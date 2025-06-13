@@ -4,7 +4,6 @@
 #include "./appbase.h"
 
 #include "./quickicon.h"
-#include <qtmetamacros.h>
 #ifdef Q_OS_ANDROID
 #include "./android.h"
 #endif
@@ -218,6 +217,7 @@ public:
     Q_INVOKABLE bool unloadMain();
     Q_INVOKABLE void shutdown();
     Q_INVOKABLE bool storeSettings();
+    Q_INVOKABLE bool applyLauncherSettings();
     Q_INVOKABLE bool applySettings();
     Q_INVOKABLE bool clearLogfile();
     Q_INVOKABLE bool checkOngoingImportExport();
@@ -272,7 +272,10 @@ public:
     Q_INVOKABLE void addDialog(QObject *dialog);
     Q_INVOKABLE void removeDialog(QObject *dialog);
     Q_INVOKABLE void terminateSyncthing();
-    Q_INVOKABLE void requestLauncherStatus();
+#ifdef Q_OS_ANDROID
+    Q_INVOKABLE void sendMessageToService(ServiceAction action, int arg1 = 0, int arg2 = 0, const QString &str = QString());
+    Q_INVOKABLE void handleMessageFromService(ActivityAction action, int arg1, int arg2, const QString &str);
+#endif
 
 Q_SIGNALS:
     void darkmodeEnabledChanged(bool darkmodeEnabled);
@@ -292,9 +295,10 @@ Q_SIGNALS:
     void storagePermissionGrantedChanged(bool storagePermissionGranted);
     void notificationPermissionGrantedChanged(bool notificationPermissionGranted);
 #ifndef Q_OS_ANDROID
-    void syncthingTerminationRequested(); // FIXME: use this
-    void settingsReloadRequested(); // FIXME: use this
-    void launcherStatusRequested(); // FIXME: use this
+    void syncthingTerminationRequested();
+    void settingsReloadRequested();
+    void launcherStatusRequested();
+    void stoppingLibSyncthingRequested();
 #endif
 
 protected:
@@ -337,7 +341,6 @@ private:
 #ifdef Q_OS_ANDROID
     mutable std::optional<bool> m_storagePermissionGranted;
     mutable std::optional<bool> m_notificationPermissionGranted;
-    SyncthingServiceConnection m_serviceConnection;
 #endif
     std::pair<QVariantMap, QVariantMap> m_settingsImport;
     std::optional<QString> m_homeDirMove;

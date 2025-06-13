@@ -8,40 +8,16 @@ namespace QtGui {
 class AppService;
 class App;
 
-class SyncthingServiceBinder : public QAndroidBinder {
-public:
-    enum SyncthingServiceAction : int {
-        ReloadSettings = 1,
-        TerminateSyncthing,
-        BroadcastLauncherStatus,
-    };
-
-    explicit SyncthingServiceBinder();
-
-    bool onTransact(int code, const QAndroidParcel &data, const QAndroidParcel &reply, QAndroidBinder::CallType flags) override;
-    void setService(AppService *service)
-    {
-        m_service = service;
-    }
-
-private:
-    AppService *m_service;
+enum class ServiceAction : int {
+    ReloadSettings = 100,
+    TerminateSyncthing,
+    BroadcastLauncherStatus,
+    Reconnect,
+    ClearInternalErrorNotifications,
 };
 
-class SyncthingServiceConnection : public QAndroidServiceConnection {
-public:
-    explicit SyncthingServiceConnection();
-
-    bool connect();
-    const QAndroidBinder &binder() const
-    {
-        return m_binder;
-    }
-    void onServiceConnected(const QString &name, const QAndroidBinder &serviceBinder) override;
-    void onServiceDisconnected(const QString &name) override;
-
-private:
-    QAndroidBinder m_binder;
+enum class ActivityAction : int {
+    ShowError = 100,
 };
 
 namespace JniFn {

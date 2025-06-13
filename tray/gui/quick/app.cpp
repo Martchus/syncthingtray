@@ -121,7 +121,7 @@ App::App(bool insecure, QObject *parent)
     qDebug() << "Initializing UI";
 
 #ifdef Q_OS_ANDROID
-    m_serviceConnection.connect();
+    JniFn::registerActivityJniMethods(this);
 #endif
 
     m_app->installEventFilter(this);
@@ -177,19 +177,7 @@ App::App(bool insecure, QObject *parent)
         [this](const QString &dirId) { emit info(tr("Triggered override of \"%1\"").arg(dirDisplayName(dirId))); });
     connect(&m_connection, &SyncthingConnection::revertTriggered, this,
         [this](const QString &dirId) { emit info(tr("Triggered revert of \"%1\"").arg(dirDisplayName(dirId))); });
-
-#ifdef Q_OS_ANDROID
-    // start Android service
-    qDebug() << "Starting Android service";
-    QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("startSyncthingService");
-
-    JniFn::registerActivityJniMethods(this);
-
-    // request launcher status in case the service has already been running
-    requestLauncherStatus();
-#endif
-
-    QObject::connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, &App::shutdown);
+    connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, &App::shutdown);
 
     initEngine();
 
@@ -281,7 +269,6 @@ QVariantMap App::statistics() const
 
 void App::statistics(QVariantMap &res) const
 {
-
     res[QStringLiteral("stConfigDir")] = m_syncthingConfigDir;
     res[QStringLiteral("stDataDir")] = m_syncthingDataDir;
     res[QStringLiteral("stLevelDbSize")] = formattedDatabaseSize(QStringLiteral("index-v0.14.0.db"), QStringLiteral("*.ldb"));
@@ -306,6 +293,14 @@ bool App::nativePopups() const
 
 bool App::initEngine()
 {
+    // init service/launcher/backend
+#ifdef Q_OS_ANDROID
+    qDebug() << "Starting Android service";
+    QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("startSyncthingService");
+#else
+    emit launcherStatusRequested();
+#endif
+
     qDebug() << "Initializing QML engine";
     m_engine.emplace();
     connect(
@@ -377,10 +372,10 @@ bool App::unloadMain()
 
 void App::shutdown()
 {
-    // FIXME: stop libsyncthing
-    //m_launcher.stopLibSyncthing();
 #ifdef Q_OS_ANDROID
     QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("stopSyncthingService");
+#else
+    emit stoppingLibSyncthingRequested();
 #endif
 }
 
@@ -1008,10 +1003,21 @@ static auto splitFolderRef(QStringView folderRef)
     return res;
 }
 
-//QAndroidBinder *App::handleBind(const QAndroidIntent &intent)
-//{
-//    return nullptr;
-//}
+void App::sendMessageToService(ServiceAction action, int arg1, int arg2, const QString &str)
+{
+    QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("sendMessageToService", action, arg1, arg2, str);
+}
+
+void App::handleMessageFromService(ActivityAction action, int arg1, int arg2, const QString &str)
+{
+    switch (action) {
+    case ActivityAction::ShowError:
+        QMetaObject::invokeMethod(this, "showError", Qt::QueuedConnection, Q_ARG(QString, str));
+        break;
+    default:
+        ;
+    }
+}
 
 void App::handleAndroidIntent(const QString &data, bool fromNotification)
 {
@@ -1052,8 +1058,7 @@ void App::clearInternalErrors()
         return;
     }
 #ifdef Q_OS_ANDROID
-    // FIXME: tell service to clear notification
-    //clearAndroidExtraNotifications(3, 3 + m_internalErrors.size());
+    sendMessageToService(ServiceAction::ClearInternalErrorNotifications);
 #endif
     m_internalErrors.clear();
     invalidateStatus();
@@ -1225,16 +1230,49 @@ bool App::storeSettings()
         return false;
     }
 #ifdef Q_OS_ANDROID
-    m_serviceConnection.binder().transact(SyncthingServiceBinder::ReloadSettings, QAndroidParcel(), nullptr, QAndroidBinder::CallType::OneWay);
+    sendMessageToService(ServiceAction::ReloadSettings);
 #else
     emit settingsReloadRequested();
 #endif
     return true;
 }
 
+/// \cond
+static void ensureDefault(bool &mod, QJsonObject &o, QLatin1String member, const QJsonValue &d)
+{
+    if (!o.contains(member)) {
+        o.insert(member, d);
+        mod = true;
+    }
+}
+/// \endcond
+
+bool App::applyLauncherSettings()
+{
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+    static constexpr auto runByDefault = true;
+#else
+    static constexpr auto runByDefault = false;
+#endif
+    auto launcherSettingsObj = m_settings.value(QLatin1String("launcher")).toObject();
+    auto mod = false;
+    ensureDefault(mod, launcherSettingsObj, QLatin1String("run"), runByDefault);
+    ensureDefault(mod, launcherSettingsObj, QLatin1String("stopOnMetered"), false);
+    ensureDefault(mod, launcherSettingsObj, QLatin1String("writeLogFile"), false);
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+    ensureDefault(mod, launcherSettingsObj, QLatin1String("logLevel"), SyncthingLauncher::libSyncthingLogLevelString(LibSyncthing::LogLevel::Info));
+#endif
+    ensureDefault(mod, launcherSettingsObj, QLatin1String("stHomeDir"), QString());
+    if (mod) {
+        m_settings.insert(QLatin1String("launcher"), launcherSettingsObj);
+    }
+    return true;
+}
+
 bool App::applySettings()
 {
     applySyncthingSettings();
+    applyLauncherSettings();
     applyConnectionSettings(m_launcherStatus.value(QStringLiteral("guiUrl")).toUrl());
     auto tweaksSettings = m_settings.value(QLatin1String("tweaks")).toObject();
     m_alwaysUnloadGuiWhenHidden = tweaksSettings.value(QLatin1String("unloadGuiWhenHidden")).toBool(false);
@@ -1394,19 +1432,9 @@ static QStringList::size_type importObjects(
 void App::terminateSyncthing()
 {
 #ifdef Q_OS_ANDROID
-    m_serviceConnection.binder().transact(SyncthingServiceBinder::TerminateSyncthing, QAndroidParcel(), nullptr, QAndroidBinder::CallType::OneWay);
+    sendMessageToService(ServiceAction::TerminateSyncthing);
 #else
     emit syncthingTerminationRequested();
-#endif
-}
-
-void App::requestLauncherStatus()
-{
-#ifdef Q_OS_ANDROID
-    m_serviceConnection.binder().transact(
-        SyncthingServiceBinder::BroadcastLauncherStatus, QAndroidParcel(), nullptr, QAndroidBinder::CallType::OneWay);
-#else
-    emit launcherStatusRequested();
 #endif
 }
 
@@ -1669,14 +1697,12 @@ bool App::moveSyncthingHome(const QString &newHomeDir, const QJSValue &callback)
     }
 
     // stop Syncthing if necessary
-    /* FIXME: query service
-    if (m_launcher.isRunning()) {
+    if (m_launcherStatus.value(QStringLiteral("isRunning")).toBool()) {
         emit info(tr("Waiting for backend to terminate before moving home …"));
         m_homeDirMove = newHomeDir;
-        m_launcher.terminate();
+        terminateSyncthing();
         return false;
     }
-    */
 
     setImportExportStatus(ImportExportStatus::Moving);
     QtConcurrent::run([newHomeDir = newHomeDir, customHomeDir = currentSyncthingHomeDir(), defaultPath = m_settingsDir.value_or(QDir()).path(),

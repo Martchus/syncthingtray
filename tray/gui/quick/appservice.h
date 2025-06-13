@@ -19,6 +19,8 @@
 
 namespace QtGui {
 
+enum class ServiceAction : int;
+
 class AppService : public AppBase {
     Q_OBJECT
     Q_PROPERTY(Data::SyncthingLauncher *launcher READ launcher CONSTANT)
@@ -39,12 +41,18 @@ Q_SIGNALS:
     void launcherStatusChanged(const QVariant &status);
 #endif
 
-public Q_SLOTS:
+public:
     Q_INVOKABLE void broadcastLauncherStatus();
     Q_INVOKABLE bool applyLauncherSettings();
     Q_INVOKABLE bool applySettings();
     Q_INVOKABLE bool reloadSettings();
     Q_INVOKABLE void terminateSyncthing();
+    Q_INVOKABLE void stopLibSyncthing();
+#ifdef Q_OS_ANDROID
+    Q_INVOKABLE void showError(const QString &error);
+    Q_INVOKABLE void clearInternalErrors();
+    Q_INVOKABLE void handleMessageFromActivity(ServiceAction action, int arg1, int arg2, const QString &str);
+#endif
 
 private Q_SLOTS:
     void handleConnectionError(const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request,
@@ -56,7 +64,6 @@ private Q_SLOTS:
     void handleNewErrors(const std::vector<Data::SyncthingError> &errors);
     void handleConnectionStatusChanged(Data::SyncthingStatus newStatus);
 #ifdef Q_OS_ANDROID
-    void stopLibSyncthing();
     QJniObject &makeAndroidIcon(const QIcon &icon);
     void invalidateAndroidIconCache();
     void updateAndroidNotification();

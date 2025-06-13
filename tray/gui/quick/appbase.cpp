@@ -15,16 +15,6 @@ using namespace Data;
 
 namespace QtGui {
 
-/// \cond
-static void ensureDefault(bool &mod, QJsonObject &o, QLatin1String member, const QJsonValue &d)
-{
-    if (!o.contains(member)) {
-        o.insert(member, d);
-        mod = true;
-    }
-}
-/// \endcond
-
 AppBase::AppBase(bool insecure, QObject *parent)
     : QObject(parent)
     , m_notifier(m_connection)
@@ -141,8 +131,11 @@ QString AppBase::readSettingFile(QFile &settingsFile, QJsonObject &settings)
     return QString();
 }
 
-bool AppBase::loadSettings()
+bool AppBase::loadSettings(bool force)
 {
+    if (force) {
+        m_settingsFile.reset();
+    }
     if (!m_settingsFile.isOpen() && !openSettings()) {
         return false;
     }

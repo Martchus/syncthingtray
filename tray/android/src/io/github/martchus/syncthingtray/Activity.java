@@ -2,6 +2,8 @@ package io.github.martchus.syncthingtray;
 
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.ServiceConnection;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -12,7 +14,11 @@ import android.media.MediaScannerConnection;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-//import android.os.IBinder;
+import android.os.IBinder;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.provider.DocumentsContract;
 import android.net.Uri;
 import android.provider.Settings;
@@ -35,6 +41,8 @@ import io.github.martchus.syncthingtray.Util;
 
 public class Activity extends QtActivity {
     private static final String TAG = "SyncthingActivity";
+
+    // various fields for activity-internal state
     private static final int STORAGE_PERMISSION_REQUEST = 100;
     private float m_fontScale = 1.0f;
     private int m_fontWeightAdjustment = 0;
@@ -44,6 +52,11 @@ public class Activity extends QtActivity {
     private boolean m_explicitShutdown = false;
     private boolean m_keepRunningAfterDestruction = false;
     private android.content.pm.ActivityInfo m_info;
+
+    // fields for communicating with service
+    private Messenger m_service = null;
+    private boolean m_isBound;
+    private final Messenger m_messenger = new Messenger(new IncomingHandler());
     public static final String BROADCAST_LAUNCHER_STATUS = "io.github.martchus.syncthingtray.launcherstatus";
     private final BroadcastReceiver m_serviceMessageReceiver = new BroadcastReceiver() {
         @Override
@@ -54,11 +67,71 @@ public class Activity extends QtActivity {
         }
     };
 
+    private class IncomingHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            Bundle bundle = msg.getData();
+            String str = bundle != null ? bundle.getString("message") : null;
+            handleMessageFromService(msg.what, msg.arg1, msg.arg2, str);
+            super.handleMessage(msg);
+        }
+    }
+
     private void registerServiceBroadcastReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BROADCAST_LAUNCHER_STATUS);
         registerReceiver(m_serviceMessageReceiver, intentFilter);
         Log.i(TAG, "Registered broadcast receiver");
+    }
+
+    private ServiceConnection m_connection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            Log.i(TAG, "Connected to service");
+            m_service = new Messenger(service);
+            try {
+                Message msg = Message.obtain(null, SyncthingService.MSG_REGISTER_CLIENT);
+                msg.replyTo = m_messenger;
+                m_service.send(msg);
+                sendMessageToService(SyncthingService.MSG_SERVICE_ACTION_BROADCAST_LAUNCHER_STATUS, 0, 0, "");
+            } catch (RemoteException e) {
+            }
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            Log.i(TAG, "Disconnected from service");
+            m_service = null;
+        }
+    };
+
+    private void connectToService() {
+        Log.i(TAG, "Connecting to service");
+        bindService(new Intent(Activity.this, SyncthingService.class), m_connection, Context.BIND_AUTO_CREATE);
+        m_isBound = true;
+    }
+
+    public void sendMessageToService(int what, int arg1, int arg2, String str) {
+        try {
+            m_service.send(SyncthingService.makeMessage(what, arg1, arg2, str));
+        } catch (RemoteException e) {
+            showToast("Unable to send message to background service: " + e.toString());
+        }
+    }
+
+    private void disconnectFromService() {
+        Log.i(TAG, "Disconnecting from service");
+        if (m_isBound) {
+            if (m_service != null) {
+                try {
+                    Message msg = Message.obtain(null, SyncthingService.MSG_UNREGISTER_CLIENT);
+                    msg.replyTo = m_messenger;
+                    m_service.send(msg);
+                } catch (RemoteException e) {
+                }
+            }
+            unbindService(m_connection);
+            m_isBound = false;
+        }
     }
 
     public boolean performHapticFeedback() {
@@ -201,6 +274,7 @@ public class Activity extends QtActivity {
         } else {
             startService(intent);
         }
+        connectToService();
     }
 
     public void stopSyncthingService() {
@@ -370,6 +444,7 @@ public class Activity extends QtActivity {
     private static native void loadQtQuickGui();
     private static native void unloadQtQuickGui();
     private static native void handleLauncherStatusBroadcast(Intent intent);
+    private static native void handleMessageFromService(int what, int arg1, int arg2, String str);
     private static native void handleAndroidIntent(String page, boolean fromNotification);
     private static native void handleStoragePermissionChanged(boolean storagePermissionGranted);
     private static native void handleNotificationPermissionChanged(boolean notificationPermissionGranted);

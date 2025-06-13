@@ -12,18 +12,26 @@ import android.content.pm.ServiceInfo;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.RemoteException;
 import android.util.Log;
+
+import java.util.ArrayList;
 
 import org.qtproject.qt.android.bindings.QtService;
 
 import io.github.martchus.syncthingtray.Activity;
-import io.github.martchus.syncthingtray.SyncthingServiceBinder;
 import io.github.martchus.syncthingtray.Util;
 
 public class SyncthingService extends QtService {
-    private final SyncthingServiceBinder m_binder = new SyncthingServiceBinder(this);
     private static final String TAG = "SyncthingService";
     private static SyncthingService s_instance = null;
+
+    // fields for managing notifications
     private static final int s_notificationID = 1;
     private static final int s_activityIntentRequestCode = 1;
     private Intent m_notificationContentIntent;
@@ -39,6 +47,64 @@ public class SyncthingService extends QtService {
     private static String s_notificationSubText = "";
     private static Bitmap s_notificationIcon = null;
 
+    // fields to communicate with activity
+    private ArrayList<Messenger> m_clients = new ArrayList<Messenger>();
+    private final Messenger m_messenger = new Messenger(new IncomingHandler());
+
+    // messages to register/unregister clients (used from Java only)
+    public static final int MSG_REGISTER_CLIENT = 1;
+    public static final int MSG_UNREGISTER_CLIENT = 2;
+    // messages to invoke activity and service actions invoked from Java and C++ (keep in sync with android.h)
+    public static final int MSG_ACTIVITY_ACTION_SHOW_ERROR = 100;
+    public static final int MSG_SERVICE_ACTION_BROADCAST_LAUNCHER_STATUS = 102;
+
+    private class IncomingHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+            case MSG_REGISTER_CLIENT:
+                m_clients.add(msg.replyTo);
+                break;
+            case MSG_UNREGISTER_CLIENT:
+                m_clients.remove(msg.replyTo);
+                break;
+            default:
+                Bundle bundle = msg.getData();
+                String str = bundle != null ? bundle.getString("message") : null;
+                handleMessageFromActivity(msg.what, msg.arg1, msg.arg2, str);
+                super.handleMessage(msg);
+            }
+        }
+    }
+
+    public static Message makeMessage(int what, int arg1, int arg2, String str) {
+        Message msg = Message.obtain(null, what, arg1, arg2);
+        if (str != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString("message", str);
+            msg.setData(bundle);
+        }
+        return msg;
+    }
+
+    public int sendMessageToClients(int what, int arg1, int arg2, String str) {
+        int messagesSent = 0;
+        for (int i = m_clients.size() - 1; i >= 0; --i) {
+            try {
+                m_clients.get(i).send(makeMessage(what, arg1, arg2, str));
+                ++messagesSent;
+            } catch (RemoteException e) {
+                m_clients.remove(i); // remove presumably dead client
+            }
+        }
+        return messagesSent;
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return m_messenger.getBinder();
+    }
+    
     private void initializeNotificationManagement()  {
         if (m_notificationManager != null) {
             return;
@@ -223,4 +289,5 @@ public class SyncthingService extends QtService {
 
     private static native void stopLibSyncthing();
     private static native void broadcastLauncherStatus();
+    private static native void handleMessageFromActivity(int what, int arg1, int arg2, String str);
 }

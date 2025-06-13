@@ -49,6 +49,7 @@ AppService::AppService(bool insecure, QObject *parent)
 #ifdef Q_OS_ANDROID
     connect(&m_notifier, &SyncthingNotifier::newDevice, this, &AppService::showNewDevice);
     connect(&m_notifier, &SyncthingNotifier::newDir, this, &AppService::showNewDir);
+    connect(this, &AppService::error, this, &AppService::showError);
 #endif
 
     if (!SyncthingLauncher::mainInstance()) {
@@ -113,9 +114,8 @@ bool AppService::applyLauncherSettings()
         if (!m_launcher.logFile().isOpen()) {
             m_launcher.logFile().setFileName(m_settingsDir->path() + QStringLiteral("/syncthing.log"));
             if (!m_launcher.logFile().open(QIODeviceBase::WriteOnly | QIODeviceBase::Append | QIODeviceBase::Text)) {
-                // FIXME: emit error
-                //emit error(tr("Unable to open persistent log file for Syncthing under \"%1\": %2")
-                //        .arg(m_launcher.logFile().fileName(), m_launcher.logFile().errorString()));
+                emit error(tr("Unable to open persistent log file for Syncthing under \"%1\": %2")
+                        .arg(m_launcher.logFile().fileName(), m_launcher.logFile().errorString()));
                 return false;
             }
         }
@@ -125,8 +125,7 @@ bool AppService::applyLauncherSettings()
     m_launcher.setRunning(shouldRun, std::move(options));
 #else
     if (shouldRun) {
-        // FIXME: show error like in UI
-        //emit error(tr("This build of the app cannot launch Syncthing."));
+        emit error(tr("This build of the app cannot launch Syncthing."));
         return false;
     }
 #endif
@@ -136,7 +135,7 @@ bool AppService::applyLauncherSettings()
 bool AppService::reloadSettings()
 {
     qDebug() << "Reloading settings";
-    const auto res = loadSettings() && applyLauncherSettings();
+    const auto res = loadSettings(true) && applyLauncherSettings();
     invalidateStatus();
     return res;
 }
@@ -144,6 +143,11 @@ bool AppService::reloadSettings()
 void AppService::terminateSyncthing()
 {
     m_launcher.terminate();
+}
+
+void AppService::stopLibSyncthing()
+{
+    m_launcher.stopLibSyncthing();
 }
 
 bool AppService::applySettings()
@@ -156,9 +160,50 @@ bool AppService::applySettings()
 }
 
 #ifdef Q_OS_ANDROID
-void AppService::stopLibSyncthing()
+void AppService::showError(const QString &error)
 {
-    m_launcher.stopLibSyncthing();
+    const auto ctx = QJniObject(QNativeInterface::QAndroidApplication::context());
+    if (ctx.callMethod<jint>("sendMessageToClients", static_cast<jint>(ActivityAction::ShowError), 0, 0, error) > 0) {
+        return;
+    }
+    const auto title = QJniObject::fromString(tr("Syncthing App ran into error"));
+    const auto text = QJniObject::fromString(error);
+    const auto subText = QJniObject::fromString(QString());
+    static const auto page = QJniObject::fromString(QStringLiteral("internalErrors"));
+    const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
+    updateExtraAndroidNotification(title, text, subText, page, icon);
+}
+
+void AppService::clearInternalErrors()
+{
+    clearAndroidExtraNotifications(3, 3 + m_internalErrors.size());
+}
+
+void AppService::handleMessageFromActivity(ServiceAction action, int arg1, int arg2, const QString &str)
+{
+    Q_UNUSED(arg1)
+    Q_UNUSED(arg2)
+    Q_UNUSED(str)
+    qDebug() << "Received message from activity: " << static_cast<int>(action);
+    switch (action) {
+    case ServiceAction::ReloadSettings:
+        QMetaObject::invokeMethod(this, "reloadSettings", Qt::QueuedConnection);
+        break;
+    case ServiceAction::TerminateSyncthing:
+        QMetaObject::invokeMethod(this, "terminateSyncthing", Qt::QueuedConnection);
+        break;
+    case ServiceAction::BroadcastLauncherStatus:
+        QMetaObject::invokeMethod(this, "broadcastLauncherStatus", Qt::QueuedConnection);
+        break;
+    case ServiceAction::Reconnect:
+        QMetaObject::invokeMethod(this->connection(), "reconnect", Qt::QueuedConnection);
+        break;
+    case ServiceAction::ClearInternalErrorNotifications:
+        QMetaObject::invokeMethod(this, "clearInternalErrors", Qt::QueuedConnection);
+        break;
+    default:
+        ;
+    }
 }
 #endif
 

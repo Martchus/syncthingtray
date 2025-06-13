@@ -299,11 +299,9 @@ static int runApplication(int argc, const char *const *argv)
         qDebug() << "Initializing service";
         SET_QT_APPLICATION_INFO;
         qputenv("QT_QPA_PLATFORM", "minimal"); // cannot use android platform as it would get stuck without activity
-        auto binder = new SyncthingServiceBinder();
-        auto androidService = QAndroidService(argc, const_cast<char **>(argv), [binder](const QAndroidIntent &) { return binder; });
+        auto androidService = QAndroidService(argc, const_cast<char **>(argv));
         auto guiApp = QGuiApplication(argc, const_cast<char **>(argv)); // need GUI app for using QIcon and such
         auto serviceApp = AppService(insecureArg.isPresent());
-        binder->setService(&serviceApp);
         networkAccessManager().setParent(&androidService);
         qDebug() << "Executing service";
         const auto res = androidService.exec();
@@ -339,6 +337,8 @@ static int runApplication(int argc, const char *const *argv)
         QObject::connect(&quickApp, &App::syncthingTerminationRequested, &appService::terminateSyncthing);
         QObject::connect(&quickApp, &App::settingsReloadRequested, &appService::reloadSettings);
         QObject::connect(&quickApp, &App::launcherStatusRequested, &appService::requestLauncherStatus);
+        QObject::connect(&quickApp, &App::stoppingLibSyncthingRequested, &appService::stopLibSyncthing);
+        QObject::connect(&appService, &AppService::error, &quickApp::error);
 #endif
         const auto res = app.exec();
 #if defined(Q_OS_ANDROID)

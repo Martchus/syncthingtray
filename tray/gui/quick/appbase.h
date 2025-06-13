@@ -42,7 +42,7 @@ public:
     }
     virtual const QString &status();
 
-    Q_INVOKABLE bool loadSettings();
+    Q_INVOKABLE bool loadSettings(bool force = false);
     Q_INVOKABLE void applyConnectionSettings(const QUrl &syncthingUrl);
     Q_INVOKABLE void applySyncthingSettings();
 
