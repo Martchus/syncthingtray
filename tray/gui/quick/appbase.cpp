@@ -173,7 +173,7 @@ void AppBase::applyConnectionSettings(const QUrl &syncthingUrl)
     }
     m_connection.setInsecure(m_insecure);
     if (m_connectToLaunched) {
-        handleGuiAddressChanged(syncthingUrl);
+        handleGuiUrlChanged(syncthingUrl);
     } else if (m_connection.applySettings(m_connectionSettingsFromConfig) || !m_connection.isConnected()) {
         m_connection.reconnect();
     }
@@ -187,7 +187,7 @@ void AppBase::applySyncthingSettings()
     m_syncthingDataDir = m_syncthingConfigDir;
 }
 
-void AppBase::handleGuiAddressChanged(const QUrl &newUrl)
+void AppBase::handleGuiUrlChanged(const QUrl &newUrl)
 {
     auto url = newUrl;
 #ifndef QT_NO_SSL

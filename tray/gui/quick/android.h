@@ -11,6 +11,8 @@ class App;
 enum class ServiceAction : int {
     ReloadSettings = 100,
     TerminateSyncthing,
+    RestartSyncthing,
+    ShutdownSyncthing,
     BroadcastLauncherStatus,
     Reconnect,
     ClearInternalErrorNotifications,

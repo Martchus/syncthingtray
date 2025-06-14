@@ -150,6 +150,18 @@ void AppService::stopLibSyncthing()
     m_launcher.stopLibSyncthing();
 }
 
+void AppService::restartSyncthing()
+{
+    m_launcher.setManuallyStopped(true);
+    m_connection.restart();
+}
+
+void AppService::shutdownSyncthing()
+{
+    m_launcher.setManuallyStopped(true);
+    m_connection.shutdown();
+}
+
 bool AppService::applySettings()
 {
     applySyncthingSettings();
@@ -191,6 +203,12 @@ void AppService::handleMessageFromActivity(ServiceAction action, int arg1, int a
         break;
     case ServiceAction::TerminateSyncthing:
         QMetaObject::invokeMethod(this, "terminateSyncthing", Qt::QueuedConnection);
+        break;
+    case ServiceAction::RestartSyncthing:
+        QMetaObject::invokeMethod(this, "restartSyncthing", Qt::QueuedConnection);
+        break;
+    case ServiceAction::ShutdownSyncthing:
+        QMetaObject::invokeMethod(this, "shotdownSyncthing", Qt::QueuedConnection);
         break;
     case ServiceAction::BroadcastLauncherStatus:
         QMetaObject::invokeMethod(this, "broadcastLauncherStatus", Qt::QueuedConnection);

@@ -3,6 +3,7 @@
 
 #include "./appbase.h"
 
+#include <qtmetamacros.h>
 #include <syncthingwidgets/misc/internalerror.h>
 #include <syncthingwidgets/misc/syncthinglauncher.h>
 
@@ -48,6 +49,8 @@ public:
     Q_INVOKABLE bool reloadSettings();
     Q_INVOKABLE void terminateSyncthing();
     Q_INVOKABLE void stopLibSyncthing();
+    Q_INVOKABLE void restartSyncthing();
+    Q_INVOKABLE void shutdownSyncthing();
 #ifdef Q_OS_ANDROID
     Q_INVOKABLE void showError(const QString &error);
     Q_INVOKABLE void clearInternalErrors();

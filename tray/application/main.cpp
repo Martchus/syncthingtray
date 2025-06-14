@@ -335,6 +335,8 @@ static int runApplication(int argc, const char *const *argv)
         auto quickApp = App(insecureArg.isPresent());
 #if !defined(Q_OS_ANDROID)
         QObject::connect(&quickApp, &App::syncthingTerminationRequested, &appService::terminateSyncthing);
+        QObject::connect(&quickApp, &App::syncthingRestartRequested, &appService::restartSyncthing);
+        QObject::connect(&quickApp, &App::syncthingShutdownRequested, &appService::shutdownSyncthing);
         QObject::connect(&quickApp, &App::settingsReloadRequested, &appService::reloadSettings);
         QObject::connect(&quickApp, &App::launcherStatusRequested, &appService::requestLauncherStatus);
         QObject::connect(&quickApp, &App::stoppingLibSyncthingRequested, &appService::stopLibSyncthing);
