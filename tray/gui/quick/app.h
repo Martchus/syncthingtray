@@ -58,7 +58,11 @@ class App : public AppBase {
     Q_PROPERTY(bool hasInternalErrors READ hasInternalErrors NOTIFY hasInternalErrorsChanged)
     Q_PROPERTY(QVariantMap statistics READ statistics)
     Q_PROPERTY(bool savingConfig READ isSavingConfig NOTIFY savingConfigChanged)
-    Q_PROPERTY(bool launching READ isLaunching NOTIFY launchingChanged)
+    Q_PROPERTY(bool syncthingStarting READ isSyncthingStarting NOTIFY syncthingStartingChanged)
+    Q_PROPERTY(bool syncthingRunning READ isSyncthingRunning NOTIFY syncthingRunningChanged)
+    Q_PROPERTY(QUrl syncthingGuiUrl READ syncthingGuiUrl NOTIFY syncthingGuiUrlChanged)
+    Q_PROPERTY(QString syncthingRunningStatus READ syncthingRunningStatus NOTIFY syncthingRunningStatusChanged)
+    Q_PROPERTY(QString meteredStatus READ meteredStatus NOTIFY meteredStatusChanged)
     Q_PROPERTY(bool importExportOngoing READ isImportExportOngoing NOTIFY importExportOngoingChanged)
     Q_PROPERTY(QString statusText READ statusText NOTIFY statusInfoChanged)
     Q_PROPERTY(QIcon statusIcon READ statusIcon NOTIFY statusInfoChanged)
@@ -174,9 +178,29 @@ public:
     {
         return m_importExportStatus != ImportExportStatus::None;
     }
-    bool isLaunching() const
+    bool syncthingStarting() const
     {
-        return m_launcherStatus.value(QStringLiteral("isStarting")).toBool();
+        return m_isSyncthingStarting;
+    }
+    bool isSyncthingStarting() const
+    {
+        return m_isSyncthingStarting;
+    }
+    bool isSyncthingRunning() const
+    {
+        return m_isSyncthingRunning;
+    }
+    const QUrl &syncthingGuiUrl() const
+    {
+        return m_syncthingGuiUrl;
+    }
+    const QString &syncthingRunningStatus() const
+    {
+        return m_syncthingRunningStatus;
+    }
+    const QString &meteredStatus() const
+    {
+        return m_meteredStatus;
     }
     const QString &statusText() const
     {
@@ -207,7 +231,7 @@ public:
     QString currentSyncthingHomeDir() const;
     QObject *currentDialog();
 
-    // helper functions invoked from QML
+    // helper functions
     Q_INVOKABLE bool initEngine();
 #ifdef Q_OS_ANDROID
     Q_INVOKABLE bool destroyEngine();
@@ -272,10 +296,14 @@ public:
     Q_INVOKABLE void addDialog(QObject *dialog);
     Q_INVOKABLE void removeDialog(QObject *dialog);
     Q_INVOKABLE void terminateSyncthing();
+    Q_INVOKABLE void restartSyncthing();
+    Q_INVOKABLE void shutdownSyncthing();
+    Q_INVOKABLE void connectToSyncthing();
 #ifdef Q_OS_ANDROID
     Q_INVOKABLE void sendMessageToService(ServiceAction action, int arg1 = 0, int arg2 = 0, const QString &str = QString());
     Q_INVOKABLE void handleMessageFromService(ActivityAction action, int arg1, int arg2, const QString &str);
 #endif
+    Q_INVOKABLE void handleLauncherStatusBroadcast(const QVariant &status);
 
 Q_SIGNALS:
     void darkmodeEnabledChanged(bool darkmodeEnabled);
@@ -286,7 +314,11 @@ Q_SIGNALS:
     void internalErrorsRequested();
     void connectionErrorsRequested();
     void savingConfigChanged(bool isSavingConfig);
-    void launchingChanged(bool launchingChanged);
+    void syncthingStartingChanged(bool syncthingStarting);
+    void syncthingRunningChanged(bool syncthingRunning);
+    void syncthingGuiUrlChanged(const QUrl &syncthingGuiUrl);
+    void syncthingRunningStatusChanged(const QString &syncthingRunningStatus);
+    void meteredStatusChanged(const QString &meteredStatus);
     void importExportOngoingChanged(bool importExportOngoing);
     void statusInfoChanged();
     void textShared(const QString &text);
@@ -296,6 +328,9 @@ Q_SIGNALS:
     void notificationPermissionGrantedChanged(bool notificationPermissionGranted);
 #ifndef Q_OS_ANDROID
     void syncthingTerminationRequested();
+    void syncthingRestartRequested();
+    void syncthingShutdownRequested();
+    void syncthingConnectRequested();
     void settingsReloadRequested();
     void launcherStatusRequested();
     void stoppingLibSyncthingRequested();
@@ -314,7 +349,6 @@ private Q_SLOTS:
     void handleNewErrors(const std::vector<Data::SyncthingError> &errors);
     void handleStateChanged(Qt::ApplicationState state);
     void handleConnectionStatusChanged(Data::SyncthingStatus newStatus);
-    void handleLauncherStatusBroadcast(const QVariant &status);
 #ifdef Q_OS_ANDROID
     void handleAndroidIntent(const QString &page, bool fromNotification);
     void handleStoragePermissionChanged(bool storagePermissionGranted);
@@ -329,7 +363,9 @@ private:
     QString locateSettingsExportDir();
 
     std::optional<QQmlApplicationEngine> m_engine;
-    QVariantMap m_launcherStatus;
+    QString m_syncthingRunningStatus;
+    QUrl m_syncthingGuiUrl;
+    QString m_meteredStatus;
     QGuiApplication *m_app;
     QtForkAwesome::QuickImageProvider *m_imageProvider;
     Data::SyncthingDirectoryModel m_dirModel;
@@ -357,6 +393,8 @@ private:
     bool m_isGuiLoaded;
     bool m_alwaysUnloadGuiWhenHidden;
     bool m_unloadGuiWhenHidden;
+    bool m_isSyncthingStarting;
+    bool m_isSyncthingRunning;
 };
 
 inline void App::clearLog()

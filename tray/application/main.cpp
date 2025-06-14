@@ -71,6 +71,7 @@ Q_IMPORT_QML_PLUGIN(WebViewItemPlugin)
 #include <QDebug>
 #include <QSslSocket>
 #include <QtCore/private/qandroidextras_p.h>
+#include <QtGui/private/qhighdpiscaling_p.h>
 #endif
 
 using namespace std;
@@ -299,6 +300,9 @@ static int runApplication(int argc, const char *const *argv)
         qDebug() << "Initializing service";
         SET_QT_APPLICATION_INFO;
         qputenv("QT_QPA_PLATFORM", "minimal"); // cannot use android platform as it would get stuck without activity
+        const auto scaleFactor = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jfloat>("scaleFactor", "()F");
+        qDebug() << "Scale factor for notification/service icons: " << scaleFactor;
+        QHighDpiScaling::setGlobalFactor(scaleFactor);
         auto androidService = QAndroidService(argc, const_cast<char **>(argv));
         auto guiApp = QGuiApplication(argc, const_cast<char **>(argv)); // need GUI app for using QIcon and such
         auto serviceApp = AppService(insecureArg.isPresent());
@@ -334,11 +338,16 @@ static int runApplication(int argc, const char *const *argv)
 #endif
         auto quickApp = App(insecureArg.isPresent());
 #if !defined(Q_OS_ANDROID)
-        QObject::connect(&quickApp, &App::syncthingTerminationRequested, &appService::terminateSyncthing);
-        QObject::connect(&quickApp, &App::settingsReloadRequested, &appService::reloadSettings);
-        QObject::connect(&quickApp, &App::launcherStatusRequested, &appService::requestLauncherStatus);
-        QObject::connect(&quickApp, &App::stoppingLibSyncthingRequested, &appService::stopLibSyncthing);
-        QObject::connect(&appService, &AppService::error, &quickApp::error);
+        QObject::connect(&quickApp, &App::syncthingTerminationRequested, &appService, &AppService::terminateSyncthing);
+        QObject::connect(&quickApp, &App::syncthingRestartRequested, &appService, &AppService::restartSyncthing);
+        QObject::connect(&quickApp, &App::syncthingShutdownRequested, &appService, &AppService::shutdownSyncthing);
+        QObject::connect(&quickApp, &App::syncthingConnectRequested, appService.connection(), static_cast<void(SyncthingConnection::*)()>(&SyncthingConnection::connect));
+        QObject::connect(&quickApp, &App::settingsReloadRequested, &appService, &AppService::reloadSettings);
+        QObject::connect(&quickApp, &App::launcherStatusRequested, &appService, &AppService::broadcastLauncherStatus);
+        QObject::connect(&quickApp, &App::stoppingLibSyncthingRequested, &appService, &AppService::stopLibSyncthing);
+        QObject::connect(&appService, &AppService::launcherStatusChanged, &quickApp, &App::handleLauncherStatusBroadcast);
+        QObject::connect(&appService, &AppService::error, &quickApp, &App::error);
+        appService.broadcastLauncherStatus();
 #endif
         const auto res = app.exec();
 #if defined(Q_OS_ANDROID)

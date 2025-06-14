@@ -26,9 +26,8 @@ AppService::AppService(bool insecure, QObject *parent)
     JniFn::registerServiceJniMethods(this);
 #endif
 
-    auto &iconManager = initIconManager();
 #ifdef Q_OS_ANDROID
-    connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &AppService::invalidateAndroidIconCache);
+    connect(&initIconManager(), &Data::IconManager::statusIconsChanged, this, &AppService::invalidateAndroidIconCache);
 #endif
 
     connect(&m_connection, &SyncthingConnection::error, this, &AppService::handleConnectionError);
@@ -43,7 +42,7 @@ AppService::AppService(bool insecure, QObject *parent)
     connect(&m_launcher, &SyncthingLauncher::outputAvailable, this, &AppService::gatherLogs);
     connect(&m_launcher, &SyncthingLauncher::runningChanged, this, &AppService::handleRunningChanged);
     connect(&m_launcher, &SyncthingLauncher::runningChanged, this, &AppService::broadcastLauncherStatus);
-    connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &AppService::handleGuiAddressChanged);
+    connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &AppService::handleGuiUrlChanged);
     connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &AppService::broadcastLauncherStatus);
 
 #ifdef Q_OS_ANDROID
@@ -51,6 +50,8 @@ AppService::AppService(bool insecure, QObject *parent)
     connect(&m_notifier, &SyncthingNotifier::newDir, this, &AppService::showNewDir);
     connect(this, &AppService::error, this, &AppService::showError);
 #endif
+
+    m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents | SyncthingConnection::PollingFlags::RemoteIndexUpdated | SyncthingConnection::PollingFlags::Errors);
 
     if (!SyncthingLauncher::mainInstance()) {
         SyncthingLauncher::setMainInstance(&m_launcher);
@@ -150,6 +151,18 @@ void AppService::stopLibSyncthing()
     m_launcher.stopLibSyncthing();
 }
 
+void AppService::restartSyncthing()
+{
+    m_launcher.setManuallyStopped(true);
+    m_connection.restart();
+}
+
+void AppService::shutdownSyncthing()
+{
+    m_launcher.setManuallyStopped(true);
+    m_connection.shutdown();
+}
+
 bool AppService::applySettings()
 {
     applySyncthingSettings();
@@ -192,11 +205,20 @@ void AppService::handleMessageFromActivity(ServiceAction action, int arg1, int a
     case ServiceAction::TerminateSyncthing:
         QMetaObject::invokeMethod(this, "terminateSyncthing", Qt::QueuedConnection);
         break;
+    case ServiceAction::RestartSyncthing:
+        QMetaObject::invokeMethod(this, "restartSyncthing", Qt::QueuedConnection);
+        break;
+    case ServiceAction::ShutdownSyncthing:
+        QMetaObject::invokeMethod(this, "shotdownSyncthing", Qt::QueuedConnection);
+        break;
+    case ServiceAction::ConnectToSyncthing:
+        QMetaObject::invokeMethod(connection(), "connect", Qt::QueuedConnection);
+        break;
     case ServiceAction::BroadcastLauncherStatus:
         QMetaObject::invokeMethod(this, "broadcastLauncherStatus", Qt::QueuedConnection);
         break;
     case ServiceAction::Reconnect:
-        QMetaObject::invokeMethod(this->connection(), "reconnect", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(connection(), "reconnect", Qt::QueuedConnection);
         break;
     case ServiceAction::ClearInternalErrorNotifications:
         QMetaObject::invokeMethod(this, "clearInternalErrors", Qt::QueuedConnection);

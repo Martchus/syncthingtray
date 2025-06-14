@@ -155,9 +155,11 @@ endif ()
 # link also explicitly against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Network)
 
-# enable private Qt headers for QAndroidService, QAndroidBinder and QAndroidServiceConnection
 if (ANDROID)
+    # enable private Qt headers for QAndroidService
     list(APPEND ADDITIONAL_QT_MODULES CorePrivate)
+    # enable private Qt headers for QHighDpiScaling
+    list(APPEND ADDITIONAL_QT_MODULES GuiPrivate)
 endif ()
 
 # configure libsyncthing

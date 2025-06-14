@@ -53,7 +53,7 @@ Q_SIGNALS:
     void statusChanged();
 
 protected Q_SLOTS:
-    void handleGuiAddressChanged(const QUrl &newUrl);
+    void handleGuiUrlChanged(const QUrl &newUrl);
 
 protected:
     static QString openSettingFile(QFile &settingsFile, const QString &path);

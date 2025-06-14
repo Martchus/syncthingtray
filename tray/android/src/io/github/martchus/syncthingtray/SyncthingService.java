@@ -9,6 +9,7 @@ import android.app.NotificationChannel;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ServiceInfo;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
 import android.os.Build;
@@ -18,6 +19,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.util.DisplayMetrics;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -285,6 +287,10 @@ public class SyncthingService extends QtService {
                 null,
                 s_notificationID);
         }
+    }
+
+    public float scaleFactor() {
+        return Resources.getSystem().getDisplayMetrics().density;
     }
 
     private static native void stopLibSyncthing();

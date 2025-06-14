@@ -58,7 +58,7 @@ ToolBar {
             }
             BusyIndicator {
                 id: busyIndicator
-                running: App.connection.connecting || App.launching || App.savingConfig || App.importExportOngoing
+                running: App.connection.connecting || App.syncthingStarting || App.savingConfig || App.importExportOngoing
                 visible: running
                 Layout.preferredWidth: statusButton.width - 5
                 Layout.preferredHeight: statusButton.height - 5
@@ -75,7 +75,7 @@ ToolBar {
                 visible: !App.connection.connected
                 icon.source: App.faUrlBase + "refresh"
                 text: qsTr("Try to re-connect")
-                onClicked: App.connection.connect()
+                onClicked: App.connectToSyncthing()
             }
         }
         StackLayout {

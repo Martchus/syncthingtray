@@ -1,5 +1,4 @@
 #include "./app.h"
-#include <private/qandroidextras_p.h>
 
 #ifdef Q_OS_ANDROID
 #include "./android.h"
@@ -117,6 +116,8 @@ App::App(bool insecure, QObject *parent)
     , m_isGuiLoaded(false)
     , m_alwaysUnloadGuiWhenHidden(false)
     , m_unloadGuiWhenHidden(false)
+    , m_isSyncthingStarting(true)
+    , m_isSyncthingRunning(false)
 {
     qDebug() << "Initializing UI";
 
@@ -171,6 +172,8 @@ App::App(bool insecure, QObject *parent)
     connect(&m_connection, &SyncthingConnection::hasOutOfSyncDirsChanged, this, &App::invalidateStatus);
     connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &App::handleChangedDevices);
     connect(&m_connection, &SyncthingConnection::newErrors, this, &App::handleNewErrors);
+    connect(this, &App::syncthingRunningChanged, this, &App::handleRunningChanged);
+    connect(this, &App::syncthingGuiUrlChanged, this, &App::handleGuiUrlChanged);
 
     // show info when override/revert has been triggered
     connect(&m_connection, &SyncthingConnection::overrideTriggered, this,
@@ -179,9 +182,11 @@ App::App(bool insecure, QObject *parent)
         [this](const QString &dirId) { emit info(tr("Triggered revert of \"%1\"").arg(dirDisplayName(dirId))); });
     connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, &App::shutdown);
 
-    initEngine();
+#ifdef Q_OS_ANDROID
+    QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("onNativeReady");
+#endif
 
-    qDebug() << "App initialized";
+    initEngine();
 }
 
 App::~App()
@@ -229,9 +234,9 @@ const QString &App::status()
         return m_status.emplace(tr("Moving home directory …"));
     }
     if (m_connectToLaunched) {
-        if (!m_launcherStatus.value(QStringLiteral("isRunning")).toBool()) {
-            return m_status.emplace(m_launcherStatus.value(QStringLiteral("runningStatus")).toString());
-        } else if (m_launcherStatus.value(QStringLiteral("isStarting")).toBool()) {
+        if (!m_isSyncthingRunning) {
+            return m_status.emplace(m_syncthingRunningStatus);
+        } else if (m_isSyncthingStarting) {
             return m_status.emplace(tr("Backend is starting …"));
         }
     }
@@ -293,14 +298,6 @@ bool App::nativePopups() const
 
 bool App::initEngine()
 {
-    // init service/launcher/backend
-#ifdef Q_OS_ANDROID
-    qDebug() << "Starting Android service";
-    QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("startSyncthingService");
-#else
-    emit launcherStatusRequested();
-#endif
-
     qDebug() << "Initializing QML engine";
     m_engine.emplace();
     connect(
@@ -964,23 +961,35 @@ void App::handleConnectionStatusChanged(Data::SyncthingStatus newStatus)
 void App::handleLauncherStatusBroadcast(const QVariant &status)
 {
     const auto launcherStatus = status.toMap();
-    const auto isStarting = launcherStatus.value(QStringLiteral("isStarting"));
-    const auto isStartingChanged = isStarting != m_launcherStatus.value(QStringLiteral("isStarting"));
-    const auto isRunning = launcherStatus.value(QStringLiteral("isRunning"));
-    const auto isRunningChanged = isRunning != m_launcherStatus.value(QStringLiteral("isRunning"));
-    const auto guiUrl = launcherStatus.value(QStringLiteral("guiUrl"));
-    const auto guiUrlChanged = guiUrl != m_launcherStatus.value(QStringLiteral("guiUrl"));
-    m_launcherStatus = launcherStatus;
+    const auto isStarting = launcherStatus.value(QStringLiteral("isStarting")).toBool();
+    const auto isStartingChanged = isStarting != m_isSyncthingStarting;
+    const auto isRunning = launcherStatus.value(QStringLiteral("isRunning")).toBool();
+    const auto isRunningChanged = isRunning != m_isSyncthingRunning;
+    const auto guiUrl = launcherStatus.value(QStringLiteral("guiUrl")).toUrl();
+    const auto guiUrlChanged = guiUrl != m_syncthingGuiUrl;
+    const auto runningStatus = launcherStatus.value(QStringLiteral("runningStatus")).toString();
+    const auto runningStatusChanged = runningStatus != m_syncthingRunningStatus;
+    const auto meteredStatus = launcherStatus.value(QStringLiteral("meteredStatus")).toString();
+    const auto hasMeteredStatusChanged = meteredStatus != m_meteredStatus;
+    m_isSyncthingStarting = isStarting;
+    m_isSyncthingRunning = isRunning;
+    m_syncthingGuiUrl = guiUrl;
+    m_syncthingRunningStatus = runningStatus;
+    m_meteredStatus = meteredStatus;
     if (isStartingChanged) {
-        emit launchingChanged(isStarting.toBool());
+        emit syncthingStartingChanged(isStarting);
     }
-    if (isRunningChanged) {
-        qDebug() << "Launcher running status has changed: " << isRunning;
-        handleRunningChanged(isRunning.toBool());
+    if (isRunningChanged || runningStatusChanged) {
+        qDebug() << "Launcher running status has changed: " << runningStatus;
+        emit syncthingRunningChanged(isRunning);
+        emit syncthingRunningStatusChanged(runningStatus);
+    }
+    if (hasMeteredStatusChanged) {
+        emit meteredStatusChanged(meteredStatus);
     }
     if (guiUrlChanged) {
-        qDebug() << "GUI address changed: " << guiUrl;
-        handleGuiAddressChanged(guiUrl.toUrl());
+        qDebug() << "GUI URL changed: " << guiUrl;
+        emit syncthingGuiUrlChanged(guiUrl);
     }
 }
 
@@ -1273,7 +1282,7 @@ bool App::applySettings()
 {
     applySyncthingSettings();
     applyLauncherSettings();
-    applyConnectionSettings(m_launcherStatus.value(QStringLiteral("guiUrl")).toUrl());
+    applyConnectionSettings(m_syncthingGuiUrl);
     auto tweaksSettings = m_settings.value(QLatin1String("tweaks")).toObject();
     m_alwaysUnloadGuiWhenHidden = tweaksSettings.value(QLatin1String("unloadGuiWhenHidden")).toBool(false);
     invalidateStatus();
@@ -1287,8 +1296,6 @@ bool App::clearLogfile()
     if (launcherSettingsObj.value(QLatin1String("writeLogFile")).toBool()) {
         launcherSettingsObj.insert(QLatin1String("writeLogFile"), false);
         m_settings.insert(QLatin1String("launcher"), launcherSettingsObj);
-        // FIXME
-        //applyLauncherSettings();
     }
     emit settingsChanged(m_settings);
     if (!storeSettings()) {
@@ -1438,6 +1445,33 @@ void App::terminateSyncthing()
 #endif
 }
 
+void App::restartSyncthing()
+{
+#ifdef Q_OS_ANDROID
+    sendMessageToService(ServiceAction::RestartSyncthing);
+#else
+    emit syncthingRestartRequested();
+#endif
+}
+
+void App::connectToSyncthing()
+{
+#ifdef Q_OS_ANDROID
+    sendMessageToService(ServiceAction::ShutdownSyncthing);
+#else
+    emit syncthingShutdownRequested();
+#endif
+}
+
+void App::shutdownSyncthing()
+{
+#ifdef Q_OS_ANDROID
+    sendMessageToService(ServiceAction::ConnectToSyncthing);
+#else
+    emit syncthingConnectRequested();
+#endif
+}
+
 /*!
  * \brief Imports selected settings (app-related and of Syncthing itself) from the specified \a url.
  */
@@ -1453,7 +1487,7 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
 
     // stop Syncthing if necessary
     const auto importSyncthingHome = selectedSettings.value(QStringLiteral("syncthingHome")).toBool();
-    if (importSyncthingHome && m_launcherStatus.value(QStringLiteral("isRunning")).toBool()) {
+    if (importSyncthingHome && m_isSyncthingRunning) {
         emit info(tr("Waiting for backend to terminate before importing settings …"));
         m_settingsImport.first = availableSettings;
         m_settingsImport.second = selectedSettings;
@@ -1697,7 +1731,7 @@ bool App::moveSyncthingHome(const QString &newHomeDir, const QJSValue &callback)
     }
 
     // stop Syncthing if necessary
-    if (m_launcherStatus.value(QStringLiteral("isRunning")).toBool()) {
+    if (m_isSyncthingRunning) {
         emit info(tr("Waiting for backend to terminate before moving home …"));
         m_homeDirMove = newHomeDir;
         terminateSyncthing();

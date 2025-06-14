@@ -105,9 +105,11 @@ public class Activity extends QtActivity {
     };
 
     private void connectToService() {
-        Log.i(TAG, "Connecting to service");
-        bindService(new Intent(Activity.this, SyncthingService.class), m_connection, Context.BIND_AUTO_CREATE);
-        m_isBound = true;
+        if (!m_isBound) {
+            Log.i(TAG, "Connecting to service");
+            bindService(new Intent(Activity.this, SyncthingService.class), m_connection, Context.BIND_AUTO_CREATE);
+            m_isBound = true;
+        }
     }
 
     public void sendMessageToService(int what, int arg1, int arg2, String str) {
@@ -119,19 +121,20 @@ public class Activity extends QtActivity {
     }
 
     private void disconnectFromService() {
-        Log.i(TAG, "Disconnecting from service");
-        if (m_isBound) {
-            if (m_service != null) {
-                try {
-                    Message msg = Message.obtain(null, SyncthingService.MSG_UNREGISTER_CLIENT);
-                    msg.replyTo = m_messenger;
-                    m_service.send(msg);
-                } catch (RemoteException e) {
-                }
-            }
-            unbindService(m_connection);
-            m_isBound = false;
+        if (!m_isBound) {
+            return;
         }
+        Log.i(TAG, "Disconnecting from service");
+        if (m_service != null) {
+            try {
+                Message msg = Message.obtain(null, SyncthingService.MSG_UNREGISTER_CLIENT);
+                msg.replyTo = m_messenger;
+                m_service.send(msg);
+            } catch (RemoteException e) {
+            }
+        }
+        unbindService(m_connection);
+        m_isBound = false;
     }
 
     public boolean performHapticFeedback() {
@@ -274,7 +277,6 @@ public class Activity extends QtActivity {
         } else {
             startService(intent);
         }
-        connectToService();
     }
 
     public void stopSyncthingService() {
@@ -341,6 +343,11 @@ public class Activity extends QtActivity {
         super.onStart();
     }
 
+    public void onNativeReady() {
+        startSyncthingService();
+        connectToService();
+    }
+
     @Override
     public void onResume() {
         Log.i(TAG, "Resuming");
@@ -357,6 +364,8 @@ public class Activity extends QtActivity {
         // load the Qt Quick GUI again when the activity was previously destroyed
         if (m_restarting) {
             m_restarting = false;
+            startSyncthingService();
+            connectToService();
             loadQtQuickGui();
         }
 
