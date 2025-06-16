@@ -1,8 +1,6 @@
 #ifndef SYNCTHING_TRAY_ANDROID_H
 #define SYNCTHING_TRAY_ANDROID_H
 
-#include <QtCore/private/qandroidextras_p.h>
-
 namespace QtGui {
 
 class AppService;
@@ -14,12 +12,13 @@ enum class ServiceAction : int {
     RestartSyncthing,
     ShutdownSyncthing,
     ConnectToSyncthing,
-    BroadcastLauncherStatus,
+    BroadcastLauncherStatus, // keep in-line with MSG_SERVICE_ACTION_BROADCAST_LAUNCHER_STATUS
     Reconnect,
     ClearInternalErrorNotifications,
     ClearLog,
     FollowLog,
     CloseLog,
+    RequestErrors,
 };
 
 enum class ActivityAction : int {

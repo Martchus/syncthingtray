@@ -3,9 +3,8 @@
 #include "./app.h"
 #include "./appservice.h"
 
-#ifdef Q_OS_ANDROID
 #include <QJniEnvironment>
-#endif
+#include <QtCore/private/qandroidextras_p.h>
 
 namespace QtGui {
 

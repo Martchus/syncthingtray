@@ -13,6 +13,11 @@
 #include <QDebug>
 #include <QStringBuilder>
 
+#ifdef Q_OS_ANDROID
+#include <QCoreApplication>
+#include <QtCore/private/qandroidextras_p.h>
+#endif
+
 using namespace Data;
 
 namespace QtGui {
@@ -249,6 +254,9 @@ void AppService::handleMessageFromActivity(ServiceAction action, int arg1, int a
         break;
     case ServiceAction::CloseLog:
         m_clientsFollowingLog = false;
+        break;
+    case ServiceAction::RequestErrors:
+        QMetaObject::invokeMethod(connection(), "requestErrors", Qt::QueuedConnection);
         break;
     default:
         ;

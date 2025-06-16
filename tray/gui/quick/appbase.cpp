@@ -133,7 +133,7 @@ QString AppBase::readSettingFile(QFile &settingsFile, QJsonObject &settings)
 
 bool AppBase::loadSettings(bool force)
 {
-    if (force) {
+    if (force && m_settingsFile.isOpen()) {
         m_settingsFile.reset();
     }
     if (!m_settingsFile.isOpen() && !openSettings()) {

@@ -173,6 +173,9 @@ App::App(bool insecure, QObject *parent)
     connect(&m_connection, &SyncthingConnection::hasOutOfSyncDirsChanged, this, &App::invalidateStatus);
     connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &App::handleChangedDevices);
     connect(&m_connection, &SyncthingConnection::newErrors, this, &App::handleNewErrors);
+#ifdef Q_OS_ANDROID
+    connect(&m_connection, &SyncthingConnection::errorsCleared, this, [this] { sendMessageToService(ServiceAction::RequestErrors); });
+#endif
     connect(this, &App::syncthingRunningChanged, this, &App::handleRunningChanged);
     connect(this, &App::syncthingGuiUrlChanged, this, &App::handleGuiUrlChanged);
 
@@ -1491,7 +1494,7 @@ void App::restartSyncthing()
 #endif
 }
 
-void App::connectToSyncthing()
+void App::shutdownSyncthing()
 {
 #ifdef Q_OS_ANDROID
     sendMessageToService(ServiceAction::ShutdownSyncthing);
@@ -1500,7 +1503,7 @@ void App::connectToSyncthing()
 #endif
 }
 
-void App::shutdownSyncthing()
+void App::connectToSyncthing()
 {
 #ifdef Q_OS_ANDROID
     sendMessageToService(ServiceAction::ConnectToSyncthing);

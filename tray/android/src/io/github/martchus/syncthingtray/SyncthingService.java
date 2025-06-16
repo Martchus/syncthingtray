@@ -57,8 +57,7 @@ public class SyncthingService extends QtService {
     public static final int MSG_REGISTER_CLIENT = 1;
     public static final int MSG_UNREGISTER_CLIENT = 2;
     // messages to invoke activity and service actions invoked from Java and C++ (keep in sync with android.h)
-    public static final int MSG_ACTIVITY_ACTION_SHOW_ERROR = 100;
-    public static final int MSG_SERVICE_ACTION_BROADCAST_LAUNCHER_STATUS = 102;
+    public static final int MSG_SERVICE_ACTION_BROADCAST_LAUNCHER_STATUS = 105;
 
     private class IncomingHandler extends Handler {
         @Override
