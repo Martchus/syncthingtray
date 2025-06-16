@@ -49,7 +49,6 @@ public:
 Q_SIGNALS:
     void error(const QString &errorMessage, const QString &details = QString());
     void settingsChanged(const QJsonObject &settingsChanged);
-    void logsAvailable(const QString &newLogMessages);
     void statusChanged();
 
 protected Q_SLOTS:
@@ -76,7 +75,6 @@ protected:
     StatusInfo m_statusInfo;
     QString m_syncthingConfigDir;
     QString m_syncthingDataDir;
-    QString m_log;
     bool m_connectToLaunched;
     bool m_insecure;
 };

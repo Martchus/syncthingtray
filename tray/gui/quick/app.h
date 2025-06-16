@@ -243,6 +243,7 @@ public:
     Q_INVOKABLE bool storeSettings();
     Q_INVOKABLE bool applyLauncherSettings();
     Q_INVOKABLE bool applySettings();
+    Q_INVOKABLE bool reloadSettings();
     Q_INVOKABLE bool clearLogfile();
     Q_INVOKABLE bool checkOngoingImportExport();
     Q_INVOKABLE bool openSyncthingConfigFile();
@@ -334,6 +335,8 @@ Q_SIGNALS:
     void settingsReloadRequested();
     void launcherStatusRequested();
     void stoppingLibSyncthingRequested();
+    void clearLogRequested();
+    void replayLogRequested();
 #endif
 
 protected:
@@ -343,7 +346,6 @@ private Q_SLOTS:
     void handleConnectionError(const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request,
         const QByteArray &response);
     void invalidateStatus() override;
-    void gatherLogs(const QByteArray &newOutput);
     void handleRunningChanged(bool isRunning);
     void handleChangedDevices();
     void handleNewErrors(const std::vector<Data::SyncthingError> &errors);
@@ -387,6 +389,7 @@ private:
     int m_iconSize;
     int m_tabIndex;
     ImportExportStatus m_importExportStatus;
+    bool m_clearingLogfile;
     bool m_darkmodeEnabled;
     bool m_darkColorScheme;
     bool m_darkPalette;
@@ -396,11 +399,6 @@ private:
     bool m_isSyncthingStarting;
     bool m_isSyncthingRunning;
 };
-
-inline void App::clearLog()
-{
-    m_log.clear();
-}
 
 inline QVariantList App::internalErrors() const
 {

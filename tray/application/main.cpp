@@ -344,8 +344,10 @@ static int runApplication(int argc, const char *const *argv)
         QObject::connect(&quickApp, &App::syncthingConnectRequested, appService.connection(), static_cast<void(SyncthingConnection::*)()>(&SyncthingConnection::connect));
         QObject::connect(&quickApp, &App::settingsReloadRequested, &appService, &AppService::reloadSettings);
         QObject::connect(&quickApp, &App::launcherStatusRequested, &appService, &AppService::broadcastLauncherStatus);
-        QObject::connect(&quickApp, &App::stoppingLibSyncthingRequested, &appService, &AppService::stopLibSyncthing);
+        QObject::connect(&quickApp, &App::clearLogRequested, &appService, &AppService::clearLog);
+        QObject::connect(&quickApp, &App::replayLogRequested, &appService, &AppService::replayLog);
         QObject::connect(&appService, &AppService::launcherStatusChanged, &quickApp, &App::handleLauncherStatusBroadcast);
+        QObject::connect(&appService, &AppService::logsAvailable, &quickApp, &App::logsAvailable);
         QObject::connect(&appService, &AppService::error, &quickApp, &App::error);
         appService.broadcastLauncherStatus();
 #endif

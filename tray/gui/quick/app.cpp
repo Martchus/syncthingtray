@@ -110,6 +110,7 @@ App::App(bool insecure, QObject *parent)
     , m_iconSize(16)
     , m_tabIndex(-1)
     , m_importExportStatus(ImportExportStatus::None)
+    , m_clearingLogfile(false)
     , m_darkmodeEnabled(false)
     , m_darkColorScheme(false)
     , m_darkPalette(m_app ? SYNCTHING_APP_IS_PALETTE_DARK(m_app->palette()) : false)
@@ -494,11 +495,28 @@ bool App::loadErrors(QObject *listView)
 
 bool App::showLog(QObject *textArea)
 {
-    textArea->setProperty("text", m_log);
+    textArea->setProperty("text", QString());
     connect(this, &App::logsAvailable, textArea, [textArea](const QString &newLogs) {
         QMetaObject::invokeMethod(textArea, "insert", Q_ARG(int, textArea->property("length").toInt()), Q_ARG(QString, newLogs));
     });
+#ifdef Q_OS_ANDROID
+    connect(textArea, &QObject::destroyed, this, [this] {
+        sendMessageToService(ServiceAction::CloseLog);
+    });
+    sendMessageToService(ServiceAction::FollowLog);
+#else
+    emit replayLogRequested();
+#endif
     return true;
+}
+
+void App::clearLog()
+{
+#ifdef Q_OS_ANDROID
+    sendMessageToService(ServiceAction::ClearLog);
+#else
+    emit clearLogRequested();
+#endif
 }
 
 bool App::showQrCode(Icon *icon)
@@ -895,13 +913,6 @@ void App::invalidateStatus()
     emit statusChanged();
 }
 
-void App::gatherLogs(const QByteArray &newOutput)
-{
-    const auto asText = QString::fromUtf8(newOutput);
-    emit logsAvailable(asText);
-    m_log.append(asText);
-}
-
 void App::handleRunningChanged(bool isRunning)
 {
     if (m_connectToLaunched) {
@@ -911,6 +922,9 @@ void App::handleRunningChanged(bool isRunning)
         importSettings(m_settingsImport.first, m_settingsImport.second);
     } else if (m_homeDirMove.has_value()) {
         moveSyncthingHome(m_homeDirMove.value());
+    } else if (m_clearingLogfile) {
+        m_clearingLogfile = false;
+        clearLogfile();
     }
 }
 
@@ -1019,9 +1033,14 @@ void App::sendMessageToService(ServiceAction action, int arg1, int arg2, const Q
 
 void App::handleMessageFromService(ActivityAction action, int arg1, int arg2, const QString &str)
 {
+    Q_UNUSED(arg1)
+    Q_UNUSED(arg2)
     switch (action) {
     case ActivityAction::ShowError:
         QMetaObject::invokeMethod(this, "showError", Qt::QueuedConnection, Q_ARG(QString, str));
+        break;
+    case ActivityAction::AppendLog:
+        emit logsAvailable(str);
         break;
     default:
         ;
@@ -1238,11 +1257,7 @@ bool App::storeSettings()
         emit error(tr("Unable to save settings: ") + m_settingsFile.errorString());
         return false;
     }
-#ifdef Q_OS_ANDROID
-    sendMessageToService(ServiceAction::ReloadSettings);
-#else
-    emit settingsReloadRequested();
-#endif
+    reloadSettings();
     return true;
 }
 
@@ -1289,33 +1304,55 @@ bool App::applySettings()
     return true;
 }
 
+bool App::reloadSettings()
+{
+#ifdef Q_OS_ANDROID
+    sendMessageToService(ServiceAction::ReloadSettings);
+#else
+    emit settingsReloadRequested();
+#endif
+    return true;
+}
+
 bool App::clearLogfile()
 {
-    auto launcherSettings = m_settings.value(QLatin1String("launcher"));
-    auto launcherSettingsObj = launcherSettings.toObject();
-    if (launcherSettingsObj.value(QLatin1String("writeLogFile")).toBool()) {
-        launcherSettingsObj.insert(QLatin1String("writeLogFile"), false);
-        m_settings.insert(QLatin1String("launcher"), launcherSettingsObj);
-    }
-    emit settingsChanged(m_settings);
-    if (!storeSettings()) {
+    if (checkOngoingImportExport()) {
         return false;
     }
 
-    /* FIXME: query logfile from launcher
-    auto &logFile = m_launcher.logFile();
-    if (logFile.fileName().isEmpty()) {
-        logFile.setFileName(m_settingsDir->path() + QStringLiteral("/syncthing.log"));
+    // return earily if there's nothing to change/remove
+    auto launcherSettings = m_settings.value(QLatin1String("launcher"));
+    auto launcherSettingsObj = launcherSettings.toObject();
+    auto logfile = QFile(m_settingsDir->path() + QStringLiteral("/syncthing.log"));
+    auto persistentLogfileEnabled = launcherSettingsObj.value(QLatin1String("writeLogFile")).toBool();
+    if (!persistentLogfileEnabled && !logfile.exists()) {
+        return true;
     }
-    auto ok = !logFile.exists() || logFile.remove();
+
+    // stop Syncthing if running
+    if (m_isSyncthingRunning) {
+        emit info(tr("Waiting for backend to terminate before clearing logs …"));
+        m_clearingLogfile = true;
+        terminateSyncthing();
+        return false;
+    }
+
+    // remove log file
+    auto ok = !logfile.exists() || logfile.remove();
     if (ok) {
         emit info(tr("Persistent logging disabled and logfile removed"));
     } else {
         emit info(tr("Unable to remove logfile"));
     }
-    return ok;
-    */
-    return true;
+
+    // disable persistent logging
+    if (!persistentLogfileEnabled) {
+        return reloadSettings() && ok;
+    }
+    launcherSettingsObj.insert(QLatin1String("writeLogFile"), false);
+    m_settings.insert(QLatin1String("launcher"), launcherSettingsObj);
+    emit settingsChanged(m_settings);
+    return storeSettings() && ok;
 }
 
 bool App::checkOngoingImportExport()
@@ -1597,6 +1634,7 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
         m_settingsFile.close();
         loadSettings();
         applySettings();
+        reloadSettings();
     });
     return true;
 }
@@ -1803,6 +1841,7 @@ bool App::moveSyncthingHome(const QString &newHomeDir, const QJSValue &callback)
         }
         emit errorOccurred ? error(message) : info(message);
         applySettings();
+        reloadSettings();
     });
     return true;
 }

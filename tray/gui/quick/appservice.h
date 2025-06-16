@@ -15,6 +15,9 @@
 #include <QJniObject>
 #endif
 
+#ifdef Q_OS_ANDROID
+#include <atomic>
+#endif
 #include <optional>
 
 namespace QtGui {
@@ -39,6 +42,7 @@ public:
 Q_SIGNALS:
 #ifndef Q_OS_ANDROID
     void launcherStatusChanged(const QVariant &status);
+    void logsAvailable(const QString &newLogMessages);
 #endif
 
 public:
@@ -50,6 +54,8 @@ public:
     Q_INVOKABLE void stopLibSyncthing();
     Q_INVOKABLE void restartSyncthing();
     Q_INVOKABLE void shutdownSyncthing();
+    Q_INVOKABLE void clearLog();
+    Q_INVOKABLE void replayLog();
 #ifdef Q_OS_ANDROID
     Q_INVOKABLE void showError(const QString &error);
     Q_INVOKABLE void clearInternalErrors();
@@ -81,11 +87,13 @@ private Q_SLOTS:
 
 private:
     Data::SyncthingLauncher m_launcher;
+    QString m_log;
 #ifdef Q_OS_ANDROID
     QHash<const QIcon *, QJniObject> m_androidIconCache;
     int m_androidNotificationId = 100000000;
     mutable std::optional<bool> m_storagePermissionGranted;
     mutable std::optional<bool> m_notificationPermissionGranted;
+    std::atomic_bool m_clientsFollowingLog;
 #endif
 };
 

@@ -17,10 +17,14 @@ enum class ServiceAction : int {
     BroadcastLauncherStatus,
     Reconnect,
     ClearInternalErrorNotifications,
+    ClearLog,
+    FollowLog,
+    CloseLog,
 };
 
 enum class ActivityAction : int {
     ShowError = 100,
+    AppendLog,
 };
 
 namespace JniFn {

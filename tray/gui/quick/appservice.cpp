@@ -19,6 +19,9 @@ namespace QtGui {
 
 AppService::AppService(bool insecure, QObject *parent)
     : AppBase(insecure, parent)
+#ifdef Q_OS_ANDROID
+    , m_clientsFollowingLog(false)
+#endif
 {
     qDebug() << "Initializing service app";
 
@@ -163,6 +166,21 @@ void AppService::shutdownSyncthing()
     m_connection.shutdown();
 }
 
+void AppService::clearLog()
+{
+    m_log.clear();
+}
+
+void AppService::replayLog()
+{
+#ifdef Q_OS_ANDROID
+    m_clientsFollowingLog = true;
+    QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jint>("sendMessageToClients", static_cast<jint>(ActivityAction::AppendLog), 0, 0, m_log);
+#else
+    emit logsAvailable(m_log);
+#endif
+}
+
 bool AppService::applySettings()
 {
     applySyncthingSettings();
@@ -223,6 +241,15 @@ void AppService::handleMessageFromActivity(ServiceAction action, int arg1, int a
     case ServiceAction::ClearInternalErrorNotifications:
         QMetaObject::invokeMethod(this, "clearInternalErrors", Qt::QueuedConnection);
         break;
+    case ServiceAction::ClearLog:
+        QMetaObject::invokeMethod(this, "clearLog", Qt::QueuedConnection);
+        break;
+    case ServiceAction::FollowLog:
+        QMetaObject::invokeMethod(this, "replayLog", Qt::QueuedConnection);
+        break;
+    case ServiceAction::CloseLog:
+        m_clientsFollowingLog = false;
+        break;
     default:
         ;
     }
@@ -255,7 +282,13 @@ void AppService::invalidateStatus()
 void AppService::gatherLogs(const QByteArray &newOutput)
 {
     const auto asText = QString::fromUtf8(newOutput);
+#ifdef Q_OS_ANDROID
+    if (m_clientsFollowingLog) {
+        QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jint>("sendMessageToClients", static_cast<jint>(ActivityAction::AppendLog), 0, 0, asText);
+    }
+#else
     emit logsAvailable(asText);
+#endif
     m_log.append(asText);
 }
 
