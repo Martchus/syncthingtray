@@ -240,7 +240,7 @@ public class SyncthingService extends QtService {
         showForegroundNotification();
         s_instance = this;
 
-        super.onCreate();
+        super.onCreate(); // blocks until QAndroidService::exec() is entered so AppService c'tor has run after this line
         Log.i(TAG, "Created service and notification");
     }
 

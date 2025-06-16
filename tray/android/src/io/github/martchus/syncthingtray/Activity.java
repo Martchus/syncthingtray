@@ -324,7 +324,7 @@ public class Activity extends QtActivity {
 
         Util.init();
 
-        super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState); // does *not* block, native code registering JNI functions will only run once layout is initialized
 
         // read font scale as Qt does not handle this automatically on Android
         Configuration config = getResources().getConfiguration();

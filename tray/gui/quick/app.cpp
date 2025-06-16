@@ -234,7 +234,7 @@ const QString &App::status()
         return m_status.emplace(tr("Moving home directory …"));
     }
     if (m_connectToLaunched) {
-        if (!m_isSyncthingRunning) {
+        if (!m_isSyncthingRunning && !m_syncthingRunningStatus.isEmpty()) {
             return m_status.emplace(m_syncthingRunningStatus);
         } else if (m_isSyncthingStarting) {
             return m_status.emplace(tr("Backend is starting …"));
