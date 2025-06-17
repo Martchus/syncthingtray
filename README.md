@@ -339,8 +339,26 @@ Disabling the systemd integration is mainly intended for systems which do not us
 Windows and MacOS).
 
 ## Configuring the built-in launcher
-The built-in launcher can be accessed and configured within the settings dialog. The GUI should be
-self-explaining.
+The built-in launcher can be accessed and configured within the settings dialog. It is *not* available
+in the Plasmoid. It allows you to launch Syncthing
+
+1. as an *external* process by leaving "Use built-in Syncthing library" *un*checked.
+    * When launching Syncthing this way you have to specify the path to an executable, e.g. one you
+      have downloaded from the [upstream Syncthing website](https://syncthing.net/downloads). It is also
+      possible use the Syncthing version built into Syncthing Tray by pointing it to the Syncthing Tray
+      executable and specifying the arguments `syncthing serve`.
+    * When launching Syncthing as external process Syncthing Tray does not interfere with
+      [Syncthing's configuration for lowering the priority](https://docs.syncthing.net/users/config.html#config-option-options.setlowpriority).
+2. as part of the Syncthing Tray UI process by checking "Use built-in Syncthing library".
+    * This will always use the Syncthing version built into Syncthing Tray.
+    * Launching Syncthing as part of the UI process will interfere with
+      [Syncthing's configuration for lowering the priority](https://docs.syncthing.net/users/config.html#config-option-options.setlowpriority).
+      You should therefore avoid using this configuration option or start Syncthing as external process
+      instead. Otherwise the configuration option might have no effect or will affect the UI of Syncthing
+      Tray as well causing it to become slow/unresponsive.
+    * This option might not be available on your build of Syncthing Tray, e.g. it is disabled on the
+      packages I provide for GNU/Linux distributions as it makes most sense to use the
+      distribution-provided version of Syncthing there.
 
 It is recommended to enable "Consider process status …". Note that Syncthing might not be immediately
 ready to serve API requests when started. Hence it is still required to configure a re-connect interval.
