@@ -18,6 +18,8 @@ import androidx.core.content.ContextCompat;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 
@@ -34,8 +36,8 @@ import java.util.LinkedList;
  */
 public class DocumentsProvider extends android.provider.DocumentsProvider {
     private static final String ALL_MIME_TYPES = "*/*";
-    private File[] m_rootDirs = new File[]{};
-    private String[] m_rootPaths = new String[]{};
+    private ArrayList<File> m_rootDirs = new ArrayList<File>();
+    private ArrayList<String> m_rootPaths = new ArrayList<String>();
 
     // The default columns to return information about a root if no specific
     // columns are requested in a query.
@@ -62,27 +64,26 @@ public class DocumentsProvider extends android.provider.DocumentsProvider {
     };
 
     private void determineRootPaths(Context context) {
-        try {
-            m_rootDirs = ContextCompat.getExternalFilesDirs(context, null);
-            m_rootPaths = new String[m_rootDirs.length];
-            for (int i = 0, len = m_rootDirs.length; i != len; ++i) {
-                m_rootPaths[i] = m_rootDirs[i].getCanonicalPath();
+        m_rootDirs.addAll(Arrays.asList(ContextCompat.getExternalFilesDirs(context, null)));
+        m_rootDirs.add(context.getFilesDir());
+        for (File rootDir : m_rootDirs) {
+            try {
+                m_rootPaths.add(rootDir.getCanonicalPath());
+            } catch (IOException e) {
+                m_rootPaths.add(rootDir.getAbsolutePath());
             }
-        } catch (IOException e) {
-            // ensure at least some empty arrays are assigned
-            m_rootDirs = new File[]{};
-            m_rootPaths = new String[]{};
         }
     }
 
     private String summaryForRootIndex(int index) {
-        if (m_rootDirs.length == 1) {
-            return "";
-        }
         if (index == 0) {
             return "Internal storage";
         }
-        if (m_rootDirs.length <= 2) {
+        int lastIndex = m_rootDirs.size() - 1;
+        if (index == lastIndex) {
+            return "Home directory";
+        }
+        if (lastIndex <= 2) {
             return "External storage";
         }
         return "External storage: " + index;
