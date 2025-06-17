@@ -413,6 +413,11 @@ help texts provided within the app itself. A few additional remarks:
 * It is probably also a good idea to enable authentication for accessing the web-based UI as
   otherwise any other app would be able to access it. A user name and password can be configured
   under "Advanced" → "Syncthing API and web-based GUI".
+* The app exposes its private directories via a "document provider" so you can grant other apps
+  the permission to access them, e.g. to browse the Syncthing home directory containing the
+  Syncthing configuration and database in a file browser that supports "document providers".
+  Checkout the "[Using the document provider on Android](#using-the-document-provider-on-android)"
+  for details.
 
 ### Testing the app without migrating
 To only test the app without migrating your setup you can follow the steps of this section. Note
@@ -499,11 +504,9 @@ While Syncthing Tray basically works on Android, there are still some unresolved
       [FUSE Passthrough](https://source.android.com/docs/core/storage/fuse-passthrough). To be able
       to do this, the app exposes the private directories as "document provider" which are this way
       selectable via the Android file selection dialog from other apps. This of course does not
-      cover all use cases as other apps might only be able to use files from fixed directories. One
-      open source file manager that allows accessing these files is
-      [Material Files](https://github.com/zhanghai/MaterialFiles) where one can add it as "external
-      storage". Note that Files by Google recognizes the document provider of the Syncthing app but
-      only opens the app itself instead of letting one browse the files.
+      cover all use cases as other apps might only be able to use files from fixed directories.
+      Checkout the section
+      "[Using the document provider on Android](#using-the-document-provider-on-android)" for details.
 * Media rescans need to be triggered manually but this can be easily done per folder from the UI.
 * There are probably still many small UI bugs in the Qt Quick based UI used on Android.
 * The Syncthing home directory needs to be within the private directory of the app on the main
@@ -522,6 +525,45 @@ While Syncthing Tray basically works on Android, there are still some unresolved
 * Some of the problems/solutions found on the
   [Wiki pages of Syncthing-Fork](https://github.com/Catfriend1/syncthing-android/wiki) might help with
   Syncthing Tray on Android as well.
+
+### Using the document provider on Android
+Syncthing Tray provides a
+[document provider](https://developer.android.com/reference/android/provider/DocumentsProvider) under
+Android which allows other apps (e.g. file managers) to access private directories of Syncthing and
+Syncthing Tray. Other apps have of course to ask for permission before accessing the exposed
+directories.
+
+The following directories are exposed:
+
+* Home directory: This directory contains the settings of the app/wrapper (`settings/appconfig.json`)
+  and the Syncthing config file and database (`settings/syncthing/…`). Accessing this directory
+  is mainly useful for debugging and troubleshooting.
+* Internal and external storage: These directories are not used by the app/wrapper or Syncthing by
+  default.
+    * You may move the Syncthing config and database there in the app settings. This can be useful
+      to free space on the internal storage by moving the possibly big Syncthing database to the
+      SD card. (This may have performance implications and you may run into other limitations.)
+    * You may create Syncthing folders there. This can be useful if other apps are not supposed to
+      access the contents of these folders without asking for permission first. Doing this may also
+      help to workaround performance limitations, checkout the
+      "[Caveats on Android](#caveats-on-android)" section for details.
+
+In order to access files from the exposed directories you need to trigger the standard file dialog
+from Android in the app you want to open the file with. In the standard file dialog the directories
+are selectable from the left drawer.
+
+Unfortunately not all file managers support browsing directories exposed via a document provider:
+
+* The standard "Files" app from Android supports it. One can select the exposed directories from
+  the left drawer. Unfortunately this app is often replaced with a different app by device vendors,
+  e.g. the app is not present on the Samsung devices I tested on.
+* The open source app [Material Files](https://github.com/zhanghai/MaterialFiles) supports it as
+  well and can be used as alternative if "Files" is not present. One can add the exposed
+  directories via "Add storage → External storage" and then select them from the left drawer.
+* The "Files by Google" app does *not* support it. The app recognizes the document provider but
+  only opens the app itself instead of letting one manage the files.
+* The "My Files" app present on Samsung devices does not seem to support custom document providers
+  at all.
 
 ## Download
 Checkout the [download section on the website](https://martchus.github.io/syncthingtray/#downloads-section) for an overview.
