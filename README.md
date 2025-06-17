@@ -518,10 +518,10 @@ While Syncthing Tray basically works on Android, there are still some unresolved
   One can easily open the official web UI in a web browser, though.
 * A [foreground service of type "Special use"](https://developer.android.com/develop/background-work/services/fgs/service-types#special-use)
   is used so Syncthing is able to keep running in the background when the app activity is paused
-  or destroyed. Keeping Syncthing running when the activity is destroyed only works with custom Qt
-  patches found [on my fork of qtbase](https://github.com/Martchus/qtbase). With these patches
-  Syncthing Tray can be configured with the CMake option
-  `-DBACKGROUND_RUNNING_AFTER_ANDROID_ACTIVITY_DESTRUCTION:BOOL=ON` to make use of them.
+  or destroyed. To achieve this the "minimal" platform plugin is required which is not present in
+  standard builds of Qt for Android. So
+  [this Qt patch](https://codereview.qt-project.org/c/qt/qtbase/+/653832) is required to build
+  Syncthing Tray for Android.
 * Some of the problems/solutions found on the
   [Wiki pages of Syncthing-Fork](https://github.com/Catfriend1/syncthing-android/wiki) might help with
   Syncthing Tray on Android as well.
