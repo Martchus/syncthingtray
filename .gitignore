@@ -37,6 +37,7 @@ Makefile*
 
 # Generated files
 /*/android/AndroidManifest.xml
+/*/android/res/xml/shortcuts.xml
 
 # Created by Java extension of Visual Studio Code
 /*/android/.gradle
