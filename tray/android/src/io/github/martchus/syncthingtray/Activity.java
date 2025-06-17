@@ -1,12 +1,10 @@
 package io.github.martchus.syncthingtray;
 
 import android.content.ActivityNotFoundException;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.Manifest;
@@ -57,31 +55,20 @@ public class Activity extends QtActivity {
     private Messenger m_service = null;
     private boolean m_isBound;
     private final Messenger m_messenger = new Messenger(new IncomingHandler());
-    public static final String BROADCAST_LAUNCHER_STATUS = "io.github.martchus.syncthingtray.launcherstatus";
-    private final BroadcastReceiver m_serviceMessageReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (BROADCAST_LAUNCHER_STATUS.equals(intent.getAction())) {
-                handleLauncherStatusBroadcast(intent);
-            }
-        }
-    };
 
     private class IncomingHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
             Bundle bundle = msg.getData();
-            String str = bundle != null ? bundle.getString("message") : null;
-            handleMessageFromService(msg.what, msg.arg1, msg.arg2, str);
+            String str = null;
+            byte[] variant = null;
+            if (bundle != null) {
+                str = bundle.getString("message");
+                variant = bundle.getByteArray("variant");
+            }
+            handleMessageFromService(msg.what, msg.arg1, msg.arg2, str, variant);
             super.handleMessage(msg);
         }
-    }
-
-    private void registerServiceBroadcastReceiver() {
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BROADCAST_LAUNCHER_STATUS);
-        registerReceiver(m_serviceMessageReceiver, intentFilter);
-        Log.i(TAG, "Registered broadcast receiver");
     }
 
     private ServiceConnection m_connection = new ServiceConnection() {
@@ -114,7 +101,7 @@ public class Activity extends QtActivity {
 
     public void sendMessageToService(int what, int arg1, int arg2, String str) {
         try {
-            m_service.send(SyncthingService.makeMessage(what, arg1, arg2, str));
+            m_service.send(SyncthingService.obtainMessageWithBundle(what, arg1, arg2, SyncthingService.bundleString(str)));
         } catch (RemoteException e) {
             showToast("Unable to send message to background service: " + e.toString());
         }
@@ -332,9 +319,6 @@ public class Activity extends QtActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             m_fontWeightAdjustment = config.fontWeightAdjustment;
         }
-
-        // receive messages from the Syncthing service to be informed about launcher status
-        registerServiceBroadcastReceiver();
     }
 
     @Override
@@ -453,7 +437,7 @@ public class Activity extends QtActivity {
     private static native void loadQtQuickGui();
     private static native void unloadQtQuickGui();
     private static native void handleLauncherStatusBroadcast(Intent intent);
-    private static native void handleMessageFromService(int what, int arg1, int arg2, String str);
+    private static native void handleMessageFromService(int what, int arg1, int arg2, String str, byte[] variant);
     private static native void handleAndroidIntent(String page, boolean fromNotification);
     private static native void handleStoragePermissionChanged(boolean storagePermissionGranted);
     private static native void handleNotificationPermissionChanged(boolean notificationPermissionGranted);

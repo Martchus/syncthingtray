@@ -95,13 +95,24 @@ const QString &AppService::status()
     return AppBase::status();
 }
 
+#ifdef Q_OS_ANDROID
+/// \cond
+static QByteArray serializeVariant(const QVariant &variant)
+{
+    auto res = QByteArray();
+    auto stream = QDataStream(&res, QIODevice::WriteOnly);
+    stream << variant;
+    return res;
+}
+/// \endcond
+#endif
+
 void AppService::broadcastLauncherStatus()
 {
 #ifdef Q_OS_ANDROID
-    auto intent = QAndroidIntent(QStringLiteral("io.github.martchus.syncthingtray.launcherstatus"));
-    intent.putExtra(QStringLiteral("status"), m_launcher.overallStatus());
     QJniObject(QNativeInterface::QAndroidApplication::context())
-        .callMethod<void>("sendBroadcast", "(Landroid/content/Intent;)V", intent.handle().object());
+        .callMethod<jint>(
+            "sendMessageToClients", static_cast<jint>(ActivityAction::UpdateLauncherStatus), 0, 0, serializeVariant(m_launcher.overallStatus()));
 #else
     emit launcherStatusChanged(m_launcher.overallStatus());
 #endif

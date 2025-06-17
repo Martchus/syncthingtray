@@ -19,7 +19,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
-import android.util.DisplayMetrics;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -78,27 +77,51 @@ public class SyncthingService extends QtService {
         }
     }
 
-    public static Message makeMessage(int what, int arg1, int arg2, String str) {
+    public static Message obtainMessageWithBundle(int what, int arg1, int arg2, Bundle bundle) {
         Message msg = Message.obtain(null, what, arg1, arg2);
-        if (str != null) {
-            Bundle bundle = new Bundle();
-            bundle.putString("message", str);
+        if (bundle != null) {
             msg.setData(bundle);
         }
         return msg;
     }
 
-    public int sendMessageToClients(int what, int arg1, int arg2, String str) {
+    public static Bundle bundleString(String str) {
+        if (str == null) {
+            return null;
+        }
+        Bundle bundle = new Bundle();
+        bundle.putString("message", str);
+        return bundle;
+    }
+
+    public static Bundle bundleVariant(byte[] variant) {
+        if (variant == null) {
+            return null;
+        }
+        Bundle bundle = new Bundle();
+        bundle.putByteArray("variant", variant);
+        return bundle;
+    }
+
+    public int sendMessageToClients(int what, int arg1, int arg2, Bundle data) {
         int messagesSent = 0;
         for (int i = m_clients.size() - 1; i >= 0; --i) {
             try {
-                m_clients.get(i).send(makeMessage(what, arg1, arg2, str));
+                m_clients.get(i).send(obtainMessageWithBundle(what, arg1, arg2, data));
                 ++messagesSent;
             } catch (RemoteException e) {
                 m_clients.remove(i); // remove presumably dead client
             }
         }
         return messagesSent;
+    }
+
+    public int sendMessageToClients(int what, int arg1, int arg2, String str) {
+        return sendMessageToClients(what, arg1, arg2, bundleString(str));
+    }
+
+    public int sendMessageToClients(int what, int arg1, int arg2, byte[] variant) {
+        return sendMessageToClients(what, arg1, arg2, bundleVariant(variant));
     }
 
     @Override

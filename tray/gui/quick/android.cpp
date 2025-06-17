@@ -28,9 +28,13 @@ static void stopLibSyncthing(JNIEnv *, jobject)
     QMetaObject::invokeMethod(appServiceObjectForJava, "stopLibSyncthing", Qt::QueuedConnection);
 }
 
-static void handleMessageFromService(JNIEnv *, jobject, jint what, jint arg1, jint arg2, jstring str)
+static void handleMessageFromService(JNIEnv *, jobject, jint what, jint arg1, jint arg2, jstring str, jbyteArray variantArray)
 {
-    appObjectForJava->handleMessageFromService(static_cast<ActivityAction>(what), arg1, arg2, QJniObject::fromLocalRef(str).toString());
+    auto env = QJniEnvironment();
+    auto variantSize = env->GetArrayLength(variantArray);
+    auto variant = QByteArray(variantSize, Qt::Initialization::Uninitialized);
+    env->GetByteArrayRegion(variantArray, 0, variantSize, reinterpret_cast<jbyte *>(variant.data()));
+    appObjectForJava->handleMessageFromService(static_cast<ActivityAction>(what), arg1, arg2, QJniObject::fromLocalRef(str).toString(), variant);
 }
 
 static void broadcastLauncherStatus(JNIEnv *, jobject)
@@ -104,7 +108,7 @@ void registerActivityJniMethods(App *app)
     auto registeredMethods = true;
     static const JNINativeMethod activityMethods[] = {
         { "handleLauncherStatusBroadcast", "(Landroid/content/Intent;)V", reinterpret_cast<void *>(JniFn::handleLauncherStatusBroadcast) },
-        { "handleMessageFromService", "(IIILjava/lang/String;)V", reinterpret_cast<void *>(JniFn::handleMessageFromService) },
+        { "handleMessageFromService", "(IIILjava/lang/String;[B)V", reinterpret_cast<void *>(JniFn::handleMessageFromService) },
         { "handleAndroidIntent", "(Ljava/lang/String;Z)V", reinterpret_cast<void *>(JniFn::handleAndroidIntent) },
         { "handleStoragePermissionChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handleStoragePermissionChanged) },
         { "handleNotificationPermissionChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handleNotificationPermissionChanged) },

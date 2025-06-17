@@ -1027,12 +1027,22 @@ static auto splitFolderRef(QStringView folderRef)
     return res;
 }
 
+/// \cond
+static QVariant deserializeVariant(const QByteArray &variantData)
+{
+    auto stream = QDataStream(variantData);
+    auto res = QVariant();
+    stream >> res;
+    return res;
+}
+/// \endcond
+
 void App::sendMessageToService(ServiceAction action, int arg1, int arg2, const QString &str)
 {
     QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("sendMessageToService", action, arg1, arg2, str);
 }
 
-void App::handleMessageFromService(ActivityAction action, int arg1, int arg2, const QString &str)
+void App::handleMessageFromService(ActivityAction action, int arg1, int arg2, const QString &str, const QByteArray &variant)
 {
     Q_UNUSED(arg1)
     Q_UNUSED(arg2)
@@ -1043,6 +1053,8 @@ void App::handleMessageFromService(ActivityAction action, int arg1, int arg2, co
     case ActivityAction::AppendLog:
         emit logsAvailable(str);
         break;
+    case ActivityAction::UpdateLauncherStatus:
+        QMetaObject::invokeMethod(this, "handleLauncherStatusBroadcast", Qt::QueuedConnection, Q_ARG(QVariant, deserializeVariant(variant)));
     default:;
     }
 }

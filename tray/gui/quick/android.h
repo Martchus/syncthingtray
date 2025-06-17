@@ -24,6 +24,7 @@ enum class ServiceAction : int {
 enum class ActivityAction : int {
     ShowError = 100,
     AppendLog,
+    UpdateLauncherStatus,
 };
 
 namespace JniFn {
