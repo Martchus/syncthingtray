@@ -392,26 +392,20 @@ public class Activity extends QtActivity {
     public void onDestroy() {
         Log.i(TAG, "Destroying");
 
-        // stop service and libsyncthing unless background_running_after_destruction is configured
-        // note: QtActivity will normally exit the main thread in super.onDestroy() so we cannot keep the service running.
-        //       It would not stop the service and Go threads but it would be impossible to re-enter the UI leaving the app
-        //       in some kind of zombie state. This is fixed by custom Qt patches on my qtbase fork. With these patches
-        //       background_running_after_destruction can be enabled (via the CMake variable
-        //       BACKGROUND_RUNNING_AFTER_ANDROID_ACTIVITY_DESTRUCTION) as the problematic default behavior of Qt is
-        //       prevented.
+        // stop only UI if BACKGROUND_RUNNING_AFTER_ANDROID_ACTIVITY_DESTRUCTION is configured
+        // note: With this configuration the main UI process can keep running even after the activity has
+        //       been destroyed. It can resume the UI once the activity is created again. This requires
+        //       custom Qt patches on my qtbase fork. With these patches background_running_after_destruction
+        //       can be enabled (via the CMake variable BACKGROUND_RUNNING_AFTER_ANDROID_ACTIVITY_DESTRUCTION).
         if (m_explicitShutdown) {
             m_keepRunningAfterDestruction = false;
         } else {
             Bundle md = metaData();
             m_keepRunningAfterDestruction = md != null && md.getBoolean("android.app.background_running_after_destruction");
         }
-        if (m_keepRunningAfterDestruction) {
-            Log.i(TAG, "Stopping only Qt Quick GUI");
-            unloadQtQuickGui();
-        } else {
-            Log.i(TAG, "Stopping Syncthing and Qt Quick GUI");
-            stopSyncthingService();
-        }
+        Log.i(TAG, "Stopping Qt Quick GUI");
+        unloadQtQuickGui();
+        disconnectFromService();
         super.onDestroy();
     }
 
