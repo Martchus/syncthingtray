@@ -202,6 +202,9 @@ public class SyncthingService extends QtService {
     }
 
     public static void updateNotification(String title, String text, String subText, Bitmap bitmapIcon) {
+        if (s_notificationTitle.equals(title) && s_notificationText.equals(text) && s_notificationSubText.equals(subText)) {
+            return;
+        }
         if (title != null) {
             s_notificationTitle = title;
         }
@@ -217,7 +220,7 @@ public class SyncthingService extends QtService {
         if (s_instance == null) {
             return;
         }
-        Log.i(TAG, "Updating notification: " + s_notificationText);
+        Log.i(TAG, "Updating notification: " + s_notificationTitle + " - " + s_notificationText);
         s_instance.m_notificationBuilder.setContentTitle(s_notificationTitle).setContentText(s_notificationText).setSubText(s_notificationSubText);
         if (s_notificationIcon != null) {
             // update only large icon (not calling setSmallIcon(icon)) because Android doesn't render the badge correctly on the small icon
