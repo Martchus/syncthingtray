@@ -97,7 +97,7 @@ using namespace Data;
 namespace QtGui {
 
 App::App(bool insecure, QObject *parent)
-    : AppBase(insecure, parent)
+    : AppBase(insecure, false, parent)
     , m_app(static_cast<QGuiApplication *>(QCoreApplication::instance()))
     , m_imageProvider(nullptr)
     , m_dirModel(m_connection)
@@ -124,6 +124,10 @@ App::App(bool insecure, QObject *parent)
 
 #ifdef Q_OS_ANDROID
     JniFn::registerActivityJniMethods(this);
+#ifndef SYNCTHINGTRAY_GUI_CODE_IN_SERVICE
+    // create dummy bitmap to link against libjnigraphics.so (for font functions, supposedly libandroid.so would be enough)
+    IconManager::makeAndroidBitmap(QImage());
+#endif
 #endif
 
     m_app->installEventFilter(this);
@@ -651,7 +655,9 @@ static QString loadDefaultSystemFonts()
 {
     auto defaultSystemFontFamily = QString();
     if (ANDROID_API_AT_LEAST(34)) {
+        qDebug() << "Loading default system fonts";
         if (auto *const m = AFontMatcher_create()) {
+            qDebug() << "Instantiated matcher";
             matchAndLoadDefaultFont(m, AFONT_WEIGHT_NORMAL, defaultSystemFontFamily);
             matchAndLoadDefaultFont(m, AFONT_WEIGHT_THIN, defaultSystemFontFamily);
             matchAndLoadDefaultFont(m, AFONT_WEIGHT_LIGHT, defaultSystemFontFamily);

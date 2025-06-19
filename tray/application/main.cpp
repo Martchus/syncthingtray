@@ -294,9 +294,11 @@ static int runApplication(int argc, const char *const *argv)
     if (serviceArg.isPresent()) {
         qDebug() << "Initializing service";
         SET_QT_APPLICATION_INFO;
-        qputenv("QT_QPA_PLATFORM", "minimal"); // cannot use android platform as it would get stuck without activity
         auto androidService = QAndroidService(argc, const_cast<char **>(argv));
+#ifdef SYNCTHINGTRAY_GUI_CODE_IN_SERVICE
+        qputenv("QT_QPA_PLATFORM", "minimal"); // cannot use android platform as it would get stuck without activity
         auto guiApp = QGuiApplication(argc, const_cast<char **>(argv)); // need GUI app for using QIcon and such
+#endif
         auto serviceApp = AppService(insecureArg.isPresent());
         networkAccessManager().setParent(&androidService);
         qDebug() << "Executing service";

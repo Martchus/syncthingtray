@@ -28,7 +28,7 @@ class AppBase : public QObject {
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
 
 public:
-    explicit AppBase(bool insecure, QObject *parent = nullptr);
+    explicit AppBase(bool insecure, bool textOnly = false, QObject *parent = nullptr);
     ~AppBase();
 
     // properties

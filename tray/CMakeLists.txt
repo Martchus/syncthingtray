@@ -188,10 +188,10 @@ if (UNIFY_TRAY_MENUS)
     message(STATUS "left- and right-click context menus will be unified")
 endif ()
 
-# link against library to use Android's Bitmap API (see https://developer.android.com/ndk/reference/group/bitmap)
+# link against library to use Android's Font API (see https://developer.android.com/ndk/reference/group/font)
 if (ANDROID)
-    find_library(JNI_GRAPHICS_LIB jnigraphics REQUIRED)
-    list(APPEND PRIVATE_LIBRARIES ${JNI_GRAPHICS_LIB})
+    find_library(ANDROID_SYSTEM_LIB android REQUIRED)
+    list(APPEND PRIVATE_LIBRARIES ${ANDROID_SYSTEM_LIB})
 endif ()
 
 # add shortcuts/actions to desktop file
@@ -447,13 +447,17 @@ if (ANDROID)
     endif ()
 
     # specify required plugins so androiddeployqt knows what we need and don't need
+    set(REQUIRED_PLATFORMS ${QT_PACKAGE_PREFIX}::QAndroidIntegrationPlugin)
+    if (ANDROID_SERVICE_WITH_ICON_RENDERING)
+        list(APPEND REQUIRED_PLATFORMS ${QT_PACKAGE_PREFIX}::QMinimalIntegrationPlugin)
+    endif ()
     # cmake-format: off
     qt_import_plugins(${META_TARGET_NAME}
         INCLUDE_BY_TYPE imageformats ${QT_PACKAGE_PREFIX}::QSvgPlugin
         INCLUDE_BY_TYPE iconengines ${QT_PACKAGE_PREFIX}::QSvgIconPlugin
         INCLUDE_BY_TYPE tls ${QT_PACKAGE_PREFIX}::QTlsBackendOpenSSLPlugin
         INCLUDE_BY_TYPE networkinformation ${QT_PACKAGE_PREFIX}::QAndroidNetworkInformationPlugin
-        INCLUDE_BY_TYPE platforms ${QT_PACKAGE_PREFIX}::QAndroidIntegrationPlugin ${QT_PACKAGE_PREFIX}::QMinimalIntegrationPlugin
+        INCLUDE_BY_TYPE platforms ${REQUIRED_PLATFORMS}
         EXCLUDE_BY_TYPE platforminputcontexts webview
     )
     # cmake-format: on
@@ -462,12 +466,11 @@ if (ANDROID)
     endif ()
 
     # assert existance of required platform plugins as those MUST be present (or the app will crash on startup)
-    if (NOT TARGET ${QT_PACKAGE_PREFIX}::QAndroidIntegrationPlugin)
-        message(FATAL_ERROR "The required Android platform plugin is not present in your Qt build.")
-    endif ()
-    if (NOT TARGET ${QT_PACKAGE_PREFIX}::QMinimalIntegrationPlugin)
-        message(FATAL_ERROR "The required \"minimal\" platform plugin is not present in your Qt build.")
-    endif ()
+    foreach (REQUIRED_PLATFORM ${REQUIRED_PLATFORMS})
+        if (NOT TARGET "${REQUIRED_PLATFORM}")
+            message(FATAL_ERROR "The required platform plugin ${REQUIRED_PLATFORM} is not present in your Qt build.")
+        endif ()
+    endforeach ()
 
     if (USE_LIBSYNCTHING)
         # bundle internal Syncthing library

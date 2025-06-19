@@ -15,9 +15,10 @@ using namespace Data;
 
 namespace QtGui {
 
-AppBase::AppBase(bool insecure, QObject *parent)
+AppBase::AppBase(bool insecure, bool textOnly, QObject *parent)
     : QObject(parent)
     , m_notifier(m_connection)
+    , m_statusInfo(textOnly)
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     , m_connectToLaunched(true)
 #else

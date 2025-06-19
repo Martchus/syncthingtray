@@ -22,8 +22,14 @@ using namespace Data;
 
 namespace QtGui {
 
+#ifdef SYNCTHINGTRAY_GUI_CODE_IN_SERVICE
+static constexpr auto textOnly = false;
+#else
+static constexpr auto textOnly = true;
+#endif
+
 AppService::AppService(bool insecure, QObject *parent)
-    : AppBase(insecure, parent)
+    : AppBase(insecure, textOnly, parent)
 #ifdef Q_OS_ANDROID
     , m_clientsFollowingLog(false)
 #endif
@@ -34,7 +40,8 @@ AppService::AppService(bool insecure, QObject *parent)
     JniFn::registerServiceJniMethods(this);
 #endif
 
-#ifdef Q_OS_ANDROID
+#if defined(Q_OS_ANDROID) && defined(SYNCTHINGTRAY_GUI_CODE_IN_SERVICE)
+    // initialize experimental icon rendering within service to have icon on notification
     const auto scaleFactor = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jfloat>("scaleFactor", "()F");
     const auto darkmode = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("isDarkmodeEnabled");
     qDebug() << "Scale factor for notification/service icons: " << scaleFactor;
@@ -42,7 +49,7 @@ AppService::AppService(bool insecure, QObject *parent)
     auto &iconManager = Data::IconManager::instance();
     //auto s = darkmode ? StatusIconSettings(StatusIconSettings::DarkTheme{}) : StatusIconSettings(StatusIconSettings::BrightTheme{});
     auto s = StatusIconSettings();
-    s.renderSize *= scaleFactor;
+    s.renderSize *= 2 * scaleFactor;
     s.strokeWidth = StatusIconStrokeWidth::Thick;
     iconManager.applySettings(&s, &s, false, false);
     connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &AppService::invalidateAndroidIconCache);
@@ -229,7 +236,11 @@ void AppService::showError(const QString &error)
     const auto text = QJniObject::fromString(error);
     const auto subText = QJniObject::fromString(QString());
     static const auto page = QJniObject::fromString(QStringLiteral("internalErrors"));
+#ifdef SYNCTHINGTRAY_GUI_CODE_IN_SERVICE
     const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
+#else
+    static const auto icon = QJniObject();
+#endif
     updateExtraAndroidNotification(title, text, subText, page, icon);
 }
 
@@ -364,6 +375,7 @@ void AppService::handleConnectionStatusChanged(Data::SyncthingStatus newStatus)
 }
 
 #ifdef Q_OS_ANDROID
+#ifdef SYNCTHINGTRAY_GUI_CODE_IN_SERVICE
 void AppService::invalidateAndroidIconCache()
 {
     m_statusInfo.updateConnectionStatus(m_connection);
@@ -379,13 +391,18 @@ QJniObject &AppService::makeAndroidIcon(const QIcon &icon)
     }
     return cachedIcon;
 }
+#endif
 
 void AppService::updateAndroidNotification()
 {
     const auto title = QJniObject::fromString(m_connection.isConnected() ? m_statusInfo.statusText() : status());
     const auto text = QJniObject::fromString(m_statusInfo.additionalStatusText());
     static const auto subText = QJniObject::fromString(QString());
+#ifdef SYNCTHINGTRAY_GUI_CODE_IN_SERVICE
     const auto &icon = makeAndroidIcon(m_statusInfo.statusIcon());
+#else
+    static const auto icon = QJniObject();
+#endif
     QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateNotification",
         "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;)V", title.object(), text.object(), subText.object(),
         icon.object());
@@ -417,7 +434,11 @@ void AppService::updateSyncthingErrorsNotification(const std::vector<Data::Synct
     const auto text = QJniObject::fromString(syncthingErrors == 1 ? mostRecent.message : tr("Most recent: ") + mostRecent.message);
     const auto subText = QJniObject::fromString(QString::fromStdString(mostRecent.when.toString()));
     static const auto page = QJniObject::fromString(QStringLiteral("connectionErrors"));
+#ifdef SYNCTHINGTRAY_GUI_CODE_IN_SERVICE
     const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
+#else
+    static const auto icon = QJniObject();
+#endif
     updateExtraAndroidNotification(title, text, subText, page, icon, 2);
 }
 
@@ -433,7 +454,11 @@ void AppService::showInternalError(const InternalError &error)
     const auto text = QJniObject::fromString(m_internalErrors.empty() ? error.message : tr("Most recent: ") + error.message);
     const auto subText = QJniObject::fromString(error.url.isEmpty() ? QString() : QStringLiteral("URL: ") + error.url.toString());
     static const auto page = QJniObject::fromString(QStringLiteral("internalErrors"));
+#ifdef SYNCTHINGTRAY_GUI_CODE_IN_SERVICE
     const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
+#else
+    static const auto icon = QJniObject();
+#endif
     updateExtraAndroidNotification(title, text, subText, page, icon, 3);
 }
 
@@ -443,7 +468,11 @@ void AppService::showNewDevice(const QString &devId, const QString &message)
     const auto text = QJniObject::fromString(message);
     static const auto subText = QJniObject::fromString(QString());
     const auto page = QJniObject::fromString(QStringLiteral("newdev:") + devId);
+#ifdef SYNCTHINGTRAY_GUI_CODE_IN_SERVICE
     const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().networkWired);
+#else
+    static const auto icon = QJniObject();
+#endif
     updateExtraAndroidNotification(title, text, subText, page, icon);
 }
 
@@ -453,7 +482,11 @@ void AppService::showNewDir(const QString &devId, const QString &dirId, const QS
     const auto text = QJniObject::fromString(message);
     static const auto subText = QJniObject::fromString(QString());
     const auto page = QJniObject::fromString(QStringLiteral("newfolder:") % devId % QChar(':') % dirId % QChar(':') % dirLabel);
+#ifdef SYNCTHINGTRAY_GUI_CODE_IN_SERVICE
     const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().shareAlt);
+#else
+    static const auto icon = QJniObject();
+#endif
     updateExtraAndroidNotification(title, text, subText, page, icon);
 }
 #endif

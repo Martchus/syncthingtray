@@ -72,8 +72,10 @@ private Q_SLOTS:
     void handleNewErrors(const std::vector<Data::SyncthingError> &errors);
     void handleConnectionStatusChanged(Data::SyncthingStatus newStatus);
 #ifdef Q_OS_ANDROID
-    QJniObject &makeAndroidIcon(const QIcon &icon);
+#ifdef SYNCTHINGTRAY_GUI_CODE_IN_SERVICE
     void invalidateAndroidIconCache();
+    QJniObject &makeAndroidIcon(const QIcon &icon);
+#endif
     void updateAndroidNotification();
     void updateExtraAndroidNotification(
         const QJniObject &title, const QJniObject &text, const QJniObject &subText, const QJniObject &page, const QJniObject &icon, int id = 0);
@@ -89,7 +91,9 @@ private:
     Data::SyncthingLauncher m_launcher;
     QString m_log;
 #ifdef Q_OS_ANDROID
+#ifdef SYNCTHINGTRAY_GUI_CODE_IN_SERVICE
     QHash<const QIcon *, QJniObject> m_androidIconCache;
+#endif
     int m_androidNotificationId = 100000000;
     mutable std::optional<bool> m_storagePermissionGranted;
     mutable std::optional<bool> m_notificationPermissionGranted;

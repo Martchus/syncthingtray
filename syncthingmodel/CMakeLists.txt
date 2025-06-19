@@ -69,6 +69,17 @@ list(APPEND ADDITIONAL_QT_MODULES Concurrent Network Gui Svg)
 # link against standard filesystem for local deletion in SyncthingFileModel
 use_standard_filesystem()
 
+if (ANDROID)
+    # allow running service with QGuiApplication and icon rendering
+    option(ANDROID_SERVICE_WITH_ICON_RENDERING "run service with QGuiApplication and icon rendering" OFF)
+    if (ANDROID_SERVICE_WITH_ICON_RENDERING)
+        list(APPEND META_PUBLIC_COMPILE_DEFINITIONS SYNCTHINGTRAY_GUI_CODE_IN_SERVICE)
+    endif ()
+    # link against library to use Android's Bitmap API (see https://developer.android.com/ndk/reference/group/bitmap)
+    find_library(JNI_GRAPHICS_LIB jnigraphics REQUIRED)
+    list(APPEND PRIVATE_LIBRARIES ${JNI_GRAPHICS_LIB})
+endif ()
+
 # include modules to apply configuration
 include(BasicConfig)
 include(QtGuiConfig)

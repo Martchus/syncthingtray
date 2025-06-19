@@ -534,12 +534,6 @@ While Syncthing Tray basically works on Android, there are still some unresolved
   will likely be removed when Syncthing v2 is released.)
 * Not all features the official web UI offers have been implemented in the Qt Quick based UI yet.
   One can easily open the official web UI in a web browser, though.
-* A [foreground service of type "Special use"](https://developer.android.com/develop/background-work/services/fgs/service-types#special-use)
-  is used so Syncthing is able to keep running in the background when the app activity is paused
-  or destroyed. To achieve this the "minimal" platform plugin is required which is not present in
-  standard builds of Qt for Android. So
-  [this Qt patch](https://codereview.qt-project.org/c/qt/qtbase/+/653832) is required to build
-  Syncthing Tray for Android.
 * Some of the problems/solutions found on the
   [Wiki pages of Syncthing-Fork](https://github.com/Catfriend1/syncthing-android/wiki) might help with
   Syncthing Tray on Android as well.
