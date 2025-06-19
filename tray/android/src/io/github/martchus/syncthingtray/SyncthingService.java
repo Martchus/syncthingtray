@@ -281,7 +281,7 @@ public class SyncthingService extends QtService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        if ("shutdown".equals(intent.getAction())) {
+        if (intent != null && "shutdown".equals(intent.getAction())) {
             sendMessageToClients(MSG_FINISH_CLIENT, 0, 0, "");
             stopForeground(Service.STOP_FOREGROUND_REMOVE);
             stopSelf();
