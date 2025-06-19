@@ -35,6 +35,7 @@ public class SyncthingService extends QtService {
     // fields for managing notifications
     private static final int s_notificationID = 1;
     private static final int s_activityIntentRequestCode = 1;
+    private static final int s_serviceIntentRequestCode = 1;
     private Intent m_notificationContentIntent;
     private Intent m_shutdownIntent;
     private NotificationManager m_notificationManager;
@@ -55,6 +56,7 @@ public class SyncthingService extends QtService {
     // messages to register/unregister clients (used from Java only)
     public static final int MSG_REGISTER_CLIENT = 1;
     public static final int MSG_UNREGISTER_CLIENT = 2;
+    public static final int MSG_FINISH_CLIENT = 3;
     // messages to invoke activity and service actions invoked from Java and C++ (keep in sync with android.h)
     public static final int MSG_SERVICE_ACTION_BROADCAST_LAUNCHER_STATUS = 105;
 
@@ -160,7 +162,7 @@ public class SyncthingService extends QtService {
 
         m_notificationContentIntent = new Intent(this, Activity.class);
         m_notificationContentIntent.putExtra("notification", true);
-        m_shutdownIntent = new Intent(this, Activity.class);
+        m_shutdownIntent = new Intent(this, SyncthingService.class);
         m_shutdownIntent.setAction("shutdown");
 
         m_notificationBuilder
@@ -172,7 +174,7 @@ public class SyncthingService extends QtService {
             .setOngoing(true)
             .setOnlyAlertOnce(true)
             .setContentIntent(PendingIntent.getActivity(this, s_activityIntentRequestCode, m_notificationContentIntent, PendingIntent.FLAG_IMMUTABLE))
-            .addAction((new Notification.Action.Builder(null, "Shutdown", PendingIntent.getActivity(this, s_activityIntentRequestCode, m_shutdownIntent, PendingIntent.FLAG_IMMUTABLE)).build()))
+            .addAction((new Notification.Action.Builder(null, "Shutdown", PendingIntent.getService(this, s_serviceIntentRequestCode, m_shutdownIntent, PendingIntent.FLAG_IMMUTABLE)).build()))
             .setPriority(Notification.PRIORITY_DEFAULT)
             .setDefaults(Notification.DEFAULT_SOUND)
             .setCategory(Notification.CATEGORY_SERVICE)
@@ -278,7 +280,13 @@ public class SyncthingService extends QtService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        broadcastLauncherStatus();
+        if ("shutdown".equals(intent.getAction())) {
+            sendMessageToClients(MSG_FINISH_CLIENT, 0, 0, "");
+            stopForeground(Service.STOP_FOREGROUND_REMOVE);
+            stopSelf();
+        } else {
+            broadcastLauncherStatus();
+        }
         return Service.START_STICKY;
     }
 

@@ -59,14 +59,21 @@ public class Activity extends QtActivity {
     private class IncomingHandler extends Handler {
         @Override
         public void handleMessage(Message msg) {
-            Bundle bundle = msg.getData();
-            String str = null;
-            byte[] variant = null;
-            if (bundle != null) {
-                str = bundle.getString("message");
-                variant = bundle.getByteArray("variant");
+            switch (msg.what) {
+            case SyncthingService.MSG_FINISH_CLIENT:
+                m_explicitShutdown = true;
+                finish();
+                break;
+            default:
+                Bundle bundle = msg.getData();
+                String str = null;
+                byte[] variant = null;
+                if (bundle != null) {
+                    str = bundle.getString("message");
+                    variant = bundle.getByteArray("variant");
+                }
+                handleMessageFromService(msg.what, msg.arg1, msg.arg2, str, variant);
             }
-            handleMessageFromService(msg.what, msg.arg1, msg.arg2, str, variant);
             super.handleMessage(msg);
         }
     }
@@ -412,9 +419,6 @@ public class Activity extends QtActivity {
     protected void onNewIntent(@NonNull Intent intent) {
         if (intent.getBooleanExtra("notification", false)) {
             sendAndroidIntentToQtQuickApp(intent.getStringExtra("page"), true);
-        } else if ("shutdown".equals(intent.getAction())) {
-            stopSyncthingService();
-            finish();
         }
     }
 
