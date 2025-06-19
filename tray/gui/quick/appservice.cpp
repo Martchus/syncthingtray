@@ -35,7 +35,17 @@ AppService::AppService(bool insecure, QObject *parent)
 #endif
 
 #ifdef Q_OS_ANDROID
-    connect(&initIconManager(), &Data::IconManager::statusIconsChanged, this, &AppService::invalidateAndroidIconCache);
+    const auto scaleFactor = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jfloat>("scaleFactor", "()F");
+    const auto darkmode = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("isDarkmodeEnabled");
+    qDebug() << "Scale factor for notification/service icons: " << scaleFactor;
+    //qDebug() << "Darkmode for notification/service icons: " << darkmode;
+    auto &iconManager = Data::IconManager::instance();
+    //auto s = darkmode ? StatusIconSettings(StatusIconSettings::DarkTheme{}) : StatusIconSettings(StatusIconSettings::BrightTheme{});
+    auto s = StatusIconSettings();
+    s.renderSize *= scaleFactor;
+    s.strokeWidth = StatusIconStrokeWidth::Thick;
+    iconManager.applySettings(&s, &s, false, false);
+    connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &AppService::invalidateAndroidIconCache);
 #endif
 
     connect(&m_connection, &SyncthingConnection::error, this, &AppService::handleConnectionError);

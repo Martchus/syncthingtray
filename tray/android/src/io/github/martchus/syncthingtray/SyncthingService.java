@@ -9,6 +9,7 @@ import android.app.NotificationChannel;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ServiceInfo;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
@@ -321,6 +322,10 @@ public class SyncthingService extends QtService {
 
     public float scaleFactor() {
         return Resources.getSystem().getDisplayMetrics().density;
+    }
+
+    public boolean isDarkmodeEnabled() {
+        return (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
     }
 
     private static native void stopLibSyncthing();

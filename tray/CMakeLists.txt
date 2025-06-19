@@ -158,8 +158,6 @@ list(APPEND ADDITIONAL_QT_MODULES Network)
 if (ANDROID)
     # enable private Qt headers for QAndroidService and QAndroidIntent
     list(APPEND ADDITIONAL_QT_MODULES CorePrivate)
-    # enable private Qt headers for QHighDpiScaling
-    list(APPEND ADDITIONAL_QT_MODULES GuiPrivate)
 endif ()
 
 # configure libsyncthing

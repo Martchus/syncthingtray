@@ -70,7 +70,6 @@ Q_IMPORT_QML_PLUGIN(WebViewItemPlugin)
 #include <QDebug>
 #include <QSslSocket>
 #include <QtCore/private/qandroidextras_p.h>
-#include <QtGui/private/qhighdpiscaling_p.h>
 #endif
 
 using namespace std;
@@ -296,9 +295,6 @@ static int runApplication(int argc, const char *const *argv)
         qDebug() << "Initializing service";
         SET_QT_APPLICATION_INFO;
         qputenv("QT_QPA_PLATFORM", "minimal"); // cannot use android platform as it would get stuck without activity
-        const auto scaleFactor = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jfloat>("scaleFactor", "()F");
-        qDebug() << "Scale factor for notification/service icons: " << scaleFactor;
-        QHighDpiScaling::setGlobalFactor(scaleFactor);
         auto androidService = QAndroidService(argc, const_cast<char **>(argv));
         auto guiApp = QGuiApplication(argc, const_cast<char **>(argv)); // need GUI app for using QIcon and such
         auto serviceApp = AppService(insecureArg.isPresent());
