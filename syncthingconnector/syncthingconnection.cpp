@@ -1074,6 +1074,10 @@ bool SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
         setSyncthingUrl(connectionSettings.syncthingUrl);
         reconnectRequired = true;
     }
+    if (localPath() != connectionSettings.localPath) {
+        setLocalPath(connectionSettings.localPath);
+        reconnectRequired = true;
+    }
     if (apiKey() != connectionSettings.apiKey) {
         setApiKey(connectionSettings.apiKey);
         reconnectRequired = true;

@@ -41,6 +41,7 @@ enum class SyncthingStatusComputionFlags : quint64 {
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     QString label;
     QString syncthingUrl;
+    QString localPath;
     bool authEnabled = false;
     QString userName;
     QString password;

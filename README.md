@@ -186,6 +186,14 @@ located under `~/.config/Martchus/Syncthing Tray` on GNU/Linux and
 `%appdata%\Martchus\Syncthing Tray` on Windows. The configuration and database of Syncthing
 itself are also located within this directory when Syncthing is launched via the mobile UI.
 
+### Connect to Syncthing via Unix domain socket
+When using a Unix domain socket as Syncthing GUI address (e.g. by starting Syncthing with
+parameters like `--gui-address=unix://%t/syncthing.socket --skip-port-probing`) you need to
+specify the path to the socket as "Local path" in the advanced connection settings. This
+setting requires Qt 6.8 or higher. You still need to provide the "Syncthing URL" using the
+`unix+http` as scheme (e.g. `unix+http://127.0.0.1:8080` where the host and port are not
+actually used). The web view will not work with this, though.
+
 ## Single-instance behavior and launch options
 This section does *not* apply to the [Android app](#using-the-android-app), the
 [Plasmoid](#configuring-plasmoid) and the

@@ -47,6 +47,7 @@ void SyncthingConnectionSettings::storeToJson(QJsonObject &object)
     httpAuth.insert(QLatin1String("userName"), userName);
     httpAuth.insert(QLatin1String("password"), password);
     object.insert(QLatin1String("httpAuth"), httpAuth);
+    advanced.insert(QLatin1String("localPath"), localPath);
     advanced.insert(QLatin1String("trafficPollInterval"), trafficPollInterval);
     advanced.insert(QLatin1String("devStatsPollInterval"), devStatsPollInterval);
     advanced.insert(QLatin1String("errorsPollInterval"), errorsPollInterval);
@@ -71,6 +72,7 @@ bool SyncthingConnectionSettings::loadFromJson(const QJsonObject &object)
     authEnabled = httpAuth.value(QLatin1String("enabled")).toBool();
     userName = httpAuth.value(QLatin1String("userName")).toString();
     password = httpAuth.value(QLatin1String("password")).toString();
+    localPath = advanced.value(QLatin1String("localPath")).toString();
     trafficPollInterval = advanced.value(QLatin1String("trafficPollInterval")).toInt(defaultTrafficPollInterval);
     devStatsPollInterval = advanced.value(QLatin1String("devStatsPollInterval")).toInt(defaultDevStatusPollInterval);
     errorsPollInterval = advanced.value(QLatin1String("errorsPollInterval")).toInt(defaultErrorsPollInterval);

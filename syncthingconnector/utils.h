@@ -53,7 +53,11 @@ LIB_SYNCTHING_CONNECTOR_EXPORT const QNetworkInformation *loadNetworkInformation
  */
 inline bool isLocal(const QUrl &url)
 {
-    return isLocal(url.host());
+    if (isLocal(url.host())) {
+        return true;
+    }
+    const auto scheme = url.scheme();
+    return scheme.startsWith(QLatin1String("unix+")) || scheme.startsWith(QLatin1String("local+"));
 }
 
 template <typename IntType = quint64, Traits::EnableIf<std::is_integral<IntType>> * = nullptr>

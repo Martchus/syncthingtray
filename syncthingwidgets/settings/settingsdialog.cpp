@@ -162,6 +162,9 @@ QWidget *ConnectionOptionPage::setupWidget()
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
     ui()->timeoutSpinBox->setEnabled(false);
 #endif
+#if (QT_VERSION < QT_VERSION_CHECK(6, 8, 0))
+    ui()->localPathLineEdit->setEnabled(false);
+#endif
     toggleAdvancedSettings(false);
     return widget;
 }
@@ -234,6 +237,7 @@ bool ConnectionOptionPage::showConnectionSettings(int index)
     }
     const SyncthingConnectionSettings &connectionSettings = (index == 0 ? m_primarySettings : m_secondarySettings[static_cast<size_t>(index - 1)]);
     ui()->urlLineEdit->setText(connectionSettings.syncthingUrl);
+    ui()->localPathLineEdit->setText(connectionSettings.localPath);
     ui()->authCheckBox->setChecked(connectionSettings.authEnabled);
     ui()->userNameLineEdit->setText(connectionSettings.userName);
     ui()->passwordLineEdit->setText(connectionSettings.password);
@@ -264,6 +268,7 @@ bool ConnectionOptionPage::cacheCurrentSettings(bool applying)
     SyncthingConnectionSettings &connectionSettings
         = (m_currentIndex == 0 ? m_primarySettings : m_secondarySettings[static_cast<size_t>(m_currentIndex - 1)]);
     connectionSettings.syncthingUrl = ui()->urlLineEdit->text();
+    connectionSettings.localPath = ui()->localPathLineEdit->text();
     connectionSettings.authEnabled = ui()->authCheckBox->isChecked();
     connectionSettings.userName = ui()->userNameLineEdit->text();
     connectionSettings.password = ui()->passwordLineEdit->text();
@@ -402,12 +407,12 @@ void ConnectionOptionPage::toggleAdvancedSettings(bool show)
         return;
     }
 #if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
-    for (auto *const widget : std::initializer_list<QWidget *>{ ui()->authLabel, ui()->userNameLabel, ui()->passwordLabel, ui()->timeoutLabel,
+    for (auto *const widget : std::initializer_list<QWidget *>{ ui()->localPathLabel, ui()->authLabel, ui()->userNameLabel, ui()->passwordLabel, ui()->timeoutLabel,
              ui()->longPollingLabel, ui()->diskEventLimitLabel, ui()->pollLabel, ui()->pauseOnMeteredConnectionCheckBox }) {
         ui()->formLayout->setRowVisible(widget, show);
     }
 #else
-    for (auto *const widget : std::initializer_list<QWidget *>{ ui()->authLabel, ui()->authCheckBox, ui()->userNameLabel, ui()->userNameLineEdit,
+    for (auto *const widget : std::initializer_list<QWidget *>{ ui()->localPathLabel, ui()->localPathLineEdit, ui()->authLabel, ui()->authCheckBox, ui()->userNameLabel, ui()->userNameLineEdit,
              ui()->passwordLabel, ui()->passwordLineEdit, ui()->timeoutLabel, ui()->timeoutSpinBox, ui()->longPollingLabel, ui()->longPollingSpinBox,
              ui()->diskEventLimitLabel, ui()->diskEventLimitSpinBox, ui()->pollLabel, ui()->pollDevStatsLabel, ui()->pollDevStatsSpinBox,
              ui()->pollErrorsLabel, ui()->pollErrorsSpinBox, ui()->pollTrafficLabel, ui()->pollTrafficSpinBox, ui()->reconnectLabel,

@@ -66,6 +66,12 @@ QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const Q
     // give it a few seconds more time than the actual long polling interval set via the timeout query parameter
     request.setTransferTimeout(longPolling ? (m_longPollingTimeout ? m_longPollingTimeout + 5000 : 0) : m_requestTimeout);
 #endif
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 8, 0))
+    // set full local server name to support connecting to Unix domain sockets
+    if (!localPath().isEmpty()) {
+        request.setAttribute(QNetworkRequest::FullLocalServerNameAttribute, localPath());
+    }
+#endif
     return request;
 }
 

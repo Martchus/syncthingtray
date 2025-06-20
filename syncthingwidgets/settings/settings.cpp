@@ -283,6 +283,7 @@ bool restore()
                 connectionSettings->label = (i == 0 ? QStringLiteral("Primary instance") : QStringLiteral("Secondary instance %1").arg(i));
             }
             connectionSettings->syncthingUrl = settings.value(QStringLiteral("syncthingUrl"), connectionSettings->syncthingUrl).toString();
+            connectionSettings->localPath = settings.value(QStringLiteral("localPath"), connectionSettings->localPath).toString();
             connectionSettings->authEnabled = settings.value(QStringLiteral("authEnabled"), connectionSettings->authEnabled).toBool();
             connectionSettings->userName = settings.value(QStringLiteral("userName")).toString();
             connectionSettings->password = settings.value(QStringLiteral("password")).toString();
@@ -452,6 +453,7 @@ bool save()
         settings.setArrayIndex(i);
         settings.setValue(QStringLiteral("label"), connectionSettings->label);
         settings.setValue(QStringLiteral("syncthingUrl"), connectionSettings->syncthingUrl);
+        settings.setValue(QStringLiteral("localPath"), connectionSettings->localPath);
         settings.setValue(QStringLiteral("authEnabled"), connectionSettings->authEnabled);
         settings.setValue(QStringLiteral("userName"), connectionSettings->userName);
         settings.setValue(QStringLiteral("password"), connectionSettings->password);
@@ -672,6 +674,7 @@ void Connection::addConfigFromWizard(const Data::SyncthingConfig &config)
     }
 
     primary.syncthingUrl = url;
+    primary.localPath.clear();
     primary.userName = config.guiUser;
     primary.authEnabled = false;
     primary.password.clear();

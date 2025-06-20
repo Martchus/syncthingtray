@@ -128,6 +128,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_OBJECT
     Q_PROPERTY(QString syncthingUrl READ syncthingUrl WRITE setSyncthingUrl NOTIFY syncthingUrlChanged)
     Q_PROPERTY(QUrl syncthingUrlWithCredentials READ makeUrlWithCredentials NOTIFY syncthingUrlChanged)
+    Q_PROPERTY(QString localPath READ localPath WRITE setLocalPath)
     Q_PROPERTY(QByteArray apiKey READ apiKey WRITE setApiKey)
     Q_PROPERTY(bool isLocal READ isLocal)
     Q_PROPERTY(QString user READ user)
@@ -210,6 +211,8 @@ public:
     // getter/setter for various properties
     const QString &syncthingUrl() const;
     void setSyncthingUrl(const QString &url);
+    const QString &localPath() const;
+    void setLocalPath(const QString &localPath);
     bool isLocal() const;
     const QByteArray &apiKey() const;
     void setApiKey(const QByteArray &apiKey);
@@ -531,6 +534,7 @@ private:
     bool checkConnectionConfiguration();
 
     QString m_syncthingUrl;
+    QString m_localPath;
     QByteArray m_apiKey;
     QString m_user;
     QString m_password;
@@ -630,6 +634,22 @@ inline void SyncthingConnection::setSyncthingUrl(const QString &url)
     if (m_syncthingUrl != url) {
         emit syncthingUrlChanged(m_syncthingUrl = url);
     }
+}
+
+/*!
+ * \brief Returns the path of the Unix domain socket to connect to Syncthing.
+ */
+inline const QString &SyncthingConnection::localPath() const
+{
+    return m_localPath;
+}
+
+/*!
+ * \brief Sets the path of the Unix domain socket to connect to Syncthing.
+ */
+inline void SyncthingConnection::setLocalPath(const QString &localPath)
+{
+    m_localPath = localPath;
 }
 
 /*!
