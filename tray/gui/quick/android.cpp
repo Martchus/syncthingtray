@@ -31,9 +31,11 @@ static void stopLibSyncthing(JNIEnv *, jobject)
 static void handleMessageFromService(JNIEnv *, jobject, jint what, jint arg1, jint arg2, jstring str, jbyteArray variantArray)
 {
     auto env = QJniEnvironment();
-    auto variantSize = env->GetArrayLength(variantArray);
+    auto variantSize = variantArray ? env->GetArrayLength(variantArray) : 0;
     auto variant = QByteArray(variantSize, Qt::Initialization::Uninitialized);
-    env->GetByteArrayRegion(variantArray, 0, variantSize, reinterpret_cast<jbyte *>(variant.data()));
+    if (variantArray) {
+        env->GetByteArrayRegion(variantArray, 0, variantSize, reinterpret_cast<jbyte *>(variant.data()));
+    }
     appObjectForJava->handleMessageFromService(static_cast<ActivityAction>(what), arg1, arg2, QJniObject::fromLocalRef(str).toString(), variant);
 }
 
