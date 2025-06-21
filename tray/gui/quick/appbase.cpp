@@ -39,6 +39,8 @@ AppBase::AppBase(bool insecure, bool textOnly, QObject *parent)
 #endif
 
     m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents | SyncthingConnection::PollingFlags::Errors);
+    m_connectionSettingsFromLauncher.statusComputionFlags += SyncthingStatusComputionFlags::RemoteSynchronizing;
+    m_connectionSettingsFromConfig.statusComputionFlags += SyncthingStatusComputionFlags::RemoteSynchronizing;
 #ifdef Q_OS_ANDROID
     m_notifier.setEnabledNotifications(
         SyncthingHighLevelNotification::ConnectedDisconnected | SyncthingHighLevelNotification::NewDevice | SyncthingHighLevelNotification::NewDir);

@@ -93,8 +93,12 @@ public class Activity extends QtActivity {
         }
 
         public void onServiceDisconnected(ComponentName className) {
-            Log.i(TAG, "Disconnected from service");
+            Log.i(TAG, "Disconnected from service, trying to restart");
             m_service = null;
+            if (!Activity.this.isFinishing()) {
+                startSyncthingService();
+                connectToService();
+            }
         }
     };
 

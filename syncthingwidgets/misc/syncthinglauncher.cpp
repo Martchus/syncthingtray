@@ -443,6 +443,9 @@ void SyncthingLauncher::handleProcessFinished(int code, QProcess::ExitStatus sta
 {
     const auto &exitStatus = m_lastExitStatus.emplace(code, status);
     emit exited(exitStatus.code, exitStatus.status);
+    if (m_logFile.isOpen()) {
+        m_logFile.flush();
+    }
 }
 
 void SyncthingLauncher::resetState()
@@ -566,6 +569,9 @@ void SyncthingLauncher::handleLibSyncthingFinished()
     emit exited(exitStatus.code, exitStatus.status);
     emit runningChanged(false);
     emit startingChanged();
+    if (m_logFile.isOpen()) {
+        m_logFile.flush();
+    }
 }
 #endif
 
