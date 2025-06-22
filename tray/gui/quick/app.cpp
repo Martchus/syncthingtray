@@ -1316,8 +1316,17 @@ bool App::applySettings()
     applySyncthingSettings();
     applyLauncherSettings();
     applyConnectionSettings(m_syncthingGuiUrl);
+    auto mod = false;
     auto tweaksSettings = m_settings.value(QLatin1String("tweaks")).toObject();
+    ensureDefault(mod, tweaksSettings, QLatin1String("unloadGuiWhenHidden"), false);
+#ifdef Q_OS_ANDROID
+    ensureDefault(mod, tweaksSettings, QLatin1String("importExportAsArchive"), true);
+    ensureDefault(mod, tweaksSettings, QLatin1String("importExportEncryptionPassword"), QString());
+#endif
     m_alwaysUnloadGuiWhenHidden = tweaksSettings.value(QLatin1String("unloadGuiWhenHidden")).toBool(false);
+    if (mod) {
+        m_settings.insert(QLatin1String("tweaks"), tweaksSettings);
+    }
     invalidateStatus();
     return true;
 }
@@ -1667,14 +1676,31 @@ bool App::exportSettings(const QUrl &url, const QJSValue &callback)
     }
     setImportExportStatus(ImportExportStatus::Exporting);
 
-    QtConcurrent::run([this, url, currentHomePath = currentSyncthingHomeDir()] {
+#ifdef Q_OS_ANDROID
+    const auto tweaksSettings = m_settings.value(QLatin1String("tweaks")).toObject();
+#endif
+    QtConcurrent::run([this, url, currentHomePath = currentSyncthingHomeDir()
+#ifdef Q_OS_ANDROID
+        ,
+        asArchive = tweaksSettings.value(QLatin1String("importExportAsArchive")).toBool(),
+        encryptionPassword = tweaksSettings.value(QLatin1String("importExportEncryptionPassword")).toString()
+#endif
+    ] {
+        if (!m_settingsDir.has_value()) {
+            return std::make_pair(tr("settings directory was not located."), true);
+        }
         const auto path = resolveUrl(url);
+
+#ifdef Q_OS_ANDROID
+        if (asArchive) {
+            const auto error = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jstring>("compressArchive", path, SYNCTHING_APP_STRING_CONVERSION(m_settingsDir->path()), encryptionPassword).toString();
+            return std::make_pair(error.isEmpty() ? tr("Settings have been archived to \"%1\".").arg(path) : error, !error.isEmpty());
+        }
+#endif
+
         const auto dir = QDir(path);
         if (!dir.exists() && !dir.mkpath(QStringLiteral("."))) {
             return std::make_pair(tr("unable to create export directory under \"%1\"").arg(path), true);
-        }
-        if (!m_settingsDir.has_value()) {
-            return std::make_pair(tr("settings directory was not located."), true);
         }
         try {
             std::filesystem::copy(SYNCTHING_APP_STRING_CONVERSION(m_settingsDir->path()), SYNCTHING_APP_STRING_CONVERSION(path),

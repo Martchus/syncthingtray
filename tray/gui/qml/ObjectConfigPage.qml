@@ -43,7 +43,11 @@ Page {
                             const value = configObject[key];
                             if ((value !== undefined && value !== null) || !specialEntry.optional) {
                                 indexByKey[key] = index;
-                                listModel.append(objectConfigPage.makeConfigRowForSpecialEntry(specialEntry, value, index++));
+                                const row = objectConfigPage.makeConfigRowForSpecialEntry(specialEntry, value, index);
+                                if (row) {
+                                    listModel.append(row);
+                                    ++index;
+                                }
                                 return;
                             }
                         }
@@ -173,9 +177,11 @@ Page {
     }
 
     function makeConfigRowForSpecialEntry(specialEntry, value, index) {
+        if ((specialEntry.value = value ?? specialEntry.defaultValue) === undefined) {
+            return undefined;
+        }
         specialEntry.index = index;
         specialEntry.isArray = Array.isArray(objectConfigPage.configObject);
-        specialEntry.value = value ?? specialEntry.defaultValue;
         specialEntry.type = specialEntry.type ?? typeof specialEntry.value;
         specialEntry.label = specialEntry.label ?? uncamel(specialEntry.isArray ? specialEntry.key : specialEntry.type);
         specialEntry.desc = specialEntry.desc ?? "";
