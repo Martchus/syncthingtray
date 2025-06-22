@@ -30,6 +30,14 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import net.lingala.zip4j.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.model.ZipParameters;
+import net.lingala.zip4j.model.enums.CompressionLevel;
+import net.lingala.zip4j.model.enums.CompressionMethod;
+import net.lingala.zip4j.model.enums.EncryptionMethod;
+import net.lingala.zip4j.model.enums.AesKeyStrength;
+
 import java.io.*;
 
 import org.qtproject.qt.android.bindings.QtActivity;
@@ -296,6 +304,49 @@ public class Activity extends QtActivity {
 
     public int fontWeightAdjustment() {
         return m_fontWeightAdjustment;
+    }
+
+    private ZipFile makeZipFile(String path, String password) {
+        ZipFile zipFile = password.isEmpty()
+            ? new ZipFile(path)
+            : new ZipFile(path, password.toCharArray());
+        zipFile.setUseUtf8CharsetForPasswords(true);
+        return zipFile;
+    }
+
+    public String compressArchive(String settingsPath, String syncthingHomePath, String destinationArchivePath, String password) {
+        try {
+            ZipParameters parameters = new ZipParameters();
+            parameters.setCompressionMethod(CompressionMethod.DEFLATE);
+            parameters.setCompressionLevel(CompressionLevel.NORMAL);
+            ZipFile zipFile = makeZipFile(destinationArchivePath, password);
+            if (!password.isEmpty()) {
+                parameters.setEncryptFiles(true);
+                parameters.setEncryptionMethod(EncryptionMethod.AES);
+                parameters.setAesKeyStrength(AesKeyStrength.KEY_STRENGTH_256);
+            }
+            zipFile.addFolder(new File(settingsPath), parameters);
+            if (!syncthingHomePath.isEmpty()) {
+                parameters.setRootFolderNameInZip("syncthing");
+                zipFile.addFolder(new File(syncthingHomePath), parameters);
+            }
+            return "";
+        } catch (ZipException e) {
+            return e.toString();
+        }
+    }
+
+    public String extractArchive(String sourceArchivePath, String destinationDirectoryPath, String password)  {
+        try {
+            ZipFile zipFile = makeZipFile(sourceArchivePath, password);
+            if (!password.isEmpty() && !zipFile.isEncrypted()) {
+                zipFile = makeZipFile(sourceArchivePath, "");
+            }
+            zipFile.extractAll(destinationDirectoryPath);
+            return "";
+        } catch (ZipException e) {
+            return e.toString();
+        }
     }
 
     private Bundle metaData() {

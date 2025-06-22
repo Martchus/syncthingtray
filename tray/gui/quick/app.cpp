@@ -1316,8 +1316,17 @@ bool App::applySettings()
     applySyncthingSettings();
     applyLauncherSettings();
     applyConnectionSettings(m_syncthingGuiUrl);
+    auto mod = false;
     auto tweaksSettings = m_settings.value(QLatin1String("tweaks")).toObject();
+    ensureDefault(mod, tweaksSettings, QLatin1String("unloadGuiWhenHidden"), false);
+#ifdef Q_OS_ANDROID
+    ensureDefault(mod, tweaksSettings, QLatin1String("importExportAsArchive"), true);
+    ensureDefault(mod, tweaksSettings, QLatin1String("importExportEncryptionPassword"), QString());
+#endif
     m_alwaysUnloadGuiWhenHidden = tweaksSettings.value(QLatin1String("unloadGuiWhenHidden")).toBool(false);
+    if (mod) {
+        m_settings.insert(QLatin1String("tweaks"), tweaksSettings);
+    }
     invalidateStatus();
     return true;
 }
@@ -1409,11 +1418,51 @@ bool App::checkSettings(const QUrl &url, const QJSValue &callback)
         return false;
     }
     setImportExportStatus(ImportExportStatus::Checking);
-    QtConcurrent::run([this, url, currentHomePath = currentSyncthingHomeDir()]() mutable {
+    const auto tweaksSettings = m_settings.value(QLatin1String("tweaks")).toObject();
+    QtConcurrent::run([this, url, currentHomePath = currentSyncthingHomeDir(),
+                          asArchive = tweaksSettings.value(QLatin1String("importExportAsArchive")).toBool(),
+                          encryptionPassword = tweaksSettings.value(QLatin1String("importExportEncryptionPassword")).toString()]() mutable {
         auto availableSettings = QVariantMap();
         auto pathStr = resolveUrl(url);
-        auto path = std::filesystem::path(SYNCTHING_APP_STRING_CONVERSION(pathStr));
+        auto tempDir = QString();
         auto errors = QStringList();
+
+        if (asArchive) {
+#ifdef Q_OS_ANDROID
+            if (!m_settingsDir.has_value()) {
+                errors.append(tr("Settings directory was not located."));
+            } else {
+                tempDir = m_settingsDir->path() + QString("/../import-tmp");
+                try {
+                    const auto tempPath = std::filesystem::path(SYNCTHING_APP_STRING_CONVERSION(tempDir));
+                    if (std::filesystem::exists(tempPath)) {
+                        std::filesystem::remove_all(tempPath);
+                    }
+                    std::filesystem::create_directories(tempPath);
+                    tempDir = QString::fromStdString(std::filesystem::absolute(tempPath));
+                    const auto error = QJniObject(QNativeInterface::QAndroidApplication::context())
+                                           .callMethod<jstring>("extractArchive", pathStr, tempDir, encryptionPassword)
+                                           .toString();
+                    if (!error.isEmpty()) {
+                        QDir(tempDir).removeRecursively();
+                        errors.append(tr("Unable to extract archive: %1").arg(error));
+                    }
+                    availableSettings.insert(QStringLiteral("tempDir"), tempDir);
+                    pathStr = tempDir + QStringLiteral("/settings");
+                } catch (const std::runtime_error &e) {
+                    errors.append(tr("Unable to create temp dir: %1").arg(e.what()));
+                }
+            }
+#else
+            errors.append(tr("archiving is only supported on Android."));
+#endif
+            if (!errors.isEmpty()) {
+                availableSettings.insert(QStringLiteral("error"), errors.join(QChar('\n')));
+                return availableSettings;
+            }
+        }
+
+        auto path = std::filesystem::path(SYNCTHING_APP_STRING_CONVERSION(pathStr));
         availableSettings.insert(QStringLiteral("path"), pathStr);
         availableSettings.insert(QStringLiteral("currentSyncthingHomePath"), std::move(currentHomePath));
         try {
@@ -1554,12 +1603,13 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
     QtConcurrent::run([this, importSyncthingHome, availableSettings, selectedSettings, rawConfig = m_connection.rawConfig()]() mutable {
         // copy selected files from import directory to settings directory
         auto summary = QStringList();
+        auto aborted = availableSettings.value(QStringLiteral("aborted")).toBool();
         auto syncthingHomePath = availableSettings.value(QStringLiteral("currentSyncthingHomePath")).toString();
         try {
             // copy app config file
             const auto settingsPath = std::filesystem::path(SYNCTHING_APP_STRING_CONVERSION(m_settingsDir->path()));
             const auto importAppConfig = selectedSettings.value(QStringLiteral("appConfig")).toBool();
-            if (importAppConfig) {
+            if (importAppConfig && !aborted) {
                 const auto appConfigSrcPathStr = availableSettings.value(QStringLiteral("appConfigPath")).toString();
                 const auto appConfigSrcPath = SYNCTHING_APP_STRING_CONVERSION(appConfigSrcPathStr);
                 const auto appConfigDstPath = settingsPath / "appconfig.json";
@@ -1581,7 +1631,7 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
             }
 
             // copy Syncthing home directory
-            if (importSyncthingHome) {
+            if (importSyncthingHome && !aborted) {
                 const auto homeSrcPathStr = availableSettings.value(QStringLiteral("syncthingHomePath")).toString();
                 const auto homeSrcPath = SYNCTHING_APP_STRING_CONVERSION(homeSrcPathStr);
                 const auto homeDstPath = syncthingHomePath.isEmpty() ? (settingsPath / "syncthing")
@@ -1597,7 +1647,7 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
         }
 
         // merge selected folders/devices into existing config
-        if (!importSyncthingHome) {
+        if (!importSyncthingHome && !aborted) {
             const auto availableFolders = availableSettings.value(QStringLiteral("folders")).toJsonArray();
             const auto availableDevices = availableSettings.value(QStringLiteral("devices")).toJsonArray();
             const auto selectedFolders = selectedSettings.value(QStringLiteral("selectedFolders")).value<QVariantList>();
@@ -1627,6 +1677,14 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
                 } else {
                     return std::make_pair(tr("Unable to import folders/devices."), true);
                 }
+            }
+        }
+
+        if (const auto tempDir = availableSettings.value(QStringLiteral("tempDir")).toString(); !tempDir.isEmpty()) {
+            try {
+                std::filesystem::remove_all(SYNCTHING_APP_STRING_CONVERSION(tempDir));
+            } catch (const std::runtime_error &e) {
+                return std::make_pair(tr("Unable to remove temp dir: %1").arg(e.what()), true);
             }
         }
 
@@ -1667,14 +1725,29 @@ bool App::exportSettings(const QUrl &url, const QJSValue &callback)
     }
     setImportExportStatus(ImportExportStatus::Exporting);
 
-    QtConcurrent::run([this, url, currentHomePath = currentSyncthingHomeDir()] {
+    const auto tweaksSettings = m_settings.value(QLatin1String("tweaks")).toObject();
+    QtConcurrent::run([this, url, currentHomePath = currentSyncthingHomeDir(),
+                          asArchive = tweaksSettings.value(QLatin1String("importExportAsArchive")).toBool(),
+                          encryptionPassword = tweaksSettings.value(QLatin1String("importExportEncryptionPassword")).toString()] {
+        if (!m_settingsDir.has_value()) {
+            return std::make_pair(tr("settings directory was not located."), true);
+        }
+
         const auto path = resolveUrl(url);
+        if (asArchive) {
+#ifdef Q_OS_ANDROID
+            const auto error = QJniObject(QNativeInterface::QAndroidApplication::context())
+                                   .callMethod<jstring>("compressArchive", m_settingsDir->path(), currentHomePath, path, encryptionPassword)
+                                   .toString();
+            return std::make_pair(error.isEmpty() ? tr("Settings have been archived to \"%1\".").arg(path) : error, !error.isEmpty());
+#else
+            return std::make_pair(tr("Archiving is only supported on Android."), true);
+#endif
+        }
+
         const auto dir = QDir(path);
         if (!dir.exists() && !dir.mkpath(QStringLiteral("."))) {
             return std::make_pair(tr("unable to create export directory under \"%1\"").arg(path), true);
-        }
-        if (!m_settingsDir.has_value()) {
-            return std::make_pair(tr("settings directory was not located."), true);
         }
         try {
             std::filesystem::copy(SYNCTHING_APP_STRING_CONVERSION(m_settingsDir->path()), SYNCTHING_APP_STRING_CONVERSION(path),

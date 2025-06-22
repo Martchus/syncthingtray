@@ -168,6 +168,10 @@ Page {
             onTriggered: App.importSettings(importPage.availableSettings, importPage.selectedConfig)
         }
     ]
+    function back() {
+        App.importSettings(importPage.availableSettings, {aborted: true});
+        return false;
+    }
     function handleSelectedIndexes(model) {
         const indexes = [];
         const folders = importPage.availableSettings.folders;

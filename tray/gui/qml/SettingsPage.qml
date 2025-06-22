@@ -95,6 +95,12 @@ StackView {
             }
         }
 
+        FileDialog {
+            id: backupFileDialog
+            fileMode: appSettingsPage.currentBackupFunction === "exportSettings" ? FileDialog.SaveFile : FileDialog.OpenFile
+            onAccepted: App[appSettingsPage.currentBackupFunction](backupFileDialog.selectedFile, appSettingsPage.currentBackupCallback)
+        }
+
         FolderDialog {
             id: backupFolderDialog
             onAccepted: App[appSettingsPage.currentBackupFunction](backupFolderDialog.selectedFolder, appSettingsPage.currentBackupCallback)
@@ -105,7 +111,7 @@ StackView {
         function initiateBackup(functionName, callback) {
             appSettingsPage.currentBackupFunction = functionName;
             appSettingsPage.currentBackupCallback = callback;
-            backupFolderDialog.open();
+            return App.settings.tweaks.importExportAsArchive ? backupFileDialog.open() : backupFolderDialog.open();
         }
         function openNestedSettings(title, key) {
             if (appSettingsPage.config[key] === undefined) {
@@ -152,6 +158,8 @@ StackView {
             ],
             tweaks: [
                 {key: "unloadGuiWhenHidden", type: "boolean", defaultValue: false, label: qsTr("Stop UI when hidden"), statusText: qsTr("Might help save battery live but resets UI state.")},
+                {key: "importExportAsArchive", type: "boolean", defaultValue: false, label: qsTr("Import/export archive"), statusText: qsTr("Import and export to/from a Zip archive.")},
+                {key: "importExportEncryptionPassword", type: "string", defaultValue: "", label: qsTr("Import/export password"), statusText: qsTr("Encrypt/decrypt data via AES-256 when exporting/importing to archive.")},
             ]
         })
         property bool hasUnsavedChanges: false
