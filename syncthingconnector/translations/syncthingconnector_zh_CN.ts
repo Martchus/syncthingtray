@@ -162,43 +162,43 @@
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1607"/>
         <source>Unable to request directory override: </source>
-        <translation type="unfinished"></translation>
+        <translation>无法从目录覆盖：</translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1640"/>
         <source>Unable to request directory revert: </source>
-        <translation type="unfinished"></translation>
+        <translation>无法从目录恢复：</translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1812"/>
         <source>Unable to parse JSON response: </source>
-        <translation type="unfinished"></translation>
+        <translation>无法解析 JSON 响应：</translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1825"/>
         <source>Unable to request: </source>
-        <translation type="unfinished"></translation>
+        <translation>无法请求：</translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1850"/>
         <source>Unable to parse response for browsing &quot;%1&quot;: </source>
-        <translation type="unfinished"></translation>
+        <translation>无法解析浏览“%1”的响应：</translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1864"/>
         <source>Unable to browse &quot;%1&quot;: </source>
-        <translation type="unfinished"></translation>
+        <translation>无法浏览&quot;%1&quot;：</translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1888"/>
         <location filename="../syncthingconnection_requests.cpp" line="1912"/>
         <source>Unable to query ignore patterns of &quot;%1&quot;: </source>
-        <translation type="unfinished"></translation>
+        <translation>无法查询&quot;%1 &quot;的忽略模式：</translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1938"/>
         <source>Unable to change ignore patterns of &quot;%1&quot;: </source>
-        <translation type="unfinished"></translation>
+        <translation>无法更改&quot;%1 &quot;的忽略模式：</translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1999"/>
@@ -263,7 +263,7 @@
     <message>
         <location filename="../syncthingconnection.cpp" line="195"/>
         <source>connected, but all remote devices disconnected</source>
-        <translation type="unfinished"></translation>
+        <translation>已连接，但所有远程设备都已断开</translation>
     </message>
     <message>
         <location filename="../syncthingconnection.cpp" line="197"/>
@@ -298,12 +298,12 @@
     <message>
         <location filename="../syncthingconnection.h" line="730"/>
         <source>connecting</source>
-        <translation type="unfinished"></translation>
+        <translation>连接中</translation>
     </message>
     <message>
         <location filename="../syncthingconnection.h" line="732"/>
         <source>, re-connect attempt every %1 ms</source>
-        <translation type="unfinished"></translation>
+        <translation>每隔 %1 毫秒尝试重新连接</translation>
     </message>
 </context>
 <context>
@@ -379,7 +379,7 @@
     <message>
         <location filename="../syncthingservice.cpp" line="407"/>
         <source>reload all unit files</source>
-        <translation type="unfinished"></translation>
+        <translation>重新加载所有单元文件</translation>
     </message>
 </context>
 <context>
@@ -387,7 +387,7 @@
     <message>
         <location filename="../utils.cpp" line="40"/>
         <source>%1 ago</source>
-        <translation>%1 前</translation>
+        <translation>%1 之前</translation>
     </message>
     <message>
         <location filename="../utils.cpp" line="43"/>
@@ -467,12 +467,12 @@
     <message>
         <location filename="../syncthingdev.cpp" line="36"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation>已暂停</translation>
     </message>
     <message>
         <location filename="../syncthingdev.cpp" line="39"/>
         <source>Syncing (%1 %, %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>正正同步 (%1 %, %2)</translation>
     </message>
 </context>
 <context>
@@ -508,37 +508,37 @@
     <message>
         <location filename="../syncthingdev.cpp" line="15"/>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>未知</translation>
     </message>
     <message>
         <location filename="../syncthingdev.cpp" line="17"/>
         <source>Disconnected</source>
-        <translation type="unfinished"></translation>
+        <translation>已断开连接</translation>
     </message>
     <message>
         <location filename="../syncthingdev.cpp" line="19"/>
         <source>This Device</source>
-        <translation type="unfinished"></translation>
+        <translation>此设备</translation>
     </message>
     <message>
         <location filename="../syncthingdev.cpp" line="21"/>
         <source>Idle</source>
-        <translation type="unfinished"></translation>
+        <translation>空闲</translation>
     </message>
     <message>
         <location filename="../syncthingdev.cpp" line="23"/>
         <source>Syncing</source>
-        <translation type="unfinished"></translation>
+        <translation>同步中</translation>
     </message>
     <message>
         <location filename="../syncthingdev.cpp" line="25"/>
         <source>Out of Sync</source>
-        <translation type="unfinished"></translation>
+        <translation>未同步</translation>
     </message>
     <message>
         <location filename="../syncthingdev.cpp" line="27"/>
         <source>Rejected</source>
-        <translation type="unfinished"></translation>
+        <translation>被拒绝</translation>
     </message>
 </context>
 <context>
@@ -554,87 +554,87 @@
     <message>
         <location filename="../syncthingdir.cpp" line="180"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation>已暂停</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="183"/>
         <source>Unshared</source>
-        <translation type="unfinished"></translation>
+        <translation>未共享</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="18"/>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>未知</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="195"/>
         <source>Local Additions</source>
-        <translation type="unfinished"></translation>
+        <translation>本地添加</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="197"/>
         <source>Unexpected Items</source>
-        <translation type="unfinished"></translation>
+        <translation>意外的项目</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="20"/>
         <source>Up to Date</source>
-        <translation type="unfinished"></translation>
+        <translation>最新的</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="22"/>
         <source>Waiting to Scan</source>
-        <translation type="unfinished"></translation>
+        <translation>等待扫描</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="205"/>
         <source>Scanning (%1 %, %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>正在扫描 (%1 %, %2)</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="209"/>
         <source>Scanning (%1 %)</source>
-        <translation type="unfinished"></translation>
+        <translation>正在扫描 (%1 %)</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="214"/>
         <source>Syncing (%1 %, %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>正在同步 (%1 %, %2)</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="24"/>
         <source>Scanning</source>
-        <translation type="unfinished"></translation>
+        <translation>正在扫描</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="26"/>
         <source>Waiting to Sync</source>
-        <translation type="unfinished"></translation>
+        <translation>等待同步</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="28"/>
         <source>Preparing to Sync</source>
-        <translation type="unfinished"></translation>
+        <translation>准备同步</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="30"/>
         <source>Syncing</source>
-        <translation type="unfinished"></translation>
+        <translation>正在同步</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="32"/>
         <source>Cleaning Versions</source>
-        <translation type="unfinished"></translation>
+        <translation>清理版本</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="34"/>
         <source>Waiting to Clean</source>
-        <translation type="unfinished"></translation>
+        <translation>等待清理</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="36"/>
         <source>Out of Sync</source>
-        <translation type="unfinished"></translation>
+        <translation>未同步</translation>
     </message>
 </context>
 <context>
@@ -689,27 +689,27 @@
     <message>
         <location filename="../syncthingdir.cpp" line="45"/>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>未知</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="47"/>
         <source>Send &amp; Receive</source>
-        <translation>发送与接受</translation>
+        <translation>发送和接受</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="49"/>
         <source>Send Only</source>
-        <translation type="unfinished"></translation>
+        <translation>仅发送</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="51"/>
         <source>Receive Only</source>
-        <translation type="unfinished"></translation>
+        <translation>仅接收</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="53"/>
         <source>Receive Encrypted</source>
-        <translation type="unfinished"></translation>
+        <translation>加密接收</translation>
     </message>
     <message>
         <source>Send only</source>

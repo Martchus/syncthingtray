@@ -42,7 +42,7 @@
         <location filename="../syncthingdiractions.cpp" line="81"/>
         <source>%1 item(s) out-of-sync</source>
         <translation>
-            <numerusform>%1 项目未同步</numerusform>
+            <numerusform>%1 个项目未同步</numerusform>
         </translation>
     </message>
 </context>
@@ -105,7 +105,7 @@
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="247"/>
         <source>Not a shared directory</source>
-        <translation type="unfinished"></translation>
+        <translation>不是共享目录</translation>
     </message>
     <message>
         <source>Use bright custom colors</source>

@@ -41,7 +41,7 @@
     <message>
         <location filename="../syncthingicons.cpp" line="269"/>
         <source>No remote device connected</source>
-        <translation type="unfinished"></translation>
+        <translation>未连接远程设备</translation>
     </message>
     <message>
         <location filename="../syncthingicons.cpp" line="270"/>
@@ -65,7 +65,7 @@
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="133"/>
         <source>Out of Sync items</source>
-        <translation type="unfinished"></translation>
+        <translation>未同步的项目</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="139"/>
@@ -75,7 +75,7 @@
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="141"/>
         <source>Connection type</source>
-        <translation type="unfinished"></translation>
+        <translation>连接类型</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="143"/>
@@ -115,19 +115,19 @@
     <message numerus="yes">
         <location filename="../syncthingdevicemodel.cpp" line="166"/>
         <source>%1 item(s), ~ %2</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 个项目， ~ %2</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="183"/>
         <source>local</source>
-        <translation type="unfinished"></translation>
+        <translation>本地</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="183"/>
         <source>remote</source>
-        <translation type="unfinished"></translation>
+        <translation>远程</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="188"/>
@@ -243,17 +243,17 @@
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="403"/>
         <source>Override remote changes</source>
-        <translation type="unfinished"></translation>
+        <translation>覆盖远程更改</translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="406"/>
         <source>Revert local changes</source>
-        <translation type="unfinished"></translation>
+        <translation>还原本地更改</translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="420"/>
         <source>On SD card</source>
-        <translation type="unfinished"></translation>
+        <translation>在 SD 卡上</translation>
     </message>
     <message>
         <source>Errors</source>
@@ -307,27 +307,27 @@
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="155"/>
         <source>Out of Sync items</source>
-        <translation type="unfinished"></translation>
+        <translation>未同步的项目</translation>
     </message>
     <message numerus="yes">
         <location filename="../syncthingdirectorymodel.cpp" line="195"/>
         <source>%1 item(s), ~ %2</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 个项目， ~ %2</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../syncthingdirectorymodel.cpp" line="206"/>
         <source>%1 item(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 个项目</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../syncthingdirectorymodel.cpp" line="208"/>
         <source>%1 and %2 item(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 和 %2 个项目</numerusform>
         </translation>
     </message>
     <message>
@@ -414,12 +414,12 @@
     <message>
         <location filename="../syncthingerrormodel.cpp" line="62"/>
         <source>Message</source>
-        <translation type="unfinished"></translation>
+        <translation>消息</translation>
     </message>
     <message>
         <location filename="../syncthingerrormodel.cpp" line="64"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>时间</translation>
     </message>
 </context>
 <context>
@@ -427,194 +427,196 @@
     <message>
         <location filename="../syncthingfilemodel.cpp" line="315"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>名称</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="317"/>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>大小</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="319"/>
         <source>Last modified</source>
-        <translation type="unfinished"></translation>
+        <translation>最后修改</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="321"/>
         <source>Ignore pattern</source>
-        <translation type="unfinished"></translation>
+        <translation>忽略模式</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="369"/>
         <source>%1 elements</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 个元素</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="232"/>
         <source>Exists locally and globally</source>
-        <translation type="unfinished"></translation>
+        <translation>存在于本地和全球</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="234"/>
         <source>Exists only globally</source>
-        <translation type="unfinished"></translation>
+        <translation>仅存在于全球</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="236"/>
         <source>Exists only locally</source>
-        <translation type="unfinished"></translation>
+        <translation>仅存在于本地</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="238"/>
         <source>Exists globally and perhaps locally</source>
-        <translation type="unfinished"></translation>
+        <translation>存在于全球，也可能存在于本地</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="240"/>
         <source>Exists locally and perhaps globally</source>
-        <translation type="unfinished"></translation>
+        <translation>存在于本地，也可能存在于全球</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="242"/>
         <source>Does not exist</source>
-        <translation type="unfinished"></translation>
+        <translation>不存在</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="486"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>刷新</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="489"/>
         <source>Deselect recursively</source>
-        <translation type="unfinished"></translation>
+        <translation>递归取消选择</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="489"/>
         <source>Select recursively</source>
-        <translation type="unfinished"></translation>
+        <translation>递归选择</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="491"/>
         <source>Deselect single item</source>
-        <translation type="unfinished"></translation>
+        <translation>取消选择单个项目</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="491"/>
         <source>Select single item</source>
-        <translation type="unfinished"></translation>
+        <translation>选择单个项目</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="493"/>
         <source>Open local version</source>
-        <translation type="unfinished"></translation>
+        <translation>打开本地版本</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="493"/>
         <source>Copy local path</source>
-        <translation type="unfinished"></translation>
+        <translation>复制本地路径</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="493"/>
         <source>Browse locally</source>
-        <translation type="unfinished"></translation>
+        <translation>本地浏览</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="778"/>
         <source>Select items to sync/ignore</source>
-        <translation type="unfinished"></translation>
+        <translation>选择要同步/忽略的项目</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="780"/>
         <source>Select</source>
-        <translation type="unfinished"></translation>
+        <translation>选择</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="785"/>
         <source>Discard staged changes</source>
-        <translation type="unfinished"></translation>
+        <translation>放弃阶段更改</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="795"/>
         <source>Uncheck all and discard staged changes</source>
-        <translation type="unfinished"></translation>
+        <translation>取消选中所有并放弃阶段更改</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="797"/>
         <source>Discard</source>
-        <translation type="unfinished"></translation>
+        <translation>放弃</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="809"/>
         <source>Ignore checked items (and their children)</source>
-        <translation type="unfinished"></translation>
+        <translation>忽略选中的项目（及其子项）</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="823"/>
         <source>Include checked items (and their children)</source>
-        <translation type="unfinished"></translation>
+        <translation>包括选中的项目（及其子项）</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="862"/>
         <source>Remove ignore patterns matching checked items (may affect other items as well)</source>
-        <translation type="unfinished"></translation>
+        <translation>删除忽略与选中项匹配的模式（也可能影响其他项）</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="831"/>
         <source>Include all items by default</source>
-        <translation type="unfinished"></translation>
+        <translation>默认包含所有项</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="816"/>
         <source>Ignore and locally delete checked items (and their children)</source>
-        <translation type="unfinished"></translation>
+        <translation>忽略并本地删除选中的项目（及其子项）</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="831"/>
         <source>Ignore all items by default</source>
-        <translation type="unfinished"></translation>
+        <translation>默认忽略所有项目</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="890"/>
         <source>Review and apply staged changes</source>
-        <translation type="unfinished"></translation>
+        <translation>查看和应用阶段更改</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="892"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>应用</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="900"/>
         <source>Do you want to apply the following changes?</source>
-        <translation type="unfinished"></translation>
+        <translation>是否要应用以下更改？</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="908"/>
         <source>Cannot apply ignore patterns while a previous request for ignore patterns is still pending.</source>
-        <translation type="unfinished"></translation>
+        <translation>当上一个忽略模式请求仍处于待处理状态时，无法应用忽略模式。</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="916"/>
         <source>Unable to change ignore patterns:
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>无法更改忽略模式：
+%1</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="997"/>
         <source>Ignore patterns have been changed.</source>
-        <translation type="unfinished"></translation>
+        <translation>忽略模式已更改。</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="1000"/>
         <source>Ignore patterns have been changed but the following local files could not be deleted:
 </source>
-        <translation type="unfinished"></translation>
+        <translation>忽略模式已更改，但无法删除以下本地文件：
+</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="1170"/>
         <source>Cannot query ignore patterns while a previous request for ignore patterns is still pending.</source>
-        <translation type="unfinished"></translation>
+        <translation>当上一个忽略模式请求仍处于待处理状态时，无法查询忽略模式。</translation>
     </message>
 </context>
 <context>
@@ -670,7 +672,7 @@
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="44"/>
         <source>No remote device connected</source>
-        <translation type="unfinished"></translation>
+        <translation>未连接远程设备</translation>
     </message>
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="46"/>
@@ -680,12 +682,12 @@
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="48"/>
         <source>Local dir is out of sync</source>
-        <translation type="unfinished"></translation>
+        <translation>本地目录未同步</translation>
     </message>
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="50"/>
         <source>Unread notification present</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 </TS>

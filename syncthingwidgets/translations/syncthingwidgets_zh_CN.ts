@@ -6,37 +6,37 @@
     <message>
         <location filename="../misc/syncthinglauncher.cpp" line="136"/>
         <source>Syncthing is running</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing 正在运行</translation>
     </message>
     <message>
         <location filename="../misc/syncthinglauncher.cpp" line="138"/>
         <source>Syncthing is temporarily stopped due to metered connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing 因按流量计费连接而暂时停止</translation>
     </message>
     <message>
         <location filename="../misc/syncthinglauncher.cpp" line="140"/>
         <source>Syncthing exited with status %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing 已退出，状态为 %1</translation>
     </message>
     <message>
         <location filename="../misc/syncthinglauncher.cpp" line="142"/>
         <source>Syncthing is not running</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing 未运行</translation>
     </message>
     <message>
         <location filename="../misc/syncthinglauncher.cpp" line="165"/>
         <source>Network connection is metered</source>
-        <translation type="unfinished"></translation>
+        <translation>网络连接按流量计费</translation>
     </message>
     <message>
         <location filename="../misc/syncthinglauncher.cpp" line="165"/>
         <source>Network connection is not metered</source>
-        <translation type="unfinished"></translation>
+        <translation>网络连接不按流量计费</translation>
     </message>
     <message>
         <location filename="../misc/syncthinglauncher.cpp" line="167"/>
         <source>State of network connection cannot be determined</source>
-        <translation type="unfinished"></translation>
+        <translation>无法确定网络连接的状态</translation>
     </message>
     <message>
         <location filename="../misc/syncthinglauncher.cpp" line="236"/>
@@ -49,22 +49,22 @@
     <message>
         <location filename="../webview/webviewdialog.cpp" line="250"/>
         <source>Unable to open Syncthing UI via &quot;%1&quot;: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>无法通过 “%1” 打开 Syncthing 界面: %2</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="91"/>
         <source>The network connection is currently considered metered.</source>
-        <translation type="unfinished"></translation>
+        <translation>网络连接当前被视为按流量计费。</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="92"/>
         <source>The network connection is currently not considered metered.</source>
-        <translation type="unfinished"></translation>
+        <translation>网络连接当前不被视为按流量计费。</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="93"/>
         <source>Unable to determine whether the network connection is metered; assuming an unmetered connection.</source>
-        <translation type="unfinished"></translation>
+        <translation>无法确定网络连接是否按流量计费，假设连接不按流量计费。</translation>
     </message>
 </context>
 <context>
@@ -77,12 +77,12 @@
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="28"/>
         <source>Frame shape</source>
-        <translation>框架形状</translation>
+        <translation>边框形状</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="42"/>
         <source>No frame</source>
-        <translation>无框架</translation>
+        <translation>无边框</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="47"/>
@@ -102,17 +102,17 @@
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="65"/>
         <source>Frame shadow</source>
-        <translation>框架阴影</translation>
+        <translation>边框阴影</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="79"/>
         <source>Plain</source>
-        <translation>简单</translation>
+        <translation>平坦</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="84"/>
         <source>Raised</source>
-        <translation>提高</translation>
+        <translation>凸起</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="89"/>
@@ -122,7 +122,7 @@
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="97"/>
         <source>Tab position</source>
-        <translation>标签位置</translation>
+        <translation>选项卡位置</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="111"/>
@@ -147,47 +147,47 @@
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="341"/>
         <source>Downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>下载</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="348"/>
         <source>Show tab texts</source>
-        <translation type="unfinished"></translation>
+        <translation>显示选项卡文本</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="362"/>
         <source>Prefer icons from theme over ForkAwesome icons (needs restart to apply)</source>
-        <translation type="unfinished"></translation>
+        <translation>更喜欢主题中的图标，而不是 forkawesome 图标（需要重新启动以应用）</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="371"/>
         <source>Icons</source>
-        <translation type="unfinished">图标</translation>
+        <translation>图标</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="385"/>
         <source>Popup</source>
-        <translation type="unfinished"></translation>
+        <translation>弹出窗口</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="390"/>
         <source>Normal window</source>
-        <translation type="unfinished"></translation>
+        <translation>常规窗口</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="395"/>
         <source>Window without titlebar</source>
-        <translation type="unfinished"></translation>
+        <translation>无标题栏窗口</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="400"/>
         <source>None - open Syncthing directly</source>
-        <translation type="unfinished"></translation>
+        <translation>无 - 直接打开 Syncthing</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="408"/>
         <source>Window type</source>
-        <translation type="unfinished"></translation>
+        <translation>窗口类型</translation>
     </message>
     <message>
         <source>Colors</source>
@@ -200,7 +200,7 @@
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="221"/>
         <source>Optional GUI elements</source>
-        <translation>可选 GUI 元素</translation>
+        <translation>可选界面元素</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="334"/>
@@ -243,7 +243,7 @@
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="134"/>
         <source>Menu size</source>
-        <translation>菜单大小</translation>
+        <translation>窗口大小</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="171"/>
@@ -256,152 +256,152 @@
     <message>
         <location filename="../settings/applywizardpage.ui" line="6"/>
         <source>General</source>
-        <translation type="unfinished">一般</translation>
+        <translation>常规</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="923"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>应用</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="924"/>
         <source>Apply selected configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>应用所选配置</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="925"/>
         <source>Review the summary of the configuration changes before applying them</source>
-        <translation type="unfinished"></translation>
+        <translation>在应用配置更改之前，请查看配置更改的摘要</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="949"/>
         <source>Summary:</source>
-        <translation type="unfinished"></translation>
+        <translation>摘要:</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="963"/>
         <source>Keep %1 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>保持 %1 %2</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="963"/>
         <source>enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>已启用</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="963"/>
         <source>disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>已禁用</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="964"/>
         <source>%1 %2</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 %2</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="964"/>
         <source>Enable</source>
-        <translation type="unfinished">启用</translation>
+        <translation>启用</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="964"/>
         <source>Disable</source>
-        <translation type="unfinished">禁用</translation>
+        <translation>禁用</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="974"/>
         <source>Keep connection and launcher configuration as-is</source>
-        <translation type="unfinished"></translation>
+        <translation>保持连接和启动器配置不变</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="977"/>
         <source>Configure Syncthing Tray to use the currently running Syncthing instance</source>
-        <translation type="unfinished"></translation>
+        <translation>将 Syncthing Tray 配置为使用当前正在运行的 Syncthing 实例</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="978"/>
         <source>Do &lt;i&gt;not&lt;/i&gt; change how Syncthing is launched</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;i&gt;不要&lt;/i&gt;更改 Syncthing 的启动方式</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="982"/>
         <source>Start Syncthing via Syncthing Tray&apos;s launcher</source>
-        <translation type="unfinished"></translation>
+        <translation>通过 Syncthing Tray 的启动器启动 Syncthing</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="984"/>
         <source>executable from PATH as separate process, &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>从 PATH 作为单独进程的可执行文件，&quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="985"/>
         <source>built-in Syncthing library, &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>内置 Syncthing 库 “%1”</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="990"/>
         <source>Start Syncthing by enabling and starting its systemd unit</source>
-        <translation type="unfinished"></translation>
+        <translation>通过启用和启动 Syncthing 的 systemd 单元来启动 Syncthing</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="992"/>
         <source>Using user unit &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>使用用户单位 “%1”</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="993"/>
         <source>Using system unit &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>使用系统单位 &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1002"/>
         <source>systemd integration</source>
-        <translation type="unfinished"></translation>
+        <translation>systemd 集成</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1008"/>
         <source>Preserve existing autostart entry for &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>保留 “%1” 的现有自动启动条目</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1014"/>
         <source>Override</source>
-        <translation type="unfinished"></translation>
+        <translation>覆盖</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1014"/>
         <source>Delete</source>
-        <translation type="unfinished"></translation>
+        <translation>删除</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1015"/>
         <source>%1 existing autostart entry for &quot;%2&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 的现有自动启动条目 &quot;%2&quot;</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1017"/>
         <source>autostart of Syncthing Tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing Tray 自动启动</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1022"/>
         <source>Further information:</source>
-        <translation type="unfinished"></translation>
+        <translation>更多信息：</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1022"/>
         <source>Click on &quot;Show details from setup detection&quot; for further details.</source>
-        <translation type="unfinished"></translation>
+        <translation>点击&quot;显示设置检测的详细信息&quot;以获取更多详细信息。</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1023"/>
         <source>If you want to do amendments, you can head back one or more steps.</source>
-        <translation type="unfinished"></translation>
+        <translation>如果您想进行修改，可以返回一个或多个步骤。</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1023"/>
         <source>If you abort now, nothing will be changed.</source>
-        <translation type="unfinished"></translation>
+        <translation>如果现在取消，则不会更改任何内容。</translation>
     </message>
 </context>
 <context>
@@ -409,17 +409,17 @@
     <message>
         <location filename="../settings/autostartoptionpage.ui" line="12"/>
         <source>Autostart</source>
-        <translation>自启动</translation>
+        <translation>自动启动</translation>
     </message>
     <message>
         <location filename="../settings/autostartoptionpage.ui" line="27"/>
         <source>Start the tray icon when the desktop environment launches</source>
-        <translation>桌面环境启动时启动托盘图标</translation>
+        <translation>系统启动时自动启动</translation>
     </message>
     <message>
         <location filename="../settings/autostartoptionpage.ui" line="75"/>
         <source>Delete existing entry</source>
-        <translation type="unfinished"></translation>
+        <translation>删除现有条目</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="856"/>
@@ -449,7 +449,7 @@
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1115"/>
         <source>There is already an autostart entry for &quot;%1&quot;. It will not be overridden when applying changes unless you delete it first.</source>
-        <translation type="unfinished"></translation>
+        <translation>已经有 &quot;%1 &quot;的自动启动条目。除非您先删除它，否则在应用更改时它不会被覆盖。</translation>
     </message>
 </context>
 <context>
@@ -457,53 +457,54 @@
     <message>
         <location filename="../settings/autostartwizardpage.ui" line="6"/>
         <source>General</source>
-        <translation type="unfinished">一般</translation>
+        <translation>常规</translation>
     </message>
     <message>
         <location filename="../settings/autostartwizardpage.ui" line="19"/>
         <source>Start Syncthing Tray on login (only affects sessions of the current user)</source>
-        <translation type="unfinished"></translation>
+        <translation>登录时启动 Syncthing Tray（仅影响当前用户的会话）</translation>
     </message>
     <message>
         <location filename="../settings/autostartwizardpage.ui" line="46"/>
         <source>You previously selected to start Syncthing via the built-in launcher so Syncthing itself will be started automatically on login as well.</source>
-        <translation type="unfinished"></translation>
+        <translation>您之前选择通过内置启动器启动 Syncthing，因此 Syncthing 本身也会在登录时自动启动。</translation>
     </message>
     <message>
         <location filename="../settings/autostartwizardpage.ui" line="56"/>
         <source>You previously selected to start Syncthing via systemd so its systemd-unit will be enabled. This means Syncthing itself will start automatically independently of this setting which only affects the tray icon.</source>
-        <translation type="unfinished"></translation>
+        <translation>您之前选择通过 systemd 启动 Syncthing，因此将启用其 systemd-unit。这意味着 Syncthing 本身将自动启动，此设置仅影响托盘图标。</translation>
     </message>
     <message>
         <location filename="../settings/autostartwizardpage.ui" line="66"/>
         <source>Since Syncthing is running independently of Syncthing Tray on your system, this does not affect when Syncthing itself is launched.</source>
-        <translation type="unfinished"></translation>
+        <translation>由于 Syncthing 独立于系统上的 Syncthing Tray 运行，因此这不会影响 Syncthing 本身的启动时间。</translation>
     </message>
     <message>
         <location filename="../settings/autostartwizardpage.ui" line="76"/>
         <source>The currently running Syncthing instance is started via Syncthing Tray so Syncthing itself will be started automatically on login as well.</source>
-        <translation type="unfinished"></translation>
+        <translation>当前正在运行的 Syncthing 实例是通过 Syncthing Tray 启动的，因此 Syncthing 本身也会在登录时自动启动。</translation>
     </message>
     <message>
         <location filename="../settings/autostartwizardpage.ui" line="86"/>
         <source>This setting is about Syncthing Tray itself. If Syncthing is started via Syncthing Tray&apos;s launcher it will indirectly affect Syncthing as well, though.</source>
-        <translation type="unfinished"></translation>
+        <translation>此设置与 Syncthing Tray 本身有关。但是，如果 Syncthing 是通过 Syncthing Tray 的启动器启动的，它也会间接影响 Syncthing。</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="847"/>
         <source>Configure autostart</source>
-        <translation type="unfinished"></translation>
+        <translation>配置自动启动</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="848"/>
         <source>Select whether to start Syncthing Tray automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>选择是否自动启动 Syncthing Tray</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="902"/>
         <source>Do not modify the existing autostart entry for
 &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>不要修改现有的自动启动条目
+&quot;%1&quot;</translation>
     </message>
 </context>
 <context>
@@ -522,27 +523,27 @@ The Web UI will be opened in the default web browser instead.</source>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="12"/>
         <location filename="../settings/settingsdialog.cpp" line="1730"/>
         <source>Built-in web view</source>
-        <translation type="unfinished"></translation>
+        <translation>内置 Web 视图</translation>
     </message>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="22"/>
         <source>Zoom factor</source>
-        <translation type="unfinished">缩放系数</translation>
+        <translation>缩放系数</translation>
     </message>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="45"/>
         <source>Hiding</source>
-        <translation type="unfinished">隐藏</translation>
+        <translation>隐藏</translation>
     </message>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="52"/>
         <source>Keep web view running when currently not shown</source>
-        <translation type="unfinished">当前未显示时保持网页视图运行</translation>
+        <translation>当前未显示时保持网页视图运行</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1732"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing Tray 尚未使用 Qt WebKit 或 Qt WebEngine 构建以支持 Web 视图。</translation>
     </message>
 </context>
 <context>
@@ -570,7 +571,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="114"/>
         <source>Add secondary instance</source>
-        <translation>添加辅助实例</translation>
+        <translation>添加次要配置</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="131"/>
@@ -580,22 +581,22 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="161"/>
         <source>It is possible to save multiple configurations. This allows switching quickly between multiple Syncthing instances using the connection button in the right corner of the tray menu. The config label is an arbitrary name to identify a configuration and does not have to match the name of the corresponding Syncthing device. The first configuration is the primary/default configuration.</source>
-        <translation>可以保存多个配置。 这允许使用托盘菜单右上角的连接按钮在多个 Syncthing 实例之间快速切换。 配置标签是用于标识配置的任意名称，不必与相应 Syncthing 设备的名称匹配。 第一个配置是主要/默认配置。</translation>
+        <translation>可以保存多个配置，允许在托盘右上角的连接按钮菜单之间快速切换多个 Syncthing 实例配置。配置标签是用于标识配置的任意名称，不必与相应的 Syncthing 设备名称匹配。第一个配置是主要/默认配置。</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="171"/>
         <source>Syncthing URL</source>
-        <translation>Syncthing URL</translation>
+        <translation>Syncthing 网址</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="185"/>
         <source>Authentication</source>
-        <translation>验证</translation>
+        <translation>身份验证</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="202"/>
         <source>User</source>
-        <translation>用户</translation>
+        <translation>用户名</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="219"/>
@@ -615,17 +616,17 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="178"/>
         <source>&quot;http://host:port/…&quot; or &quot;https://host:port/…&quot;, e.g. &quot;http://127.0.0.1:8384&quot; for local instance with default settings</source>
-        <translation type="unfinished"></translation>
+        <translation>“http：//host：port/...”或 “https：//host：port/...”，例如“http://127.0.0.1:8384”表示使用默认设置的本地实例</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="192"/>
         <source>Supply credentials for HTTP authentication (normally the API key is sufficient)</source>
-        <translation type="unfinished"></translation>
+        <translation>提供 HTTP 身份验证的凭据（通常 API 密钥就足够了）</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="267"/>
         <source>Insert values from local Syncthing configuration</source>
-        <translation>从本地 Syncthing 配置插入值</translation>
+        <translation>从本地 Syncthing 配置导入</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="284"/>
@@ -635,7 +636,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="311"/>
         <source>Poll interval</source>
-        <translation>拉取间隔</translation>
+        <translation>轮询间隔</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="335"/>
@@ -660,7 +661,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="358"/>
         <source>Device statistics</source>
-        <translation>设备数据</translation>
+        <translation>设备统计信息</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="378"/>
@@ -680,7 +681,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="423"/>
         <source>Reconnect</source>
-        <translation>重连</translation>
+        <translation>重新连接</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="436"/>
@@ -710,37 +711,37 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="611"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>选项</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="623"/>
         <source>Select what information should be considered to compute the overall status:</source>
-        <translation>选择应考虑哪些信息来计算总体状态：</translation>
+        <translation>选择将哪些信息用来计算总体状态：</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="663"/>
         <source>The limit for querying change events.</source>
-        <translation type="unfinished"></translation>
+        <translation>查询更改事件的限制。</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="666"/>
         <source>Recent changes</source>
-        <translation type="unfinished"></translation>
+        <translation>最近的更改</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="673"/>
         <source>limit to </source>
-        <translation type="unfinished"></translation>
+        <translation>限制为 </translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="686"/>
         <source>Local path</source>
-        <translation type="unfinished"></translation>
+        <translation>本地路径</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="693"/>
         <source>Path to Unix domain socket when setting Syncthing URL to &quot;unix+http://…&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>将 Syncthing 网址设置为 “unix+http：//...” 时 Unix 域套接字的路径</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="481"/>
@@ -760,47 +761,47 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="519"/>
         <source>The API key displayed in Syncthing&apos;s settings dialog</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing 的设置对话框中显示的 API 密钥</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="526"/>
         <source>The timeout for normal requests to Syncthing&apos;s API. Set to zero to enforce no timeout.</source>
-        <translation type="unfinished"></translation>
+        <translation>对 Syncthing API 正常请求的超时。设置为 0 则不执行超时。</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="529"/>
         <source>Transfer timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>传输超时</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="536"/>
         <source>no timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>无超时</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="568"/>
         <source>Show advanced configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>显示高级配置</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="578"/>
         <source>The timeout for long-polling requests to Syncthing&apos;s event API. Set to zero to use Syncthing&apos;s default timeout and no timeout being enforced from Syncthing Tray&apos;s side.</source>
-        <translation type="unfinished"></translation>
+        <translation>对 Syncthing 事件 API 的长轮询请求的超时。设置为 0 以使用 Syncthing 的默认超时，并且 Syncthing Tray 端不会强制执行超时。</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="581"/>
         <source>Long polling int.</source>
-        <translation type="unfinished"></translation>
+        <translation>长轮询</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="588"/>
         <source>Syncthing&apos;s default with no timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing 的默认值，无超时</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="604"/>
         <source>Pause all devices while the local network connection is metered</source>
-        <translation type="unfinished"></translation>
+        <translation>在本地网络连接按流量计费时暂停所有设备</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="131"/>
@@ -884,7 +885,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../misc/dbusstatusnotifier.cpp" line="52"/>
         <source>Open web UI</source>
-        <translation>打开网页 UI</translation>
+        <translation>打开网页用户界面</translation>
     </message>
 </context>
 <context>
@@ -892,47 +893,47 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/wizard.cpp" line="539"/>
         <source>Checking current Syncthing setup</source>
-        <translation type="unfinished"></translation>
+        <translation>检查当前的 Syncthing 设置</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="540"/>
         <source>Checking Syncthing configuration and whether Syncthing is already running or can be started …</source>
-        <translation type="unfinished"></translation>
+        <translation>检查 Syncthing 配置以及 Syncthing 是否已经运行或可以启动...</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="546"/>
         <source>Check again</source>
-        <translation type="unfinished"></translation>
+        <translation>再次检查</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="598"/>
         <source>Re-visit setup detection</source>
-        <translation type="unfinished"></translation>
+        <translation>重新访问设置检测</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="599"/>
         <source>You might trigger checking the Syncthing setup again</source>
-        <translation type="unfinished"></translation>
+        <translation>您可能会再次触发检查 Syncthing 设置</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="625"/>
         <source>It looks like Syncthing has not been running on this system before as its configuration cannot be found. Is that correct?</source>
-        <translation type="unfinished"></translation>
+        <translation>看起来 Syncthing 之前没有在此系统上运行过，因为找不到其配置。正确吗？</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="621"/>
         <source>Yes, continue configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>是的，继续配置</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="622"/>
         <source>No, let me select Syncthing&apos;s configuration file manually</source>
-        <translation type="unfinished"></translation>
+        <translation>不，让我手动选择 Syncthing 的配置文件</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="631"/>
         <source>Select Syncthing&apos;s configuration file</source>
-        <translation type="unfinished"></translation>
+        <translation>选择 Syncthing 的配置文件</translation>
     </message>
     <message>
         <source>no</source>
@@ -955,7 +956,7 @@ The Web UI will be opened in the default web browser instead.</source>
         <location filename="../misc/direrrorsdialog.cpp" line="84"/>
         <source>%1 item(s) out-of-sync</source>
         <translation>
-            <numerusform>%1 项目未同步</numerusform>
+            <numerusform>%1 个项目未同步</numerusform>
         </translation>
     </message>
     <message>
@@ -979,42 +980,42 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/wizard.cpp" line="1082"/>
         <source>Waiting for configuration wizard completed</source>
-        <translation type="unfinished"></translation>
+        <translation>等待配置向导完成</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1083"/>
         <source>Changes are being applied</source>
-        <translation type="unfinished"></translation>
+        <translation>正在应用更改</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1089"/>
         <source>Configuration wizard completed</source>
-        <translation type="unfinished"></translation>
+        <translation>配置向导已完成</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1093"/>
         <source>All changes have been applied</source>
-        <translation type="unfinished"></translation>
+        <translation>所有更改均已应用</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1095"/>
         <source>&lt;p&gt;The configuration has been changed successfully. The way Syncthing Tray connects to and starts Syncthing has not changed, though. You may configure this manually in the settings.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;配置已成功更改。不过，Syncthing Tray 连接和启动 Syncthing 的方式没有改变。您可以在设置中手动配置。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1098"/>
         <source>&lt;p&gt;The configuration has been changed successfully. You can close the wizard and &lt;a href=&quot;openSyncthing&quot;&gt;open Syncthing&lt;/a&gt; to pair remote devices and add folders for sharing. If you need further help, read the &lt;a href=&quot;openDocs&quot;&gt;documentation to get started&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;To initiate the pairing from another device, the device ID of this Syncthing device is displayed below.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;配置已成功更改。您可以关闭向导并&lt;a href=“openSyncthing”&gt;打开 Syncthing&lt;/a&gt; 以配对远程设备并添加文件夹以进行共享。如果您需要进一步的帮助，请阅读 &lt;a href=“openDocs”&gt;文档以开始使用&lt;/a&gt;。&lt;/p&gt;&lt;p&gt;要从另一台设备启动配对，此 Syncthing 设备的设备 ID 如下所示。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1107"/>
         <source>Not all changes could be applied</source>
-        <translation type="unfinished"></translation>
+        <translation>并非所有更改都可以应用</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1110"/>
         <source>You may try to head back one or more steps and try again or finish the wizard and configure Syncthing Tray manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>您可以尝试返回一个或多个步骤，然后重试，或者完成向导并手动配置 Syncthing Tray。</translation>
     </message>
 </context>
 <context>
@@ -1022,42 +1023,42 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="12"/>
         <source>General</source>
-        <translation type="unfinished">一般</translation>
+        <translation>常规</translation>
     </message>
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="22"/>
         <source>Open Syncthing&apos;s UI via</source>
-        <translation type="unfinished"></translation>
+        <translation>通过以下方式打开 Syncthing 的用户界面</translation>
     </message>
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="28"/>
         <source>Syncthing Tray&apos;s built-in web view</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing Tray 的内置 Web 视图</translation>
     </message>
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="35"/>
         <source>Tab in the default web browser</source>
-        <translation type="unfinished"></translation>
+        <translation>默认网络浏览器中的选项卡</translation>
     </message>
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="50"/>
         <source>Chromium-based browser in &quot;app mode&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>基于 Chromium 浏览器的 &quot;应用程序模式&quot;</translation>
     </message>
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="57"/>
         <source>...</source>
-        <translation type="unfinished"></translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1706"/>
         <source>Custom command to launch Syncthing&apos;s UI - </source>
-        <translation type="unfinished"></translation>
+        <translation>启动 Syncthing 用户界面的自定义命令 - </translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1707"/>
         <source>&lt;p&gt;Enter a custom command to launch Syncthing&apos;s UI. The expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; will be replaced with the Syncthing-URL.&lt;/p&gt;&lt;p&gt;Leave the command empty to use the auto-detection.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;输入自定义命令以启动 Syncthing 的用户界面。表达式 &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; 将被替换为 Syncthing 网址.&lt;/p&gt;&lt;p&gt; 留空命令以使用自动检测。&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -1094,12 +1095,12 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/iconsoptionpage.ui" line="106"/>
         <source>Stroke width</source>
-        <translation type="unfinished"></translation>
+        <translation>描边宽度</translation>
     </message>
     <message>
         <location filename="../settings/iconsoptionpage.ui" line="113"/>
         <source>Thick</source>
-        <translation type="unfinished"></translation>
+        <translation>加粗</translation>
     </message>
     <message>
         <location filename="../settings/iconsoptionpage.ui" line="132"/>
@@ -1124,7 +1125,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/iconsoptionpage.ui" line="39"/>
         <source>Use Drag &amp; Drop to reuse a selected color at a different position.</source>
-        <translation type="unfinished"></translation>
+        <translation>使用拖放功能可以在不同的位置重复使用选定的颜色。</translation>
     </message>
     <message>
         <location filename="../settings/iconsoptionpage.ui" line="197"/>
@@ -1142,12 +1143,12 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="658"/>
         <source>UI icons</source>
-        <translation>UI 图标</translation>
+        <translation>用户界面图标</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="660"/>
         <source>These icon settings are used within Syncthing Tray&apos;s UI.</source>
-        <translation>这些图标设置在 Syncthing Tray 的 UI 中使用。</translation>
+        <translation>这些图标设置在 Syncthing Tray 的用户界面中使用。</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="664"/>
@@ -1162,7 +1163,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="667"/>
         <source>Use same settings as for UI icons</source>
-        <translation>使用与 UI 图标相同的设置</translation>
+        <translation>使用与用户界面图标相同的设置</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="728"/>
@@ -1182,12 +1183,12 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="803"/>
         <source>Select colors manually (no longer follow system palette)</source>
-        <translation type="unfinished"></translation>
+        <translation>手动选择颜色（不再遵循系统调色板）</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="804"/>
         <source>Transparent background and foreground depending on system palette</source>
-        <translation type="unfinished"></translation>
+        <translation>透明背景和前景，具体取决于系统调色板</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="761"/>
@@ -1221,7 +1222,7 @@ The Web UI will be opened in the default web browser instead.</source>
         <location filename="../misc/internalerrorsdialog.cpp" line="117"/>
         <source>%1 error(s) occurred</source>
         <translation>
-            <numerusform>发生 %1 个错误</numerusform>
+            <numerusform>%1 个错误发生</numerusform>
         </translation>
     </message>
 </context>
@@ -1235,7 +1236,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="21"/>
         <source>Launch Syncthing when starting the tray icon</source>
-        <translation>启动托盘图标时启动 Syncthing</translation>
+        <translation>启动 Syncthing Tray 时启动 Syncthing</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="43"/>
@@ -1255,7 +1256,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="70"/>
         <source>Set directory for configuration and keys</source>
-        <translation type="unfinished"></translation>
+        <translation>设置配置和密钥的目录</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="73"/>
@@ -1270,32 +1271,33 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="91"/>
         <source>Debug</source>
-        <translation>Debug</translation>
+        <translation>调试</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="96"/>
         <source>Verbose</source>
+        <translatorcomment>冗余</translatorcomment>
         <translation>Verbose</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="101"/>
         <source>Info</source>
-        <translation>Info</translation>
+        <translation>信息</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="106"/>
         <source>Warning</source>
-        <translation>Warning</translation>
+        <translation>警告</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="111"/>
         <source>Fatal</source>
-        <translation>Fatal</translation>
+        <translation>错误</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="119"/>
         <source>Set database directory (falls back to config directory if empty)</source>
-        <translation type="unfinished"></translation>
+        <translation>设置数据库目录（如果为空，则返回到配置目录）</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="122"/>
@@ -1305,12 +1307,12 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="132"/>
         <source>Options</source>
-        <translation type="unfinished"></translation>
+        <translation>选项</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="139"/>
         <source>Replace ${var} or $var in directories with values from environment</source>
-        <translation type="unfinished"></translation>
+        <translation>将目录中的 ${var} 或 $var 替换为环境变量中的值</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="149"/>
@@ -1323,12 +1325,15 @@ The Web UI will be opened in the default web browser instead.</source>
  • Don&apos;t reconnect when the process is not running
  • Try to reconnect when starting the process
  • Suppress notification about disconnect when Syncthing has been stopped manually</source>
-        <translation type="unfinished"></translation>
+        <translation>考虑有关本地实例的通知和重新连接尝试的进程状态
+ - 进程未运行时不要重新连接
+ - 启动进程时尝试重新连接
+ - 手动停止 Syncthing 时，阻止有关断开连接的通知</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="166"/>
         <source>Stop automatically when network connection is metered</source>
-        <translation type="unfinished"></translation>
+        <translation>对网络连接按流量计费时自动停止</translation>
     </message>
     <message>
         <source>Consider process status for reconnect attempts to local instance
@@ -1372,7 +1377,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1157"/>
         <source>Launch %1 when starting the tray icon</source>
-        <translation>启动托盘图标时启动 %1</translation>
+        <translation>启动 Syncthing Tray 图标时启动 %1</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1160"/>
@@ -1387,7 +1392,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1172"/>
         <source>Leave empty for default path</source>
-        <translation type="unfinished"></translation>
+        <translation>默认路径留空</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1184"/>
@@ -1455,82 +1460,82 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/wizard.cpp" line="652"/>
         <source>Select what configuration to apply</source>
-        <translation type="unfinished"></translation>
+        <translation>选择要应用的配置</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="653"/>
         <source>Something when wrong when checking the Syncthing setup.</source>
-        <translation type="unfinished"></translation>
+        <translation>检查 Syncthing 设置时出错。</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="654"/>
         <source>Show details from setup detection</source>
-        <translation type="unfinished"></translation>
+        <translation>显示设置检测的详细信息</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="730"/>
         <source>Systemd</source>
-        <translation type="unfinished">Systemd</translation>
+        <translation>Systemd</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="762"/>
         <source>&lt;b&gt;The Syncthing config could be located under &quot;%1&quot; but it seems invalid/incomplete.&lt;/b&gt; Hence Syncthing is assumed to be not running.</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;b&gt;Syncthing 配置可能位于“%1”下，但它似乎无效/不完整。&lt;/b&gt;因此，Syncthing 被认定为未运行。</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="754"/>
         <source>Looks like Syncthing is not running yet. You can launch it via %1.</source>
-        <translation type="unfinished"></translation>
+        <translation>看起来 Syncthing 尚未运行。您可以通过 %1 启动它。</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="754"/>
         <source> and </source>
-        <translation type="unfinished"></translation>
+        <translation> 和 </translation>
     </message>
     <message>
         <location filename="../settings/mainconfigwizardpage.ui" line="6"/>
         <source>General</source>
-        <translation type="unfinished">一般</translation>
+        <translation>常规</translation>
     </message>
     <message>
         <location filename="../settings/mainconfigwizardpage.ui" line="23"/>
         <source>Configure Syncthing Tray for currently running Syncthing instance</source>
-        <translation type="unfinished"></translation>
+        <translation>为当前正在运行的 Syncthing 实例配置 Syncthing Tray</translation>
     </message>
     <message>
         <location filename="../settings/mainconfigwizardpage.ui" line="30"/>
         <source>Start installed Syncthing application via Syncthing Tray</source>
-        <translation type="unfinished"></translation>
+        <translation>通过 Syncthing Tray 启动已安装的 Syncthing 应用程序</translation>
     </message>
     <message>
         <location filename="../settings/mainconfigwizardpage.ui" line="37"/>
         <source>Start Syncthing application that is built into Syncthing Tray</source>
-        <translation type="unfinished"></translation>
+        <translation>启动 Syncthing Tray 中内置的 Syncthing 应用程序</translation>
     </message>
     <message>
         <location filename="../settings/mainconfigwizardpage.ui" line="44"/>
         <source>Start Syncthing via systemd user-unit (enables and starts the unit %1)</source>
-        <translation type="unfinished"></translation>
+        <translation>通过 systemd 用户单元启动 Syncthing（启用并启动单元 %1）</translation>
     </message>
     <message>
         <location filename="../settings/mainconfigwizardpage.ui" line="51"/>
         <source>Start Syncthing via systemd system-unit (enables and starts the unit %1)</source>
-        <translation type="unfinished"></translation>
+        <translation>通过 systemd 系统单元启动 Syncthing（启用并启动单元 %1）</translation>
     </message>
     <message>
         <location filename="../settings/mainconfigwizardpage.ui" line="58"/>
         <source>Keep settings for how to connect to Syncthing and start Syncthing as they are</source>
-        <translation type="unfinished"></translation>
+        <translation>保持连接 Syncthing 和启动 Syncthing 的设置不变</translation>
     </message>
     <message>
         <location filename="../settings/mainconfigwizardpage.ui" line="65"/>
         <source>Enable systemd-integration</source>
-        <translation type="unfinished"></translation>
+        <translation>启用 systemd 集成</translation>
     </message>
     <message>
         <location filename="../settings/mainconfigwizardpage.ui" line="92"/>
         <source>Click next to configure Syncthing Tray according to the selected options. You can also reconduct the checks the available options are based on by heading back. If you cancel the wizard, no configuration changes will be made.</source>
-        <translation type="unfinished"></translation>
+        <translation>单击下一步，根据所选选项配置 Syncthing Tray。您还可以通过返回来重新执行可用选项所基于的检查。如果取消向导，则不会进行任何配置更改。</translation>
     </message>
     <message>
         <source>no</source>
@@ -1539,17 +1544,17 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/wizard.cpp" line="703"/>
         <source>Looks like Syncthing is already running and Syncthing Tray can be configured accordingly automatically.</source>
-        <translation type="unfinished"></translation>
+        <translation>看起来 Syncthing 已经在运行，并且可以相应地自动配置 Syncthing Tray。</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="737"/>
         <source>Syncthing Tray&apos;s launcher</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing Tray 的启动器</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="756"/>
         <source>Looks like Syncthing is not running yet and needs to be installed before Syncthing Tray can be configured.</source>
-        <translation type="unfinished"></translation>
+        <translation>看起来 Syncthing 尚未运行，需要在配置 Syncthing Tray 之前安装。</translation>
     </message>
 </context>
 <context>
@@ -1562,12 +1567,12 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="16"/>
         <source>Notify on</source>
-        <translation>通知于</translation>
+        <translation>通知</translation>
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="22"/>
         <source>disconnect</source>
-        <translation>断连</translation>
+        <translation>断开连接</translation>
     </message>
     <message>
         <source>internal errors</source>
@@ -1576,7 +1581,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="29"/>
         <source>internal errors (if disabled connection errors are only shown within &quot;Internal errors&quot; accessible from the menu!)</source>
-        <translation type="unfinished"></translation>
+        <translation>内部错误（如果已禁用，连接错误只显示在菜单 &quot;内部错误 &quot;中！）</translation>
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="36"/>
@@ -1596,12 +1601,12 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="57"/>
         <source>new/unknown device connects</source>
-        <translation>新/未知设备连接</translation>
+        <translation>新的/未知的设备连接</translation>
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="64"/>
         <source>remote device shares new/unknown folder</source>
-        <translation>远程设备共享新/未知目录</translation>
+        <translation>远程设备共享新的/未知的目录</translation>
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="71"/>
@@ -1616,7 +1621,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="87"/>
         <source>D-Bus &amp;notifications (org.freedesktop.Notifications)</source>
-        <translation>D-Bus &amp;通知 (org.freedesktop.Notifications)</translation>
+        <translation>D-Bus &amp;通知 (org.freedesktop.通知)</translation>
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="94"/>
@@ -1631,7 +1636,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="110"/>
         <source>Ignore inavailability of Syncthing the specified number of seconds after Syncthing has been started; has only effect if the Syncthing start can be determined which is currently only supported for the local instance started via Systemd or the internal launcher.</source>
-        <translation>在 Syncthing 启动后指定的秒数内忽略 Syncthing 的不可用情况； 仅当可以确定 Syncthing 启动时才有效，目前仅支持通过 Systemd 或内部启动器启动的本地实例。</translation>
+        <translation>在 Syncthing 启动后指定的秒数内忽略 Syncthing 的不可用性； 仅在可以确定 Syncthing 启动时才有效，目前仅支持通过 Systemd 或内部启动器启动的本地实例。</translation>
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="120"/>
@@ -1644,7 +1649,7 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation> 秒</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="501"/>
+        <location filename="../settings/settingsdialog.cpp" line="496"/>
         <source>Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.</source>
         <translation>配置为使用 DBus 通知，但 D-Bus 通知守护程序似乎不可用。</translation>
     </message>
@@ -1654,7 +1659,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="49"/>
         <source>Own device ID</source>
-        <translation>本设备 ID</translation>
+        <translation>当前设备 ID</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="59"/>
@@ -1669,97 +1674,97 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="122"/>
         <source>Remote/global tree of folder &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>远程/全局目录树 “%1”</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="160"/>
         <source>Ignore</source>
-        <translation type="unfinished"></translation>
+        <translation>忽略</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="166"/>
         <source>Include</source>
-        <translation type="unfinished"></translation>
+        <translation>包括</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="172"/>
         <source>Other</source>
-        <translation type="unfinished"></translation>
+        <translation>其它</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="220"/>
         <source>Manage ignore patterns (experimental)</source>
-        <translation type="unfinished"></translation>
+        <translation>管理忽略模式（实验性）</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="247"/>
         <source>Deletion of the following local files (will affect other devices unless ignored below!):</source>
-        <translation type="unfinished"></translation>
+        <translation>删除以下本地文件（除非下面忽略，否则会影响其他设备！）：</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="301"/>
         <source>Deletion of the following local files:</source>
-        <translation type="unfinished"></translation>
+        <translation>删除以下本地文件：</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="263"/>
         <source>Edit patterns manually</source>
-        <translation type="unfinished"></translation>
+        <translation>手动编辑模式</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="304"/>
         <source>Changes to ignore patterns:</source>
-        <translation type="unfinished"></translation>
+        <translation>更改以忽略模式：</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="352"/>
         <source>Ignore patterns of folder &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;%1&quot; 文件夹的忽略模式</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="405"/>
         <source>Do you want to save the changes?</source>
-        <translation type="unfinished"></translation>
+        <translation>是否要保存更改？</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="417"/>
         <source>Notifications/errors</source>
-        <translation type="unfinished"></translation>
+        <translation>通知/错误</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="445"/>
         <source>Copy</source>
-        <translation type="unfinished"></translation>
+        <translation>复制</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="457"/>
         <source>Selected notification:</source>
-        <translation type="unfinished"></translation>
+        <translation>选定的通知：</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="481"/>
         <source>Clear all notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>清除所有通知</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="382"/>
         <source>Ignore patterns have been changed.</source>
-        <translation type="unfinished"></translation>
+        <translation>忽略模式已更改。</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="265"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>应用</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="267"/>
         <source>No</source>
-        <translation type="unfinished"></translation>
+        <translation>否</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="389"/>
         <source>Unable to save ignore patterns: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>无法保存忽略模式： %1</translation>
     </message>
 </context>
 <context>
@@ -1797,7 +1802,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1827"/>
         <source>Start wizard</source>
-        <translation type="unfinished"></translation>
+        <translation>开始向导</translation>
     </message>
 </context>
 <context>
@@ -1823,17 +1828,17 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../misc/statusinfo.cpp" line="18"/>
         <source>Initializing …</source>
-        <translation type="unfinished"></translation>
+        <translation>初始化…</translation>
     </message>
     <message>
         <location filename="../misc/statusinfo.cpp" line="45"/>
         <source>Connecting to Syncthing …</source>
-        <translation type="unfinished"></translation>
+        <translation>正在连接到 Syncthing ...</translation>
     </message>
     <message>
         <location filename="../misc/statusinfo.cpp" line="56"/>
         <source>Reconnecting …</source>
-        <translation type="unfinished"></translation>
+        <translation>正在重新连接...</translation>
     </message>
     <message>
         <location filename="../misc/statusinfo.cpp" line="63"/>
@@ -1875,7 +1880,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../misc/statusinfo.cpp" line="97"/>
         <source>No remote device connected</source>
-        <translation type="unfinished"></translation>
+        <translation>未连接远程设备</translation>
     </message>
     <message>
         <location filename="../misc/statusinfo.cpp" line="101"/>
@@ -1963,12 +1968,15 @@ This dialog closes automatically when the process finally terminates.</source>
  • Don&apos;t reconnect when unit not active/running
  • Try to reconnect when unit becomes active/running
  • Suppress notification about disconnect when Syncthing has been stopped manually</source>
-        <translation type="unfinished"></translation>
+        <translation>考虑 systemd 设备状态，以获取有关本地实例的通知和重新连接尝试
+ - 当单元未激活/运行时不要重新连接
+ - 当单元激活/运行时尝试重新连接
+ - 当 Syncthing 被手动停止时，阻止有关断开连接的通知</translation>
     </message>
     <message>
         <location filename="../settings/systemdoptionpage.ui" line="38"/>
         <source>Stop automatically when network connection is metered</source>
-        <translation type="unfinished"></translation>
+        <translation>对网络连接按流量计费时自动停止</translation>
     </message>
     <message>
         <location filename="../settings/systemdoptionpage.ui" line="79"/>
@@ -1997,7 +2005,7 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../settings/systemdoptionpage.ui" line="132"/>
         <source>Current status</source>
-        <translation>目前状态</translation>
+        <translation>当前状态</translation>
     </message>
     <message>
         <location filename="../settings/systemdoptionpage.ui" line="185"/>
@@ -2027,7 +2035,7 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1481"/>
         <source>Reload all unit files</source>
-        <translation type="unfinished"></translation>
+        <translation>重新加载所有单元文件</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1540"/>
@@ -2061,12 +2069,12 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../misc/textviewdialog.cpp" line="67"/>
         <source>Press F5 to reload.</source>
-        <translation type="unfinished"></translation>
+        <translation>按 F5 重新加载。</translation>
     </message>
     <message>
         <location filename="../misc/textviewdialog.cpp" line="69"/>
         <source> Checkout &lt;a href=&quot;openLauncherSettings&quot;&gt;launcher settings&lt;/a&gt; for continuous log of local Syncthing instance.</source>
-        <translation type="unfinished"></translation>
+        <translation>查看&lt;a href=&quot;openLauncherSettings&quot;&gt;启动器设置&lt;/a&gt;，获取本地同步连续不断的日志</translation>
     </message>
 </context>
 <context>
@@ -2078,7 +2086,7 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../webview/webpage.cpp" line="493"/>
         <source>Select path for Syncthing directory …</source>
-        <translation type="unfinished"></translation>
+        <translation>选择 Syncthing 目录路径 ...</translation>
     </message>
 </context>
 <context>
@@ -2127,77 +2135,77 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/wizard.cpp" line="461"/>
         <source>Welcome to Syncthing Tray</source>
-        <translation type="unfinished"></translation>
+        <translation>欢迎使用 Syncthing Tray</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="462"/>
         <source>It looks like you&apos;re launching Syncthing Tray for the first time.</source>
-        <translation type="unfinished"></translation>
+        <translation>看起来您是第一次启动 Syncthing Tray。</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="452"/>
         <source>&lt;p&gt;&lt;strong&gt;You have started the standalone version of Syncthing Tray. It looks like you are on KDE Plasma, though. On KDE the preferred version of Syncthing Tray is the Plasmoid which is supposed to be used &lt;em&gt;instead&lt;/em&gt; of the standalone version.&lt;/strong&gt; Checkout the documentation about &lt;a href=&quot;%1&quot;&gt;configuring the Plasmoid&lt;/a&gt; for the best way to use Syncthing Tray on KDE. After adding Syncthing Tray as Plasmoid, you can reopen this wizard from the Plasmoid via its settings dialog.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;&lt;strong&gt;您已启动 Syncthing Tray 的独立版本。不过，看起来您使用的是 KDE Plasma。在 KDE 上，Syncthing Tray 的首选版本是 Plasmoid，它应该被&lt;em&gt;用来代替&lt;/em&gt;独立版本。&lt;/strong&gt;查看有关 &lt;a href=“%1”&gt;配置 Plasmoid 的文档&lt;/a&gt;，了解在 KDE 上使用 Syncthing Tray 的最佳方式。将 Syncthing Tray 添加为 Plasmoid 后，您可以通过 Plasmoid 的设置对话框从 Plasmoid 重新打开此向导。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="463"/>
         <source>&lt;p&gt;You must configure how to connect to Syncthing and how to launch Syncthing (if that&apos;s wanted) when using Syncthing Tray the first time.&lt;/p&gt;&lt;p&gt;You can always reopen this wizard from the settings dialog.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;首次使用 Syncthing Tray 时，您必须配置如何连接到 Syncthing 以及如何启动 Syncthing（如果需要）。&lt;/p&gt;&lt;p&gt;您始终可以从设置对话框中重新打开此向导。&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="467"/>
         <source>Wizard&apos;s start page</source>
-        <translation type="unfinished"></translation>
+        <translation>向导的开始页面</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="468"/>
         <source>This wizard will help you configuring Syncthing Tray.</source>
-        <translation type="unfinished"></translation>
+        <translation>此向导将帮助您配置 Syncthing Tray。</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="477"/>
         <source>Start guided setup</source>
-        <translation type="unfinished"></translation>
+        <translation>启动引导设置</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="479"/>
         <source>Allows to configure Syncthing Tray automatically for the local Syncthing instance and helps you starting Syncthing if wanted.</source>
-        <translation type="unfinished"></translation>
+        <translation>允许为本地 Syncthing 实例自动配置 Syncthing Tray，并在需要时帮助您启动 Syncthing。</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="487"/>
         <source>Configure connection and launcher settings manually</source>
-        <translation type="unfinished"></translation>
+        <translation>手动配置连接和启动器设置</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="489"/>
         <source>Head back to settings to configure connection and launcher manually</source>
-        <translation type="unfinished"></translation>
+        <translation>返回设置以手动配置连接和启动器</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="492"/>
         <source>Note that the connection settings allow importing URL, credentials and API-key from the local Syncthing configuration.</source>
-        <translation type="unfinished"></translation>
+        <translation>请注意，连接设置允许从本地 Syncthing 配置导入 URL、凭据和 API 密钥。</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="508"/>
         <source>Show Syncthing&apos;s documentation</source>
-        <translation type="unfinished"></translation>
+        <translation>显示 Syncthing 文档</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="509"/>
         <source>It contains general information about configuring Syncthing.</source>
-        <translation type="unfinished"></translation>
+        <translation>它包含有关配置 Syncthing 的一般信息。</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="515"/>
         <source>Show Syncthing Tray&apos;s README</source>
-        <translation type="unfinished"></translation>
+        <translation>显示 Syncthing Tray 的 README</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="516"/>
         <source>It contains documentation about this GUI integration specifically.</source>
-        <translation type="unfinished"></translation>
+        <translation>它包含有关图形用户界面集成的文档。</translation>
     </message>
 </context>
 <context>
@@ -2205,205 +2213,205 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/wizard.cpp" line="74"/>
         <source>Setup wizard - </source>
-        <translation type="unfinished"></translation>
+        <translation>设置向导 - </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="219"/>
         <source>The internal launcher has not been initialized.</source>
-        <translation type="unfinished"></translation>
+        <translation>内部启动器尚未初始化。</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="231"/>
         <source>The service handler has not been initialized.</source>
-        <translation type="unfinished"></translation>
+        <translation>服务处理程序尚未初始化。</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="264"/>
         <source>Unable to locate Syncthing config file.</source>
-        <translation type="unfinished"></translation>
+        <translation>找不到 Syncthing 配置文件。</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="266"/>
         <source>Located Syncthing config file: </source>
-        <translation type="unfinished"></translation>
+        <translation>找到 Syncthing 配置文件： </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="268"/>
         <source>Syncthing config file looks ok.</source>
-        <translation type="unfinished"></translation>
+        <translation>syncthing 配置文件看起来没问题。</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="270"/>
         <source>Syncthing config file looks invalid/incomplete.</source>
-        <translation type="unfinished"></translation>
+        <translation>syncthing 配置文件看起来无效/不完整。</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="273"/>
         <source>Syncthing configuration:</source>
-        <translation type="unfinished"></translation>
+        <translation>syncthing 配置：</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="281"/>
         <source>Could connect to Syncthing under: </source>
-        <translation type="unfinished"></translation>
+        <translation>在以下位置连接到 Syncthing： </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="282"/>
         <source>Syncthing version: </source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing 版本： </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="283"/>
         <source>Syncthing device ID: </source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing 设备 ID： </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="284"/>
         <source>Syncthing status: </source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing 状态： </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="286"/>
         <source>Additional Syncthing status info: </source>
-        <translation type="unfinished"></translation>
+        <translation>其他 Syncthing 状态信息： </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="321"/>
         <source>Autostart:</source>
-        <translation type="unfinished"></translation>
+        <translation>自动启动：</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="322"/>
         <source>Currently %1</source>
-        <translation type="unfinished"></translation>
+        <translation>当前 %1</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="322"/>
         <source>enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>已启用</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="322"/>
         <source>disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>已禁用</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="324"/>
         <source>Points to &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>指向“%1”</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="366"/>
         <source>The Syncthing process exited prematurely. </source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing 进程提前退出。 </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="379"/>
         <source>The Syncthing service stopped prematurely. </source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing 服务提前停止。 </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="403"/>
         <source>Ran into timeout while waiting for Syncthing to create config file. Maybe Syncthing created its config file under an unexpected location. </source>
-        <translation type="unfinished"></translation>
+        <translation>在等待 Syncthing 创建配置文件时超时。也许 Syncthing 在其它位置创建了它的配置文件。 </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="414"/>
         <source>Checkout Syncthing&apos;s log for details.</source>
-        <translation type="unfinished"></translation>
+        <translation>查看 Syncthing 的日志了解详细信息。</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="418"/>
         <source> It can be accessed within the &lt;a href=&quot;openLauncherSettings&quot;&gt;launcher settings&lt;/a&gt;.</source>
-        <translation type="unfinished"></translation>
+        <translation> 可以在&lt;a href=&quot;openLauncherSettings&quot;&gt;启动器设置&lt;/a&gt;中访问它。</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="423"/>
         <source> It is normally written to the system journal (and can be accessed via e.g. journalctl).</source>
-        <translation type="unfinished"></translation>
+        <translation> 它通常写入系统日志（并且可以通过 journalctl 等方式访问）。</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="291"/>
         <source>API connection:</source>
-        <translation type="unfinished"></translation>
+        <translation>API 连接：</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="294"/>
         <source>API connection errors:</source>
-        <translation type="unfinished"></translation>
+        <translation>API 连接错误：</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="301"/>
         <source>State of user unit file &quot;%1&quot;: </source>
-        <translation type="unfinished"></translation>
+        <translation>用户单元文件 “%1” 的状态： </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="302"/>
         <source>State of system unit file &quot;%1&quot;: </source>
-        <translation type="unfinished"></translation>
+        <translation>系统单位文件 &quot;%1&quot; 的状态： </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="299"/>
         <source>Systemd:</source>
-        <translation type="unfinished"></translation>
+        <translation>Systemd:</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="289"/>
         <source>Could NOT connect to Syncthing under: </source>
-        <translation type="unfinished"></translation>
+        <translation>无法连接到以下 Syncthing： </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="305"/>
         <source>No available</source>
-        <translation type="unfinished"></translation>
+        <translation>无可用的</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="311"/>
         <source>Could test-launch Syncthing successfully, exit code: </source>
-        <translation type="unfinished"></translation>
+        <translation>可以成功测试启动 Syncthing，退出代码： </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="312"/>
         <source>Syncthing version returned from test-launch: </source>
-        <translation type="unfinished"></translation>
+        <translation>测试启动时返回的 Syncthing 版本： </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="314"/>
         <source>Unable to test-launch Syncthing: </source>
-        <translation type="unfinished"></translation>
+        <translation>无法测试启动 Syncthing： </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="316"/>
         <source>Built-in Syncthing available: </source>
-        <translation type="unfinished"></translation>
+        <translation>内置 Syncthing 可用： </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="316"/>
         <source>yes</source>
-        <translation type="unfinished"></translation>
+        <translation>是</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="316"/>
         <source>no</source>
-        <translation type="unfinished">否</translation>
+        <translation>否</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="317"/>
         <source>Launcher:</source>
-        <translation type="unfinished"></translation>
+        <translation>启动器：</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="332"/>
         <source>Details from setup detection - </source>
-        <translation type="unfinished"></translation>
+        <translation>设置检测的详细信息 - </translation>
     </message>
 </context>
 <context>
     <name>Settings::Connection</name>
     <message>
-        <location filename="../settings/settings.cpp" line="673"/>
+        <location filename="../settings/settings.cpp" line="671"/>
         <source>Backup of %1 (created by wizard)</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 的备份（通过向导创建）</translation>
     </message>
 </context>
 <context>
