@@ -1,5 +1,7 @@
 #include "./syncthingignorepattern.h"
 
+#include <algorithm>
+
 namespace Data {
 
 /// \cond
@@ -141,10 +143,6 @@ bool SyncthingIgnorePattern::matches(const QString &path, QChar pathSeparator) c
 
     // define behavior to handle the current character in the glob pattern not matching the current pattern in the path
     const auto handleMismatch = [&, this] {
-        // fail the match immediately if the glob pattern started with a "/" indicating it is supposed to match only from the root
-        if (matchFromRoot) {
-            return false;
-        }
         // deal with the mismatch by trying to match previous asterisks more greedily
         while (!asterisks.empty() && asterisks.back().visited) {
             // do not consider asterisks we have already visited, though (as it would lead to an endless loop)
@@ -157,6 +155,10 @@ bool SyncthingIgnorePattern::matches(const QString &path, QChar pathSeparator) c
             inAsterisk = asterisk.visited = true;
             state = asterisk.state;
             return true;
+        }
+        // fail the match immediately if the glob pattern started with a "/" indicating it is supposed to match only from the root
+        if (matchFromRoot) {
+            return false;
         }
         // deal with the mismatch by checking the path as of the next path element
         for (; pathIter != pathEnd; ++pathIter) {
@@ -193,6 +195,11 @@ bool SyncthingIgnorePattern::matches(const QString &path, QChar pathSeparator) c
             if (!asterisks.empty()) {
                 asterisks.back().visited = false;
             }
+        }
+        // forget single asterisks from previous path segments as they must not match across path separators
+        if (matchedChar == pathSeparator || matchedChar == genericPathSeparator) {
+            asterisks.erase(std::remove_if(asterisks.begin(), asterisks.end(),
+                [](const auto &a) { return a.state == MatchManyAny; }), asterisks.end());
         }
     };
 

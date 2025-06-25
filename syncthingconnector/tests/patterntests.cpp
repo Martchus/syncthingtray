@@ -180,6 +180,12 @@ void IgnorePatternTests::testWildcards()
     CPPUNIT_ASSERT(!p14.matches(QStringLiteral("c++/cmake/android/build.gradle")));
     CPPUNIT_ASSERT(p14.matches(QStringLiteral("c++/cmake//.gradle")));
     CPPUNIT_ASSERT(!p14.matches(QStringLiteral("c++/cmake/.gradle")));
+
+    auto p15 = SyncthingIgnorePattern(QStringLiteral("/foo/*/*.tar.*"));
+    CPPUNIT_ASSERT(!p15.matches(QStringLiteral("foo/bar/PKGBUILD")));
+    CPPUNIT_ASSERT(!p15.matches(QStringLiteral("foo/bar/test.pkgtar.zst")));
+    CPPUNIT_ASSERT(p15.matches(QStringLiteral("foo/bar/test.pkg.tar.")));
+    CPPUNIT_ASSERT(p15.matches(QStringLiteral("foo/bar/test.pkg.tar.zst")));
 }
 
 void IgnorePatternTests::testCharacterRange()
