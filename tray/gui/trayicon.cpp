@@ -121,23 +121,6 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     trayMenu().widget().applySettings(connectionConfig);
 }
 
-/*!
- * \brief Moves the specified \a point in the specified \a rect.
- */
-void moveInside(QPoint &point, const QRect &rect)
-{
-    if (point.y() < rect.top()) {
-        point.setY(rect.top());
-    } else if (point.y() > rect.bottom()) {
-        point.setY(rect.bottom());
-    }
-    if (point.x() < rect.left()) {
-        point.setX(rect.left());
-    } else if (point.x() > rect.right()) {
-        point.setX(rect.right());
-    }
-}
-
 void TrayIcon::handleActivated(QSystemTrayIcon::ActivationReason reason)
 {
     switch (reason) {
