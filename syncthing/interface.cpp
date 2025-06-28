@@ -53,6 +53,14 @@ inline _GoString_ gostr(const char *str)
 }
 
 /*!
+ * \brief Converts the specified std::string_view to a "GoSlice".
+ */
+inline GoSlice goslice(std::string_view str)
+{
+    return GoSlice{ const_cast<char *>(str.data()), static_cast<GoInt>(str.size()), static_cast<GoInt>(str.size()) };
+}
+
+/*!
  * \brief Converts the specified C-string to a std::string. Takes care of freeing \a str.
  */
 inline string stdstr(char *str)
@@ -268,6 +276,15 @@ long long runCommand(const std::vector<const char *> &arguments)
         setArguments(arguments.front(), ++arguments.begin(), arguments.end());
     }
     return ::libst_run_main();
+}
+
+/*!
+ * \brief Verifies \a data with the specified \a pubKeyPEM and \a signature.
+ * \returns Returns an empty string if \a data is valid and an error message otherwise.
+ */
+std::string verify(std::string_view pubKeyPEM, std::string_view signature, std::string_view data)
+{
+    return stdstr(::libst_verify(goslice(pubKeyPEM), goslice(signature), goslice(data)));
 }
 
 } // namespace LibSyncthing

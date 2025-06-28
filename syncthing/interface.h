@@ -63,6 +63,7 @@ LIB_SYNCTHING_EXPORT std::string syncthingVersion();
 LIB_SYNCTHING_EXPORT std::string longSyncthingVersion();
 LIB_SYNCTHING_EXPORT long long runCli(const std::vector<const char *> &arguments);
 LIB_SYNCTHING_EXPORT long long runCommand(const std::vector<const char *> &arguments);
+LIB_SYNCTHING_EXPORT std::string verify(std::string_view pubKeyPEM, std::string_view signature, std::string_view data);
 
 } // namespace LibSyncthing
 
