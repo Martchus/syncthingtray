@@ -932,6 +932,8 @@ On Windows, you'll have to use the `syncthingtray-cli` executable to see output 
 * `SYNCTHINGTRAY_FAKE_FIRST_LAUNCH`: assume Syncthing Tray (or the Plasmoid) has been launched for the
   first time
 * `SYNCTHINGTRAY_ENABLE_WIP_FEATURES`: enable work-in-progress/experimental features
+* `SYNCTHINGTRAY_SINGLE_INSTANCE_ID`: override the identifier used to determine whether another running
+  instance of Syncthing Tray is relevant in terms of the single-instance behavior
 * `SYNCTHINGTRAY_QML_ENTRY_POINT_PATH`: specifies the Qt Quick GUI entry point to use externally provided
   QML code, e.g. set to something like `G:\projects\main\syncthingtray\tray\gui\qml\AppWindow.qml`; useful
   to hot-reload the Qt Quick GUI with QML code changes with F5 without recompiling and relaunching the
