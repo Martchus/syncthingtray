@@ -41,6 +41,7 @@
 #include <qtutilities/settingsdialog/qtsettings.h>
 
 #ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
+#include <qtutilities/setup/signature.h>
 #include <qtutilities/setup/updater.h>
 #endif
 
@@ -101,19 +102,6 @@ static void handleSystemdServiceError(const QString &context, const QString &nam
     msgBox->setInformativeText(name % QStringLiteral(":\n") % message);
     msgBox->show();
 }
-#endif
-
-#ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
-// clang-format off
-constexpr auto signingKey = std::string_view(
-R"(-----BEGIN EC PUBLIC KEY-----
-MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQBzGxkQSS43eE4r+A7HjlcEch5apsn
-fKOgJWaRE2TOD9dNoBO2RSaJEAzzOXg2BPMsiPdr+Ty99FZtX8fmIcgJHGoB3sE1
-PmSOaw3YWAXrHUYslrVRJI4iYCLuT4qjFMHgmqvphEE/zGDZ5Tyu6FwVlSjCO4Yy
-FdsjpzKV6nrX6EsK++o=
------END EC PUBLIC KEY-----
-)");
-// clang-format on
 #endif
 
 QObject *parentObject = nullptr;
@@ -437,8 +425,21 @@ static int runApplication(int argc, const char *const *argv)
             if (update.signature.empty()) {
                 return QStringLiteral("empty/non-existent signature");
             }
-            return QString::fromUtf8(LibSyncthing::verify(signingKey, update.signature, update.data));
+            return QString::fromUtf8(LibSyncthing::verify(QtUtilities::publicSigningKey(), update.signature, update.data));
         });
+
+            const auto signature = std::string_view(
+        R"(-----BEGIN SIGNATURE-----
+MIGIAkIBzfowGVL4Ab6ZivoPF8w54QxZaninI5JNJyihqBGB0f0EY13/wjvTfpnf
+Mycxyz/Uhz1oBbE1FJIaDxHc5iKEOhMCQgDTgVywPbVOzz05IEHXwF/XxeNYrpgm
+7PHrhb8pfCLPyKEorUC/h8nQXmGVEoiiJTH1zxUwEerY91PM7omOvJ/72w==
+-----END SIGNATURE-----)");
+
+        // test with valid message
+        auto message = std::string("test message");
+
+        std::cerr << "test verify: " << LibSyncthing::verify(QtUtilities::publicSigningKey(), signature, message) << std::endl;
+    
         updateHandler.applySettings();
         QtUtilities::UpdateHandler::setMainInstance(&updateHandler);
 #endif
