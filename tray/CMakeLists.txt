@@ -230,6 +230,7 @@ if (SETUP_TOOLS)
                 "When enabling SETUP_TOOLS you must also enable USE_LIBSYNCTHING as this feature uses the signature verification from Syncthing."
         )
     endif ()
+    set(REQUIRED_ICONS install)
     set_property(
         SOURCE application/main.cpp gui/traywidget.cpp
         APPEND
