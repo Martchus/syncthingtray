@@ -52,19 +52,24 @@
         <translation>Невозможно открыть пользовательский интерфейс Syncthing через «%1»: %2</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="91"/>
+        <location filename="../settings/settingsdialog.cpp" line="95"/>
         <source>The network connection is currently considered metered.</source>
         <translation>В настоящее время сетевое подключение считается лимитным.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="92"/>
+        <location filename="../settings/settingsdialog.cpp" line="96"/>
         <source>The network connection is currently not considered metered.</source>
         <translation>В настоящее время сетевое подключение не считается лимитным.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="93"/>
+        <location filename="../settings/settingsdialog.cpp" line="97"/>
         <source>Unable to determine whether the network connection is metered; assuming an unmetered connection.</source>
         <translation>Невозможно определить, является ли сетевое подключение тарифицируемым; предполагается, что подключение без тарифицируемого тарифа.</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1796"/>
+        <source>Unable to restart via &quot;%1&quot;: %2</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -414,32 +419,32 @@
         <translation>Запустить значок в трее при запуске среды рабочего стола</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="856"/>
+        <location filename="../settings/settingsdialog.cpp" line="860"/>
         <source>This is achieved by adding a *.desktop file under &lt;i&gt;~/.config/autostart&lt;/i&gt; so the setting only affects the current user.</source>
         <translation>Это достигается путем добавления файла *.desktop в &lt;i&gt;~/.config/autostart&lt;/i&gt;, чтобы настройка влияла только на текущего пользователя.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="859"/>
+        <location filename="../settings/settingsdialog.cpp" line="863"/>
         <source>This is achieved by adding a registry key under &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; so the setting only affects the current user. Note that the startup entry is invalidated when moving &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</source>
         <translation>Это достигается путем добавления ключа реестра в &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt;, чтобы настройка влияла только на текущего пользователя. Обратите внимание, что запись запуска становится недействительной при перемещении &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="863"/>
+        <location filename="../settings/settingsdialog.cpp" line="867"/>
         <source>This is achieved by adding a *.plist file under &lt;i&gt;~/Library/LaunchAgents&lt;/i&gt; so the setting only affects the current user.</source>
         <translation>Это достигается путем добавления файла *.plist в &lt;i&gt;~/Library/LaunchAgents&lt;/i&gt;, чтобы настройка влияла только на текущего пользователя.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="867"/>
+        <location filename="../settings/settingsdialog.cpp" line="871"/>
         <source>This feature has not been implemented for your platform (yet).</source>
         <translation>Эта функция пока не реализована на вашей платформе.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1085"/>
+        <location filename="../settings/settingsdialog.cpp" line="1089"/>
         <source>unable to modify startup entry</source>
         <translation>невозможно изменить запись запуска</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1115"/>
+        <location filename="../settings/settingsdialog.cpp" line="1119"/>
         <source>There is already an autostart entry for &quot;%1&quot;. It will not be overridden when applying changes unless you delete it first.</source>
         <translation>Запись автозапуска для &quot;%1&quot; уже есть. Она не будет переопределена при применении изменений, если вы ее сначала не удалите.</translation>
     </message>
@@ -502,7 +507,7 @@
     <name>QtGui::BuiltinWebViewOptionPage</name>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="1730"/>
+        <location filename="../settings/settingsdialog.cpp" line="1734"/>
         <source>Built-in web view</source>
         <translation>Встроенный веб-просмотр</translation>
     </message>
@@ -522,7 +527,7 @@
         <translation>Сохранять веб-представление активным, когда оно в данный момент не отображается</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1732"/>
+        <location filename="../settings/settingsdialog.cpp" line="1736"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
         <translation>Syncthing Tray не поддерживает vieb-представление с использованием Qt WebKit или Qt WebEngine.</translation>
     </message>
@@ -780,7 +785,7 @@
         <translation>Подключаться автоматически при запуске</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="131"/>
+        <location filename="../settings/settingsdialog.cpp" line="135"/>
         <source>Auto-detected for local instance</source>
         <translation>Автоматически определяется для локального экземпляра</translation>
     </message>
@@ -790,22 +795,22 @@
         <translation>Выберите файл конфигурации вручную</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="178"/>
+        <location filename="../settings/settingsdialog.cpp" line="182"/>
         <source>Select Syncthing config file</source>
         <translation>Выберите файл конфигурации Syncthing</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="186"/>
+        <location filename="../settings/settingsdialog.cpp" line="190"/>
         <source>Unable to parse the Syncthing config file.</source>
         <translation>Не удалось проанализировать файл конфигурации Syncthing.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="292"/>
+        <location filename="../settings/settingsdialog.cpp" line="296"/>
         <source>Unable to load specified certificate &quot;%1&quot;.</source>
         <translation>Невозможно загрузить указанный сертификат «%1».</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="318"/>
+        <location filename="../settings/settingsdialog.cpp" line="322"/>
         <source>Instance %1</source>
         <translation>Экземпляр %1</translation>
     </message>
@@ -838,35 +843,50 @@
         <translation> - новая папка</translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="33"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="31"/>
+        <source> - new version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="34"/>
         <source>Disconnected from Syncthing</source>
         <translation>Отключено от Syncthing</translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="34"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="35"/>
         <source>Try to reconnect</source>
         <translation>Попробуйте переподключиться</translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="38"/>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="42"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="39"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="43"/>
         <source>View details</source>
         <translation>Посмотреть подробности</translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="46"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="47"/>
         <source>Show</source>
         <translation>Показывать</translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="46"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="47"/>
         <source>Dismiss</source>
         <translation>Отклонить</translation>
     </message>
     <message>
-        <location filename="../misc/dbusstatusnotifier.cpp" line="52"/>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="53"/>
         <source>Open web UI</source>
         <translation>Открыть веб-интерфейс</translation>
+    </message>
+    <message>
+        <location filename="../misc/dbusstatusnotifier.cpp" line="61"/>
+        <source>Open updater</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/dbusstatusnotifier.h" line="108"/>
+        <source>Version %1 is available</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -1030,12 +1050,12 @@
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1706"/>
+        <location filename="../settings/settingsdialog.cpp" line="1710"/>
         <source>Custom command to launch Syncthing&apos;s UI - </source>
         <translation>Пользовательская команда для запуска пользовательского интерфейса Syncthing - </translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1707"/>
+        <location filename="../settings/settingsdialog.cpp" line="1711"/>
         <source>&lt;p&gt;Enter a custom command to launch Syncthing&apos;s UI. The expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; will be replaced with the Syncthing-URL.&lt;/p&gt;&lt;p&gt;Leave the command empty to use the auto-detection.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Введите пользовательскую команду для запуска пользовательского интерфейса Syncthing. Выражение &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; будет заменено на Syncthing-URL.&lt;/p&gt;&lt;p&gt;Оставьте команду пустой, чтобы использовать автоматическое определение.&lt;/p&gt;</translation>
     </message>
@@ -1116,57 +1136,57 @@
 <context>
     <name>QtGui::IconsOptionPageBase</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="658"/>
+        <location filename="../settings/settingsdialog.cpp" line="662"/>
         <source>UI icons</source>
         <translation>Значки пользовательского интерфейса</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="664"/>
+        <location filename="../settings/settingsdialog.cpp" line="668"/>
         <source>System icons</source>
         <translation>Системные значки</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="660"/>
+        <location filename="../settings/settingsdialog.cpp" line="664"/>
         <source>These icon settings are used within Syncthing Tray&apos;s UI.</source>
         <translation>Эти настройки значков используются в пользовательском интерфейсе Syncthing Tray.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="665"/>
+        <location filename="../settings/settingsdialog.cpp" line="669"/>
         <source>These icon settings are used for the system tray icon and the notifications.</source>
         <translation>Эти настройки значков используются для значка на панели задач и уведомлений.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="667"/>
+        <location filename="../settings/settingsdialog.cpp" line="671"/>
         <source>Use same settings as for UI icons</source>
         <translation>Используйте те же настройки, что и для иконок пользовательского интерфейса</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="728"/>
+        <location filename="../settings/settingsdialog.cpp" line="732"/>
         <source>Colorful background with gradient (default)</source>
         <translation>Цветной фон с градиентом (по умолчанию)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="734"/>
+        <location filename="../settings/settingsdialog.cpp" line="738"/>
         <source>Transparent background and dark foreground (for bright themes)</source>
         <translation>Прозрачный фон и темный передний план (для ярких тем)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="740"/>
+        <location filename="../settings/settingsdialog.cpp" line="744"/>
         <source>Transparent background and bright foreground (for dark themes)</source>
         <translation>Прозрачный фон и яркий передний план (для темных тем)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="803"/>
+        <location filename="../settings/settingsdialog.cpp" line="807"/>
         <source>Select colors manually (no longer follow system palette)</source>
         <translation>Выбирайте цвета вручную (больше не следуйте системной палитре)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="804"/>
+        <location filename="../settings/settingsdialog.cpp" line="808"/>
         <source>Transparent background and foreground depending on system palette</source>
         <translation>Прозрачный фон и передний план в зависимости от системной палитры</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="761"/>
+        <location filename="../settings/settingsdialog.cpp" line="765"/>
         <source>%1 px (scaled to %2 px)</source>
         <translation>%1 пиксель (масштабирован до %2 пикселей)</translation>
     </message>
@@ -1323,7 +1343,7 @@
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="223"/>
-        <location filename="../settings/settingsdialog.cpp" line="1303"/>
+        <location filename="../settings/settingsdialog.cpp" line="1307"/>
         <source>Stop launched instance</source>
         <translation>Остановить запущенный экземпляр</translation>
     </message>
@@ -1338,87 +1358,87 @@
         <translation>Убедитесь, что последний журнал виден</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1156"/>
+        <location filename="../settings/settingsdialog.cpp" line="1160"/>
         <source>%1-launcher</source>
         <translation>%1-пусковая установка</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1157"/>
+        <location filename="../settings/settingsdialog.cpp" line="1161"/>
         <source>Launch %1 when starting the tray icon</source>
         <translation>Запустить %1 при запуске значка в трее</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1160"/>
+        <location filename="../settings/settingsdialog.cpp" line="1164"/>
         <source>%1 executable</source>
         <translation>%1 исполняемый файл</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1161"/>
+        <location filename="../settings/settingsdialog.cpp" line="1165"/>
         <source>%1 log (interleaved stdout/stderr)</source>
         <translation>%1 журнал (чередующийся stdout/stderr)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1172"/>
+        <location filename="../settings/settingsdialog.cpp" line="1176"/>
         <source>Leave empty for default path</source>
         <translation>Оставьте пустым для пути по умолчанию</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1184"/>
+        <location filename="../settings/settingsdialog.cpp" line="1188"/>
         <source>Restore default</source>
         <translation>Восстановить настройки по умолчанию</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1190"/>
+        <location filename="../settings/settingsdialog.cpp" line="1194"/>
         <source>Show Syncthing releases/downloads</source>
         <translation>Показать релизы/загрузки Syncthing</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1338"/>
+        <location filename="../settings/settingsdialog.cpp" line="1342"/>
         <source>%1 exited with exit code %2</source>
         <translation>%1 завершен с кодом выхода %2</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1341"/>
+        <location filename="../settings/settingsdialog.cpp" line="1345"/>
         <source>%1 crashed with exit code %2</source>
         <translation>%1 вылетел с кодом выхода %2</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1374"/>
+        <location filename="../settings/settingsdialog.cpp" line="1378"/>
         <source>failed to start (e.g. executable does not exist or not permission error)</source>
         <translation>не удалось запустить (например, исполняемый файл не существует или нет разрешения)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1377"/>
+        <location filename="../settings/settingsdialog.cpp" line="1381"/>
         <source>process crashed</source>
         <translation>процесс завершился сбоем</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1380"/>
+        <location filename="../settings/settingsdialog.cpp" line="1384"/>
         <source>timeout error</source>
         <translation>ошибка тайм-аута</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1383"/>
+        <location filename="../settings/settingsdialog.cpp" line="1387"/>
         <source>read error</source>
         <translation>ошибка чтения</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1386"/>
+        <location filename="../settings/settingsdialog.cpp" line="1390"/>
         <source>write error</source>
         <translation>ошибка записи</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1389"/>
+        <location filename="../settings/settingsdialog.cpp" line="1393"/>
         <source>unknown process error</source>
         <translation>неизвестная ошибка процесса</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1392"/>
+        <location filename="../settings/settingsdialog.cpp" line="1396"/>
         <source>An error occurred when running %1: %2</source>
         <translation>Произошла ошибка при запуске %1: %2</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1445"/>
+        <location filename="../settings/settingsdialog.cpp" line="1449"/>
         <source>Kill launched instance</source>
         <translation>Убить запущенный экземпляр</translation>
     </message>
@@ -1609,7 +1629,7 @@
         <translation> с</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="501"/>
+        <location filename="../settings/settingsdialog.cpp" line="505"/>
         <source>Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.</source>
         <translation>Настроено использование уведомлений D-Bus, но демон уведомлений D-Bus, похоже, недоступен.</translation>
     </message>
@@ -1730,37 +1750,37 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1781"/>
+        <location filename="../settings/settingsdialog.cpp" line="1809"/>
         <source>Tray</source>
         <translation>Трей</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1789"/>
+        <location filename="../settings/settingsdialog.cpp" line="1817"/>
         <source>Web view</source>
         <translation>Веб-просмотр</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1796"/>
+        <location filename="../settings/settingsdialog.cpp" line="1824"/>
         <source>Startup</source>
         <translation>Запуск</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1798"/>
+        <location filename="../settings/settingsdialog.cpp" line="1826"/>
         <source>additional tool</source>
         <translation>дополнительный инструмент</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1798"/>
+        <location filename="../settings/settingsdialog.cpp" line="1826"/>
         <source>Extra launcher</source>
         <translation>Дополнительный пусковой механизм</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1821"/>
+        <location filename="../settings/settingsdialog.cpp" line="1855"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1827"/>
+        <location filename="../settings/settingsdialog.cpp" line="1861"/>
         <source>Start wizard</source>
         <translation>Запустить мастер</translation>
     </message>
@@ -1943,8 +1963,8 @@ This dialog closes automatically when the process finally terminates.</source>
         <location filename="../settings/systemdoptionpage.ui" line="117"/>
         <location filename="../settings/systemdoptionpage.ui" line="172"/>
         <location filename="../settings/systemdoptionpage.ui" line="261"/>
-        <location filename="../settings/settingsdialog.cpp" line="1605"/>
-        <location filename="../settings/settingsdialog.cpp" line="1614"/>
+        <location filename="../settings/settingsdialog.cpp" line="1609"/>
+        <location filename="../settings/settingsdialog.cpp" line="1618"/>
         <source>unknown</source>
         <translation>неизвестный</translation>
     </message>
@@ -1984,27 +2004,27 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation>Системный блок</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1481"/>
+        <location filename="../settings/settingsdialog.cpp" line="1485"/>
         <source>Reload all unit files</source>
         <translation>Перезагрузить все файлы модулей</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1540"/>
+        <location filename="../settings/settingsdialog.cpp" line="1544"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation>Невозможно одновременно отобразить кнопку запуска/остановки для службы systemd и внутреннего лаунчера. Служба systemd предшествует.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1546"/>
+        <location filename="../settings/settingsdialog.cpp" line="1550"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation>Невозможно одновременно учитывать службу systemd и внутренний лаунчер для повторных подключений. Служба systemd предшествует.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1578"/>
+        <location filename="../settings/settingsdialog.cpp" line="1582"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation>указанный блок либо неактивен, либо не существует</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1600"/>
+        <location filename="../settings/settingsdialog.cpp" line="1604"/>
         <source>since </source>
         <translation>с</translation>
     </message>
@@ -2323,7 +2343,7 @@ This dialog closes automatically when the process finally terminates.</source>
 <context>
     <name>Settings::Connection</name>
     <message>
-        <location filename="../settings/settings.cpp" line="673"/>
+        <location filename="../settings/settings.cpp" line="677"/>
         <source>Backup of %1 (created by wizard)</source>
         <translation>Резервная копия %1 (созданная мастером)</translation>
     </message>
@@ -2331,7 +2351,7 @@ This dialog closes automatically when the process finally terminates.</source>
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../settings/settings.cpp" line="320"/>
+        <location filename="../settings/settings.cpp" line="325"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation>Не удалось загрузить сертификат «%1» при восстановлении настроек.</translation>
     </message>
