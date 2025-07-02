@@ -37,6 +37,7 @@ class InterfaceTests : public TestFixture {
     CPPUNIT_TEST(testRunWithConfig);
     CPPUNIT_TEST(testRunCli);
     CPPUNIT_TEST(testRunCommand);
+    CPPUNIT_TEST(testVerify);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -48,6 +49,7 @@ public:
     void testRunWithConfig();
     void testRunCli();
     void testRunCommand();
+    void testVerify();
 
     void setUp() override;
     void tearDown() override;
@@ -282,4 +284,30 @@ void InterfaceTests::testRunCli()
 void InterfaceTests::testRunCommand()
 {
     CPPUNIT_ASSERT_EQUAL_MESSAGE("run arbitrary CLI command", 0ll, runCommand({ "--help" }));
+}
+
+/*!
+ * \brief Tests the signature verification.
+ */
+void InterfaceTests::testVerify()
+{
+    const auto key = std::string_view(
+        R"(-----BEGIN PUBLIC KEY-----
+MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQBzGxkQSS43eE4r+A7HjlcEch5apsn
+fKOgJWaRE2TOD9dNoBO2RSaJEAzzOXg2BPMsiPdr+Ty99FZtX8fmIcgJHGoB3sE1
+PmSOaw3YWAXrHUYslrVRJI4iYCLuT4qjFMHgmqvphEE/zGDZ5Tyu6FwVlSjCO4Yy
+FdsjpzKV6nrX6EsK++o=
+-----END PUBLIC KEY-----)");
+    const auto signature = std::string_view(
+        R"(-----BEGIN SIGNATURE-----
+MIGIAkIAzBD4hoa3O2V0PAwetDyU0/XyT3877ENN8VnOcpfIJDjNdHg5VErCZH1a
+o+TV7g5vQt1o6UYBlw4h/cV7DS3y4I0CQgG5B5EfO/8lAA5+0KspBpZEEHDg99Jk
+gACrHJpVPGnex+8fyo/y94wOi9y40tkItuNou136Z9DdfypZI4R/vNf0tA==
+-----END SIGNATURE-----)");
+
+    auto message = std::string("test message");
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("valid message", std::string(), LibSyncthing::verify(key, signature, message));
+
+    message[5] = '?';
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("manipulated message", "incorrect signature"s, LibSyncthing::verify(key, signature, message));
 }
