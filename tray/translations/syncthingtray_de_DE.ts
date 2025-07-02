@@ -856,14 +856,22 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     </message>
 </context>
 <context>
+    <name>QtGui::VerificationErrorMessageBox</name>
+    <message>
+        <location filename="../gui/helper.cpp" line="90"/>
+        <source>&lt;p&gt;The signature of the downloaded executable could not be verified: %1&lt;/p&gt;&lt;p&gt;This can have different causes:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Data corruption occurred during the download/extraction. In this case cancelling and retrying the update will help.&lt;/li&gt;&lt;li&gt;The signing key or updating mechanism in general has changed. In this case an according release note will be present on &lt;a href=&quot;https://martchus.github.io/syncthingtray/#downloads-section&quot;&gt;the website&lt;/a&gt; and &lt;a href=&quot;https://github.com/Martchus/syncthingtray/releases&quot;&gt;GitHub&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;A bug in the newly introduced updater, see &lt;a href=&quot;https://github.com/Martchus/syncthingtray/issues&quot;&gt;issues on GitHub&lt;/a&gt; for potential bug reports.&lt;/li&gt;&lt;li&gt;Someone tries to distribute manipulated executables of Syncthing Tray.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;It is recommend to cancel the update and retry or cross-check the cause if the issue persists. If you ignore this error you &lt;i&gt;may&lt;/i&gt; install a corrupted/manipulated executable.&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Die Signatur der heruntergelandenen Programmdatei konnte nicht verifiziert werden: %1&lt;/p&gt;&lt;p&gt;Das kann verschiedene Ursachen haben:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Die Datei wurde beim Herunterladen/Extrahieren beschädigt. In diesem Fall sollte es helfen das Update abzubrechen und neu zu versuchen.&lt;/li&gt;&lt;li&gt;Der Schlüssel mit dem die Datei signiert wird oder die Update-Mechanismus im Allgemeinen haben sich geändert. In diesem Fall sollte eine Anmerkung auf &lt;a href=&quot;https://martchus.github.io/syncthingtray/#downloads-section&quot;&gt;der Website&lt;/a&gt; oder &lt;a href=&quot;https://github.com/Martchus/syncthingtray/releases&quot;&gt;GitHub&lt;/a&gt; zu finden sein.&lt;/li&gt;&lt;li&gt;Der neue eingeführte Updater enthält noch Fehler, siehe &lt;a href=&quot;https://github.com/Martchus/syncthingtray/issues&quot;&gt;&quot;Issues&quot; auf GitHub&lt;/a&gt; für Fehlerberichte.&lt;/li&gt;&lt;li&gt;Jemand versucht manipulierte Versionen von Syncthing Tray zu verteilen.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Es ist am besten das Update abzubrechen und nochmals zu versuchen. Falls der Fehler weiterhin auftritt sollte die Ursache ermittelt werden. Wenn du diesen Fehler ignorierst, wird &lt;i&gt;vielleicht&lt;/i&gt; eine beschädigte/manipulierte Version der Anwendungsdatei installiert.&lt;/p&gt;</translation>
+    </message>
+</context>
+<context>
     <name>main</name>
     <message>
-        <location filename="../application/main.cpp" line="100"/>
+        <location filename="../application/main.cpp" line="106"/>
         <source>Unable to </source>
         <translation>Fehler beim </translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="148"/>
+        <location filename="../application/main.cpp" line="168"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the --windowed flag, though.It is also possible to start Syncthing Tray with --wait to wait until the system tray becomes available instead of showing this message.</source>
         <translation>Das System-Tray bzw. der Infobereich ist aktuell nicht verfügbar. Mit der Option &quot;--windowed&quot; ist es möglich, Syncthing Tray als normales Fenster zu starten. Außerdem ist es möglich mit der Option &quot;--wait&quot; zu warten bis das System-Tray verfügbar ist anstelle diesen Dialog zu zeigen.</translation>
     </message>
@@ -876,7 +884,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="vanished">Der Einstellungsdialog ermöglicht es die URL, Zugangsdaten und den API-Key automatisch aus der lokalen Syncthing-Konfiguration auszulesen.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="175"/>
+        <location filename="../application/main.cpp" line="195"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation>Die verwendete Qt-Bibliothek wurde nicht mit Unterstützung für System-Tray konfiguriert. Es wäre möglich, Syncthing Tray als normales Fenster zu starten (mit Option -w).</translation>
     </message>
