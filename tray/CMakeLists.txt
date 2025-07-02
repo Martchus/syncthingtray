@@ -224,11 +224,9 @@ option(
     "enables setup tools; needs qtutilities and syncthingwidgets built with this option as well; makes likely sense to disable when distributing via a package manager"
     OFF)
 if (SETUP_TOOLS)
+    # validate the signature using libsyncthing if enabled to avoid additional dependency on OpenSSL; otherwise use OpenSSL
     if (NOT USE_LIBSYNCTHING)
-        message(
-            FATAL_ERROR
-                "When enabling SETUP_TOOLS you must also enable USE_LIBSYNCTHING as this feature uses the signature verification from Syncthing."
-        )
+        use_crypto()
     endif ()
     set(REQUIRED_ICONS install)
     set_property(

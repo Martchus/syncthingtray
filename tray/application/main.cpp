@@ -42,6 +42,9 @@
 
 #ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
 #include <qtutilities/setup/updater.h>
+#ifndef SYNCTHINGTRAY_USE_LIBSYNCTHING
+#include <qtutilities/setup/verification.h>
+#endif
 #endif
 
 #include <QNetworkAccessManager>
@@ -103,9 +106,12 @@ static void handleSystemdServiceError(const QString &context, const QString &nam
 }
 #endif
 
+// define public key and signature extension depending on verification backend
 #ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
 // clang-format off
-constexpr auto signingKey = std::string_view(
+#ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
+#define SYNCTHINGTRAY_SIGNATURE_EXTENSION ".stsigtool-sig"
+constexpr auto signingKeyStsigtool = std::string_view(
 R"(-----BEGIN EC PUBLIC KEY-----
 MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQBzGxkQSS43eE4r+A7HjlcEch5apsn
 fKOgJWaRE2TOD9dNoBO2RSaJEAzzOXg2BPMsiPdr+Ty99FZtX8fmIcgJHGoB3sE1
@@ -113,6 +119,17 @@ PmSOaw3YWAXrHUYslrVRJI4iYCLuT4qjFMHgmqvphEE/zGDZ5Tyu6FwVlSjCO4Yy
 FdsjpzKV6nrX6EsK++o=
 -----END EC PUBLIC KEY-----
 )");
+#else
+#define SYNCTHINGTRAY_SIGNATURE_EXTENSION ".openssl-sig"
+constexpr auto signingKeyOpenSSL = std::string_view(
+R"(-----BEGIN EC PUBLIC KEY-----
+MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQAWJAn1E7ZE5Q6H69oaV5sqCIppJdg
+4bXDan9dJv6GOg70/t7q2CvwcwUXhV4FvCZxCHo25+rWYINfqKU2Utul8koAx8tK
+59ohfOzI63I+CC76GfX41uRGU0P5i6hS7o/hgBLiVXqT0FgS2BMfmnLMUvUjqnI2
+YQM7C55/5BM5Vrblkow=
+-----END EC PUBLIC KEY-----
+)");
+#endif
 // clang-format on
 #endif
 
@@ -432,12 +449,17 @@ static int runApplication(int argc, const char *const *argv)
             Data::setForkAwesomeThemeOverrides();
         }
 #ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
-        auto updateHandler = QtUtilities::UpdateHandler(&Settings::settings(), &networkAccessManager());
+        auto updateHandler = QtUtilities::UpdateHandler(
+            QString(), QStringLiteral(SYNCTHINGTRAY_SIGNATURE_EXTENSION), &Settings::settings(), &networkAccessManager());
         updateHandler.updater()->setVerifier([](const QtUtilities::Updater::Update &update) {
             if (update.signature.empty()) {
                 return QStringLiteral("empty/non-existent signature");
             }
-            return QString::fromUtf8(LibSyncthing::verify(signingKey, update.signature, update.data));
+#ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
+            return QString::fromUtf8(LibSyncthing::verify(signingKeyStsigtool, update.signature, update.data));
+#else
+            return QString::fromUtf8(QtUtilities::verifySignature(signingKeyOpenSSL, update.signature, update.data));
+#endif
         });
         updateHandler.applySettings();
         QtUtilities::UpdateHandler::setMainInstance(&updateHandler);
