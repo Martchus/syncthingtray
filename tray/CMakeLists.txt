@@ -125,8 +125,20 @@ if (ANDROID)
     set(META_CXX_STANDARD 20)
 endif ()
 
+# determine required version of c++utilities
+option(
+    SETUP_TOOLS
+    "enables setup tools; needs qtutilities and syncthingwidgets built with this option as well; makes likely sense to disable when distributing via a package manager"
+    OFF)
+option(USE_LIBSYNCTHING "whether libsyncthing should be included for syncthingtray's CLI" OFF)
+set(CPP_UTILITIES_REQUIRED_VERSION 5.28.0)
+if (SETUP_TOOLS AND NOT USE_LIBSYNCTHING)
+    set(CPP_UTILITIES_REQUIRED_VERSION 5.29.0)
+endif ()
+
 # find c++utilities
-find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.28.0 REQUIRED)
+find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} ${CPP_UTILITIES_REQUIRED_VERSION}
+             REQUIRED)
 use_cpp_utilities()
 
 # find qtutilities
@@ -162,7 +174,6 @@ if (ANDROID)
 endif ()
 
 # configure libsyncthing
-option(USE_LIBSYNCTHING "whether libsyncthing should be included for syncthingtray's CLI" OFF)
 if (USE_LIBSYNCTHING)
     find_package(syncthing ${META_APP_VERSION} REQUIRED)
     use_syncthing()
@@ -219,10 +230,6 @@ Exec=${SYNCTHINGCTL_TARGET_NAME} restart")
 set(DESKTOP_FILE_ADDITIONAL_ENTRIES "${DESKTOP_FILE_ADDITIONAL_ENTRIES}${ACTIONS}\n")
 
 # configure whether setup tools are enabled
-option(
-    SETUP_TOOLS
-    "enables setup tools; needs qtutilities and syncthingwidgets built with this option as well; makes likely sense to disable when distributing via a package manager"
-    OFF)
 if (SETUP_TOOLS)
     # validate the signature using libsyncthing if enabled to avoid additional dependency on OpenSSL; otherwise use OpenSSL
     if (NOT USE_LIBSYNCTHING)

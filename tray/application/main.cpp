@@ -46,7 +46,7 @@
 #ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
 #include <qtutilities/setup/updater.h>
 #ifndef SYNCTHINGTRAY_USE_LIBSYNCTHING
-#include <qtutilities/setup/verification.h>
+#include <c++utilities/misc/verification.h>
 #endif
 #endif
 
@@ -463,7 +463,7 @@ static int runApplication(int argc, const char *const *argv)
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
                 error = QString::fromUtf8(LibSyncthing::verify(signingKeyStsigtool, update.signature, update.data));
 #else
-                error = QString::fromUtf8(QtUtilities::verifySignature(signingKeyOpenSSL, update.signature, update.data));
+                error = QString::fromUtf8(CppUtilities::verifySignature(signingKeyOpenSSL, update.signature, update.data));
 #endif
             }
             if (!error.isEmpty()) {
