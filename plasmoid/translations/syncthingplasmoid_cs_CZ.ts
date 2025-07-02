@@ -4,7 +4,8 @@
 <context>
     <name>DetailView</name>
     <message>
-        <location filename="../package/contents/ui/DetailView.qml" line="14"/>
+        <location filename="../package6/contents/ui/DetailView.qml" line="19"/>
+        <location filename="../package5/contents/ui/DetailView.qml" line="14"/>
         <source>Copy value</source>
         <translation>Zkopírovat hodnotu</translation>
     </message>
@@ -12,144 +13,221 @@
 <context>
     <name>DevicesPage</name>
     <message>
-        <location filename="../package/contents/ui/DevicesPage.qml" line="60"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="65"/>
+        <location filename="../package5/contents/ui/DevicesPage.qml" line="64"/>
         <source>Resume</source>
         <translation>Pokračovat</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DevicesPage.qml" line="60"/>
-        <location filename="../package/contents/ui/DevicesPage.qml" line="98"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="65"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="117"/>
+        <location filename="../package5/contents/ui/DevicesPage.qml" line="64"/>
+        <location filename="../package5/contents/ui/DevicesPage.qml" line="116"/>
         <source>Pause</source>
         <translation>Pozastavit</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="103"/>
+        <location filename="../package5/contents/ui/DevicesPage.qml" line="102"/>
+        <source>Copy name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="108"/>
+        <location filename="../package5/contents/ui/DevicesPage.qml" line="107"/>
+        <source>Copy ID</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>DirectoriesPage</name>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="75"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="23"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="22"/>
+        <source>Filter folders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="85"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="83"/>
         <source>Show errors</source>
         <translation>Zobrazit chyby</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="86"/>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="142"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="96"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="165"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="94"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="163"/>
         <source>Rescan</source>
         <translation>Znovu proskenovat</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="94"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="104"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="102"/>
         <source>Resume</source>
         <translation>Pokračovat</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="94"/>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="149"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="104"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="172"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="102"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="170"/>
         <source>Pause</source>
         <translation>Pozastavit</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="104"/>
-        <location filename="../package/contents/ui/DirectoriesPage.qml" line="156"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="114"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="179"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="112"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="177"/>
         <source>Open in file browser</source>
         <translation>Otevřít ve správci souborů</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="151"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="149"/>
+        <source>Copy label/ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="156"/>
+        <location filename="../package5/contents/ui/DirectoriesPage.qml" line="154"/>
+        <source>Copy path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="186"/>
+        <source>Browse remote files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="193"/>
+        <source>Show/edit ignore patterns</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>DownloadsPage</name>
     <message>
-        <location filename="../package/contents/ui/DownloadsPage.qml" line="64"/>
-        <location filename="../package/contents/ui/DownloadsPage.qml" line="120"/>
-        <location filename="../package/contents/ui/DownloadsPage.qml" line="137"/>
+        <location filename="../package6/contents/ui/DownloadsPage.qml" line="67"/>
+        <location filename="../package6/contents/ui/DownloadsPage.qml" line="123"/>
+        <location filename="../package6/contents/ui/DownloadsPage.qml" line="148"/>
+        <location filename="../package5/contents/ui/DownloadsPage.qml" line="66"/>
+        <location filename="../package5/contents/ui/DownloadsPage.qml" line="122"/>
+        <location filename="../package5/contents/ui/DownloadsPage.qml" line="147"/>
         <source>Open in file browser</source>
         <translation>Otevřít ve správci souborů</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DownloadsPage.qml" line="139"/>
+        <location filename="../package5/contents/ui/DownloadsPage.qml" line="138"/>
+        <source>Copy label/ID</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>FullRepresentation</name>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="192"/>
         <source>Connect</source>
-        <translation>Pripojit</translation>
+        <translation type="vanished">Pripojit</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="200"/>
         <source>Resume</source>
-        <translation>Pokračovat</translation>
+        <translation type="vanished">Pokračovat</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="208"/>
         <source>Pause</source>
-        <translation>Pozastavit</translation>
+        <translation type="vanished">Pozastavit</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="253"/>
         <source>Stop</source>
-        <translation>Zastavit</translation>
+        <translation type="vanished">Zastavit</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="264"/>
         <source>Start</source>
-        <translation>Spustit</translation>
+        <translation type="vanished">Spustit</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="309"/>
         <source>Show new notifications</source>
-        <translation>Zobrazit nová oznámení</translation>
+        <translation type="vanished">Zobrazit nová oznámení</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="335"/>
         <source>Show own device ID</source>
-        <translation>Zobrazit identifiktátor místního zařízení</translation>
+        <translation type="vanished">Zobrazit identifiktátor místního zařízení</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="348"/>
         <source>Show Syncthing log</source>
-        <translation>Zobrazit záznam událostí v Syncthing</translation>
+        <translation type="vanished">Zobrazit záznam událostí v Syncthing</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="361"/>
         <source>Rescan all folders</source>
-        <translation>Znovu proskenovat všechny adresáře</translation>
+        <translation type="vanished">Znovu proskenovat všechny adresáře</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="371"/>
         <source>Settings</source>
-        <translation>Nastavení</translation>
+        <translation type="vanished">Nastavení</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="384"/>
         <source>Open Syncthing</source>
-        <translation>Otevřít Syncthing</translation>
+        <translation type="vanished">Otevřít Syncthing</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="454"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="40"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="34"/>
+        <source>Folders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="46"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="40"/>
+        <source>Devices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="52"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="46"/>
+        <source>History</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="58"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="52"/>
+        <source>Downloads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="253"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="247"/>
         <source>Global</source>
         <translation>Globální</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="463"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="260"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="254"/>
         <source>Global incoming traffic</source>
         <translation>Globální příchozí provoz</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="474"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="278"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="272"/>
         <source>Local</source>
         <translation>Lokální</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="483"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="285"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="279"/>
         <source>Global outgoing traffic</source>
         <translation>Globální odchozí provoz</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="535"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="111"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="105"/>
         <source>Toggle filter</source>
         <translation>Vyp/zap. filtr</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/FullRepresentation.qml" line="326"/>
         <source>About Syncthing Tray</source>
-        <translation>O Syncthing Tray</translation>
+        <translation type="vanished">O Syncthing Tray</translation>
     </message>
 </context>
 <context>
@@ -160,39 +238,70 @@
         <translation>Vzhled</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="18"/>
         <source>Size of full representation</source>
-        <translation>Velikost úplného zobrazení</translation>
+        <translation type="vanished">Velikost úplného zobrazení</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="68"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="25"/>
+        <source>Size of folder/device/download list</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="64"/>
         <source> x </source>
         <translation> x </translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="94"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="90"/>
         <source> grid units</source>
         <translation> jednotek mřížky</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="112"/>
-        <source>Note that the size is ignored when the Plasmoid is displayed on the desktop, in full screen mode or as entry of the system tray Plasmoid.</source>
-        <translation>Poznamenejme, že velikost je ignorována pokud je Plasmoid zobrazován na ploše, v režimu na celou obrazovku nebo jako položka plasmoidu v systémové oznamovací oblasti.</translation>
+        <location filename="../lib/appearanceoptionpage.ui" line="108"/>
+        <source>Note that the size is ignored when the Plasmoid is displayed on the desktop, in full screen mode or as entry of the system tray Plasmoid. Then the Plasmoid can be resized using Plasma&apos;s UI. On Plasma older than 5.26, when displayed as entry of the system tray Plasmoid the size can not be changed (setting a high value just leads to the contents being clipped).</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="124"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="120"/>
+        <source>Optional GUI elements</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="132"/>
+        <source>Downloads</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="139"/>
+        <source>Show tab texts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="148"/>
+        <source>Icons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="160"/>
+        <source>Prefer icons from theme over ForkAwesome icons (needs restart to apply)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Note that the size is ignored when the Plasmoid is displayed on the desktop, in full screen mode or as entry of the system tray Plasmoid.</source>
+        <translation type="vanished">Poznamenejme, že velikost je ignorována pokud je Plasmoid zobrazován na ploše, v režimu na celou obrazovku nebo jako položka plasmoidu v systémové oznamovací oblasti.</translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="169"/>
         <source>States to enable passive mode</source>
         <translation>Stavy pro zapnutí pasivního režimu</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="25"/>
         <source>Colors</source>
-        <translation>Barvy</translation>
+        <translation type="vanished">Barvy</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="32"/>
         <source>Bright custom text colors (use for dark color scheme)</source>
-        <translation>Světlé uživatelsky určené barvy textu (použijte pro tmavé schéma barev)</translation>
+        <translation type="vanished">Světlé uživatelsky určené barvy textu (použijte pro tmavé schéma barev)</translation>
     </message>
 </context>
 <context>
@@ -206,17 +315,26 @@
 <context>
     <name>Plasmoid::SettingsDialog</name>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="126"/>
+        <location filename="../lib/settingsdialog.cpp" line="130"/>
         <source>Plasmoid</source>
         <translation>Plasmoid</translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="134"/>
-        <source>Web view</source>
-        <translation>Webové zobrazení</translation>
+        <location filename="../lib/settingsdialog.cpp" line="140"/>
+        <source>General web view settings</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="144"/>
+        <location filename="../lib/settingsdialog.cpp" line="141"/>
+        <source>Built-in web view</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Web view</source>
+        <translation type="vanished">Webové zobrazení</translation>
+    </message>
+    <message>
+        <location filename="../lib/settingsdialog.cpp" line="150"/>
         <source>Extras</source>
         <translation>Další</translation>
     </message>
@@ -237,73 +355,209 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="324"/>
+        <location filename="../lib/syncthingapplet.cpp" line="515"/>
         <source>About</source>
         <translation>O Syncthing Plasmoid</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="336"/>
-        <source>New notifications</source>
-        <translation>Nová oznámení</translation>
+        <location filename="../lib/syncthingapplet.cpp" line="589"/>
+        <source>Associated directory does not exist.</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="491"/>
+        <location filename="../lib/syncthingapplet.cpp" line="615"/>
+        <source>Unable to establish connection to Syncthing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>New notifications</source>
+        <translation type="vanished">Nová oznámení</translation>
+    </message>
+    <message>
+        <location filename="../lib/syncthingapplet.cpp" line="682"/>
         <source>D-Bus error - unable to </source>
         <translation>chyba D-Bus – nedaří </translation>
     </message>
 </context>
 <context>
+    <name>RecentChangesPage</name>
+    <message>
+        <location filename="../package6/contents/ui/RecentChangesPage.qml" line="120"/>
+        <source>Open item</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/RecentChangesPage.qml" line="125"/>
+        <location filename="../package5/contents/ui/RecentChangesPage.qml" line="109"/>
+        <source>Copy path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/RecentChangesPage.qml" line="130"/>
+        <location filename="../package5/contents/ui/RecentChangesPage.qml" line="114"/>
+        <source>Copy device ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/RecentChangesPage.qml" line="135"/>
+        <location filename="../package5/contents/ui/RecentChangesPage.qml" line="119"/>
+        <source>Copy folder ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>StatisticsView</name>
     <message>
-        <location filename="../package/contents/ui/StatisticsView.qml" line="15"/>
+        <location filename="../package6/contents/ui/StatisticsView.qml" line="12"/>
+        <location filename="../package5/contents/ui/StatisticsView.qml" line="12"/>
         <source> files</source>
         <translation> soubory</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/StatisticsView.qml" line="20"/>
+        <location filename="../package6/contents/ui/StatisticsView.qml" line="17"/>
+        <location filename="../package5/contents/ui/StatisticsView.qml" line="17"/>
         <source> directories</source>
         <translation> adresáře</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/StatisticsView.qml" line="26"/>
+        <location filename="../package6/contents/ui/StatisticsView.qml" line="23"/>
+        <location filename="../package5/contents/ui/StatisticsView.qml" line="23"/>
         <source> size</source>
         <translation> velikost</translation>
     </message>
 </context>
 <context>
-    <name>main</name>
+    <name>ToolBar</name>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="58"/>
-        <source>Web UI</source>
-        <translation>Webové rozhraní</translation>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="25"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="24"/>
+        <source>Connect</source>
+        <translation type="unfinished">Pripojit</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="59"/>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="34"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="33"/>
+        <source>Connecting …</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="43"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="42"/>
+        <source>Resume</source>
+        <translation type="unfinished">Pokračovat</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="52"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="51"/>
+        <source>Pause</source>
+        <translation type="unfinished">Pozastavit</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="76"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="75"/>
+        <source>Stop</source>
+        <translation type="unfinished">Zastavit</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="90"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="89"/>
+        <source>Start</source>
+        <translation type="unfinished">Spustit</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="144"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="145"/>
+        <source>Show new notifications</source>
+        <translation type="unfinished">Zobrazit nová oznámení</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="163"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="164"/>
+        <source>About Syncthing Tray</source>
+        <translation type="unfinished">O Syncthing Tray</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="175"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="176"/>
+        <source>Show own device ID</source>
+        <translation type="unfinished">Zobrazit identifiktátor místního zařízení</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="191"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="192"/>
+        <source>Show Syncthing log</source>
+        <translation type="unfinished">Zobrazit záznam událostí v Syncthing</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="203"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="204"/>
+        <source>Rescan all folders</source>
+        <translation type="unfinished">Znovu proskenovat všechny adresáře</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="219"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="220"/>
+        <source>Settings</source>
+        <translation type="unfinished">Nastavení</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/ToolBar.qml" line="234"/>
+        <location filename="../package5/contents/ui/ToolBar.qml" line="235"/>
+        <source>Open Syncthing</source>
+        <translation type="unfinished">Otevřít Syncthing</translation>
+    </message>
+</context>
+<context>
+    <name>main</name>
+    <message>
+        <source>Web UI</source>
+        <translation type="vanished">Webové rozhraní</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/main.qml" line="78"/>
+        <location filename="../package5/contents/ui/main.qml" line="60"/>
         <source>Settings</source>
         <translation>Nastavení</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="60"/>
+        <location filename="../package6/contents/ui/main.qml" line="59"/>
+        <location filename="../package5/contents/ui/main.qml" line="67"/>
         <source>Log</source>
         <translation>Záznam událostí</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="62"/>
+        <location filename="../package6/contents/ui/main.qml" line="64"/>
+        <location filename="../package5/contents/ui/main.qml" line="68"/>
         <source>Internal errors</source>
         <translation>Vnitřní chyby</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="64"/>
+        <location filename="../package6/contents/ui/main.qml" line="44"/>
+        <location filename="../package5/contents/ui/main.qml" line="61"/>
         <source>Rescan all folders</source>
         <translation>Znovu proskenovat všechny adresáře</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="66"/>
+        <location filename="../package6/contents/ui/main.qml" line="39"/>
+        <location filename="../package5/contents/ui/main.qml" line="59"/>
+        <source>Open Syncthing</source>
+        <translation type="unfinished">Otevřít Syncthing</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/main.qml" line="49"/>
+        <location filename="../package5/contents/ui/main.qml" line="63"/>
+        <source>Show own device ID</source>
+        <translation type="unfinished">Zobrazit identifiktátor místního zařízení</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/main.qml" line="54"/>
+        <location filename="../package5/contents/ui/main.qml" line="65"/>
         <source>Restart Syncthing</source>
         <translation>Restartovat Syncthing</translation>
     </message>
     <message>
-        <location filename="../package/contents/ui/main.qml" line="68"/>
+        <location filename="../package6/contents/ui/main.qml" line="70"/>
+        <location filename="../package5/contents/ui/main.qml" line="70"/>
         <source>About</source>
         <translation>O Syncthing Plasmoid</translation>
     </message>
