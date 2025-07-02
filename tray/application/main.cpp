@@ -461,10 +461,11 @@ static int runApplication(int argc, const char *const *argv)
                 error = QStringLiteral("empty/non-existent signature");
             } else {
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
-                error = QString::fromUtf8(LibSyncthing::verify(signingKeyStsigtool, update.signature, update.data));
+                const auto res = LibSyncthing::verify(signingKeyStsigtool, update.signature, update.data);
 #else
-                error = QString::fromUtf8(CppUtilities::verifySignature(signingKeyOpenSSL, update.signature, update.data));
+                const auto res = CppUtilities::verifySignature(signingKeyOpenSSL, update.signature, update.data);
 #endif
+                error = QString::fromUtf8(res.data(), static_cast<QString::size_type>(res.size()));
             }
             if (!error.isEmpty()) {
                 auto loop = QEventLoop();
