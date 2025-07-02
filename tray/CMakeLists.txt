@@ -229,10 +229,7 @@ if (SETUP_TOOLS)
         use_crypto()
     endif ()
     set(REQUIRED_ICONS install)
-    set_property(
-        SOURCE application/main.cpp gui/traywidget.cpp
-        APPEND
-        PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_SETUP_TOOLS_ENABLED)
+    list(APPEND META_PRIVATE_COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_SETUP_TOOLS_ENABLED)
 endif ()
 
 # configure Qt Quick GUI

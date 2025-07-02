@@ -3,6 +3,9 @@
 
 #include "../gui/trayicon.h"
 #include "../gui/traywidget.h"
+#ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
+#include "../gui/helper.h"
+#endif
 #endif
 
 #ifdef GUI_QTQUICK
@@ -449,17 +452,30 @@ static int runApplication(int argc, const char *const *argv)
             Data::setForkAwesomeThemeOverrides();
         }
 #ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
+        auto verificationErrorMsgBox = VerificationErrorMessageBox();
         auto updateHandler = QtUtilities::UpdateHandler(
             QString(), QStringLiteral(SYNCTHINGTRAY_SIGNATURE_EXTENSION), &Settings::settings(), &networkAccessManager());
-        updateHandler.updater()->setVerifier([](const QtUtilities::Updater::Update &update) {
+        updateHandler.updater()->setVerifier([&verificationErrorMsgBox](const QtUtilities::Updater::Update &update) {
+            auto error = QString();
             if (update.signature.empty()) {
-                return QStringLiteral("empty/non-existent signature");
-            }
+                error = QStringLiteral("empty/non-existent signature");
+            } else {
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
-            return QString::fromUtf8(LibSyncthing::verify(signingKeyStsigtool, update.signature, update.data));
+                error = QString::fromUtf8(LibSyncthing::verify(signingKeyStsigtool, update.signature, update.data));
 #else
-            return QString::fromUtf8(QtUtilities::verifySignature(signingKeyOpenSSL, update.signature, update.data));
+                error = QString::fromUtf8(QtUtilities::verifySignature(signingKeyOpenSSL, update.signature, update.data));
 #endif
+            }
+            if (!error.isEmpty()) {
+                auto loop = QEventLoop();
+                QObject::connect(&verificationErrorMsgBox, &QDialog::finished, &loop, &QEventLoop::exit);
+                QMetaObject::invokeMethod(&verificationErrorMsgBox, "openForError", Qt::QueuedConnection, Q_ARG(QString, error));
+                auto res = loop.exec();
+                if (res == QMessageBox::Ignore) {
+                    error.clear();
+                }
+            }
+            return error;
         });
         updateHandler.applySettings();
         QtUtilities::UpdateHandler::setMainInstance(&updateHandler);

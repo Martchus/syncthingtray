@@ -72,6 +72,40 @@ void BasicTreeView::mousePressEvent(QMouseEvent *event)
     handleContextMenu(event);
 }
 
+#ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
+VerificationErrorMessageBox::VerificationErrorMessageBox()
+{
+    setWindowTitle(QApplication::applicationName());
+    setStandardButtons(QMessageBox::Cancel | QMessageBox::Ignore);
+    setDefaultButton(QMessageBox::Cancel);
+    setIcon(QMessageBox::Critical);
+}
+
+VerificationErrorMessageBox::~VerificationErrorMessageBox()
+{
+}
+
+void VerificationErrorMessageBox::openForError(const QString &errorMessage)
+{
+    setText(tr("<p>The signature of the downloaded executable could not be verified: %1</p>"
+               "<p>This can have different causes:</p>"
+               "<ul>"
+               "<li>Data corruption occurred during the download/extraction. In this case cancelling and retrying the update will "
+               "help.</li>"
+               "<li>The signing key or updating mechanism in general has changed. In this case an according release note will be present "
+               "on <a href=\"https://martchus.github.io/syncthingtray/#downloads-section\">the website</a> and <a "
+               "href=\"https://github.com/Martchus/syncthingtray/releases\">GitHub</a>.</li>"
+               "<li>A bug in the newly introduced updater, see <a "
+               "href=\"https://github.com/Martchus/syncthingtray/issues\">issues on GitHub</a> for potential bug reports.</li>"
+               "<li>Someone tries to distribute manipulated executables of Syncthing Tray.</li>"
+               "</ul>"
+               "<p>It is recommend to cancel the update and retry or cross-check the cause if the issue persists. If you ignore this "
+               "error you <i>may</i> install a corrupted/manipulated executable.</p>")
+            .arg(errorMessage));
+    open();
+}
+#endif
+
 /*!
  * \brief Shows \a menu at the specified \a position for the specified \a view.
  * \remarks
