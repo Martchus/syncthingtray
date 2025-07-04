@@ -427,8 +427,8 @@ bool restore()
     webView.zoomFactor = settings.value(QStringLiteral("zoomFactor"), webView.zoomFactor).toDouble();
     webView.geometry = settings.value(QStringLiteral("geometry")).toByteArray();
     webView.keepRunning = settings.value(QStringLiteral("keepRunning"), webView.keepRunning).toBool();
-    settings.endGroup();
 #endif
+    settings.endGroup();
 
     v.qt.restore(settings);
 
@@ -561,8 +561,8 @@ bool save()
     settings.setValue(QStringLiteral("zoomFactor"), webView.zoomFactor);
     settings.setValue(QStringLiteral("geometry"), webView.geometry);
     settings.setValue(QStringLiteral("keepRunning"), webView.keepRunning);
-    settings.endGroup();
 #endif
+    settings.endGroup();
 
     v.qt.save(settings);
 
