@@ -113,7 +113,7 @@ static void handleSystemdServiceError(const QString &context, const QString &nam
 #ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
 // clang-format off
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
-#define SYNCTHINGTRAY_SIGNATURE_EXTENSION ".stsigtool-sig"
+#define SYNCTHINGTRAY_SIGNATURE_EXTENSION ".stsigtool.sig"
 constexpr auto signingKeyStsigtool = std::string_view(
 R"(-----BEGIN EC PUBLIC KEY-----
 MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQBzGxkQSS43eE4r+A7HjlcEch5apsn
@@ -123,7 +123,7 @@ FdsjpzKV6nrX6EsK++o=
 -----END EC PUBLIC KEY-----
 )");
 #else
-#define SYNCTHINGTRAY_SIGNATURE_EXTENSION ".openssl-sig"
+#define SYNCTHINGTRAY_SIGNATURE_EXTENSION ".openssl.sig"
 constexpr auto signingKeyOpenSSL = std::string_view(
 R"(-----BEGIN EC PUBLIC KEY-----
 MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQAWJAn1E7ZE5Q6H69oaV5sqCIppJdg
