@@ -566,7 +566,7 @@ bool save()
 
     v.qt.save(settings);
 
-    settings.sync();
+    QtUtilities::saveSettingsWithLogging(settings);
     v.error = QtUtilities::errorMessageForSettings(settings);
     return v.error.isEmpty();
 }
