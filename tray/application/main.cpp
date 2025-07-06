@@ -16,6 +16,7 @@
 #include <syncthingwidgets/misc/syncthinglauncher.h>
 #ifdef GUI_QTWIDGETS
 #include <syncthingwidgets/settings/settings.h>
+#include <syncthingwidgets/webview/webviewdialog.h>
 #endif
 
 #include <syncthingmodel/syncthingicons.h>
@@ -72,6 +73,10 @@ using QtApp = QGuiApplication;
 #include <QQmlEngineExtensionPlugin>
 Q_IMPORT_QML_PLUGIN(WebViewItemPlugin)
 #endif
+#endif
+
+#ifdef SYNCTHINGWIDGETS_HAS_SCHEME_HANDLER
+#include <QWebEngineUrlScheme>
 #endif
 
 #include <iostream>
@@ -406,6 +411,15 @@ static int runApplication(int argc, const char *const *argv)
     if (firstRun) {
         firstRun = false;
         SET_QT_APPLICATION_INFO;
+
+#ifdef SYNCTHINGWIDGETS_HAS_SCHEME_HANDLER
+        auto scheme = QWebEngineUrlScheme(QByteArrayLiteral("st"));
+        scheme.setSyntax(QWebEngineUrlScheme::Syntax::Path);
+        scheme.setFlags(QWebEngineUrlScheme::SecureScheme | QWebEngineUrlScheme::LocalScheme | QWebEngineUrlScheme::LocalAccessAllowed
+            | QWebEngineUrlScheme::ViewSourceAllowed | QWebEngineUrlScheme::FetchApiAllowed);
+        QWebEngineUrlScheme::registerScheme(scheme);
+#endif
+
         auto application = QApplication(argc, const_cast<char **>(argv));
         QGuiApplication::setQuitOnLastWindowClosed(false);
 #if defined(Q_OS_ANDROID)

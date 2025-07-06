@@ -373,6 +373,8 @@ public:
     QueryResult postConfigFromJsonObject(
         const QJsonObject &rawConfig, std::function<void(QString &&)> &&callback = std::function<void(QString &&)>());
     QueryResult postConfigFromByteArray(const QByteArray &rawConfig, std::function<void(QString &&)> &&callback = std::function<void(QString &&)>());
+    QueryResult sendCustomRequest(const QByteArray &verb, const QUrl &url,
+        const QMap<QByteArray, QByteArray> &headers = QMap<QByteArray, QByteArray>(), QIODevice *data = nullptr);
 
 Q_SIGNALS:
     void syncthingUrlChanged(const QString &newUrl);
@@ -515,6 +517,7 @@ private:
         QByteArray response;
     };
     QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true, bool longPolling = false);
+    QNetworkRequest prepareRequest(const QUrl &url, bool longPolling = false);
     QNetworkReply *requestData(const QString &path, const QUrlQuery &query, bool rest = true, bool longPolling = false);
     QNetworkReply *postData(const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray());
     QNetworkReply *sendData(const QByteArray &verb, const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray());

@@ -4,8 +4,9 @@ cmake_minimum_required(VERSION 3.17.0 FATAL_ERROR)
 set(META_PROJECT_NAME syncthingwidgets)
 set(META_PROJECT_TYPE library)
 set(META_APP_NAME "UI elements of Syncthing Tray")
-set(META_PUBLIC_QT_MODULES Gui Widgets)
+set(META_PUBLIC_QT_MODULES Gui Widgets WebEngineCore WebEngineWidgets)
 set(META_WEBVIEW_SRC_DIR webview)
+set(META_WEBVIEW_WITH_CORE ON)
 set(META_GUI_OPTIONAL ON)
 
 # add project files

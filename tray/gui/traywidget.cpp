@@ -381,7 +381,7 @@ void TrayWidget::showAboutDialog()
 
 void TrayWidget::showWebUI()
 {
-    auto *const dlg = QtGui::showWebUI(m_connection.syncthingUrl(), m_selectedConnection, m_webViewDlg, this);
+    auto *const dlg = QtGui::showWebUI(m_connection.syncthingUrl(), m_selectedConnection, m_webViewDlg, this, &m_connection);
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     if (!dlg) {
         return;
@@ -590,7 +590,7 @@ void TrayWidget::applySettings(const QString &connectionConfig)
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     // web view
     if (m_webViewDlg) {
-        m_webViewDlg->applySettings(*m_selectedConnection, false);
+        m_webViewDlg->applySettings(*m_selectedConnection, false, &m_connection);
     }
 #endif
 
@@ -1002,7 +1002,7 @@ void TrayWidget::handleConnectionSelected(QAction *connectionAction)
 #endif
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
         if (m_webViewDlg) {
-            m_webViewDlg->applySettings(*m_selectedConnection, false);
+            m_webViewDlg->applySettings(*m_selectedConnection, false, &m_connection);
         }
 #endif
     }

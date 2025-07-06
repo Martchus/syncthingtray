@@ -54,7 +54,15 @@ QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const Q
     }
     url.setPath(rest ? (basePath % QStringLiteral("rest/") % path) : (basePath + path));
     url.setQuery(query);
-    QNetworkRequest request(url);
+    return prepareRequest(url, longPolling);
+}
+
+/*!
+ * \brief Prepares a request for the specified \a url.
+ */
+QNetworkRequest SyncthingConnection::prepareRequest(const QUrl &url, bool longPolling)
+{
+    auto request = QNetworkRequest(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/x-www-form-urlencoded"));
     request.setRawHeader("X-API-Key", m_apiKey);
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 9, 0))
@@ -1639,6 +1647,21 @@ void SyncthingConnection::readRevert()
     default:
         emitError(tr("Unable to request directory revert: "), SyncthingErrorCategory::SpecificRequest, reply);
     }
+}
+
+/*!
+ * \brief Performs a generic HTTP request to Syncthing.
+ */
+SyncthingConnection::QueryResult SyncthingConnection::sendCustomRequest(
+    const QByteArray &verb, const QUrl &url, const QMap<QByteArray, QByteArray> &headers, QIODevice *data)
+{
+    auto request = prepareRequest(url, false);
+    request.setTransferTimeout(0);
+    for (auto i = headers.cbegin(), end = headers.cend(); i != end; ++i) {
+        request.setRawHeader(i.key(), i.value());
+    }
+    auto *const reply = networkAccessManager().sendCustomRequest(request, verb, data);
+    return QueryResult{ reply };
 }
 
 /*!

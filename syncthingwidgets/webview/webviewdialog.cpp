@@ -6,6 +6,7 @@
 //       unity builds.
 #include "resources/../../tray/resources/config.h"
 
+#include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/syncthingprocess.h>
 
 #include <QCoreApplication>
@@ -29,15 +30,59 @@
 #include <QIcon>
 #include <QKeyEvent>
 #if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
+#include <QNetworkReply>
 #include <QWebEngineProfile>
-#include <QtWebEngineWidgetsVersion>
+#include <QWebEngineUrlRequestJob>
 #endif
 
 #include <initializer_list>
 
+#if defined(SYNCTHINGWIDGETS_HAS_SCHEME_HANDLER)
+#include <iostream>
+#endif
+
 using namespace QtUtilities;
 
 namespace QtGui {
+
+#if defined(SYNCTHINGWIDGETS_HAS_SCHEME_HANDLER)
+SyncthingSchemeHandler::SyncthingSchemeHandler(QObject *parent)
+    : QWebEngineUrlSchemeHandler(parent)
+    , m_connection(nullptr)
+{
+}
+
+void SyncthingSchemeHandler::setConnection(Data::SyncthingConnection *connection)
+{
+    m_connection = connection;
+}
+
+void SyncthingSchemeHandler::requestStarted(QWebEngineUrlRequestJob *job)
+{
+    if (!m_connection) {
+        job->fail(QWebEngineUrlRequestJob::UrlNotFound);
+        return;
+    }
+    auto requestUrl = job->requestUrl();
+    auto url = m_connection->makeUrlWithCredentials();
+    url.setPath(requestUrl.path());
+    url.setQuery(requestUrl.query());
+    std::cerr << "Forwarding local request: " << url.toString().toStdString() << '\n';
+    auto res = m_connection->sendCustomRequest(job->requestMethod(), url, job->requestHeaders(), job->requestBody());
+    auto reply = res.reply;
+    connect(job, &QObject::destroyed, res.reply, &QObject::deleteLater);
+    res.connection = connect(
+        res.reply, &QNetworkReply::finished, job,
+        [job, reply] {
+            std::cerr << "Replying local request \"" << reply->request().url().toString().toStdString()
+                      << "\": " << (reply->error() == QNetworkReply::NoError ? QStringLiteral("ok") : reply->errorString()).toStdString() << '\n';
+            std::cerr << "Content type: " << reply->header(QNetworkRequest::ContentTypeHeader).toByteArray().toStdString() << '\n';
+            job->setAdditionalResponseHeaders(reply->headers().toMultiMap());
+            job->reply(reply->header(QNetworkRequest::ContentTypeHeader).toByteArray(), reply);
+        },
+        Qt::QueuedConnection);
+}
+#endif
 
 WebViewDialog::WebViewDialog(QWidget *parent)
     : QMainWindow(parent)
@@ -49,6 +94,12 @@ WebViewDialog::WebViewDialog(QWidget *parent)
 
 #if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
     m_profile = new QWebEngineProfile(objectName(), this);
+#if defined(SYNCTHINGWIDGETS_HAS_SCHEME_HANDLER)
+    m_schemeHandler = new SyncthingSchemeHandler(this);
+    m_profile->installUrlSchemeHandler(QByteArrayLiteral("st"), m_schemeHandler);
+#else
+    m_schemeHandler = nullptr;
+#endif
 #if (QTWEBENGINEWIDGETS_VERSION >= QT_VERSION_CHECK(5, 13, 0))
     m_profile->setUrlRequestInterceptor(new WebViewInterceptor(m_connectionSettings, m_profile));
 #else
@@ -79,7 +130,8 @@ QtGui::WebViewDialog::~WebViewDialog()
 {
 }
 
-void QtGui::WebViewDialog::applySettings(const Data::SyncthingConnectionSettings &connectionSettings, bool aboutToShow)
+void WebViewDialog::applySettings(
+    const Data::SyncthingConnectionSettings &connectionSettings, bool aboutToShow, Data::SyncthingConnection *connection)
 {
     // delete the web view if currently hidden and the configuration to keep it running in the background isn't enabled
     const auto &settings(Settings::values());
@@ -88,10 +140,22 @@ void QtGui::WebViewDialog::applySettings(const Data::SyncthingConnectionSettings
         return;
     }
 
-    // apply settings to the view
+    // set how to connect
     m_connectionSettings = connectionSettings;
-    if (!WebPage::isSamePage(m_view->url(), connectionSettings.syncthingUrl)) { // prevent reload if the URL remains the same
-        m_view->setUrl(connectionSettings.syncthingUrl);
+#if defined(SYNCTHINGWIDGETS_HAS_SCHEME_HANDLER)
+    m_schemeHandler->setConnection(connection);
+    if (connection
+        && (m_connectionSettings.syncthingUrl.startsWith(QLatin1String("unix+http:"))
+            || m_connectionSettings.syncthingUrl.startsWith(QLatin1String("local+http:")))) {
+        m_connectionSettings.syncthingUrl = QStringLiteral("st://local/");
+    }
+#else
+    Q_UNUSED(connection)
+#endif
+
+    // apply settings to the view
+    if (!WebPage::isSamePage(m_view->url(), m_connectionSettings.syncthingUrl)) { // prevent reload if the URL remains the same
+        m_view->setUrl(m_connectionSettings.syncthingUrl);
     }
     m_view->setZoomFactor(settings.webView.zoomFactor);
 }
@@ -267,7 +331,8 @@ static void openBrowserInAppMode(const QString &url)
  * \param parent The parent to use when creating a new WebViewDialog. Allowed to be nullptr (as usual with parents).
  * \returns Returns the used WebViewDialog or nullptr if another method was used.
  */
-WebViewDialog *showWebUI(const QString &url, const Data::SyncthingConnectionSettings *settings, WebViewDialog *dlg, QWidget *parent)
+WebViewDialog *showWebUI(
+    const QString &url, const Data::SyncthingConnectionSettings *settings, WebViewDialog *dlg, QWidget *parent, Data::SyncthingConnection *connection)
 {
     switch (Settings::values().webView.mode) {
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
@@ -276,7 +341,7 @@ WebViewDialog *showWebUI(const QString &url, const Data::SyncthingConnectionSett
             dlg = new WebViewDialog(parent);
         }
         if (settings) {
-            dlg->applySettings(*settings, true);
+            dlg->applySettings(*settings, true, connection);
         }
         return dlg;
 #else

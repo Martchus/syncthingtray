@@ -310,7 +310,7 @@ void SyncthingApplet::setCurrentConnectionConfigIndex(int index)
         reconnectRequired = m_connection.applySettings(selectedConfig);
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
         if (m_webViewDlg) {
-            m_webViewDlg->applySettings(selectedConfig, false);
+            m_webViewDlg->applySettings(selectedConfig, false, &m_connection);
         }
 #endif
         config().writeEntry<int>("selectedConfig", index);
@@ -475,7 +475,7 @@ void SyncthingApplet::concludeWizard(const QString &errorMessage)
 
 void SyncthingApplet::showWebUI()
 {
-    auto *const dlg = QtGui::showWebUI(m_connection.syncthingUrl(), currentConnectionConfig(), m_webViewDlg);
+    auto *const dlg = QtGui::showWebUI(m_connection.syncthingUrl(), currentConnectionConfig(), m_webViewDlg, nullptr, &m_connection);
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     if (!dlg) {
         return;
