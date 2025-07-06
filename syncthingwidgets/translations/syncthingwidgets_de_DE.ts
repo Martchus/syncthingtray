@@ -1485,7 +1485,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="139"/>
         <source>Replace ${var} or $var in directories with values from environment</source>
-        <translation>Ersetze ${var} or $var in Verzeichnispfaden mit Werten der Umgebung</translation>
+        <translation>Ersetze ${var} oder $var in Verzeichnispfaden mit Werten der Umgebung</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="149"/>
