@@ -129,10 +129,12 @@ Syncthing installation. You might consider different configurations:
 * If you would like Syncthing Tray to take care of starting Syncthing for you, you can use the Syncthing launcher
   available in the settings. Note that this is *not* supported when using the Plasmoid.
     * The Linux and Windows builds provided in the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases)
-      come with a built-in version of Syncthing which you can consider to use. Keep in mind that automatic updates of Syncthing are
-      not possible this way.
-    * In any case you can simply point the launcher to the binary of Syncthing (which you have to download/install
-      separately).
+      come with a built-in version of Syncthing which you can consider to use. Note that the built-in version of Syncthing
+      will be only updated when you update Syncthing Tray (either manually or via the its updater). The update feature of
+      Syncthing itself is not available this way.
+    * In any case you can simply point the launcher to the binary of Syncthing which you have to download/install separately.
+      This way Syncthing can be (but also has to be) updated independently of Syncthing Tray, e.g. using Syncthing's own
+      update feature.
     * Checkout the "[Configuring the built-in launcher](#configuring-the-built-in-launcher)" section for further details.
 * It is also possible to let Syncthing Tray connect to a Syncthing instance running on a different machine.
 
@@ -340,6 +342,19 @@ but this change might not be available on older distributions.
 The systemd integration can be explicitly enabled/disabled at compile time by adding
 `-DSYSTEMD_SUPPORT=ON/OFF` to the CMake arguments. If the systemd integration does not work be sure your
 version of Syncthing Tray has been compiled with systemd support.
+
+It is possible to build Syncthing itself as a library as part of Syncthing Tray and configure its
+Syncthing launcher to make use of this "built-in" version as an alternative way of launching Syncthing.
+The build Syncthing and use of it in the launcher can be enabled by adding `-DNO_LIBSYNCTHING=OFF` and
+`-DUSE_LIBSYNCTHING=ON` to the CMake arguments respectively. When building Syncthing itself a Go build
+environment is required.
+
+The updater can be explicitly enabled/disabled by adding `-DSETUP_TOOLS=ON/OFF` to the CMake arguments
+when compiling `qtutilities` and `syncthingtray`. When enabled, `c++utilities` needs to compiled with
+`-DUSE_LIBARCHIVE=ON` and `libarchive` becomes a dependency. With the built-in version of Syncthing
+disabled this will also lead to a hard dependency on the crypo library of OpenSSL for signature
+verification. (With the built-in version of Syncthing enabled the Go-based crypto code from Syncthing
+itself is used instead of OpenSSL.)
 
 Note for distributors: There will be no hard dependency to systemd in any case. Distributions supporting
 alternative init systems do *not* need to provide differently configured versions of Syncthing Tray.
@@ -641,8 +656,11 @@ See the [release section on GitHub](https://github.com/Martchus/syncthingtray/re
               the package `libopengl0` is installed on Debian/Ubuntu)
         * Supports X11 and Wayland (set the environment variable `QT_QPA_PLATFORM=xcb` to disable
           native Wayland support if it does not work on your system)
-        * Binaries are signed with the GPG key
-          [`B9E36A7275FC61B464B67907E06FE8F53CDC6A4C`](https://keyserver.ubuntu.com/pks/lookup?search=B9E36A7275FC61B464B67907E06FE8F53CDC6A4C&fingerprint=on&op=index).
+        * The archive is signed with the GPG key
+          [`B9E36A7275FC61B464B67907E06FE8F53CDC6A4C`](https://keyserver.ubuntu.com/pks/lookup?search=B9E36A7275FC61B464B67907E06FE8F53CDC6A4C&fingerprint=on&op=index) for manual verification.
+        * The executable is signed in addition using ECDSA for verification by the updater. The public key can be found
+          [in the source code](https://github.com/Martchus/syncthingtray/blob/master/tray/application/main.cpp) and verification
+          is possible with `stsigtool` or OpenSSL.
     * a Flatpak is hosted on [Flathub](https://flathub.org/apps/io.github.martchus.syncthingtray)
         * Read the [README of the Flatpak](https://github.com/flathub/io.github.martchus.syncthingtray/blob/master/README.md) for
           caveats and workarounds
@@ -658,8 +676,11 @@ See the [release section on GitHub](https://github.com/Martchus/syncthingtray/re
             * On Windows 7 the bundled Go/Syncthing will nevertheless be too new; use a version of Go/Syncthing that is *older*
               than 1.21/1.27.0 instead.
         * The Universal CRT needs to be [installed](https://learn.microsoft.com/en-us/cpp/windows/universal-crt-deployment#central-deployment).
-        * Binaries are signed with the GPG key
-          [`B9E36A7275FC61B464B67907E06FE8F53CDC6A4C`](https://keyserver.ubuntu.com/pks/lookup?search=B9E36A7275FC61B464B67907E06FE8F53CDC6A4C&fingerprint=on&op=index).
+        * The archive is signed with the GPG key
+          [`B9E36A7275FC61B464B67907E06FE8F53CDC6A4C`](https://keyserver.ubuntu.com/pks/lookup?search=B9E36A7275FC61B464B67907E06FE8F53CDC6A4C&fingerprint=on&op=index) for manual verification.
+        * The executable is signed in addition using ECDSA for verification by the updater. The public key can be found
+          [in the source code](https://github.com/Martchus/syncthingtray/blob/master/tray/application/main.cpp) and verification
+          is possible with `stsigtool` or OpenSSL.
     * or, using Winget, type `winget install Martchus.syncthingtray` in a Command Prompt window.
     * or, using [Scoop](https://scoop.sh), type `scoop bucket add extras & scoop install extras/syncthingtray`.
     * or, via this [Chocolatey package](https://community.chocolatey.org/packages/syncthingtray), type `choco install syncthingtray`.
