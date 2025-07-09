@@ -416,9 +416,9 @@ The Plasmoid can be shown via a hot-key as well by configuring one in the Plasmo
 ## Using the Android app
 The Android app requires Android 9 or later. It is mainly tested on Android 14 and 15, though.
 Depending on the Android version and vendor-specific limitations you might run into permission
-errors and problems with the app being stopped by the OS. For me it works well enough on a
-three year old average Samsung device. It probably works on most recent phones except very
-low-end devices.
+errors and [problems with the app being stopped by the OS](https://dontkillmyapp.com). For me it
+works well enough on a three year old average Samsung device. It probably works on most recent phones
+except very low-end devices.
 
 **The Android app is still experimental.** Use it with care and create backups of your
 configuration and data before trying it. No builds are provided at this point so you have to
