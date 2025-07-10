@@ -1091,7 +1091,10 @@ void TrayWidget::setTrafficPixmaps(bool recompute)
 void TrayWidget::connectWithUpdateNotifier()
 {
 #ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
-    if (auto *const updateHandler = QtUtilities::UpdateHandler::mainInstance()) {
+    if (!m_menu) {
+        return;
+    }
+    if (auto *const updateHandler = QtUtilities::UpdateHandler::mainInstance(); updateHandler && m_menu->icon()) {
         connect(updateHandler->notifier(), &QtUtilities::UpdateNotifier::updateAvailable, m_menu->icon(), &TrayIcon::showNewVersionAvailable);
     }
 #endif
