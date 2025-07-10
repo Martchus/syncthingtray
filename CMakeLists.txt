@@ -66,8 +66,8 @@ option(NO_FILE_ITEM_ACTION_PLUGIN "whether building the file item action plugin 
 option(NO_MODEL "whether building models should be skipped, implies NO_TRAY" OFF)
 option(NO_WIDGETS "whether building widgets should be skipped, implies NO_TRAY" OFF)
 option(NO_PLASMOID "whether building the Plasmoid for the Plasma desktop should be skipped" "${PLASMOID_DISABLED_BY_DEFAULT}")
-option(WIDGETS_GUI "enables/disables building the Qt Widgets GUI (disabled by default)" ${WIDGET_GUI_ENABLED_BY_DEFAULT})
-option(QUICK_GUI "enables/disables building the experimental Qt Quick GUI (disabled by default)" ${QUICK_GUI_ENABLED_BY_DEFAULT})
+option(WIDGETS_GUI "enables/disables building the Qt Widgets GUI" ${WIDGET_GUI_ENABLED_BY_DEFAULT})
+option(QUICK_GUI "enables/disables building the experimental Qt Quick GUI" ${QUICK_GUI_ENABLED_BY_DEFAULT})
 
 # allow using non-default configuration
 set(CONFIGURATION_PACKAGE_SUFFIX "" CACHE STRING "sets the suffix for find_package() calls to packages configured via c++utilities")
