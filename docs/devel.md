@@ -77,14 +77,35 @@ It is also possible to build only the CLI (`syncthingctl`) by adding `-DNO_MODEL
 
 ---
 
-To get rid of systemd support, add `-DENABLE_SYSTEMD_SUPPORT_BY_DEFAULT:BOOL=OFF` to the CMake arguments.
-In this case the Qt module `dbus` is not required anymore. Note that there is no hard dependency
-to systemd in any case.
+Building the testsuite requires CppUnit and Syncthing itself. Tests will spawn (and eventually terminate)
+a test instance of Syncthing that does not affect a possibly existing Syncthing setup on the build host.
+
+### Further build-time configuration
+The systemd integration can be explicitly enabled/disabled at compile time by adding
+`-DSYSTEMD_SUPPORT=ON/OFF` to the CMake arguments. If the systemd integration does not work be sure your
+version of Syncthing Tray has been compiled with systemd support.
+
+Note for distributors: There will be no hard dependency to systemd in any case. Distributions supporting
+alternative init systems do *not* need to provide differently configured versions of Syncthing Tray.
+Disabling the systemd integration is mainly intended for systems which do not use systemd at all (e.g.
+Windows and MacOS).
 
 ---
 
-Building the testsuite requires CppUnit and Syncthing itself. Tests will spawn (and eventually terminate)
-a test instance of Syncthing that does not affect a possibly existing Syncthing setup on the build host.
+It is possible to build Syncthing itself as a library as part of Syncthing Tray and configure its
+Syncthing launcher to make use of this "built-in" version as an alternative way of launching Syncthing.
+The build Syncthing and use of it in the launcher can be enabled by adding `-DNO_LIBSYNCTHING=OFF` and
+`-DUSE_LIBSYNCTHING=ON` to the CMake arguments respectively. When building Syncthing itself a Go build
+environment is required.
+
+---
+
+The updater can be explicitly enabled/disabled by adding `-DSETUP_TOOLS=ON/OFF` to the CMake arguments
+when compiling `qtutilities` and `syncthingtray`. When enabled, `c++utilities` needs to compiled with
+`-DUSE_LIBARCHIVE=ON` and `libarchive` becomes a dependency. With the built-in version of Syncthing
+disabled this will also lead to a hard dependency on the crypo library of OpenSSL for signature
+verification. (With the built-in version of Syncthing enabled the Go-based crypto code from Syncthing
+itself is used instead of OpenSSL.)
 
 ### Building this straight
 0. Install (preferably the latest version of) the GCC toolchain or Clang, the required Qt modules,

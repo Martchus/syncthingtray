@@ -159,7 +159,7 @@ For further cleanup you may ensure that autostart is disabled (to avoid a dangli
 delete the configuration files (see "[Location of the configuration file](#location-of-the-configuration-file)"
 section below).
 
-## General remarks on the configuration
+## Configuration
 You need to configure how Syncthing Tray should connect to Syncthing itself. The previous
 section "Does this launch or bundle Syncthing itself…" mentions available options. Additionally,
 a wizard is shown on the first launch which can guide though the configuration for common
@@ -199,7 +199,7 @@ setting requires Qt 6.8 or higher. You still need to provide the "Syncthing URL"
 `unix+http` as scheme (e.g. `unix+http://127.0.0.1:8080` where the host and port are not
 actually used). The web view will not work with this, though.
 
-## Single-instance behavior and launch options
+### Single-instance behavior and launch options
 This section does *not* apply to the [Android app](#using-the-android-app), the
 [Plasmoid](#configuring-plasmoid) and the
 [Dolphin integration](#configuring-dolphin-integration).
@@ -238,7 +238,7 @@ Those were just the options of the tray application. Checkout the
 "[Using the command-line interface](#using-the-command-line-interface)" section for an
 overview of available tooling for the command-line.
 
-## Configuring Plasmoid
+### Configuring Plasmoid
 The Plasmoid requires installing Syncthing Tray via distribution-specific packaging. It is
 *not* available via the generic GNU/Linux download or the Flatpak. Checkout the relevant notes
 on the [downloads page](https://martchus.github.io/syncthingtray/#downloads-section) for
@@ -285,16 +285,16 @@ In case the Plasmoid won't show up, checkout the
 "[Troubleshooting KDE integration](#troubleshooting-kde-integration)" section below for
 further help.
 
-## Configuring Dolphin integration
+### Configuring Dolphin integration
 The Dolphin integration can be enabled/disabled in Dolphin's context menu settings. It will
 read Syncthing's API key automatically from its config file. If your Syncthing config file is
 not in the default location you need to select it via the corresponding menu action.
 
-## Configuring systemd integration
+### Configuring systemd integration
 The next section explains what it is good for and how to use it. If it doesn't work on your
 system please read the subsequent sections as well before filing an issue.
 
-### Using the systemd integration
+#### Using the systemd integration
 With the system configured correctly and systemd support enabled at build-time the following
 features are available:
 
@@ -319,7 +319,7 @@ a regular system-wide unit (including those ending with `…@username`) you need
 "System unit" checkbox in the settings. Note that starting and stopping the system-wide Syncthing
 unit requires authorization (systemd can ask through PolicyKit).
 
-### Required system configuration
+#### Required system configuration
 The communication between Syncthing Tray and systemd is implemented using systemd's D-Bus service.
 That means systemd's D-Bus service (which is called `org.freedesktop.systemd1`) must be running on
 your D-Bus. For [user units](https://wiki.archlinux.org/index.php/Systemd/User) the session D-Bus is
@@ -341,30 +341,7 @@ Note that the Plasma Wayland session screwed things up in the way I've described
 [Only spawn dbus-run-session if there isn't a session already](https://invent.kde.org/plasma/plasma-workspace/-/merge_requests/128)
 but this change might not be available on older distributions.
 
-### Build-time configuration
-The systemd integration can be explicitly enabled/disabled at compile time by adding
-`-DSYSTEMD_SUPPORT=ON/OFF` to the CMake arguments. If the systemd integration does not work be sure your
-version of Syncthing Tray has been compiled with systemd support.
-
-It is possible to build Syncthing itself as a library as part of Syncthing Tray and configure its
-Syncthing launcher to make use of this "built-in" version as an alternative way of launching Syncthing.
-The build Syncthing and use of it in the launcher can be enabled by adding `-DNO_LIBSYNCTHING=OFF` and
-`-DUSE_LIBSYNCTHING=ON` to the CMake arguments respectively. When building Syncthing itself a Go build
-environment is required.
-
-The updater can be explicitly enabled/disabled by adding `-DSETUP_TOOLS=ON/OFF` to the CMake arguments
-when compiling `qtutilities` and `syncthingtray`. When enabled, `c++utilities` needs to compiled with
-`-DUSE_LIBARCHIVE=ON` and `libarchive` becomes a dependency. With the built-in version of Syncthing
-disabled this will also lead to a hard dependency on the crypo library of OpenSSL for signature
-verification. (With the built-in version of Syncthing enabled the Go-based crypto code from Syncthing
-itself is used instead of OpenSSL.)
-
-Note for distributors: There will be no hard dependency to systemd in any case. Distributions supporting
-alternative init systems do *not* need to provide differently configured versions of Syncthing Tray.
-Disabling the systemd integration is mainly intended for systems which do not use systemd at all (e.g.
-Windows and MacOS).
-
-## Configuring the built-in launcher
+### Configuring the built-in launcher
 The built-in launcher can be accessed and configured within the settings dialog. It is *not* available
 in the Plasmoid. It allows you to launch Syncthing
 
@@ -391,6 +368,16 @@ ready to serve API requests when started. Hence it is still required to configur
 The re-connect interval will only be in effect while the Syncthing process is running. So despite the
 re-connect interval there will be no connection attempts while the Syncthing process is not running.
 
+### Configuring hotkeys
+Use the same approach as for launching an arbitrary application via a hotkey in your graphical
+environment. Make it invoke
+
+* `syncthingtray --trigger` to show the Qt Widgets based tray menu.
+* `syncthingtray --webui` to show the web UI.
+* `syncthingctl [...]` to trigger a particular action. See `syncthingctl -h` for details.
+
+The Plasmoid can be shown via a hot-key as well by configuring one in the Plasmoid settings.
+
 ## Using the command-line interface
 Syncthing Tray provides two command-line interfaces:
 
@@ -405,16 +392,6 @@ Syncthing Tray provides two command-line interfaces:
     * On Windows, you'll have to use the `syncthingtray-cli` executable to see output in the terminal.
     * The experimental mobile UI can be launched on the desktop with the `qt-quick-gui` sub-command
       when Syncthing Tray was built with support for it.
-
-## Configuring hotkeys
-Use the same approach as for launching an arbitrary application via a hotkey in your graphical
-environment. Make it invoke
-
-* `syncthingtray --trigger` to show the Qt Widgets based tray menu.
-* `syncthingtray --webui` to show the web UI.
-* `syncthingctl [...]` to trigger a particular action. See `syncthingctl -h` for details.
-
-The Plasmoid can be shown via a hot-key as well by configuring one in the Plasmoid settings.
 
 ## Download
 Checkout the [download section on the website](https://martchus.github.io/syncthingtray/#downloads-section) for an overview.
