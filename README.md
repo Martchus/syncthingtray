@@ -66,7 +66,7 @@ for how to achieve a more native look and feel. Under GNOME one needs to install
 one's distribution already provides such an extension by default).
 
 Limitations of your system tray might affect Syncthing Tray. For instance when using the mentioned GNOME
-extension the Syncthing Tray UI shown in the [screenshots](screenshots.md) is only shown by *double*-clicking
+extension the Syncthing Tray UI shown in the [screenshots](docs/screenshots.md) is only shown by *double*-clicking
 the icon. If your system tray is unable to show the Syncthing Tray UI at all like on COSMIC you can still use
 Syncthing Tray for the tray icon and basic functionality accessible via the menu.
 
@@ -115,7 +115,7 @@ and workarounds for certain caveats like the positioning issues under Wayland.
     * Rescan selected items
     * Rescan entire Syncthing folder
     * Pause/resume Syncthing folder
-    * See also the [screenshots](screenshots.md#syncthing-actions-for-dolphin)
+    * See also the [screenshots](docs/screenshots.md#syncthing-actions-for-dolphin)
 * Allows building Syncthing as a library to run it in the same process as the tray/GUI
 * English and German localization
 
