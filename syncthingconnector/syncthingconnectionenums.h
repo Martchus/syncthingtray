@@ -15,7 +15,8 @@ enum class SyncthingConnectionLoggingFlags : quint64 {
     ApiReplies = (1 << 2), /**< log replies from Syncthing's REST-API */
     Events = (1 << 3), /**< log events received via Syncthing's event API */
     DirsOrDevsResetted = (1 << 4), /**< log list of directories/devices when list is reset */
-    All = ApiCalls | ApiReplies | Events | DirsOrDevsResetted, /** log as much as possible */
+    CertLoading = (1 << 5), /**< log loading of the certificate */
+    All = ApiCalls | ApiReplies | Events | DirsOrDevsResetted | CertLoading, /** log as much as possible */
 };
 
 } // namespace Data

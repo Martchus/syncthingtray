@@ -221,6 +221,9 @@ void SyncthingConnection::setLoggingFlags(SyncthingConnectionLoggingFlags flags)
                 && qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_DIRS_OR_DEVS_RESETTED")) {
                 m_loggingFlags |= SyncthingConnectionLoggingFlags::Events;
             }
+            if (!(flags && SyncthingConnectionLoggingFlags::CertLoading) && qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_CERT_LOADING")) {
+                m_loggingFlags |= SyncthingConnectionLoggingFlags::CertLoading;
+            }
         }
     }
     if ((m_loggingFlags && SyncthingConnectionLoggingFlags::DirsOrDevsResetted)
@@ -1012,11 +1015,17 @@ bool SyncthingConnection::loadSelfSignedCertificate(const QUrl &url)
     // not required when not using secure connection
     const auto syncthingUrl = url.isEmpty() ? m_syncthingUrl : url;
     if (!syncthingUrl.scheme().endsWith(QChar('s'))) {
+        if (m_loggingFlags && SyncthingConnectionLoggingFlags::CertLoading) {
+            std::cerr << Phrases::Info << "Not loading self-signed certificate as URL scheme doesn't end with 's'." << Phrases::End;
+        }
         return false;
     }
 
     // auto-determining the path is only possible if the Syncthing instance is running locally
     if (m_certificatePath.isEmpty() && !::Data::isLocal(syncthingUrl)) {
+        if (m_loggingFlags && SyncthingConnectionLoggingFlags::CertLoading) {
+            std::cerr << Phrases::Info << "Not auto-loading self-signed certificate as URL is not considered local." << Phrases::End;
+        }
         return false;
     }
 
@@ -1025,12 +1034,22 @@ bool SyncthingConnection::loadSelfSignedCertificate(const QUrl &url)
         ? m_certificatePath
         : (!m_configDir.isEmpty() ? (m_configDir + QStringLiteral("/https-cert.pem")) : SyncthingConfig::locateHttpsCertificate());
     if (certPath.isEmpty()) {
+        if (m_loggingFlags && SyncthingConnectionLoggingFlags::CertLoading) {
+            std::cerr << Phrases::Error << "Unable to locate self-signed certificate." << Phrases::End;
+        }
         emit error(tr("Unable to locate certificate used by Syncthing."), SyncthingErrorCategory::OverallConnection, QNetworkReply::NoError);
         return false;
+    }
+    if (m_loggingFlags && SyncthingConnectionLoggingFlags::CertLoading) {
+        const auto pathSpec = m_certificatePath.isEmpty() ? "auto-detected" : "manually specified";
+        std::cerr << Phrases::Info << "Loading self-signed certificate from " << pathSpec << " path: " << certPath.toStdString() << Phrases::End;
     }
     // add exception
     const auto certs = QSslCertificate::fromPath(certPath);
     if (certs.isEmpty() || certs.at(0).isNull()) {
+        if (m_loggingFlags && SyncthingConnectionLoggingFlags::CertLoading) {
+            std::cerr << Phrases::Error << "Unable to load self-signed certificate." << Phrases::End;
+        }
         emit error(tr("Unable to load certificate used by Syncthing."), SyncthingErrorCategory::OverallConnection, QNetworkReply::NoError);
         return false;
     }
