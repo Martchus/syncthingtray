@@ -4,60 +4,44 @@
 <context>
     <name>AppService</name>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="109"/>
-        <source>Backend is starting …</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/quick/appservice.cpp" line="155"/>
         <source>Unable to open persistent log file for Syncthing under &quot;%1&quot;: %2</source>
-        <translation type="unfinished">无法打开 “%1” 下 Syncthing 的持久性日志文件： %2</translation>
+        <translation type="obsolete">无法打开 “%1” 下 Syncthing 的持久性日志文件： %2</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="166"/>
         <source>This build of the app cannot launch Syncthing.</source>
-        <translation type="unfinished">此应用程序版本无法启动 Syncthing。</translation>
+        <translation type="obsolete">此应用程序版本无法启动 Syncthing。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="235"/>
         <source>Syncthing App ran into error</source>
-        <translation type="unfinished">Syncthing App 遇到错误</translation>
+        <translation type="obsolete">Syncthing App 遇到错误</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="433"/>
         <source>Syncthing error/notification</source>
-        <translation type="unfinished">Syncthing 错误/通知</translation>
+        <translation type="obsolete">Syncthing 错误/通知</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="433"/>
         <source>%1 Syncthing errors/notifications</source>
-        <translation type="unfinished">%1 个 Syncthing 错误/通知</translation>
+        <translation type="obsolete">%1 个 Syncthing 错误/通知</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="434"/>
-        <location filename="../gui/quick/appservice.cpp" line="454"/>
         <source>Most recent: </source>
-        <translation type="unfinished">最近：</translation>
+        <translation type="obsolete">最近：</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="453"/>
         <source>Syncthing API error</source>
-        <translation type="unfinished">Syncthing API 错误</translation>
+        <translation type="obsolete">Syncthing API 错误</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="453"/>
         <source>%1 Syncthing API errors</source>
-        <translation type="unfinished">%1 个 Syncthing API 错误</translation>
+        <translation type="obsolete">%1 个 Syncthing API 错误</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="467"/>
         <source>Syncthing device wants to connect</source>
-        <translation type="unfinished">Syncthing 设备想要连接</translation>
+        <translation type="obsolete">Syncthing 设备想要连接</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="481"/>
         <source>Syncthing device wants to share folder</source>
-        <translation type="unfinished">Syncthing 设备想要共享文件夹</translation>
+        <translation type="obsolete">Syncthing 设备想要共享文件夹</translation>
     </message>
 </context>
 <context>
@@ -415,48 +399,60 @@
 <context>
     <name>QtGui::AppService</name>
     <message>
+        <location filename="../gui/quick/appservice.cpp" line="109"/>
         <source>Backend is starting …</source>
-        <translation type="vanished">后台正在启动...</translation>
+        <translation>后台正在启动...</translation>
     </message>
     <message>
+        <location filename="../gui/quick/appservice.cpp" line="155"/>
         <source>Unable to open persistent log file for Syncthing under &quot;%1&quot;: %2</source>
-        <translation type="vanished">无法打开 “%1” 下 Syncthing 的持久性日志文件： %2</translation>
+        <translation>无法打开 “%1” 下 Syncthing 的持久性日志文件： %2</translation>
     </message>
     <message>
+        <location filename="../gui/quick/appservice.cpp" line="166"/>
         <source>This build of the app cannot launch Syncthing.</source>
-        <translation type="vanished">此应用程序版本无法启动 Syncthing。</translation>
+        <translation>此应用程序版本无法启动 Syncthing。</translation>
     </message>
     <message>
+        <location filename="../gui/quick/appservice.cpp" line="235"/>
         <source>Syncthing App ran into error</source>
-        <translation type="vanished">Syncthing App 遇到错误</translation>
+        <translation>Syncthing App 遇到错误</translation>
     </message>
     <message>
+        <location filename="../gui/quick/appservice.cpp" line="433"/>
         <source>Syncthing error/notification</source>
-        <translation type="vanished">Syncthing 错误/通知</translation>
+        <translation>Syncthing 错误/通知</translation>
     </message>
     <message>
+        <location filename="../gui/quick/appservice.cpp" line="433"/>
         <source>%1 Syncthing errors/notifications</source>
-        <translation type="vanished">%1 个 Syncthing 错误/通知</translation>
+        <translation>%1 个 Syncthing 错误/通知</translation>
     </message>
     <message>
+        <location filename="../gui/quick/appservice.cpp" line="434"/>
+        <location filename="../gui/quick/appservice.cpp" line="454"/>
         <source>Most recent: </source>
-        <translation type="vanished">最近：</translation>
+        <translation>最近：</translation>
     </message>
     <message>
+        <location filename="../gui/quick/appservice.cpp" line="453"/>
         <source>Syncthing API error</source>
-        <translation type="vanished">Syncthing API 错误</translation>
+        <translation>Syncthing API 错误</translation>
     </message>
     <message>
+        <location filename="../gui/quick/appservice.cpp" line="453"/>
         <source>%1 Syncthing API errors</source>
-        <translation type="vanished">%1 个 Syncthing API 错误</translation>
+        <translation>%1 个 Syncthing API 错误</translation>
     </message>
     <message>
+        <location filename="../gui/quick/appservice.cpp" line="467"/>
         <source>Syncthing device wants to connect</source>
-        <translation type="vanished">Syncthing 设备想要连接</translation>
+        <translation>Syncthing 设备想要连接</translation>
     </message>
     <message>
+        <location filename="../gui/quick/appservice.cpp" line="481"/>
         <source>Syncthing device wants to share folder</source>
-        <translation type="vanished">Syncthing 设备想要共享文件夹</translation>
+        <translation>Syncthing 设备想要共享文件夹</translation>
     </message>
 </context>
 <context>
@@ -906,12 +902,12 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../application/main.cpp" line="106"/>
+        <location filename="../application/main.cpp" line="111"/>
         <source>Unable to </source>
         <translation>无法 </translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="168"/>
+        <location filename="../application/main.cpp" line="173"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the --windowed flag, though.It is also possible to start Syncthing Tray with --wait to wait until the system tray becomes available instead of showing this message.</source>
         <translation>系统托盘当前不可用。不过，您可以使用 --windowed 将托盘菜单作为常规窗口打开。也可以使用 --wait 启动 Syncthing Tray 以等待系统托盘可用，而不是显示此消息。</translation>
     </message>
@@ -924,7 +920,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="vanished">请注意，设置对话框允许从本地 Syncthing 配置导入 URL、凭据和 API 密钥。</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="195"/>
+        <location filename="../application/main.cpp" line="200"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation>Qt 库没有使用托盘图标支持构建。不过，您可以使用 -w 将托盘菜单作为常规窗口打开。</translation>
     </message>

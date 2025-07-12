@@ -47,7 +47,7 @@
 <context>
     <name>QtGui</name>
     <message>
-        <location filename="../webview/webviewdialog.cpp" line="250"/>
+        <location filename="../webview/webviewdialog.cpp" line="314"/>
         <source>Unable to open Syncthing UI via &quot;%1&quot;: %2</source>
         <translation>无法通过 “%1” 打开 Syncthing 界面: %2</translation>
     </message>
@@ -2112,7 +2112,7 @@ This dialog closes automatically when the process finally terminates.</source>
 <context>
     <name>QtGui::WebViewDialog</name>
     <message>
-        <location filename="../webview/webviewdialog.cpp" line="46"/>
+        <location filename="../webview/webviewdialog.cpp" line="91"/>
         <source>Syncthing</source>
         <translation>Syncthing</translation>
     </message>

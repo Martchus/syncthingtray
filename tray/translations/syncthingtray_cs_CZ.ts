@@ -2,65 +2,6 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="de_DE">
 <context>
-    <name>AppService</name>
-    <message>
-        <location filename="../gui/quick/appservice.cpp" line="109"/>
-        <source>Backend is starting …</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/quick/appservice.cpp" line="155"/>
-        <source>Unable to open persistent log file for Syncthing under &quot;%1&quot;: %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/quick/appservice.cpp" line="166"/>
-        <source>This build of the app cannot launch Syncthing.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/quick/appservice.cpp" line="235"/>
-        <source>Syncthing App ran into error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/quick/appservice.cpp" line="433"/>
-        <source>Syncthing error/notification</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/quick/appservice.cpp" line="433"/>
-        <source>%1 Syncthing errors/notifications</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/quick/appservice.cpp" line="434"/>
-        <location filename="../gui/quick/appservice.cpp" line="454"/>
-        <source>Most recent: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/quick/appservice.cpp" line="453"/>
-        <source>Syncthing API error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/quick/appservice.cpp" line="453"/>
-        <source>%1 Syncthing API errors</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/quick/appservice.cpp" line="467"/>
-        <source>Syncthing device wants to connect</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../gui/quick/appservice.cpp" line="481"/>
-        <source>Syncthing device wants to share folder</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>QtGui::App</name>
     <message>
         <location filename="../gui/quick/app.cpp" line="392"/>
@@ -411,6 +352,65 @@
     <message>
         <location filename="../gui/quick/appbase.cpp" line="175"/>
         <source>Unable to load HTTPs certificate</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>QtGui::AppService</name>
+    <message>
+        <location filename="../gui/quick/appservice.cpp" line="109"/>
+        <source>Backend is starting …</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/appservice.cpp" line="155"/>
+        <source>Unable to open persistent log file for Syncthing under &quot;%1&quot;: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/appservice.cpp" line="166"/>
+        <source>This build of the app cannot launch Syncthing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/appservice.cpp" line="235"/>
+        <source>Syncthing App ran into error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/appservice.cpp" line="433"/>
+        <source>Syncthing error/notification</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/appservice.cpp" line="433"/>
+        <source>%1 Syncthing errors/notifications</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/appservice.cpp" line="434"/>
+        <location filename="../gui/quick/appservice.cpp" line="454"/>
+        <source>Most recent: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/appservice.cpp" line="453"/>
+        <source>Syncthing API error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/appservice.cpp" line="453"/>
+        <source>%1 Syncthing API errors</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/appservice.cpp" line="467"/>
+        <source>Syncthing device wants to connect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../gui/quick/appservice.cpp" line="481"/>
+        <source>Syncthing device wants to share folder</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -861,12 +861,12 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../application/main.cpp" line="106"/>
+        <location filename="../application/main.cpp" line="111"/>
         <source>Unable to </source>
         <translation>Nedaří se </translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="168"/>
+        <location filename="../application/main.cpp" line="173"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the --windowed flag, though.It is also possible to start Syncthing Tray with --wait to wait until the system tray becomes available instead of showing this message.</source>
         <translation>Oznamovací oblast systémového panelu je (pro tuto chvíli) nedostupná. Je možné otevřít nabídku oznamovací oblasti jako běžné okno pomocí příznaku „--windowed“. Dále je možné spustit s volbou „--wait“ a čekat na to, až bude oznamovací oblast k dispozici (namísto zobrazení této zprávy).</translation>
     </message>
@@ -879,7 +879,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="vanished">Poznamenejme, že dialog nastavení umožňuje importovat URL adresu, přihlašovací údaje a klíč k API z místního nastavení Syncthing.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="195"/>
+        <location filename="../application/main.cpp" line="200"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation>Knihovny Qt byly sestaveny bez podpory pro ikonu v oznamovací oblasti. Měli byste otevřít nabídku pro oznamovací oblast jako běžné okno pomocí příznaku -w.</translation>
     </message>
