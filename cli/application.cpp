@@ -115,6 +115,7 @@ int Application::exec(int argc, const char *const *argv)
             return statusCode;
         }
 
+        m_args.parser.ensureDefaultOperation();
         m_args.parser.checkConstraints();
         m_argsRead = true;
 
