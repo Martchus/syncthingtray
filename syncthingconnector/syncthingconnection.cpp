@@ -1274,7 +1274,8 @@ void SyncthingConnection::emitError(const QString &message, const QJsonParseErro
 void SyncthingConnection::emitError(const QString &message, SyncthingErrorCategory category, QNetworkReply *reply)
 {
     if (loggingFlags() && SyncthingConnectionLoggingFlags::ApiReplies) {
-        cerr << Phrases::Error << "Syncthing connection error: " << message.toLocal8Bit().data() << reply->errorString().toLocal8Bit().data() << endl;
+        std::cerr << Phrases::Error << "Syncthing connection error: " << message.toLocal8Bit().data() << reply->errorString().toLocal8Bit().data()
+                  << Phrases::End;
     }
     emit error(message + reply->errorString(), category, reply->error(), reply->request(), reply->bytesAvailable() ? reply->readAll() : QByteArray());
 
@@ -1292,7 +1293,8 @@ void SyncthingConnection::emitError(const QString &message, SyncthingErrorCatego
 void SyncthingConnection::emitError(const QString &message, QNetworkReply *reply)
 {
     if (loggingFlags() && SyncthingConnectionLoggingFlags::ApiReplies) {
-        cerr << Phrases::Error << "Syncthing API error: " << message.toLocal8Bit().data() << reply->errorString().toLocal8Bit().data() << endl;
+        std::cerr << Phrases::Error << "Syncthing API error: " << message.toLocal8Bit().data() << reply->errorString().toLocal8Bit().data()
+                  << Phrases::End;
     }
     emit error(message, SyncthingErrorCategory::SpecificRequest, reply->error(), reply->request(),
         reply->bytesAvailable() ? reply->readAll() : QByteArray());
