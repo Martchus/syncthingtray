@@ -38,19 +38,6 @@ private:
     QEvent::Type m_contextMenuEventType;
 };
 
-#ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
-class VerificationErrorMessageBox : public QMessageBox {
-    Q_OBJECT
-
-public:
-    explicit VerificationErrorMessageBox();
-    ~VerificationErrorMessageBox();
-
-public Q_SLOTS:
-    void openForError(const QString &errorMessage);
-};
-#endif
-
 constexpr auto listItemPadding = 4;
 constexpr auto listItemSpacing = listItemPadding;
 constexpr auto listItemIconSize = 16;
