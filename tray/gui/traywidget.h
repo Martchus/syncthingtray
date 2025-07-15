@@ -83,6 +83,9 @@ public Q_SLOTS:
     void applySettings(const QString &connectionConfig = QString());
     void applySettingsChangesFromWizard();
     void saveSettings();
+#ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
+    static void respawnIfRestartRequested();
+#endif
 
 protected:
     bool event(QEvent *event) override;

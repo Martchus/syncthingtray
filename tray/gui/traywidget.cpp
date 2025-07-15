@@ -1100,4 +1100,13 @@ void TrayWidget::connectWithUpdateNotifier()
 #endif
 }
 
+#ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
+void TrayWidget::respawnIfRestartRequested()
+{
+    if (auto *const restartHandler = s_settingsDlg ? s_settingsDlg->restartHandler() : nullptr) {
+        restartHandler->respawnIfRestartRequested();
+    }
+}
+#endif
+
 } // namespace QtGui

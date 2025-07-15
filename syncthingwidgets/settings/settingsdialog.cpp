@@ -1772,6 +1772,30 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     init();
 }
 
+#ifdef SYNCTHINGWIDGETS_SETUP_TOOLS_ENABLED
+/// \cond
+static void replaceProcess()
+{
+    auto *const updateHandler = QtUtilities::UpdateHandler::mainInstance();
+    if (!updateHandler) {
+        return;
+    }
+    auto *const process = new Data::SyncthingProcess();
+    QObject::connect(process, &Data::SyncthingProcess::finished, process, &QObject::deleteLater);
+    QObject::connect(process, &Data::SyncthingProcess::errorOccurred, process, [process] {
+        auto messageBox = QMessageBox();
+        messageBox.setWindowTitle(QStringLiteral("Syncthing"));
+        messageBox.setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
+        messageBox.setIcon(QMessageBox::Critical);
+        messageBox.setText(QCoreApplication::translate("QtGui", "Unable to restart via \"%1\": %2").arg(process->program(), process->errorString()));
+        messageBox.exec();
+    });
+    process->setProcessChannelMode(QProcess::ForwardedChannels);
+    process->start(updateHandler->updater()->storedPath(), QStringList({ QStringLiteral("qt-widgets-gui"), QStringLiteral("--replace") }));
+}
+/// \endcond
+#endif
+
 SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *parent)
     : QtUtilities::SettingsDialog(parent)
 {
@@ -1779,26 +1803,12 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
 
 #ifdef SYNCTHINGWIDGETS_SETUP_TOOLS_ENABLED
     // initialize option page for updating
-    auto *const updateOptionPage = new UpdateOptionPage(QtUtilities::UpdateHandler::mainInstance(), this);
-    updateOptionPage->setRestartHandler([] {
-        auto *const updateHandler = QtUtilities::UpdateHandler::mainInstance();
-        if (!updateHandler) {
-            return;
-        }
-        auto *const process = new Data::SyncthingProcess();
-        QObject::connect(process, &Data::SyncthingProcess::finished, process, &QObject::deleteLater);
-        QObject::connect(process, &Data::SyncthingProcess::errorOccurred, process, [process] {
-            auto messageBox = QMessageBox();
-            messageBox.setWindowTitle(QStringLiteral("Syncthing"));
-            messageBox.setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
-            messageBox.setIcon(QMessageBox::Critical);
-            messageBox.setText(
-                QCoreApplication::translate("QtGui", "Unable to restart via \"%1\": %2").arg(process->program(), process->errorString()));
-            messageBox.exec();
-        });
-        process->setProcessChannelMode(QProcess::ForwardedChannels);
-        process->start(updateHandler->updater()->storedPath(), QStringList({ QStringLiteral("qt-widgets-gui"), QStringLiteral("--replace") }));
-    });
+    m_updateOptionPage = new UpdateOptionPage(QtUtilities::UpdateHandler::mainInstance(), this);
+    if (Settings::values().isIndependentInstance) {
+        m_updateOptionPage->setRestartHandler((m_restartHandler = new RestartHandler)->requester());
+    } else {
+        m_updateOptionPage->setRestartHandler(&replaceProcess);
+    }
 #endif
 
     // setup categories
@@ -1826,7 +1836,7 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
         new LauncherOptionPage(QStringLiteral("Process"), tr("additional tool"), tr("Extra launcher"))
 #ifdef SYNCTHINGWIDGETS_SETUP_TOOLS_ENABLED
             ,
-        updateOptionPage
+        m_updateOptionPage
 #endif
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
         ,
@@ -1847,6 +1857,9 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
 
 SettingsDialog::~SettingsDialog()
 {
+#ifdef SYNCTHINGWIDGETS_SETUP_TOOLS_ENABLED
+    delete m_restartHandler;
+#endif
 }
 
 void SettingsDialog::init()

@@ -450,6 +450,9 @@ static int runApplication(int argc, const char *const *argv)
         if (insecureArg.isPresent()) {
             settings.connection.insecure = true;
         }
+        if (newInstanceArg.isPresent()) {
+            settings.isIndependentInstance = true;
+        }
         LOAD_QT_TRANSLATIONS;
         if (!settings.error.isEmpty()) {
             QMessageBox::critical(nullptr, QCoreApplication::applicationName(), settings.error);
@@ -515,7 +518,11 @@ static int runApplication(int argc, const char *const *argv)
         // trigger UI and enter event loop
         QObject::connect(&application, &QCoreApplication::aboutToQuit, &shutdownSyncthingTray);
         trigger(triggerArg.isPresent(), showWebUiArg.isPresent(), showWizardArg.isPresent());
-        return application.exec();
+        const auto res = application.exec();
+#ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
+        TrayWidget::respawnIfRestartRequested();
+#endif
+        return res;
     }
 
 #if defined(Q_OS_ANDROID)
