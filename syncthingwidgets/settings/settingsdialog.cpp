@@ -1759,6 +1759,8 @@ void BuiltinWebViewOptionPage::reset()
 #endif
 }
 
+QtUtilities::RestartHandler *SettingsDialog::s_restartHandler = nullptr;
+
 SettingsDialog::SettingsDialog(const QList<OptionCategory *> &categories, QWidget *parent)
     : QtUtilities::SettingsDialog(parent)
 {
@@ -1805,7 +1807,10 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
     // initialize option page for updating
     m_updateOptionPage = new UpdateOptionPage(QtUtilities::UpdateHandler::mainInstance(), this);
     if (Settings::values().isIndependentInstance) {
-        m_updateOptionPage->setRestartHandler((m_restartHandler = new RestartHandler)->requester());
+        if (!s_restartHandler) {
+            s_restartHandler = new RestartHandler;
+        }
+        m_updateOptionPage->setRestartHandler(s_restartHandler->requester());
     } else {
         m_updateOptionPage->setRestartHandler(&replaceProcess);
     }
@@ -1855,11 +1860,20 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
     init();
 }
 
-SettingsDialog::~SettingsDialog()
+void SettingsDialog::respawnIfRestartRequested()
 {
 #ifdef SYNCTHINGWIDGETS_SETUP_TOOLS_ENABLED
-    delete m_restartHandler;
+    if (!s_restartHandler) {
+        return;
+    }
+    s_restartHandler->respawnIfRestartRequested();
+    delete s_restartHandler;
+    s_restartHandler = nullptr;
 #endif
+}
+
+SettingsDialog::~SettingsDialog()
+{
 }
 
 void SettingsDialog::init()

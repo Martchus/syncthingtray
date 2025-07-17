@@ -208,7 +208,7 @@ public:
     void hideConnectionStatus();
     void selectLauncherSettings();
     void selectUpdateSettings();
-    QtUtilities::RestartHandler *restartHandler();
+    static void respawnIfRestartRequested();
 
 Q_SIGNALS:
     void wizardRequested();
@@ -222,15 +222,10 @@ private:
     ConnectionOptionPage *m_connectionsOptionPage = nullptr;
     AppearanceOptionPage *m_appearanceOptionPage = nullptr;
     QtUtilities::UpdateOptionPage *m_updateOptionPage = nullptr;
-    QtUtilities::RestartHandler *m_restartHandler = nullptr;
     int m_launcherSettingsCategory = -1, m_launcherSettingsPageIndex = -1;
     int m_updateSettingsCategory = -1, m_updateSettingsPageIndex = -1;
+    static QtUtilities::RestartHandler *s_restartHandler;
 };
-
-inline QtUtilities::RestartHandler *SettingsDialog::restartHandler()
-{
-    return m_restartHandler;
-}
 
 } // namespace QtGui
 

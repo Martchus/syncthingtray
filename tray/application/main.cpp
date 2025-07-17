@@ -16,6 +16,7 @@
 #include <syncthingwidgets/misc/syncthinglauncher.h>
 #ifdef GUI_QTWIDGETS
 #include <syncthingwidgets/settings/settings.h>
+#include <syncthingwidgets/settings/settingsdialog.h>
 #include <syncthingwidgets/webview/webviewdialog.h>
 #endif
 
@@ -520,7 +521,7 @@ static int runApplication(int argc, const char *const *argv)
         trigger(triggerArg.isPresent(), showWebUiArg.isPresent(), showWizardArg.isPresent());
         const auto res = application.exec();
 #ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
-        TrayWidget::respawnIfRestartRequested();
+        SettingsDialog::respawnIfRestartRequested();
 #endif
         return res;
     }

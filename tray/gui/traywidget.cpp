@@ -257,6 +257,8 @@ TrayWidget::~TrayWidget()
     if (s_instances.empty()) {
         delete s_settingsDlg;
         delete s_aboutDlg;
+        s_settingsDlg = nullptr;
+        s_aboutDlg = nullptr;
         QCoreApplication::quit();
     } else {
         auto *const remainingInstance = s_instances.front();
@@ -1099,14 +1101,5 @@ void TrayWidget::connectWithUpdateNotifier()
     }
 #endif
 }
-
-#ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
-void TrayWidget::respawnIfRestartRequested()
-{
-    if (auto *const restartHandler = s_settingsDlg ? s_settingsDlg->restartHandler() : nullptr) {
-        restartHandler->respawnIfRestartRequested();
-    }
-}
-#endif
 
 } // namespace QtGui
