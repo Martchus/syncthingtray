@@ -67,7 +67,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1796"/>
+        <location filename="../settings/settingsdialog.cpp" line="1792"/>
         <source>Unable to restart via &quot;%1&quot;: %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1745,37 +1745,37 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1809"/>
+        <location filename="../settings/settingsdialog.cpp" line="1824"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1817"/>
+        <location filename="../settings/settingsdialog.cpp" line="1832"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1824"/>
+        <location filename="../settings/settingsdialog.cpp" line="1839"/>
         <source>Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1826"/>
+        <location filename="../settings/settingsdialog.cpp" line="1841"/>
         <source>additional tool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1826"/>
+        <location filename="../settings/settingsdialog.cpp" line="1841"/>
         <source>Extra launcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1855"/>
+        <location filename="../settings/settingsdialog.cpp" line="1882"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1861"/>
+        <location filename="../settings/settingsdialog.cpp" line="1888"/>
         <source>Start wizard</source>
         <translation type="unfinished"></translation>
     </message>

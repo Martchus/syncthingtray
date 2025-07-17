@@ -67,7 +67,7 @@
         <translation>无法确定网络连接是否按流量计费，假设连接不按流量计费。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1796"/>
+        <location filename="../settings/settingsdialog.cpp" line="1792"/>
         <source>Unable to restart via &quot;%1&quot;: %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1790,37 +1790,37 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1809"/>
+        <location filename="../settings/settingsdialog.cpp" line="1824"/>
         <source>Tray</source>
         <translation>托盘</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1817"/>
+        <location filename="../settings/settingsdialog.cpp" line="1832"/>
         <source>Web view</source>
         <translation>网页视图</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1824"/>
+        <location filename="../settings/settingsdialog.cpp" line="1839"/>
         <source>Startup</source>
         <translation>启动</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1826"/>
+        <location filename="../settings/settingsdialog.cpp" line="1841"/>
         <source>additional tool</source>
         <translation>附加工具</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1826"/>
+        <location filename="../settings/settingsdialog.cpp" line="1841"/>
         <source>Extra launcher</source>
         <translation>额外启动器</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1855"/>
+        <location filename="../settings/settingsdialog.cpp" line="1882"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1861"/>
+        <location filename="../settings/settingsdialog.cpp" line="1888"/>
         <source>Start wizard</source>
         <translation>开始向导</translation>
     </message>
