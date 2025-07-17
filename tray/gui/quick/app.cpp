@@ -48,6 +48,8 @@
 
 #include <android/font.h>
 #include <android/font_matcher.h>
+
+#include <dlfcn.h>
 #endif
 
 #ifndef Q_OS_ANDROID
@@ -124,10 +126,6 @@ App::App(bool insecure, QObject *parent)
 
 #ifdef Q_OS_ANDROID
     JniFn::registerActivityJniMethods(this);
-#ifndef SYNCTHINGTRAY_GUI_CODE_IN_SERVICE
-    // create dummy bitmap to link against libjnigraphics.so (for font functions, supposedly libandroid.so would be enough)
-    IconManager::makeAndroidBitmap(QImage());
-#endif
 #endif
 
     m_app->installEventFilter(this);
@@ -618,6 +616,28 @@ DiffHighlighter *App::createDiffHighlighter(QTextDocument *parent)
 #define REQUIRES_ANDROID_API(x) __attribute__((__availability__(android, introduced = x)))
 #define ANDROID_API_AT_LEAST(x) __builtin_available(android x, *)
 
+struct FontFunctions {
+    explicit FontFunctions(void *libandroid) REQUIRES_ANDROID_API(29)
+        : FontMatcher_create(reinterpret_cast<decltype(&AFontMatcher_create)>(dlsym(libandroid, "AFontMatcher_create")))
+        , FontMatcher_destroy(reinterpret_cast<decltype(&AFontMatcher_destroy)>(dlsym(libandroid, "AFontMatcher_destroy")))
+        , FontMatcher_match(reinterpret_cast<decltype(&AFontMatcher_match)>(dlsym(libandroid, "AFontMatcher_match")))
+        , FontMatcher_setStyle(reinterpret_cast<decltype(&AFontMatcher_setStyle)>(dlsym(libandroid, "AFontMatcher_setStyle")))
+        , Font_getFontFilePath(reinterpret_cast<decltype(&AFont_getFontFilePath)>(dlsym(libandroid, "AFont_getFontFilePath")))
+        , Font_close(reinterpret_cast<decltype(&AFont_close)>(dlsym(libandroid, "AFont_close")))
+    {
+    }
+    operator bool() const REQUIRES_ANDROID_API(29)
+    {
+        return FontMatcher_create && FontMatcher_destroy && FontMatcher_match && FontMatcher_setStyle && Font_getFontFilePath && Font_close;
+    }
+    decltype(&AFontMatcher_create) FontMatcher_create REQUIRES_ANDROID_API(29);
+    decltype(&AFontMatcher_destroy) FontMatcher_destroy REQUIRES_ANDROID_API(29);
+    decltype(&AFontMatcher_match) FontMatcher_match REQUIRES_ANDROID_API(29);
+    decltype(&AFontMatcher_setStyle) FontMatcher_setStyle REQUIRES_ANDROID_API(29);
+    decltype(&AFont_getFontFilePath) Font_getFontFilePath REQUIRES_ANDROID_API(29);
+    decltype(&AFont_close) Font_close REQUIRES_ANDROID_API(29);
+};
+
 static void loadSystemFont(std::string_view fontPath, QString &fontFamily)
 {
     auto fontFile = QFile(QString::fromUtf8(fontPath.data(), static_cast<qsizetype>(fontPath.size())));
@@ -635,14 +655,15 @@ static void loadSystemFont(std::string_view fontPath, QString &fontFamily)
     }
 }
 
-static void matchAndLoadDefaultFont(AFontMatcher *matcher, std::uint16_t weight, QString &fontFamily) REQUIRES_ANDROID_API(34)
+static void matchAndLoadDefaultFont(const FontFunctions &fontFn, AFontMatcher *matcher, std::uint16_t weight, QString &fontFamily)
+    REQUIRES_ANDROID_API(34)
 {
-    AFontMatcher_setStyle(matcher, weight, false);
-    if (auto *const font = AFontMatcher_match(matcher, "FontFamily.Default", reinterpret_cast<const uint16_t *>(u"foobar"), 3, nullptr)) {
-        auto path = std::string_view(AFont_getFontFilePath(font));
+    fontFn.FontMatcher_setStyle(matcher, weight, false);
+    if (auto *const font = fontFn.FontMatcher_match(matcher, "FontFamily.Default", reinterpret_cast<const uint16_t *>(u"foobar"), 3, nullptr)) {
+        auto path = std::string_view(fontFn.Font_getFontFilePath(font));
         qDebug() << "Found system font: " << path;
         loadSystemFont(path, fontFamily);
-        AFont_close(font);
+        fontFn.Font_close(font);
     }
 }
 
@@ -656,15 +677,27 @@ static QString loadDefaultSystemFonts()
     auto defaultSystemFontFamily = QString();
     if (ANDROID_API_AT_LEAST(34)) {
         qDebug() << "Loading default system fonts";
-        if (auto *const m = AFontMatcher_create()) {
-            qDebug() << "Instantiated matcher";
-            matchAndLoadDefaultFont(m, AFONT_WEIGHT_NORMAL, defaultSystemFontFamily);
-            matchAndLoadDefaultFont(m, AFONT_WEIGHT_THIN, defaultSystemFontFamily);
-            matchAndLoadDefaultFont(m, AFONT_WEIGHT_LIGHT, defaultSystemFontFamily);
-            matchAndLoadDefaultFont(m, AFONT_WEIGHT_MEDIUM, defaultSystemFontFamily);
-            matchAndLoadDefaultFont(m, AFONT_WEIGHT_BOLD, defaultSystemFontFamily);
-            AFontMatcher_destroy(m);
+        auto *const libandroid = dlopen("libandroid.so", RTLD_LOCAL);
+        if (!libandroid) {
+            qDebug() << "Failed to open libandroid.so: " << dlerror();
+            return defaultSystemFontFamily;
         }
+        const auto fontFn = FontFunctions(libandroid);
+        if (!fontFn) {
+            qDebug() << "Failed loading font functions in libandroid.so.";
+            dlclose(libandroid);
+            return defaultSystemFontFamily;
+        }
+        if (auto *const m = fontFn.FontMatcher_create()) {
+            qDebug() << "Instantiated matcher";
+            matchAndLoadDefaultFont(fontFn, m, AFONT_WEIGHT_NORMAL, defaultSystemFontFamily);
+            matchAndLoadDefaultFont(fontFn, m, AFONT_WEIGHT_THIN, defaultSystemFontFamily);
+            matchAndLoadDefaultFont(fontFn, m, AFONT_WEIGHT_LIGHT, defaultSystemFontFamily);
+            matchAndLoadDefaultFont(fontFn, m, AFONT_WEIGHT_MEDIUM, defaultSystemFontFamily);
+            matchAndLoadDefaultFont(fontFn, m, AFONT_WEIGHT_BOLD, defaultSystemFontFamily);
+            fontFn.FontMatcher_destroy(m);
+        }
+        dlclose(libandroid);
     }
     return defaultSystemFontFamily;
 }

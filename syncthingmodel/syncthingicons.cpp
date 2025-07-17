@@ -444,7 +444,7 @@ void IconManager::renderForkAwesomeIcon(QtForkAwesome::Icon icon, QPainter *pain
     m_forkAwesomeRenderer.render(icon, painter, rect, m_palette.color(QPalette::Normal, QPalette::Text));
 }
 
-#if defined(Q_OS_ANDROID) // && defined(SYNCTHINGTRAY_GUI_CODE_IN_SERVICE)
+#if defined(Q_OS_ANDROID) && defined(SYNCTHINGTRAY_GUI_CODE_IN_SERVICE)
 static QJniObject createBitmap(const QSize &size)
 {
     const auto config = QJniObject::getStaticObjectField("android/graphics/Bitmap$Config", "ARGB_8888", "Landroid/graphics/Bitmap$Config;");
