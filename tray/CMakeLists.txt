@@ -238,7 +238,7 @@ if (SETUP_TOOLS)
     if (NOT USE_LIBSYNCTHING)
         use_crypto()
     endif ()
-    list(APPEND REQUIRED_ICONS install)
+    list(APPEND REQUIRED_ICONS install info)
     list(APPEND META_PRIVATE_COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_SETUP_TOOLS_ENABLED)
 endif ()
 

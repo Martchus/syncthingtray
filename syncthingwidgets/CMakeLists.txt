@@ -156,7 +156,7 @@ if (SETUP_TOOLS)
         SOURCE settings/settingsdialog.cpp
         APPEND
         PROPERTY COMPILE_DEFINITIONS SYNCTHINGWIDGETS_SETUP_TOOLS_ENABLED)
-    list(APPEND REQUIRED_ICONS install)
+    list(APPEND REQUIRED_ICONS install info)
 endif ()
 
 # link also explicitly against the following Qt modules
