@@ -127,8 +127,14 @@ Syncthing Tray does *not* launch Syncthing itself by default. There should be no
 Syncthing installation. You might consider different configurations:
 
 * If you're happy how Syncthing is started on your system so far just tell Syncthing Tray to connect to your currently
-  running Syncthing instance in the settings. If you're currently starting Syncthing via systemd you might consider
-  enabling the systemd integration in the settings (see section "[Configuring systemd integration](#configuring-systemd-integration)").
+  running Syncthing instance in the settings.
+    * When starting Syncthing via systemd it is recommended to enable the systemd integration in the settings (see section
+      "[Configuring systemd integration](#configuring-systemd-integration)").
+    * When starting Syncthing by other means (e.g. as Windows service) there are no further integrations provided. Hence,
+      Syncthing Tray cannot know whether Syncthing is expected to be running or not. It will therefore unconditionally
+      attempt to connect with Syncthing continuously as-per the configurable re-connect interval. It will also
+      unconditionally notify when disconnecting from Syncthing if this kind of notification is enabled (so it makes perhaps
+      most sense to disable it).
 * If you would like Syncthing Tray to take care of starting Syncthing for you, you can use the Syncthing launcher
   available in the settings. Note that this is *not* supported when using the Plasmoid.
     * The Linux and Windows builds provided in the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases)
