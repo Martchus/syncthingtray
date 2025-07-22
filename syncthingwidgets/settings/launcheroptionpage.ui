@@ -2,6 +2,12 @@
 <ui version="4.0">
  <class>QtGui::LauncherOptionPage</class>
  <widget class="QWidget" name="QtGui::LauncherOptionPage">
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
   <property name="windowTitle">
    <string>Syncthing launcher</string>
   </property>
@@ -9,248 +15,299 @@
    <iconset theme="system-run" resource="../resources/syncthingwidgetsicons.qrc">
     <normaloff>:/icons/hicolor/scalable/apps/system-run.svg</normaloff>:/icons/hicolor/scalable/apps/system-run.svg</iconset>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="mainVerticalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
-    <widget class="QCheckBox" name="enabledCheckBox">
-     <property name="font">
-      <font>
-       <bold>true</bold>
-      </font>
-     </property>
-     <property name="text">
-      <string>Launch Syncthing when starting the tray icon</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QWidget" name="launcherFormWidget" native="true">
-     <layout class="QFormLayout" name="formLayout">
-      <property name="leftMargin">
-       <number>30</number>
-      </property>
-      <property name="topMargin">
-       <number>0</number>
-      </property>
-      <property name="rightMargin">
-       <number>0</number>
-      </property>
-      <property name="bottomMargin">
-       <number>0</number>
-      </property>
-      <item row="0" column="0">
-       <widget class="QLabel" name="syncthingPathLabel">
-        <property name="text">
-         <string>Syncthing executable</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QtUtilities::PathSelection" name="syncthingPathSelection" native="true"/>
-      </item>
-      <item row="2" column="0">
-       <widget class="QLabel" name="argumentsLabel">
-        <property name="text">
-         <string>Arguments</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QtUtilities::ClearLineEdit" name="argumentsLineEdit"/>
-      </item>
-      <item row="1" column="1">
-       <widget class="QCheckBox" name="useBuiltInVersionCheckBox">
-        <property name="text">
-         <string>Use built-in Syncthing library</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="configDirLabel">
-        <property name="toolTip">
-         <string>Set directory for configuration and keys</string>
-        </property>
-        <property name="text">
-         <string>Config directory</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QtUtilities::PathSelection" name="configDirPathSelection" native="true"/>
-      </item>
-      <item row="7" column="0">
-       <widget class="QLabel" name="logLevelLabel">
-        <property name="text">
-         <string>Log level</string>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="1">
-       <widget class="QComboBox" name="logLevelComboBox">
-        <item>
-         <property name="text">
-          <string>Debug</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Verbose</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Info</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Warning</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Fatal</string>
-         </property>
-        </item>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="dataDirLabel">
-        <property name="toolTip">
-         <string>Set database directory (falls back to config directory if empty)</string>
-        </property>
-        <property name="text">
-         <string>Data directory</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QtUtilities::PathSelection" name="dataDirPathSelection" native="true"/>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="optionsLabel">
-        <property name="text">
-         <string>Options</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1">
-       <widget class="QCheckBox" name="expandEnvCheckBox">
-        <property name="text">
-         <string>Replace ${var} or $var in directories with values from environment</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="showButtonCheckBox">
-     <property name="text">
-      <string>Show start/stop button on tray for local instance</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="considerForReconnectCheckBox">
-     <property name="text">
-      <string>Consider process status for notifications and reconnect attempts concerning local instance
- • Don't reconnect when the process is not running
- • Try to reconnect when starting the process
- • Suppress notification about disconnect when Syncthing has been stopped manually</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="stopOnMeteredCheckBox">
-     <property name="text">
-      <string>Stop automatically when network connection is metered</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="Line" name="line">
+    <widget class="QSplitter" name="splitter">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Vertical</enum>
      </property>
-    </widget>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QLabel" name="logLabel">
-       <property name="font">
-        <font>
-         <bold>true</bold>
-        </font>
+     <widget class="QWidget" name="settingsWidget" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <layout class="QVBoxLayout" name="settingsVerticalLayout">
+       <property name="bottomMargin">
+        <number>0</number>
        </property>
-       <property name="text">
-        <string>Syncthing log (interleaved stdout/stderr)</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="launchNowPushButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Apply and launch now</string>
-       </property>
-       <property name="icon">
-        <iconset theme="view-refresh" resource="../resources/syncthingwidgetsicons.qrc">
-         <normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</iconset>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="stopPushButton">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="text">
-        <string>Stop launched instance</string>
-       </property>
-       <property name="icon">
-        <iconset theme="process-stop" resource="../resources/syncthingwidgetsicons.qrc">
-         <normaloff>:/icons/hicolor/scalable/actions/process-stop.svg</normaloff>:/icons/hicolor/scalable/actions/process-stop.svg</iconset>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
-    <widget class="QtUtilities::ClearPlainTextEdit" name="logTextEdit">
-     <property name="undoRedoEnabled">
-      <bool>false</bool>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-     <property name="placeholderText">
-      <string>No log messages available yet</string>
-     </property>
-    </widget>
-   </item>
-   <item>
-    <widget class="QCheckBox" name="ensureCursorVisibleCheckBox">
-     <property name="text">
-      <string>Ensure latest log is visible</string>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
+       <item>
+        <widget class="QCheckBox" name="enabledCheckBox">
+         <property name="font">
+          <font>
+           <bold>true</bold>
+          </font>
+         </property>
+         <property name="text">
+          <string>Launch Syncthing when starting the tray icon</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="launcherFormWidget" native="true">
+         <layout class="QFormLayout" name="formLayout">
+          <property name="leftMargin">
+           <number>30</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="syncthingPathLabel">
+            <property name="text">
+             <string>Syncthing executable</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QtUtilities::PathSelection" name="syncthingPathSelection" native="true"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="argumentsLabel">
+            <property name="text">
+             <string>Arguments</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QtUtilities::ClearLineEdit" name="argumentsLineEdit"/>
+          </item>
+          <item row="1" column="1">
+           <widget class="QCheckBox" name="useBuiltInVersionCheckBox">
+            <property name="text">
+             <string>Use built-in Syncthing library</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <widget class="QLabel" name="configDirLabel">
+            <property name="toolTip">
+             <string>Set directory for configuration and keys</string>
+            </property>
+            <property name="text">
+             <string>Config directory</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="1">
+           <widget class="QtUtilities::PathSelection" name="configDirPathSelection" native="true"/>
+          </item>
+          <item row="7" column="0">
+           <widget class="QLabel" name="logLevelLabel">
+            <property name="text">
+             <string>Log level</string>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="1">
+           <widget class="QComboBox" name="logLevelComboBox">
+            <item>
+             <property name="text">
+              <string>Debug</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Verbose</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Info</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Warning</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Fatal</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="dataDirLabel">
+            <property name="toolTip">
+             <string>Set database directory (falls back to config directory if empty)</string>
+            </property>
+            <property name="text">
+             <string>Data directory</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="1">
+           <widget class="QtUtilities::PathSelection" name="dataDirPathSelection" native="true"/>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="optionsLabel">
+            <property name="text">
+             <string>Options</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="1">
+           <widget class="QCheckBox" name="expandEnvCheckBox">
+            <property name="text">
+             <string>Replace ${var} or $var in directories with values from environment</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="showButtonCheckBox">
+         <property name="text">
+          <string>Show start/stop button on tray for local instance</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="considerForReconnectCheckBox">
+         <property name="text">
+          <string>Consider process status for notifications and reconnect attempts concerning local instance
+ • Don't reconnect when the process is not running
+ • Try to reconnect when starting the process
+ • Suppress notification about disconnect when Syncthing has been stopped manually</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="stopOnMeteredCheckBox">
+         <property name="text">
+          <string>Stop automatically when network connection is metered</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="Line" name="line">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="logWidget" native="true">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <layout class="QVBoxLayout" name="logVerticalLayout">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QLabel" name="logLabel">
+           <property name="font">
+            <font>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="text">
+            <string>Syncthing log (interleaved stdout/stderr)</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="launchNowPushButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Apply and launch now</string>
+           </property>
+           <property name="icon">
+            <iconset theme="view-refresh" resource="../resources/syncthingwidgetsicons.qrc">
+             <normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</normaloff>:/icons/hicolor/scalable/actions/view-refresh.svg</iconset>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="stopPushButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Stop launched instance</string>
+           </property>
+           <property name="icon">
+            <iconset theme="process-stop" resource="../resources/syncthingwidgetsicons.qrc">
+             <normaloff>:/icons/hicolor/scalable/actions/process-stop.svg</normaloff>:/icons/hicolor/scalable/actions/process-stop.svg</iconset>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QtUtilities::ClearPlainTextEdit" name="logTextEdit">
+         <property name="undoRedoEnabled">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="placeholderText">
+          <string>No log messages available yet</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="ensureCursorVisibleCheckBox">
+         <property name="text">
+          <string>Ensure latest log is visible</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </item>
   </layout>
