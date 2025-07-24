@@ -133,7 +133,7 @@ option(
 option(USE_LIBSYNCTHING "whether libsyncthing should be included for syncthingtray's CLI" OFF)
 set(CPP_UTILITIES_REQUIRED_VERSION 5.28.0)
 if (SETUP_TOOLS AND NOT USE_LIBSYNCTHING)
-    set(CPP_UTILITIES_REQUIRED_VERSION 5.29.0)
+    set(CPP_UTILITIES_REQUIRED_VERSION 5.30.0)
 endif ()
 
 # find c++utilities

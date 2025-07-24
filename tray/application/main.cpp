@@ -46,6 +46,7 @@
 #include <qtutilities/settingsdialog/qtsettings.h>
 
 #ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
+#include <c++utilities/misc/signingkeys.h>
 #include <qtutilities/setup/updater.h>
 #ifndef SYNCTHINGTRAY_USE_LIBSYNCTHING
 #include <c++utilities/misc/verification.h>
@@ -117,29 +118,13 @@ static void handleSystemdServiceError(const QString &context, const QString &nam
 
 // define public key and signature extension depending on verification backend
 #ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
-// clang-format off
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
 #define SYNCTHINGTRAY_SIGNATURE_EXTENSION ".stsigtool.sig"
-constexpr auto signingKeyStsigtool = std::string_view(
-R"(-----BEGIN EC PUBLIC KEY-----
-MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQBzGxkQSS43eE4r+A7HjlcEch5apsn
-fKOgJWaRE2TOD9dNoBO2RSaJEAzzOXg2BPMsiPdr+Ty99FZtX8fmIcgJHGoB3sE1
-PmSOaw3YWAXrHUYslrVRJI4iYCLuT4qjFMHgmqvphEE/zGDZ5Tyu6FwVlSjCO4Yy
-FdsjpzKV6nrX6EsK++o=
------END EC PUBLIC KEY-----
-)");
+constexpr auto signingKeyStsigtool = SigningKeys::stsigtool[0];
 #else
 #define SYNCTHINGTRAY_SIGNATURE_EXTENSION ".openssl.sig"
-constexpr auto signingKeyOpenSSL = std::string_view(
-R"(-----BEGIN EC PUBLIC KEY-----
-MIGbMBAGByqGSM49AgEGBSuBBAAjA4GGAAQAWJAn1E7ZE5Q6H69oaV5sqCIppJdg
-4bXDan9dJv6GOg70/t7q2CvwcwUXhV4FvCZxCHo25+rWYINfqKU2Utul8koAx8tK
-59ohfOzI63I+CC76GfX41uRGU0P5i6hS7o/hgBLiVXqT0FgS2BMfmnLMUvUjqnI2
-YQM7C55/5BM5Vrblkow=
------END EC PUBLIC KEY-----
-)");
+constexpr auto signingKeyOpenSSL = SigningKeys::openssl[0];
 #endif
-// clang-format on
 #endif
 
 QObject *parentObject = nullptr;
