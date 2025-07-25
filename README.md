@@ -452,7 +452,7 @@ See the [release section on GitHub](https://github.com/Martchus/syncthingtray/re
     * for generic, self-contained binaries checkout the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases)
         * Requires glibc>=2.26, OpenGL and libX11
             * openSUSE Leap 15, Fedora 27, Debian 10 and Ubuntu 18.04 are recent enough (be sure
-              the package `libopengl0` is installed on Debian/Ubuntu)
+              the packages `libglx0`, `libopengl0` and `libegl1` are installed on Debian/Ubuntu)
         * Supports X11 and Wayland (set the environment variable `QT_QPA_PLATFORM=xcb` to disable
           native Wayland support if it does not work on your system)
         * The archive is signed with the GPG key
