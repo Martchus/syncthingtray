@@ -6,16 +6,25 @@
 package io.github.martchus.syncthingtray;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.LinkProperties;
+import android.net.Network;
+import android.net.RouteInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.storage.StorageManager;
 import android.provider.DocumentsContract;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
+
 import java.io.File;
 import java.lang.IllegalArgumentException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
+import java.net.Inet4Address;
+import java.net.InetAddress;
 
 public class Util {
     private static final String TAG = "Util";
@@ -109,6 +118,24 @@ public class Util {
             return "/storage/" + volumeId;
         }
         return volumeId;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public static String getGatewayIPv4(final Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        Network activeNetwork = cm.getActiveNetwork();
+        if (activeNetwork == null) return null;
+
+        LinkProperties props = cm.getLinkProperties(activeNetwork);
+        if (props == null) return null;
+
+        for (RouteInfo route : props.getRoutes()) {
+            InetAddress gateway = route.getGateway();
+            if (route.isDefaultRoute() && gateway instanceof Inet4Address) {
+                return gateway.getHostAddress();
+            }
+        }
+        return null;
     }
 
     private static native void initSigsysHandler();

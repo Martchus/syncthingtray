@@ -331,6 +331,10 @@ public class SyncthingService extends QtService {
         return (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
     }
 
+    public String getGatewayIPv4() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? Util.getGatewayIPv4(this) : null;
+    }
+
     private static native void stopLibSyncthing();
     private static native void broadcastLauncherStatus();
     private static native void handleMessageFromActivity(int what, int arg1, int arg2, String str);

@@ -16,6 +16,7 @@
 #ifdef Q_OS_ANDROID
 #include <QCoreApplication>
 #include <QtCore/private/qandroidextras_p.h>
+#include <QtEnvironmentVariables>
 #endif
 
 using namespace Data;
@@ -160,6 +161,17 @@ bool AppService::applyLauncherSettings()
     } else {
         m_launcher.logFile().close();
     }
+#ifdef Q_OS_ANDROID
+    if (shouldRun) {
+        if (const auto ipObj = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jstring>("getGatewayIPv4"); ipObj.isValid()) {
+            const auto ip = ipObj.toString();
+            qDebug() << "Setting FALLBACK_NET_GATEWAY_IPV4:" << ip;
+            qputenv("FALLBACK_NET_GATEWAY_IPV4", ip.toUtf8());
+        } else {
+            qunsetenv("FALLBACK_NET_GATEWAY_IPV4");
+        }
+    }
+#endif
     m_launcher.setRunning(shouldRun, std::move(options));
 #else
     if (shouldRun) {

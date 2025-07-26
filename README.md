@@ -517,7 +517,8 @@ Some of the code is based on code from other open source projects:
   [Kirigami](https://invent.kde.org/frameworks/kirigami). The comments at the beginning of those files state the original
   authors/contributors.
 * Parts of `tray/android/src/io/github/martchus/syncthingtray/Util.java` are based on
-  [com.nutomic.syncthingandroid.util](https://github.com/Catfriend1/syncthing-android/blob/main/app/src/main/java/com/nutomic/syncthingandroid/util/FileUtils.java).
+  [com.nutomic.syncthingandroid.util](https://github.com/Catfriend1/syncthing-android/blob/main/app/src/main/java/com/nutomic/syncthingandroid/util/FileUtils.java) and
+  [com.nutomic.syncthingandroid.service](https://github.com/Catfriend1/syncthing-android/blob/main/app/src/main/java/com/nutomic/syncthingandroid/service/SyncthingRunnable.java).
 * The icon files `ic_stat_notify*` under `tray/android/res` and `tray/resources` are taken from
   [syncthing-android](https://github.com/Catfriend1/syncthing-android/tree/main/app/src/main/res).
 * The code in `tray/android/src/io/github/martchus/syncthingtray/DocumentsProvider.java` is based on
