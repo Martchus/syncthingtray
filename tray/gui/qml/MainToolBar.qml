@@ -7,10 +7,12 @@ import Main
 
 ToolBar {
     id: toolBar
-    Material.theme: Material.Dark
+    Material.theme: Material.Light
+    Material.background: Material.LightBlue
     ColumnLayout {
         anchors.fill: parent
         anchors.leftMargin: leftMargin
+        Material.theme: Material.Dark
         RowLayout {
             visible: App.status.length !== 0
             CustomToolButton {
