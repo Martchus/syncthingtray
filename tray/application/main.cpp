@@ -47,10 +47,8 @@
 
 #ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
 #include <c++utilities/misc/signingkeys.h>
-#include <qtutilities/setup/updater.h>
-#ifndef SYNCTHINGTRAY_USE_LIBSYNCTHING
 #include <c++utilities/misc/verification.h>
-#endif
+#include <qtutilities/setup/updater.h>
 #endif
 
 #include <QNetworkAccessManager>
@@ -120,10 +118,10 @@ static void handleSystemdServiceError(const QString &context, const QString &nam
 #ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
 #define SYNCTHINGTRAY_SIGNATURE_EXTENSION ".stsigtool.sig"
-constexpr auto signingKeyStsigtool = SigningKeys::stsigtool[0];
+#define SYNCTHINGTRAY_SIGNING_KEYS SigningKeys::stsigtool
 #else
 #define SYNCTHINGTRAY_SIGNATURE_EXTENSION ".openssl.sig"
-constexpr auto signingKeyOpenSSL = SigningKeys::openssl[0];
+#define SYNCTHINGTRAY_SIGNING_KEYS SigningKeys::openssl
 #endif
 #endif
 
@@ -464,9 +462,9 @@ static int runApplication(int argc, const char *const *argv)
                 error = QStringLiteral("empty/non-existent signature");
             } else {
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
-                const auto res = LibSyncthing::verify(signingKeyStsigtool, update.signature, update.data);
+                const auto res = CppUtilities::verifySignature(SYNCTHINGTRAY_SIGNING_KEYS, update.signature, update.data, &LibSyncthing::verify);
 #else
-                const auto res = CppUtilities::verifySignature(signingKeyOpenSSL, update.signature, update.data);
+                const auto res = CppUtilities::verifySignature(SYNCTHINGTRAY_SIGNING_KEYS, update.signature, update.data);
 #endif
                 error = QString::fromUtf8(res.data(), static_cast<QString::size_type>(res.size()));
             }
