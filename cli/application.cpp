@@ -866,6 +866,8 @@ QByteArray Application::editConfigViaScript() const
             script += line;
             script += '\n';
         }
+        // remove trailing termination to avoid e.g. "Expected token `)' in line 2" when "… line 1" would make more sense
+        script.removeLast();
     }
 
     // define function to print error
