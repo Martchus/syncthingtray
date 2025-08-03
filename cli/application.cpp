@@ -839,8 +839,8 @@ QByteArray Application::editConfigViaScript() const
 {
 #if defined(SYNCTHINGCTL_USE_SCRIPT) || defined(SYNCTHINGCTL_USE_JSENGINE)
     // get script
-    QByteArray script;
-    QString scriptFileName;
+    auto script = QByteArray();
+    auto scriptFileName = QString();
     if (m_args.script.isPresent()) {
         // read script file
         auto scriptFile = QFile(QString::fromLocal8Bit(m_args.script.firstValue()));
@@ -858,8 +858,7 @@ QByteArray Application::editConfigViaScript() const
         // construct script from CLI arguments
         auto requiredSize = QString::size_type(0);
         for (const auto *const line : m_args.jsLines.values()) {
-            requiredSize += static_cast<QString::size_type>(std::strlen(line));
-            requiredSize += 1;
+            requiredSize += static_cast<QString::size_type>(std::strlen(line)) + 1;
         }
         script.reserve(requiredSize);
         for (const auto *const line : m_args.jsLines.values()) {
@@ -876,11 +875,11 @@ QByteArray Application::editConfigViaScript() const
     });
 
     // evaluate config via JSON.parse()
-    SYNCTHINGCTL_JS_ENGINE engine;
-    auto globalObject(engine.globalObject());
-    const auto configString(QJsonDocument(m_connection.rawConfig()).toJson(QJsonDocument::Indented));
+    auto engine = SYNCTHINGCTL_JS_ENGINE();
+    auto globalObject = engine.globalObject();
+    const auto configString = QJsonDocument(m_connection.rawConfig()).toJson(QJsonDocument::Indented);
     globalObject.setProperty(QStringLiteral("configStr"), SYNCTHINGCTL_JS_VALUE(QString::fromUtf8(configString)) SYNCTHINGCTL_JS_READONLY);
-    const auto configObj(engine.evaluate(QStringLiteral("JSON.parse(configStr)")));
+    const auto configObj = engine.evaluate(QStringLiteral("JSON.parse(configStr)"));
     if (configObj.isError()) {
         cerr << Phrases::Error << "Unable to evaluate the current Syncthing configuration." << Phrases::End;
         printError(configObj);
@@ -893,8 +892,8 @@ QByteArray Application::editConfigViaScript() const
     globalObject.setProperty(QStringLiteral("ownID"), m_connection.myId() SYNCTHINGCTL_JS_UNDELETABLE);
     globalObject.setProperty(QStringLiteral("url"), m_connection.syncthingUrl() SYNCTHINGCTL_JS_UNDELETABLE);
 
-    // provide console.log() which is not available in QJSEngine and QScriptEngine by default (note that print() is only available when using Qt Script)
-    JSConsole console;
+    // provide console.log() which is not available in QJSEngine and QScriptEngine by default (print() is only available when using Qt Script)
+    auto console = JSConsole();
     globalObject.setProperty(QStringLiteral("console"), engine.newQObject(&console));
 
     // provide helper
@@ -905,7 +904,7 @@ QByteArray Application::editConfigViaScript() const
         cerr << Phrases::Error << "Unable to load internal helper script: " << helperFile.errorString().toStdString() << Phrases::EndFlush;
         return QByteArray();
     }
-    const auto helperRes(engine.evaluate(QString::fromUtf8(helperScript)));
+    const auto helperRes = engine.evaluate(QString::fromUtf8(helperScript));
     if (helperRes.isError()) {
         cerr << Phrases::Error << "Unable to evaluate internal helper script." << Phrases::End;
         printError(helperRes);
@@ -913,7 +912,7 @@ QByteArray Application::editConfigViaScript() const
     }
 
     // evaluate the user provided script
-    const auto res(engine.evaluate(QString::fromUtf8(script), scriptFileName));
+    const auto res = engine.evaluate(QString::fromUtf8(script), scriptFileName);
     if (res.isError()) {
         cerr << Phrases::Error;
         if (m_args.script.isPresent()) {
@@ -927,7 +926,7 @@ QByteArray Application::editConfigViaScript() const
     }
 
     // validate the altered configuration
-    const auto newConfigObj(globalObject.property(QStringLiteral("config")));
+    const auto newConfigObj = globalObject.property(QStringLiteral("config"));
     if (!newConfigObj.isObject()) {
         cerr << Phrases::Error << "New config object seems empty." << Phrases::EndFlush;
         return QByteArray();
@@ -946,7 +945,7 @@ QByteArray Application::editConfigViaScript() const
     }
 
     // serilaize the altered configuration via JSON.stringify()
-    const auto newConfigJson(engine.evaluate(QStringLiteral("JSON.stringify(config, null, 4)")));
+    const auto newConfigJson = engine.evaluate(QStringLiteral("JSON.stringify(config, null, 4)"));
     if (!newConfigJson.isString()) {
         cerr << Phrases::Error << "Unable to convert the config object to JSON via JSON.stringify()." << Phrases::End;
         cerr << configObj.toString().toLocal8Bit().data() << endl;
