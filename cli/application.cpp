@@ -914,7 +914,13 @@ QByteArray Application::editConfigViaScript() const
     // evaluate the user provided script
     const auto res(engine.evaluate(QString::fromUtf8(script), scriptFileName));
     if (res.isError()) {
-        cerr << Phrases::Error << "Unable to evaluate the specified script file \"" << m_args.script.firstValue() << "\"." << Phrases::End;
+        cerr << Phrases::Error;
+        if (m_args.script.isPresent()) {
+            cerr << "Unable to evaluate the specified script file \"" << m_args.script.firstValue() << "\":";
+        } else {
+            cerr << "Unable to specified script:";
+        }
+        cerr << Phrases::End;
         printError(res);
         return QByteArray();
     }
