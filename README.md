@@ -213,9 +213,8 @@ This section does *not* apply to the [Android app](#using-the-android-app), the
 Syncthing Tray is a single-instance application. So if you try to start a second instance the
 second process will only pass arguments to the process that is already running and exit. This
 is useful as is prevents one from accidentally launching two Syncthing instances at the same
-time via the built-in Syncthing launcher. It also allows showing the triggering certain
-actions via certain launch options, see "[Configuring hotkeys](#configuring-hotkeys)" for
-details.
+time via the built-in Syncthing launcher. It also allows triggering certain actions via launch
+options, see "[Configuring hotkeys](#configuring-hotkeys)" for details.
 
 Besides that there are a few other notable launch options:
 
