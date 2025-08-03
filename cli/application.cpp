@@ -849,8 +849,7 @@ QByteArray Application::editConfigViaScript() const
             scriptFileName = scriptFile.fileName();
         }
         if (scriptFile.error() != QFile::NoError) {
-            cerr << Phrases::Error << "Unable to read specified script file \"" << m_args.script.firstValue() << "\":"
-                 << Phrases::End;
+            cerr << Phrases::Error << "Unable to read specified script file \"" << m_args.script.firstValue() << "\":" << Phrases::End;
             cerr << scriptFile.errorString().toStdString() << '\n';
             return QByteArray();
         }
