@@ -18,7 +18,7 @@ Args::Args()
           "otherwise busy with e.g. scanning. Devices are considered idling if they are disconnected or all directories shared with the device are "
           "remotely up-to-date.")
     , pwd("pwd", 'p', "operates in the current working directory")
-    , cat("cat", '\0', "prints the current Syncthing configuration")
+    , cat("cat", '\0', "prints the Syncthing configuration as JSON")
     , edit("edit", '\0', "allows editing the Syncthing configuration using an external editor")
     , statusPwd("status", 's', "prints the status of the current working directory")
     , rescanPwd("rescan", 'r', "rescans the current working directory")
