@@ -843,16 +843,15 @@ QByteArray Application::editConfigViaScript() const
     QString scriptFileName;
     if (m_args.script.isPresent()) {
         // read script file
-        QFile scriptFile(QString::fromLocal8Bit(m_args.script.firstValue()));
-        if (!scriptFile.open(QFile::ReadOnly)) {
-            cerr << Phrases::Error << "Unable to open specified script file \"" << m_args.script.firstValue() << "\"." << Phrases::EndFlush;
-            return QByteArray();
+        auto scriptFile = QFile(QString::fromLocal8Bit(m_args.script.firstValue()));
+        if (scriptFile.open(QFile::ReadOnly)) {
+            script = scriptFile.readAll();
+            scriptFileName = scriptFile.fileName();
         }
-        script = scriptFile.readAll();
-        scriptFileName = scriptFile.fileName();
-        if (script.isEmpty()) {
-            cerr << Phrases::Error << "Unable to read any bytes from specified script file \"" << m_args.script.firstValue() << "\"."
-                 << Phrases::EndFlush;
+        if (scriptFile.error() != QFile::NoError) {
+            cerr << Phrases::Error << "Unable to read specified script file \"" << m_args.script.firstValue() << "\":"
+                 << Phrases::End;
+            cerr << scriptFile.errorString().toStdString() << '\n';
             return QByteArray();
         }
     } else if (m_args.jsLines.isPresent()) {
