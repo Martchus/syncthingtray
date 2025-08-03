@@ -10,5 +10,5 @@ JSConsole::JSConsole(QObject *parent) : QObject(parent)
 
 void JSConsole::log(const QString &msg) const
 {
-    cerr << "script: "<< msg.toLocal8Bit().data() << endl;
+    cerr << "script: "<< msg.toStdString() << endl;
 }
