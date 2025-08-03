@@ -871,7 +871,7 @@ QByteArray Application::editConfigViaScript() const
 
     // define function to print error
     const auto printError([](const auto &object) {
-        cerr << object.toString().toLocal8Bit().data() << "\nin line " << SYNCTHINGCTL_JS_INT(object.property(QStringLiteral("lineNumber"))) << endl;
+        cerr << object.toString().toStdString() << " in line " << SYNCTHINGCTL_JS_INT(object.property(QStringLiteral("lineNumber"))) << endl;
     });
 
     // evaluate config via JSON.parse()
