@@ -9,7 +9,7 @@ The following integrations are provided:
 * Tray application (using the Qt framework)
 * Context menu extension for the [Dolphin](https://www.kde.org/applications/system/dolphin) file manager
 * Plasmoid for [KDE Plasma](https://www.kde.org/plasma-desktop)
-* Command-line interface
+* [Command-line interface](docs/cli.md)
 * Qt-ish C++ library
 
 ---
