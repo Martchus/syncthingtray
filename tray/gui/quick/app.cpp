@@ -197,7 +197,7 @@ App::App(bool insecure, QObject *parent)
 
 App::~App()
 {
-    qDebug() << "Destorying app";
+    qDebug() << "Destroying app";
 #ifdef Q_OS_ANDROID
     JniFn::unregisterActivityJniMethods(this);
 #endif
