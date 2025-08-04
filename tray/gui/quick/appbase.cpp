@@ -15,6 +15,11 @@ using namespace Data;
 
 namespace QtGui {
 
+/*!
+ * \class AppBase
+ * \brief The AppBase class implements common functionality of App and AppService.
+ */
+
 AppBase::AppBase(bool insecure, bool textOnly, QObject *parent)
     : QObject(parent)
     , m_notifier(m_connection)

@@ -98,6 +98,23 @@ using namespace Data;
 
 namespace QtGui {
 
+/*!
+ * \class App
+ * \brief The App class provides various functionality for the Qt Quick GUI.
+ * \remarks
+ * - This class is backed by AppService which manages the runtime of Syncthing.
+ * - This class provides the Qml engine and is accessible from Qml via the App singleton.
+ * - Under Android this class is accompanied by the Java class Activity which implements certain
+ *   Android-specific functionality in Java.
+ */
+
+/*!
+ * \brief Initializes the Qt Quick GUI and related platform-specific functionality.
+ * \remarks
+ * - Registers JNI functions for the Java class Activity under Android and signals the Activity
+ *   class via "onNativeReady" that these functions are available. This will also trigger the
+ *   service startup.
+ */
 App::App(bool insecure, QObject *parent)
     : AppBase(insecure, false, parent)
     , m_app(static_cast<QGuiApplication *>(QCoreApplication::instance()))

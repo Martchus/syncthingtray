@@ -23,12 +23,34 @@ using namespace Data;
 
 namespace QtGui {
 
+/*!
+ * \class AppService
+ * \brief The AppService class manages the runtime of Syncthing for the Qt Quick GUI.
+ * \remarks
+ * - Under Android the app is split into two processes. One UI process and one service process. Hence the code
+ *   that needs to run in the service process has been moved from the App class into the AppService class. The
+ *   communication between these is implemented via Binder.
+ * - Under other platforms an object of the AppService class is simply instantiated next to the main App object.
+ *   There is no process boundary so communication between these is done via signals and slots.
+ * - Under Android this class is accompanied by the Java class SyncthingService which implements certain
+ *   Android-specific functionality in Java. Both classes also implement the notification handling because the
+ *   Android service is a "foreground service" which means it is tied to a notification.
+ * \sa https://developer.android.com/develop/background-work/services/fgs
+ */
+
 #ifdef SYNCTHINGTRAY_GUI_CODE_IN_SERVICE
 static constexpr auto textOnly = false;
 #else
 static constexpr auto textOnly = true;
 #endif
 
+/*!
+ * \brief Initializes the Syncthing launcher and related platform-specific functionality.
+ * \remarks
+ * - Registers JNI functions for the Java class SyncthingService under Android. There is no
+ *   "onNativeReady" call like in App because for services Qt itself provides this kind of
+ *   synchronization.
+ */
 AppService::AppService(bool insecure, QObject *parent)
     : AppBase(insecure, textOnly, parent)
 #ifdef Q_OS_ANDROID
