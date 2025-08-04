@@ -186,7 +186,11 @@ App::App(bool insecure, QObject *parent)
         [this](const QString &dirId) { emit info(tr("Triggered override of \"%1\"").arg(dirDisplayName(dirId))); });
     connect(&m_connection, &SyncthingConnection::revertTriggered, this,
         [this](const QString &dirId) { emit info(tr("Triggered revert of \"%1\"").arg(dirDisplayName(dirId))); });
-    connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, &App::shutdown);
+
+    // stop libsyncthing when the app is about to quit
+    if constexpr (!isServiceShutdownManual()) {
+        connect(QCoreApplication::instance(), &QCoreApplication::aboutToQuit, this, &App::shutdownService);
+    }
 
 #ifdef Q_OS_ANDROID
     QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("onNativeReady");
@@ -373,7 +377,7 @@ bool App::unloadMain()
     return true;
 }
 
-void App::shutdown()
+void App::shutdownService()
 {
 #ifdef Q_OS_ANDROID
     QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("stopSyncthingService");

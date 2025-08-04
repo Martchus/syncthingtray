@@ -68,6 +68,7 @@ class App : public AppBase {
     Q_PROPERTY(QIcon statusIcon READ statusIcon NOTIFY statusInfoChanged)
     Q_PROPERTY(QString additionalStatusText READ additionalStatusText NOTIFY statusInfoChanged)
     Q_PROPERTY(bool scanSupported READ isScanSupported CONSTANT)
+    Q_PROPERTY(bool manualServiceShutdown READ isServiceShutdownManual CONSTANT)
     Q_PROPERTY(QString fontFamily READ fontFamily CONSTANT)
     Q_PROPERTY(qreal fontScale READ fontScale CONSTANT)
     Q_PROPERTY(int fontWeightAdjustment READ fontWeightAdjustment CONSTANT)
@@ -222,6 +223,20 @@ public:
         return false;
 #endif
     }
+    /*!
+     * \brief Whether the shutdown of the accomanying AppService is manual.
+     * \remarks
+     * Under Android, the service is supposed to keep running in the background even when the app UI is closed.
+     * Hence the service has to be shutdown manually.
+     */
+    static constexpr bool isServiceShutdownManual()
+    {
+#ifdef Q_OS_ANDROID
+        return true;
+#else
+        return false;
+#endif
+    }
     QString fontFamily() const;
     qreal fontScale() const;
     int fontWeightAdjustment() const;
@@ -239,7 +254,7 @@ public:
     Q_INVOKABLE bool loadMain();
     Q_INVOKABLE bool reloadMain();
     Q_INVOKABLE bool unloadMain();
-    Q_INVOKABLE void shutdown();
+    Q_INVOKABLE void shutdownService();
     Q_INVOKABLE bool storeSettings();
     Q_INVOKABLE bool applyLauncherSettings();
     Q_INVOKABLE bool applySettings();
