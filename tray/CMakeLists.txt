@@ -304,6 +304,17 @@ if (QUICK_GUI)
     endif ()
 endif ()
 
+# consider Java classes when generating API documentation
+set(ANDROID_JAVA_SRC_DIR "android/src/io/github/martchus/syncthingtray")
+list(
+    APPEND
+    DOC_FILES
+    "${ANDROID_JAVA_SRC_DIR}/Activity.java"
+    "${ANDROID_JAVA_SRC_DIR}/Application.java"
+    "${ANDROID_JAVA_SRC_DIR}/DocumentsProvider.java"
+    "${ANDROID_JAVA_SRC_DIR}/SyncthingService.java"
+    "${ANDROID_JAVA_SRC_DIR}/Util.java")
+
 # include further modules to apply configuration
 include(QtConfig)
 include(WindowsResources)
