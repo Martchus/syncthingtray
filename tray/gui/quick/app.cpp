@@ -407,6 +407,10 @@ bool App::openPath(const QString &dirId, const QString &relativePath)
     return false;
 }
 
+/*!
+ * \brief Triggers a scan of \a path via the underlying OS.
+ * \remarks So far only supported under Android where it is used to discover media files.
+ */
 bool App::scanPath(const QString &path)
 {
 #ifdef Q_OS_ANDROID

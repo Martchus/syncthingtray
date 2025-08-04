@@ -215,6 +215,9 @@ public:
     {
         return m_statusInfo.additionalStatusText();
     }
+    /*!
+     * \brief Whether scanPath() is available.
+     */
     static constexpr bool isScanSupported()
     {
 #ifdef Q_OS_ANDROID
