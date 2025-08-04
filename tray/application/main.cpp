@@ -541,5 +541,9 @@ CPP_UTILITIES_MAIN_EXPORT int main(int argc, char *argv[])
     SET_APPLICATION_INFO;
     CMD_UTILS_CONVERT_ARGS_TO_UTF8;
     CMD_UTILS_HANDLE_VIRTUAL_TERMINAL_PROCESSING;
+#ifdef Q_OS_ANDROID
+    // prevent crashes on exit, see https://doc.qt.io/qt-6/android-environment-variables.html
+    qputenv("QT_ANDROID_NO_EXIT_CALL", "1");
+#endif
     return runApplication(argc, argv);
 }
