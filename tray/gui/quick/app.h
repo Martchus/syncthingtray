@@ -123,7 +123,7 @@ public:
         emit settingsChanged(m_settings);
     }
 #if defined(Q_OS_ANDROID) || defined(Q_OS_WINDOWS) // it leads to crashes on those platforms
-    bool nativePopups() const
+    static constexpr bool nativePopups()
     {
         return false;
     }
@@ -215,7 +215,7 @@ public:
     {
         return m_statusInfo.additionalStatusText();
     }
-    bool isScanSupported() const
+    static constexpr bool isScanSupported()
     {
 #ifdef Q_OS_ANDROID
         return true;
