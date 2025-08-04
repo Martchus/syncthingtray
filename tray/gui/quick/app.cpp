@@ -1405,7 +1405,7 @@ bool App::clearLogfile()
         return false;
     }
 
-    // return earily if there's nothing to change/remove
+    // return early if there's nothing to change/remove
     auto launcherSettings = m_settings.value(QLatin1String("launcher"));
     auto launcherSettingsObj = launcherSettings.toObject();
     auto logfile = QFile(m_settingsDir->path() + QStringLiteral("/syncthing.log"));
