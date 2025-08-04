@@ -372,6 +372,9 @@ bool App::loadMain()
         m_engine->loadFromModule("Main", "AppWindow");
     }
     m_isGuiLoaded = true;
+#ifdef Q_OS_ANDROID
+    QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("onGuiLoaded");
+#endif
     return true;
 }
 

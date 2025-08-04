@@ -58,6 +58,8 @@ public class Activity extends QtActivity {
     private boolean m_explicitShutdown = false;
     private boolean m_keepRunningAfterDestruction = false;
     private android.content.pm.ActivityInfo m_info;
+    private String m_showPage = null;
+    private boolean m_showFromNotification = false;
 
     // fields for communicating with service
     private Messenger m_service = null;
@@ -394,6 +396,14 @@ public class Activity extends QtActivity {
         connectToService();
     }
 
+    public void onGuiLoaded() {
+        if (m_showPage != null) {
+            handleAndroidIntent(m_showPage, m_showFromNotification);
+            m_showPage = null;
+            m_showFromNotification = false;
+        }
+    }
+
     @Override
     public void onResume() {
         Log.i(TAG, "Resuming");
@@ -483,7 +493,8 @@ public class Activity extends QtActivity {
         try {
             handleAndroidIntent(page, fromNotification);
         } catch (java.lang.UnsatisfiedLinkError e) {
-            showToast("Unable to open in Syncthing Tray app right now.");
+            m_showPage = page;
+            m_showFromNotification = fromNotification;
         }
     }
 
