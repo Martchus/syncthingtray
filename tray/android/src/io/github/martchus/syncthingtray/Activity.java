@@ -458,7 +458,7 @@ public class Activity extends QtActivity {
             Bundle md = metaData();
             m_keepRunningAfterDestruction = md != null && md.getBoolean("android.app.background_running_after_destruction");
         }
-        Log.i(TAG, "Stopping Qt Quick GUI");
+        Log.i(TAG, "Stopping Qt Quick GUI" + (m_keepRunningAfterDestruction ? ", keeping app running" : ""));
         unloadQtQuickGui();
         disconnectFromService();
         super.onDestroy();
