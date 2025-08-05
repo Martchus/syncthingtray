@@ -366,7 +366,7 @@ void SyncthingLauncher::launch(const LibSyncthing::RuntimeOptions &runtimeOption
 void SyncthingLauncher::terminate(SyncthingConnection *relevantConnection)
 {
     if (m_process.isRunning()) {
-        m_manuallyStopped = true;
+        setManuallyStopped(true);
         m_process.stopSyncthing(relevantConnection);
     } else {
         tearDownLibSyncthing();
@@ -376,7 +376,7 @@ void SyncthingLauncher::terminate(SyncthingConnection *relevantConnection)
 void SyncthingLauncher::kill()
 {
     if (m_process.isRunning()) {
-        m_manuallyStopped = true;
+        setManuallyStopped(true);
         m_process.killSyncthing();
     } else {
         tearDownLibSyncthing();
@@ -395,7 +395,7 @@ void SyncthingLauncher::tearDownLibSyncthing()
     if (!m_startFuture.isRunning() || m_stopFuture.isRunning()) {
         return;
     }
-    m_manuallyStopped = true;
+    setManuallyStopped(true);
     m_stopFuture = QtConcurrent::run(std::bind(&SyncthingLauncher::stopLibSyncthing, this));
 #endif
 }

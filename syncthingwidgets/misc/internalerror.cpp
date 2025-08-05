@@ -67,9 +67,14 @@ static bool ignoreInavailabilityAfterStart(unsigned int ignoreInavailabilityAfte
 /*!
  * \brief Returns whether the error is relevant. Only in this case a notification for the error should be shown.
  * \todo Unify with SyncthingNotifier::isDisconnectRelevant().
+ * \remarks
+ * The function automatically checks automatically whether the launcher or service have been manually stopped. The argument \a isManuallyStopped can be used in
+ * addition in case the launcher/service is not available but the information is known by other means (e.g. in the Android UI process which is informed by this
+ * via a Binder message).
+ *
  */
-bool InternalError::isRelevant(
-    const SyncthingConnection &connection, SyncthingErrorCategory category, const QString &message, int networkError, bool useGlobalSettings)
+bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingErrorCategory category, const QString &message, int networkError,
+    bool useGlobalSettings, bool isManuallyStopped)
 {
     // ignore overall connection errors when auto reconnect tries >= 1
     if (category != SyncthingErrorCategory::OverallConnection && category != SyncthingErrorCategory::TLS && connection.autoReconnectTries() >= 1) {
@@ -111,10 +116,13 @@ bool InternalError::isRelevant(
     constexpr auto ignoreInavailabilityAfterStartSec = ignoreInavailabilityAfterStartSecDefault;
 #endif
 
-    // consider process/launcher or systemd unit status
+    // ignore "remote host closed" error if we've just stopped Syncthing ourselves (or "connection refused" which can also be the result of stopping Syncthing ourselves)
     const auto remoteHostClosed = networkError == QNetworkReply::ConnectionRefusedError || networkError == QNetworkReply::RemoteHostClosedError
         || networkError == QNetworkReply::ProxyConnectionClosedError;
-    // ignore "remote host closed" error if we've just stopped Syncthing ourselves (or "connection refused" which can also be the result of stopping Syncthing ourselves)
+    if (remoteHostClosed && isManuallyStopped) {
+        return false;
+    }
+    // consider process/launcher or systemd unit status
     const auto *launcher = SyncthingLauncher::mainInstance();
     if (considerLauncherForReconnect && remoteHostClosed && launcher && launcher->isManuallyStopped()) {
         return false;

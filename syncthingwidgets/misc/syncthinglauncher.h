@@ -18,6 +18,7 @@
 #include <QUrl>
 
 #include <cstdint>
+#include <functional>
 #include <optional>
 
 namespace Settings {
@@ -67,6 +68,7 @@ public:
     bool isActiveWithoutSleepFor(unsigned int atLeastSeconds) const;
     bool isManuallyStopped() const;
     void setManuallyStopped(bool manuallyStopped);
+    void setManualStopHandler(std::function<bool(void)> &&handler);
     bool isEmittingOutput() const;
     void setEmittingOutput(bool emittingOutput);
     std::optional<bool> isNetworkConnectionMetered() const;
@@ -154,6 +156,7 @@ private:
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     LibSyncthing::LogLevel m_libsyncthingLogLevel;
 #endif
+    std::function<bool(void)> m_manualStopHandler;
     bool m_manuallyStopped;
     bool m_stoppedMetered;
     bool m_emittingOutput;
@@ -222,7 +225,20 @@ inline bool SyncthingLauncher::isManuallyStopped() const
 ///          to have SyncthingLauncher::isManuallyStopped() reflect that as well (e.g. to suppress notifications).
 inline void SyncthingLauncher::setManuallyStopped(bool manuallyStopped)
 {
-    m_manuallyStopped = manuallyStopped;
+    if (!manuallyStopped || !m_manualStopHandler || !m_manualStopHandler()) {
+        m_manuallyStopped = manuallyStopped;
+    }
+}
+
+/// \brief Sets a handler which is executed *before* the process is manually stopped.
+/// \remarks
+// - When the handler returns true isManuallyStopped() will *not* be set. The stopping is *not* intercepted
+//   in any case, though.
+// - Used under Android to inform the UI process that Syncthing is going to stop *before* stopping it so it
+//   can avoid showing "connection refused" errors.
+inline void SyncthingLauncher::setManualStopHandler(std::function<bool(void)> &&handler)
+{
+    m_manualStopHandler = std::move(handler);
 }
 
 /// \brief Returns whether the output/log should be emitted via outputAvailable() signal.

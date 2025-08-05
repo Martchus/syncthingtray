@@ -891,7 +891,7 @@ bool App::eventFilter(QObject *object, QEvent *event)
 void App::handleConnectionError(
     const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
 {
-    if (!InternalError::isRelevant(m_connection, category, errorMessage, networkError, false)) {
+    if (!InternalError::isRelevant(m_connection, category, errorMessage, networkError, false, m_isManuallyStopped)) {
         return;
     }
     qWarning() << "Connection error: " << errorMessage;
@@ -1058,6 +1058,9 @@ void App::handleLauncherStatusBroadcast(const QVariant &status)
     m_syncthingGuiUrl = guiUrl;
     m_syncthingRunningStatus = runningStatus;
     m_meteredStatus = meteredStatus;
+    if (isRunning) {
+        m_isManuallyStopped = false;
+    }
     if (isStartingChanged) {
         emit syncthingStartingChanged(isStarting);
     }
@@ -1122,6 +1125,9 @@ void App::handleMessageFromService(ActivityAction action, int arg1, int arg2, co
         break;
     case ActivityAction::UpdateLauncherStatus:
         QMetaObject::invokeMethod(this, "handleLauncherStatusBroadcast", Qt::QueuedConnection, Q_ARG(QVariant, deserializeVariant(variant)));
+    case ActivityAction::FlagManualStop:
+        m_isManuallyStopped = true;
+        break;
     default:;
     }
 }

@@ -28,6 +28,7 @@
 #include <QtVersion>
 
 #include <array>
+#include <atomic>
 #include <optional>
 
 QT_FORWARD_DECLARE_CLASS(QTextDocument)
@@ -416,6 +417,7 @@ private:
     bool m_unloadGuiWhenHidden;
     bool m_isSyncthingStarting;
     bool m_isSyncthingRunning;
+    std::atomic_bool m_isManuallyStopped;
 };
 
 inline QVariantList App::internalErrors() const

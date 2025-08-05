@@ -78,6 +78,14 @@ AppService::AppService(bool insecure, QObject *parent)
     connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &AppService::invalidateAndroidIconCache);
 #endif
 
+#ifdef Q_OS_ANDROID
+    m_launcher.setManualStopHandler([] {
+        QJniObject(QNativeInterface::QAndroidApplication::context())
+            .callMethod<jint>("sendMessageToClients", static_cast<jint>(ActivityAction::FlagManualStop), 0, 0, QByteArray());
+        return false;
+    });
+#endif
+
     connect(&m_connection, &SyncthingConnection::error, this, &AppService::handleConnectionError);
     connect(&m_connection, &SyncthingConnection::statusChanged, this, &AppService::handleConnectionStatusChanged);
     connect(&m_connection, &SyncthingConnection::newDevices, this, &AppService::handleChangedDevices);
@@ -334,8 +342,9 @@ void AppService::handleMessageFromActivity(ServiceAction action, int arg1, int a
 void AppService::handleConnectionError(
     const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
 {
-    Q_UNUSED(networkError)
-    Q_UNUSED(category)
+    if (!InternalError::isRelevant(m_connection, category, errorMessage, networkError, false)) {
+        return;
+    }
 #ifdef Q_OS_ANDROID
     auto error = InternalError(errorMessage, request.url(), response);
     showInternalError(error);

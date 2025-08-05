@@ -28,7 +28,7 @@ public:
     explicit InternalError(const QString &message = QString(), const QUrl &url = QUrl(), const QByteArray &response = QByteArray());
 
     static bool isRelevant(const Data::SyncthingConnection &connection, Data::SyncthingErrorCategory category, const QString &message,
-        int networkError, bool useGlobalSettings = true);
+        int networkError, bool useGlobalSettings = true, bool isManuallyStopped = false);
     QString whenToString() const;
 
     QString message;
