@@ -1056,7 +1056,7 @@ void App::handleLauncherStatusBroadcast(const QVariant &status)
     m_syncthingGuiUrl = guiUrl;
     m_syncthingRunningStatus = runningStatus;
     m_meteredStatus = meteredStatus;
-    if (isRunning) {
+    if (isRunningChanged && isRunning) {
         m_isManuallyStopped = false;
     }
     if (isStartingChanged) {
