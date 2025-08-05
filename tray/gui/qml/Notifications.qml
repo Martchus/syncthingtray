@@ -41,7 +41,7 @@ QtObject {
         }
     }
 
-    signal notification
+    signal notification(message: string)
     function showNotifiction(message) {
         return App.showToast(message) || notification(message);
     }
