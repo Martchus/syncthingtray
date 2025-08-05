@@ -41,6 +41,7 @@ public:
         return &m_notifier;
     }
     virtual const QString &status();
+    virtual bool isSyncthingRunning() const = 0;
 
     Q_INVOKABLE bool loadSettings(bool force = false);
     Q_INVOKABLE void applyConnectionSettings(const QUrl &syncthingUrl);

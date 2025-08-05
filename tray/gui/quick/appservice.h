@@ -27,6 +27,7 @@ enum class ServiceAction : int;
 class AppService : public AppBase {
     Q_OBJECT
     Q_PROPERTY(Data::SyncthingLauncher *launcher READ launcher CONSTANT)
+    Q_PROPERTY(bool syncthingRunning READ isSyncthingRunning)
 
 public:
     explicit AppService(bool insecure, QObject *parent = nullptr);
@@ -34,6 +35,10 @@ public:
 
     // properties
     const QString &status() override final;
+    bool isSyncthingRunning() const final
+    {
+        return m_launcher.isRunning();
+    }
     Data::SyncthingLauncher *launcher()
     {
         return &m_launcher;

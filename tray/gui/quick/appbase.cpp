@@ -44,6 +44,8 @@ AppBase::AppBase(bool insecure, bool textOnly, QObject *parent)
 #endif
 
     m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents | SyncthingConnection::PollingFlags::Errors);
+    m_connection.setAutoReconnectInterval(0); // avoid initial "Trying to reconnect …" status when using launcher but running Syncthing is disabled
+    m_connectionSettingsFromLauncher.reconnectInterval = 0; // enable automatic reconnects only via handleGuiUrlChanged()
     m_connectionSettingsFromLauncher.statusComputionFlags += SyncthingStatusComputionFlags::RemoteSynchronizing;
     m_connectionSettingsFromConfig.statusComputionFlags += SyncthingStatusComputionFlags::RemoteSynchronizing;
 #ifdef Q_OS_ANDROID
@@ -213,6 +215,7 @@ void AppBase::handleGuiUrlChanged(const QUrl &newUrl)
     }
     m_connectionSettingsFromLauncher.apiKey = m_syncthingConfig.guiApiKey.toUtf8();
     m_connectionSettingsFromLauncher.authEnabled = false;
+    m_connectionSettingsFromLauncher.reconnectInterval = isSyncthingRunning() ? SyncthingConnectionSettings::defaultReconnectInterval : 0;
 #ifndef QT_NO_SSL
     m_connectionSettingsFromLauncher.httpsCertPath = m_syncthingConfigDir + QStringLiteral("/https-cert.pem");
 #endif
@@ -220,6 +223,7 @@ void AppBase::handleGuiUrlChanged(const QUrl &newUrl)
     if (m_connectToLaunched) {
         invalidateStatus();
         if (newUrl.isEmpty()) {
+            m_connection.setAutoReconnectInterval(0);
             m_connection.disconnect();
         } else if (m_connection.applySettings(m_connectionSettingsFromLauncher) || !m_connection.isConnected()) {
             m_connection.reconnect();

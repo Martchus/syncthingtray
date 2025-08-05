@@ -188,7 +188,7 @@ public:
     {
         return m_isSyncthingStarting;
     }
-    bool isSyncthingRunning() const
+    bool isSyncthingRunning() const override final
     {
         return m_isSyncthingRunning;
     }
