@@ -46,7 +46,7 @@ public class SyncthingService extends QtService {
     private Notification.Builder m_extraNotificationBuilder;
     private Notification m_notification;
     private static String s_notificationTitle = "Syncthing";
-    private static String s_notificationText = "Tap to start Syncthing";
+    private static String s_notificationText = "Initializing …";
     private static String s_notificationSubText = "";
     private static Bitmap s_notificationIcon = null;
 
