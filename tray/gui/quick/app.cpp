@@ -975,8 +975,6 @@ bool App::shouldIgnorePermissions(const QString &path)
 void App::invalidateStatus()
 {
     AppBase::invalidateStatus();
-    m_statusInfo.updateConnectionStatus(m_connection);
-    m_statusInfo.updateConnectedDevices(m_connection);
     emit statusInfoChanged();
     emit statusChanged();
 }
