@@ -163,7 +163,7 @@ public:
     {
         return m_iconSize;
     }
-    const QString &status() override;
+    const QString &status() override final;
     bool hasInternalErrors() const
     {
         return !m_internalErrors.isEmpty();

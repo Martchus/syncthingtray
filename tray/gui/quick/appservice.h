@@ -33,7 +33,7 @@ public:
     ~AppService();
 
     // properties
-    const QString &status() override;
+    const QString &status() override final;
     Data::SyncthingLauncher *launcher()
     {
         return &m_launcher;
