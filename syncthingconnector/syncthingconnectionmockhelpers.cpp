@@ -29,13 +29,13 @@ namespace Data {
  */
 namespace TestData {
 LIB_SYNCTHING_CONNECTOR_EXPORT extern bool initialized;
-LIB_SYNCTHING_CONNECTOR_EXPORT extern std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty, browse, needed;
+LIB_SYNCTHING_CONNECTOR_EXPORT extern std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty, browse, needed, pendingFolders, pendingDevices;
 LIB_SYNCTHING_CONNECTOR_EXPORT extern std::string events[7];
 
 #if (defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) && !defined(LIB_SYNCTHING_CONNECTOR_MOCKED)) || (!defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) && defined(LIB_SYNCTHING_CONNECTOR_MOCKED))
 #define LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED_IMPLEMENTATION
 bool initialized = false;
-std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty, browse, needed;
+std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty, browse, needed, pendingFolders, pendingDevices;
 std::string events[7];
 #endif
 } // namespace TestData
@@ -76,10 +76,10 @@ void setupTestData()
 
     // read mock files for REST-API
     const char *const fileNames[] = { "config", "status", "folderstats", "devicestats", "errors", "folderstatus-01", "folderstatus-02",
-        "folderstatus-03", "pullerrors-01", "connections", "version", "empty", "browse", "needed" };
+        "folderstatus-03", "pullerrors-01", "connections", "version", "empty", "browse", "needed", "pending-folders", "pending-devices" };
     const char *const *fileName = fileNames;
     for (auto *const testDataVariable : { &config, &status, &folderStats, &deviceStats, &errors, &folderStatus, &folderStatus2, &folderStatus3,
-             &pullErrors, &connections, &version, &empty, &browse, &needed }) {
+             &pullErrors, &connections, &version, &empty, &browse, &needed, &pendingFolders, &pendingDevices }) {
         *testDataVariable = readMockFile(testApp.testFilePath(argsToString("mocks/", *fileName, ".json")));
         qDebug() << "Adding mock file: " << *fileName;
         ++fileName;
@@ -250,6 +250,10 @@ MockedReply *MockedReply::forRequest(const QString &method, const QString &path,
                 response = connections;
             } else if (path == QLatin1String("system/version")) {
                 response = version;
+            } else if (path == QLatin1String("cluster/pending/folders")) {
+                response = pendingFolders;
+            } else if (path == QLatin1String("cluster/pending/devices")) {
+                response = pendingDevices;
             } else if (path == QLatin1String("events")) {
                 response = events[s_eventIndex];
                 std::cerr << "mocking: at event index " << s_eventIndex << std::endl;

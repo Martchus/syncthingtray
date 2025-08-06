@@ -178,5 +178,88 @@
         "overwriteRemoteDeviceNamesOnConnect": false,
         "tempIndexMinBlocks": 10
     },
+    "defaults": {
+        "device": {
+            "addresses": ["dynamic"],
+            "allowedNetworks": [],
+            "autoAcceptFolders": false,
+            "certName": "",
+            "compression": "metadata",
+            "deviceID": "",
+            "ignoredFolders": [],
+            "introducedBy": "",
+            "introducer": false,
+            "maxRecvKbps": 0,
+            "maxRequestKiB": 0,
+            "maxSendKbps": 0,
+            "name": "",
+            "numConnections": 0,
+            "paused": false,
+            "remoteGUIPort": 0,
+            "skipIntroductionRemovals": false,
+            "untrusted": false
+        },
+        "folder": {
+            "autoNormalize": true,
+            "blockPullOrder": "standard",
+            "caseSensitiveFS": false,
+            "copiers": 0,
+            "copyOwnershipFromParent": false,
+            "copyRangeMethod": "standard",
+            "devices": [
+            {
+                "deviceID": "P56IOI7-MZJNU2Y-IQGDREY-DM2MGTI-MGL3BXN-PQ6W5BM-TBBZ4TJ-XZWICQ2",
+                "encryptionPassword": "",
+                "introducedBy": ""
+            }
+            ],
+            "disableFsync": false,
+            "disableSparseFiles": false,
+            "disableTempIndexes": false,
+            "filesystemType": "basic",
+            "fsWatcherDelayS": 10,
+            "fsWatcherEnabled": true,
+            "fsWatcherTimeoutS": 0,
+            "hashers": 0,
+            "id": "",
+            "ignoreDelete": false,
+            "ignorePerms": false,
+            "junctionsAsDirs": false,
+            "label": "",
+            "markerName": ".stfolder",
+            "maxConcurrentWrites": 2,
+            "maxConflicts": 10,
+            "minDiskFree": {"unit": "%", "value": 1},
+            "modTimeWindowS": 0,
+            "order": "random",
+            "path": "~",
+            "paused": false,
+            "pullerMaxPendingKiB": 0,
+            "pullerPauseS": 0,
+            "rescanIntervalS": 3600,
+            "scanProgressIntervalS": 0,
+            "sendOwnership": false,
+            "sendXattrs": false,
+            "syncOwnership": false,
+            "syncXattrs": false,
+            "type": "sendreceive",
+            "versioning": {
+                "cleanupIntervalS": 3600,
+                "fsPath": "",
+                "fsType": "basic",
+                "params": {},
+                "type": ""
+            },
+            "weakHashThresholdPct": 25,
+            "xattrFilter": {
+            "entries": [],
+            "maxSingleEntrySize": 1024,
+            "maxTotalSize": 4096
+            }
+        },
+        "ignores": {
+            "lines": []
+        }
+    },
     "ignoredDevices": []
 }

@@ -1,0 +1,22 @@
+{
+  "forever-alone": {
+    "offeredBy": {
+      "53STGR7-YBM6FCX-PAZ2RHM-YPY6OEJ-WYHVZO7-PCKQRCK-PZLTP7T": {
+        "time": "2025-08-06T16:36:26Z",
+        "label": "",
+        "receiveEncrypted": false,
+        "remoteEncrypted": false
+      }
+    }
+  },
+  "new-folder": {
+    "offeredBy": {
+      "53STGR7-YBM6FCX-PAZ2RHM-YPY6OEJ-WYHVZO7-PCKQRCK-PZLTP7T": {
+        "time": "2025-08-06T16:36:26Z",
+        "label": "New folder",
+        "receiveEncrypted": false,
+        "remoteEncrypted": false
+      }
+    }
+  }
+}
