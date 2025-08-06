@@ -49,16 +49,14 @@ SwipeView {
     required property var window
     property string searchText
     readonly property list<Item> children: [startPage, dirsPage, devsPage, changesPage, advancedPage, settingsPage]
-    readonly property var currentPage: {
-        const currentChild = children[currentIndex];
-        return currentChild.currentItem ?? currentChild;
-    }
-    readonly property var currentDepth: children[currentIndex]?.depth ?? 1
+    readonly property var currentChild: children[currentIndex]
+    readonly property var currentPage: currentChild.currentItem ?? currentChild
+    readonly property var currentDepth: currentChild?.depth ?? 1
     readonly property var currentActions: currentPage.actions ?? []
     readonly property var currentExtraActions: currentPage.extraActions ?? []
     signal changesMightBeDiscarded
     function pop(force) {
-        const currentChild = children[currentIndex];
+        const currentChild = pageStack.currentChild;
         const currentPage = currentChild.currentItem ?? currentChild;
         if (!force && currentPage.hasUnsavedChanges) {
             const parentPage = currentPage.parentPage;
