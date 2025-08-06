@@ -417,11 +417,10 @@ bool App::openPath(const QString &path)
 
 bool App::openPath(const QString &dirId, const QString &relativePath)
 {
-    auto row = int();
-    auto dirInfo = m_connection.findDirInfo(dirId, row);
-    if (!dirInfo) {
+    const auto fullPath = m_connection.fullPath(dirId, relativePath);
+    if (fullPath.isEmpty()) {
         emit error(tr("Unable to open \"%1\"").arg(relativePath));
-    } else if (openPath(dirInfo->path % QChar('/') % relativePath)) {
+    } else if (openPath(fullPath)) {
         return true;
     }
     return false;
@@ -463,11 +462,10 @@ bool App::copyText(const QString &text)
 
 bool App::copyPath(const QString &dirId, const QString &relativePath)
 {
-    auto row = int();
-    auto dirInfo = m_connection.findDirInfo(dirId, row);
-    if (!dirInfo) {
+    const auto fullPath = m_connection.fullPath(dirId, relativePath);
+    if (fullPath.isEmpty()) {
         emit error(tr("Unable to copy \"%1\"").arg(relativePath));
-    } else if (copyText(dirInfo->path % QChar('/') % relativePath)) {
+    } else if (copyText(fullPath)) {
         return true;
     }
     return false;
