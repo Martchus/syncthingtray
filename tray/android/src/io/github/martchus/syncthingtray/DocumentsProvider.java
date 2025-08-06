@@ -18,10 +18,15 @@ import androidx.core.content.ContextCompat;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
+
+import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
+import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
+import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 /**
  * A document provider for the Storage Access Framework which exposes the files in the
@@ -188,6 +193,38 @@ public class DocumentsProvider extends android.provider.DocumentsProvider {
     }
 
     @Override
+    public String renameDocument(String documentId, String displayName) throws FileNotFoundException {
+        File src = getFileForDocId(documentId);
+        File dst = new File(src.getParent(), displayName);
+        if (!src.renameTo(dst)) {
+            throw new FileNotFoundException("Failed to rename document with id " + documentId);
+        }
+        return getDocIdForFile(dst);
+    }
+
+    @Override
+    public String moveDocument(String sourceDocumentId, String sourceParentDocumentId, String destinationParentDocumentId) throws FileNotFoundException {
+        File src = getFileForDocId(sourceDocumentId);
+        File dst = new File(getFileForDocId(destinationParentDocumentId), src.getName());
+        if (!src.renameTo(dst)) {
+            throw new FileNotFoundException("Failed to move document " + sourceDocumentId + " to " + destinationParentDocumentId);
+        }
+        return getDocIdForFile(dst);
+    }
+
+    @Override
+    public String copyDocument(String sourceDocumentId, String destinationParentDocumentId) throws FileNotFoundException {
+        File src = getFileForDocId(sourceDocumentId);
+        File dst = new File(getFileForDocId(destinationParentDocumentId), src.getName());
+        try {
+            Files.copy(src.toPath(), dst.toPath(), REPLACE_EXISTING, COPY_ATTRIBUTES, NOFOLLOW_LINKS);
+        } catch (IOException e) {
+            throw new FileNotFoundException("Failed to copy document " + sourceDocumentId + " to " + destinationParentDocumentId + ": " + e.getMessage());
+        }
+        return getDocIdForFile(dst);
+    }
+
+    @Override
     public String getDocumentType(String documentId) throws FileNotFoundException {
         File file = getFileForDocId(documentId);
         return getMimeType(file);
@@ -293,10 +330,11 @@ public class DocumentsProvider extends android.provider.DocumentsProvider {
         int flags = 0;
         if (file.isDirectory()) {
             if (file.canWrite()) flags |= Document.FLAG_DIR_SUPPORTS_CREATE;
-        } else if (file.canWrite()) {
-            flags |= Document.FLAG_SUPPORTS_WRITE;
+        } else {
+            flags |= Document.FLAG_SUPPORTS_COPY;
+            if (file.canWrite()) flags |= Document.FLAG_SUPPORTS_WRITE;
         }
-        if (file.getParentFile().canWrite()) flags |= Document.FLAG_SUPPORTS_DELETE;
+        if (file.getParentFile().canWrite()) flags |= Document.FLAG_SUPPORTS_DELETE | Document.FLAG_SUPPORTS_RENAME | Document.FLAG_SUPPORTS_MOVE;
 
         final String displayName = file.getName();
         final String mimeType = getMimeType(file);
