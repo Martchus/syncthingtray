@@ -92,6 +92,9 @@ Item {
                     }
                 }
 
+                function openPath() {
+                    plasmoid.nativeInterface.openLocalFileOrDir(directoryId, path)
+                }
                 function copyPath() {
                     plasmoid.nativeInterface.copyToClipboard(directoryId, path)
                 }
@@ -105,6 +108,11 @@ Item {
 
             PlasmaComponents.Menu {
                 id: contextMenu
+                PlasmaComponents.MenuItem {
+                    text: qsTr("Open item")
+                    icon: "document-open"
+                    onClicked: recentChangesView.currentItem.openPath()
+                }
                 PlasmaComponents.MenuItem {
                     text: qsTr("Copy path")
                     icon: "edit-copy"
