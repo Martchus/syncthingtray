@@ -1416,6 +1416,7 @@ bool App::clearLogfile()
     auto logfile = QFile(m_settingsDir->path() + QStringLiteral("/syncthing.log"));
     auto persistentLogfileEnabled = launcherSettingsObj.value(QLatin1String("writeLogFile")).toBool();
     if (!persistentLogfileEnabled && !logfile.exists()) {
+        emit info(tr("No logfile present anyway"));
         return true;
     }
 
@@ -1432,7 +1433,7 @@ bool App::clearLogfile()
     if (ok) {
         emit info(tr("Persistent logging disabled and logfile removed"));
     } else {
-        emit info(tr("Unable to remove logfile"));
+        emit error(tr("Unable to remove logfile"));
     }
 
     // disable persistent logging

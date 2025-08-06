@@ -33,7 +33,7 @@ StackView {
                     iconName: "terminal"
                 }
                 ListElement {
-                    callback: () => App.clearLogfile()
+                    callback: () => deleteLogFileDialog.open()
                     label: qsTr("Clear log file")
                     title: qsTr("Disables persistent logging and removes the log file")
                     iconName: "trash-o"
@@ -104,6 +104,17 @@ StackView {
         FolderDialog {
             id: backupFolderDialog
             onAccepted: App[appSettingsPage.currentBackupFunction](backupFolderDialog.selectedFolder, appSettingsPage.currentBackupCallback)
+        }
+
+        CustomDialog {
+            id: deleteLogFileDialog
+            title: meta.title
+            contentItem: Label {
+                Layout.fillWidth: true
+                text: qsTr("Do you really want to delete the persistent log file?")
+                wrapMode: Text.WordWrap
+            }
+            onAccepted: App.clearLogfile()
         }
 
         property string currentBackupFunction
