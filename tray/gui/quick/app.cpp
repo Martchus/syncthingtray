@@ -259,6 +259,8 @@ const QString &App::status()
         return m_status.emplace(tr("Checking locations to move home directory …"));
     case ImportExportStatus::Moving:
         return m_status.emplace(tr("Moving home directory …"));
+    case ImportExportStatus::SavingSupportBundle:
+        return m_status.emplace(tr("Saving support bundle …"));
     }
     if (m_connectToLaunched) {
         if (!m_isSyncthingRunning && !m_syncthingRunningStatus.isEmpty()) {
@@ -1997,6 +1999,50 @@ bool App::moveSyncthingHome(const QString &newHomeDir, const QJSValue &callback)
         emit errorOccurred ? error(message) : info(message);
         applySettings();
         reloadSettings();
+    });
+    return true;
+}
+
+bool App::saveSupportBundle(const QUrl &url, const QJSValue &callback)
+{
+    if (checkOngoingImportExport()) {
+        return false;
+    }
+    if (!m_connection.rawConfig().value(QLatin1String("gui")).toObject().value(QLatin1String("debugging")).toBool()) {
+        emit error(tr("Debugging needs to be enabled under advanced GUI settings first."));
+        return false;
+    }
+    m_downloadFile.emplace(resolveUrl(url));
+    if (!m_downloadFile->open(QFile::WriteOnly | QFile::Truncate)) {
+        emit error(tr("Unable to open output file: ").arg(m_downloadFile->errorString()));
+        return false;
+    }
+    setImportExportStatus(ImportExportStatus::SavingSupportBundle);
+    auto *const reply = m_connection.downloadSupportBundle().reply;
+    connect(reply, &QNetworkReply::readyRead, this, [this, reply] {
+        m_downloadFile->write(reply->readAll());
+        if (m_downloadFile->error() != QFile::NoError) {
+            reply->abort();
+        }
+    });
+    connect(reply, &QNetworkReply::finished, this, [this, reply, callback] {
+        reply->deleteLater();
+        m_downloadFile->write(reply->readAll());
+        m_downloadFile->flush();
+        auto errors = QStringList();
+        auto message = QString();
+        if (m_downloadFile->error() != QFile::NoError) {
+            errors << tr("Unable to write bundle: %1").arg(m_downloadFile->errorString());
+        }
+        if (const auto replyError = reply->error(); replyError != QNetworkReply::NoError && replyError != QNetworkReply::OperationCanceledError) {
+            errors << tr("Unable to download bundle: %1").arg(reply->errorString());
+        }
+        m_downloadFile.reset();
+        emit errors.isEmpty() ? info(tr("Support bundle saved")) : error(message = errors.join(QChar('\n')));
+        setImportExportStatus(ImportExportStatus::None);
+        if (callback.isCallable()) {
+            callback.call(QJSValueList{ QJSValue(message), QJSValue(errors.isEmpty()) });
+        }
     });
     return true;
 }

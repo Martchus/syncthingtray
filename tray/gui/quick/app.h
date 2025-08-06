@@ -80,7 +80,7 @@ class App : public AppBase {
     QML_ELEMENT
     QML_SINGLETON
 
-    enum class ImportExportStatus { None, Checking, Importing, Exporting, CheckingMove, Moving };
+    enum class ImportExportStatus { None, Checking, Importing, Exporting, CheckingMove, Moving, SavingSupportBundle };
 
 public:
     explicit App(bool insecure, QObject *parent = nullptr);
@@ -271,6 +271,7 @@ public:
     Q_INVOKABLE bool exportSettings(const QUrl &url, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool checkSyncthingHome(const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool moveSyncthingHome(const QString &newHomeDir, const QJSValue &callback = QJSValue());
+    Q_INVOKABLE bool saveSupportBundle(const QUrl &url, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool openPath(const QString &path);
     Q_INVOKABLE bool openPath(const QString &dirId, const QString &relativePath);
     Q_INVOKABLE bool scanPath(const QString &path);
@@ -400,6 +401,7 @@ private:
     mutable std::optional<bool> m_notificationPermissionGranted;
 #endif
     std::pair<QVariantMap, QVariantMap> m_settingsImport;
+    std::optional<QFile> m_downloadFile;
     std::optional<QString> m_homeDirMove;
     QtUtilities::QtSettings m_qtSettings;
     QString m_faUrlBase;

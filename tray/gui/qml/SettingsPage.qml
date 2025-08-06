@@ -75,6 +75,11 @@ StackView {
                     label: qsTr("Move Syncthing home directory")
                     iconName: "folder-open-o"
                 }
+                ListElement {
+                    label: qsTr("Save support bundle")
+                    functionName: "saveSupportBundle"
+                    iconName: "user-md"
+                }
             }
             delegate: ItemDelegate {
                 width: listView.width
@@ -97,7 +102,8 @@ StackView {
 
         FileDialog {
             id: backupFileDialog
-            fileMode: appSettingsPage.currentBackupFunction === "exportSettings" ? FileDialog.SaveFile : FileDialog.OpenFile
+            fileMode: appSettingsPage.currentBackupFunction === "exportSettings" || appSettingsPage.currentBackupFunction === "saveSupportBundle"
+                      ? FileDialog.SaveFile : FileDialog.OpenFile
             onAccepted: App[appSettingsPage.currentBackupFunction](backupFileDialog.selectedFile, appSettingsPage.currentBackupCallback)
         }
 
@@ -122,7 +128,7 @@ StackView {
         function initiateBackup(functionName, callback) {
             appSettingsPage.currentBackupFunction = functionName;
             appSettingsPage.currentBackupCallback = callback;
-            return App.settings.tweaks.importExportAsArchive ? backupFileDialog.open() : backupFolderDialog.open();
+            return App.settings.tweaks.importExportAsArchive || functionName === "saveSupportBundle" ? backupFileDialog.open() : backupFolderDialog.open();
         }
         function openNestedSettings(title, key) {
             if (appSettingsPage.config[key] === undefined) {

@@ -1632,6 +1632,14 @@ void SyncthingConnection::requestRevert(const QString &dirId)
 }
 
 /*!
+ * \brief Downloads a support bundle.
+ */
+SyncthingConnection::QueryResult SyncthingConnection::downloadSupportBundle()
+{
+    return QueryResult{ networkAccessManager().get(prepareRequest(QStringLiteral("debug/support"), QUrlQuery())) };
+}
+
+/*!
  * \brief Reads data from requestOverride().
  */
 void SyncthingConnection::readRevert()

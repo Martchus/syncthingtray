@@ -376,6 +376,7 @@ public:
     QueryResult postConfigFromByteArray(const QByteArray &rawConfig, std::function<void(QString &&)> &&callback = std::function<void(QString &&)>());
     QueryResult sendCustomRequest(const QByteArray &verb, const QUrl &url,
         const QMap<QByteArray, QByteArray> &headers = QMap<QByteArray, QByteArray>(), QIODevice *data = nullptr);
+    QueryResult downloadSupportBundle();
 
 Q_SIGNALS:
     void syncthingUrlChanged(const QString &newUrl);
