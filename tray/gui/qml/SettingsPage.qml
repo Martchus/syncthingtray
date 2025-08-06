@@ -134,14 +134,14 @@ StackView {
             connection: [
                 {key: "useLauncher", type: "boolean", label: qsTr("Automatic"), statusText: qsTr("Connect to the Syncthing backend launched via this app and disregard the settings below.")},
                 {key: "syncthingUrl", label: qsTr("Syncthing URL")},
-                {key: "apiKey", label: qsTr("API key")},
+                {key: "apiKey", label: qsTr("API key"), inputMethodHints: Qt.ImhHiddenText | Qt.ImhSensitiveData | Qt.ImhNoAutoUppercase},
                 {key: "httpsCertPath", label: qsTr("HTTPs certificate path"), type: "filepath"},
                 {key: "httpAuth", label: qsTr("HTTP authentication")},
             ],
             httpAuth: [
                 {key: "enabled", label: qsTr("Enabled")},
                 {key: "userName", label: qsTr("Username")},
-                {key: "password", label: qsTr("Password")},
+                {key: "password", label: qsTr("Password"), inputMethodHints: Qt.ImhHiddenText | Qt.ImhSensitiveData | Qt.ImhNoAutoUppercase},
             ],
             launcher: [
                 {key: "run", label: qsTr("Run Syncthing"), statusText: Qt.binding(() => App.syncthingRunningStatus)},
@@ -159,7 +159,7 @@ StackView {
             tweaks: [
                 {key: "unloadGuiWhenHidden", type: "boolean", defaultValue: false, label: qsTr("Stop UI when hidden"), statusText: qsTr("Might help save battery live but resets UI state.")},
                 {key: "importExportAsArchive", type: "boolean", defaultValue: false, label: qsTr("Import/export archive"), statusText: qsTr("Import and export to/from a Zip archive.")},
-                {key: "importExportEncryptionPassword", type: "string", defaultValue: "", label: qsTr("Import/export password"), statusText: qsTr("Encrypt/decrypt data via AES-256 when exporting/importing to archive.")},
+                {key: "importExportEncryptionPassword", type: "string", inputMethodHints: Qt.ImhHiddenText | Qt.ImhSensitiveData | Qt.ImhNoAutoUppercase, defaultValue: "", label: qsTr("Import/export password"), statusText: qsTr("Encrypt/decrypt data via AES-256 when exporting/importing to archive.")},
             ]
         })
         property bool hasUnsavedChanges: false

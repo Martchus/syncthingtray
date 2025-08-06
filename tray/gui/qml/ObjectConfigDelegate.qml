@@ -24,7 +24,7 @@ DelegateChooser {
                     }
                     Label {
                         Layout.fillWidth: true
-                        text: modelData.value?.toString() ?? ""
+                        text: displayText(modelData.value, modelData.inputMethodHints)
                         elide: Text.ElideRight
                         font.weight: Font.Light
                         wrapMode: Text.WordWrap
@@ -62,7 +62,7 @@ DelegateChooser {
                     }
                     Label {
                         Layout.fillWidth: true
-                        text: modelData.value
+                        text: displayText(modelData.value, modelData.inputMethodHints)
                         elide: Text.ElideRight
                         font.weight: Font.Light
                     }
@@ -87,6 +87,7 @@ DelegateChooser {
                         id: editedStringValue
                         Layout.fillWidth: true
                         text: modelData.value
+                        inputMethodHints: modelData.inputMethodHints ?? Qt.ImhNone
                         enabled: modelData?.enabled ?? true
                         onAccepted: stringDlg.accept()
                     }
@@ -443,7 +444,7 @@ DelegateChooser {
                     }
                     Label {
                         Layout.fillWidth: true
-                        text: modelData.value
+                        text: displayText(modelData.value, modelData.inputMethodHints)
                         elide: Text.ElideRight
                         font.weight: Font.Light
                     }
@@ -466,6 +467,7 @@ DelegateChooser {
                 contentItem: TextField {
                     id: editedNumberValue
                     text: modelData.value
+                    inputMethodHints: modelData.inputMethodHints ?? Qt.ImhNone
                     validator: DoubleValidator {
                         id: numberValidator
                         locale: "en"
@@ -718,4 +720,7 @@ DelegateChooser {
         }
     }
     required property var objectConfigPage
+    function displayText(data, inputMethodHints = Qt.ImhNone) {
+        return (inputMethodHints & Qt.ImhHiddenText) ? (data?.toString() ? "•••" : "") : (data?.toString() ?? "");
+    }
 }

@@ -113,10 +113,10 @@ StackView {
         })
         property var specialEntriesByKey: ({
             "gui": [
-                {key: "apiKey", label: qsTr("API Key"), desc: qsTr("If set, this is the API key that enables usage of the REST interface. The app uses the REST interface so this value must not be empty for the app to function.")},
+                {key: "apiKey", label: qsTr("API Key"), inputMethodHints: Qt.ImhHiddenText | Qt.ImhSensitiveData | Qt.ImhNoAutoUppercase, desc: qsTr("If set, this is the API key that enables usage of the REST interface. The app uses the REST interface so this value must not be empty for the app to function.")},
                 {key: "address", label: qsTr("GUI Listen Address"), desc: qsTr("Set the listen address.")},
                 {key: "user", label: qsTr("GUI Authentication User"), desc: advancedPage.usernameDesc},
-                {key: "password", label: qsTr("GUI Authentication Password (bcrypt hash!)"), desc: advancedPage.passwordDesc},
+                {key: "password", label: qsTr("GUI Authentication Password (bcrypt hash!)"), inputMethodHints: Qt.ImhHiddenText | Qt.ImhSensitiveData | Qt.ImhNoAutoUppercase, desc: advancedPage.passwordDesc},
                 {key: "useTLS", label: qsTr("Use HTTPS for GUI and API"), desc: qsTr("If enabled, TLS (HTTPS) will be enforced. Non-HTTPS requests will be redirected to HTTPS. When set to false, TLS connections are still possible but not required.")},
                 {key: "sendBasicAuthPrompt", label: qsTr("Prompt for basic authentication"), desc: qsTr("When this setting is enabled, the web-based GUI will respond to unauthenticated requests with a 401 response prompting for Basic Authorization, so that https://user:pass@localhost style URLs continue to work in standard browsers. Other clients that always send the Authorization request header do not need this setting.")},
                 {key: "authMode", label: qsTr("Authentication mode"), type: "options", desc: qsTr("Authentication mode to use. If not present, the authentication mode (static) is controlled by the presence of user/password fields for backward compatibility."), options: [
