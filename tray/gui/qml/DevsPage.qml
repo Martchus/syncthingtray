@@ -22,7 +22,7 @@ StackView {
             Action {
                 text: qsTr("Add device")
                 icon.source: App.faUrlBase + "plus"
-                onTriggered: page.add()
+                onTriggered: stackView.add()
             }
         ]
         property list<Action> extraActions: [
@@ -38,8 +38,8 @@ StackView {
             }
         ]
         property alias model: devsListView.mainModel
-        function add(deviceId = "", deviceName = "") {
-            stackView.push("DevConfigPage.qml", {devId: deviceId, devName: deviceName, stackView: stackView}, StackView.PushTransition);
-        }
+    }
+    function add(deviceId = "", deviceName = "") {
+        stackView.push("DevConfigPage.qml", {devId: deviceId, devName: deviceName, existing: false, stackView: stackView}, StackView.PushTransition);
     }
 }

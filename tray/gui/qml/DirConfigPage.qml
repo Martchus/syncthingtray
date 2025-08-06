@@ -4,7 +4,7 @@ import Main
 
 AdvancedDirConfigPage {
     id: dirConfigPage
-    title: dirName.length > 0 ? qsTr("Config of folder \"%1\"").arg(dirName) : qsTr("Add new folder")
+    title: existing && dirName.length > 0 ? qsTr("Config of folder \"%1\"").arg(dirName) : qsTr("Add new folder")
     isDangerous: false
     specialEntriesOnly: true
     specialEntries: [
@@ -76,4 +76,5 @@ AdvancedDirConfigPage {
         ],
     })
     property list<string> shareWithDeviceIds
+    property bool existing: true
 }

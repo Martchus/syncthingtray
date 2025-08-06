@@ -2,7 +2,7 @@ import QtQuick
 
 AdvancedDevConfigPage {
     id: devConfigPage
-    title: devName.length > 0 ? qsTr("Config of device \"%1\"").arg(devName) : qsTr("Add new device")
+    title: existing && devName.length > 0 ? qsTr("Config of device \"%1\"").arg(devName) : qsTr("Add new device")
     isDangerous: false
     specialEntriesOnly: true
     specialEntries: [
@@ -30,4 +30,5 @@ AdvancedDevConfigPage {
             {key: "time", label: qsTr("Time"), init: () => new Date().toISOString(), desc: qsTr("The time when this entry was added (for informative purposes).")},
         ]
     })
+    property bool existing: true
 }

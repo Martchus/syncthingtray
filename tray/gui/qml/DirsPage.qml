@@ -22,7 +22,7 @@ StackView {
             Action {
                 text: qsTr("Add folder")
                 icon.source: App.faUrlBase + "plus"
-                onTriggered: page.add()
+                onTriggered: stackView.add()
             }
         ]
         property list<Action> extraActions: [
@@ -43,8 +43,8 @@ StackView {
             }
         ]
         property alias model: dirsListView.mainModel
-        function add(dirId = "", dirName = "", shareWithDeviceIds = []) {
-            stackView.push("DirConfigPage.qml", {dirId: dirId, dirName: dirName, shareWithDeviceIds: shareWithDeviceIds ?? [], stackView: stackView}, StackView.PushTransition);
-        }
+    }
+    function add(dirId = "", dirName = "", shareWithDeviceIds = [], existing = false) {
+        stackView.push("DirConfigPage.qml", {dirId: dirId, dirName: dirName, shareWithDeviceIds: shareWithDeviceIds ?? [], existing: existing, stackView: stackView}, StackView.PushTransition);
     }
 }

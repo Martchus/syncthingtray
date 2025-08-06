@@ -95,17 +95,15 @@ SwipeView {
         pageStack.setCurrentIndex(indexForward.pop());
         return true;
     }
-    function addDir(dirId, dirName, shareWithDeviceIds) {
-        pageStack.setCurrentIndex(1);
-        pageStack.currentPage.add(dirId, dirName, shareWithDeviceIds);
-    }
-    function addDevice(deviceId, deviceName) {
-        pageStack.setCurrentIndex(2);
-        pageStack.currentPage.add(deviceId, deviceName);
-    }
     function showPage(index) {
         pageStack.setCurrentIndex(index);
         return pageStack.children[index];
+    }
+    function addDir(dirId, dirName, shareWithDeviceIds, existing) {
+        showPage(1).add(dirId, dirName, shareWithDeviceIds, existing);
+    }
+    function addDevice(deviceId, deviceName) {
+        showPage(2).add(deviceId, deviceName);
     }
     function updateSearchText(searchText, updateModel = true) {
         if (pageStack.searchText === searchText) {

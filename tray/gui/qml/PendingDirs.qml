@@ -148,8 +148,8 @@ Page {
         return true;
     }
 
-    function shareFolder(dirId, selectedDevs) {
-        let label = "";
+    function labelForDir(dirId, selectedDevs) {
+        let label = dirId;
         for (const dev of Object.values(selectedDevs)) {
             const devInfo = dev.info;
             const labelFromDevInfo = devInfo.label ?? devInfo.Label ?? "";
@@ -158,6 +158,10 @@ Page {
                 break;
             }
         }
-        pages.addDir(dirId, label, Object.keys(selectedDevs));
+        return label;
+    }
+
+    function shareFolder(dirId, selectedDevs) {
+        pages.addDir(dirId, labelForDir(dirId, selectedDevs), Object.keys(selectedDevs), App.hasDir(dirId));
     }
 }
