@@ -98,8 +98,8 @@ Item {
                 function copyDeviceId() {
                     plasmoid.nativeInterface.copyToClipboard(modifiedBy)
                 }
-                function copyFolderId() {
-                    plasmoid.nativeInterface.copyToClipboard(folderId)
+                function copyDirectoryId() {
+                    plasmoid.nativeInterface.copyToClipboard(directoryId)
                 }
             }
 
@@ -118,7 +118,7 @@ Item {
                 PlasmaComponents.MenuItem {
                     text: qsTr("Copy folder ID")
                     icon: "folder"
-                    onClicked: recentChangesView.currentItem.copyFolderId()
+                    onClicked: recentChangesView.currentItem.copyDirectoryId()
                 }
             }
         }
