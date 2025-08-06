@@ -413,7 +413,13 @@ void WebPage::supplyCredentials(QAuthenticator *authenticator)
  */
 bool WebPage::handleNavigationRequest(const QUrl &currentUrl, const QUrl &targetUrl)
 {
+    // handle initial request
     if (currentUrl.isEmpty()) {
+        // download support bundle via external browser
+        if (targetUrl.path() == QLatin1String("/rest/debug/support")) {
+            QDesktopServices::openUrl(targetUrl);
+            return false;
+        }
         // allow initial request
         return true;
     }
