@@ -71,10 +71,19 @@ SwipeView {
                 return true;
             }
         }
-        return currentPage.back?.() || currentChild.pop?.() || pageStack.back();
+        const wentBack = currentPage.back?.() || currentChild.pop?.();
+        const lastPageSet = setPageHistory[setPageHistory.length - 1];
+        const previousPage = indexHistory[indexHistory.length - 1];
+        if (lastPageSet !== undefined && lastPageSet === previousPage) {
+            setPageHistory.pop();
+            return pageStack.back() || wentBack;
+        } else {
+            return wentBack || pageStack.back();
+        }
     }
     readonly property var indexHistory: [0]
     readonly property var indexForward: []
+    readonly property var setPageHistory: []
     property bool goingBackAndForth: false
     function back() {
         if (indexHistory.length < 1) {
@@ -96,6 +105,7 @@ SwipeView {
         return true;
     }
     function showPage(index) {
+        pageStack.setPageHistory.push(index);
         pageStack.setCurrentIndex(index);
         return pageStack.children[index];
     }
