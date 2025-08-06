@@ -8,7 +8,7 @@ import Main
 ToolBar {
     id: toolBar
     Material.theme: Material.Light
-    Material.background: Material.LightBlue
+    Material.background: Material.primary
     ColumnLayout {
         anchors.fill: parent
         anchors.leftMargin: leftMargin
