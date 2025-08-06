@@ -93,7 +93,7 @@ Item {
                 }
 
                 function copyPath() {
-                    plasmoid.nativeInterface.copyToClipboard(path)
+                    plasmoid.nativeInterface.copyToClipboard(directoryId, path)
                 }
                 function copyDeviceId() {
                     plasmoid.nativeInterface.copyToClipboard(modifiedBy)

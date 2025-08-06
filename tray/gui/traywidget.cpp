@@ -773,15 +773,23 @@ void TrayWidget::showRecentChangesContextMenu(const QPoint &position)
             const auto *const selectionModelToCopy = m_ui->recentChangesTreeView->selectionModel();
             const auto indexesToCopy = selectionModelToCopy ? selectionModelToCopy->selectedRows() : QModelIndexList();
             if (indexesToCopy.size() == 1) {
-                QGuiApplication::clipboard()->setText(indexesToCopy.front().data(role).toString());
+                auto &indexToCopy = indexesToCopy.front();
+                auto toCopy = indexToCopy.data(role).toString();
+                if (role == SyncthingRecentChangesModel::Path) {
+                    if (const auto fullPath = m_connection.fullPath(indexToCopy.data(SyncthingRecentChangesModel::DirectoryId).toString(), toCopy);
+                        !fullPath.isEmpty()) {
+                        toCopy = fullPath;
+                    }
+                }
+                QGuiApplication::clipboard()->setText(toCopy);
             }
         };
     };
     auto menu = QMenu(this);
     if (auto index = indexes.front(); index.data(SyncthingRecentChangesModel::Action).toString() != QLatin1String("deleted")) {
-        if (auto dirIndex = 0;
-            const auto *const dir = m_connection.findDirInfo(index.data(SyncthingRecentChangesModel::DirectoryId).toString(), dirIndex)) {
-            const auto fullPath = QString(dir->path % QChar('/') % index.data(SyncthingRecentChangesModel::Path).toString());
+        if (const auto fullPath = m_connection.fullPath(
+                index.data(SyncthingRecentChangesModel::DirectoryId).toString(), index.data(SyncthingRecentChangesModel::Path).toString());
+            !fullPath.isEmpty()) {
             connect(menu.addAction(QIcon::fromTheme(
                                        QStringLiteral("document-open"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/document-open.svg"))),
                         tr("Open item")),

@@ -303,6 +303,7 @@ public:
     SyncthingDev *findDevInfo(const QString &devId, int &row);
     const SyncthingDev *findDevInfo(const QString &devId, int &row) const;
     SyncthingDev *findDevInfoByName(const QString &devName, int &row);
+    Q_INVOKABLE QString fullPath(const QString &dirId, const QString &relativePath) const;
 
 #ifndef QT_NO_SSL
     const QList<QSslError> &expectedSslErrors() const;

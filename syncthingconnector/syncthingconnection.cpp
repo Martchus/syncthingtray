@@ -873,6 +873,17 @@ SyncthingDev *SyncthingConnection::findDevInfoByName(const QString &devName, int
 }
 
 /*!
+ * \brief Returns the full path for \a relativePath within the directory specified by \a dirId.
+ * \remarks Returns an empty string if the directory doesn't exist.
+ */
+QString SyncthingConnection::fullPath(const QString &dirId, const QString &relativePath) const
+{
+    auto row = int();
+    auto dirInfo = findDirInfo(dirId, row);
+    return dirInfo ? (dirInfo->path % QChar('/') % relativePath) : QString();
+}
+
+/*!
  * \brief Returns all directory IDs for the current configuration.
  * \remarks Computed by looping dirInfo().
  */

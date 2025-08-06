@@ -98,7 +98,7 @@ Item {
                     plasmoid.openLocalFileOrDir(directoryId, path)
                 }
                 function copyPath() {
-                    plasmoid.copyToClipboard(path)
+                    plasmoid.copyToClipboard(directoryId, path)
                 }
                 function copyDeviceId() {
                     plasmoid.copyToClipboard(modifiedBy)
