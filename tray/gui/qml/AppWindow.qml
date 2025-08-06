@@ -106,7 +106,7 @@ ApplicationWindow {
     }
     readonly property Notifications notifications: Notifications {
         pageStack: pageStack
-        onNotification: {
+        onNotification: (message) => {
             notifictionToolTip.text = notifictionToolTip.visible ? `${notifictionToolTip.text}\n${message}` : message;
             notifictionToolTip.open();
         }
