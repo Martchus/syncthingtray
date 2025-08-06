@@ -91,6 +91,14 @@ DelegateChooser {
                         enabled: modelData?.enabled ?? true
                         onAccepted: stringDlg.accept()
                     }
+                    IconOnlyButton {
+                        visible: editedStringValue.enabled && modelData.key === "id"
+                        text: qsTr("Make random ID")
+                        icon.source: App.faUrlBase + "hashtag"
+                        onClicked: App.requestFromSyncthing("GET", "svc/random/string", {length: 10}, (res, error) => {
+                                                                editedStringValue.text = (res?.random?.substr(0, 5) + '-' + res?.random?.substr(5, 5)).toLowerCase();
+                                                            });
+                    }
                     CopyPasteButtons {
                         edit: editedStringValue
                     }
