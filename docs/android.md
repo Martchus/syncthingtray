@@ -1,15 +1,22 @@
 # Using the Android app
-The Android app requires Android 9 or later. It is mainly tested on Android 14 and 15, though.
-Depending on the Android version and vendor-specific limitations you might run into permission
-errors and [problems with the app being stopped by the OS](https://dontkillmyapp.com). For me it
-works well enough on a three year old average Samsung device. It probably works on most recent phones
-except very low-end devices.
-
 **The Android app is still experimental.** Use it with care and create backups of your
 configuration and data before trying it. No builds are provided at this point so you have to
 [build it from sources](https://github.com/Martchus/cpp-utilities/blob/master/README.md#remarks-about-building-for-android).
 See the section "[Caveats on Android](#caveats-on-android)" below for further limitations.
 
+## Compatibility
+The Android app requires Android 9 or later. It is mainly tested on Android 14, 15 and 16, though.
+
+Depending on the Android version and vendor-specific limitations you might run into permission
+errors and [the app being stopped by the OS](https://dontkillmyapp.com).
+
+For me it works well enough on a three year old average Samsung device except that the foreground
+service of the app is frequently killed (just to be restarted almost immediately again). I also
+successfully tested it on an older Nokia device with Android 10. So it probably works on most
+phones that came out around 2018 or more recently. I haven't tested the app on very low-end
+devices yet.
+
+## General remarks
 If you're starting from scratch you can simply install and start the app. Otherwise, checkout
 the sections about migrating after reading the general remarks.
 
@@ -122,6 +129,9 @@ configuration from another device.
 ## Caveats on Android
 While Syncthing Tray basically works on Android, there are still some unresolved issues:
 
+* The Go runtime and thus the service process sometimes "panics" which still needs debugging. It
+  is restarted by Android automatically, though. (Just like it is restarted after being sometimes
+  killed forcefully by the Android.)
 * The performance can be problematic due to the use of FUSE as of Android 11. Especially if one
   has many files in one directory the performance is bad.
     * I recommended to avoid having many files in a single directory.
