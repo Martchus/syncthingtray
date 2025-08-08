@@ -136,11 +136,6 @@
             </item>
             <item>
              <property name="text">
-              <string>Verbose</string>
-             </property>
-            </item>
-            <item>
-             <property name="text">
               <string>Info</string>
              </property>
             </item>

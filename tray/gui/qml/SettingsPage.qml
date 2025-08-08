@@ -174,10 +174,9 @@ StackView {
                 {key: "run", label: qsTr("Run Syncthing"), statusText: Qt.binding(() => App.syncthingRunningStatus)},
                 {key: "logLevel", label: qsTr("Log level"), type: "options", options: [
                     {value: "debug", label: qsTr("Debug")},
-                    {value: "verbose", label: qsTr("Verbose")},
                     {value: "info", label: qsTr("Info")},
                     {value: "warning", label: qsTr("Warning")},
-                    {value: "fatal", label: qsTr("Fatal")},
+                    {value: "error", label: qsTr("Error")},
                 ]},
                 {key: "stopOnMetered", label: qsTr("Stop on metered network connection"), statusText: Qt.binding(() => App.meteredStatus)},
                 {key: "writeLogFile", label: qsTr("Write persistent log file"), statusText: qsTr("Write a persistent log file into the app directory")},

@@ -1150,6 +1150,40 @@ LauncherOptionPage::~LauncherOptionPage()
 {
 }
 
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+static LibSyncthing::LogLevel comboBoxIndexToLogLevel(int index)
+{
+    switch (index) {
+    case 0:
+        return LibSyncthing::LogLevel::Debug;
+    case 1:
+        return LibSyncthing::LogLevel::Info;
+    case 2:
+        return LibSyncthing::LogLevel::Warning;
+    case 3:
+        return LibSyncthing::LogLevel::Error;
+    default:
+        return LibSyncthing::LogLevel::Default;
+    }
+}
+
+static int logLevelToComboBoxIndex(LibSyncthing::LogLevel logLevel)
+{
+    switch (logLevel) {
+    case LibSyncthing::LogLevel::Debug:
+        return 0;
+    case LibSyncthing::LogLevel::Info:
+        return 1;
+    case LibSyncthing::LogLevel::Warning:
+        return 2;
+    case LibSyncthing::LogLevel::Error:
+        return 3;
+    default:
+        return 1;
+    }
+}
+#endif
+
 QWidget *LauncherOptionPage::setupWidget()
 {
     auto *const widget = LauncherOptionPageBase::setupWidget();
@@ -1249,7 +1283,7 @@ bool LauncherOptionPage::apply()
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
         settings.libSyncthing.configDir = ui()->configDirPathSelection->lineEdit()->text();
         settings.libSyncthing.dataDir = ui()->dataDirPathSelection->lineEdit()->text();
-        settings.libSyncthing.logLevel = static_cast<LibSyncthing::LogLevel>(ui()->logLevelComboBox->currentIndex());
+        settings.libSyncthing.logLevel = comboBoxIndexToLogLevel(ui()->logLevelComboBox->currentIndex());
         settings.libSyncthing.expandPaths = ui()->expandEnvCheckBox->isChecked();
 #endif
         settings.syncthingPath = ui()->syncthingPathSelection->lineEdit()->text();
@@ -1279,7 +1313,7 @@ void LauncherOptionPage::reset()
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
         ui()->configDirPathSelection->lineEdit()->setText(settings.libSyncthing.configDir);
         ui()->dataDirPathSelection->lineEdit()->setText(settings.libSyncthing.dataDir);
-        ui()->logLevelComboBox->setCurrentIndex(static_cast<int>(settings.libSyncthing.logLevel));
+        ui()->logLevelComboBox->setCurrentIndex(logLevelToComboBoxIndex(settings.libSyncthing.logLevel));
         ui()->expandEnvCheckBox->setChecked(settings.libSyncthing.expandPaths);
 #endif
         ui()->syncthingPathSelection->lineEdit()->setText(settings.syncthingPath);
@@ -1429,7 +1463,7 @@ void LauncherOptionPage::launch()
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
 void LauncherOptionPage::updateLibSyncthingLogLevel()
 {
-    m_launcher->setLibSyncthingLogLevel(static_cast<LibSyncthing::LogLevel>(ui()->logLevelComboBox->currentIndex()));
+    m_launcher->setLibSyncthingLogLevel(comboBoxIndexToLogLevel(ui()->logLevelComboBox->currentIndex()));
 }
 #endif
 
