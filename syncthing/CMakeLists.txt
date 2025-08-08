@@ -6,7 +6,7 @@ set(META_PROJECT_TYPE library)
 set(META_APP_NAME "Syncthing library")
 set(META_APP_DESCRIPTION "Syncthing itself, built as a shared or static library")
 set(META_PROJECT_VARNAME_UPPER LIB_SYNCTHING)
-set(META_SYNCTHING_VERSION "v2.0.0-beta.6")
+set(META_SYNCTHING_VERSION "v2.0.0-rc.24")
 
 # use testfiles directory from syncthingconnector
 set(META_SRCDIR_REFS "${CMAKE_CURRENT_SOURCE_DIR}\n${CMAKE_CURRENT_SOURCE_DIR}/../syncthingconnector")
@@ -187,6 +187,10 @@ else ()
     string(TIMESTAMP BUILD_STAMP "%s" UTC)
 endif ()
 set(GO_LINKER_FLAGS "${GO_LINKER_FLAGS} -X github.com/syncthing/syncthing/lib/build.Stamp=${BUILD_STAMP}")
+if (ANDROID)
+    # configure anet, see https://github.com/wlynxg/anet/blob/main/README.md#how-to-build-with-go-1230-or-later
+    set(GO_LINKER_FLAGS "${GO_LINKER_FLAGS} -checklinkname=0")
+endif ()
 
 # set Go build arguments
 set(GO_BUILD_MOD

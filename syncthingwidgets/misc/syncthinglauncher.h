@@ -102,7 +102,7 @@ Q_SIGNALS:
     void runningChanged(bool isRunning);
     void startingChanged();
     void outputAvailable(const QByteArray &data);
-    void exitLogged(const std::string &exitMessage);
+    void exitLogged(std::string_view exitMessage);
     void exited(int exitCode, QProcess::ExitStatus exitStatus);
     void errorOccurred(QProcess::ProcessError error);
     void guiUrlChanged(const QUrl &newUrl);

@@ -187,9 +187,10 @@ std::int64_t runSyncthing(const RuntimeOptions &options)
     for (;;) {
         const auto exitCode
             = ::libst_run_syncthing(gostr(options.configDir), gostr(options.dataDir), gostr(options.guiAddress), gostr(options.guiApiKey),
-                options.flags & RuntimeFlags::Verbose, options.flags & RuntimeFlags::AllowNewerConfig, options.flags & RuntimeFlags::NoDefaultConfig,
-                options.flags & RuntimeFlags::SkipPortProbing, options.flags & RuntimeFlags::EnsureConfigDirExists,
-                options.flags & RuntimeFlags::EnsureDataDirExists, options.flags & RuntimeFlags::ExpandPathsFromEnv);
+                gostr(options.profilerAddress), options.dbMaintenanceInterval.count(), options.dbDeleteRetentionInterval.count(),
+                options.flags & RuntimeFlags::Verbose, options.flags & RuntimeFlags::AllowNewerConfig, options.flags & RuntimeFlags::SkipPortProbing,
+                options.flags & RuntimeFlags::EnsureConfigDirExists, options.flags & RuntimeFlags::EnsureDataDirExists,
+                options.flags & RuntimeFlags::ExpandPathsFromEnv, options.flags & RuntimeFlags::ResetDeltaIndexes);
         // return exit code unless it is "3" as this means Syncthing is supposed to be restarted
         if (exitCode != 3) {
             return exitCode;

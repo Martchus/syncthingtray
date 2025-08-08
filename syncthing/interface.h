@@ -3,6 +3,7 @@
 
 #include "./global.h"
 
+#include <chrono>
 #include <cstdint>
 #include <functional>
 #include <string>
@@ -15,7 +16,7 @@ enum class RuntimeFlags : std::uint64_t {
     None = 0,
     Verbose = (1 << 0),
     AllowNewerConfig = (1 << 1),
-    NoDefaultConfig = (1 << 2),
+    ResetDeltaIndexes = (1 << 2),
     EnsureConfigDirExists = (1 << 3),
     EnsureDataDirExists = (1 << 4),
     SkipPortProbing = (1 << 5),
@@ -37,18 +38,21 @@ struct RuntimeOptions {
     std::string dataDir;
     std::string guiAddress;
     std::string guiApiKey;
+    std::string profilerAddress;
+    std::chrono::nanoseconds dbMaintenanceInterval = std::chrono::hours(8);
+    std::chrono::nanoseconds dbDeleteRetentionInterval = std::chrono::hours(4320);
     RuntimeFlags flags = RuntimeFlags::AllowNewerConfig | RuntimeFlags::EnsureConfigDirExists | RuntimeFlags::EnsureDataDirExists;
 };
 
 enum class LogLevel : int {
-    Debug,
-    Verbose,
-    Info,
-    Warning,
-    Fatal,
+    Debug = -4,
+    Info = 0,
+    Default = Info,
+    Warning = 4,
+    Error = 8,
 };
 constexpr auto lowestLogLevel = LogLevel::Debug;
-constexpr auto highestLogLevel = LogLevel::Fatal;
+constexpr auto highestLogLevel = LogLevel::Error;
 
 using LoggingCallback = std::function<void(LogLevel, const char *message, std::size_t messageSize)>;
 

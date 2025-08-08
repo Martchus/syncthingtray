@@ -8,6 +8,7 @@ set(META_PUBLIC_QT_MODULES Gui Widgets WebEngineCore WebEngineWidgets)
 set(META_WEBVIEW_SRC_DIR webview)
 set(META_WEBVIEW_WITH_CORE ON)
 set(META_GUI_OPTIONAL ON)
+set(META_CXX_STANDARD 20)
 
 # add project files
 set(HEADER_FILES misc/diffhighlighter.h misc/internalerror.h misc/statusinfo.h misc/syncthinglauncher.h misc/utils.h)
