@@ -249,6 +249,9 @@ TrayWidget::TrayWidget(TrayMenu *parent)
 
 TrayWidget::~TrayWidget()
 {
+    if (m_webViewDlg) {
+        disconnect(m_webViewDlg, &WebViewDialog::destroyed, this, &TrayWidget::handleWebViewDeleted);
+    }
     auto i = std::find(s_instances.begin(), s_instances.end(), this);
     auto wasFirst = i == s_instances.begin();
     if (i != s_instances.end()) {
