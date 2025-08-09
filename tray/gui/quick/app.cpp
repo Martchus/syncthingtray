@@ -1386,6 +1386,7 @@ bool App::applySettings()
     auto mod = false;
     auto tweaksSettings = m_settings.value(QLatin1String("tweaks")).toObject();
     ensureDefault(mod, tweaksSettings, QLatin1String("unloadGuiWhenHidden"), false);
+    ensureDefault(mod, tweaksSettings, QLatin1String("exportDir"), QString());
 #ifdef Q_OS_ANDROID
     ensureDefault(mod, tweaksSettings, QLatin1String("importExportAsArchive"), true);
     ensureDefault(mod, tweaksSettings, QLatin1String("importExportEncryptionPassword"), QString());
@@ -1784,6 +1785,24 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
 }
 
 /*!
+ * \brief Returns the path to create a sub directory or file within within \a dir.
+ */
+static QString makeExportPath(const QString &dir, const QString &name, const QString &extension)
+{
+    const auto now = CppUtilities::DateTime::now();
+    const auto date
+        = QStringLiteral("%1-%2-%3").arg(now.year(), 4, 10, QChar('0')).arg(now.month(), 2, 10, QChar('0')).arg(now.day(), 2, 10, QChar('0'));
+    const auto time
+        = QStringLiteral("%1-%2-%3").arg(now.hour(), 2, 10, QChar('0')).arg(now.minute(), 2, 10, QChar('0')).arg(now.second(), 2, 10, QChar('0'));
+    auto path = QString();
+    for (int index = 0; path.isEmpty() || QFile::exists(path); ++index) {
+        const auto indexStr = index ? QChar('-') % QString::number(index) : QString();
+        path = dir % QChar('/') % name % QChar('-') % date % QChar('T') % time % indexStr % extension;
+    }
+    return path;
+}
+
+/*!
  * \brief Exports all settings (app-related and of Syncthing itself) to the specified \a url.
  */
 bool App::exportSettings(const QUrl &url, const QJSValue &callback)
@@ -1796,12 +1815,22 @@ bool App::exportSettings(const QUrl &url, const QJSValue &callback)
     const auto tweaksSettings = m_settings.value(QLatin1String("tweaks")).toObject();
     QtConcurrent::run([this, url, currentHomePath = currentSyncthingHomeDir(),
                           asArchive = tweaksSettings.value(QLatin1String("importExportAsArchive")).toBool(),
-                          encryptionPassword = tweaksSettings.value(QLatin1String("importExportEncryptionPassword")).toString()] {
+                          encryptionPassword = tweaksSettings.value(QLatin1String("importExportEncryptionPassword")).toString(),
+                          exportDir = tweaksSettings.value(QLatin1String("exportDir")).toString()] {
         if (!m_settingsDir.has_value()) {
             return std::make_pair(tr("settings directory was not located."), true);
         }
 
-        const auto path = resolveUrl(url);
+        auto path = QString();
+        if (url.isEmpty()) {
+            if (exportDir.isEmpty()) {
+                return std::make_pair(tr("no destination or file or directory specified/configured."), true);
+            }
+            path = makeExportPath(exportDir, QStringLiteral("syncthing-app-backup"), asArchive ? QStringLiteral(".zip") : QString());
+        } else {
+            path = resolveUrl(url);
+        }
+
         if (asArchive) {
 #ifdef Q_OS_ANDROID
             const auto error = QJniObject(QNativeInterface::QAndroidApplication::context())
@@ -2014,9 +2043,21 @@ bool App::saveSupportBundle(const QUrl &url, const QJSValue &callback)
         emit error(tr("Debugging needs to be enabled under advanced GUI settings first."));
         return false;
     }
-    m_downloadFile.emplace(resolveUrl(url));
+    auto path = QString();
+    if (url.isEmpty()) {
+        const auto exportDir = m_settings.value(QLatin1String("tweaks")).toObject().value(QLatin1String("exportDir")).toString();
+        if (exportDir.isEmpty()) {
+            emit error(tr("No destination or file or directory specified/configured."));
+            return false;
+            ;
+        }
+        path = makeExportPath(exportDir, QStringLiteral("syncthing-app-support-bundle"), QStringLiteral(".zip"));
+    } else {
+        path = resolveUrl(url);
+    }
+    m_downloadFile.emplace(path);
     if (!m_downloadFile->open(QFile::WriteOnly | QFile::Truncate)) {
-        emit error(tr("Unable to open output file: ").arg(m_downloadFile->errorString()));
+        emit error(tr("Unable to open output file under \"%1\": %2").arg(path, m_downloadFile->errorString()));
         return false;
     }
     setImportExportStatus(ImportExportStatus::SavingSupportBundle);

@@ -132,9 +132,13 @@ StackView {
         property string currentBackupFunction
         property var currentBackupCallback
         function initiateBackup(functionName, callback) {
+            const tweaks = App.settings.tweaks;
             appSettingsPage.currentBackupFunction = functionName;
             appSettingsPage.currentBackupCallback = callback;
-            return App.settings.tweaks.importExportAsArchive || functionName === "saveSupportBundle" ? backupFileDialog.open() : backupFolderDialog.open();
+            if (tweaks.exportDir?.length > 0 && (functionName === "exportSettings" || functionName === "saveSupportBundle")) {
+                return App[functionName]("", callback);
+            }
+            return tweaks.importExportAsArchive || functionName === "saveSupportBundle" ? backupFileDialog.open() : backupFolderDialog.open();
         }
         function openNestedSettings(title, key) {
             if (appSettingsPage.config[key] === undefined) {
@@ -180,9 +184,10 @@ StackView {
                 {key: "openLogs", label: qsTr("Open logs"), statusText: qsTr("Show Syncthing logs since app startup"), defaultValue: () => stackView.push("LogPage.qml", {}, StackView.PushTransition)},
             ],
             tweaks: [
-                {key: "unloadGuiWhenHidden", type: "boolean", defaultValue: false, label: qsTr("Stop UI when hidden"), statusText: qsTr("Might help save battery live but resets UI state.")},
-                {key: "importExportAsArchive", type: "boolean", defaultValue: false, label: qsTr("Import/export archive"), statusText: qsTr("Import and export to/from a Zip archive.")},
-                {key: "importExportEncryptionPassword", type: "string", inputMethodHints: Qt.ImhHiddenText | Qt.ImhSensitiveData | Qt.ImhNoAutoUppercase, defaultValue: "", label: qsTr("Import/export password"), statusText: qsTr("Encrypt/decrypt data via AES-256 when exporting/importing to archive.")},
+                {key: "importExportAsArchive", type: "boolean", defaultValue: false, label: qsTr("Import/export archive"), statusText: qsTr("Import and export to/from a Zip archive")},
+                {key: "importExportEncryptionPassword", type: "string", inputMethodHints: Qt.ImhHiddenText | Qt.ImhSensitiveData | Qt.ImhNoAutoUppercase, defaultValue: "", label: qsTr("Import/export password"), statusText: qsTr("Encrypt/decrypt data via AES-256 when exporting/importing to archive")},
+                {key: "exportDir", type: "folderpath", defaultValue: "", label: qsTr("Export path"), statusText: qsTr("Save exports and support bundles under fix location")},
+                {key: "unloadGuiWhenHidden", type: "boolean", defaultValue: false, label: qsTr("Stop UI when hidden"), statusText: qsTr("Saves system resources but resets UI state")},
             ]
         })
         property bool hasUnsavedChanges: false
