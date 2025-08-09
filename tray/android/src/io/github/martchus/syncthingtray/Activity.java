@@ -22,6 +22,8 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 import android.util.Log;
 
@@ -351,6 +353,15 @@ public class Activity extends QtActivity {
         }
     }
 
+    private applyTheming() {
+        String color = "#03A9F4 "; // Material.LightBlue (alternative from dark palette: #81D4FA)
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(color);
+        window.setNavigationBarColor(color);
+    }
+
     private Bundle metaData() {
         if (m_info == null) {
             try {
@@ -374,6 +385,7 @@ public class Activity extends QtActivity {
         Log.i(TAG, "Creating");
 
         Util.init();
+        applyTheming();
 
         super.onCreate(savedInstanceState); // does *not* block, native code registering JNI functions will only run once layout is initialized
 
