@@ -22,6 +22,8 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 import android.util.Log;
 
@@ -351,6 +353,19 @@ public class Activity extends QtActivity {
         }
     }
 
+    private void applyTheming() {
+        // set color to Material.LightBlue from Material.Light, in consistency with MainToolBar.qml/Theming.qml
+        // note: The status/navigation bar color cannot be set anymore like this under newer Android versions. So
+        //       Qt.ExpandedClientAreaHint is used instead. However, this code still seems to do *something*. With
+        //       it the icons in the status bar are rendered in white (instead of black) which looks much better.
+        int color = 0xFF03A9F4;
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(color);
+        window.setNavigationBarColor(color);
+    }
+
     private Bundle metaData() {
         if (m_info == null) {
             try {
@@ -373,6 +388,7 @@ public class Activity extends QtActivity {
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "Creating");
 
+        applyTheming();
         Util.init();
 
         super.onCreate(savedInstanceState); // does *not* block, native code registering JNI functions will only run once layout is initialized
