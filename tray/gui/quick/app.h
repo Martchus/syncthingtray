@@ -134,10 +134,13 @@ public:
 #endif
     static constexpr bool extendedClientArea()
     {
-#if QT_VERSION >= QT_VERSION_CHECK(6, 10, 0)
+        // disable extended client areas by default as further tweaking is needed
+        // note: Safe areas are not working as expected with Qt 6.9 at all but this is fixed on dev and
+        //       thus might work with Qt 6.10.
+#ifdef SYNCTHINGTRAY_TEST_EXTENDED_CLIENT_AREA
         return true;
 #else
-        return false; // safe areas are not working as expected
+        return false;
 #endif
     }
     QString syncthingVersion() const
