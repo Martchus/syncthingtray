@@ -6,6 +6,9 @@ import Qt.labs.qmlmodels
 import Main
 
 TabBar {
+    Material.theme: Material.Light
+    Material.background: Material.primary
+    Material.accent: "#fff"
     visible: drawer.interactive
     currentIndex: Math.min(pageStack.currentIndex, 4)
     MainTabButton {

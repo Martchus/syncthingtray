@@ -4,6 +4,8 @@ import QtQuick.Controls.Material
 import Main
 
 TabButton {
+    Material.theme: Material.Dark
+    Material.accent: Material.foreground
     display: parent.width > 400 ? AbstractButton.TextUnderIcon : AbstractButton.IconOnly
     font.pointSize: 7
     icon.source: App.faUrlBase + iconName
