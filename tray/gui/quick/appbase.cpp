@@ -128,12 +128,16 @@ Data::IconManager &AppBase::initIconManager()
 
 QString AppBase::readSettingFile(QFile &settingsFile, QJsonObject &settings)
 {
-    auto parsError = QJsonParseError();
-    auto doc = QJsonDocument::fromJson(settingsFile.readAll(), &parsError);
-    settings = doc.object();
+    auto settingsData = settingsFile.readAll();
     if (settingsFile.error() != QFile::NoError) {
         return tr("Unable to read settings: ") + settingsFile.errorString();
     }
+    if (settingsData.isEmpty()) {
+        return QString(); // settings file is expected to be empty on first startup
+    }
+    auto parsError = QJsonParseError();
+    auto doc = QJsonDocument::fromJson(settingsData, &parsError);
+    settings = doc.object();
     if (parsError.error != QJsonParseError::NoError || !doc.isObject()) {
         return tr("Unable to restore settings: ")
             + (parsError.error != QJsonParseError::NoError ? parsError.errorString() : tr("JSON document contains no object"));
