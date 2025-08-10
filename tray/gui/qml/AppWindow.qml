@@ -12,6 +12,7 @@ ApplicationWindow {
     height: 500
     title: meta.title
     font: theming.font
+    flags: Qt.ExpandedClientAreaHint | Qt.NoTitleBarBackgroundHint
     header: MainToolBar {
         drawer: drawer
         pageStack: pageStack
@@ -21,6 +22,7 @@ ApplicationWindow {
         id: toolBar
         drawer: drawer
         pageStack: pageStack
+        bottomPadding: parent.SafeArea.margins.bottom
     }
     Material.theme: theming.Material.theme
     Material.primary: theming.Material.primary
