@@ -643,6 +643,7 @@ DelegateChooser {
             FileDialog {
                 id: fileDlg
                 title: modelData.label
+                fileMode: modelData.fileMode ?? FileDialog.OpenFile
                 onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, App.resolveUrl(fileDlg.selectedFile))
             }
             CustomDialog {
