@@ -12,7 +12,7 @@ ApplicationWindow {
     height: 500
     title: meta.title
     font: theming.font
-    flags: Qt.ExpandedClientAreaHint | Qt.NoTitleBarBackgroundHint
+    flags: App.extendedClientArea ? Qt.ExpandedClientAreaHint | Qt.NoTitleBarBackgroundHint : 0
     header: MainToolBar {
         drawer: drawer
         pageStack: pageStack

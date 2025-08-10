@@ -52,6 +52,7 @@ class App : public AppBase {
     Q_PROPERTY(bool darkmodeEnabled READ isDarkmodeEnabled NOTIFY darkmodeEnabledChanged)
     Q_PROPERTY(int iconSize READ iconSize CONSTANT)
     Q_PROPERTY(bool nativePopups READ nativePopups CONSTANT)
+    Q_PROPERTY(bool extendedClientArea READ extendedClientArea CONSTANT)
     Q_PROPERTY(QString syncthingVersion READ syncthingVersion CONSTANT)
     Q_PROPERTY(QString qtVersion READ qtVersion CONSTANT)
     Q_PROPERTY(QString readmeUrl READ readmeUrl CONSTANT)
@@ -131,6 +132,14 @@ public:
 #else
     bool nativePopups() const;
 #endif
+    static constexpr bool extendedClientArea()
+    {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 10, 0)
+        return true;
+#else
+        return false; // safe areas are not working as expected
+#endif
+    }
     QString syncthingVersion() const
     {
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
