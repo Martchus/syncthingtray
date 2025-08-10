@@ -6,7 +6,7 @@ set(META_APP_NAME "Syncthing Tray")
 set(META_APP_NAME_QUICK_GUI "Syncthing App")
 set(META_GUI_OPTIONAL ON)
 if (QUICK_GUI)
-    set(META_QT_VERSION 6.8.0)
+    set(META_QT_VERSION 6.9.0)
 endif ()
 
 # use testfiles directory from syncthingconnector
