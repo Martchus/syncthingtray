@@ -88,9 +88,9 @@ variable `PLASMA_USE_QT_SCALING=1` might help.
 * Wayland limitations
     * The tray menu can not be positioned correctly under Wayland because the protocol does not allow setting window positions from
       the client-side (at least I don't know a way to do it). This issue can not be fixed unless Wayland provides an API to set the
-      window position to specific coordinates or a system tray icon.
-      See discussion on [freedesktop.org](https://lists.freedesktop.org/archives/wayland-devel/2014-August/017584.html).
-      Note that the Plasmoid is not affected by this limitation.
+      window position to specific coordinates or a system tray icon (see discussion on
+      [freedesktop.org](https://lists.freedesktop.org/archives/wayland-devel/2014-August/017584.html).
+      The Plasmoid is *not* affected by this limitation.
     * While the tray menu is shown its entry is shown in the taskbar. Not sure whether there is a way to avoid this.
 * Qt limitations and bugs
     * Qt < 6.7:
