@@ -26,3 +26,18 @@ The screenshots are not up-to-date.
 
 ## Syncthing actions for Dolphin
 ![Rescan/pause/status](/fileitemactionplugin/resources/screenshots/dolphin.png)
+
+## Mobile UI on Android
+![Startpage](/tray/resources/screenshots/mobile/startpage.jpg)
+![Folders](/tray/resources/screenshots/mobile/folders.jpg)
+![Folders](/tray/resources/screenshots/mobile/folders-2.jpg)
+![Folders (darkmode)](/tray/resources/screenshots/mobile/dark-folders.jpg)
+![Folder config](/tray/resources/screenshots/mobile/folder-config.jpg)
+
+![Import](/tray/resources/screenshots/mobile/import.jpg)
+![Run config](/tray/resources/screenshots/mobile/run-config.jpg)
+
+![Devices](/tray/resources/screenshots/mobile/dark-devices.jpg)
+![Advanced](/tray/resources/screenshots/mobile/dark-advanced.jpg)
+![File tree 1](/tray/resources/screenshots/mobile/dark-file-tree-1.jpg)
+![File tree 2](/tray/resources/screenshots/mobile/dark-file-tree-2.jpg)
