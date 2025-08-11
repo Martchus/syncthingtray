@@ -131,10 +131,7 @@ option(
     "enables setup tools; needs qtutilities and syncthingwidgets built with this option as well; makes likely sense to disable when distributing via a package manager"
     OFF)
 option(USE_LIBSYNCTHING "whether libsyncthing should be included for syncthingtray's CLI" OFF)
-set(CPP_UTILITIES_REQUIRED_VERSION 5.28.0)
-if (SETUP_TOOLS AND NOT USE_LIBSYNCTHING)
-    set(CPP_UTILITIES_REQUIRED_VERSION 5.30.0)
-endif ()
+set(CPP_UTILITIES_REQUIRED_VERSION 5.30.0)
 
 # find c++utilities
 find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} ${CPP_UTILITIES_REQUIRED_VERSION}
@@ -321,6 +318,7 @@ include(WindowsResources)
 include(AppTarget)
 include(ShellCompletion)
 include(Doxygen)
+include(Sphinx)
 include(ConfigHeader)
 
 # deduce major Qt version from package prefix
