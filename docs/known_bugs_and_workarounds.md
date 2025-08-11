@@ -5,7 +5,7 @@ platforms. For bugs of Syncthing Tray itself, checkout the issues on GitHub.
 ## Workaround positioning issues under Wayland
 The Qt Widgets based version basically works under Wayland but there are
 positioning issues and the settings regarding positioning have no effect (see
-"[List of bugs](#List-of-bugs)" section below). One can workaround this limitation by telling the
+"[List of bugs](#list-of-bugs)" section below). One can workaround this limitation by telling the
 window manager how to place the window, e.g. under Sway one could add a
 configuration like this:
 

@@ -10,7 +10,7 @@ For basic instructions and platform-specific details checkout the README file of
 [c++utilities](https://github.com/Martchus/cpp-utilities).
 
 To avoid building c++utilities/qtutilities/qtforkawesome separately, follow the instructions under
-"[Building this straight](#Building-this-straight)". There's also documentation about
+"[Building this straight](#building-this-straight)". There's also documentation about
 [various build variables](https://github.com/Martchus/cpp-utilities/blob/master/doc/buildvariables.md) which
 can be passed to CMake to influence the build.
 
@@ -219,7 +219,7 @@ Translations for further locales can be added quite easily:
    in `connector/CMakeLists.txt`, `model/CMakeLists.txt`, `widgets/CMakeLists.txt`,
    `fileitemactionplugin/CMakeLists.txt`, `plasmoid/CMakeLists.txt` and
    `tray/CMakeLists.txt`.
-2. Configure a new build, e.g. follow steps under *[Building this straight](#Building-this-straight)*.
+2. Configure a new build, e.g. follow steps under *[Building this straight](#building-this-straight)*.
 3. Conduct a full build or generate only translation files via the `translations` target.
 4. New translation files should have been created by the build system under
    `connector/translations`, `model/translations`, `widgets/translations`,
@@ -232,10 +232,10 @@ Translations for further locales can be added quite easily:
 ### Extend/update existing translations
 * For English, update the corresponding string literals within the source code.
 * If necassary, sync the translation files with the source code like in step `2.`/`3.` of
-  "[Add a new locale](#Add-a-new-locale)". Check that no translations have been lost (except ones which are no
+  "[Add a new locale](#add-a-new-locale)". Check that no translations have been lost (except ones which are no
   longer required of course).
 * Change the strings within the translation files found within the `translations`
-  directories like in step `4.`/`5.` of "[Add a new locale](#Add-a-new-locale)".
+  directories like in step `4.`/`5.` of "[Add a new locale](#add-a-new-locale)".
 
 ### Remarks
 * Syncthing Tray displays also text from [qtutilities](https://github.com/Martchus/qtutilities).
