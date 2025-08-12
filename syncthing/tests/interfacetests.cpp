@@ -161,22 +161,26 @@ void InterfaceTests::testRun(const std::function<long long()> &runFunction, bool
 
         // check whether the usual log messages appear
         const string msg(message, messageSize);
-        if (startsWith(msg, "My ID: ")) {
+        if (startsWith(msg, "My ID: ") || startsWith(msg, "Calculated our device ID")) {
             myIdAnnounced = true;
-        } else if (startsWith(msg, "Single thread SHA256 performance is") || startsWith(msg, "Hashing performance is")) {
+        } else if (startsWith(msg, "Single thread SHA256 performance is") || startsWith(msg, "Hashing performance is")
+            || startsWith(msg, "Measured hashing performance")) {
             performanceAnnounced = true;
-        } else if (startsWith(msg, "GUI and API listening on")) {
+        } else if (startsWith(msg, "GUI and API listening")) {
             guiAnnounced = true;
-        } else if (msg == "Ready to synchronize test1 (sendreceive)") {
+        } else if (msg == "Ready to synchronize test1 (sendreceive)"
+            || startsWith(msg, "Ready to synchronize (folder.id=test1 folder.type=sendreceive")) {
             testDir1Ready = true;
-        } else if (msg == "Ready to synchronize test2 (sendreceive)" || msg == "Ready to synchronize \"Test dir 2\" (test2) (sendreceive)") {
+        } else if (msg == "Ready to synchronize test2 (sendreceive)" || msg == "Ready to synchronize \"Test dir 2\" (test2) (sendreceive)"
+            || startsWith(msg, "Ready to synchronize (folder.id=test2 folder.type=sendreceive")) {
             testDir2Ready = true;
-        } else if (msg == "Device 6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4 is \"Test dev 1\" at [dynamic]") {
+        } else if (msg == "Device 6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4 is \"Test dev 1\" at [dynamic]"
+            || startsWith(msg, "Loaded peer device configuration (device=6EIS2PN name=\"Test dev 1\" address=\"[dynamic]\"")) {
             testDev1Ready = true;
-        } else if (startsWith(
-                       msg, "Device MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7 is \"Test dev 2\" at [tcp://192.168.2.2")) {
+        } else if (startsWith(msg, "Device MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7 is \"Test dev 2\" at [tcp://192.168.2.2")
+            || startsWith(msg, "Loaded peer device configuration (device=MMGUI6U name=\"Test dev 2\" address=\"[tcp://192.168.2.2")) {
             testDev2Ready = true;
-        } else if (msg == "Exiting") {
+        } else if (startsWith(msg, "Exiting")) {
             shutDownLogged = true;
         }
 
