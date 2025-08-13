@@ -356,12 +356,12 @@
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="589"/>
+        <location filename="../lib/syncthingapplet.cpp" line="598"/>
         <source>Associated directory does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="615"/>
+        <location filename="../lib/syncthingapplet.cpp" line="624"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -370,7 +370,7 @@
         <translation type="vanished">新通知</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="682"/>
+        <location filename="../lib/syncthingapplet.cpp" line="691"/>
         <source>D-Bus error - unable to </source>
         <translation>D-Bus 错误 - 无法 </translation>
     </message>
@@ -378,24 +378,25 @@
 <context>
     <name>RecentChangesPage</name>
     <message>
+        <location filename="../package5/contents/ui/RecentChangesPage.qml" line="112"/>
         <location filename="../package6/contents/ui/RecentChangesPage.qml" line="120"/>
         <source>Open item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/RecentChangesPage.qml" line="109"/>
+        <location filename="../package5/contents/ui/RecentChangesPage.qml" line="117"/>
         <location filename="../package6/contents/ui/RecentChangesPage.qml" line="125"/>
         <source>Copy path</source>
         <translation>复制路径</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/RecentChangesPage.qml" line="114"/>
+        <location filename="../package5/contents/ui/RecentChangesPage.qml" line="122"/>
         <location filename="../package6/contents/ui/RecentChangesPage.qml" line="130"/>
         <source>Copy device ID</source>
         <translation>复制设备 ID</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/RecentChangesPage.qml" line="119"/>
+        <location filename="../package5/contents/ui/RecentChangesPage.qml" line="127"/>
         <location filename="../package6/contents/ui/RecentChangesPage.qml" line="135"/>
         <source>Copy folder ID</source>
         <translation type="unfinished"></translation>

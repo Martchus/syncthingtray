@@ -54,7 +54,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="962"/>
+        <location filename="../syncthingconnection.cpp" line="973"/>
         <source>Unable to parse timestamp &quot;%1&quot; (%2): %3</source>
         <translation type="unfinished"></translation>
     </message>
@@ -89,12 +89,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1040"/>
+        <location filename="../syncthingconnection.cpp" line="1051"/>
         <source>Unable to locate certificate used by Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1053"/>
+        <location filename="../syncthingconnection.cpp" line="1064"/>
         <source>Unable to load certificate used by Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -165,12 +165,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2287"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2295"/>
         <source>Unable to request Syncthing events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2022"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2030"/>
         <source>Unable to post config: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -240,68 +240,68 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1648"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1656"/>
         <source>Unable to request directory revert: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1835"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1843"/>
         <source>Unable to parse JSON response: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1848"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1856"/>
         <source>Unable to request: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1873"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1881"/>
         <source>Unable to parse response for browsing &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1887"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1895"/>
         <source>Unable to browse &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1911"/>
-        <location filename="../syncthingconnection_requests.cpp" line="1935"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1919"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1943"/>
         <source>Unable to query ignore patterns of &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1961"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1969"/>
         <source>Unable to change ignore patterns of &quot;%1&quot;: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2240"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2248"/>
         <source>Unable to parse Syncthing events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2886"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2894"/>
         <source>Unable to parse disk events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2911"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2919"/>
         <source>Unable to request disk events: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1267"/>
+        <location filename="../syncthingconnection.cpp" line="1278"/>
         <source>at offset %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.h" line="733"/>
+        <location filename="../syncthingconnection.h" line="735"/>
         <source>connecting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.h" line="735"/>
+        <location filename="../syncthingconnection.h" line="737"/>
         <source>, re-connect attempt every %1 ms</source>
         <translation type="unfinished"></translation>
     </message>
