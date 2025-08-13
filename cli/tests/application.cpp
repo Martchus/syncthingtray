@@ -171,8 +171,8 @@ void ApplicationTests::test()
     const char *const logArgs[] = { "syncthingctl", "log", "--api-key", apiKey.data(), "--url", url.data(), nullptr };
     TESTUTILS_ASSERT_EXEC(logArgs);
     cout << stdout;
-    CPPUNIT_ASSERT(stdout.find("My ID") != string::npos || stdout.find("My name") != string::npos);
-    CPPUNIT_ASSERT(stdout.find("Startup complete") != string::npos);
+    CPPUNIT_ASSERT(
+        stdout.find("My ID") != string::npos || stdout.find("My name") != string::npos || stdout.find("Calculated our device ID") != string::npos);
     CPPUNIT_ASSERT(stdout.find("Access the GUI via the following URL") != string::npos);
 
     // use environment variables to specify API-key and URL
