@@ -478,7 +478,12 @@ void SyncthingLauncher::handleLoggingCallback(LibSyncthing::LogLevel level, cons
     auto messageData = QByteArray();
     messageSize = min<size_t>(numeric_limits<int>::max() - 20, messageSize);
     messageData.reserve(static_cast<int>(messageSize) + 20);
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     messageData.append(logLevelPrefix(level));
+#else
+    const auto prefix = logLevelPrefix(level);
+    messageData.append(prefix.data(), static_cast<qsizetype>(prefix.size()));
+#endif
     messageData.append(message, static_cast<int>(messageSize));
     messageData.append('\n');
     if (level >= m_libsyncthingLogLevel && m_logFile.isOpen()) {
