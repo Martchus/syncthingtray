@@ -472,7 +472,7 @@
     <message>
         <location filename="../syncthingdev.cpp" line="39"/>
         <source>Syncing (%1 %, %2)</source>
-        <translation>正正同步 (%1 %, %2)</translation>
+        <translation>正在同步 (%1 %, %2)</translation>
     </message>
 </context>
 <context>
