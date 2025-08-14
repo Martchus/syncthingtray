@@ -865,7 +865,11 @@ QByteArray Application::editConfigViaScript() const
             script += '\n';
         }
         // remove trailing termination to avoid e.g. "Expected token `)' in line 2" when "… line 1" would make more sense
+#if QT_VERSION >= QT_VERSION_CHECK(6, 5, 0)
         script.removeLast();
+#else
+        script.remove(script.size() - 1, 1);
+#endif
     }
 
     // define function to print error
