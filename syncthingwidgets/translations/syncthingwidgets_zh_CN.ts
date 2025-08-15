@@ -69,7 +69,7 @@
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1828"/>
         <source>Unable to restart via &quot;%1&quot;: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>无法通过 “%1” 重新启动： %2</translation>
     </message>
 </context>
 <context>
@@ -796,7 +796,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="581"/>
         <source>Long polling int.</source>
-        <translation>长轮询</translation>
+        <translation>长轮询。</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="588"/>
@@ -864,7 +864,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../misc/dbusstatusnotifier.cpp" line="31"/>
         <source> - new version</source>
-        <translation type="unfinished"></translation>
+        <translation> - 新版本</translation>
     </message>
     <message>
         <location filename="../misc/dbusstatusnotifier.cpp" line="34"/>
@@ -900,12 +900,12 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <location filename="../misc/dbusstatusnotifier.cpp" line="61"/>
         <source>Open updater</source>
-        <translation type="unfinished"></translation>
+        <translation>打开更新程序</translation>
     </message>
     <message>
         <location filename="../misc/dbusstatusnotifier.h" line="108"/>
         <source>Version %1 is available</source>
-        <translation type="unfinished"></translation>
+        <translation>版本 %1 已可用</translation>
     </message>
 </context>
 <context>
@@ -1296,7 +1296,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <source>Verbose</source>
         <translatorcomment>冗余</translatorcomment>
-        <translation type="vanished">Verbose</translation>
+        <translation>冗余</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="139"/>
@@ -2093,7 +2093,7 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../misc/textviewdialog.cpp" line="69"/>
         <source> Checkout &lt;a href=&quot;openLauncherSettings&quot;&gt;launcher settings&lt;/a&gt; for continuous log of local Syncthing instance.</source>
-        <translation>查看&lt;a href=&quot;openLauncherSettings&quot;&gt;启动器设置&lt;/a&gt;，获取本地同步连续不断的日志</translation>
+        <translation>查看 &lt;a href=&quot;openLauncherSettings&quot;&gt;启动器设置&lt;/a&gt; 获取本地同步连续不断的日志。</translation>
     </message>
 </context>
 <context>

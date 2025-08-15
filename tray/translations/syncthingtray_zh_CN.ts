@@ -140,17 +140,17 @@
     <message>
         <location filename="../gui/quick/app.cpp" line="261"/>
         <source>Moving home directory …</source>
-        <translation>移动主目录...</translation>
+        <translation>正在移动主目录...</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="263"/>
         <source>Cleaning home directory …</source>
-        <translation type="unfinished"></translation>
+        <translation>正在清理主目录…</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="265"/>
         <source>Saving support bundle …</source>
-        <translation type="unfinished"></translation>
+        <translation>正在保存支持包…</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="1342"/>
@@ -160,7 +160,7 @@
     <message>
         <location filename="../gui/quick/app.cpp" line="1424"/>
         <source>No logfile present anyway</source>
-        <translation type="unfinished"></translation>
+        <translation>目前没有日志文件</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="1439"/>
@@ -180,22 +180,22 @@
     <message>
         <location filename="../gui/quick/app.cpp" line="1502"/>
         <source>Settings directory was not located.</source>
-        <translation type="unfinished"></translation>
+        <translation>设置目录未找到。</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="1517"/>
         <source>Unable to extract archive: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>无法提取存档： %1</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="1522"/>
         <source>Unable to create temp dir: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>无法创建临时目录： %1</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="1526"/>
         <source>archiving is only supported on Android.</source>
-        <translation type="unfinished"></translation>
+        <translation>存档仅在 Android 上受支持。</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="1550"/>
@@ -245,7 +245,7 @@
     <message>
         <location filename="../gui/quick/app.cpp" line="1756"/>
         <source>Unable to remove temp dir: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>无法删除临时目录： %1</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="1773"/>
@@ -255,17 +255,17 @@
     <message>
         <location filename="../gui/quick/app.cpp" line="1827"/>
         <source>no destination or file or directory specified/configured.</source>
-        <translation type="unfinished"></translation>
+        <translation>未指定/配置目标或文件或目录。</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="1839"/>
         <source>Settings have been archived to &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>设置已保存到 “%1”。</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="1841"/>
         <source>Archiving is only supported on Android.</source>
-        <translation type="unfinished"></translation>
+        <translation>仅在 Android 上支持存档。</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="1847"/>
@@ -275,47 +275,47 @@
     <message>
         <location filename="../gui/quick/app.cpp" line="2043"/>
         <source>Debugging needs to be enabled under advanced GUI settings first.</source>
-        <translation type="unfinished"></translation>
+        <translation>首先需要在高级图形用户界面设置下启用调试功能。</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="2050"/>
         <source>No destination or file or directory specified/configured.</source>
-        <translation type="unfinished"></translation>
+        <translation>未指定/配置目标、文件或目录。</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="2060"/>
         <source>Unable to open output file under &quot;%1&quot;: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>无法打开 &quot;%1&quot; 下的输出文件：%2</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="2078"/>
         <source>Unable to write bundle: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>无法写入支持包：%1</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="2081"/>
         <source>Unable to download bundle: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>无法下载支持包: %1</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="2084"/>
         <source>Support bundle saved</source>
-        <translation type="unfinished"></translation>
+        <translation>支持包已保存</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="2105"/>
         <source>Removed old database directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>移除旧的数据库目录。</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="2107"/>
         <source>Unable to remove old database directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>无法移除旧的数据库目录。</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="2113"/>
         <source>There was nothing to clean up.</source>
-        <translation type="unfinished"></translation>
+        <translation>没有什么可清理的。</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="1821"/>
@@ -340,7 +340,7 @@
     <message>
         <location filename="../gui/quick/app.cpp" line="1955"/>
         <source>Unable to move Syncthing home: settings directory was not located.</source>
-        <translation type="unfinished"></translation>
+        <translation>无法移动 Syncthing 主目录：设置目录未找到。</translation>
     </message>
     <message>
         <location filename="../gui/quick/app.cpp" line="1961"/>
@@ -501,7 +501,7 @@
         <location filename="../gui/quick/appservice.cpp" line="477"/>
         <location filename="../gui/quick/appservice.cpp" line="497"/>
         <source>Most recent: </source>
-        <translation>最近：</translation>
+        <translation>最近: </translation>
     </message>
     <message>
         <location filename="../gui/quick/appservice.cpp" line="496"/>
@@ -693,12 +693,12 @@
     <message>
         <location filename="../gui/trayicon.cpp" line="307"/>
         <source>New version - click to open updater</source>
-        <translation type="unfinished"></translation>
+        <translation>新版本 - 单击以打开更新程序</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="307"/>
         <source>Version %1 is available</source>
-        <translation type="unfinished"></translation>
+        <translation>版本 %1 已可用</translation>
     </message>
 </context>
 <context>
@@ -975,7 +975,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <message>
         <location filename="../application/main.cpp" line="472"/>
         <source>&lt;p&gt;This can have different causes:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Data corruption occurred during the download/extraction. In this case cancelling and retrying the update will help.&lt;/li&gt;&lt;li&gt;The signing key or updating mechanism in general has changed. In this case an according release note will be present on &lt;a href=&quot;https://martchus.github.io/syncthingtray/#downloads-section&quot;&gt;the website&lt;/a&gt; and &lt;a href=&quot;https://github.com/Martchus/syncthingtray/releases&quot;&gt;GitHub&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;A bug in the newly introduced updater, see &lt;a href=&quot;https://github.com/Martchus/syncthingtray/issues&quot;&gt;issues on GitHub&lt;/a&gt; for potential bug reports.&lt;/li&gt;&lt;li&gt;Someone tries to distribute manipulated executables of Syncthing Tray.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;It is recommend to cancel the update and retry or cross-check the cause if the issue persists. If you ignore this error you &lt;i&gt;may&lt;/i&gt; install a corrupted/manipulated executable.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;这可能有不同的原因：&lt;/p&gt;&lt;ul&gt;&lt;li&gt;下载/提取过程中发生了数据损坏。在这种情况下，取消并重试更新会有帮助。&lt;/li&gt;&lt;li&gt;签名密钥或一般更新机制已更改。在这种情况下，&lt;a href=&quot;https://martchus.github.io/syncthingtray/#downloads-section&quot;&gt;网站&lt;/a&gt;和&lt;a href=&quot;https://github.com/Martchus/syncthingtray/releases&quot;&gt;GitHub&lt;/a&gt;上会出现相应的发布说明。&lt;/li&gt;&lt;li&gt;新引入的更新程序中存在一个错误，请参见&lt;a href=&quot;https://github.com/Martchus/syncthingtray/issues&quot;&gt;GitHub 上的问题&lt;/a&gt;，以获取潜在的错误报告。&lt;/li&gt;&lt;li&gt;有人试图分发经过篡改的 Syncthing Tray 可执行文件。&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;如果问题仍然存在，建议取消更新并重试或交叉检查原因。如果您忽略此错误，则&lt;i&gt;可能&lt;/i&gt;安装了已损坏/被篡改的可执行文件。&lt;/p&gt;</translation>
     </message>
     <message>
         <source>You must configure how to connect to Syncthing when using Syncthing Tray the first time.</source>

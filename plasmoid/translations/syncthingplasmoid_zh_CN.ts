@@ -45,7 +45,7 @@
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="22"/>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="23"/>
         <source>Filter folders</source>
-        <translation type="unfinished"></translation>
+        <translation>过滤文件夹</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="83"/>
@@ -98,12 +98,12 @@
     <message>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="186"/>
         <source>Browse remote files</source>
-        <translation type="unfinished"></translation>
+        <translation>浏览远程文件</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="193"/>
         <source>Show/edit ignore patterns</source>
-        <translation type="unfinished"></translation>
+        <translation>显示/编辑忽略模式</translation>
     </message>
 </context>
 <context>
@@ -179,25 +179,25 @@
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="34"/>
         <location filename="../package6/contents/ui/FullRepresentation.qml" line="40"/>
         <source>Folders</source>
-        <translation type="unfinished"></translation>
+        <translation>文件夹</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="40"/>
         <location filename="../package6/contents/ui/FullRepresentation.qml" line="46"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation>设备</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="46"/>
         <location filename="../package6/contents/ui/FullRepresentation.qml" line="52"/>
         <source>History</source>
-        <translation type="unfinished"></translation>
+        <translation>历史</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="52"/>
         <location filename="../package6/contents/ui/FullRepresentation.qml" line="58"/>
         <source>Downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>下载</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="247"/>
@@ -255,32 +255,32 @@
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="108"/>
         <source>Note that the size is ignored when the Plasmoid is displayed on the desktop, in full screen mode or as entry of the system tray Plasmoid. Then the Plasmoid can be resized using Plasma&apos;s UI. On Plasma older than 5.26, when displayed as entry of the system tray Plasmoid the size can not be changed (setting a high value just leads to the contents being clipped).</source>
-        <translation type="unfinished"></translation>
+        <translation>请注意，当 Plasmoid 以全屏模式显示在桌面上或作为系统托盘 Plasmoid 的条目时，将忽略该大小。然后可以使用 Plasma 的用户界面调整 Plasmoid 的大小。在低于 5.26 的 Plasma 上，当显示为系统托盘 Plasmoid 的条目时，无法更改大小（设置高值只会导致内容被剪切）。</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="120"/>
         <source>Optional GUI elements</source>
-        <translation type="unfinished"></translation>
+        <translation>可选界面元素</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="132"/>
         <source>Downloads</source>
-        <translation type="unfinished"></translation>
+        <translation>下载</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="139"/>
         <source>Show tab texts</source>
-        <translation type="unfinished"></translation>
+        <translation>显示选项卡文本</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="148"/>
         <source>Icons</source>
-        <translation type="unfinished"></translation>
+        <translation>图标</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="160"/>
         <source>Prefer icons from theme over ForkAwesome icons (needs restart to apply)</source>
-        <translation type="unfinished"></translation>
+        <translation>更喜欢主题中的图标，而不是 forkawesome 图标（需要重新启动以应用）</translation>
     </message>
     <message>
         <source>Note that the size is ignored when the Plasmoid is displayed on the desktop or in full screen mode. When displayed as entry of the system tray Plasmoid the size can not be changed (setting a high value just leads to the contents being clipped).</source>
@@ -318,12 +318,12 @@
     <message>
         <location filename="../lib/settingsdialog.cpp" line="140"/>
         <source>General web view settings</source>
-        <translation type="unfinished"></translation>
+        <translation>常规 Web 视图设置</translation>
     </message>
     <message>
         <location filename="../lib/settingsdialog.cpp" line="141"/>
         <source>Built-in web view</source>
-        <translation type="unfinished"></translation>
+        <translation>内置 Web 视图</translation>
     </message>
     <message>
         <source>Web view</source>
@@ -358,12 +358,12 @@
     <message>
         <location filename="../lib/syncthingapplet.cpp" line="598"/>
         <source>Associated directory does not exist.</source>
-        <translation type="unfinished"></translation>
+        <translation>关联目录不存在。</translation>
     </message>
     <message>
         <location filename="../lib/syncthingapplet.cpp" line="624"/>
         <source>Unable to establish connection to Syncthing.</source>
-        <translation type="unfinished"></translation>
+        <translation>无法与 Syncthing 建立连接。</translation>
     </message>
     <message>
         <source>New notifications</source>
@@ -381,7 +381,7 @@
         <location filename="../package5/contents/ui/RecentChangesPage.qml" line="112"/>
         <location filename="../package6/contents/ui/RecentChangesPage.qml" line="120"/>
         <source>Open item</source>
-        <translation type="unfinished"></translation>
+        <translation>打开项目</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/RecentChangesPage.qml" line="117"/>
@@ -399,7 +399,7 @@
         <location filename="../package5/contents/ui/RecentChangesPage.qml" line="127"/>
         <location filename="../package6/contents/ui/RecentChangesPage.qml" line="135"/>
         <source>Copy folder ID</source>
-        <translation type="unfinished"></translation>
+        <translation>复制文件夹 ID</translation>
     </message>
 </context>
 <context>
@@ -429,79 +429,79 @@
         <location filename="../package5/contents/ui/ToolBar.qml" line="24"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="25"/>
         <source>Connect</source>
-        <translation type="unfinished">连接</translation>
+        <translation>连接</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/ToolBar.qml" line="33"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="34"/>
         <source>Connecting …</source>
-        <translation type="unfinished"></translation>
+        <translation>连接中 …</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/ToolBar.qml" line="42"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="43"/>
         <source>Resume</source>
-        <translation type="unfinished">恢复</translation>
+        <translation>恢复</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/ToolBar.qml" line="51"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="52"/>
         <source>Pause</source>
-        <translation type="unfinished">暂停</translation>
+        <translation>暂停</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/ToolBar.qml" line="75"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="76"/>
         <source>Stop</source>
-        <translation type="unfinished">停止</translation>
+        <translation>停止</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/ToolBar.qml" line="89"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="90"/>
         <source>Start</source>
-        <translation type="unfinished">启动</translation>
+        <translation>启动</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/ToolBar.qml" line="145"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="144"/>
         <source>Show new notifications</source>
-        <translation type="unfinished">显示新通知</translation>
+        <translation>显示新通知</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/ToolBar.qml" line="164"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="163"/>
         <source>About Syncthing Tray</source>
-        <translation type="unfinished">关于 Syncthing Tray</translation>
+        <translation>关于 Syncthing Tray</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/ToolBar.qml" line="176"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="175"/>
         <source>Show own device ID</source>
-        <translation type="unfinished">显示本设备 ID</translation>
+        <translation>显示本设备 ID</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/ToolBar.qml" line="192"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="191"/>
         <source>Show Syncthing log</source>
-        <translation type="unfinished">显示 Syncthing 日志</translation>
+        <translation>显示 Syncthing 日志</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/ToolBar.qml" line="204"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="203"/>
         <source>Rescan all folders</source>
-        <translation type="unfinished">重新扫描所有目录</translation>
+        <translation>重新扫描所有目录</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/ToolBar.qml" line="220"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="219"/>
         <source>Settings</source>
-        <translation type="unfinished">设置</translation>
+        <translation>设置</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/ToolBar.qml" line="235"/>
         <location filename="../package6/contents/ui/ToolBar.qml" line="234"/>
         <source>Open Syncthing</source>
-        <translation type="unfinished">打开 Syncthing</translation>
+        <translation>打开 Syncthing</translation>
     </message>
 </context>
 <context>
@@ -540,7 +540,7 @@
         <location filename="../package5/contents/ui/main.qml" line="63"/>
         <location filename="../package6/contents/ui/main.qml" line="49"/>
         <source>Show own device ID</source>
-        <translation type="unfinished">显示本设备 ID</translation>
+        <translation>显示本设备 ID</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/main.qml" line="65"/>
