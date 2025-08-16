@@ -230,13 +230,22 @@ endif ()
 set(SYNCTHINGINTERNAL_HEADER_PATH "${CMAKE_CURRENT_BINARY_DIR}/libsyncthinginternal.h")
 set(SYNCTHINGINTERNAL_LIBRARY_PATH "${CMAKE_CURRENT_BINARY_DIR}/${SYNCTHINGINTERNAL_LIBRARY_NAME}")
 
+# set SQLite3 related tags in consistency with official builds
+set(GO_BUILD_TAGS "${GO_BUILD_TAGS} sqlite_omit_load_extension sqlite_dbstat")
+
 # configure use system SQLite3
 option(SYNCTHING_USE_SYSTEM_SQLITE "use the system-provided SQLite3 library" ON)
 if (SYNCTHING_USE_SYSTEM_SQLITE)
     set(GO_BUILD_TAGS "${GO_BUILD_TAGS} libsqlite3")
-    if (MINGW)
-        set(GO_BUILD_TAGS "${GO_BUILD_TAGS} sqlite_omit_load_extension")
-    endif ()
+endif ()
+
+# allow usuing netgo and usergo
+option(SYNCTHING_NET_AND_USERGO "use netgo and usergo build tags" OFF)
+if (SYNCTHING_NET_AND_USERGO)
+    # note: Official builds use these under Linux to avoid "warning: Using 'getgrgid_r'/'getaddrinfo' in statically linked
+    # applications" but this is not normally required here as our GNU/Linux builds don't link statically against glibc. If
+    # one wanted to link statically against the C library (when building for Linux) this should be enabled, though.
+    set(GO_BUILD_TAGS "${GO_BUILD_TAGS} netgo osusergo")
 endif ()
 
 # generate Syncthing's assets (not setting GOARCH/GOOS here, this is supposed to run on the host)
