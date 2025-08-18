@@ -54,6 +54,7 @@ private:
 
     const std::vector<SyncthingDev> &m_devs;
     std::vector<int> m_rowCount;
+    mutable QString m_thisDevVersion;
 };
 
 inline const SyncthingDev *SyncthingDeviceModel::info(const QModelIndex &index) const

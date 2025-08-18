@@ -7,6 +7,7 @@
 
 #include <c++utilities/conversion/stringconversion.h>
 
+#include <QRegularExpression>
 #include <QStringBuilder>
 
 using namespace std;
@@ -17,7 +18,7 @@ namespace Data {
 static int computeDeviceRowCount(const SyncthingDev &dev)
 {
     // hide connection type, last seen and everything after introducer (eg. traffic) unless connected
-    return dev.isConnected() ? 11 : 6;
+    return dev.status == SyncthingDevStatus::ThisDevice ? 7 : (dev.isConnected() ? 11 : 6);
 }
 
 SyncthingDeviceModel::SyncthingDeviceModel(SyncthingConnection &connection, QObject *parent)
@@ -194,6 +195,16 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                 case 9:
                     return dev.introducer ? tr("yes") : tr("no");
                 case 10:
+                    if (dev.status == SyncthingDevStatus::ThisDevice) {
+                        if (m_thisDevVersion.isEmpty()) {
+                            static const auto versionRegex = QRegularExpression(QStringLiteral("(syncthing )?(v[^\\(\\)\\s]*)([^\\(\\)]*)(\\(.*(\\))).*"));
+                            const auto versionMatch = versionRegex.match(m_connection.syncthingVersion());
+                            if (versionMatch.hasMatch()) {
+                                m_thisDevVersion = versionMatch.captured(2) % QChar(' ') % versionMatch.captured(4);
+                            }
+                        }
+                        return m_thisDevVersion;
+                    }
                     return dev.clientVersion;
                 }
             }
@@ -409,6 +420,7 @@ void SyncthingDeviceModel::devStatusChanged(const SyncthingDev &dev, int index)
 void SyncthingDeviceModel::handleConfigInvalidated()
 {
     beginResetModel();
+    m_thisDevVersion.clear();
 }
 
 void SyncthingDeviceModel::handleNewConfigAvailable()
