@@ -208,182 +208,182 @@
         <translation>在 “%1” 下找不到 Syncthing 配置文件。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1657"/>
+        <location filename="../gui/quick/app.cpp" line="1658"/>
         <source>Unable to import settings: settings directory was not located.</source>
         <translation>无法导入设置：未找到设置目录。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1664"/>
+        <location filename="../gui/quick/app.cpp" line="1665"/>
         <source>Waiting for backend to terminate before importing settings …</source>
         <translation>正在等待后台终止，然后再导入设置...</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1699"/>
+        <location filename="../gui/quick/app.cpp" line="1700"/>
         <source>Imported app config from &quot;%1&quot;.</source>
         <translation>从 “%1” 导入应用程序配置。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1712"/>
+        <location filename="../gui/quick/app.cpp" line="1713"/>
         <source>Imported Syncthing config and database from &quot;%1&quot;.</source>
         <translation>从 “%1” 导入了 Syncthing 配置和数据库。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1730"/>
+        <location filename="../gui/quick/app.cpp" line="1731"/>
         <source>Unable to find folders/devices in current Syncthing config.</source>
         <translation>在当前 Syncthing 配置中找不到文件夹/设备。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1745"/>
+        <location filename="../gui/quick/app.cpp" line="1746"/>
         <source>Merging %1 folders and %2 devices</source>
         <translation>合并 %1 文件夹和 %2 设备</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1747"/>
+        <location filename="../gui/quick/app.cpp" line="1748"/>
         <source>Unable to import folders/devices.</source>
         <translation>无法导入文件夹/设备。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1756"/>
+        <location filename="../gui/quick/app.cpp" line="1757"/>
         <source>Unable to remove temp dir: %1</source>
         <translation>无法删除临时目录： %1</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1773"/>
+        <location filename="../gui/quick/app.cpp" line="1774"/>
         <source>Unable to import settings: %1</source>
         <translation>无法导入设置： %1</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1827"/>
+        <location filename="../gui/quick/app.cpp" line="1828"/>
         <source>no destination or file or directory specified/configured.</source>
         <translation>未指定/配置目标或文件或目录。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1839"/>
+        <location filename="../gui/quick/app.cpp" line="1840"/>
         <source>Settings have been archived to &quot;%1&quot;.</source>
         <translation>设置已保存到 “%1”。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1841"/>
+        <location filename="../gui/quick/app.cpp" line="1842"/>
         <source>Archiving is only supported on Android.</source>
         <translation>仅在 Android 上支持存档。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1847"/>
+        <location filename="../gui/quick/app.cpp" line="1848"/>
         <source>unable to create export directory under &quot;%1&quot;</source>
         <translation>无法在 “%1” 下创建导出目录</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2043"/>
+        <location filename="../gui/quick/app.cpp" line="2044"/>
         <source>Debugging needs to be enabled under advanced GUI settings first.</source>
         <translation>首先需要在高级图形用户界面设置下启用调试功能。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2050"/>
+        <location filename="../gui/quick/app.cpp" line="2051"/>
         <source>No destination or file or directory specified/configured.</source>
         <translation>未指定/配置目标、文件或目录。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2060"/>
+        <location filename="../gui/quick/app.cpp" line="2061"/>
         <source>Unable to open output file under &quot;%1&quot;: %2</source>
         <translation>无法打开 &quot;%1&quot; 下的输出文件：%2</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2078"/>
+        <location filename="../gui/quick/app.cpp" line="2079"/>
         <source>Unable to write bundle: %1</source>
         <translation>无法写入支持包：%1</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2081"/>
+        <location filename="../gui/quick/app.cpp" line="2082"/>
         <source>Unable to download bundle: %1</source>
         <translation>无法下载支持包: %1</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2084"/>
+        <location filename="../gui/quick/app.cpp" line="2085"/>
         <source>Support bundle saved</source>
         <translation>支持包已保存</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2105"/>
+        <location filename="../gui/quick/app.cpp" line="2106"/>
         <source>Removed old database directory.</source>
         <translation>移除旧的数据库目录。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2107"/>
+        <location filename="../gui/quick/app.cpp" line="2108"/>
         <source>Unable to remove old database directory.</source>
         <translation>无法移除旧的数据库目录。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2113"/>
+        <location filename="../gui/quick/app.cpp" line="2114"/>
         <source>There was nothing to clean up.</source>
         <translation>没有什么可清理的。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1821"/>
+        <location filename="../gui/quick/app.cpp" line="1822"/>
         <source>settings directory was not located.</source>
         <translation>未找到设置目录。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1904"/>
+        <location filename="../gui/quick/app.cpp" line="1905"/>
         <source>Default directory</source>
         <translation>默认目录</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1920"/>
+        <location filename="../gui/quick/app.cpp" line="1921"/>
         <source>External storage %1</source>
         <translation>外部存储 %1</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1929"/>
+        <location filename="../gui/quick/app.cpp" line="1930"/>
         <source>Current home directory</source>
         <translation>当前主目录</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1955"/>
+        <location filename="../gui/quick/app.cpp" line="1956"/>
         <source>Unable to move Syncthing home: settings directory was not located.</source>
         <translation>无法移动 Syncthing 主目录：设置目录未找到。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1961"/>
+        <location filename="../gui/quick/app.cpp" line="1962"/>
         <source>Waiting for backend to terminate before moving home …</source>
         <translation>在移至主目录之前等待后台终止...</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1981"/>
+        <location filename="../gui/quick/app.cpp" line="1982"/>
         <source>Home directory stays the same.</source>
         <translation>主目录保持不变。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1992"/>
+        <location filename="../gui/quick/app.cpp" line="1993"/>
         <source>Cleaned up new home directory &quot;%1&quot;.</source>
         <translation>已清理新的主目录&quot;%1&quot;。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1998"/>
+        <location filename="../gui/quick/app.cpp" line="1999"/>
         <source>Copied data from previous home directory &quot;%1&quot; to new one.</source>
         <translation>已将数据从以前的主目录 “%1” 复制到新的主目录。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2001"/>
+        <location filename="../gui/quick/app.cpp" line="2002"/>
         <source>Cleaned up previous home directory.</source>
         <translation>清理了以前的主目录。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2004"/>
+        <location filename="../gui/quick/app.cpp" line="2005"/>
         <source>Configured &quot;%1&quot; as new/empty Syncthing home.</source>
         <translation>已将 “%1” 配置为新的/空的同步主目录。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2006"/>
+        <location filename="../gui/quick/app.cpp" line="2007"/>
         <source>Configured &quot;%1&quot; as Syncthing home.</source>
         <translation>已将 “%1” 配置为 Syncthing 主目录。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2010"/>
+        <location filename="../gui/quick/app.cpp" line="2011"/>
         <source>Unable to move home directory: %1</source>
         <translation>无法移动主目录： %1</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1761"/>
+        <location filename="../gui/quick/app.cpp" line="1762"/>
         <source>Nothing has been imported.</source>
         <translation>没有任何东西被导入。</translation>
     </message>
@@ -393,12 +393,12 @@
         <translation>正在等待后台终止，然后再清除日志...</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1867"/>
+        <location filename="../gui/quick/app.cpp" line="1868"/>
         <source>Unable to export settings: %1</source>
         <translation>无法导出设置： %1</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1860"/>
+        <location filename="../gui/quick/app.cpp" line="1861"/>
         <source>Settings have been exported to &quot;%1&quot;.</source>
         <translation>设置已导出到 “%1”。</translation>
     </message>

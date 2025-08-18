@@ -1296,7 +1296,7 @@ The Web UI will be opened in the default web browser instead.</source>
     <message>
         <source>Verbose</source>
         <translatorcomment>冗余</translatorcomment>
-        <translation>冗余</translation>
+        <translation type="vanished">冗余</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="139"/>
@@ -1831,12 +1831,12 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation type="vanished">正在初始化 ...</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="47"/>
+        <location filename="../misc/statusinfo.cpp" line="48"/>
         <source>Not connected to Syncthing</source>
         <translation>未连接到 Syncthing</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="50"/>
+        <location filename="../misc/statusinfo.cpp" line="51"/>
         <source>Trying to reconnect every %1 ms</source>
         <translation>尝试每 %1 毫秒重新连接一次</translation>
     </message>
@@ -1850,69 +1850,74 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation>初始化…</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="45"/>
+        <location filename="../misc/statusinfo.cpp" line="46"/>
         <source>Connecting to Syncthing …</source>
         <translation>正在连接到 Syncthing ...</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="56"/>
+        <location filename="../misc/statusinfo.cpp" line="55"/>
+        <source>Tap to connect now</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="61"/>
         <source>Reconnecting …</source>
         <translation>正在重新连接...</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="63"/>
-        <location filename="../misc/statusinfo.cpp" line="89"/>
+        <location filename="../misc/statusinfo.cpp" line="68"/>
+        <location filename="../misc/statusinfo.cpp" line="94"/>
         <source>Synchronization is ongoing</source>
         <translation>同步正在进行中</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="64"/>
-        <location filename="../misc/statusinfo.cpp" line="68"/>
+        <location filename="../misc/statusinfo.cpp" line="69"/>
+        <location filename="../misc/statusinfo.cpp" line="73"/>
         <source>At least one folder is out of sync</source>
         <translation>至少有一个目录未同步</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="72"/>
+        <location filename="../misc/statusinfo.cpp" line="77"/>
         <source>Notifications available</source>
         <translation>通知可用</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="77"/>
+        <location filename="../misc/statusinfo.cpp" line="82"/>
         <source>Syncthing is idling</source>
         <translation>Syncthing 空闲中</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="81"/>
+        <location filename="../misc/statusinfo.cpp" line="86"/>
         <source>Syncthing is scanning</source>
         <translation>Syncthing 扫描中</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="85"/>
+        <location filename="../misc/statusinfo.cpp" line="90"/>
         <source>At least one device is paused</source>
         <translation>至少有一个设备已暂停</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="93"/>
+        <location filename="../misc/statusinfo.cpp" line="98"/>
         <source>At least one remote folder is not in sync</source>
         <translation>至少有一个远程目录未同步</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="97"/>
+        <location filename="../misc/statusinfo.cpp" line="102"/>
         <source>No remote device connected</source>
         <translation>未连接远程设备</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="101"/>
+        <location filename="../misc/statusinfo.cpp" line="106"/>
         <source>Status is unknown</source>
         <translation>状态未知</translation>
     </message>
     <message>
-        <location filename="../misc/statusinfo.cpp" line="124"/>
+        <location filename="../misc/statusinfo.cpp" line="129"/>
         <source>Not connected to other devices</source>
         <translation>未连接到其他设备</translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="148"/>
+        <location filename="../misc/statusinfo.cpp" line="153"/>
         <source>Connected to %1 devices</source>
         <translation>
             <numerusform>已连接 %1 个设备</numerusform>
@@ -1925,14 +1930,14 @@ The Web UI will be opened in the default web browser instead.</source>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="155"/>
+        <location filename="../misc/statusinfo.cpp" line="160"/>
         <source>Connected to %1 and %2</source>
         <translation>
             <numerusform>已连接到 %1 和 %2</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="158"/>
+        <location filename="../misc/statusinfo.cpp" line="163"/>
         <source>Connected to %1</source>
         <translation>
             <numerusform>已连接到 %1</numerusform>
