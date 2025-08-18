@@ -52,7 +52,7 @@ void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection, c
             }
             if (m_clickToConnect) {
                 const auto newLine = m_additionalStatusInfo.isEmpty() ? QString() : QStringLiteral("\n");
-                m_additionalStatusInfo.append(newLine + QCoreApplication::translate("QtGui::StatusInfo", "Try to connect now"));
+                m_additionalStatusInfo.append(newLine + QCoreApplication::translate("QtGui::StatusInfo", "Tap to connect now"));
             }
         }
         m_statusIcon = icons ? &icons->disconnected : nullptr;
