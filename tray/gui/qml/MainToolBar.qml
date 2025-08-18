@@ -63,8 +63,9 @@ ToolBar {
                 Material.accent: Material.foreground
                 running: App.connection.connecting || App.syncthingStarting || App.savingConfig || App.importExportOngoing
                 visible: running
-                Layout.preferredWidth: statusButton.width - 5
-                Layout.preferredHeight: statusButton.height - 5
+                Layout.preferredWidth: statusButton.width - Layout.margins * 2
+                Layout.preferredHeight: statusButton.height - Layout.margins * 2
+                Layout.margins: 5
             }
             Label {
                 text: App.status
