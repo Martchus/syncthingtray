@@ -466,14 +466,14 @@ void SyncthingDirectoryModel::dirStatusChanged(const SyncthingDir &dir, int inde
     const auto oldRowCount = m_rowCount[static_cast<std::size_t>(index)];
     const auto newRowCount = computeDirectoryRowCount(dir);
     const auto newLastRow = newRowCount - 1;
-    if (oldRowCount > newRowCount) {
-        // begin removing rows for statistics
-        beginRemoveRows(modelIndex1, 2, 3);
+    if (newRowCount < oldRowCount) {
+        // remove surplus rows
+        beginRemoveRows(modelIndex1, newRowCount, oldRowCount - 1);
         m_rowCount[static_cast<std::size_t>(index)] = newRowCount;
         endRemoveRows();
-    } else if (newRowCount > oldRowCount) {
-        // begin inserting rows for statistics
-        beginInsertRows(modelIndex1, 2, 3);
+    } else if (oldRowCount < newRowCount) {
+        // insert additional rows
+        beginInsertRows(modelIndex1, oldRowCount, newLastRow);
         m_rowCount[static_cast<std::size_t>(index)] = newRowCount;
         endInsertRows();
     }
