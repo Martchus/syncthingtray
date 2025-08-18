@@ -14,10 +14,11 @@ using namespace Data;
 
 namespace QtGui {
 
-StatusInfo::StatusInfo(bool textOnly)
+StatusInfo::StatusInfo(bool textOnly, bool clickToConnect)
     : m_statusText(QCoreApplication::translate("QtGui::StatusInfo", "Initializing …"))
     , m_statusIcon(textOnly ? nullptr : &trayIcons().disconnected)
     , m_textOnly(textOnly)
+    , m_clickToConnect(clickToConnect)
 {
 }
 
@@ -48,6 +49,10 @@ void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection, c
             if (connection.autoReconnectInterval() > 0) {
                 m_additionalStatusInfo
                     = QCoreApplication::translate("QtGui::StatusInfo", "Trying to reconnect every %1 ms").arg(connection.autoReconnectInterval());
+            }
+            if (m_clickToConnect) {
+                const auto newLine = m_additionalStatusInfo.isEmpty() ? QString() : QStringLiteral("\n");
+                m_additionalStatusInfo.append(newLine + QCoreApplication::translate("QtGui::StatusInfo", "Try to connect now"));
             }
         }
         m_statusIcon = icons ? &icons->disconnected : nullptr;

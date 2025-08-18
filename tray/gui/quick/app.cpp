@@ -116,7 +116,7 @@ namespace QtGui {
  *   service startup.
  */
 App::App(bool insecure, QObject *parent)
-    : AppBase(insecure, false, parent)
+    : AppBase(insecure, false, true, parent)
     , m_app(static_cast<QGuiApplication *>(QCoreApplication::instance()))
     , m_imageProvider(nullptr)
     , m_dirModel(m_connection)

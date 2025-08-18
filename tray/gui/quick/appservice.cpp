@@ -52,7 +52,7 @@ static constexpr auto textOnly = true;
  *   synchronization.
  */
 AppService::AppService(bool insecure, QObject *parent)
-    : AppBase(insecure, textOnly, parent)
+    : AppBase(insecure, textOnly, false, parent)
 #ifdef Q_OS_ANDROID
     , m_clientsFollowingLog(false)
 #endif

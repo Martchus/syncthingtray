@@ -152,8 +152,11 @@ Page {
             ItemDelegate {
                 Layout.fillWidth: true
                 onClicked: {
-                    if (App.connection.hasErrors) {
+                    const connection = App.connection;
+                    if (connection.hasErrors) {
                         startPage.pages.showPage(5).push("ErrorsPage.qml", {}, StackView.PushTransition);
+                    } else if (!connection.connected && !connection.connecting) {
+                        connection.connect();
                     } else {
                         App.performHapticFeedback();
                     }

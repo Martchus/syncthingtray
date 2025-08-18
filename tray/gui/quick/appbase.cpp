@@ -20,10 +20,10 @@ namespace QtGui {
  * \brief The AppBase class implements common functionality of App and AppService.
  */
 
-AppBase::AppBase(bool insecure, bool textOnly, QObject *parent)
+AppBase::AppBase(bool insecure, bool textOnly, bool clickToConnect, QObject *parent)
     : QObject(parent)
     , m_notifier(m_connection)
-    , m_statusInfo(textOnly)
+    , m_statusInfo(textOnly, clickToConnect)
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     , m_connectToLaunched(true)
 #else

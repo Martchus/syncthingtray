@@ -15,8 +15,9 @@ namespace QtGui {
 
 class SYNCTHINGWIDGETS_EXPORT StatusInfo {
 public:
-    explicit StatusInfo(bool textOnly = false);
-    explicit StatusInfo(const Data::SyncthingConnection &connection, const QString &configurationName = QString(), bool textOnly = false);
+    explicit StatusInfo(bool textOnly = false, bool clickToConnect = false);
+    explicit StatusInfo(
+        const Data::SyncthingConnection &connection, const QString &configurationName = QString(), bool textOnly = false, bool clickToConnect = true);
 
     const QString &statusText() const;
     const QString &additionalStatusText() const;
@@ -33,11 +34,13 @@ private:
     QString m_additionalStatusText;
     const QIcon *m_statusIcon;
     bool m_textOnly;
+    bool m_clickToConnect;
 };
 
-inline StatusInfo::StatusInfo(const Data::SyncthingConnection &connection, const QString &configurationName, bool textOnly)
+inline StatusInfo::StatusInfo(const Data::SyncthingConnection &connection, const QString &configurationName, bool textOnly, bool clickToConnect)
     : m_statusIcon(nullptr)
     , m_textOnly(textOnly)
+    , m_clickToConnect(clickToConnect)
 {
     updateConnectionStatus(connection, configurationName);
     updateConnectedDevices(connection);
