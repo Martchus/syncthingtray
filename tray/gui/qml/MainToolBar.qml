@@ -60,6 +60,7 @@ ToolBar {
             }
             BusyIndicator {
                 id: busyIndicator
+                Material.accent: Material.foreground
                 running: App.connection.connecting || App.syncthingStarting || App.savingConfig || App.importExportOngoing
                 visible: running
                 Layout.preferredWidth: statusButton.width - 5
