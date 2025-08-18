@@ -197,7 +197,8 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                 case 10:
                     if (dev.status == SyncthingDevStatus::ThisDevice) {
                         if (m_thisDevVersion.isEmpty()) {
-                            static const auto versionRegex = QRegularExpression(QStringLiteral("(syncthing )?(v[^\\(\\)\\s]*)([^\\(\\)]*)(\\(.*(\\))).*"));
+                            static const auto versionRegex
+                                = QRegularExpression(QStringLiteral("(syncthing )?(v[^\\(\\)\\s]*)([^\\(\\)]*)(\\(.*(\\))).*"));
                             const auto versionMatch = versionRegex.match(m_connection.syncthingVersion());
                             if (versionMatch.hasMatch()) {
                                 m_thisDevVersion = versionMatch.captured(2) % QChar(' ') % versionMatch.captured(4);
