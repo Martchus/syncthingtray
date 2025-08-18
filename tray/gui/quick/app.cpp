@@ -1638,6 +1638,7 @@ void App::shutdownSyncthing()
 
 void App::connectToSyncthing()
 {
+    m_connection.connect();
 #ifdef Q_OS_ANDROID
     sendMessageToService(ServiceAction::ConnectToSyncthing);
 #else
