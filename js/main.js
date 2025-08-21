@@ -106,7 +106,7 @@ function determineDisplayNameForAsset(name)
     if (name.startsWith("syncthingctl-")) {
         component = "Additional command-line client for Syncthing";
     } else if (name.startsWith("syncthingtray-")) {
-        component = "Tray application";
+        component = name.includes("android") ? "App" : "Tray application";
     }
     if (arch && component) {
         return `${arch}: ${component}`;
