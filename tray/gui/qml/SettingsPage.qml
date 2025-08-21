@@ -181,6 +181,7 @@ StackView {
                 {key: "stopOnMetered", label: qsTr("Stop on metered network connection"), statusText: Qt.binding(() => App.meteredStatus)},
                 {key: "writeLogFile", label: qsTr("Write persistent log file"), statusText: qsTr("Write a persistent log file into the app directory")},
                 {key: "openLogs", label: qsTr("Open logs"), statusText: qsTr("Show Syncthing logs since app startup"), defaultValue: () => stackView.push("LogPage.qml", {}, StackView.PushTransition)},
+                {key: "openPersistentLogs", label: qsTr("Open persistent logs"), statusText: qsTr("Open persistent log file externally"), defaultValue: () => App.openSyncthingLogFile()},
             ],
             tweaks: [
                 {key: "importExportAsArchive", type: "boolean", defaultValue: false, label: qsTr("Import/export archive"), statusText: qsTr("Import and export to/from a Zip archive")},

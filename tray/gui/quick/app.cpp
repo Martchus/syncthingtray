@@ -1418,7 +1418,7 @@ bool App::clearLogfile()
     // return early if there's nothing to change/remove
     auto launcherSettings = m_settings.value(QLatin1String("launcher"));
     auto launcherSettingsObj = launcherSettings.toObject();
-    auto logfile = QFile(m_settingsDir->path() + QStringLiteral("/syncthing.log"));
+    auto logfile = QFile(syncthingLogFilePath());
     auto persistentLogfileEnabled = launcherSettingsObj.value(QLatin1String("writeLogFile")).toBool();
     if (!persistentLogfileEnabled && !logfile.exists()) {
         emit info(tr("No logfile present anyway"));
@@ -1476,6 +1476,14 @@ void App::setImportExportStatus(ImportExportStatus importExportStatus)
 bool QtGui::App::openSyncthingConfigFile()
 {
     return openPath(m_syncthingConfigDir + QStringLiteral("/config.xml"));
+}
+
+/*!
+ * \brief Opens the Syncthing log file in the standard editor.
+ */
+bool QtGui::App::openSyncthingLogFile()
+{
+    return openPath(syncthingLogFilePath());
 }
 
 /*!

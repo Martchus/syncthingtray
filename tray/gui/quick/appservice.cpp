@@ -181,7 +181,7 @@ bool AppService::applyLauncherSettings()
     m_launcher.setLibSyncthingLogLevel(launcherSettingsObj.value(QLatin1String("logLevel")).toString());
     if (launcherSettingsObj.value(QLatin1String("writeLogFile")).toBool()) {
         if (!m_launcher.logFile().isOpen()) {
-            m_launcher.logFile().setFileName(m_settingsDir->path() + QStringLiteral("/syncthing.log"));
+            m_launcher.logFile().setFileName(syncthingLogFilePath());
             if (!m_launcher.logFile().open(QIODeviceBase::WriteOnly | QIODeviceBase::Append | QIODeviceBase::Text)) {
                 emit error(tr("Unable to open persistent log file for Syncthing under \"%1\": %2")
                         .arg(m_launcher.logFile().fileName(), m_launcher.logFile().errorString()));

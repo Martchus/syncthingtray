@@ -58,6 +58,7 @@ protected Q_SLOTS:
 protected:
     static QString openSettingFile(QFile &settingsFile, const QString &path);
     static QString readSettingFile(QFile &settingsFile, QJsonObject &settings);
+    QString syncthingLogFilePath() const;
     bool openSettings();
     virtual void invalidateStatus();
     Data::IconManager &initIconManager();
@@ -79,6 +80,14 @@ protected:
     bool m_connectToLaunched;
     bool m_insecure;
 };
+
+/*
+ * \brief Returns the path of the Syncthing log file.
+ */
+inline QString AppBase::syncthingLogFilePath() const
+{
+    return m_settingsDir->path() + QStringLiteral("/syncthing.log");
+}
 
 } // namespace QtGui
 
