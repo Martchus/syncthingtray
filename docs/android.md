@@ -1,8 +1,9 @@
 # Using the Android app
 **The Android app is still experimental.** Use it with care and create backups of your
-configuration and data before trying it. No builds are provided at this point so you have to
-[build it from sources](https://github.com/Martchus/cpp-utilities/blob/master/README.md#remarks-about-building-for-android).
-See the section "[Caveats on Android](#caveats-on-android)" below for further limitations.
+configuration and data before trying it. Before filing any issues, be sure to read the section
+"[Caveats on Android](#caveats-on-android)". When building from sources, checkout the
+[Android-specific remarks](https://github.com/Martchus/cpp-utilities/blob/master/README.md#remarks-about-building-for-android)
+of the `c++utilities` README.
 
 ## Compatibility
 The Android app requires Android 9 or later. It is mainly tested on Android 14, 15 and 16, though.
