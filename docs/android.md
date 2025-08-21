@@ -96,7 +96,7 @@ configuration from another device.
         * All devices and folders will be added in paused state. So you can still tweak settings
           and ignore patterns before any scanning or syncing takes place.
         * Changing folder paths is not possible after the import anymore, though. Therefore you
-          have to change the paths of the folders during the import if necassary.
+          have to change the paths of the folders during the import if necessary.
         * When setting up a completely new device you can simply select/create empty folders
           where you want the imported folders to be. Then Syncthing will pull the contents from
           other devices once you unpause the folders/devices.

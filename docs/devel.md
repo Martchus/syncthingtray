@@ -66,7 +66,7 @@ go install golang.org/dl/go1.22.11@latest && $GOPATH/src/go/bin/go1.22.11 downlo
 Checkout the [release history of Go](https://go.dev/doc/devel/release) for available versions.
 
 Then the version can be used by adding `-DGO_BIN=$GOPATH/bin/go1.22.11` to the CMake arguments. It is not
-necassary to clean an existing build directly. All relevant parts will be re-built as necassary with the
+necessary to clean an existing build directly. All relevant parts will be re-built as necessary with the
 new version.
 
 ---
@@ -231,7 +231,7 @@ Translations for further locales can be added quite easily:
 
 ### Extend/update existing translations
 * For English, update the corresponding string literals within the source code.
-* If necassary, sync the translation files with the source code like in step `2.`/`3.` of
+* If necessary, sync the translation files with the source code like in step `2.`/`3.` of
   "[Add a new locale](#add-a-new-locale)". Check that no translations have been lost (except ones which are no
   longer required of course).
 * Change the strings within the translation files found within the `translations`
