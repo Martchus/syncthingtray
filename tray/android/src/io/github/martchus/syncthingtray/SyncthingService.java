@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
@@ -270,6 +271,15 @@ public class SyncthingService extends QtService {
 
         super.onCreate(); // blocks until QAndroidService::exec() is entered so AppService c'tor has run after this line
         Log.i(TAG, "Created service and notification");
+
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(TAG, "Loading service settings");
+                reloadSettings();
+            }
+        });
     }
 
     @Override
@@ -335,6 +345,7 @@ public class SyncthingService extends QtService {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? Util.getGatewayIPv4(this) : null;
     }
 
+    private static native void reloadSettings();
     private static native void stopLibSyncthing();
     private static native void broadcastLauncherStatus();
     private static native void handleMessageFromActivity(int what, int arg1, int arg2, String str);

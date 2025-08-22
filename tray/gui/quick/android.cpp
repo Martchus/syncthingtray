@@ -39,6 +39,11 @@ static void handleMessageFromService(JNIEnv *, jobject, jint what, jint arg1, ji
     appObjectForJava->handleMessageFromService(static_cast<ActivityAction>(what), arg1, arg2, QJniObject::fromLocalRef(str).toString(), variant);
 }
 
+static void reloadSettings(JNIEnv *, jobject)
+{
+    QMetaObject::invokeMethod(appServiceObjectForJava, "reloadSettings", Qt::QueuedConnection);
+}
+
 static void broadcastLauncherStatus(JNIEnv *, jobject)
 {
     QMetaObject::invokeMethod(appServiceObjectForJava, "broadcastLauncherStatus", Qt::QueuedConnection);
@@ -84,9 +89,10 @@ void registerServiceJniMethods(AppService *appService)
     static const JNINativeMethod serviceMethods[] = {
         { "stopLibSyncthing", "()V", reinterpret_cast<void *>(JniFn::stopLibSyncthing) },
         { "handleMessageFromActivity", "(IIILjava/lang/String;)V", reinterpret_cast<void *>(JniFn::handleMessageFromActivity) },
+        { "reloadSettings", "()V", reinterpret_cast<void *>(JniFn::reloadSettings) },
         { "broadcastLauncherStatus", "()V", reinterpret_cast<void *>(JniFn::broadcastLauncherStatus) },
     };
-    registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/SyncthingService", serviceMethods, 3) && registeredMethods;
+    registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/SyncthingService", serviceMethods, 4) && registeredMethods;
     if (!registeredMethods) {
         qWarning() << "Unable to register all native service methods in JNI environment.";
     }

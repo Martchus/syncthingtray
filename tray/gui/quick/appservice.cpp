@@ -114,7 +114,19 @@ AppService::AppService(bool insecure, QObject *parent)
         SyncthingLauncher::setMainInstance(&m_launcher);
     }
 
+    // This helps so that the status of whether the network connection is metered is already 
+    // known when reloadingSettings(). Adding a sleep like this is of course bad.
+    // It doesn't work with a time of 0 seconds.
+    // It also doesn't work when first returning to the Android service main loop (see SyncthingService.java).
+    //QTimer::singleShot(1000, this, &AppService::reloadSettings);
+
+    // We could in theory just wait for the event that the metered connection has changed. However, this
+    // signal is only emitted initially when the network connection is metered. If it is not metered the signal
+    // is never emitted.
+
+#ifndef Q_OS_ANDROID
     reloadSettings();
+#endif
 }
 
 AppService::~AppService()

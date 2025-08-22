@@ -8,6 +8,7 @@
 #endif
 
 #include <syncthingconnector/syncthingprocess.h>
+#include <syncthingconnector/utils.h>
 
 #include <c++utilities/io/buffersearch.h>
 
@@ -16,6 +17,10 @@
 #include <QFuture>
 #include <QFutureWatcher>
 #include <QUrl>
+
+#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
+#include <QNetworkInformation>
+#endif
 
 #include <cstdint>
 #include <functional>
@@ -157,12 +162,15 @@ private:
     LibSyncthing::LogLevel m_libsyncthingLogLevel;
 #endif
     std::function<bool(void)> m_manualStopHandler;
+#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
+    const QNetworkInformation *m_networkInformation;
+#endif
     bool m_manuallyStopped;
     bool m_stoppedMetered;
     bool m_emittingOutput;
     bool m_useLibSyncthing;
     bool m_stopOnMeteredConnection;
-    std::optional<bool> m_metered;
+    mutable std::optional<bool> m_metered;
     std::optional<SyncthingExitStatus> m_lastExitStatus;
     static SyncthingLauncher *s_mainInstance;
 };
@@ -251,6 +259,12 @@ inline bool SyncthingLauncher::isEmittingOutput() const
 /// \remarks Returns an std::optional<bool> without value if it is unknown whether the network connection is metered.
 inline std::optional<bool> SyncthingLauncher::isNetworkConnectionMetered() const
 {
+#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
+    if (!m_metered.has_value() && m_networkInformation) {
+        qDebug() << "is metered: " << m_networkInformation->isMetered();
+        m_metered = m_networkInformation->isMetered();
+    }
+#endif
     return m_metered;
 }
 

@@ -1,5 +1,6 @@
 #include "./syncthinglauncher.h"
 
+#include <qdebug.h>
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/utils.h>
 
@@ -58,6 +59,9 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     , m_libsyncthingLogLevel(LibSyncthing::LogLevel::Info)
 #endif
+#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
+    , m_networkInformation(nullptr)
+#endif
     , m_manuallyStopped(true)
     , m_stoppedMetered(false)
     , m_emittingOutput(false)
@@ -76,9 +80,11 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
 
     // initialize handling of metered connections
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
-    if (const auto *const networkInformation = loadNetworkInformationBackendForMetered()) {
-        connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, [this](bool isMetered) { setNetworkConnectionMetered(isMetered); });
-        setNetworkConnectionMetered(networkInformation->isMetered());
+    if ((m_networkInformation = loadNetworkInformationBackendForMetered())) {
+        connect(m_networkInformation, &QNetworkInformation::isMeteredChanged, this, [this](bool isMetered) {
+            qDebug() << "metered changed: " << isMetered;
+            setNetworkConnectionMetered(isMetered);
+        });
     }
 #endif
 }
@@ -161,8 +167,9 @@ void SyncthingLauncher::setEmittingOutput(bool emittingOutput)
  */
 QString SyncthingLauncher::meteredStatus() const
 {
-    if (m_metered.has_value()) {
-        return m_metered.value() ? tr("Network connection is metered") : tr("Network connection is not metered");
+    auto metered = isNetworkConnectionMetered();
+    if (metered.has_value()) {
+        return metered.value() ? tr("Network connection is metered") : tr("Network connection is not metered");
     } else {
         return tr("State of network connection cannot be determined");
     }
