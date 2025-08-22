@@ -10,6 +10,7 @@
 #include <QUrl>
 
 #include <limits>
+#include <utility>
 #include <vector>
 
 QT_FORWARD_DECLARE_CLASS(QJsonObject)
@@ -45,7 +46,8 @@ LIB_SYNCTHING_CONNECTOR_EXPORT bool setDirectoriesPaused(QJsonObject &syncthingC
 LIB_SYNCTHING_CONNECTOR_EXPORT bool setDevicesPaused(QJsonObject &syncthingConfig, const QStringList &dirs, bool paused);
 LIB_SYNCTHING_CONNECTOR_EXPORT QString substituteTilde(const QString &path, const QString &tilde, const QString &pathSeparator);
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
-LIB_SYNCTHING_CONNECTOR_EXPORT const QNetworkInformation *loadNetworkInformationBackendForMetered();
+LIB_SYNCTHING_CONNECTOR_EXPORT std::pair<const QNetworkInformation *, bool> loadNetworkInformationBackendForMetered(
+    bool determineInitialValue = false);
 #endif
 
 /*!

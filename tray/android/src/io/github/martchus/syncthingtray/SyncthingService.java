@@ -13,6 +13,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -329,6 +330,10 @@ public class SyncthingService extends QtService {
 
     public boolean isDarkmodeEnabled() {
         return (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+    }
+
+    public boolean isNetworkConnectionMetered() {
+        return ((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE)).isActiveNetworkMetered();
     }
 
     public String getGatewayIPv4() {

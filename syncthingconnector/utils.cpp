@@ -16,11 +16,15 @@
 #include <QString>
 #include <QStringBuilder>
 #include <QUrl>
+#include <utility>
 
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
 #include <QNetworkInformation>
 #ifdef Q_OS_ANDROID
+#include <QCoreApplication>
 #include <QDebug>
+#include <QJniEnvironment>
+#include <QJniObject>
 #endif
 #endif
 
@@ -267,8 +271,10 @@ QString substituteTilde(const QString &path, const QString &tilde, const QString
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
 /*!
  * \brief Loads the QNetworkInformation backend for determining whether the connection is metered.
+ * \arg determineInitialValue Whether to try extra hard to determine the initial value.
+ * \remarks Returns the backend and whether the network connection is metered right now.
  */
-const QNetworkInformation *loadNetworkInformationBackendForMetered()
+std::pair<const QNetworkInformation *, bool> loadNetworkInformationBackendForMetered(bool determineInitialValue)
 {
     static const auto *const backend = []() -> const QNetworkInformation * {
 #ifdef Q_OS_ANDROID
@@ -301,7 +307,23 @@ const QNetworkInformation *loadNetworkInformationBackendForMetered()
 #endif
         return nullptr;
     }();
-    return backend;
+
+    auto isInitiallyMetered = backend->isMetered();
+#ifdef Q_OS_ANDROID
+    // detect the initial status of whether the network connection is metered manually under Android because QNetworkInformation always
+    // returns false on startup with no way to know when it has been initialized
+    if (determineInitialValue && !isInitiallyMetered) {
+        if (const auto context = QNativeInterface::QAndroidApplication::context(); context.isValid()) {
+            auto env = QJniEnvironment();
+            if (auto method = env.findMethod(context.objectClass(), "isNetworkConnectionMetered", "()Z")) {
+                isInitiallyMetered = env->CallBooleanMethod(context.object(), method) == JNI_TRUE;
+            }
+        }
+    }
+#else
+    Q_UNUSED(determineInitialValue)
+#endif
+    return std::make_pair(backend, isInitiallyMetered);
 }
 #endif
 

@@ -373,7 +373,7 @@ void SyncthingConnection::setPausingOnMeteredConnection(bool pausingOnMeteredCon
             // initialize handling of metered connections
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
             if (!m_handlingMeteredConnectionInitialized) {
-                if (const auto *const networkInformation = loadNetworkInformationBackendForMetered()) {
+                if (const auto [networkInformation, isMetered] = loadNetworkInformationBackendForMetered(); networkInformation) {
                     QObject::connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, &SyncthingConnection::handleMeteredConnection);
                 }
             }
