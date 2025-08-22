@@ -53,7 +53,6 @@ Q_SIGNALS:
 public:
     Q_INVOKABLE void broadcastLauncherStatus();
     Q_INVOKABLE bool applyLauncherSettings();
-    Q_INVOKABLE bool applySettings();
     Q_INVOKABLE bool reloadSettings();
     Q_INVOKABLE void terminateSyncthing();
     Q_INVOKABLE void stopLibSyncthing();

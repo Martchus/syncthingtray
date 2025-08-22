@@ -258,15 +258,6 @@ void AppService::replayLog()
 #endif
 }
 
-bool AppService::applySettings()
-{
-    applySyncthingSettings();
-    applyConnectionSettings(m_launcher.guiUrl());
-    applyLauncherSettings();
-    invalidateStatus();
-    return true;
-}
-
 #ifdef Q_OS_ANDROID
 void AppService::showError(const QString &error)
 {
