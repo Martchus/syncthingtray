@@ -109,7 +109,7 @@ void ModelTests::testDevicesModel()
     QCOMPARE(model.index(1, 0).data(), QStringLiteral("Other instance"));
     QCOMPARE(model.index(1, 1).data(), QStringLiteral("Unknown"));
     const auto dev1Idx = model.index(0, 0);
-    QCOMPARE(model.rowCount(dev1Idx), 6);
+    QCOMPARE(model.rowCount(dev1Idx), 7);
     QCOMPARE(model.index(0, 0, dev1Idx).data(), QStringLiteral("ID"));
     QCOMPARE(model.index(0, 1, dev1Idx).data(), QStringLiteral("P56IOI7-MZJNU2Y-IQGDREY-DM2MGTI-MGL3BXN-PQ6W5BM-TBBZ4TJ-XZWICQ2"));
     QCOMPARE(model.index(1, 0, dev1Idx).data(), QStringLiteral("Out of Sync items"));
@@ -118,6 +118,8 @@ void ModelTests::testDevicesModel()
     QCOMPARE(model.index(2, 1, dev1Idx).data(), QStringLiteral("dynamic, tcp://192.168.1.2:22000"));
     QCOMPARE(model.index(5, 0, dev1Idx).data(), QStringLiteral("Introducer"));
     QCOMPARE(model.index(5, 1, dev1Idx).data(), QStringLiteral("no"));
+    QCOMPARE(model.index(6, 0, dev1Idx).data(), QStringLiteral("Version"));
+    QCOMPARE(model.index(6, 1, dev1Idx).data(), QStringLiteral("unknown"));
     const auto dev2Idx = model.index(1, 0);
     QCOMPARE(model.rowCount(dev2Idx), 6);
     QCOMPARE(model.index(0, 1, dev2Idx).data(), QStringLiteral("53STGR7-YBM6FCX-PAZ2RHM-YPY6OEJ-WYHVZO7-PCKQRCK-PZLTP7T"));

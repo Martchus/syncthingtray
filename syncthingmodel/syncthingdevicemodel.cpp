@@ -194,7 +194,8 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                     return dev.certName.isEmpty() ? tr("none") : dev.certName;
                 case 9:
                     return dev.introducer ? tr("yes") : tr("no");
-                case 10:
+                case 10: {
+                    const QString *version = nullptr;
                     if (dev.status == SyncthingDevStatus::ThisDevice) {
                         if (m_thisDevVersion.isEmpty()) {
                             static const auto versionRegex
@@ -204,9 +205,14 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                                 m_thisDevVersion = versionMatch.captured(2) % QChar(' ') % versionMatch.captured(4);
                             }
                         }
-                        return m_thisDevVersion;
+                        if (!m_thisDevVersion.isEmpty()) {
+                            version = &m_thisDevVersion;
+                        }
+                    } else if (!dev.clientVersion.isEmpty()) {
+                        version = &dev.clientVersion;
                     }
-                    return dev.clientVersion;
+                    return version ? *version : tr("unknown");
+                }
                 }
             }
             break;
