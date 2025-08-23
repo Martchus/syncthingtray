@@ -2048,7 +2048,10 @@ bool App::saveSupportBundle(const QUrl &url, const QJSValue &callback)
     if (checkOngoingImportExport()) {
         return false;
     }
-    if (!m_connection.rawConfig().value(QLatin1String("gui")).toObject().value(QLatin1String("debugging")).toBool()) {
+    const auto debuggingSetting = m_connection.rawConfig().value(QLatin1String("gui")).toObject().value(QLatin1String("debugging"));
+    if (!debuggingSetting.isUndefined() && !debuggingSetting.toBool()) {
+        // before Syncthing commit d682220305a07d2fa31825a4d377d20eb0e1f1fb the route for creating a debug bundle needs to be enabled
+        // explicitly
         emit error(tr("Debugging needs to be enabled under advanced GUI settings first."));
         return false;
     }
