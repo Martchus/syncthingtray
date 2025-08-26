@@ -29,6 +29,9 @@
 #include <boost/process/v1/io.hpp>
 #include <boost/process/v1/locale.hpp>
 #include <boost/process/v1/search_path.hpp>
+#ifdef PLATFORM_WINDOWS
+#include <boost/process/v1/windows.hpp>
+#endif
 #else
 #include <boost/process/async.hpp>
 #include <boost/process/async_pipe.hpp>
@@ -38,18 +41,13 @@
 #include <boost/process/io.hpp>
 #include <boost/process/locale.hpp>
 #include <boost/process/search_path.hpp>
+#ifdef PLATFORM_WINDOWS
+#include <boost/process/windows.hpp>
+#endif
 namespace boost::process {
 namespace v1 = boost::process;
 }
-#endif
-
-#ifdef PLATFORM_WINDOWS
-#if BOOST_VERSION >= 108600
-#include <boost/process/v1/windows.hpp>
-#else
-#include <boost/process/windows.hpp>
-#endif
-#endif
+#endif // BOOST_VERSION >= 108600
 
 #include <atomic>
 #include <chrono>
@@ -60,7 +58,7 @@ namespace v1 = boost::process;
 #include <mutex>
 #include <system_error>
 #include <thread>
-#endif
+#endif // LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
 
 #ifdef PLATFORM_WINDOWS
 // include Windows header directly for SyncthingProcess::nativeEventFilter()
