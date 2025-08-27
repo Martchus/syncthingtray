@@ -57,6 +57,9 @@ use_qt_utilities(ONLY_HEADERS VISIBILITY PUBLIC)
 # find boost libraries
 include(3rdParty)
 option(USE_BOOST_PROCESS "enables Boost.Process for improved behavior of the launcher" ON)
+set(BOOST_PROCESS_VERSION
+    "1"
+    CACHE STRING "version of Boost.Process to use if USE_BOOST_PROCESS is enabled")
 if (USE_BOOST_PROCESS)
     option(BOOST_STATIC_LINKAGE "${STATIC_LINKAGE}" "link statically against Boost (instead of dynamically)")
     set(Boost_USE_MULTITHREADED ON)
@@ -65,9 +68,16 @@ if (USE_BOOST_PROCESS)
     endif ()
     # add Boost::boost target which represents include directory for header-only deps and add Boost::filesystem as it is
     # needed by Boost.Process
-    set(BOOST_ARGS 1.75 REQUIRED) # 1.66 does not invoke on_exit handler correctly, 1.75 was the next version I tested and it
-                                  # worked
-    list(APPEND BOOST_ARGS COMPONENTS filesystem)
+    if (BOOST_PROCESS_VERSION STREQUAL 1)
+        set(BOOST_ARGS 1.75) # 1.66 does not invoke on_exit handler correctly, 1.75 was the next version I tested and it
+                             # worked
+    else ()
+        message(
+            FATAL_ERROR
+                "BOOST_PROCESS_VERSION must be set to 1. Support for version 2 has not been implemented yet because v2 does not support process groups."
+        )
+    endif ()
+    list(APPEND BOOST_ARGS REQUIRED COMPONENTS filesystem)
     use_package(TARGET_NAME Boost::boost PACKAGE_NAME Boost PACKAGE_ARGS "${BOOST_ARGS}")
     use_package(TARGET_NAME Boost::filesystem PACKAGE_NAME Boost PACKAGE_ARGS "${BOOST_ARGS}")
     list(APPEND META_PUBLIC_COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_BOOST_PROCESS)
