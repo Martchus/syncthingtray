@@ -203,6 +203,7 @@ set(GO_BUILD_EXTRA_ARGS
     ""
     CACHE STRING "additional arguments to add to the Go build (see `go help build`)")
 unset(GO_BUILD_ARGS)
+unset(GO_BUILD_MODE)
 unset(GO_BUILD_TAGS)
 if (GO_BUILD_MOD)
     list(APPEND GO_BUILD_ARGS -mod "${GO_BUILD_MOD}")
@@ -215,12 +216,12 @@ if (GO_TARGET_OS STREQUAL "android")
     # use buildmode c-shared on Android because c-archive is not supported, see https://github.com/golang/go/issues/33806
     set(SYNCTHINGINTERNAL_LIBRARY_TYPE SHARED)
     set(SYNCTHINGINTERNAL_LIBRARY_NAME "libsyncthinginternal.so")
-    list(APPEND GO_BUILD_ARGS -buildmode c-shared)
+    list(APPEND GO_BUILD_MODE -buildmode c-shared)
     set(GO_RANLIB_ARGS "")
 else ()
     set(SYNCTHINGINTERNAL_LIBRARY_TYPE STATIC)
     set(SYNCTHINGINTERNAL_LIBRARY_NAME "libsyncthinginternal.a")
-    list(APPEND GO_BUILD_ARGS -buildmode c-archive)
+    list(APPEND GO_BUILD_MODE -buildmode c-archive)
 endif ()
 if (GO_BUILD_EXTRA_ARGS)
     list(APPEND GO_BUILD_ARGS "${GO_BUILD_EXTRA_ARGS}")
@@ -266,8 +267,8 @@ add_custom_command(
     COMMAND
         "${CMAKE_COMMAND}" -E env ${GO_COMPILER_ARGS} "GOOS=${GO_TARGET_OS}" "CGO_CFLAGS=${CGO_CFLAGS}"
         "CGO_CXXFLAGS=${CGO_CXXFLAGS}" "CGO_LDFLAGS=${CGO_LDFLAGS}" "GOARCH=${GO_TARGET_ARCH}" "CGO_ENABLED=1"
-        "GO111MODULE=on" "GOPATH=${GO_DEVELOPMENT_PATH}" "GOFLAGS=${GO_FLAGS}" "${GO_BIN}" build ${GO_BUILD_ARGS} -o
-        "${SYNCTHINGINTERNAL_LIBRARY_PATH}" -ldflags "${GO_LINKER_FLAGS}" ./c-bindings ${GO_RANLIB_ARGS}
+        "GO111MODULE=on" "GOPATH=${GO_DEVELOPMENT_PATH}" "GOFLAGS=${GO_FLAGS}" "${GO_BIN}" build ${GO_BUILD_MODE}
+        ${GO_BUILD_ARGS} -o "${SYNCTHINGINTERNAL_LIBRARY_PATH}" -ldflags "${GO_LINKER_FLAGS}" ./c-bindings ${GO_RANLIB_ARGS}
     DEPENDS ${SRC_FILES_SYNCTHING}
     WORKING_DIRECTORY "${SYNCTHING_PATH}"
     COMMENT "Building Syncthing itself (as library)")
@@ -281,6 +282,26 @@ add_test(
         "GO111MODULE=on" "GOPATH=${GO_DEVELOPMENT_PATH}" "GOFLAGS=${GO_FLAGS}" "${GO_BIN}" test -skip
         "TestResolveWindows83|TestCheckGoFmt" -ldflags "${GO_LINKER_FLAGS}" ./lib/... ./cmd/syncthing/... ./c-bindings/...
     WORKING_DIRECTORY "${SYNCTHING_PATH}")
+
+# allow building libsyncthing's serve and CLI functions as standalone executables for testing
+foreach (ST_EXECUTABLE_NAME stsrv stcli)
+    set(ST_EXECUTABLE_PATH "${CMAKE_CURRENT_BINARY_DIR}/${ST_EXECUTABLE_NAME}")
+    list(APPEND SYNCTHING_EXECUTABLE_PATHS "${ST_EXECUTABLE_PATH}")
+    add_custom_command(
+        OUTPUT "${ST_EXECUTABLE_PATH}"
+        COMMAND
+            "${CMAKE_COMMAND}" -E env ${GO_COMPILER_ARGS} "GOOS=${GO_TARGET_OS}" "CGO_CFLAGS=${CGO_CFLAGS}"
+            "CGO_CXXFLAGS=${CGO_CXXFLAGS}" "CGO_LDFLAGS=${CGO_LDFLAGS}" "GOARCH=${GO_TARGET_ARCH}" "CGO_ENABLED=1"
+            "GO111MODULE=on" "GOPATH=${GO_DEVELOPMENT_PATH}" "GOFLAGS=${GO_FLAGS}" "${GO_BIN}" build ${GO_BUILD_ARGS} -o
+            "${ST_EXECUTABLE_PATH}" -ldflags "${GO_LINKER_FLAGS}" "./cmd/${ST_EXECUTABLE_NAME}"
+        DEPENDS ${SRC_FILES_SYNCTHING} "${SYNCTHING_PATH}/cmd/${ST_EXECUTABLE_NAME}/main.go"
+        WORKING_DIRECTORY "${SYNCTHING_PATH}"
+        COMMENT "Building standalone Syncthing executable ${ST_EXECUTABLE_NAME}")
+endforeach ()
+add_custom_target(
+    "${META_PROJECT_NAME}-executables"
+    DEPENDS "${SYNCTHING_EXECUTABLE_PATHS}"
+    COMMENT "Building Syncthing executables for testing")
 
 # find c++utilities to use CMake modules and headers from it privately
 find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
