@@ -48,7 +48,7 @@ Syncthing Tray is known to work under:
 * macOS
 * Deepin Desktop Environment
 * Sway/Swaybar/Waybar (with caveats, see remarks below)
-* Android (still experimental and in initial development)
+* Android (still experimental)
 
 This does *not* mean Syncthing Tray is actively tested on all those platforms or
 desktop environments.
