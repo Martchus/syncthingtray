@@ -68,14 +68,17 @@ if (USE_BOOST_PROCESS)
     endif ()
     # add Boost::boost target which represents include directory for header-only deps and add Boost::filesystem as it is
     # needed by Boost.Process
-    if (BOOST_PROCESS_VERSION STREQUAL 1)
+    if (BOOST_PROCESS_VERSION STREQUAL 2)
+        set(BOOST_ARGS 1.86)
+        set_property(
+            SOURCE syncthingprocess.cpp
+            APPEND
+            PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_BOOST_PROCESS_V2)
+    elseif (BOOST_PROCESS_VERSION STREQUAL 1)
         set(BOOST_ARGS 1.75) # 1.66 does not invoke on_exit handler correctly, 1.75 was the next version I tested and it
                              # worked
     else ()
-        message(
-            FATAL_ERROR
-                "BOOST_PROCESS_VERSION must be set to 1. Support for version 2 has not been implemented yet because v2 does not support process groups."
-        )
+        message(FATAL_ERROR "BOOST_PROCESS_VERSION must be set to either 1 or 2.")
     endif ()
     list(APPEND BOOST_ARGS REQUIRED COMPONENTS filesystem)
     use_package(TARGET_NAME Boost::boost PACKAGE_NAME Boost PACKAGE_ARGS "${BOOST_ARGS}")

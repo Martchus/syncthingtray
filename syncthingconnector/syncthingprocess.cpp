@@ -20,6 +20,11 @@
 #include <boost/asio/executor_work_guard.hpp>
 #include <boost/asio/io_context.hpp>
 #include <boost/filesystem/path.hpp>
+
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS_V2
+#include <boost/process/v2/process.hpp>
+
+#else
 #if BOOST_VERSION >= 108600
 #include <boost/process/v1/async.hpp>
 #include <boost/process/v1/async_pipe.hpp>
@@ -48,6 +53,7 @@ namespace boost::process {
 namespace v1 = boost::process;
 }
 #endif // BOOST_VERSION >= 108600
+#endif // LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS_V2
 
 #include <atomic>
 #include <chrono>
@@ -100,9 +106,13 @@ struct SyncthingProcessInternalData : std::enable_shared_from_this<SyncthingProc
     std::mutex mutex;
     QString program;
     QStringList arguments;
+#ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS_V2
+    boost::process::v2::group group; // not supported
+#else
     boost::process::v1::group group;
     boost::process::v1::child child;
     boost::process::v1::async_pipe pipe;
+#endif
     std::mutex readMutex;
     std::condition_variable readCondVar;
     char buffer[bufferCapacity];
