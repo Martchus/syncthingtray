@@ -9,7 +9,7 @@
 #include <QJsonValue>
 #include <QStandardPaths>
 
-//#define SYNCTHINGTRAY_DEBUG_MAIN_LOOP_ACTIVITY
+#define SYNCTHINGTRAY_DEBUG_MAIN_LOOP_ACTIVITY
 
 using namespace Data;
 

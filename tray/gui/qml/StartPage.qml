@@ -21,6 +21,11 @@ Page {
             id: mainLayout
             width: mainView.width
             spacing: 0
+            BusyIndicator {
+                running: true
+                Layout.preferredWidth: 64
+                Layout.preferredHeight: 64
+            }
             ItemDelegate {
                 Layout.fillWidth: true
                 onClicked: App.requestStoragePermission()
