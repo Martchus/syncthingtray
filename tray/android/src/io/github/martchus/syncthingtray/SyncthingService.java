@@ -75,7 +75,11 @@ public class SyncthingService extends QtService {
             default:
                 Bundle bundle = msg.getData();
                 String str = bundle != null ? bundle.getString("message") : null;
-                handleMessageFromActivity(msg.what, msg.arg1, msg.arg2, str);
+                try {
+                    handleMessageFromActivity(msg.what, msg.arg1, msg.arg2, str);
+                } catch (java.lang.UnsatisfiedLinkError e) {
+                    Log.i(TAG, "Unable to handle message " + msg.what + " from activity, backend not started yet");
+                }
                 super.handleMessage(msg);
             }
         }
@@ -130,6 +134,7 @@ public class SyncthingService extends QtService {
 
     @Override
     public IBinder onBind(Intent intent) {
+        Log.i(TAG, "Returning messenger binder");
         return m_messenger.getBinder();
     }
     
@@ -269,15 +274,26 @@ public class SyncthingService extends QtService {
         showForegroundNotification();
         s_instance = this;
 
-        super.onCreate(); // blocks until QAndroidService::exec() is entered so AppService c'tor has run after this line
+        // blocks until QAndroidService::exec() is entered so AppService c'tor has run after this line
+        // note: This seems broken as of commit d00e5433f6b4d91d481e1a4f7a193d0f5b4ff10c on qtbase dev branch
+        //       leading to super.onCreate() returning immediately and the native main() function never be
+        //       called as a previous call to QtAndroidPrivate::waitForServiceSetup() blocks indefinitely.
+        //       Hence the service code is prepared for all native function calls to fail with an
+        //       UnsatisfiedLinkError exception. Not being able to handle these calls on early startup does
+        //       not seem to break anything.
+        super.onCreate();
         Log.i(TAG, "Created service and notification");
     }
 
     @Override
     public void onDestroy() {
         s_instance = null;
-        super.onDestroy();
-        stopLibSyncthing();
+        try {
+            super.onDestroy();
+            stopLibSyncthing();
+        } catch (java.lang.UnsatisfiedLinkError e) {
+            Log.i(TAG, "Unable to destroy, backend not started anyway");
+        }
         stopForeground(Service.STOP_FOREGROUND_REMOVE);
         Log.i(TAG, "Destroyed service and notification");
     }
@@ -290,7 +306,11 @@ public class SyncthingService extends QtService {
             stopForeground(Service.STOP_FOREGROUND_REMOVE);
             stopSelf();
         } else {
-            broadcastLauncherStatus();
+            try {
+                broadcastLauncherStatus();
+            } catch (java.lang.UnsatisfiedLinkError e) {
+                Log.i(TAG, "Unable to broadcast launcher status, backend not started yet");
+            }
         }
         return Service.START_STICKY;
     }
