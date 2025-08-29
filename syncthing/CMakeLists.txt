@@ -122,10 +122,18 @@ if (MSVC)
     unset(CGO_LDFLAGS)
 endif ()
 
-# locate the Syncthing checkout
+# store temporary/cache files produced by the Go build system under CMAKE_BINARY_DIR
 set(GO_DEVELOPMENT_PATH
-    "${CMAKE_CURRENT_SOURCE_DIR}/go"
+    "${CMAKE_BINARY_DIR}/go"
     CACHE PATH "the 'GOPATH'")
+if (GO_DEVELOPMENT_PATH STREQUAL "${CMAKE_CURRENT_SOURCE_DIR}/go")
+    # override previous default of using the source dir if still present
+    set(GO_DEVELOPMENT_PATH
+        "${CMAKE_BINARY_DIR}/go"
+        CACHE PATH "the 'GOPATH'" FORCE)
+endif ()
+
+# locate the Syncthing checkout
 set(SYNCTHING_PATH
     "${CMAKE_CURRENT_SOURCE_DIR}/go/src/github.com/syncthing/syncthing"
     CACHE PATH "path of Syncthing checkout")
