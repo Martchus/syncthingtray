@@ -429,7 +429,6 @@ private:
     bool m_darkColorScheme;
     bool m_darkPalette;
     bool m_isGuiLoaded;
-    bool m_alwaysUnloadGuiWhenHidden;
     bool m_unloadGuiWhenHidden;
     bool m_isSyncthingStarting;
     bool m_isSyncthingRunning;

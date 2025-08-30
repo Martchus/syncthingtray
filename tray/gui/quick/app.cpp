@@ -134,7 +134,6 @@ App::App(bool insecure, QObject *parent)
     , m_darkColorScheme(false)
     , m_darkPalette(m_app ? SYNCTHING_APP_IS_PALETTE_DARK(m_app->palette()) : false)
     , m_isGuiLoaded(false)
-    , m_alwaysUnloadGuiWhenHidden(false)
     , m_unloadGuiWhenHidden(false)
     , m_isSyncthingStarting(true)
     , m_isSyncthingRunning(false)
@@ -1016,7 +1015,7 @@ void App::handleStateChanged(Qt::ApplicationState state)
         for (auto *const uiObject : m_uiObjects) {
             uiObject->moveToThread(nullptr);
         }
-        if (m_unloadGuiWhenHidden || m_alwaysUnloadGuiWhenHidden) {
+        if (m_unloadGuiWhenHidden) {
             m_unloadGuiWhenHidden = false;
             unloadMain();
         }
@@ -1385,13 +1384,11 @@ bool App::applySettings()
     applyConnectionSettings(m_syncthingGuiUrl);
     auto mod = false;
     auto tweaksSettings = m_settings.value(QLatin1String("tweaks")).toObject();
-    ensureDefault(mod, tweaksSettings, QLatin1String("unloadGuiWhenHidden"), false);
     ensureDefault(mod, tweaksSettings, QLatin1String("exportDir"), QString());
 #ifdef Q_OS_ANDROID
     ensureDefault(mod, tweaksSettings, QLatin1String("importExportAsArchive"), true);
     ensureDefault(mod, tweaksSettings, QLatin1String("importExportEncryptionPassword"), QString());
 #endif
-    m_alwaysUnloadGuiWhenHidden = tweaksSettings.value(QLatin1String("unloadGuiWhenHidden")).toBool(false);
     if (mod) {
         m_settings.insert(QLatin1String("tweaks"), tweaksSettings);
     }
