@@ -158,8 +158,12 @@ or package. This README also lists more options and instructions for building fr
 If you are using one of the package manager options you should follow the usual workflow of that package manager.
 
 Otherwise, you just have to extract the archive and launch the contained executable. Especially on Windows, please
-read the notes on the website before filing any issues. Note that automatic updates haven't been implemented yet.
-To uninstall, just delete the executable again.
+read the notes on the website before filing any issues. To uninstall, just delete the executable again.
+
+Notifications about updates can be enabled in the settings which also allow upgrading to a new version if available.
+This simply replaces the executable at the location where you put it so this location needs to be writable. The old
+executable is renamed/preserved as a backup and you can simply rename it back if you need to go back to the previous
+version.
 
 For further cleanup you may ensure that autostart is disabled (to avoid a dangling autostart entry). You may also
 delete the configuration files (see "[Location of the configuration file](#location-of-the-configuration-file)"
