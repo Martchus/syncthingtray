@@ -417,7 +417,7 @@ void SyncthingLauncher::handleProcessReadyRead()
     if (m_logFile.isOpen()) {
         m_logFile.write(data);
     }
-    handleOutputAvailable(-1, data);
+    handleOutputAvailable(std::numeric_limits<int>::max(), data);
 }
 
 void SyncthingLauncher::handleProcessStateChanged(QProcess::ProcessState newState)
