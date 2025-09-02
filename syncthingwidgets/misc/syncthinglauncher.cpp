@@ -590,7 +590,7 @@ void SyncthingLauncher::handleLibSyncthingFinished()
  */
 void SyncthingLauncher::showLibSyncthingNotSupported(QByteArray &&reason)
 {
-    handleOutputAvailable(8, std::move(reason)); // LibSyncthing::LogLevel::Error
+    handleOutputAvailable(std::numeric_limits<int>::max(), std::move(reason));
     const auto &exitStatus = m_lastExitStatus.emplace(-1, QProcess::CrashExit);
     emit exited(exitStatus.code, exitStatus.status);
 }
