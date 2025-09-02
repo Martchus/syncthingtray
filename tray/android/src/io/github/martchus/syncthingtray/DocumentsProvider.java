@@ -69,8 +69,15 @@ public class DocumentsProvider extends android.provider.DocumentsProvider {
     };
 
     private void determineRootPaths(Context context) {
-        m_rootDirs.addAll(Arrays.asList(ContextCompat.getExternalFilesDirs(context, null)));
-        m_rootDirs.add(context.getFilesDir());
+        File filesDir = context.getFilesDir();
+        for (File externalDir : ContextCompat.getExternalFilesDirs(context, null)) {
+            if (externalDir != null) {
+                m_rootDirs.add(externalDir);
+            }
+        }
+        if (filesDir != null) {
+            m_rootDirs.add(filesDir);
+        }
         for (File rootDir : m_rootDirs) {
             try {
                 m_rootPaths.add(rootDir.getCanonicalPath());
