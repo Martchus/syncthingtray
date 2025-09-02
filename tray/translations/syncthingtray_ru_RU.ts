@@ -47,43 +47,43 @@
         <translation type="vanished">Ожидание бэкэнда…</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="418"/>
-        <location filename="../gui/quick/app.cpp" line="426"/>
+        <location filename="../gui/quick/app.cpp" line="417"/>
+        <location filename="../gui/quick/app.cpp" line="425"/>
         <source>Unable to open &quot;%1&quot;</source>
         <translation>Невозможно открыть &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="459"/>
+        <location filename="../gui/quick/app.cpp" line="458"/>
         <source>Copied value</source>
         <translation>Скопированное значение</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="463"/>
+        <location filename="../gui/quick/app.cpp" line="462"/>
         <source>Unable to copy value</source>
         <translation>Невозможно скопировать значение</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="471"/>
+        <location filename="../gui/quick/app.cpp" line="470"/>
         <source>Unable to copy &quot;%1&quot;</source>
         <translation>Невозможно скопировать &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="271"/>
+        <location filename="../gui/quick/app.cpp" line="270"/>
         <source>Backend is starting …</source>
         <translation>Бэкэнд запускается…</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="253"/>
+        <location filename="../gui/quick/app.cpp" line="252"/>
         <source>Checking for data to import …</source>
         <translation>Проверка данных для импорта…</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="255"/>
+        <location filename="../gui/quick/app.cpp" line="254"/>
         <source>Importing configuration …</source>
         <translation>Импорт конфигурации…</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="257"/>
+        <location filename="../gui/quick/app.cpp" line="256"/>
         <source>Exporting configuration …</source>
         <translation>Экспорт конфигурации…</translation>
     </message>
@@ -92,7 +92,7 @@
         <translation type="vanished">Не подключен к бэкэнду.</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="280"/>
+        <location filename="../gui/quick/app.cpp" line="279"/>
         <source>Saving configuration …</source>
         <translation>Сохранение конфигурации…</translation>
     </message>
@@ -113,22 +113,22 @@
         </translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="447"/>
+        <location filename="../gui/quick/app.cpp" line="446"/>
         <source>Scanning is not supported.</source>
         <translation>Сканирование не поддерживается.</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="490"/>
+        <location filename="../gui/quick/app.cpp" line="489"/>
         <source>Unable to load ignore patterns: </source>
         <translation>Невозможно загрузить шаблоны игнорирования: </translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="511"/>
+        <location filename="../gui/quick/app.cpp" line="510"/>
         <source>Unable to save ignore patterns: </source>
         <translation>Невозможно сохранить шаблоны игнорирования: </translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="950"/>
+        <location filename="../gui/quick/app.cpp" line="949"/>
         <source>Unable to resolve URL &quot;%1&quot;.</source>
         <translation>Не удалось разрешить URL &quot;%1&quot;.</translation>
     </message>
@@ -157,12 +157,12 @@
         <translation type="vanished">Устройство Syncthing хочет предоставить общий доступ к папке</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1184"/>
+        <location filename="../gui/quick/app.cpp" line="1183"/>
         <source>Another config change is still pending.</source>
         <translation>Еще одно изменение конфигурации все еще ожидает рассмотрения.</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1294"/>
+        <location filename="../gui/quick/app.cpp" line="1293"/>
         <source>Unable to minimize app.</source>
         <translation>Невозможно свернуть приложение.</translation>
     </message>
@@ -175,22 +175,22 @@
         <translation type="vanished">Невозможно открыть настройки в разделе «%1»: </translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="203"/>
+        <location filename="../gui/quick/app.cpp" line="202"/>
         <source>Triggered override of &quot;%1&quot;</source>
         <translation>Инициировано переопределение &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="205"/>
+        <location filename="../gui/quick/app.cpp" line="204"/>
         <source>Triggered revert of &quot;%1&quot;</source>
         <translation>Инициирован возврат &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="259"/>
+        <location filename="../gui/quick/app.cpp" line="258"/>
         <source>Checking locations to move home directory …</source>
         <translation>Проверка местоположений для перемещения домашнего каталога…</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="261"/>
+        <location filename="../gui/quick/app.cpp" line="260"/>
         <source>Moving home directory …</source>
         <translation>Перемещение домашнего каталога…</translation>
     </message>
@@ -211,7 +211,7 @@
         <translation type="vanished">Документ JSON не содержит объектов</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1342"/>
+        <location filename="../gui/quick/app.cpp" line="1341"/>
         <source>Unable to save settings: </source>
         <translation>Не удалось сохранить настройки: </translation>
     </message>
@@ -224,257 +224,257 @@
         <translation type="vanished">Эта сборка приложения не может запустить Syncthing.</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1439"/>
+        <location filename="../gui/quick/app.cpp" line="1436"/>
         <source>Persistent logging disabled and logfile removed</source>
         <translation>Постоянное ведение журнала отключено, файл журнала удален</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1441"/>
+        <location filename="../gui/quick/app.cpp" line="1438"/>
         <source>Unable to remove logfile</source>
         <translation>Невозможно удалить файл журнала</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1457"/>
+        <location filename="../gui/quick/app.cpp" line="1454"/>
         <source>Another import/export still pending</source>
         <translation>Еще один импорт/экспорт все еще находится на рассмотрении</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1502"/>
+        <location filename="../gui/quick/app.cpp" line="1507"/>
         <source>Settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1517"/>
+        <location filename="../gui/quick/app.cpp" line="1522"/>
         <source>Unable to extract archive: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1522"/>
+        <location filename="../gui/quick/app.cpp" line="1527"/>
         <source>Unable to create temp dir: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1526"/>
+        <location filename="../gui/quick/app.cpp" line="1531"/>
         <source>archiving is only supported on Android.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1550"/>
+        <location filename="../gui/quick/app.cpp" line="1555"/>
         <source>The Syncthing home directory under &quot;%1&quot; is empty.</source>
         <translation>Домашний каталог Syncthing в «%1» пуст.</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1563"/>
+        <location filename="../gui/quick/app.cpp" line="1568"/>
         <source>No Syncthing configuration file found under &quot;%1&quot;.</source>
         <translation>Файл конфигурации Syncthing не найден в разделе «%1».</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1658"/>
+        <location filename="../gui/quick/app.cpp" line="1663"/>
         <source>Unable to import settings: settings directory was not located.</source>
         <translation>Не удалось импортировать настройки: каталог настроек не найден.</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1665"/>
+        <location filename="../gui/quick/app.cpp" line="1670"/>
         <source>Waiting for backend to terminate before importing settings …</source>
         <translation>Ожидание завершения работы бэкэнда перед импортом настроек…</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1700"/>
+        <location filename="../gui/quick/app.cpp" line="1705"/>
         <source>Imported app config from &quot;%1&quot;.</source>
         <translation>Импортирована конфигурация приложения из &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1713"/>
+        <location filename="../gui/quick/app.cpp" line="1718"/>
         <source>Imported Syncthing config and database from &quot;%1&quot;.</source>
         <translation>Импортированы конфигурация и база данных Syncthing из &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1731"/>
+        <location filename="../gui/quick/app.cpp" line="1736"/>
         <source>Unable to find folders/devices in current Syncthing config.</source>
         <translation>Не удалось найти папки/устройства в текущей конфигурации Syncthing.</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1746"/>
+        <location filename="../gui/quick/app.cpp" line="1751"/>
         <source>Merging %1 folders and %2 devices</source>
         <translation>Объединение %1 папок и %2 устройств</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1748"/>
+        <location filename="../gui/quick/app.cpp" line="1753"/>
         <source>Unable to import folders/devices.</source>
         <translation>Невозможно импортировать папки/устройства.</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1757"/>
+        <location filename="../gui/quick/app.cpp" line="1762"/>
         <source>Unable to remove temp dir: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1774"/>
+        <location filename="../gui/quick/app.cpp" line="1779"/>
         <source>Unable to import settings: %1</source>
         <translation>Невозможно импортировать настройки: %1</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1828"/>
+        <location filename="../gui/quick/app.cpp" line="1833"/>
         <source>no destination or file or directory specified/configured.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1840"/>
+        <location filename="../gui/quick/app.cpp" line="1845"/>
         <source>Settings have been archived to &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1842"/>
+        <location filename="../gui/quick/app.cpp" line="1847"/>
         <source>Archiving is only supported on Android.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1848"/>
+        <location filename="../gui/quick/app.cpp" line="1853"/>
         <source>unable to create export directory under &quot;%1&quot;</source>
         <translation>невозможно создать каталог экспорта в &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2044"/>
+        <location filename="../gui/quick/app.cpp" line="2052"/>
         <source>Debugging needs to be enabled under advanced GUI settings first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2051"/>
+        <location filename="../gui/quick/app.cpp" line="2059"/>
         <source>No destination or file or directory specified/configured.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2061"/>
+        <location filename="../gui/quick/app.cpp" line="2069"/>
         <source>Unable to open output file under &quot;%1&quot;: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2079"/>
+        <location filename="../gui/quick/app.cpp" line="2087"/>
         <source>Unable to write bundle: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2082"/>
+        <location filename="../gui/quick/app.cpp" line="2090"/>
         <source>Unable to download bundle: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2085"/>
+        <location filename="../gui/quick/app.cpp" line="2093"/>
         <source>Support bundle saved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2106"/>
+        <location filename="../gui/quick/app.cpp" line="2114"/>
         <source>Removed old database directory.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2108"/>
+        <location filename="../gui/quick/app.cpp" line="2116"/>
         <source>Unable to remove old database directory.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2114"/>
+        <location filename="../gui/quick/app.cpp" line="2122"/>
         <source>There was nothing to clean up.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1822"/>
+        <location filename="../gui/quick/app.cpp" line="1827"/>
         <source>settings directory was not located.</source>
         <translation>каталог настроек не найден.</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="263"/>
+        <location filename="../gui/quick/app.cpp" line="262"/>
         <source>Cleaning home directory …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="265"/>
+        <location filename="../gui/quick/app.cpp" line="264"/>
         <source>Saving support bundle …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1424"/>
+        <location filename="../gui/quick/app.cpp" line="1421"/>
         <source>No logfile present anyway</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1905"/>
+        <location filename="../gui/quick/app.cpp" line="1910"/>
         <source>Default directory</source>
         <translation>Каталог по умолчанию</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1921"/>
+        <location filename="../gui/quick/app.cpp" line="1926"/>
         <source>External storage %1</source>
         <translation>Внешнее хранилище %1</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1930"/>
+        <location filename="../gui/quick/app.cpp" line="1935"/>
         <source>Current home directory</source>
         <translation>Текущий домашний каталог</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1956"/>
+        <location filename="../gui/quick/app.cpp" line="1961"/>
         <source>Unable to move Syncthing home: settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1962"/>
+        <location filename="../gui/quick/app.cpp" line="1967"/>
         <source>Waiting for backend to terminate before moving home …</source>
         <translation>Ожидание завершения работы бэкэнда перед возвращением домой…</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1982"/>
+        <location filename="../gui/quick/app.cpp" line="1987"/>
         <source>Home directory stays the same.</source>
         <translation>Домашний каталог остается прежним.</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1993"/>
+        <location filename="../gui/quick/app.cpp" line="1998"/>
         <source>Cleaned up new home directory &quot;%1&quot;.</source>
         <translation>Очищен новый домашний каталог «%1».</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1999"/>
+        <location filename="../gui/quick/app.cpp" line="2004"/>
         <source>Copied data from previous home directory &quot;%1&quot; to new one.</source>
         <translation>Данные скопированы из предыдущего домашнего каталога «%1» в новый.</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2002"/>
+        <location filename="../gui/quick/app.cpp" line="2007"/>
         <source>Cleaned up previous home directory.</source>
         <translation>Очистил предыдущий домашний каталог.</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2005"/>
+        <location filename="../gui/quick/app.cpp" line="2010"/>
         <source>Configured &quot;%1&quot; as new/empty Syncthing home.</source>
         <translation>Настроен «%1» как новый/пустой дом Syncthing.</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2007"/>
+        <location filename="../gui/quick/app.cpp" line="2012"/>
         <source>Configured &quot;%1&quot; as Syncthing home.</source>
         <translation>Настроил «%1» как домашний адрес Syncthing.</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2011"/>
+        <location filename="../gui/quick/app.cpp" line="2016"/>
         <source>Unable to move home directory: %1</source>
         <translation>Невозможно переместить домашний каталог: %1</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1762"/>
+        <location filename="../gui/quick/app.cpp" line="1767"/>
         <source>Nothing has been imported.</source>
         <translation>Ничего не импортировалось.</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1430"/>
+        <location filename="../gui/quick/app.cpp" line="1427"/>
         <source>Waiting for backend to terminate before clearing logs …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1868"/>
+        <location filename="../gui/quick/app.cpp" line="1873"/>
         <source>Unable to export settings: %1</source>
         <translation>Невозможно экспортировать настройки: %1</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1861"/>
+        <location filename="../gui/quick/app.cpp" line="1866"/>
         <source>Settings have been exported to &quot;%1&quot;.</source>
         <translation>Настройки экспортированы в «%1».</translation>
     </message>
@@ -563,43 +563,43 @@
         <translation type="unfinished">Эта сборка приложения не может запустить Syncthing.</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="277"/>
+        <location filename="../gui/quick/appservice.cpp" line="268"/>
         <source>Syncthing App ran into error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="476"/>
+        <location filename="../gui/quick/appservice.cpp" line="467"/>
         <source>Syncthing error/notification</source>
         <translation type="unfinished">Ошибка синхронизации/уведомление</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="476"/>
+        <location filename="../gui/quick/appservice.cpp" line="467"/>
         <source>%1 Syncthing errors/notifications</source>
         <translation type="unfinished">%1 Ошибки/уведомления Syncthing</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="477"/>
-        <location filename="../gui/quick/appservice.cpp" line="497"/>
+        <location filename="../gui/quick/appservice.cpp" line="468"/>
+        <location filename="../gui/quick/appservice.cpp" line="488"/>
         <source>Most recent: </source>
         <translation type="unfinished">Самые последние: </translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="496"/>
+        <location filename="../gui/quick/appservice.cpp" line="487"/>
         <source>Syncthing API error</source>
         <translation type="unfinished">Ошибка API Syncthing</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="496"/>
+        <location filename="../gui/quick/appservice.cpp" line="487"/>
         <source>%1 Syncthing API errors</source>
         <translation type="unfinished">%1 Ошибки API Syncthing</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="510"/>
+        <location filename="../gui/quick/appservice.cpp" line="501"/>
         <source>Syncthing device wants to connect</source>
         <translation type="unfinished">Устройство Syncthing хочет подключиться</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="524"/>
+        <location filename="../gui/quick/appservice.cpp" line="515"/>
         <source>Syncthing device wants to share folder</source>
         <translation type="unfinished">Устройство Syncthing хочет предоставить общий доступ к папке</translation>
     </message>

@@ -98,6 +98,11 @@
         <translation>Вводная часть</translation>
     </message>
     <message>
+        <location filename="../syncthingdevicemodel.cpp" line="214"/>
+        <source>unknown</source>
+        <translation type="unfinished">неизвестный</translation>
+    </message>
+    <message>
         <location filename="../syncthingdevicemodel.cpp" line="136"/>
         <source>Incoming traffic</source>
         <translation>Входящий трафик</translation>

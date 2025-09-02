@@ -385,22 +385,22 @@
 <context>
     <name>Data::Utils</name>
     <message>
-        <location filename="../utils.cpp" line="40"/>
+        <location filename="../utils.cpp" line="44"/>
         <source>%1 ago</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="43"/>
+        <location filename="../utils.cpp" line="47"/>
         <source>right now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="54"/>
+        <location filename="../utils.cpp" line="58"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../utils.cpp" line="70"/>
+        <location filename="../utils.cpp" line="74"/>
         <source>%1 file(s)</source>
         <translation>
             <numerusform>%1 file</numerusform>
@@ -408,7 +408,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../utils.cpp" line="71"/>
+        <location filename="../utils.cpp" line="75"/>
         <source>%1 dir(s)</source>
         <translation>
             <numerusform>%1 dir</numerusform>
@@ -416,43 +416,43 @@
         </translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="86"/>
+        <location filename="../utils.cpp" line="90"/>
         <source>Synchronization of local folder %1 complete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="94"/>
+        <location filename="../utils.cpp" line="98"/>
         <source>Synchronization of the following local folders complete:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="108"/>
+        <location filename="../utils.cpp" line="112"/>
         <source>file system watcher and periodic rescan disabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="110"/>
+        <location filename="../utils.cpp" line="114"/>
         <source>file system watcher active, periodic rescan disabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="113"/>
+        <location filename="../utils.cpp" line="117"/>
         <source>, file system watcher enabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="114"/>
+        <location filename="../utils.cpp" line="118"/>
         <source>, file system watcher disabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="89"/>
+        <location filename="../utils.cpp" line="93"/>
         <source>Synchronization of %1 on %2 complete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="97"/>
+        <location filename="../utils.cpp" line="101"/>
         <source>Synchronization of the following folders on %1 complete:
 </source>
         <translation type="unfinished"></translation>

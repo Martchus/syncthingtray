@@ -98,6 +98,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../syncthingdevicemodel.cpp" line="214"/>
+        <source>unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../syncthingdevicemodel.cpp" line="136"/>
         <source>Incoming traffic</source>
         <translation type="unfinished"></translation>

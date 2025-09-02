@@ -98,6 +98,11 @@
         <translation>Zavaděč</translation>
     </message>
     <message>
+        <location filename="../syncthingdevicemodel.cpp" line="214"/>
+        <source>unknown</source>
+        <translation type="unfinished">neznámé</translation>
+    </message>
+    <message>
         <location filename="../syncthingdevicemodel.cpp" line="136"/>
         <source>Incoming traffic</source>
         <translation>Příchozí provoz</translation>

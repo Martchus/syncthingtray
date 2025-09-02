@@ -393,22 +393,22 @@
 <context>
     <name>Data::Utils</name>
     <message>
-        <location filename="../utils.cpp" line="40"/>
+        <location filename="../utils.cpp" line="44"/>
         <source>%1 ago</source>
         <translation>před %1</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="43"/>
+        <location filename="../utils.cpp" line="47"/>
         <source>right now</source>
         <translation>právě teď</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="54"/>
+        <location filename="../utils.cpp" line="58"/>
         <source>unknown</source>
         <translation>neznámé</translation>
     </message>
     <message numerus="yes">
-        <location filename="../utils.cpp" line="70"/>
+        <location filename="../utils.cpp" line="74"/>
         <source>%1 file(s)</source>
         <translation>
             <numerusform>%1 soubor</numerusform>
@@ -417,7 +417,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../utils.cpp" line="71"/>
+        <location filename="../utils.cpp" line="75"/>
         <source>%1 dir(s)</source>
         <translation>
             <numerusform>%1 adr.</numerusform>
@@ -426,44 +426,44 @@
         </translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="86"/>
+        <location filename="../utils.cpp" line="90"/>
         <source>Synchronization of local folder %1 complete</source>
         <translation>Synchronizace místního adresáře %1 dokončena</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="94"/>
+        <location filename="../utils.cpp" line="98"/>
         <source>Synchronization of the following local folders complete:
 </source>
         <translation>Synchronizace následujících místních adresářů dokončena:
 </translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="108"/>
+        <location filename="../utils.cpp" line="112"/>
         <source>file system watcher and periodic rescan disabled</source>
         <translation>sledování souborového systému a periodické skenování vypnuto</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="110"/>
+        <location filename="../utils.cpp" line="114"/>
         <source>file system watcher active, periodic rescan disabled</source>
         <translation>sledování souborového systému zapnuto, periodické skenování vypnuto</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="113"/>
+        <location filename="../utils.cpp" line="117"/>
         <source>, file system watcher enabled</source>
         <translation>, sledování souborového systému zapnuto</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="114"/>
+        <location filename="../utils.cpp" line="118"/>
         <source>, file system watcher disabled</source>
         <translation>, sledování souborového systému vypnuto</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="89"/>
+        <location filename="../utils.cpp" line="93"/>
         <source>Synchronization of %1 on %2 complete</source>
         <translation>Synchronizace %1 na %2 dokončena</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="97"/>
+        <location filename="../utils.cpp" line="101"/>
         <source>Synchronization of the following folders on %1 complete:
 </source>
         <translation>Synchronizace následujících adresářů na %1 dokončena:

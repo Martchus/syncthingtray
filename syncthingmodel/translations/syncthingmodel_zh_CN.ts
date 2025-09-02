@@ -98,6 +98,11 @@
         <translation>介绍人</translation>
     </message>
     <message>
+        <location filename="../syncthingdevicemodel.cpp" line="214"/>
+        <source>unknown</source>
+        <translation type="unfinished">未知</translation>
+    </message>
+    <message>
         <location filename="../syncthingdevicemodel.cpp" line="136"/>
         <source>Incoming traffic</source>
         <translation>下载流量</translation>

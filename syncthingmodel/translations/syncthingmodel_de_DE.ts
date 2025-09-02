@@ -98,6 +98,11 @@
         <translation>Verteilergerät</translation>
     </message>
     <message>
+        <location filename="../syncthingdevicemodel.cpp" line="214"/>
+        <source>unknown</source>
+        <translation>unbekannt</translation>
+    </message>
+    <message>
         <location filename="../syncthingdevicemodel.cpp" line="136"/>
         <source>Incoming traffic</source>
         <translation>Eingehender Datenverkehr</translation>
