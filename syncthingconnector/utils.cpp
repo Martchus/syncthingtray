@@ -308,7 +308,7 @@ std::pair<const QNetworkInformation *, bool> loadNetworkInformationBackendForMet
         return nullptr;
     }();
 
-    auto isInitiallyMetered = backend->isMetered();
+    auto isInitiallyMetered = backend && backend->isMetered();
 #ifdef Q_OS_ANDROID
     // detect the initial status of whether the network connection is metered manually under Android because QNetworkInformation always
     // returns false on startup with no way to know when it has been initialized
