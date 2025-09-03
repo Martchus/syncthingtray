@@ -127,8 +127,6 @@ void SyncthingTestInstance::stop()
         if (!output.isEmpty()) {
             cerr << "\n - Syncthing output (merged stdout/stderr) during the testrun:\n"
                  << std::string_view(output.data(), static_cast<std::string_view::size_type>(output.size()));
-        }
-        if (!output.isEmpty()) {
             cerr << "\n - Syncthing (re)started: " << output.count("INFO: Starting syncthing") << " times";
             cerr << "\n - Syncthing exited:      " << output.count("INFO: Syncthing exited: exit status") << " times";
             cerr << "\n - Syncthing panicked:    " << output.count("WARNING: Panic detected") << " times";
