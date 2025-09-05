@@ -653,6 +653,10 @@ MainConfigWizardPage::MainConfigWizardPage(QWidget *parent)
     setSubTitle(tr("Something when wrong when checking the Syncthing setup."));
     setButtonText(QWizard::CustomButton1, tr("Show details from setup detection"));
     m_ui->setupUi(this);
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    m_cfgSystemdUserUnitText = m_ui->cfgSystemdUserUnitRadioButton->text();
+    m_cfgSystemdSystemUnitText = m_ui->cfgSystemdSystemUnitRadioButton->text();
+#endif
 
     // connect signals & slots
     for (auto *const option : std::initializer_list<QRadioButton *>{ m_ui->cfgCurrentlyRunningRadioButton, m_ui->cfgLauncherExternalRadioButton,
@@ -715,11 +719,11 @@ void MainConfigWizardPage::initializePage()
         const auto canLaunchViaSystemUnit = detection.systemService.canEnableOrStart();
         if (canLaunchViaUserUnit) {
             m_ui->cfgSystemdUserUnitRadioButton->show();
-            m_ui->cfgSystemdUserUnitRadioButton->setText(m_ui->cfgSystemdUserUnitRadioButton->text().arg(detection.userService.unitName()));
+            m_ui->cfgSystemdUserUnitRadioButton->setText(m_cfgSystemdUserUnitText.arg(detection.userService.unitName()));
         }
         if (canLaunchViaSystemUnit) {
             m_ui->cfgSystemdSystemUnitRadioButton->show();
-            m_ui->cfgSystemdSystemUnitRadioButton->setText(m_ui->cfgSystemdSystemUnitRadioButton->text().arg(detection.systemService.unitName()));
+            m_ui->cfgSystemdSystemUnitRadioButton->setText(m_cfgSystemdSystemUnitText.arg(detection.systemService.unitName()));
         }
         if (canLaunchViaUserUnit) {
             m_ui->cfgSystemdUserUnitRadioButton->setChecked(true);
