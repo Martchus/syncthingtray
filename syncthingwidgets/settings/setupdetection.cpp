@@ -39,7 +39,7 @@ SetupDetection::SetupDetection(QObject *parent)
     // configure timeout
     auto hasConfiguredTimeout = false;
     auto configuredTimeout = qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_WIZARD_SETUP_DETECTION_TIMEOUT", &hasConfiguredTimeout);
-    timeout.setInterval(hasConfiguredTimeout ? configuredTimeout : 2500);
+    timeout.setInterval(hasConfiguredTimeout ? configuredTimeout : 20000);
     timeout.setSingleShot(true);
 
     // connect signals & slots
