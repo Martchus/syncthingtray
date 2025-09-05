@@ -59,6 +59,7 @@ protected:
     static QString openSettingFile(QFile &settingsFile, const QString &path);
     static QString readSettingFile(QFile &settingsFile, QJsonObject &settings);
     QString syncthingLogFilePath() const;
+    QDir &settingsDir();
     bool openSettings();
     virtual void invalidateStatus();
     Data::IconManager &initIconManager();
@@ -77,6 +78,7 @@ protected:
     StatusInfo m_statusInfo;
     QString m_syncthingConfigDir;
     QString m_syncthingDataDir;
+    QString m_syncthingUnixSocketPath;
     bool m_connectToLaunched;
     bool m_insecure;
 };

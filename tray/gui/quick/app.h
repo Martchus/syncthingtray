@@ -63,6 +63,7 @@ class App : public AppBase {
     Q_PROPERTY(bool syncthingStarting READ isSyncthingStarting NOTIFY syncthingStartingChanged)
     Q_PROPERTY(bool syncthingRunning READ isSyncthingRunning NOTIFY syncthingRunningChanged)
     Q_PROPERTY(QUrl syncthingGuiUrl READ syncthingGuiUrl NOTIFY syncthingGuiUrlChanged)
+    Q_PROPERTY(bool usingUnixDomainSocket READ isUsingUnixDomainSocket NOTIFY syncthingGuiUrlChanged)
     Q_PROPERTY(QString syncthingRunningStatus READ syncthingRunningStatus NOTIFY syncthingRunningStatusChanged)
     Q_PROPERTY(QString meteredStatus READ meteredStatus NOTIFY meteredStatusChanged)
     Q_PROPERTY(bool importExportOngoing READ isImportExportOngoing NOTIFY importExportOngoingChanged)
@@ -207,6 +208,10 @@ public:
     const QUrl &syncthingGuiUrl() const
     {
         return m_syncthingGuiUrl;
+    }
+    bool isUsingUnixDomainSocket() const
+    {
+        return m_syncthingGuiUrl.scheme() == QLatin1String("unix") && !m_syncthingUnixSocketPath.isEmpty();
     }
     const QString &syncthingRunningStatus() const
     {

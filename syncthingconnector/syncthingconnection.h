@@ -651,6 +651,7 @@ inline const QString &SyncthingConnection::localPath() const
 
 /*!
  * \brief Sets the path of the Unix domain socket to connect to Syncthing.
+ * \remarks This path is only used when specifying a "unix+http://" URL via setSyncthingUrl().
  */
 inline void SyncthingConnection::setLocalPath(const QString &localPath)
 {

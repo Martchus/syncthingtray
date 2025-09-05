@@ -58,7 +58,7 @@ Page {
             ItemDelegate {
                 Layout.fillWidth: true
                 onClicked: startPage.pages.showPage(4).showGuiAuth()
-                visible: App.connection.hasState && !App.connection.guiRequiringAuth
+                visible: !App.usingUnixDomainSocket && App.connection.hasState && !App.connection.guiRequiringAuth
                 contentItem: RowLayout {
                     spacing: 15
                     ForkAwesomeIcon {
@@ -342,6 +342,7 @@ Page {
             }
             ItemDelegate {
                 Layout.fillWidth: true
+                visible: !App.usingUnixDomainSocket
                 onClicked: Qt.openUrlExternally(App.connection.syncthingUrlWithCredentials)
                 contentItem: RowLayout {
                     spacing: 15

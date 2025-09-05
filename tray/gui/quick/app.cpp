@@ -1047,7 +1047,8 @@ void App::handleLauncherStatusBroadcast(const QVariant &status)
     const auto isRunning = launcherStatus.value(QStringLiteral("isRunning")).toBool();
     const auto isRunningChanged = isRunning != m_isSyncthingRunning;
     const auto guiUrl = launcherStatus.value(QStringLiteral("guiUrl")).toUrl();
-    const auto guiUrlChanged = guiUrl != m_syncthingGuiUrl;
+    const auto unixSocketPath = launcherStatus.value(QStringLiteral("unixSocketPath")).toString();
+    const auto guiUrlChanged = guiUrl != m_syncthingGuiUrl || unixSocketPath != m_syncthingUnixSocketPath;
     const auto runningStatus = launcherStatus.value(QStringLiteral("runningStatus")).toString();
     const auto runningStatusChanged = runningStatus != m_syncthingRunningStatus;
     const auto meteredStatus = launcherStatus.value(QStringLiteral("meteredStatus")).toString();
@@ -1057,6 +1058,7 @@ void App::handleLauncherStatusBroadcast(const QVariant &status)
     m_syncthingGuiUrl = guiUrl;
     m_syncthingRunningStatus = runningStatus;
     m_meteredStatus = meteredStatus;
+    m_syncthingUnixSocketPath = unixSocketPath;
     if (isRunningChanged && isRunning) {
         m_isManuallyStopped = false;
     }
@@ -1385,6 +1387,7 @@ bool App::applySettings()
     auto mod = false;
     auto tweaksSettings = m_settings.value(QLatin1String("tweaks")).toObject();
     ensureDefault(mod, tweaksSettings, QLatin1String("exportDir"), QString());
+    ensureDefault(mod, tweaksSettings, QLatin1String("useUnixDomainSocket"), false);
 #ifdef Q_OS_ANDROID
     ensureDefault(mod, tweaksSettings, QLatin1String("importExportAsArchive"), true);
     ensureDefault(mod, tweaksSettings, QLatin1String("importExportEncryptionPassword"), QString());

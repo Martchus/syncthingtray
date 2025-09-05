@@ -595,7 +595,7 @@ void SyncthingLauncher::showLibSyncthingNotSupported(QByteArray &&reason)
     emit exited(exitStatus.code, exitStatus.status);
 }
 
-QVariant SyncthingLauncher::overallStatus() const
+QVariantMap SyncthingLauncher::overallStatus() const
 {
     const auto isMetered = isNetworkConnectionMetered();
     return QVariantMap{

@@ -46,7 +46,10 @@ help texts provided within the app itself. A few additional remarks:
   again manually.
 * It is probably also a good idea to enable authentication for accessing the web-based UI as
   otherwise any other app would be able to access it. A user name and password can be configured
-  under "Advanced" → "Syncthing API and web-based GUI".
+  under "Advanced" → "Syncthing API and web-based GUI". Alternatively, one can enable the use of
+  a UNIX domain socket under "Tweaks". This also prevents other apps from accessing the
+  web-based UI by making it completely inaccessible and by the way avoiding communication
+  overhead.
 * The app exposes its private directories via a "document provider" so you can grant other apps
   the permission to access them, e.g. to browse the Syncthing home directory containing the
   Syncthing configuration and database in a file browser that supports "document providers".

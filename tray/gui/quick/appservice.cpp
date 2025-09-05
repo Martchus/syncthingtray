@@ -157,18 +157,20 @@ static QByteArray serializeVariant(const QVariant &variant)
 
 void AppService::broadcastLauncherStatus()
 {
+    auto launcherStatus = m_launcher.overallStatus();
+    launcherStatus[QStringLiteral("unixSocketPath")] = m_syncthingUnixSocketPath;
 #ifdef Q_OS_ANDROID
     QJniObject(QNativeInterface::QAndroidApplication::context())
-        .callMethod<jint>(
-            "sendMessageToClients", static_cast<jint>(ActivityAction::UpdateLauncherStatus), 0, 0, serializeVariant(m_launcher.overallStatus()));
+        .callMethod<jint>("sendMessageToClients", static_cast<jint>(ActivityAction::UpdateLauncherStatus), 0, 0, serializeVariant(launcherStatus));
 #else
-    emit launcherStatusChanged(m_launcher.overallStatus());
+    emit launcherStatusChanged(launcherStatus);
 #endif
 }
 
 bool AppService::applyLauncherSettings()
 {
     const auto launcherSettingsObj = m_settings.value(QLatin1String("launcher")).toObject();
+    const auto tweaksSettingsObj = m_settings.value(QLatin1String("tweaks")).toObject();
     m_launcher.setStoppingOnMeteredConnection(launcherSettingsObj.value(QLatin1String("stopOnMetered")).toBool());
     const auto shouldRun = launcherSettingsObj.value(QLatin1String("run")).toBool();
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
@@ -178,6 +180,11 @@ bool AppService::applyLauncherSettings()
     m_syncthingDataDir = m_syncthingConfigDir;
     options.configDir = m_syncthingConfigDir.toStdString();
     options.dataDir = options.configDir;
+    if (tweaksSettingsObj.value(QLatin1String("useUnixDomainSocket")).toBool()) {
+        m_syncthingUnixSocketPath = settingsDir().path() + QStringLiteral("/syncthing.socket");
+        options.guiAddress = "unix://" + m_syncthingUnixSocketPath.toStdString();
+        options.flags = options.flags | LibSyncthing::RuntimeFlags::SkipPortProbing;
+    }
     m_launcher.setLibSyncthingLogLevel(launcherSettingsObj.value(QLatin1String("logLevel")).toString());
     if (launcherSettingsObj.value(QLatin1String("writeLogFile")).toBool()) {
         if (!m_launcher.logFile().isOpen()) {

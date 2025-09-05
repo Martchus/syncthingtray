@@ -91,18 +91,23 @@ QString AppBase::openSettingFile(QFile &settingsFile, const QString &path)
     return QString();
 }
 
-bool AppBase::openSettings()
+QDir &AppBase::settingsDir()
 {
     if (!m_settingsDir.has_value()) {
         m_settingsDir.emplace(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
     }
-    if (!m_settingsDir->exists() && !m_settingsDir->mkpath(QStringLiteral("."))) {
-        emit error(tr("Unable to create settings directory under \"%1\".").arg(m_settingsDir->path()));
+    return m_settingsDir.value();
+}
+
+bool AppBase::openSettings()
+{
+    auto &sd = settingsDir();
+    if (!sd.exists() && !sd.mkpath(QStringLiteral("."))) {
+        emit error(tr("Unable to create settings directory under \"%1\".").arg(sd.path()));
         m_settingsDir.reset();
         return false;
     }
-    if (const auto errorMessage = openSettingFile(m_settingsFile, m_settingsDir->path() + QStringLiteral("/appconfig.json"));
-        !errorMessage.isEmpty()) {
+    if (const auto errorMessage = openSettingFile(m_settingsFile, sd.path() + QStringLiteral("/appconfig.json")); !errorMessage.isEmpty()) {
         m_settingsDir.reset();
         emit error(errorMessage);
         return false;
@@ -203,14 +208,20 @@ void AppBase::applySyncthingSettings()
 
 void AppBase::handleGuiUrlChanged(const QUrl &newUrl)
 {
-    auto url = newUrl;
+    if (newUrl.scheme() == QLatin1String("unix") && !m_syncthingUnixSocketPath.isEmpty()) {
+        m_connectionSettingsFromLauncher.syncthingUrl = QStringLiteral("unix+http://localhost");
+        m_connectionSettingsFromLauncher.localPath = m_syncthingUnixSocketPath;
+    } else {
 #ifndef QT_NO_SSL
-    // always use TLS if supported by Qt for the sake of security (especially on Android)
-    // note: Syncthing itself always supports it and allows connections via TLS even if the "tls" setting
-    //       is disabled (because this setting is just about *enforcing* TLS).
-    url.setScheme(QStringLiteral("https"));
+        auto url = newUrl;
+        // always use TLS if supported by Qt for the sake of security (especially on Android)
+        // note: Syncthing itself always supports it and allows connections via TLS even if the "tls" setting
+        //       is disabled (because this setting is just about *enforcing* TLS).
+        url.setScheme(QStringLiteral("https"));
 #endif
-    m_connectionSettingsFromLauncher.syncthingUrl = url.toString();
+        m_connectionSettingsFromLauncher.syncthingUrl = url.toString();
+        m_connectionSettingsFromLauncher.localPath.clear();
+    }
     if (!m_syncthingConfig.restore(m_syncthingConfigDir + QStringLiteral("/config.xml"))) {
         if (!newUrl.isEmpty()) {
             emit error("Unable to read Syncthing config for automatic connection to backend.");

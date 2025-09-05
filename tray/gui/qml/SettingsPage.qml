@@ -187,6 +187,7 @@ StackView {
                 {key: "importExportAsArchive", type: "boolean", defaultValue: false, label: qsTr("Import/export archive"), statusText: qsTr("Import and export to/from a Zip archive")},
                 {key: "importExportEncryptionPassword", type: "string", inputMethodHints: Qt.ImhHiddenText | Qt.ImhSensitiveData | Qt.ImhNoAutoUppercase, defaultValue: "", label: qsTr("Import/export password"), statusText: qsTr("Encrypt/decrypt data via AES-256 when exporting/importing to archive")},
                 {key: "exportDir", type: "folderpath", defaultValue: "", label: qsTr("Export path"), statusText: qsTr("Save exports and support bundles under fix location")},
+                {key: "useUnixDomainSocket", type: "boolean", defaultValue: false, label: qsTr("Use Unix domain socket"), statusText: qsTr("Reduces communication overhead and makes Syncthing API and web GUI inaccessible to other apps, applied after restart")},
             ]
         })
         property bool hasUnsavedChanges: false
