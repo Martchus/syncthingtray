@@ -71,6 +71,168 @@
         <source>Unable to restart via &quot;%1&quot;: %2</source>
         <translation>无法通过 “%1” 重新启动： %2</translation>
     </message>
+    <message>
+        <source>Configure autostart</source>
+        <translation type="obsolete">配置自动启动</translation>
+    </message>
+    <message>
+        <source>Select whether to start Syncthing Tray automatically</source>
+        <translation type="obsolete">选择是否自动启动 Syncthing Tray</translation>
+    </message>
+    <message>
+        <source>Do not modify the existing autostart entry for
+&quot;%1&quot;</source>
+        <translation type="obsolete">不要修改现有的自动启动条目
+&quot;%1&quot;</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="obsolete">应用</translation>
+    </message>
+    <message>
+        <source>Apply selected configuration</source>
+        <translation type="obsolete">应用所选配置</translation>
+    </message>
+    <message>
+        <source>Review the summary of the configuration changes before applying them</source>
+        <translation type="obsolete">在应用配置更改之前，请查看配置更改的摘要</translation>
+    </message>
+    <message>
+        <source>Summary:</source>
+        <translation type="obsolete">摘要:</translation>
+    </message>
+    <message>
+        <source>Keep %1 %2</source>
+        <translation type="obsolete">保持 %1 %2</translation>
+    </message>
+    <message>
+        <source>enabled</source>
+        <translation type="obsolete">已启用</translation>
+    </message>
+    <message>
+        <source>disabled</source>
+        <translation type="obsolete">已禁用</translation>
+    </message>
+    <message>
+        <source>%1 %2</source>
+        <translation type="obsolete">%1 %2</translation>
+    </message>
+    <message>
+        <source>Enable</source>
+        <translation type="obsolete">启用</translation>
+    </message>
+    <message>
+        <source>Disable</source>
+        <translation type="obsolete">禁用</translation>
+    </message>
+    <message>
+        <source>Keep connection and launcher configuration as-is</source>
+        <translation type="obsolete">保持连接和启动器配置不变</translation>
+    </message>
+    <message>
+        <source>Configure Syncthing Tray to use the currently running Syncthing instance</source>
+        <translation type="obsolete">将 Syncthing Tray 配置为使用当前正在运行的 Syncthing 实例</translation>
+    </message>
+    <message>
+        <source>Do &lt;i&gt;not&lt;/i&gt; change how Syncthing is launched</source>
+        <translation type="obsolete">&lt;i&gt;不要&lt;/i&gt;更改 Syncthing 的启动方式</translation>
+    </message>
+    <message>
+        <source>Start Syncthing via Syncthing Tray&apos;s launcher</source>
+        <translation type="obsolete">通过 Syncthing Tray 的启动器启动 Syncthing</translation>
+    </message>
+    <message>
+        <source>executable from PATH as separate process, &quot;%1&quot;</source>
+        <translation type="obsolete">从 PATH 作为单独进程的可执行文件，&quot;%1&quot;</translation>
+    </message>
+    <message>
+        <source>built-in Syncthing library, &quot;%1&quot;</source>
+        <translation type="obsolete">内置 Syncthing 库 “%1”</translation>
+    </message>
+    <message>
+        <source>Start Syncthing by enabling and starting its systemd unit</source>
+        <translation type="obsolete">通过启用和启动 Syncthing 的 systemd 单元来启动 Syncthing</translation>
+    </message>
+    <message>
+        <source>Using user unit &quot;%1&quot;</source>
+        <translation type="obsolete">使用用户单位 “%1”</translation>
+    </message>
+    <message>
+        <source>Using system unit &quot;%1&quot;</source>
+        <translation type="obsolete">使用系统单位 &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <source>systemd integration</source>
+        <translation type="obsolete">systemd 集成</translation>
+    </message>
+    <message>
+        <source>Preserve existing autostart entry for &quot;%1&quot;</source>
+        <translation type="obsolete">保留 “%1” 的现有自动启动条目</translation>
+    </message>
+    <message>
+        <source>Override</source>
+        <translation type="obsolete">覆盖</translation>
+    </message>
+    <message>
+        <source>Delete</source>
+        <translation type="obsolete">删除</translation>
+    </message>
+    <message>
+        <source>%1 existing autostart entry for &quot;%2&quot;</source>
+        <translation type="obsolete">%1 的现有自动启动条目 &quot;%2&quot;</translation>
+    </message>
+    <message>
+        <source>autostart of Syncthing Tray</source>
+        <translation type="obsolete">Syncthing Tray 自动启动</translation>
+    </message>
+    <message>
+        <source>Further information:</source>
+        <translation type="obsolete">更多信息：</translation>
+    </message>
+    <message>
+        <source>Click on &quot;Show details from setup detection&quot; for further details.</source>
+        <translation type="obsolete">点击&quot;显示设置检测的详细信息&quot;以获取更多详细信息。</translation>
+    </message>
+    <message>
+        <source>If you want to do amendments, you can head back one or more steps.</source>
+        <translation type="obsolete">如果您想进行修改，可以返回一个或多个步骤。</translation>
+    </message>
+    <message>
+        <source>If you abort now, nothing will be changed.</source>
+        <translation type="obsolete">如果现在取消，则不会更改任何内容。</translation>
+    </message>
+    <message>
+        <source>Waiting for configuration wizard completed</source>
+        <translation type="obsolete">等待配置向导完成</translation>
+    </message>
+    <message>
+        <source>Changes are being applied</source>
+        <translation type="obsolete">正在应用更改</translation>
+    </message>
+    <message>
+        <source>Configuration wizard completed</source>
+        <translation type="obsolete">配置向导已完成</translation>
+    </message>
+    <message>
+        <source>All changes have been applied</source>
+        <translation type="obsolete">所有更改均已应用</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;The configuration has been changed successfully. The way Syncthing Tray connects to and starts Syncthing has not changed, though. You may configure this manually in the settings.&lt;/p&gt;</source>
+        <translation type="obsolete">&lt;p&gt;配置已成功更改。不过，Syncthing Tray 连接和启动 Syncthing 的方式没有改变。您可以在设置中手动配置。&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>&lt;p&gt;The configuration has been changed successfully. You can close the wizard and &lt;a href=&quot;openSyncthing&quot;&gt;open Syncthing&lt;/a&gt; to pair remote devices and add folders for sharing. If you need further help, read the &lt;a href=&quot;openDocs&quot;&gt;documentation to get started&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;To initiate the pairing from another device, the device ID of this Syncthing device is displayed below.&lt;/p&gt;</source>
+        <translation type="obsolete">&lt;p&gt;配置已成功更改。您可以关闭向导并&lt;a href=“openSyncthing”&gt;打开 Syncthing&lt;/a&gt; 以配对远程设备并添加文件夹以进行共享。如果您需要进一步的帮助，请阅读 &lt;a href=“openDocs”&gt;文档以开始使用&lt;/a&gt;。&lt;/p&gt;&lt;p&gt;要从另一台设备启动配对，此 Syncthing 设备的设备 ID 如下所示。&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <source>Not all changes could be applied</source>
+        <translation type="obsolete">并非所有更改都可以应用</translation>
+    </message>
+    <message>
+        <source>You may try to head back one or more steps and try again or finish the wizard and configure Syncthing Tray manually.</source>
+        <translation type="obsolete">您可以尝试返回一个或多个步骤，然后重试，或者完成向导并手动配置 Syncthing Tray。</translation>
+    </message>
 </context>
 <context>
     <name>QtGui::AppearanceOptionPage</name>
@@ -264,147 +426,147 @@
         <translation>常规</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="923"/>
+        <location filename="../settings/wizard.cpp" line="965"/>
         <source>Apply</source>
         <translation>应用</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="924"/>
+        <location filename="../settings/wizard.cpp" line="966"/>
         <source>Apply selected configuration</source>
         <translation>应用所选配置</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="925"/>
+        <location filename="../settings/wizard.cpp" line="967"/>
         <source>Review the summary of the configuration changes before applying them</source>
         <translation>在应用配置更改之前，请查看配置更改的摘要</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="949"/>
+        <location filename="../settings/wizard.cpp" line="991"/>
         <source>Summary:</source>
         <translation>摘要:</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="963"/>
+        <location filename="../settings/wizard.cpp" line="1005"/>
         <source>Keep %1 %2</source>
         <translation>保持 %1 %2</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="963"/>
+        <location filename="../settings/wizard.cpp" line="1005"/>
         <source>enabled</source>
         <translation>已启用</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="963"/>
+        <location filename="../settings/wizard.cpp" line="1005"/>
         <source>disabled</source>
         <translation>已禁用</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="964"/>
+        <location filename="../settings/wizard.cpp" line="1006"/>
         <source>%1 %2</source>
         <translation>%1 %2</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="964"/>
+        <location filename="../settings/wizard.cpp" line="1006"/>
         <source>Enable</source>
         <translation>启用</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="964"/>
+        <location filename="../settings/wizard.cpp" line="1006"/>
         <source>Disable</source>
         <translation>禁用</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="974"/>
+        <location filename="../settings/wizard.cpp" line="1016"/>
         <source>Keep connection and launcher configuration as-is</source>
         <translation>保持连接和启动器配置不变</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="977"/>
+        <location filename="../settings/wizard.cpp" line="1019"/>
         <source>Configure Syncthing Tray to use the currently running Syncthing instance</source>
         <translation>将 Syncthing Tray 配置为使用当前正在运行的 Syncthing 实例</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="978"/>
+        <location filename="../settings/wizard.cpp" line="1020"/>
         <source>Do &lt;i&gt;not&lt;/i&gt; change how Syncthing is launched</source>
         <translation>&lt;i&gt;不要&lt;/i&gt;更改 Syncthing 的启动方式</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="982"/>
+        <location filename="../settings/wizard.cpp" line="1024"/>
         <source>Start Syncthing via Syncthing Tray&apos;s launcher</source>
         <translation>通过 Syncthing Tray 的启动器启动 Syncthing</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="984"/>
+        <location filename="../settings/wizard.cpp" line="1026"/>
         <source>executable from PATH as separate process, &quot;%1&quot;</source>
         <translation>从 PATH 作为单独进程的可执行文件，&quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="985"/>
+        <location filename="../settings/wizard.cpp" line="1027"/>
         <source>built-in Syncthing library, &quot;%1&quot;</source>
         <translation>内置 Syncthing 库 “%1”</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="990"/>
+        <location filename="../settings/wizard.cpp" line="1032"/>
         <source>Start Syncthing by enabling and starting its systemd unit</source>
         <translation>通过启用和启动 Syncthing 的 systemd 单元来启动 Syncthing</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="992"/>
+        <location filename="../settings/wizard.cpp" line="1034"/>
         <source>Using user unit &quot;%1&quot;</source>
         <translation>使用用户单位 “%1”</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="993"/>
+        <location filename="../settings/wizard.cpp" line="1035"/>
         <source>Using system unit &quot;%1&quot;</source>
         <translation>使用系统单位 &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="1002"/>
+        <location filename="../settings/wizard.cpp" line="1044"/>
         <source>systemd integration</source>
         <translation>systemd 集成</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="1008"/>
+        <location filename="../settings/wizard.cpp" line="1050"/>
         <source>Preserve existing autostart entry for &quot;%1&quot;</source>
         <translation>保留 “%1” 的现有自动启动条目</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="1014"/>
+        <location filename="../settings/wizard.cpp" line="1056"/>
         <source>Override</source>
         <translation>覆盖</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="1014"/>
+        <location filename="../settings/wizard.cpp" line="1056"/>
         <source>Delete</source>
         <translation>删除</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="1015"/>
+        <location filename="../settings/wizard.cpp" line="1057"/>
         <source>%1 existing autostart entry for &quot;%2&quot;</source>
         <translation>%1 的现有自动启动条目 &quot;%2&quot;</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="1017"/>
+        <location filename="../settings/wizard.cpp" line="1059"/>
         <source>autostart of Syncthing Tray</source>
         <translation>Syncthing Tray 自动启动</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="1022"/>
+        <location filename="../settings/wizard.cpp" line="1064"/>
         <source>Further information:</source>
         <translation>更多信息：</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="1022"/>
+        <location filename="../settings/wizard.cpp" line="1064"/>
         <source>Click on &quot;Show details from setup detection&quot; for further details.</source>
         <translation>点击&quot;显示设置检测的详细信息&quot;以获取更多详细信息。</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="1023"/>
+        <location filename="../settings/wizard.cpp" line="1065"/>
         <source>If you want to do amendments, you can head back one or more steps.</source>
         <translation>如果您想进行修改，可以返回一个或多个步骤。</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="1023"/>
+        <location filename="../settings/wizard.cpp" line="1065"/>
         <source>If you abort now, nothing will be changed.</source>
         <translation>如果现在取消，则不会更改任何内容。</translation>
     </message>
@@ -495,17 +657,17 @@
         <translation>此设置与 Syncthing Tray 本身有关。但是，如果 Syncthing 是通过 Syncthing Tray 的启动器启动的，它也会间接影响 Syncthing。</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="847"/>
+        <location filename="../settings/wizard.cpp" line="889"/>
         <source>Configure autostart</source>
         <translation>配置自动启动</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="848"/>
+        <location filename="../settings/wizard.cpp" line="890"/>
         <source>Select whether to start Syncthing Tray automatically</source>
         <translation>选择是否自动启动 Syncthing Tray</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="902"/>
+        <location filename="../settings/wizard.cpp" line="944"/>
         <source>Do not modify the existing autostart entry for
 &quot;%1&quot;</source>
         <translation>不要修改现有的自动启动条目
@@ -998,42 +1160,42 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>QtGui::FinalWizardPage</name>
     <message>
-        <location filename="../settings/wizard.cpp" line="1082"/>
+        <location filename="../settings/wizard.cpp" line="1124"/>
         <source>Waiting for configuration wizard completed</source>
         <translation>等待配置向导完成</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="1083"/>
+        <location filename="../settings/wizard.cpp" line="1125"/>
         <source>Changes are being applied</source>
         <translation>正在应用更改</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="1089"/>
+        <location filename="../settings/wizard.cpp" line="1131"/>
         <source>Configuration wizard completed</source>
         <translation>配置向导已完成</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="1093"/>
+        <location filename="../settings/wizard.cpp" line="1135"/>
         <source>All changes have been applied</source>
         <translation>所有更改均已应用</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="1095"/>
+        <location filename="../settings/wizard.cpp" line="1137"/>
         <source>&lt;p&gt;The configuration has been changed successfully. The way Syncthing Tray connects to and starts Syncthing has not changed, though. You may configure this manually in the settings.&lt;/p&gt;</source>
         <translation>&lt;p&gt;配置已成功更改。不过，Syncthing Tray 连接和启动 Syncthing 的方式没有改变。您可以在设置中手动配置。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="1098"/>
+        <location filename="../settings/wizard.cpp" line="1140"/>
         <source>&lt;p&gt;The configuration has been changed successfully. You can close the wizard and &lt;a href=&quot;openSyncthing&quot;&gt;open Syncthing&lt;/a&gt; to pair remote devices and add folders for sharing. If you need further help, read the &lt;a href=&quot;openDocs&quot;&gt;documentation to get started&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;To initiate the pairing from another device, the device ID of this Syncthing device is displayed below.&lt;/p&gt;</source>
         <translation>&lt;p&gt;配置已成功更改。您可以关闭向导并&lt;a href=“openSyncthing”&gt;打开 Syncthing&lt;/a&gt; 以配对远程设备并添加文件夹以进行共享。如果您需要进一步的帮助，请阅读 &lt;a href=“openDocs”&gt;文档以开始使用&lt;/a&gt;。&lt;/p&gt;&lt;p&gt;要从另一台设备启动配对，此 Syncthing 设备的设备 ID 如下所示。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="1107"/>
+        <location filename="../settings/wizard.cpp" line="1149"/>
         <source>Not all changes could be applied</source>
         <translation>并非所有更改都可以应用</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="1110"/>
+        <location filename="../settings/wizard.cpp" line="1152"/>
         <source>You may try to head back one or more steps and try again or finish the wizard and configure Syncthing Tray manually.</source>
         <translation>您可以尝试返回一个或多个步骤，然后重试，或者完成向导并手动配置 Syncthing Tray。</translation>
     </message>
@@ -1492,22 +1654,28 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation>显示设置检测的详细信息</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="730"/>
+        <location filename="../settings/wizard.cpp" line="755"/>
         <source>Systemd</source>
         <translation>Systemd</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="762"/>
+        <location filename="../settings/wizard.cpp" line="806"/>
+        <source>Warnings:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/wizard.cpp" line="787"/>
         <source>&lt;b&gt;The Syncthing config could be located under &quot;%1&quot; but it seems invalid/incomplete.&lt;/b&gt; Hence Syncthing is assumed to be not running.</source>
         <translation>&lt;b&gt;Syncthing 配置可能位于“%1”下，但它似乎无效/不完整。&lt;/b&gt;因此，Syncthing 被认定为未运行。</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="754"/>
+        <location filename="../settings/wizard.cpp" line="779"/>
         <source>Looks like Syncthing is not running yet. You can launch it via %1.</source>
         <translation>看起来 Syncthing 尚未运行。您可以通过 %1 启动它。</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="754"/>
+        <location filename="../settings/wizard.cpp" line="750"/>
+        <location filename="../settings/wizard.cpp" line="779"/>
         <source> and </source>
         <translation> 和 </translation>
     </message>
@@ -1552,7 +1720,7 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation>启用 systemd 集成</translation>
     </message>
     <message>
-        <location filename="../settings/mainconfigwizardpage.ui" line="92"/>
+        <location filename="../settings/mainconfigwizardpage.ui" line="102"/>
         <source>Click next to configure Syncthing Tray according to the selected options. You can also reconduct the checks the available options are based on by heading back. If you cancel the wizard, no configuration changes will be made.</source>
         <translation>单击下一步，根据所选选项配置 Syncthing Tray。您还可以通过返回来重新执行可用选项所基于的检查。如果取消向导，则不会进行任何配置更改。</translation>
     </message>
@@ -1561,17 +1729,27 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation type="obsolete">否</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="703"/>
+        <location filename="../settings/wizard.cpp" line="708"/>
         <source>Looks like Syncthing is already running and Syncthing Tray can be configured accordingly automatically.</source>
         <translation>看起来 Syncthing 已经在运行，并且可以相应地自动配置 Syncthing Tray。</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="737"/>
+        <location filename="../settings/wizard.cpp" line="747"/>
+        <source>Syncthing has been started via the systemd %1 but the automatic setup detection was not able to connect via the REST-API. If you want Syncthing Tray to connect to this instance of Syncthing you will have to configure this manually. Otherwise you should probably stop this unit before proceeding with launching Syncthing in a different way.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/wizard.cpp" line="797"/>
+        <source>The systemd %1 and %2 have both be detected as enabled/running. This is probably a misconfiguration.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/wizard.cpp" line="762"/>
         <source>Syncthing Tray&apos;s launcher</source>
         <translation>Syncthing Tray 的启动器</translation>
     </message>
     <message>
-        <location filename="../settings/wizard.cpp" line="756"/>
+        <location filename="../settings/wizard.cpp" line="781"/>
         <source>Looks like Syncthing is not running yet and needs to be installed before Syncthing Tray can be configured.</source>
         <translation>看起来 Syncthing 尚未运行，需要在配置 Syncthing Tray 之前安装。</translation>
     </message>

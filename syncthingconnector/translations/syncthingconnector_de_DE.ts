@@ -365,27 +365,37 @@
 <context>
     <name>Data::SyncthingService</name>
     <message>
-        <location filename="../syncthingservice.cpp" line="378"/>
+        <location filename="../syncthingservice.cpp" line="330"/>
+        <source>user unit &quot;%1&quot;</source>
+        <translation>Benutzer-Unit &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="332"/>
+        <source>system unit &quot;%1&quot;</source>
+        <translation>System-Unit &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="393"/>
         <source>start unit</source>
         <translation>Starten der Unit</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="380"/>
+        <location filename="../syncthingservice.cpp" line="395"/>
         <source>stop unit</source>
         <translation>Stoppen der Unit</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="395"/>
+        <location filename="../syncthingservice.cpp" line="410"/>
         <source>enable unit</source>
         <translation>Aktivieren der Unit</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="397"/>
+        <location filename="../syncthingservice.cpp" line="412"/>
         <source>disable unit</source>
         <translation>Deaktivieren der Unit</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="407"/>
+        <location filename="../syncthingservice.cpp" line="422"/>
         <source>reload all unit files</source>
         <translation>Aktualisieren aller Unit-Dateien</translation>
     </message>

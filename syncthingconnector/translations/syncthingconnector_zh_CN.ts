@@ -357,27 +357,37 @@
 <context>
     <name>Data::SyncthingService</name>
     <message>
-        <location filename="../syncthingservice.cpp" line="378"/>
+        <location filename="../syncthingservice.cpp" line="330"/>
+        <source>user unit &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="332"/>
+        <source>system unit &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="393"/>
         <source>start unit</source>
         <translation>启动单位</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="380"/>
+        <location filename="../syncthingservice.cpp" line="395"/>
         <source>stop unit</source>
         <translation>停止单位</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="395"/>
+        <location filename="../syncthingservice.cpp" line="410"/>
         <source>enable unit</source>
         <translation>启用单位</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="397"/>
+        <location filename="../syncthingservice.cpp" line="412"/>
         <source>disable unit</source>
         <translation>禁用单位</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="407"/>
+        <location filename="../syncthingservice.cpp" line="422"/>
         <source>reload all unit files</source>
         <translation>重新加载所有单元文件</translation>
     </message>
