@@ -319,6 +319,21 @@ void SyncthingService::setScopeAndUnitName(SystemdScope scope, const QString &un
 }
 
 /*!
+ * \brief Returns a display name for this service.
+ * \remarks
+ * So far this just returns "user/system … unit …" but if this class was extended to support different types of
+ * services it might return different names.
+ */
+QString SyncthingService::displayName() const
+{
+    if (isUserScope()) {
+        return tr("user unit \"%1\"").arg(unitName());
+    } else {
+        return tr("system unit \"%1\"").arg(unitName());
+    }
+}
+
+/*!
  * \brief Returns whether systemd (and specifically its D-Bus interface for user services) is available.
  * \remarks The availability might not be instantly detected and may change at any time. Use the systemdAvailableChanged()
  *          to react to availability changes.

@@ -702,6 +702,7 @@ void MainConfigWizardPage::initializePage()
 #endif
 
     // add short summary as sub title and offer configurations that make sense
+    auto warnings = QStringList();
     if (detection.connection.isConnected()) {
         // do not propose any options to launch Syncthing if it is already running
         setSubTitle(tr("Looks like Syncthing is already running and Syncthing Tray can be configured accordingly automatically."));
@@ -717,6 +718,8 @@ void MainConfigWizardPage::initializePage()
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
         const auto canLaunchViaUserUnit = detection.userService.canEnableOrStart();
         const auto canLaunchViaSystemUnit = detection.systemService.canEnableOrStart();
+        const auto userUnitRunning = detection.userService.isRunning();
+        const auto systemUnitRunning = detection.systemService.isRunning();
         if (canLaunchViaUserUnit) {
             m_ui->cfgSystemdUserUnitRadioButton->show();
             m_ui->cfgSystemdUserUnitRadioButton->setText(m_cfgSystemdUserUnitText.arg(detection.userService.unitName()));
@@ -725,10 +728,28 @@ void MainConfigWizardPage::initializePage()
             m_ui->cfgSystemdSystemUnitRadioButton->show();
             m_ui->cfgSystemdSystemUnitRadioButton->setText(m_cfgSystemdSystemUnitText.arg(detection.systemService.unitName()));
         }
-        if (canLaunchViaUserUnit) {
+        if (canLaunchViaUserUnit && !systemUnitRunning) {
             m_ui->cfgSystemdUserUnitRadioButton->setChecked(true);
-        } else if (canLaunchViaSystemUnit) {
+        } else if (canLaunchViaSystemUnit && !userUnitRunning) {
             m_ui->cfgSystemdSystemUnitRadioButton->setChecked(true);
+        }
+        if (!detection.connection.isConnected()) {
+            auto runningUnits = QStringList();
+            runningUnits.reserve(2);
+            if (userUnitRunning) {
+                runningUnits << detection.userService.displayName();
+            }
+            if (systemUnitRunning) {
+                runningUnits << detection.systemService.displayName();
+            }
+            if (!runningUnits.isEmpty()) {
+                warnings << QStringLiteral("<li>")
+                        % tr("Syncthing has been started via the systemd %1 but the automatic setup detection was not able to connect via the "
+                             "REST-API. If you want Syncthing Tray to connect to this instance of Syncthing you will have to configure this "
+                             "manually. Otherwise you should probably stop this unit before proceeding with launching Syncthing in a different way.")
+                              .arg(runningUnits.join(tr(" and ")))
+                        % QStringLiteral("</li>");
+            }
         }
         if (canLaunchViaUserUnit || canLaunchViaSystemUnit) {
             launchOptions << tr("Systemd");
@@ -768,6 +789,23 @@ void MainConfigWizardPage::initializePage()
                     .arg(detection.configFilePath));
             m_ui->invalidConfigLabel->show();
         }
+    }
+
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    if (detection.userService.isRunningOrEnabled() && detection.systemService.isRunningOrEnabled()) {
+        warnings << QStringLiteral("<li>")
+                % tr("The systemd %1 and %2 have both be detected as enabled/running. This is probably a misconfiguration.")
+                      .arg(detection.userService.displayName(), detection.systemService.displayName())
+                % QStringLiteral("</li>");
+    }
+#endif
+
+    if (warnings.isEmpty()) {
+        m_ui->warningLabel->hide();
+    } else {
+        m_ui->warningLabel->setText(QStringLiteral("<p><strong>") % tr("Warnings:") % QStringLiteral("</strong></p><ul>") % warnings.join(QString())
+            % QStringLiteral("</ul>"));
+        m_ui->warningLabel->show();
     }
 
     handleSelectionChanged();

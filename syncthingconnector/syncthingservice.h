@@ -74,6 +74,7 @@ public:
     const QString &description() const;
     bool isRunning() const;
     bool isEnabled() const;
+    bool isRunningOrEnabled() const;
     bool isDisabled() const;
     bool canEnableOrStart() const;
     bool isManuallyStopped() const;
@@ -81,6 +82,7 @@ public:
     void setScope(SystemdScope scope);
     void setScopeAndUnitName(SystemdScope scope, const QString &unitName);
     bool isUserScope() const;
+    QString displayName() const;
     std::optional<bool> isNetworkConnectionMetered() const;
     void setNetworkConnectionMetered(std::optional<bool> metered);
     bool isStoppingOnMeteredConnection() const;
@@ -253,6 +255,14 @@ inline void SyncthingService::toggleRunning()
 inline bool SyncthingService::isEnabled() const
 {
     return m_unitFileState == QLatin1String("enabled");
+}
+
+/*!
+ * \brief Returns whether the unit is running or enabled.
+ */
+inline bool SyncthingService::isRunningOrEnabled() const
+{
+    return isRunning() || isEnabled();
 }
 
 /*!
