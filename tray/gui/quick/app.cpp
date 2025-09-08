@@ -304,15 +304,18 @@ QVariantMap App::statistics() const
 
 void App::statistics(QVariantMap &res) const
 {
+#ifdef Q_OS_ANDROID
+    res[QStringLiteral("extFilesDir")] = externalFilesDir();
+    res[QStringLiteral("extStoragePaths")] = externalStoragePaths();
+#endif
+    if (!m_connectToLaunched) {
+        return;
+    }
     res[QStringLiteral("stConfigDir")] = m_syncthingConfigDir;
     res[QStringLiteral("stDataDir")] = m_syncthingDataDir;
     res[QStringLiteral("stLevelDbSize")] = formattedDatabaseSize(QStringLiteral("index-v0.14.0.db"), QStringLiteral("*.ldb"));
     res[QStringLiteral("stLevelDbMigratedSize")] = formattedDatabaseSize(QStringLiteral("index-v0.14.0.db-migrated"), QStringLiteral("*.ldb"));
     res[QStringLiteral("stSQLiteDbSize")] = formattedDatabaseSize(QStringLiteral("index-v2"), QStringLiteral("*.db*"));
-#ifdef Q_OS_ANDROID
-    res[QStringLiteral("extFilesDir")] = externalFilesDir();
-    res[QStringLiteral("extStoragePaths")] = externalStoragePaths();
-#endif
 }
 
 #if !(defined(Q_OS_ANDROID) || defined(Q_OS_WINDOWS))
