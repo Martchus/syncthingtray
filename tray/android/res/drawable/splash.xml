@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:gravity="fill"
-          android:drawable="@mipmap/ic_launcher_background"/>
+    <item android:gravity="fill">
+        <!-- Material.Blue from Qt Quick Controls -->
+        <color android:color="#2196F3"></color>
+    </item>
     <item android:gravity="fill"
           android:left="300dp"
           android:right="300dp"
