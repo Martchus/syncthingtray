@@ -1887,6 +1887,15 @@
         </translation>
     </message>
     <message numerus="yes">
+        <location filename="../misc/statusinfo.cpp" line="155"/>
+        <source>Connected to %1 and %2 other devices</source>
+        <translation type="unfinished">
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+            <numerusform></numerusform>
+        </translation>
+    </message>
+    <message numerus="yes">
         <location filename="../misc/statusinfo.cpp" line="160"/>
         <source>Connected to %1 and %2</source>
         <translation type="unfinished">

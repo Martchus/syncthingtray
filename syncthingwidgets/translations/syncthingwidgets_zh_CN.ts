@@ -2102,8 +2102,9 @@ The Web UI will be opened in the default web browser instead.</source>
         </translation>
     </message>
     <message numerus="yes">
+        <location filename="../misc/statusinfo.cpp" line="155"/>
         <source>Connected to %1 and %2 other devices</source>
-        <translation type="vanished">
+        <translation>
             <numerusform>已连接到 %1 和 %2 个其他设备</numerusform>
         </translation>
     </message>

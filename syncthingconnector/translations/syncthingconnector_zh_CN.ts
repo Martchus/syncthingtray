@@ -296,12 +296,12 @@
         <translation>在偏移量 %1 处</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.h" line="735"/>
+        <location filename="../syncthingconnection.h" line="736"/>
         <source>connecting</source>
         <translation>连接中</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.h" line="737"/>
+        <location filename="../syncthingconnection.h" line="738"/>
         <source>, re-connect attempt every %1 ms</source>
         <translation>每隔 %1 毫秒尝试重新连接</translation>
     </message>
