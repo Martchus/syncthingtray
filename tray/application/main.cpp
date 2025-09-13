@@ -276,6 +276,7 @@ static int runApplication(int argc, const char *const *argv)
 #endif
 #ifdef Q_OS_ANDROID
     auto serviceArg = OperationArgument("service", '\0', "runs service");
+    serviceArg.setSubArguments({ &qtConfigArgs.languageArg() });
 #endif
 
     parser.setMainArguments({
@@ -322,7 +323,9 @@ static int runApplication(int argc, const char *const *argv)
         qDebug() << "Initializing service";
         SET_QT_APPLICATION_INFO;
         auto androidService = QAndroidService(argc, const_cast<char **>(argv));
-        qDebug() << "Qt locale (service): " << QLocale();
+        auto locale = QLocale(QString::fromLocal8Bit(qtConfigArgs.languageArg().firstValueOr("en_US")));
+        QLocale::setDefault(locale);
+        qDebug() << "Qt locale (service): " << locale;
 #ifdef SYNCTHINGTRAY_GUI_CODE_IN_SERVICE
         qputenv("QT_QPA_PLATFORM", "minimal"); // cannot use android platform as it would get stuck without activity
         auto guiApp = QGuiApplication(argc, const_cast<char **>(argv)); // need GUI app for using QIcon and such
