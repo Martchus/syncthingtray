@@ -990,6 +990,8 @@ void App::handleRunningChanged(bool isRunning)
     }
     if (!m_settingsImport.first.isEmpty() && !isRunning) {
         importSettings(m_settingsImport.first, m_settingsImport.second);
+    } else if (m_settingsExport.has_value() && !isRunning) {
+        exportSettings(m_settingsExport.value());
     } else if (m_homeDirMove.has_value()) {
         moveSyncthingHome(m_homeDirMove.value());
     } else if (m_clearingLogfile) {
@@ -1822,6 +1824,14 @@ bool App::exportSettings(const QUrl &url, const QJSValue &callback)
     if (checkOngoingImportExport()) {
         return false;
     }
+
+    if (m_isSyncthingRunning) {
+        emit info(tr("Waiting for backend to terminate before exporting settings …"));
+        m_settingsExport = url;
+        terminateSyncthing();
+        return false;
+    }
+
     setImportExportStatus(ImportExportStatus::Exporting);
 
     const auto tweaksSettings = m_settings.value(QLatin1String("tweaks")).toObject();
@@ -1871,6 +1881,7 @@ bool App::exportSettings(const QUrl &url, const QJSValue &callback)
         }
         return std::make_pair(tr("Settings have been exported to \"%1\".").arg(path), false);
     }).then(this, [this, callback](const std::pair<QString, bool> &res) {
+        m_settingsExport.reset();
         setImportExportStatus(ImportExportStatus::None);
         if (callback.isCallable()) {
             callback.call(QJSValueList{ QJSValue(res.first), QJSValue(res.second) });
@@ -1880,6 +1891,7 @@ bool App::exportSettings(const QUrl &url, const QJSValue &callback)
         } else {
             emit info(res.first);
         }
+        reloadSettings(); // launch Syncthing again if configured
     });
     return true;
 }

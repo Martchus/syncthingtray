@@ -420,6 +420,7 @@ private:
     mutable std::optional<bool> m_notificationPermissionGranted;
 #endif
     std::pair<QVariantMap, QVariantMap> m_settingsImport;
+    std::optional<QUrl> m_settingsExport;
     std::optional<QFile> m_downloadFile;
     std::optional<QString> m_homeDirMove;
     QtUtilities::QtSettings m_qtSettings;
