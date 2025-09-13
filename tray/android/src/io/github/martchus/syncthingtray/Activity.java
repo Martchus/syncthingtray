@@ -34,6 +34,7 @@ import androidx.core.content.FileProvider;
 
 import net.lingala.zip4j.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.model.ExcludeFileFilter;
 import net.lingala.zip4j.model.ZipParameters;
 import net.lingala.zip4j.model.enums.CompressionLevel;
 import net.lingala.zip4j.model.enums.CompressionMethod;
@@ -323,6 +324,12 @@ public class Activity extends QtActivity {
             ZipParameters parameters = new ZipParameters();
             parameters.setCompressionMethod(CompressionMethod.DEFLATE);
             parameters.setCompressionLevel(CompressionLevel.NORMAL);
+            parameters.setExcludeFileFilter(new ExcludeFileFilter() {
+                @Override
+                public boolean isExcluded(File file) {
+                    return file.getName().equals("syncthing.socket");
+                }
+            });
             ZipFile zipFile = makeZipFile(destinationArchivePath, password);
             if (!password.isEmpty()) {
                 parameters.setEncryptFiles(true);
