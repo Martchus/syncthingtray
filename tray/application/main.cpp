@@ -83,6 +83,7 @@ Q_IMPORT_QML_PLUGIN(WebViewItemPlugin)
 
 #ifdef Q_OS_ANDROID
 #include <QDebug>
+#include <QLocale>
 #include <QSslSocket>
 #include <QtCore/private/qandroidextras_p.h>
 #endif
@@ -321,6 +322,7 @@ static int runApplication(int argc, const char *const *argv)
         qDebug() << "Initializing service";
         SET_QT_APPLICATION_INFO;
         auto androidService = QAndroidService(argc, const_cast<char **>(argv));
+        qDebug() << "Qt locale (service): " << QLocale();
 #ifdef SYNCTHINGTRAY_GUI_CODE_IN_SERVICE
         qputenv("QT_QPA_PLATFORM", "minimal"); // cannot use android platform as it would get stuck without activity
         auto guiApp = QGuiApplication(argc, const_cast<char **>(argv)); // need GUI app for using QIcon and such
@@ -348,6 +350,9 @@ static int runApplication(int argc, const char *const *argv)
 #endif
         SET_QT_APPLICATION_INFO;
         auto app = QtApp(argc, const_cast<char **>(argv));
+#if defined(Q_OS_ANDROID)
+        qDebug() << "Qt locale: " << QLocale();
+#endif
         LOAD_QT_TRANSLATIONS;
 #if defined(Q_OS_ANDROID) && !defined(QT_NO_SSL)
         qDebug() << "TLS support available: " << QSslSocket::supportsSsl();
