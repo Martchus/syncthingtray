@@ -153,10 +153,10 @@ Page {
                 Layout.fillWidth: true
                 onClicked: {
                     const connection = App.connection;
-                    if (connection.hasErrors) {
-                        startPage.pages.showPage(5).push("ErrorsPage.qml", {}, StackView.PushTransition);
-                    } else if (!connection.connected && !connection.connecting) {
+                    if (!connection.connected && !connection.connecting) {
                         connection.connect();
+                    } else if (connection.hasErrors) {
+                        startPage.pages.showPage(5).push("ErrorsPage.qml", {}, StackView.PushTransition);
                     } else {
                         App.performHapticFeedback();
                     }
