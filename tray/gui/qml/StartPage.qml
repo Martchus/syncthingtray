@@ -360,20 +360,15 @@ Page {
         }
     }
     required property var pages
-    property list<Action> extraActions: [
+    property list<Action> actions: [
         Action {
-            text: qsTr("Restart")
+            text: qsTr("Restart Syncthing")
             icon.source: App.faUrlBase + "refresh"
             onTriggered: App.restartSyncthing()
         },
         Action {
-            text: qsTr("Shutdown")
-            icon.source: App.faUrlBase + "power-off"
-            onTriggered: App.shutdownSyncthing()
-        },
-        Action {
             text: qsTr("Quit app")
-            icon.source: App.faUrlBase + "times"
+            icon.source: App.faUrlBase + "power-off"
             onTriggered: startPage.quitRequested()
         }
     ]
