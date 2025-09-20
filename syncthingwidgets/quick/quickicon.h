@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include "../global.h"
+
 #include <QIcon>
 #include <QQuickItem>
 #include <QVariant>
@@ -22,7 +24,7 @@ namespace QtGui {
  * a class that simply renders the mentioned Qt image types in a Qt Quick scene. This is useful because the
  * Image type of Qt itself does not accept those image types directly.
  */
-class Icon : public QQuickItem
+class SYNCTHINGWIDGETS_EXPORT Icon : public QQuickItem
 {
     Q_OBJECT
     QML_ELEMENT

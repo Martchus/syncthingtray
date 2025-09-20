@@ -3,7 +3,6 @@
 
 #include "./appbase.h"
 
-#include "./quickicon.h"
 #ifdef Q_OS_ANDROID
 #include "./android.h"
 #endif
@@ -14,6 +13,7 @@
 #include <syncthingwidgets/misc/statusinfo.h>
 #include <syncthingwidgets/misc/syncthinglauncher.h>
 #include <syncthingwidgets/misc/utils.h>
+#include <syncthingwidgets/quick/quickicon.h>
 
 #include <syncthingmodel/syncthingdevicemodel.h>
 #include <syncthingmodel/syncthingdirectorymodel.h>
@@ -40,7 +40,7 @@ class QuickImageProvider;
 
 namespace QtGui {
 
-class App : public AppBase {
+class SYNCTHINGWIDGETS_EXPORT App : public AppBase {
     Q_OBJECT
     Q_PROPERTY(Data::SyncthingDirectoryModel *dirModel READ dirModel CONSTANT)
     Q_PROPERTY(Data::SyncthingSortFilterModel *sortFilterDirModel READ sortFilterDirModel CONSTANT)

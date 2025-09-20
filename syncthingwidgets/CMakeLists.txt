@@ -9,6 +9,9 @@ set(META_WEBVIEW_SRC_DIR webview)
 set(META_WEBVIEW_WITH_CORE ON)
 set(META_GUI_OPTIONAL ON)
 set(META_CXX_STANDARD 20)
+if (QUICK_GUI)
+    set(META_QT_VERSION 6.9.0)
+endif ()
 
 # add project files
 set(HEADER_FILES misc/diffhighlighter.h misc/internalerror.h misc/statusinfo.h misc/syncthinglauncher.h misc/utils.h)
@@ -56,6 +59,14 @@ set(WIDGETS_UI_FILES
     settings/mainconfigwizardpage.ui
     settings/autostartwizardpage.ui
     settings/applywizardpage.ui)
+set(QML_HEADER_FILES quick/appbase.h quick/appservice.h quick/app.h quick/scenegraph/managedtexturenode.h)
+set(QML_SRC_FILES quick/appbase.cpp quick/appservice.cpp quick/app.cpp quick/scenegraph/managedtexturenode.cpp)
+if (ANDROID)
+    list(APPEND QML_HEADER_FILES quick/android.h)
+    list(APPEND QML_SRC_FILES quick/android.cpp)
+else ()
+    list(APPEND EXCLUDED_FILES quick/android.h quick/android.cpp)
+endif ()
 
 set(TS_FILES
     translations/${META_PROJECT_NAME}_zh_CN.ts translations/${META_PROJECT_NAME}_cs_CZ.ts
@@ -163,15 +174,223 @@ endif ()
 # link also explicitly against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Network Concurrent)
 
-# include modules to apply configuration
+# apply basic configuration
 include(BasicConfig)
+
+# configure Qt Quick GUI
 include(QtGuiConfig)
+set(${META_PROJECT_VARNAME_UPPER}_HAS_WEBVIEW
+    OFF
+    PARENT_SCOPE)
+set(${META_PROJECT_VARNAME_UPPER}_HAS_WEBVIEW_PAGE
+    OFF
+    PARENT_SCOPE)
+if (QUICK_GUI)
+    find_package(${PACKAGE_NAMESPACE_PREFIX}qtquickforkawesome${CONFIGURATION_PACKAGE_SUFFIX_QTFORKAWESOME} 0.1.0 REQUIRED)
+    use_qt_quick_fork_awesome()
+
+    use_standard_filesystem()
+
+    unset(ADDITIONAL_QML_FILES)
+    list(APPEND ADDITIONAL_QT_MODULES Concurrent Svg QuickControls2Material)
+    list(APPEND ADDITIONAL_QT_REPOS svg)
+    list(APPEND PRIVATE_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/quick")
+
+    # enable private Qt headers for QAndroidIntent
+    if (ANDROID)
+        list(APPEND ADDITIONAL_QT_MODULES CorePrivate)
+    endif ()
+
+    # allow showing the web interface as page in the app (not used right now; hence disabled by default)
+    option(QUICK_GUI_WEBVIEW_PAGE "enables the web view page in the Qt Quick GUI" OFF)
+    if (QUICK_GUI_WEBVIEW_PAGE)
+        list(APPEND ADDITIONAL_QML_FILES quick/qml/WebViewPage.qml)
+        include(QtLinkage)
+        unset(WEBVIEWITEM_QML_FILES)
+        # check whether Qt WebView is present
+        option(QUICK_GUI_NO_WEBVIEW "disables web view support in the Qt Quick GUI" ON)
+        if (NOT QUICK_GUI_NO_WEBVIEW)
+            find_package("${QT_PACKAGE_PREFIX}WebView" "${META_QT_VERSION}")
+            find_package("${QT_PACKAGE_PREFIX}WebViewQuick" "${META_QT_VERSION}")
+            if ("${${QT_PACKAGE_PREFIX}WebView_FOUND}" AND "${${QT_PACKAGE_PREFIX}WebViewQuick_FOUND}")
+                list(APPEND ADDITIONAL_QT_MODULES WebView WebViewQuick)
+                list(APPEND ADDITIONAL_QT_REPOS webview)
+                list(APPEND WEBVIEWITEM_QML_FILES quick/qml/webview-webview/WebViewItem.qml)
+                set(${META_PROJECT_VARNAME_UPPER}_HAS_WEBVIEW
+                    ON
+                    PARENT_SCOPE)
+            endif ()
+        endif ()
+        if (NOT WEBVIEWITEM_QML_FILES)
+            list(APPEND WEBVIEWITEM_QML_FILES quick/qml/webview-none/WebViewItem.qml)
+        endif ()
+        set(${META_PROJECT_VARNAME_UPPER}_HAS_WEBVIEW_PAGE
+            ON
+            PARENT_SCOPE)
+
+        # find Qt Qml and enable automoc which is required for the subsequent qt_add_qml_module calls
+        find_package("${QT_PACKAGE_PREFIX}Qml" "${META_QT_VERSION}")
+        set(CMAKE_AUTOMOC ON)
+
+        # add additional module for the web view
+        qt_add_qml_module(
+            ${META_TARGET_NAME}-webviewitem
+            URI
+            "WebViewItem"
+            VERSION
+            1.0
+            STATIC
+            QML_FILES
+            ${WEBVIEWITEM_QML_FILES}
+            RESOURCE_PREFIX
+            "/qt/qml/"
+            OUTPUT_DIRECTORY
+            "${CMAKE_CURRENT_BINARY_DIR}/WebViewItem"
+            NO_PLUGIN_OPTIONAL)
+        list(APPEND PRIVATE_LIBRARIES ${META_TARGET_NAME}-webviewitemplugin)
+    endif ()
+endif ()
+
+# include further modules to apply configuration
 include(QtWebViewProviderConfig)
 include(QtConfig)
 include(WindowsResources)
 include(LibraryTarget)
 include(Doxygen)
 include(ConfigHeader)
+
+# deduce major Qt version from package prefix
+if (NOT QT_PACKAGE_PREFIX)
+    set(MAJOR_QT_VERSION "5")
+elseif (QT_PACKAGE_PREFIX MATCHES ".*Qt([0-9]+).*")
+    set(MAJOR_QT_VERSION "${CMAKE_MATCH_1}")
+endif ()
+
+# require Qt 6 for the Qt Quick GUI
+if (QUICK_GUI AND (MAJOR_QT_VERSION VERSION_LESS 6 OR MAJOR_QT_VERSION VERSION_GREATER_EQUAL 7))
+    message(FATAL_ERROR "The Qt Quick GUI is only compatible with Qt 6 (but Qt ${MAJOR_QT_VERSION} was found).")
+endif ()
+
+# add Qml module
+if (QUICK_GUI)
+    qt_policy(SET QTP0004 NEW)
+    qt_add_qml_module(
+        ${META_TARGET_NAME}
+        URI
+        "Main"
+        VERSION
+        1.0
+        NO_PLUGIN
+        QML_FILES
+        quick/qml/AboutDialog.qml
+        quick/qml/AdvancedConfigPage.qml
+        quick/qml/AdvancedDevConfigPage.qml
+        quick/qml/AdvancedDirConfigPage.qml
+        quick/qml/AdvancedPage.qml
+        quick/qml/ArrayElementButtons.qml
+        quick/qml/AppControl.qml
+        quick/qml/AppWindow.qml
+        quick/qml/ChangesPage.qml
+        quick/qml/CopyPasteButtons.qml
+        quick/qml/CloseDialog.qml
+        quick/qml/CustomDialog.qml
+        quick/qml/CustomFlickable.qml
+        quick/qml/CustomListView.qml
+        quick/qml/CustomToolButton.qml
+        quick/qml/DetailsListView.qml
+        quick/qml/DevConfigPage.qml
+        quick/qml/DevDelegate.qml
+        quick/qml/DevListView.qml
+        quick/qml/DevsPage.qml
+        quick/qml/DiscardChangesDialog.qml
+        quick/qml/DirConfigPage.qml
+        quick/qml/DirDelegate.qml
+        quick/qml/DirListView.qml
+        quick/qml/DirErrorsPage.qml
+        quick/qml/DirsPage.qml
+        quick/qml/ErrorsDelegate.qml
+        quick/qml/ErrorsPage.qml
+        quick/qml/ExpandableDelegate.qml
+        quick/qml/ExpandableItemDelegate.qml
+        quick/qml/ExpandableListView.qml
+        quick/qml/FilesPage.qml
+        quick/qml/ForkAwesomeIcon.qml
+        quick/qml/HelpButton.qml
+        quick/qml/HomeDirPage.qml
+        quick/qml/IconOnlyButton.qml
+        quick/qml/IgnorePatternPage.qml
+        quick/qml/ImportPage.qml
+        quick/qml/InternalErrorsPage.qml
+        quick/qml/LeftDrawer.qml
+        quick/qml/LoadingPane.qml
+        quick/qml/LogPage.qml
+        quick/qml/MainTabBar.qml
+        quick/qml/MainTabButton.qml
+        quick/qml/MainToolBar.qml
+        quick/qml/MenuItemInstantiator.qml
+        quick/qml/Meta.qml
+        quick/qml/NeededPage.qml
+        quick/qml/Notifications.qml
+        quick/qml/ObjectConfigDelegate.qml
+        quick/qml/ObjectConfigPage.qml
+        quick/qml/OutOfSyncDirs.qml
+        quick/qml/PageStack.qml
+        quick/qml/PendingDevices.qml
+        quick/qml/PendingDirs.qml
+        quick/qml/SelectiveImportDelegate.qml
+        quick/qml/SettingsPage.qml
+        quick/qml/StartPage.qml
+        quick/qml/Statistics.qml
+        quick/qml/StatisticsPage.qml
+        quick/qml/Theming.qml
+        ${ADDITIONAL_QML_FILES}
+        SOURCES
+        quick/quickicon.h
+        quick/quickicon.cpp
+        RESOURCE_PREFIX
+        "/qt/qml/")
+
+    # workaround build errors due to implicit conversions in generated code
+    if (TREAT_WARNINGS_AS_ERRORS)
+        foreach (QML_FILE AdvancedDevConfigPage AdvancedDirConfigPage)
+            set_source_files_properties(
+                "${CMAKE_CURRENT_BINARY_DIR}/.rcc/qmlcache/${META_TARGET_NAME}_quick/qml/${QML_FILE}_qml.cpp"
+                PROPERTIES COMPILE_FLAGS "-Wno-error=conversion")
+        endforeach ()
+    endif ()
+
+    # export additional interface link libraries added by qt_add_qml_module
+    if (NOT BUILD_SHARED_LIBS)
+        get_target_property(REQUIRED_TARGETS "${META_TARGET_NAME}" INTERFACE_LINK_LIBRARIES)
+        set(REQUIRED_TARGET_NAMES)
+        foreach (REQUIRED_TARGET ${REQUIRED_TARGETS})
+            if ("${REQUIRED_TARGET}" MATCHES ".*(${META_TARGET_NAME}_resources_[0-9]+).*")
+                list(APPEND REQUIRED_TARGET_NAMES "${CMAKE_MATCH_1}")
+            endif ()
+        endforeach ()
+        if (REQUIRED_TARGET_NAMES)
+            list(REMOVE_DUPLICATES REQUIRED_TARGET_NAMES)
+            install(
+                TARGETS ${REQUIRED_TARGET_NAMES}
+                EXPORT "${NAMESPACE_PREFIX}${META_PROJECT_NAME}${META_CONFIG_SUFFIX}qmlTargets"
+                RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT binary
+                LIBRARY DESTINATION ${LIBRARY_DESTINATION} COMPONENT binary
+                ARCHIVE DESTINATION ${LIBRARY_DESTINATION} COMPONENT binary)
+            install(
+                EXPORT ${NAMESPACE_PREFIX}${META_PROJECT_NAME}${META_CONFIG_SUFFIX}qmlTargets
+                DESTINATION "${META_DATA_DIR}/cmake"
+                EXPORT_LINK_INTERFACE_LIBRARIES
+                COMPONENT cmake-config)
+        endif ()
+    endif ()
+
+    # allow use of newer native Android APIs, see https://developer.android.com/ndk/guides/using-newer-apis
+    if (ANDROID)
+        set_source_files_properties(
+            "quick/app.cpp" PROPERTIES COMPILE_FLAGS
+                                       "-D__ANDROID_UNAVAILABLE_SYMBOLS_ARE_WEAK__ -Werror=unguarded-availability")
+    endif ()
+endif ()
 
 # configure test target
 include(TestUtilities)

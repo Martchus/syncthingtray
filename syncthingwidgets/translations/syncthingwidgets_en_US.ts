@@ -1843,9 +1843,8 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="155"/>
         <source>Connected to %1 and %2 other devices</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Connected to %1 and %2 other device</numerusform>
             <numerusform>Connected to %1 and %2 other devices</numerusform>
         </translation>

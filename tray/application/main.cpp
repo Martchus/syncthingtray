@@ -8,16 +8,15 @@
 #endif
 #endif
 
-#ifdef GUI_QTQUICK
-#include "../gui/quick/app.h"
-#include "../gui/quick/appservice.h"
-#endif
-
 #include <syncthingwidgets/misc/syncthinglauncher.h>
 #ifdef GUI_QTWIDGETS
 #include <syncthingwidgets/settings/settings.h>
 #include <syncthingwidgets/settings/settingsdialog.h>
 #include <syncthingwidgets/webview/webviewdialog.h>
+#endif
+#ifdef GUI_QTQUICK
+#include <syncthingwidgets/quick/app.h>
+#include <syncthingwidgets/quick/appservice.h>
 #endif
 
 #include <syncthingmodel/syncthingicons.h>

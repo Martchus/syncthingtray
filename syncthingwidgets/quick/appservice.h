@@ -24,7 +24,7 @@ namespace QtGui {
 
 enum class ServiceAction : int;
 
-class AppService : public AppBase {
+class SYNCTHINGWIDGETS_EXPORT AppService : public AppBase {
     Q_OBJECT
     Q_PROPERTY(Data::SyncthingLauncher *launcher READ launcher CONSTANT)
     Q_PROPERTY(bool syncthingRunning READ isSyncthingRunning)

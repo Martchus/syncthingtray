@@ -2224,9 +2224,8 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="155"/>
         <source>Connected to %1 and %2 other devices</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Mit %1 und einem weiteren Gerät verbunden</numerusform>
             <numerusform>Mit %1 und %2 weiteren Geräten verbunden</numerusform>
         </translation>

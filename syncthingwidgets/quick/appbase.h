@@ -21,7 +21,7 @@ class IconManager;
 
 namespace QtGui {
 
-class AppBase : public QObject {
+class SYNCTHINGWIDGETS_EXPORT AppBase : public QObject {
     Q_OBJECT
     Q_PROPERTY(Data::SyncthingConnection *connection READ connection CONSTANT)
     Q_PROPERTY(Data::SyncthingNotifier *notifier READ notifier CONSTANT)
