@@ -56,7 +56,7 @@ of `syncthingctl` already contains some examples.
 
 ### Querying and changing the configuration
 You can also query and change the Syncthing configuration. Depending on the use case either
-`syncthingctl` or Syncthing's own CLI client are better suited.
+`syncthingctl` or Syncthing's own CLI client is better suited.
 
 ---
 
