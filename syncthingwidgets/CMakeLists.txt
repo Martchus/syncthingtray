@@ -59,6 +59,8 @@ set(WIDGETS_UI_FILES
     settings/mainconfigwizardpage.ui
     settings/autostartwizardpage.ui
     settings/applywizardpage.ui)
+#set(QML_HEADER_FILES quick/appbase.h quick/appservice.h quick/app.h quick/scenegraph/managedtexturenode.h quick/quickicon.h)
+#set(QML_SRC_FILES quick/appbase.cpp quick/appservice.cpp quick/app.cpp quick/scenegraph/managedtexturenode.cpp quick/quickicon.cpp)
 set(QML_HEADER_FILES quick/appbase.h quick/appservice.h quick/app.h quick/scenegraph/managedtexturenode.h)
 set(QML_SRC_FILES quick/appbase.cpp quick/appservice.cpp quick/app.cpp quick/scenegraph/managedtexturenode.cpp)
 if (ANDROID)
@@ -179,6 +181,7 @@ include(BasicConfig)
 
 # configure Qt Quick GUI
 include(QtGuiConfig)
+include(QtLinkage)
 set(${META_PROJECT_VARNAME_UPPER}_HAS_WEBVIEW
     OFF
     PARENT_SCOPE)
@@ -200,6 +203,10 @@ if (QUICK_GUI)
     if (ANDROID)
         list(APPEND ADDITIONAL_QT_MODULES CorePrivate)
     endif ()
+
+    # find Qt Qml and enable automoc which is required for the subsequent qt_add_qml_module calls
+    find_package("${QT_PACKAGE_PREFIX}Qml" "${META_QT_VERSION}")
+    set(CMAKE_AUTOMOC ON)
 
     # allow showing the web interface as page in the app (not used right now; hence disabled by default)
     option(QUICK_GUI_WEBVIEW_PAGE "enables the web view page in the Qt Quick GUI" OFF)
@@ -228,13 +235,9 @@ if (QUICK_GUI)
             ON
             PARENT_SCOPE)
 
-        # find Qt Qml and enable automoc which is required for the subsequent qt_add_qml_module calls
-        find_package("${QT_PACKAGE_PREFIX}Qml" "${META_QT_VERSION}")
-        set(CMAKE_AUTOMOC ON)
-
         # add additional module for the web view
         qt_add_qml_module(
-            ${META_TARGET_NAME}-webviewitem
+            ${META_TARGET_NAME}_webviewitem
             URI
             "WebViewItem"
             VERSION
@@ -247,40 +250,18 @@ if (QUICK_GUI)
             OUTPUT_DIRECTORY
             "${CMAKE_CURRENT_BINARY_DIR}/WebViewItem"
             NO_PLUGIN_OPTIONAL)
-        list(APPEND PRIVATE_LIBRARIES ${META_TARGET_NAME}-webviewitemplugin)
+        list(APPEND PUBLIC_LIBRARIES ${META_TARGET_NAME}_webviewitemplugin)
     endif ()
-endif ()
 
-# include further modules to apply configuration
-include(QtWebViewProviderConfig)
-include(QtConfig)
-include(WindowsResources)
-include(LibraryTarget)
-include(Doxygen)
-include(ConfigHeader)
-
-# deduce major Qt version from package prefix
-if (NOT QT_PACKAGE_PREFIX)
-    set(MAJOR_QT_VERSION "5")
-elseif (QT_PACKAGE_PREFIX MATCHES ".*Qt([0-9]+).*")
-    set(MAJOR_QT_VERSION "${CMAKE_MATCH_1}")
-endif ()
-
-# require Qt 6 for the Qt Quick GUI
-if (QUICK_GUI AND (MAJOR_QT_VERSION VERSION_LESS 6 OR MAJOR_QT_VERSION VERSION_GREATER_EQUAL 7))
-    message(FATAL_ERROR "The Qt Quick GUI is only compatible with Qt 6 (but Qt ${MAJOR_QT_VERSION} was found).")
-endif ()
-
-# add Qml module
-if (QUICK_GUI)
+    # add main QML module
     qt_policy(SET QTP0004 NEW)
     qt_add_qml_module(
-        ${META_TARGET_NAME}
+        ${META_TARGET_NAME}_qmlmain
         URI
         "Main"
         VERSION
         1.0
-        NO_PLUGIN
+        STATIC
         QML_FILES
         quick/qml/AboutDialog.qml
         quick/qml/AdvancedConfigPage.qml
@@ -348,8 +329,54 @@ if (QUICK_GUI)
         quick/quickicon.h
         quick/quickicon.cpp
         RESOURCE_PREFIX
-        "/qt/qml/")
+        "/qt/qml/"
+        NO_PLUGIN_OPTIONAL)
+    set(QML_LIBRARIES)
+    foreach (MODULE Gui Quick)
+        use_qt_module(PREFIX "${QT_PACKAGE_PREFIX}" LIBRARIES_VARIABLE QML_LIBRARIES MODULE "${MODULE}")
+    endforeach ()
+    target_include_directories(${META_TARGET_NAME}_qmlmain PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/quick")
+    target_link_libraries(${META_TARGET_NAME}_qmlmain PRIVATE "${QML_LIBRARIES}")
+    if (BUILD_SHARED_LIBS AND LINUX)
+        target_compile_options(${META_TARGET_NAME}_qmlmain PRIVATE "-fPIC")
+        target_compile_options(${META_TARGET_NAME}_qmlmainplugin PRIVATE "-fPIC")
+    endif ()
+    list(APPEND PUBLIC_LIBRARIES ${META_TARGET_NAME}_qmlmain ${META_TARGET_NAME}_qmlmainplugin)
+    list(APPEND BUNDLED_TARGETS ${META_TARGET_NAME}_qmlmain ${META_TARGET_NAME}_qmlmainplugin ${META_TARGET_NAME}_qmlmainplugin_init)
+    #list(APPEND STATIC_LIBRARIES_QT_RESOURCES "${CMAKE_MATCH_1}")
+    
+    # export additional interface link libraries added by qt_add_qml_module
+    get_target_property(REQUIRED_TARGETS "${META_TARGET_NAME}_qmlmain" INTERFACE_LINK_LIBRARIES)
+    set(REQUIRED_TARGET_NAMES)
+    foreach (REQUIRED_TARGET ${REQUIRED_TARGETS})
+        if ("${REQUIRED_TARGET}" MATCHES ".*(${META_TARGET_NAME}_qmlmain_resources_[0-9]+).*")
+            list(APPEND BUNDLED_TARGETS "${CMAKE_MATCH_1}")
+        endif ()
+    endforeach ()
+endif ()
 
+# include further modules to apply configuration
+include(QtWebViewProviderConfig)
+include(QtConfig)
+include(WindowsResources)
+include(LibraryTarget)
+include(Doxygen)
+include(ConfigHeader)
+
+# deduce major Qt version from package prefix
+if (NOT QT_PACKAGE_PREFIX)
+    set(MAJOR_QT_VERSION "5")
+elseif (QT_PACKAGE_PREFIX MATCHES ".*Qt([0-9]+).*")
+    set(MAJOR_QT_VERSION "${CMAKE_MATCH_1}")
+endif ()
+
+# require Qt 6 for the Qt Quick GUI
+if (QUICK_GUI AND (MAJOR_QT_VERSION VERSION_LESS 6 OR MAJOR_QT_VERSION VERSION_GREATER_EQUAL 7))
+    message(FATAL_ERROR "The Qt Quick GUI is only compatible with Qt 6 (but Qt ${MAJOR_QT_VERSION} was found).")
+endif ()
+
+# add Qml module
+if (QUICK_GUI)
     # workaround build errors due to implicit conversions in generated code
     if (TREAT_WARNINGS_AS_ERRORS)
         foreach (QML_FILE AdvancedDevConfigPage AdvancedDirConfigPage)
@@ -357,31 +384,6 @@ if (QUICK_GUI)
                 "${CMAKE_CURRENT_BINARY_DIR}/.rcc/qmlcache/${META_TARGET_NAME}_quick/qml/${QML_FILE}_qml.cpp"
                 PROPERTIES COMPILE_FLAGS "-Wno-error=conversion")
         endforeach ()
-    endif ()
-
-    # export additional interface link libraries added by qt_add_qml_module
-    if (NOT BUILD_SHARED_LIBS)
-        get_target_property(REQUIRED_TARGETS "${META_TARGET_NAME}" INTERFACE_LINK_LIBRARIES)
-        set(REQUIRED_TARGET_NAMES)
-        foreach (REQUIRED_TARGET ${REQUIRED_TARGETS})
-            if ("${REQUIRED_TARGET}" MATCHES ".*(${META_TARGET_NAME}_resources_[0-9]+).*")
-                list(APPEND REQUIRED_TARGET_NAMES "${CMAKE_MATCH_1}")
-            endif ()
-        endforeach ()
-        if (REQUIRED_TARGET_NAMES)
-            list(REMOVE_DUPLICATES REQUIRED_TARGET_NAMES)
-            install(
-                TARGETS ${REQUIRED_TARGET_NAMES}
-                EXPORT "${NAMESPACE_PREFIX}${META_PROJECT_NAME}${META_CONFIG_SUFFIX}qmlTargets"
-                RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT binary
-                LIBRARY DESTINATION ${LIBRARY_DESTINATION} COMPONENT binary
-                ARCHIVE DESTINATION ${LIBRARY_DESTINATION} COMPONENT binary)
-            install(
-                EXPORT ${NAMESPACE_PREFIX}${META_PROJECT_NAME}${META_CONFIG_SUFFIX}qmlTargets
-                DESTINATION "${META_DATA_DIR}/cmake"
-                EXPORT_LINK_INTERFACE_LIBRARIES
-                COMPONENT cmake-config)
-        endif ()
     endif ()
 
     # allow use of newer native Android APIs, see https://developer.android.com/ndk/guides/using-newer-apis
