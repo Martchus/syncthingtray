@@ -59,8 +59,6 @@ set(WIDGETS_UI_FILES
     settings/mainconfigwizardpage.ui
     settings/autostartwizardpage.ui
     settings/applywizardpage.ui)
-#set(QML_HEADER_FILES quick/appbase.h quick/appservice.h quick/app.h quick/scenegraph/managedtexturenode.h quick/quickicon.h)
-#set(QML_SRC_FILES quick/appbase.cpp quick/appservice.cpp quick/app.cpp quick/scenegraph/managedtexturenode.cpp quick/quickicon.cpp)
 set(QML_HEADER_FILES quick/appbase.h quick/appservice.h quick/app.h quick/scenegraph/managedtexturenode.h)
 set(QML_SRC_FILES quick/appbase.cpp quick/appservice.cpp quick/app.cpp quick/scenegraph/managedtexturenode.cpp)
 if (ANDROID)
@@ -207,6 +205,7 @@ if (QUICK_GUI)
     # find Qt Qml and enable automoc which is required for the subsequent qt_add_qml_module calls
     find_package("${QT_PACKAGE_PREFIX}Qml" "${META_QT_VERSION}")
     set(CMAKE_AUTOMOC ON)
+    set(CMAKE_AUTORCC ON)
 
     # allow showing the web interface as page in the app (not used right now; hence disabled by default)
     option(QUICK_GUI_WEBVIEW_PAGE "enables the web view page in the Qt Quick GUI" OFF)
@@ -235,7 +234,7 @@ if (QUICK_GUI)
             ON
             PARENT_SCOPE)
 
-        # add additional module for the web view
+        # add additional QML module for the web view
         qt_add_qml_module(
             ${META_TARGET_NAME}_webviewitem
             URI
@@ -254,14 +253,22 @@ if (QUICK_GUI)
     endif ()
 
     # add main QML module
+    if (BUILD_SHARED_LIBS)
+        set(META_LIBRARY_TYPE SHARED)
+        set(PLUGIN_ARG NO_PLUGIN) # creating a plugin library can be avoided
+    else ()
+        set(META_LIBRARY_TYPE STATIC)
+        set(PLUGIN_ARG) # Icon will not be available without having a plugin (and importing it via
+                        # Q_IMPORT_PLUGIN(MainPlugin))
+    endif ()
     qt_policy(SET QTP0004 NEW)
     qt_add_qml_module(
-        ${META_TARGET_NAME}_qmlmain
+        ${META_TARGET_NAME}
         URI
         "Main"
         VERSION
         1.0
-        STATIC
+        ${META_LIBRARY_TYPE}
         QML_FILES
         quick/qml/AboutDialog.qml
         quick/qml/AdvancedConfigPage.qml
@@ -330,26 +337,18 @@ if (QUICK_GUI)
         quick/quickicon.cpp
         RESOURCE_PREFIX
         "/qt/qml/"
+        ${PLUGIN_ARG}
         NO_PLUGIN_OPTIONAL)
-    set(QML_LIBRARIES)
-    foreach (MODULE Gui Quick)
-        use_qt_module(PREFIX "${QT_PACKAGE_PREFIX}" LIBRARIES_VARIABLE QML_LIBRARIES MODULE "${MODULE}")
-    endforeach ()
-    target_include_directories(${META_TARGET_NAME}_qmlmain PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/quick")
-    target_link_libraries(${META_TARGET_NAME}_qmlmain PRIVATE "${QML_LIBRARIES}")
-    if (BUILD_SHARED_LIBS AND LINUX)
-        target_compile_options(${META_TARGET_NAME}_qmlmain PRIVATE "-fPIC")
-        target_compile_options(${META_TARGET_NAME}_qmlmainplugin PRIVATE "-fPIC")
+    if (NOT BUILD_SHARED_LIBS)
+        list(APPEND PUBLIC_LIBRARIES ${META_TARGET_NAME}plugin)
+        list(APPEND BUNDLED_TARGETS ${META_TARGET_NAME}plugin ${META_TARGET_NAME}plugin_init)
     endif ()
-    list(APPEND PUBLIC_LIBRARIES ${META_TARGET_NAME}_qmlmain ${META_TARGET_NAME}_qmlmainplugin)
-    list(APPEND BUNDLED_TARGETS ${META_TARGET_NAME}_qmlmain ${META_TARGET_NAME}_qmlmainplugin ${META_TARGET_NAME}_qmlmainplugin_init)
-    #list(APPEND STATIC_LIBRARIES_QT_RESOURCES "${CMAKE_MATCH_1}")
-    
+
     # export additional interface link libraries added by qt_add_qml_module
-    get_target_property(REQUIRED_TARGETS "${META_TARGET_NAME}_qmlmain" INTERFACE_LINK_LIBRARIES)
+    get_target_property(REQUIRED_TARGETS "${META_TARGET_NAME}" INTERFACE_LINK_LIBRARIES)
     set(REQUIRED_TARGET_NAMES)
     foreach (REQUIRED_TARGET ${REQUIRED_TARGETS})
-        if ("${REQUIRED_TARGET}" MATCHES ".*(${META_TARGET_NAME}_qmlmain_resources_[0-9]+).*")
+        if ("${REQUIRED_TARGET}" MATCHES ".*(${META_TARGET_NAME}_resources_[0-9]+).*")
             list(APPEND BUNDLED_TARGETS "${CMAKE_MATCH_1}")
         endif ()
     endforeach ()
