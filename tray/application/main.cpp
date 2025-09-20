@@ -8,16 +8,15 @@
 #endif
 #endif
 
-#ifdef GUI_QTQUICK
-#include "../gui/quick/app.h"
-#include "../gui/quick/appservice.h"
-#endif
-
 #include <syncthingwidgets/misc/syncthinglauncher.h>
 #ifdef GUI_QTWIDGETS
 #include <syncthingwidgets/settings/settings.h>
 #include <syncthingwidgets/settings/settingsdialog.h>
 #include <syncthingwidgets/webview/webviewdialog.h>
+#endif
+#ifdef GUI_QTQUICK
+#include <syncthingwidgets/quick/app.h>
+#include <syncthingwidgets/quick/appservice.h>
 #endif
 
 #include <syncthingmodel/syncthingicons.h>
@@ -93,12 +92,14 @@ using namespace CppUtilities;
 using namespace QtGui;
 using namespace Data;
 
-// import static icon engine plugin
-#ifdef QT_FORK_AWESOME_ICON_ENGINE_STATIC
+// import static plugins
 #include <QtPlugin>
+#if defined(QT_FORK_AWESOME_ICON_ENGINE_STATIC)
 Q_IMPORT_PLUGIN(ForkAwesomeIconEnginePlugin)
 #endif
-
+#if defined(SYNCTHINGWIDGETS_STATIC) && defined(GUI_QTQUICK)
+Q_IMPORT_PLUGIN(MainPlugin)
+#endif
 ENABLE_QT_RESOURCES_OF_STATIC_DEPENDENCIES
 
 #ifdef GUI_QTWIDGETS

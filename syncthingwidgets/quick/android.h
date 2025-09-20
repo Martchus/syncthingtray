@@ -1,6 +1,8 @@
 #ifndef SYNCTHING_TRAY_ANDROID_H
 #define SYNCTHING_TRAY_ANDROID_H
 
+#include "../global.h"
+
 namespace QtGui {
 
 class AppService;
@@ -29,10 +31,10 @@ enum class ActivityAction : int {
 };
 
 namespace JniFn {
-void registerServiceJniMethods(AppService *appService);
-void unregisterServiceJniMethods(AppService *appService);
-void registerActivityJniMethods(App *app);
-void unregisterActivityJniMethods(App *app);
+SYNCTHINGWIDGETS_EXPORT void registerServiceJniMethods(AppService *appService);
+SYNCTHINGWIDGETS_EXPORT void unregisterServiceJniMethods(AppService *appService);
+SYNCTHINGWIDGETS_EXPORT void registerActivityJniMethods(App *app);
+SYNCTHINGWIDGETS_EXPORT void unregisterActivityJniMethods(App *app);
 } // namespace JniFn
 
 } // namespace QtGui

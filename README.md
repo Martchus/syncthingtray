@@ -513,7 +513,7 @@ None of these icons have been (intentionally) modified so no copyright for modif
 
 Some of the code is based on code from other open source projects:
 
-* Code in `tray/gui/quick/quickicon.cpp` and the corresponding header file originates from
+* Code in `syncthingwidgets/quick/quickicon.cpp` and the corresponding header file originates from
   [Kirigami](https://invent.kde.org/frameworks/kirigami). The comments at the beginning of those files state the original
   authors/contributors.
 * Parts of `tray/android/src/io/github/martchus/syncthingtray/Util.java` are based on
