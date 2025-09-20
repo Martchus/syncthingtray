@@ -447,6 +447,10 @@ See the [release section on GitHub](https://github.com/Martchus/syncthingtray/re
               the packages `libglx0`, `libopengl0` and `libegl1` are installed on Debian/Ubuntu)
         * Supports X11 and Wayland (set the environment variable `QT_QPA_PLATFORM=xcb` to disable
           native Wayland support if it does not work on your system)
+        * The built-in web view is not available in these builts as it would require shipping a full web browser engine.
+          Syncthing Tray can still show the official web-based UI in a dedicated window via a Chromium-based browser you have
+          already installed using its "app mode". Alternatively, use the distribution-specific builds provided for Arch Linux,
+          openSUSE and Fedora which come with the built-in web view enabled.
         * The archive is signed with the GPG key
           [`B9E36A7275FC61B464B67907E06FE8F53CDC6A4C`](https://keyserver.ubuntu.com/pks/lookup?search=B9E36A7275FC61B464B67907E06FE8F53CDC6A4C&fingerprint=on&op=index) for manual verification.
         * The executable is signed in addition using ECDSA for verification by the updater. The public key can be found
@@ -467,6 +471,9 @@ See the [release section on GitHub](https://github.com/Martchus/syncthingtray/re
             * On Windows 7 the bundled Go/Syncthing will nevertheless be too new; use a version of Go/Syncthing that is *older*
               than 1.21/1.27.0 instead.
         * The Universal CRT needs to be [installed](https://learn.microsoft.com/en-us/cpp/windows/universal-crt-deployment#central-deployment).
+        * The built-in web view is not available in these builts as it would require shipping a full web browser engine.
+          Syncthing Tray can still show the official web-based UI in a dedicated window via a Chromium-based browser you have
+          already installed (e.g. Edge or Chrome) using its "app mode".
         * The archive is signed with the GPG key
           [`B9E36A7275FC61B464B67907E06FE8F53CDC6A4C`](https://keyserver.ubuntu.com/pks/lookup?search=B9E36A7275FC61B464B67907E06FE8F53CDC6A4C&fingerprint=on&op=index) for manual verification.
         * The executable is signed in addition using ECDSA for verification by the updater. The public key can be found
