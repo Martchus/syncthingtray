@@ -466,7 +466,8 @@ See the [release section on GitHub](https://github.com/Martchus/syncthingtray/re
           right click on the executable, select properties and tick the checkbox to allow the execution
         * Antivirus software often **wrongly** considers the executable harmful. This is a known problem. Please don't create
           issues about it.
-        * The Qt 6 based version is stable and preferable but only supports Windows 10 version 1809 and newer.
+        * The default version is using Qt 6 and hence preferred on modern versions of Windows. The oldest version of Windows it
+          supports is 64-bit Windows 10 version 1809.
         * The Qt 5 based version should still work on older versions down to Windows 7 although this is not regularly checked.
             * On Windows 7 the bundled Go/Syncthing will nevertheless be too new; use a version of Go/Syncthing that is *older*
               than 1.21/1.27.0 instead.
