@@ -122,14 +122,9 @@ set(QML_MAIN_FILES
     quick/qml/StartPage.qml
     quick/qml/Statistics.qml
     quick/qml/StatisticsPage.qml
-    quick/qml/Theming.qml
-)
-list(APPEND EXCLUDED_FILES
-    ${QML_MAIN_FILES}
-    quick/qml/WebViewPage.qml
-    quick/qml/webview-webview/WebViewItem.qml
-    quick/qml/webview-none/WebViewItem.qml
-)
+    quick/qml/Theming.qml)
+list(APPEND EXCLUDED_FILES ${QML_MAIN_FILES} quick/qml/WebViewPage.qml quick/qml/webview-webview/WebViewItem.qml
+     quick/qml/webview-none/WebViewItem.qml)
 if (ANDROID)
     list(APPEND QML_HEADER_FILES quick/android.h)
     list(APPEND QML_SRC_FILES quick/android.cpp)
