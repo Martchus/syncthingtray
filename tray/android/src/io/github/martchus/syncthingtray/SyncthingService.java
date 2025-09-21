@@ -50,6 +50,7 @@ public class SyncthingService extends QtService {
     private static String s_notificationText = "Initializing …";
     private static String s_notificationSubText = "";
     private static Bitmap s_notificationIcon = null;
+    private String m_locale = "";
 
     // fields to communicate with activity
     private ArrayList<Messenger> m_clients = new ArrayList<Messenger>();
@@ -300,6 +301,7 @@ public class SyncthingService extends QtService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        m_locale = intent.getStringExtra("locale");
         super.onStartCommand(intent, flags, startId);
         if (intent != null && "shutdown".equals(intent.getAction())) {
             sendMessageToClients(MSG_FINISH_CLIENT, 0, 0, "");
@@ -358,6 +360,10 @@ public class SyncthingService extends QtService {
 
     public String getGatewayIPv4() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? Util.getGatewayIPv4(this) : null;
+    }
+
+    public String getLocale() {
+        return m_locale;
     }
 
     private static native void stopLibSyncthing();

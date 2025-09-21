@@ -323,7 +323,6 @@ static int runApplication(int argc, const char *const *argv)
         qDebug() << "Initializing service";
         SET_QT_APPLICATION_INFO;
         auto androidService = QAndroidService(argc, const_cast<char **>(argv));
-        qDebug() << "Qt locale (service): " << QLocale();
 #ifdef SYNCTHINGTRAY_GUI_CODE_IN_SERVICE
         qputenv("QT_QPA_PLATFORM", "minimal"); // cannot use android platform as it would get stuck without activity
         auto guiApp = QGuiApplication(argc, const_cast<char **>(argv)); // need GUI app for using QIcon and such
