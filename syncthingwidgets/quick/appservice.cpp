@@ -61,12 +61,6 @@ AppService::AppService(bool insecure, QObject *parent)
 
 #ifdef Q_OS_ANDROID
     JniFn::registerServiceJniMethods(this);
-
-    // initialize default locale as Qt does not seem to do this for the QAndroidService process
-    const auto localeName = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jstring>("getLocale").toString();
-    const auto locale = QLocale(localeName);
-    QLocale::setDefault(locale);
-    qDebug() << "Qt locale (service): " << locale;
 #endif
 
 #if defined(Q_OS_ANDROID) && defined(SYNCTHINGTRAY_GUI_CODE_IN_SERVICE)

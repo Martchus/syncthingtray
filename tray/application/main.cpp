@@ -327,7 +327,14 @@ static int runApplication(int argc, const char *const *argv)
         qputenv("QT_QPA_PLATFORM", "minimal"); // cannot use android platform as it would get stuck without activity
         auto guiApp = QGuiApplication(argc, const_cast<char **>(argv)); // need GUI app for using QIcon and such
 #endif
+
+        // initialize default locale as Qt does not seem to do this for the QAndroidService process
+        const auto localeName = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jstring>("getLocale").toString();
+        const auto locale = QLocale(localeName);
+        QLocale::setDefault(locale);
+        qDebug() << "Qt locale (service): " << locale;
         LOAD_QT_TRANSLATIONS;
+
         auto serviceApp = AppService(insecureArg.isPresent());
         networkAccessManager().setParent(&androidService);
         qDebug() << "Executing service";
