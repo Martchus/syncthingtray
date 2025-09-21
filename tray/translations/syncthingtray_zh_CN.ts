@@ -47,481 +47,386 @@
 <context>
     <name>QtGui::App</name>
     <message>
-        <location filename="../gui/quick/app.cpp" line="420"/>
-        <location filename="../gui/quick/app.cpp" line="428"/>
         <source>Unable to open &quot;%1&quot;</source>
-        <translation>无法打开 &quot;%1&quot;</translation>
+        <translation type="vanished">无法打开 &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="461"/>
         <source>Copied value</source>
-        <translation>复制值</translation>
+        <translation type="vanished">复制值</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="465"/>
         <source>Unable to copy value</source>
-        <translation>无法复制值</translation>
+        <translation type="vanished">无法复制值</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="473"/>
         <source>Unable to copy &quot;%1&quot;</source>
-        <translation>无法复制 “%1”</translation>
+        <translation type="vanished">无法复制 “%1”</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="270"/>
         <source>Backend is starting …</source>
-        <translation>后台正在启动 ...</translation>
+        <translation type="vanished">后台正在启动 ...</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="252"/>
         <source>Checking for data to import …</source>
-        <translation>正在检查要导入的数据...</translation>
+        <translation type="vanished">正在检查要导入的数据...</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="254"/>
         <source>Importing configuration …</source>
-        <translation>正在导入配置 ...</translation>
+        <translation type="vanished">正在导入配置 ...</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="256"/>
         <source>Exporting configuration …</source>
-        <translation>正在导出配置 ...</translation>
+        <translation type="vanished">正在导出配置 ...</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="279"/>
         <source>Saving configuration …</source>
-        <translation>正在保存配置 ...</translation>
+        <translation type="vanished">正在保存配置 ...</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="449"/>
         <source>Scanning is not supported.</source>
-        <translation>不支持扫描。</translation>
+        <translation type="vanished">不支持扫描。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="492"/>
         <source>Unable to load ignore patterns: </source>
-        <translation>无法加载忽略模式： </translation>
+        <translation type="vanished">无法加载忽略模式： </translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="513"/>
         <source>Unable to save ignore patterns: </source>
-        <translation>无法保存忽略模式： </translation>
+        <translation type="vanished">无法保存忽略模式： </translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="952"/>
         <source>Unable to resolve URL &quot;%1&quot;.</source>
-        <translation>无法解析 URL“%1”。</translation>
+        <translation type="vanished">无法解析 URL“%1”。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1188"/>
         <source>Another config change is still pending.</source>
-        <translation>另一个配置更改仍在待处理。</translation>
+        <translation type="vanished">另一个配置更改仍在待处理。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1298"/>
         <source>Unable to minimize app.</source>
-        <translation>无法最小化应用程序。</translation>
+        <translation type="vanished">无法最小化应用程序。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="202"/>
         <source>Triggered override of &quot;%1&quot;</source>
-        <translation>触发覆盖&quot;%1&quot;</translation>
+        <translation type="vanished">触发覆盖&quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="204"/>
         <source>Triggered revert of &quot;%1&quot;</source>
-        <translation>触发恢复&quot;%1&quot;</translation>
+        <translation type="vanished">触发恢复&quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="258"/>
         <source>Checking locations to move home directory …</source>
-        <translation>检查移动主目录的位置 …</translation>
+        <translation type="vanished">检查移动主目录的位置 …</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="260"/>
         <source>Moving home directory …</source>
-        <translation>正在移动主目录...</translation>
+        <translation type="vanished">正在移动主目录...</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="262"/>
         <source>Cleaning home directory …</source>
-        <translation>正在清理主目录…</translation>
+        <translation type="vanished">正在清理主目录…</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="264"/>
         <source>Saving support bundle …</source>
-        <translation>正在保存支持包…</translation>
+        <translation type="vanished">正在保存支持包…</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1346"/>
         <source>Unable to save settings: </source>
-        <translation>无法保存设置： </translation>
+        <translation type="vanished">无法保存设置： </translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1427"/>
         <source>No logfile present anyway</source>
-        <translation>目前没有日志文件</translation>
+        <translation type="vanished">目前没有日志文件</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1442"/>
         <source>Persistent logging disabled and logfile removed</source>
-        <translation>禁用持久日志记录并删除日志文件</translation>
+        <translation type="vanished">禁用持久日志记录并删除日志文件</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1444"/>
         <source>Unable to remove logfile</source>
-        <translation>无法删除日志文件</translation>
+        <translation type="vanished">无法删除日志文件</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1460"/>
         <source>Another import/export still pending</source>
-        <translation>另一个导入/导出仍在等待</translation>
+        <translation type="vanished">另一个导入/导出仍在等待</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1513"/>
         <source>Settings directory was not located.</source>
-        <translation>设置目录未找到。</translation>
+        <translation type="vanished">设置目录未找到。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1528"/>
         <source>Unable to extract archive: %1</source>
-        <translation>无法提取存档： %1</translation>
+        <translation type="vanished">无法提取存档： %1</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1533"/>
         <source>Unable to create temp dir: %1</source>
-        <translation>无法创建临时目录： %1</translation>
+        <translation type="vanished">无法创建临时目录： %1</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1537"/>
         <source>archiving is only supported on Android.</source>
-        <translation>存档仅在 Android 上受支持。</translation>
+        <translation type="vanished">存档仅在 Android 上受支持。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1561"/>
         <source>The Syncthing home directory under &quot;%1&quot; is empty.</source>
-        <translation>“%1” 下的 Syncthing 主目录为空。</translation>
+        <translation type="vanished">“%1” 下的 Syncthing 主目录为空。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1574"/>
         <source>No Syncthing configuration file found under &quot;%1&quot;.</source>
-        <translation>在 “%1” 下找不到 Syncthing 配置文件。</translation>
+        <translation type="vanished">在 “%1” 下找不到 Syncthing 配置文件。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1669"/>
         <source>Unable to import settings: settings directory was not located.</source>
-        <translation>无法导入设置：未找到设置目录。</translation>
+        <translation type="vanished">无法导入设置：未找到设置目录。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1676"/>
         <source>Waiting for backend to terminate before importing settings …</source>
-        <translation>正在等待后台终止，然后再导入设置...</translation>
+        <translation type="vanished">正在等待后台终止，然后再导入设置...</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1711"/>
         <source>Imported app config from &quot;%1&quot;.</source>
-        <translation>从 “%1” 导入应用程序配置。</translation>
+        <translation type="vanished">从 “%1” 导入应用程序配置。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1724"/>
         <source>Imported Syncthing config and database from &quot;%1&quot;.</source>
-        <translation>从 “%1” 导入了 Syncthing 配置和数据库。</translation>
+        <translation type="vanished">从 “%1” 导入了 Syncthing 配置和数据库。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1742"/>
         <source>Unable to find folders/devices in current Syncthing config.</source>
-        <translation>在当前 Syncthing 配置中找不到文件夹/设备。</translation>
+        <translation type="vanished">在当前 Syncthing 配置中找不到文件夹/设备。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1757"/>
         <source>Merging %1 folders and %2 devices</source>
-        <translation>合并 %1 文件夹和 %2 设备</translation>
+        <translation type="vanished">合并 %1 文件夹和 %2 设备</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1759"/>
         <source>Unable to import folders/devices.</source>
-        <translation>无法导入文件夹/设备。</translation>
+        <translation type="vanished">无法导入文件夹/设备。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1768"/>
         <source>Unable to remove temp dir: %1</source>
-        <translation>无法删除临时目录： %1</translation>
+        <translation type="vanished">无法删除临时目录： %1</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1785"/>
         <source>Unable to import settings: %1</source>
-        <translation>无法导入设置： %1</translation>
+        <translation type="vanished">无法导入设置： %1</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1839"/>
         <source>no destination or file or directory specified/configured.</source>
-        <translation>未指定/配置目标或文件或目录。</translation>
+        <translation type="vanished">未指定/配置目标或文件或目录。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1851"/>
         <source>Settings have been archived to &quot;%1&quot;.</source>
-        <translation>设置已保存到 “%1”。</translation>
+        <translation type="vanished">设置已保存到 “%1”。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1853"/>
         <source>Archiving is only supported on Android.</source>
-        <translation>仅在 Android 上支持存档。</translation>
+        <translation type="vanished">仅在 Android 上支持存档。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1859"/>
         <source>unable to create export directory under &quot;%1&quot;</source>
-        <translation>无法在 “%1” 下创建导出目录</translation>
+        <translation type="vanished">无法在 “%1” 下创建导出目录</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2058"/>
         <source>Debugging needs to be enabled under advanced GUI settings first.</source>
-        <translation>首先需要在高级图形用户界面设置下启用调试功能。</translation>
+        <translation type="vanished">首先需要在高级图形用户界面设置下启用调试功能。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2065"/>
         <source>No destination or file or directory specified/configured.</source>
-        <translation>未指定/配置目标、文件或目录。</translation>
+        <translation type="vanished">未指定/配置目标、文件或目录。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2075"/>
         <source>Unable to open output file under &quot;%1&quot;: %2</source>
-        <translation>无法打开 &quot;%1&quot; 下的输出文件：%2</translation>
+        <translation type="vanished">无法打开 &quot;%1&quot; 下的输出文件：%2</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2093"/>
         <source>Unable to write bundle: %1</source>
-        <translation>无法写入支持包：%1</translation>
+        <translation type="vanished">无法写入支持包：%1</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2096"/>
         <source>Unable to download bundle: %1</source>
-        <translation>无法下载支持包: %1</translation>
+        <translation type="vanished">无法下载支持包: %1</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2099"/>
         <source>Support bundle saved</source>
-        <translation>支持包已保存</translation>
+        <translation type="vanished">支持包已保存</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2120"/>
         <source>Removed old database directory.</source>
-        <translation>移除旧的数据库目录。</translation>
+        <translation type="vanished">移除旧的数据库目录。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2122"/>
         <source>Unable to remove old database directory.</source>
-        <translation>无法移除旧的数据库目录。</translation>
+        <translation type="vanished">无法移除旧的数据库目录。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2128"/>
         <source>There was nothing to clean up.</source>
-        <translation>没有什么可清理的。</translation>
+        <translation type="vanished">没有什么可清理的。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1833"/>
         <source>settings directory was not located.</source>
-        <translation>未找到设置目录。</translation>
+        <translation type="vanished">未找到设置目录。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1916"/>
         <source>Default directory</source>
-        <translation>默认目录</translation>
+        <translation type="vanished">默认目录</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1932"/>
         <source>External storage %1</source>
-        <translation>外部存储 %1</translation>
+        <translation type="vanished">外部存储 %1</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1941"/>
         <source>Current home directory</source>
-        <translation>当前主目录</translation>
+        <translation type="vanished">当前主目录</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1967"/>
         <source>Unable to move Syncthing home: settings directory was not located.</source>
-        <translation>无法移动 Syncthing 主目录：设置目录未找到。</translation>
+        <translation type="vanished">无法移动 Syncthing 主目录：设置目录未找到。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1973"/>
         <source>Waiting for backend to terminate before moving home …</source>
-        <translation>在移至主目录之前等待后台终止...</translation>
+        <translation type="vanished">在移至主目录之前等待后台终止...</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1993"/>
         <source>Home directory stays the same.</source>
-        <translation>主目录保持不变。</translation>
+        <translation type="vanished">主目录保持不变。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2004"/>
         <source>Cleaned up new home directory &quot;%1&quot;.</source>
-        <translation>已清理新的主目录&quot;%1&quot;。</translation>
+        <translation type="vanished">已清理新的主目录&quot;%1&quot;。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2010"/>
         <source>Copied data from previous home directory &quot;%1&quot; to new one.</source>
-        <translation>已将数据从以前的主目录 “%1” 复制到新的主目录。</translation>
+        <translation type="vanished">已将数据从以前的主目录 “%1” 复制到新的主目录。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2013"/>
         <source>Cleaned up previous home directory.</source>
-        <translation>清理了以前的主目录。</translation>
+        <translation type="vanished">清理了以前的主目录。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2016"/>
         <source>Configured &quot;%1&quot; as new/empty Syncthing home.</source>
-        <translation>已将 “%1” 配置为新的/空的同步主目录。</translation>
+        <translation type="vanished">已将 “%1” 配置为新的/空的同步主目录。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2018"/>
         <source>Configured &quot;%1&quot; as Syncthing home.</source>
-        <translation>已将 “%1” 配置为 Syncthing 主目录。</translation>
+        <translation type="vanished">已将 “%1” 配置为 Syncthing 主目录。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="2022"/>
         <source>Unable to move home directory: %1</source>
-        <translation>无法移动主目录： %1</translation>
+        <translation type="vanished">无法移动主目录： %1</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1773"/>
         <source>Nothing has been imported.</source>
-        <translation>没有任何东西被导入。</translation>
+        <translation type="vanished">没有任何东西被导入。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1433"/>
         <source>Waiting for backend to terminate before clearing logs …</source>
-        <translation>正在等待后台终止，然后再清除日志...</translation>
+        <translation type="vanished">正在等待后台终止，然后再清除日志...</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1879"/>
         <source>Unable to export settings: %1</source>
-        <translation>无法导出设置： %1</translation>
+        <translation type="vanished">无法导出设置： %1</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.cpp" line="1872"/>
         <source>Settings have been exported to &quot;%1&quot;.</source>
-        <translation>设置已导出到 “%1”。</translation>
+        <translation type="vanished">设置已导出到 “%1”。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/app.h" line="152"/>
         <source>not available</source>
-        <translation>不可用</translation>
+        <translation type="vanished">不可用</translation>
     </message>
 </context>
 <context>
     <name>QtGui::AppBase</name>
     <message>
-        <location filename="../gui/quick/appbase.cpp" line="70"/>
         <source>Not connected to backend.</source>
-        <translation>未连接到后台。</translation>
+        <translation type="vanished">未连接到后台。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appbase.cpp" line="72"/>
         <source>Waiting for backend …</source>
-        <translation>正在等待后台...</translation>
+        <translation type="vanished">正在等待后台...</translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/quick/appbase.cpp" line="75"/>
         <source>There are %n notification(s)/error(s).</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>有 %n 个通知/错误。</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../gui/quick/appbase.cpp" line="77"/>
         <source>There are %n Syncthing API error(s).</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>存在 %n 个 Syncthing API 错误。</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../gui/quick/appbase.cpp" line="89"/>
         <source>Unable to open settings under &quot;%1&quot;: </source>
-        <translation>无法打开 “%1” 下的设置： </translation>
+        <translation type="vanished">无法打开 “%1” 下的设置： </translation>
     </message>
     <message>
-        <location filename="../gui/quick/appbase.cpp" line="106"/>
         <source>Unable to create settings directory under &quot;%1&quot;.</source>
-        <translation>无法在 “%1” 下创建设置目录。</translation>
+        <translation type="vanished">无法在 “%1” 下创建设置目录。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appbase.cpp" line="138"/>
         <source>Unable to read settings: </source>
-        <translation>无法读取设置： </translation>
+        <translation type="vanished">无法读取设置： </translation>
     </message>
     <message>
-        <location filename="../gui/quick/appbase.cpp" line="147"/>
         <source>Unable to restore settings: </source>
-        <translation>无法恢复设置： </translation>
+        <translation type="vanished">无法恢复设置： </translation>
     </message>
     <message>
-        <location filename="../gui/quick/appbase.cpp" line="148"/>
         <source>JSON document contains no object</source>
-        <translation>JSON 文档不包含任何对象</translation>
+        <translation type="vanished">JSON 文档不包含任何对象</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appbase.cpp" line="191"/>
         <source>Unable to load HTTPs certificate</source>
-        <translation>无法加载 HTTPS 证书</translation>
+        <translation type="vanished">无法加载 HTTPS 证书</translation>
     </message>
 </context>
 <context>
     <name>QtGui::AppService</name>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="140"/>
         <source>Backend is starting …</source>
-        <translation>后台正在启动...</translation>
+        <translation type="vanished">后台正在启动...</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="193"/>
         <source>Unable to open persistent log file for Syncthing under &quot;%1&quot;: %2</source>
-        <translation>无法打开 “%1” 下 Syncthing 的持久性日志文件： %2</translation>
+        <translation type="vanished">无法打开 “%1” 下 Syncthing 的持久性日志文件： %2</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="215"/>
         <source>This build of the app cannot launch Syncthing.</source>
-        <translation>此应用程序版本无法启动 Syncthing。</translation>
+        <translation type="vanished">此应用程序版本无法启动 Syncthing。</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="275"/>
         <source>Syncthing App ran into error</source>
-        <translation>Syncthing App 遇到错误</translation>
+        <translation type="vanished">Syncthing App 遇到错误</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="474"/>
         <source>Syncthing error/notification</source>
-        <translation>Syncthing 错误/通知</translation>
+        <translation type="vanished">Syncthing 错误/通知</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="474"/>
         <source>%1 Syncthing errors/notifications</source>
-        <translation>%1 个 Syncthing 错误/通知</translation>
+        <translation type="vanished">%1 个 Syncthing 错误/通知</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="475"/>
-        <location filename="../gui/quick/appservice.cpp" line="495"/>
         <source>Most recent: </source>
-        <translation>最近: </translation>
+        <translation type="vanished">最近: </translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="494"/>
         <source>Syncthing API error</source>
-        <translation>Syncthing API 错误</translation>
+        <translation type="vanished">Syncthing API 错误</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="494"/>
         <source>%1 Syncthing API errors</source>
-        <translation>%1 个 Syncthing API 错误</translation>
+        <translation type="vanished">%1 个 Syncthing API 错误</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="508"/>
         <source>Syncthing device wants to connect</source>
-        <translation>Syncthing 设备想要连接</translation>
+        <translation type="vanished">Syncthing 设备想要连接</translation>
     </message>
     <message>
-        <location filename="../gui/quick/appservice.cpp" line="522"/>
         <source>Syncthing device wants to share folder</source>
-        <translation>Syncthing 设备想要共享文件夹</translation>
+        <translation type="vanished">Syncthing 设备想要共享文件夹</translation>
     </message>
 </context>
 <context>
@@ -963,17 +868,17 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../application/main.cpp" line="111"/>
+        <location filename="../application/main.cpp" line="113"/>
         <source>Unable to </source>
         <translation>无法 </translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="157"/>
+        <location filename="../application/main.cpp" line="159"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the --windowed flag, though.It is also possible to start Syncthing Tray with --wait to wait until the system tray becomes available instead of showing this message.</source>
         <translation>系统托盘当前不可用。不过，您可以使用 --windowed 将托盘菜单作为常规窗口打开。也可以使用 --wait 启动 Syncthing Tray 以等待系统托盘可用，而不是显示此消息。</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="472"/>
+        <location filename="../application/main.cpp" line="479"/>
         <source>&lt;p&gt;This can have different causes:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Data corruption occurred during the download/extraction. In this case cancelling and retrying the update will help.&lt;/li&gt;&lt;li&gt;The signing key or updating mechanism in general has changed. In this case an according release note will be present on &lt;a href=&quot;https://martchus.github.io/syncthingtray/#downloads-section&quot;&gt;the website&lt;/a&gt; and &lt;a href=&quot;https://github.com/Martchus/syncthingtray/releases&quot;&gt;GitHub&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;A bug in the newly introduced updater, see &lt;a href=&quot;https://github.com/Martchus/syncthingtray/issues&quot;&gt;issues on GitHub&lt;/a&gt; for potential bug reports.&lt;/li&gt;&lt;li&gt;Someone tries to distribute manipulated executables of Syncthing Tray.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;It is recommend to cancel the update and retry or cross-check the cause if the issue persists. If you ignore this error you &lt;i&gt;may&lt;/i&gt; install a corrupted/manipulated executable.&lt;/p&gt;</source>
         <translation>&lt;p&gt;这可能有不同的原因：&lt;/p&gt;&lt;ul&gt;&lt;li&gt;下载/提取过程中发生了数据损坏。在这种情况下，取消并重试更新会有帮助。&lt;/li&gt;&lt;li&gt;签名密钥或一般更新机制已更改。在这种情况下，&lt;a href=&quot;https://martchus.github.io/syncthingtray/#downloads-section&quot;&gt;网站&lt;/a&gt;和&lt;a href=&quot;https://github.com/Martchus/syncthingtray/releases&quot;&gt;GitHub&lt;/a&gt;上会出现相应的发布说明。&lt;/li&gt;&lt;li&gt;新引入的更新程序中存在一个错误，请参见&lt;a href=&quot;https://github.com/Martchus/syncthingtray/issues&quot;&gt;GitHub 上的问题&lt;/a&gt;，以获取潜在的错误报告。&lt;/li&gt;&lt;li&gt;有人试图分发经过篡改的 Syncthing Tray 可执行文件。&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;如果问题仍然存在，建议取消更新并重试或交叉检查原因。如果您忽略此错误，则&lt;i&gt;可能&lt;/i&gt;安装了已损坏/被篡改的可执行文件。&lt;/p&gt;</translation>
     </message>
@@ -986,7 +891,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation type="vanished">请注意，设置对话框允许从本地 Syncthing 配置导入 URL、凭据和 API 密钥。</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="184"/>
+        <location filename="../application/main.cpp" line="186"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation>Qt 库没有使用托盘图标支持构建。不过，您可以使用 -w 将托盘菜单作为常规窗口打开。</translation>
     </message>

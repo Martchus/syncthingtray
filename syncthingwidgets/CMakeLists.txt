@@ -61,6 +61,75 @@ set(WIDGETS_UI_FILES
     settings/applywizardpage.ui)
 set(QML_HEADER_FILES quick/appbase.h quick/appservice.h quick/app.h quick/scenegraph/managedtexturenode.h)
 set(QML_SRC_FILES quick/appbase.cpp quick/appservice.cpp quick/app.cpp quick/scenegraph/managedtexturenode.cpp)
+set(QML_MAIN_FILES
+    quick/qml/AboutDialog.qml
+    quick/qml/AdvancedConfigPage.qml
+    quick/qml/AdvancedDevConfigPage.qml
+    quick/qml/AdvancedDirConfigPage.qml
+    quick/qml/AdvancedPage.qml
+    quick/qml/ArrayElementButtons.qml
+    quick/qml/AppControl.qml
+    quick/qml/AppWindow.qml
+    quick/qml/ChangesPage.qml
+    quick/qml/CopyPasteButtons.qml
+    quick/qml/CloseDialog.qml
+    quick/qml/CustomDialog.qml
+    quick/qml/CustomFlickable.qml
+    quick/qml/CustomListView.qml
+    quick/qml/CustomToolButton.qml
+    quick/qml/DetailsListView.qml
+    quick/qml/DevConfigPage.qml
+    quick/qml/DevDelegate.qml
+    quick/qml/DevListView.qml
+    quick/qml/DevsPage.qml
+    quick/qml/DiscardChangesDialog.qml
+    quick/qml/DirConfigPage.qml
+    quick/qml/DirDelegate.qml
+    quick/qml/DirListView.qml
+    quick/qml/DirErrorsPage.qml
+    quick/qml/DirsPage.qml
+    quick/qml/ErrorsDelegate.qml
+    quick/qml/ErrorsPage.qml
+    quick/qml/ExpandableDelegate.qml
+    quick/qml/ExpandableItemDelegate.qml
+    quick/qml/ExpandableListView.qml
+    quick/qml/FilesPage.qml
+    quick/qml/ForkAwesomeIcon.qml
+    quick/qml/HelpButton.qml
+    quick/qml/HomeDirPage.qml
+    quick/qml/IconOnlyButton.qml
+    quick/qml/IgnorePatternPage.qml
+    quick/qml/ImportPage.qml
+    quick/qml/InternalErrorsPage.qml
+    quick/qml/LeftDrawer.qml
+    quick/qml/LoadingPane.qml
+    quick/qml/LogPage.qml
+    quick/qml/MainTabBar.qml
+    quick/qml/MainTabButton.qml
+    quick/qml/MainToolBar.qml
+    quick/qml/MenuItemInstantiator.qml
+    quick/qml/Meta.qml
+    quick/qml/NeededPage.qml
+    quick/qml/Notifications.qml
+    quick/qml/ObjectConfigDelegate.qml
+    quick/qml/ObjectConfigPage.qml
+    quick/qml/OutOfSyncDirs.qml
+    quick/qml/PageStack.qml
+    quick/qml/PendingDevices.qml
+    quick/qml/PendingDirs.qml
+    quick/qml/SelectiveImportDelegate.qml
+    quick/qml/SettingsPage.qml
+    quick/qml/StartPage.qml
+    quick/qml/Statistics.qml
+    quick/qml/StatisticsPage.qml
+    quick/qml/Theming.qml
+)
+list(APPEND EXCLUDED_FILES
+    ${QML_MAIN_FILES}
+    quick/qml/WebViewPage.qml
+    quick/qml/webview-webview/WebViewItem.qml
+    quick/qml/webview-none/WebViewItem.qml
+)
 if (ANDROID)
     list(APPEND QML_HEADER_FILES quick/android.h)
     list(APPEND QML_SRC_FILES quick/android.cpp)
@@ -192,7 +261,6 @@ if (QUICK_GUI)
 
     use_standard_filesystem()
 
-    unset(ADDITIONAL_QML_FILES)
     list(APPEND ADDITIONAL_QT_MODULES Concurrent Svg QuickControls2Material)
     list(APPEND ADDITIONAL_QT_REPOS svg)
     list(APPEND PRIVATE_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/quick")
@@ -213,7 +281,7 @@ if (QUICK_GUI)
     # allow showing the web interface as page in the app (not used right now; hence disabled by default)
     option(QUICK_GUI_WEBVIEW_PAGE "enables the web view page in the Qt Quick GUI" OFF)
     if (QUICK_GUI_WEBVIEW_PAGE)
-        list(APPEND ADDITIONAL_QML_FILES quick/qml/WebViewPage.qml)
+        list(APPEND QML_MAIN_FILES quick/qml/WebViewPage.qml)
         include(QtLinkage)
         unset(WEBVIEWITEM_QML_FILES)
         # check whether Qt WebView is present
@@ -273,68 +341,7 @@ if (QUICK_GUI)
         1.0
         ${META_LIBRARY_TYPE}
         QML_FILES
-        quick/qml/AboutDialog.qml
-        quick/qml/AdvancedConfigPage.qml
-        quick/qml/AdvancedDevConfigPage.qml
-        quick/qml/AdvancedDirConfigPage.qml
-        quick/qml/AdvancedPage.qml
-        quick/qml/ArrayElementButtons.qml
-        quick/qml/AppControl.qml
-        quick/qml/AppWindow.qml
-        quick/qml/ChangesPage.qml
-        quick/qml/CopyPasteButtons.qml
-        quick/qml/CloseDialog.qml
-        quick/qml/CustomDialog.qml
-        quick/qml/CustomFlickable.qml
-        quick/qml/CustomListView.qml
-        quick/qml/CustomToolButton.qml
-        quick/qml/DetailsListView.qml
-        quick/qml/DevConfigPage.qml
-        quick/qml/DevDelegate.qml
-        quick/qml/DevListView.qml
-        quick/qml/DevsPage.qml
-        quick/qml/DiscardChangesDialog.qml
-        quick/qml/DirConfigPage.qml
-        quick/qml/DirDelegate.qml
-        quick/qml/DirListView.qml
-        quick/qml/DirErrorsPage.qml
-        quick/qml/DirsPage.qml
-        quick/qml/ErrorsDelegate.qml
-        quick/qml/ErrorsPage.qml
-        quick/qml/ExpandableDelegate.qml
-        quick/qml/ExpandableItemDelegate.qml
-        quick/qml/ExpandableListView.qml
-        quick/qml/FilesPage.qml
-        quick/qml/ForkAwesomeIcon.qml
-        quick/qml/HelpButton.qml
-        quick/qml/HomeDirPage.qml
-        quick/qml/IconOnlyButton.qml
-        quick/qml/IgnorePatternPage.qml
-        quick/qml/ImportPage.qml
-        quick/qml/InternalErrorsPage.qml
-        quick/qml/LeftDrawer.qml
-        quick/qml/LoadingPane.qml
-        quick/qml/LogPage.qml
-        quick/qml/MainTabBar.qml
-        quick/qml/MainTabButton.qml
-        quick/qml/MainToolBar.qml
-        quick/qml/MenuItemInstantiator.qml
-        quick/qml/Meta.qml
-        quick/qml/NeededPage.qml
-        quick/qml/Notifications.qml
-        quick/qml/ObjectConfigDelegate.qml
-        quick/qml/ObjectConfigPage.qml
-        quick/qml/OutOfSyncDirs.qml
-        quick/qml/PageStack.qml
-        quick/qml/PendingDevices.qml
-        quick/qml/PendingDirs.qml
-        quick/qml/SelectiveImportDelegate.qml
-        quick/qml/SettingsPage.qml
-        quick/qml/StartPage.qml
-        quick/qml/Statistics.qml
-        quick/qml/StatisticsPage.qml
-        quick/qml/Theming.qml
-        ${ADDITIONAL_QML_FILES}
+        ${QML_MAIN_FILES}
         SOURCES
         quick/quickicon.h
         quick/quickicon.cpp
