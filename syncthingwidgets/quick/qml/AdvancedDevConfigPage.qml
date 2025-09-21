@@ -4,7 +4,7 @@ import Main
 
 AdvancedConfigPage {
     title: qsTr("Advanced config of device \"%1\"").arg(devName)
-    entryName: "device"
+    entryName: qsTr("device")
     entriesKey: "devices"
     isEntry: (device) => device.deviceID === devId
     configCategory: "config-option-device"

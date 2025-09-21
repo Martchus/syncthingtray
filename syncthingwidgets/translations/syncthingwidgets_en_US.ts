@@ -84,12 +84,22 @@
         <source>Advanced config of device &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="../quick/qml/AdvancedDevConfigPage.qml" line="7"/>
+        <source>device</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>AdvancedDirConfigPage</name>
     <message>
         <location filename="../quick/qml/AdvancedDirConfigPage.qml" line="6"/>
         <source>Advanced config of folder &quot;%1&quot;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedDirConfigPage.qml" line="7"/>
+        <source>folder</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

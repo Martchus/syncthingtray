@@ -4,7 +4,7 @@ import Main
 
 AdvancedConfigPage {
     title: qsTr("Advanced config of folder \"%1\"").arg(dirName)
-    entryName: "folder"
+    entryName: qsTr("folder")
     entriesKey: "folders"
     isEntry: (folder) => folder.id === dirId
     configCategory: "config-option-folder"
