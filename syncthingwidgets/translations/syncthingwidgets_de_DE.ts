@@ -64,7 +64,7 @@
     <message>
         <location filename="../quick/qml/AdvancedConfigPage.qml" line="37"/>
         <source>This will only remove the %1 from Syncthing. No files will be deleted on disk.</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 wird nur aus Syncthing entfernt. Es werden keine Dateien gelöscht.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedConfigPage.qml" line="70"/>
@@ -87,7 +87,7 @@
     <message>
         <location filename="../quick/qml/AdvancedDevConfigPage.qml" line="7"/>
         <source>device</source>
-        <translation type="unfinished"></translation>
+        <translation>Gerät</translation>
     </message>
 </context>
 <context>
@@ -100,7 +100,7 @@
     <message>
         <location filename="../quick/qml/AdvancedDirConfigPage.qml" line="7"/>
         <source>folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordner</translation>
     </message>
 </context>
 <context>
@@ -663,192 +663,192 @@
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="5"/>
         <source>Add new device</source>
-        <translation type="unfinished"></translation>
+        <translation>Neues Gerät hinzufügen</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="9"/>
         <source>Device ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Geräte-ID</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="10"/>
         <source>Device Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Geräte-Name</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="10"/>
         <source>Shown instead of Device ID. Will be updated to the name the device advertises if left empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wird anstelle der Geräte-ID angezeigt. Kann frei gelassen werden. Dann wird der vom Geräte bekanntgegebene Name automatisch aktualisiert.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="11"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation>Pausiert</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="11"/>
         <source>Whether synchronization with this devices is (temporarily) suspended.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ob die Synchronisation mit diesem Gerät (temporär) unterbrochen ist.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="12"/>
         <source>Introducer</source>
-        <translation type="unfinished"></translation>
+        <translation>Verteilergerät</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="12"/>
         <source>Add devices from the introducer to our device list, for mutually shared folders.</source>
-        <translation type="unfinished"></translation>
+        <translation>Fügt Geräte vom Verteilergerät zu der eigenen Geräteliste hinzu, um gegenseitig geteilte Ordner zu ermöglichen.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="13"/>
         <source>Auto Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatisch annehmen</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="13"/>
         <source>Automatically create or share folders that this device advertises at the default path.</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatisch Ordner im Standardpfad erstellen oder freigeben, die dieses Gerät ankündigt.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="14"/>
         <source>Addresses</source>
-        <translation type="unfinished"></translation>
+        <translation>Adressen</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="14"/>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresse</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="14"/>
         <source>Add addresses (e.g. &quot;tcp://ip:port&quot;, &quot;tcp://host:port&quot;) or &quot;dynamic&quot; to perform automatic discovery of the address.</source>
-        <translation type="unfinished"></translation>
+        <translation>Adressen hinzufügen (z. B.. &quot;tcp://ip:port&quot;, &quot;tcp://host:port&quot;) oder &quot;dynamic&quot;, um die Adresse automatisch zu ermitteln.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="15"/>
         <source>Number of Connections</source>
-        <translation type="unfinished"></translation>
+        <translation>Anzahl der Verbindungen</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="15"/>
         <source>When set to more than one on both devices, Syncthing will attempt to establish multiple concurrent connections. If the values differ, the highest will be used. Set to zero to let Syncthing decide.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wenn auf beiden Geräten der Wert höher als eins eingestellt ist, versucht Syncthing, mehrere gleichzeitige Verbindungen herzustellen. Wenn die Werte unterschiedlich sind, wird der höchste Wert verwendet. Den Wert auf Null setzen, um Syncthing entscheiden zu lassen.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="16"/>
         <source>Untrusted</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht vertraut</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="16"/>
         <source>All folders shared with this device must be protected by a password, such that all sent data is unreadable without the given password.</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle Ordner, die mit diesem Gerät geteilt werden, müssen durch ein Passwort geschützt werden, sodass keine gesendeten Daten ohne Kenntnis des Passworts gelesen werden können.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="17"/>
         <source>Compression</source>
-        <translation type="unfinished"></translation>
+        <translation>Komprimierung</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="17"/>
         <source>Whether to use protocol compression when sending messages to this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ob Protokoll-Kompression verwendet werden soll, wenn Nachrichten an dieses Gerät gesendet werden.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="18"/>
         <source>Metadata Only</source>
-        <translation type="unfinished"></translation>
+        <translation>Nur Meta-Daten</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="18"/>
         <source>Compress metadata packets, such as index information. Metadata is usually very compression friendly so this is a good default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Komprimiert Meta-Daten-Packete wie Index-Informationen. Meta-Daten können gewöhnlich sehr gut komprimiert werden. Deshalb ist das eine gute Standardeinstellung.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="19"/>
         <source>All data</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle Daten</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="19"/>
         <source>Compress all packets, including file data. This is recommended if the folders contents are mainly compressible data such as documents or text files.</source>
-        <translation type="unfinished"></translation>
+        <translation>Komprimiert alle Pakete, inklusive Nutzdaten. Das ist empfehlenswert, wenn die Ordner hauptsächlich Dateien beinhalten, die sich gut komprimieren lassen, z. B. Textdokumente.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="20"/>
         <source>Off</source>
-        <translation type="unfinished"></translation>
+        <translation>Aus</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="20"/>
         <source>Disable all compression.</source>
-        <translation type="unfinished"></translation>
+        <translation>Deaktiviert Kompression.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="22"/>
         <source>Incoming Rate Limit (KiB/s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Eingehende Datenratenbegrenzung (KiB/s)</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="22"/>
         <source>Maximum receive rate to use for this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximale Empfangsdatenrate für dieses Gerät.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="23"/>
         <source>Outgoing Rate Limit (KiB/s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgehende Datenratenbegrenzung (KiB/s)</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="23"/>
         <source>Maximum send rate to use for this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Maximale Sendedatenrate für dieses Gerät.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="24"/>
         <source>Ignored folders</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorierte Ordner</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="24"/>
         <source>Ignored folder without ID/label</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorierte Ordner ohne ID/label</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="24"/>
         <source>The list of the folders that should be ignored. These folders will always be skipped when advertised from this remote device, i.e. they will be logged, but there will be no dialog shown.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Liste der Ordner die ignoriert werden sollen. Diese Ordner werden immer ignoriert, wenn sie von diesem Gerät angekündigt werden. Die Ankündigung wird lediglich geloggt.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="28"/>
         <source>Folder ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordner-ID</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="28"/>
         <source>The ID of the folder to be ignored.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die ID des Ordners der ignoriert werden soll.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="29"/>
         <source>Folder Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordner-Bezeichnung</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="29"/>
         <source>The label of the folder being ignored (for informative purposes).</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Bezeichnung des Ordners der ignoriert wird (nur zu informativen Zwecken).</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="30"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeit</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="30"/>
         <source>The time when this entry was added (for informative purposes).</source>
-        <translation type="unfinished"></translation>
+        <translation>Wann der Eintrag hinzugefügt wurde (nur zu informativen Zwecken).</translation>
     </message>
 </context>
 <context>
@@ -856,27 +856,27 @@
     <message>
         <location filename="../quick/qml/DevDelegate.qml" line="14"/>
         <source>Resume</source>
-        <translation type="unfinished"></translation>
+        <translation>Fortsetzen</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevDelegate.qml" line="14"/>
         <source>Pause</source>
-        <translation type="unfinished"></translation>
+        <translation>Pausieren</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevDelegate.qml" line="22"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Bearbeiten</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevDelegate.qml" line="27"/>
         <source>Out of Sync items</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht synchronisiert</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevDelegate.qml" line="33"/>
         <source>Advanced config</source>
-        <translation type="unfinished"></translation>
+        <translation>Erweitert</translation>
     </message>
 </context>
 <context>
@@ -912,57 +912,57 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="7"/>
         <source>Add new folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Neuen Ordner hinzufügen</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="11"/>
         <source>ID</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="11"/>
         <source>Required identifier for the folder. Must be the same on all cluster devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>ID für den Ordner. Muss auf allen Geräten identisch sein.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="12"/>
         <source>Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Bezeichung</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="12"/>
         <source>Optional descriptive label for the folder. Can be different on each device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Optionale, diskreptive Bezeichnung für den Ordner. Kann sich auf anderen Geräten unterscheiden.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="13"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation>Pausiert</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="13"/>
         <source>Whether this folder is (temporarily) suspended.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ob der Ordner (temporär) deaktiviert ist.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="14"/>
         <source>Path</source>
-        <translation type="unfinished"></translation>
+        <translation>Pfad</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="14"/>
         <source>Path to the folder on the local computer. Will be created if it does not exist. The tilde character (~) can be used as a shortcut for &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der lokale Pfad des Ordners. Der Ordner wird automatisch erstellt, falls er noch nicht existiert. Eine Tilde (~) kann als Platzhalter für &quot;%1&quot; verwendet werden.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="15"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="15"/>
         <source>Controls how the folder is handled by Syncthing. Open the selection and go though the different options for details about them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Legt fest, wie der Ordner von Syncthing behandelt wird. Öffne die Auswahl und gehe durch die verschiednenen Optionen für weitere Details.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="16"/>
@@ -1386,57 +1386,57 @@
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="14"/>
         <source>Rescan</source>
-        <translation type="unfinished"></translation>
+        <translation>Scannen</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="20"/>
         <source>Resume</source>
-        <translation type="unfinished"></translation>
+        <translation>Fortsetzen</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="20"/>
         <source>Pause</source>
-        <translation type="unfinished"></translation>
+        <translation>Pausieren</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="25"/>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>Öffnen</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="32"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Bearbeiten</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="37"/>
         <source>Out of Sync items</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht synchronisiert</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="49"/>
         <source>Show errors</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="55"/>
         <source>Ignore patterns</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoriermuster</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="60"/>
         <source>Remote files</source>
-        <translation type="unfinished"></translation>
+        <translation>Globale Dateien</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="66"/>
         <source>Advanced config</source>
-        <translation type="unfinished"></translation>
+        <translation>Erweitert</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="71"/>
         <source>Media rescan</source>
-        <translation type="unfinished"></translation>
+        <translation>Medien-Scan</translation>
     </message>
 </context>
 <context>
@@ -1444,7 +1444,7 @@
     <message>
         <location filename="../quick/qml/DirErrorsPage.qml" line="8"/>
         <source>Errors of folder &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler von Ordner &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
@@ -1452,12 +1452,12 @@
     <message>
         <location filename="../quick/qml/DirListView.qml" line="12"/>
         <source>Override changes on remote devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Änderungen auf dem entfernten Gerät überschreiben</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirListView.qml" line="12"/>
         <source>Revert local changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Lokale Änderungen zurücksetzen</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirListView.qml" line="17"/>
@@ -1503,7 +1503,7 @@
     <message>
         <location filename="../quick/qml/DiscardChangesDialog.qml" line="14"/>
         <source>Do you really want to go back without applying changes?</source>
-        <translation type="unfinished"></translation>
+        <translation>Willst du wirklich zurück gehen ohne die Änderungen anzuwenden?</translation>
     </message>
 </context>
 <context>
@@ -1621,17 +1621,17 @@
     <message>
         <location filename="../quick/qml/IgnorePatternPage.qml" line="9"/>
         <source>Ignore patterns of &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignoriermuster von &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../quick/qml/IgnorePatternPage.qml" line="13"/>
         <source>Edit externally</source>
-        <translation type="unfinished"></translation>
+        <translation>Extern bearbeiten</translation>
     </message>
     <message>
         <location filename="../quick/qml/IgnorePatternPage.qml" line="19"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Speichern</translation>
     </message>
 </context>
 <context>
@@ -1707,12 +1707,12 @@
     <message>
         <location filename="../quick/qml/InternalErrorsPage.qml" line="8"/>
         <source>Log of Syncthing API errors</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehlerlog der Syncthing-API</translation>
     </message>
     <message>
         <location filename="../quick/qml/InternalErrorsPage.qml" line="13"/>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Log löschen</translation>
     </message>
 </context>
 <context>
@@ -1917,17 +1917,17 @@
     <message>
         <location filename="../quick/qml/Notifications.qml" line="21"/>
         <source>Not a valid device ID.</source>
-        <translation type="unfinished"></translation>
+        <translation>Keine gültige Geräte-ID.</translation>
     </message>
     <message>
         <location filename="../quick/qml/Notifications.qml" line="34"/>
         <source>Configuration changed</source>
-        <translation type="unfinished"></translation>
+        <translation>Konfiguration geändert</translation>
     </message>
     <message>
         <location filename="../quick/qml/Notifications.qml" line="40"/>
         <source>UI disconnected from Syncthing backend</source>
-        <translation type="unfinished"></translation>
+        <translation>UI vom Syncthing-Backend getrennt</translation>
     </message>
 </context>
 <context>
@@ -1935,24 +1935,24 @@
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="38"/>
         <source>Copy</source>
-        <translation type="unfinished">Kopieren</translation>
+        <translation>Kopieren</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="96"/>
         <source>Make random ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Zufällige ID generieren</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="161"/>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="626"/>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="692"/>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Löschen</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="170"/>
         <source>Refresh list of devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Geräteliste aktualisieren</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="186"/>
@@ -1998,7 +1998,7 @@
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="632"/>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="698"/>
         <source>Edit manually</source>
-        <translation type="unfinished">Manuell editieren</translation>
+        <translation>Manuell editieren</translation>
     </message>
 </context>
 <context>
@@ -2089,17 +2089,17 @@
     <message>
         <location filename="../quick/qml/OutOfSyncDirs.qml" line="9"/>
         <source>Out of Sync folders on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht synchronisierte Ordner auf %1</translation>
     </message>
     <message>
         <location filename="../quick/qml/OutOfSyncDirs.qml" line="13"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktualisieren</translation>
     </message>
     <message>
         <location filename="../quick/qml/OutOfSyncDirs.qml" line="22"/>
         <source>%1: %2 items needed, ~ %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1: %2 Elemente benötigt, ~ %3</translation>
     </message>
 </context>
 <context>
@@ -5762,37 +5762,37 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     <message>
         <location filename="../quick/qml/StartPage.qml" line="268"/>
         <source>Traffic</source>
-        <translation type="unfinished"></translation>
+        <translation>Datenverkehr</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="301"/>
         <source>Global state</source>
-        <translation type="unfinished"></translation>
+        <translation>Globaler Status</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="306"/>
         <source>Local state</source>
-        <translation type="unfinished"></translation>
+        <translation>Lokaler Status</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="320"/>
         <source>Connect other device</source>
-        <translation type="unfinished"></translation>
+        <translation>Mit anderem Gerät verbinden</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="337"/>
         <source>Share folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Ordner teilen</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="354"/>
         <source>Open Syncthing in web browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing im Webbrowser öffnen</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="365"/>
         <source>Restart Syncthing</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing neustarten</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="370"/>
@@ -5805,7 +5805,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     <message>
         <location filename="../quick/qml/Statistics.qml" line="11"/>
         <source>%1 files, %2 dirs, ~ %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Dateien, %2 Ordner, ~ %3</translation>
     </message>
 </context>
 <context>
