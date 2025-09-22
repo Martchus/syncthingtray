@@ -71,10 +71,14 @@ option(NO_PLASMOID "whether building the Plasmoid for the Plasma desktop should 
 option(WIDGETS_GUI "enables/disables building the Qt Widgets GUI" ${WIDGET_GUI_ENABLED_BY_DEFAULT})
 option(QUICK_GUI "enables/disables building the experimental Qt Quick GUI" ${QUICK_GUI_ENABLED_BY_DEFAULT})
 
-# allow using non-default configuration
+# allow using non-default configuration-suffix/package-namespace
 set(CONFIGURATION_PACKAGE_SUFFIX "" CACHE STRING "sets the suffix for find_package() calls to packages configured via c++utilities")
 set(CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES "${CONFIGURATION_PACKAGE_SUFFIX}" CACHE STRING "sets the suffix for qtutilities")
 set(CONFIGURATION_PACKAGE_SUFFIX_QTFORKAWESOME "${CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES}" CACHE STRING "sets the suffix for qtforkawesome")
+set(PACKAGE_NAMESPACE "" CACHE STRING "sets the prefix for find_package() calls to packages configured via c++utilities")
+if (PACKAGE_NAMESPACE)
+  set(PACKAGE_NAMESPACE_PREFIX "${PACKAGE_NAMESPACE}-")
+endif ()
 
 # allow building qtforkawesome as part of this project
 set(BUNDLED_QT_FORK_AWESOME_PATH OFF CACHE PATH "specifies the (relative) path to the qtforkawesome sources for building it together with ${META_PROJECT_NAME}")
@@ -90,11 +94,6 @@ else()
         message(FATAL_ERROR "Specified directory for qtforkawesome sources \"${BUNDLED_QT_FORK_AWESOME_PATH}\" does not exist.")
     endif()
 endif()
-
-set(PACKAGE_NAMESPACE "" CACHE STRING "sets the prefix for find_package() calls to packages configured via c++utilities")
-if (PACKAGE_NAMESPACE)
-  set(PACKAGE_NAMESPACE_PREFIX "${PACKAGE_NAMESPACE}-")
-endif ()
 
 # add subdirectories
 add_subdirectory(syncthingconnector)
