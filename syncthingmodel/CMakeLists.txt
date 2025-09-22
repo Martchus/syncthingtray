@@ -76,7 +76,8 @@ if (ANDROID)
         # link against library to use Android's Bitmap API (see https://developer.android.com/ndk/reference/group/bitmap)
         find_library(JNI_GRAPHICS_LIB jnigraphics REQUIRED)
         list(APPEND PRIVATE_LIBRARIES ${JNI_GRAPHICS_LIB})
-        list(APPEND META_PUBLIC_COMPILE_DEFINITIONS SYNCTHINGTRAY_GUI_CODE_IN_SERVICE)
+        list(APPEND META_PUBLIC_COMPILE_DEFINITIONS SYNCTHINGTRAY_GUI_CODE_IN_SERVICE
+             SYNCTHINGTRAY_SERVICE_WITH_ICON_RENDERING)
     endif ()
 endif ()
 

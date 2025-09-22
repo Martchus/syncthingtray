@@ -165,7 +165,7 @@ class LIB_SYNCTHING_MODEL_EXPORT IconManager : public QObject {
     Q_OBJECT
 public:
     static IconManager &instance(const QPalette *palette = nullptr);
-#if defined(Q_OS_ANDROID) && defined(SYNCTHINGTRAY_GUI_CODE_IN_SERVICE)
+#if defined(Q_OS_ANDROID) && defined(SYNCTHINGTRAY_SERVICE_WITH_ICON_RENDERING)
     static QJniObject makeAndroidBitmap(const QImage &pixmap);
 #endif
 

@@ -290,6 +290,15 @@ if (ANDROID)
         set(ANDROID_APPLICATION_ARGUMENTS "qt-widgets-gui --windowed --wip")
     endif ()
 
+    # allow running the service process with QGuiApplication instantiated (explicitly, not just for icon rendering)
+    option(ANDROID_SERVICE_WITH_GUI_APP "run service with QGuiApplication instantiated" OFF)
+    if (ANDROID_SERVICE_WITH_GUI_APP OR ANDROID_SERVICE_WITH_ICON_RENDERING)
+        set_property(
+            SOURCE application/main.cpp
+            APPEND
+            PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_GUI_CODE_IN_SERVICE)
+    endif ()
+
     # allow keeping the app running after the activity has been destroyed (requires Qt patches from my qtbase fork)
     option(BACKGROUND_RUNNING_AFTER_ANDROID_ACTIVITY_DESTRUCTION
            "keep the app running after activity has been destroyed (requires Qt patches)" OFF)
@@ -319,7 +328,7 @@ if (ANDROID)
 
     # specify required plugins so androiddeployqt knows what we need and don't need
     set(REQUIRED_PLATFORMS ${QT_PACKAGE_PREFIX}::QAndroidIntegrationPlugin)
-    if (ANDROID_SERVICE_WITH_ICON_RENDERING)
+    if (ANDROID_SERVICE_WITH_GUI_APP OR ANDROID_SERVICE_WITH_ICON_RENDERING)
         list(APPEND REQUIRED_PLATFORMS ${QT_PACKAGE_PREFIX}::QMinimalIntegrationPlugin)
     endif ()
     # cmake-format: off
