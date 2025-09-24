@@ -137,8 +137,7 @@ int Application::exec(int argc, const char *const *argv)
 
     // finally do the request or establish connection
     m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents);
-    if (m_args.status.isPresent() || m_args.rescan.isPresent() || m_args.rescanAll.isPresent() || m_args.pause.isPresent()
-        || m_args.resume.isPresent() || m_args.waitForIdle.isPresent() || m_args.pwd.isPresent()) {
+    if (m_args.status.isPresent() || m_args.waitForIdle.isPresent()) {
         // those arguments require establishing a connection first, the actual handler is called by handleStatusChanged() when
         // the connection has been established
         m_connection.reconnect(m_settings);
@@ -356,7 +355,11 @@ void Application::requestRescan(const ArgumentOccurrence &occurrence)
         initDirCompletion(m_args.rescan, occurrence);
         return;
     }
+    if (!waitForConfig()) {
+        return;
+    }
 
+    m_connection.applyRawConfig();
     m_expectedResponse = 0;
     connect(&m_connection, &SyncthingConnection::rescanTriggered, this, &Application::handleResponse);
     for (const char *value : occurrence.values) {
@@ -378,6 +381,10 @@ void Application::requestRescan(const ArgumentOccurrence &occurrence)
 
 void Application::requestRescanAll(const ArgumentOccurrence &)
 {
+    if (!waitForConfig()) {
+        return;
+    }
+    m_connection.applyRawConfig();
     m_expectedResponse = m_connection.dirInfo().size();
     connect(&m_connection, &SyncthingConnection::rescanTriggered, this, &Application::handleResponse);
     cerr << "Request rescanning all folders ..." << endl;
@@ -386,6 +393,10 @@ void Application::requestRescanAll(const ArgumentOccurrence &)
 
 void Application::requestPauseResume(bool pause)
 {
+    if (!waitForConfig()) {
+        return;
+    }
+    m_connection.applyRawConfig();
     findRelevantDirsAndDevs(OperationType::PauseResume);
     m_expectedResponse = 0;
     if (pause) {
@@ -496,11 +507,17 @@ void Application::findRelevantDirsAndDevs(OperationType operationType)
     }
 }
 
-bool Application::findPwd()
+bool Application::findPwd(bool waitForConfigArg)
 {
-    const QString pwd(QDir::currentPath());
+    if (waitForConfigArg) {
+        if (!waitForConfig()) {
+            return false;
+        }
+        m_connection.applyRawConfig();
+    }
 
     // find directory for working directory
+    const QString pwd(QDir::currentPath());
     int dummy;
     m_pwd.dirObj = m_connection.findDirInfoByPath(pwd, m_pwd.subDir, dummy);
     if (m_pwd) {
@@ -1062,10 +1079,9 @@ void Application::printPwdStatus(const ArgumentOccurrence &)
 
 void Application::requestRescanPwd(const ArgumentOccurrence &)
 {
-    if (!findPwd()) {
+    if (!findPwd(true)) {
         return;
     }
-
     m_pwd.notifyAboutRescan();
     m_connection.rescan(m_pwd.dirObj->id, m_pwd.subDir);
     connect(&m_connection, &SyncthingConnection::rescanTriggered, this, &Application::handleResponse);
@@ -1074,7 +1090,7 @@ void Application::requestRescanPwd(const ArgumentOccurrence &)
 
 void Application::requestPausePwd(const ArgumentOccurrence &)
 {
-    if (!findPwd()) {
+    if (!findPwd(true)) {
         return;
     }
     if (m_connection.pauseDirectories(QStringList(m_pwd.dirObj->id))) {
@@ -1090,7 +1106,7 @@ void Application::requestPausePwd(const ArgumentOccurrence &)
 
 void Application::requestResumePwd(const ArgumentOccurrence &)
 {
-    if (!findPwd()) {
+    if (!findPwd(true)) {
         return;
     }
     if (m_connection.resumeDirectories(QStringList(m_pwd.dirObj->id))) {

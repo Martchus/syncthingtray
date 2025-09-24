@@ -49,7 +49,7 @@ private Q_SLOTS:
     void handleError(
         const QString &message, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response);
     void findRelevantDirsAndDevs(OperationType operationType);
-    bool findPwd();
+    bool findPwd(bool waitForConfig = false);
 
 private:
     int loadConfig();
