@@ -450,7 +450,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
         <translation>Oznamovací oblast systémového panelu je (pro tuto chvíli) nedostupná. Je možné otevřít nabídku oznamovací oblasti jako běžné okno pomocí příznaku „--windowed“. Dále je možné spustit s volbou „--wait“ a čekat na to, až bude oznamovací oblast k dispozici (namísto zobrazení této zprávy).</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="479"/>
+        <location filename="../application/main.cpp" line="485"/>
         <source>&lt;p&gt;This can have different causes:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Data corruption occurred during the download/extraction. In this case cancelling and retrying the update will help.&lt;/li&gt;&lt;li&gt;The signing key or updating mechanism in general has changed. In this case an according release note will be present on &lt;a href=&quot;https://martchus.github.io/syncthingtray/#downloads-section&quot;&gt;the website&lt;/a&gt; and &lt;a href=&quot;https://github.com/Martchus/syncthingtray/releases&quot;&gt;GitHub&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;A bug in the newly introduced updater, see &lt;a href=&quot;https://github.com/Martchus/syncthingtray/issues&quot;&gt;issues on GitHub&lt;/a&gt; for potential bug reports.&lt;/li&gt;&lt;li&gt;Someone tries to distribute manipulated executables of Syncthing Tray.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;It is recommend to cancel the update and retry or cross-check the cause if the issue persists. If you ignore this error you &lt;i&gt;may&lt;/i&gt; install a corrupted/manipulated executable.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>

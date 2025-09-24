@@ -304,7 +304,7 @@
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="134"/>
         <source>Enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktiv</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="134"/>
@@ -339,7 +339,7 @@
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="139"/>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresse</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="139"/>
@@ -349,7 +349,7 @@
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="140"/>
         <source>Incoming Rate Limit (KiB/s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Eingehende Datenratenbegrenzung (KiB/s)</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="140"/>
@@ -359,7 +359,7 @@
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="141"/>
         <source>Outgoing Rate Limit (KiB/s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ausgehende Datenratenbegrenzung (KiB/s)</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="141"/>
@@ -2006,82 +2006,82 @@
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="75"/>
         <source>Add new value</source>
-        <translation type="unfinished"></translation>
+        <translation>Neuen Wert hinzufügen</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="80"/>
         <source>Index</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="80"/>
         <source>Key</source>
-        <translation type="unfinished"></translation>
+        <translation>Schlüssel</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="87"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="105"/>
         <source>Device ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Geräte-ID</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="105"/>
         <source>The ID of the device to be ignored.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die ID des Geräts, welches ignoriert werden soll.</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="106"/>
         <source>Device Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Geräte-Name</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="106"/>
         <source>The name of the device being ignored (for informative purposes).</source>
-        <translation type="unfinished"></translation>
+        <translation>Der Name des Geräts, welches ignoriert werden soll (nur zu informativen Zwecken).</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="107"/>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Adresse</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="107"/>
         <source>The address of the device being ignored (for informative purposes).</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Adresse des Geräts, welches ignoriert werden soll (nur zu informativen Zwecken).</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="108"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Zeit</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="108"/>
         <source>The time when this entry was added (for informative purposes).</source>
-        <translation type="unfinished"></translation>
+        <translation>Wann der Eintrag hinzugefügt wurde (nur zu informativen Zwecken).</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="143"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Hilfe</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="149"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Hinzufügen</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="275"/>
         <source>Unable to add %1 because specified index is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;%1&quot; kann nicht hinzugefügt werden, da der Index nicht gültig ist.</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="283"/>
         <source>Unable to add %1 because specified key is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;%1&quot; kann nicht hinzugefügt werden, da der Schlüssel nicht gültig ist.</translation>
     </message>
 </context>
 <context>
@@ -2112,27 +2112,27 @@
     <message>
         <location filename="../quick/qml/PendingDevices.qml" line="13"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktualisieren</translation>
     </message>
     <message>
         <location filename="../quick/qml/PendingDevices.qml" line="34"/>
         <source>Name: </source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../quick/qml/PendingDevices.qml" line="41"/>
         <source>Address: </source>
-        <translation type="unfinished"></translation>
+        <translation>Adresse: </translation>
     </message>
     <message>
         <location filename="../quick/qml/PendingDevices.qml" line="49"/>
         <source>Ignore</source>
-        <translation type="unfinished">Ignorieren</translation>
+        <translation>Ignorieren</translation>
     </message>
     <message>
         <location filename="../quick/qml/PendingDevices.qml" line="54"/>
         <source>Add device</source>
-        <translation type="unfinished">Gerät hinzufügen</translation>
+        <translation>Gerät hinzufügen</translation>
     </message>
 </context>
 <context>
@@ -2145,32 +2145,32 @@
     <message>
         <location filename="../quick/qml/PendingDirs.qml" line="13"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktualisieren</translation>
     </message>
     <message>
         <location filename="../quick/qml/PendingDirs.qml" line="36"/>
         <source>Offered by:</source>
-        <translation type="unfinished"></translation>
+        <translation>Angeboten von: </translation>
     </message>
     <message>
         <location filename="../quick/qml/PendingDirs.qml" line="68"/>
         <source>For selected devices:</source>
-        <translation type="unfinished"></translation>
+        <translation>Für gewählte Geräte: </translation>
     </message>
     <message>
         <location filename="../quick/qml/PendingDirs.qml" line="75"/>
         <source>Ignore</source>
-        <translation type="unfinished">Ignorieren</translation>
+        <translation>Ignorieren</translation>
     </message>
     <message>
         <location filename="../quick/qml/PendingDirs.qml" line="80"/>
         <source>Share existing folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Existierenden Ordner teilen</translation>
     </message>
     <message>
         <location filename="../quick/qml/PendingDirs.qml" line="80"/>
         <source>Share new folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Neuen Ordner teilen</translation>
     </message>
 </context>
 <context>
@@ -2813,58 +2813,58 @@
     <message>
         <location filename="../quick/appbase.cpp" line="70"/>
         <source>Not connected to backend.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht mit dem Backend verbunden.</translation>
     </message>
     <message>
         <location filename="../quick/appbase.cpp" line="72"/>
         <source>Waiting for backend …</source>
-        <translation type="unfinished"></translation>
+        <translation>Warte aufs Backend …</translation>
     </message>
     <message numerus="yes">
         <location filename="../quick/appbase.cpp" line="75"/>
         <source>There are %n notification(s)/error(s).</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Es gibt %n Benachrichtigung/Fehler.</numerusform>
+            <numerusform>Es gibt %n Benachrichtigungen/Fehler.</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../quick/appbase.cpp" line="77"/>
         <source>There are %n Syncthing API error(s).</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Es gibt %n Syncthing-API-Fehler.</numerusform>
+            <numerusform>Es gibt %n Syncthing-API-Fehler.</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../quick/appbase.cpp" line="89"/>
         <source>Unable to open settings under &quot;%1&quot;: </source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen konnten unter &quot;%1&quot; nicht geöffnet werden: </translation>
     </message>
     <message>
         <location filename="../quick/appbase.cpp" line="106"/>
         <source>Unable to create settings directory under &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen konnten unter &quot;%1&quot; nicht gespeichert werden: </translation>
     </message>
     <message>
         <location filename="../quick/appbase.cpp" line="138"/>
         <source>Unable to read settings: </source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen konnten nicht gelesen werden: </translation>
     </message>
     <message>
         <location filename="../quick/appbase.cpp" line="147"/>
         <source>Unable to restore settings: </source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen konnten nicht wiederhergestellt werden: </translation>
     </message>
     <message>
         <location filename="../quick/appbase.cpp" line="148"/>
         <source>JSON document contains no object</source>
-        <translation type="unfinished"></translation>
+        <translation>JSON-Dokument beinhaltet kein Objekt</translation>
     </message>
     <message>
         <location filename="../quick/appbase.cpp" line="191"/>
         <source>Unable to load HTTPs certificate</source>
-        <translation type="unfinished"></translation>
+        <translation>Das HTTPs-Zertifikat konnte nicht geladen werden</translation>
     </message>
 </context>
 <context>
@@ -2872,58 +2872,58 @@
     <message>
         <location filename="../quick/appservice.cpp" line="140"/>
         <source>Backend is starting …</source>
-        <translation type="unfinished"></translation>
+        <translation>Backend startet …</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="193"/>
         <source>Unable to open persistent log file for Syncthing under &quot;%1&quot;: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Persistente Log-Datei für Syncthing kann unter &quot;%1&quot; nicht angelegt werden: %2</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="215"/>
         <source>This build of the app cannot launch Syncthing.</source>
-        <translation type="unfinished"></translation>
+        <translation>Diese Version der App kann Syncthing nicht ausführen.</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="275"/>
         <source>Syncthing App ran into error</source>
-        <translation type="unfinished"></translation>
+        <translation>In der Syncthing-App ist ein Fehler aufgetreten</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="474"/>
         <source>Syncthing error/notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing Fehler/Benachrichtigung</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="474"/>
         <source>%1 Syncthing errors/notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Syncthing Fehler/Benachrichtigungen</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="475"/>
         <location filename="../quick/appservice.cpp" line="495"/>
         <source>Most recent: </source>
-        <translation type="unfinished"></translation>
+        <translation>Letzte: </translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="494"/>
         <source>Syncthing API error</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing-API-Fehler</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="494"/>
         <source>%1 Syncthing API errors</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Syncthing-API-Fehler</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="508"/>
         <source>Syncthing device wants to connect</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing-Gerät will sich verbinden</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="522"/>
         <source>Syncthing device wants to share folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing-Gerät will einen Ordner teilen</translation>
     </message>
 </context>
 <context>
@@ -5532,7 +5532,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="162"/>
         <source>Connect to the Syncthing backend launched via this app and disregard the settings below.</source>
-        <translation type="unfinished"></translation>
+        <translation>Mit dem Syncthing-Backend das über die App gestartet wurde verbinden ohne weitere Einstellungen zu verwenden.</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="163"/>
@@ -5932,7 +5932,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     <message>
         <location filename="../quick/qml/webview-webview/WebViewItem.qml" line="31"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Aktualisieren</translation>
     </message>
 </context>
 <context>
