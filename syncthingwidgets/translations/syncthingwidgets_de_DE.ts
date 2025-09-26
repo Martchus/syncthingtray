@@ -1055,9 +1055,9 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="28"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="36"/>
         <source>Block Pull Order</source>
-        <translation>Dateiübertragungsreihenfolge</translation>
+        <translation>Block-Übertragungsreihenfolge</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="28"/>
@@ -1126,7 +1126,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="36"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="28"/>
         <source>File Pull Order</source>
         <translation>Dateiübertragungsreihenfolge</translation>
     </message>
