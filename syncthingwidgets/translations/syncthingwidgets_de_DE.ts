@@ -470,72 +470,72 @@
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="153"/>
         <source>Value</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Wert</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="154"/>
         <source>Unit</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Einheit</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="155"/>
         <source>Percent</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Prozent</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="155"/>
         <source>Percentage of the disk/volume size</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Anteil der Datenträgergröße</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="156"/>
         <source>Kilobyte</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="156"/>
         <source>Absolute size in Kilobyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Absolute Größe in Kilobyte</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="157"/>
         <source>Megabyte</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="157"/>
         <source>Absolute size in Megabyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Absolute Größe in Megabyte</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="158"/>
         <source>Gigabyte</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="158"/>
         <source>Absolute size in Gigabyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Absolute Größe in Gigabyte</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="159"/>
         <source>Terrabyte</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="159"/>
         <source>Absolute size in Terrabyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Absolute Größe in Terrabyte</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="166"/>
         <source>Discard changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Änderungen verwerfen</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="177"/>
         <source>Apply changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Änderungen anwenden</translation>
     </message>
 </context>
 <context>
@@ -5932,7 +5932,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     <message>
         <location filename="../quick/qml/webview-webview/WebViewItem.qml" line="31"/>
         <source>Refresh</source>
-        <translation type="unfinished">Aktualisieren</translation>
+        <translation>Aktualisieren</translation>
     </message>
 </context>
 <context>
