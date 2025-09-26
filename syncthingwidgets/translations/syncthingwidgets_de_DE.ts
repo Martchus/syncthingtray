@@ -987,17 +987,17 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="21"/>
         <source>Share with</source>
-        <translation type="unfinished"></translation>
+        <translation>Geteilt mit</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="21"/>
         <source>Select devices to share this folder with.</source>
-        <translation type="unfinished"></translation>
+        <translation>Wähle die Geräte, mit welchen der Ordner geteilt werden soll.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="22"/>
         <source>Versioning</source>
-        <translation type="unfinished"></translation>
+        <translation>Versionierung</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="22"/>
@@ -1007,17 +1007,17 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="23"/>
         <source>Watch for Changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Änderungen überwachen</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="23"/>
         <source>Use notifications from the filesystem to detect changed items. Watching for changes discovers most changes without periodic scanning.</source>
-        <translation type="unfinished"></translation>
+        <translation> Benachrichtigungen des Dateisystems nutzen, um Änderungen zu erkennen. Das Überwachen von Änderungen entdeckt die meisten Änderungen ohne regelmäßiges Scannen. </translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="24"/>
         <source>Rescan Interval</source>
-        <translation type="unfinished"></translation>
+        <translation>Rescan-Intervall</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="24"/>
@@ -1027,7 +1027,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="25"/>
         <source>Watcher Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Watcher-Delay</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="25"/>
@@ -1037,7 +1037,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="26"/>
         <source>Watcher Timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Watcher-Timeout</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="26"/>
@@ -1047,7 +1047,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="27"/>
         <source>Minimum Free Disk Space</source>
-        <translation type="unfinished"></translation>
+        <translation>Minimaler freier Festplattenspeicher</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="27"/>
@@ -1057,7 +1057,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="28"/>
         <source>Block Pull Order</source>
-        <translation type="unfinished"></translation>
+        <translation>Dateiübertragungsreihenfolge</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="28"/>
@@ -1068,7 +1068,7 @@
         <location filename="../quick/qml/DirConfigPage.qml" line="29"/>
         <location filename="../quick/qml/DirConfigPage.qml" line="38"/>
         <source>Random</source>
-        <translation type="unfinished"></translation>
+        <translation>Zufällig</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="29"/>
@@ -1078,7 +1078,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="30"/>
         <source>Alphabetic</source>
-        <translation type="unfinished"></translation>
+        <translation>Alphabetisch</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="30"/>
@@ -1088,7 +1088,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="31"/>
         <source>Smallest First</source>
-        <translation type="unfinished"></translation>
+        <translation>Kleinste zuerst</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="31"/>
@@ -1098,7 +1098,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="32"/>
         <source>Largest First</source>
-        <translation type="unfinished"></translation>
+        <translation>Größte zuerst</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="32"/>
@@ -1108,7 +1108,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="33"/>
         <source>Oldest First</source>
-        <translation type="unfinished"></translation>
+        <translation>Älteste zuerst</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="33"/>
@@ -1118,7 +1118,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="34"/>
         <source>Newest First</source>
-        <translation type="unfinished"></translation>
+        <translation>Neueste zuerst</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="34"/>
@@ -1128,7 +1128,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="36"/>
         <source>File Pull Order</source>
-        <translation type="unfinished"></translation>
+        <translation>Dateiübertragungsreihenfolge</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="36"/>
@@ -1138,7 +1138,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="37"/>
         <source>Standard</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="37"/>
@@ -1153,7 +1153,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="39"/>
         <source>In-Order</source>
-        <translation type="unfinished"></translation>
+        <translation>Sequenziell</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="39"/>
@@ -1163,7 +1163,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="41"/>
         <source>Ignore Permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>Berechtigungen ignorieren</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="41"/>
@@ -1173,42 +1173,42 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="42"/>
         <source>Sync Ownership</source>
-        <translation type="unfinished"></translation>
+        <translation>Besitzinformation synchronisieren</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="42"/>
         <source>Enables sending ownership information to other devices, and applying incoming ownership information. Typically requires running with elevated privileges.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bewirkt das Senden der Besitzinformation an andere Geräte und das Anwenden empfangener Besitzinformation. Erfordert üblicherweise die Ausführung mit höheren Zugriffsrechten.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="43"/>
         <source>Send Ownership</source>
-        <translation type="unfinished"></translation>
+        <translation>Besitzinformation senden</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="43"/>
         <source>Enables sending ownership information to other devices, but not applying incoming ownership information. This can have a significant performance impact. Always enabled when &quot;Sync Ownership&quot; is enabled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bewirkt das Senden von Besitzinformation an andere Geräte, jedoch ohne empfangene Besitzinformation anzuwenden. Kann zu einem merklichen Leistungseinbruch führen. Immer aktiviert, wenn „Besitzinformation synchronisieren“ eingeschaltet ist.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="44"/>
         <source>Sync Extended Attributes</source>
-        <translation type="unfinished"></translation>
+        <translation>Erweiterte Attribute synchronisieren</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="44"/>
         <source>Enables sending extended attributes to other devices, and applying incoming extended attributes. May require running with elevated privileges.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bewirkt das Senden erweiterter Attribute an andere Geräte und das Anwenden empfangener erweiterter Attribute. Erfordert ggf. die Ausführung mit höheren Zugriffsrechten.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="45"/>
         <source>Send Extended Attributes</source>
-        <translation type="unfinished"></translation>
+        <translation>Erweitere Attribute senden</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="45"/>
         <source>Enables sending extended attributes to other devices, but not applying incoming extended attributes. This can have a significant performance impact. Always enabled when &quot;Sync Extended Attributes&quot; is enabled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Bewirkt das Senden erweiterter Attribute an andere Geräte, jedoch ohne empfangene erweiterte Attribute anzuwenden. Kann zu einem merklichen Leistungseinbruch führen. Immer aktiviert, wenn „Erweiterte Attribute synchronisieren“ eingeschaltet ist.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="49"/>
@@ -1243,7 +1243,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="56"/>
         <source>Versions Path</source>
-        <translation type="unfinished"></translation>
+        <translation>Pfad für Versionen</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="56"/>
@@ -1253,7 +1253,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="57"/>
         <source>Filesystem Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Dateisystem-Typ</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="57"/>
@@ -1263,7 +1263,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="58"/>
         <source>Cleanup Interval in seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>Bereinigungsintervall in Sekunden</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="58"/>
@@ -1273,12 +1273,12 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="59"/>
         <source>Additional parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Zusätzliche Parameter</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="62"/>
         <source>Clean Out After</source>
-        <translation type="unfinished"></translation>
+        <translation>Nach best. Anzahl von Tagen bereinigen</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="62"/>
@@ -1288,7 +1288,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="63"/>
         <source>Keep Versions</source>
-        <translation type="unfinished"></translation>
+        <translation>Anzahl der Versionen, die behalten werden sollen</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="63"/>
@@ -1298,7 +1298,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="64"/>
         <source>Maximum Age</source>
-        <translation type="unfinished"></translation>
+        <translation>Max. Alter</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="64"/>
@@ -1308,7 +1308,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="65"/>
         <source>Command</source>
-        <translation type="unfinished"></translation>
+        <translation>Befehl</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="65"/>
@@ -1318,7 +1318,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="68"/>
         <source>Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Wert</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="68"/>
@@ -1328,57 +1328,57 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="69"/>
         <source>Unit</source>
-        <translation type="unfinished"></translation>
+        <translation>Einheit</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="70"/>
         <source>Percent</source>
-        <translation type="unfinished"></translation>
+        <translation>Prozent</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="70"/>
         <source>Percentage of the disk/volume size</source>
-        <translation type="unfinished"></translation>
+        <translation>Anteil der Datenträgergröße</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="71"/>
         <source>Kilobyte</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="71"/>
         <source>Absolute size in Kilobyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Absolute Größe in Kilobyte</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="72"/>
         <source>Megabyte</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="72"/>
         <source>Absolute size in Megabyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Absolute Größe in Megabyte</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="73"/>
         <source>Gigabyte</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="73"/>
         <source>Absolute size in Gigabyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Absolute Größe in Gigabyte</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="74"/>
         <source>Terrabyte</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="74"/>
         <source>Absolute size in Terrabyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Absolute Größe in Terrabyte</translation>
     </message>
 </context>
 <context>
@@ -2444,368 +2444,368 @@
     <message>
         <location filename="../quick/app.cpp" line="202"/>
         <source>Triggered override of &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;%1&quot; wird überschrieben</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="204"/>
         <source>Triggered revert of &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;%1&quot; wird zurückgesetzt</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="252"/>
         <source>Checking for data to import …</source>
-        <translation type="unfinished"></translation>
+        <translation>Prüfe Ordner für Import</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="254"/>
         <source>Importing configuration …</source>
-        <translation type="unfinished"></translation>
+        <translation>Importiere Konfiguration …</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="256"/>
         <source>Exporting configuration …</source>
-        <translation type="unfinished"></translation>
+        <translation>Exportiere Konfiguration …</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="258"/>
         <source>Checking locations to move home directory …</source>
-        <translation type="unfinished"></translation>
+        <translation>Prüfe mögliche Orte für Home-Verzeichnis …</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="260"/>
         <source>Moving home directory …</source>
-        <translation type="unfinished"></translation>
+        <translation>Verschiebe Home-Verzeichnis …</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="262"/>
         <source>Cleaning home directory …</source>
-        <translation type="unfinished"></translation>
+        <translation>Bereinige Home-Verzeichnis …</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="264"/>
         <source>Saving support bundle …</source>
-        <translation type="unfinished"></translation>
+        <translation>Erstelle Support-Bundle …</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="270"/>
         <source>Backend is starting …</source>
-        <translation type="unfinished"></translation>
+        <translation>Backend startet …</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="279"/>
         <source>Saving configuration …</source>
-        <translation type="unfinished"></translation>
+        <translation>Speichere Konfiguration …</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="420"/>
         <location filename="../quick/app.cpp" line="428"/>
         <source>Unable to open &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Kann &quot;%1&quot; nicht öffnen</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="449"/>
         <source>Scanning is not supported.</source>
-        <translation type="unfinished"></translation>
+        <translation>Scannen wird nicht unterstützt.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="461"/>
         <source>Copied value</source>
-        <translation type="unfinished"></translation>
+        <translation>Wert kopiert</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="465"/>
         <source>Unable to copy value</source>
-        <translation type="unfinished"></translation>
+        <translation>Wert konnte nicht kopiert werden</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="473"/>
         <source>Unable to copy &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;%1&quot; konnte nicht kopiert werden</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="492"/>
         <source>Unable to load ignore patterns: </source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte Ignoriermuster nicht laden: </translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="513"/>
         <source>Unable to save ignore patterns: </source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte Ignoriermuster nicht speichern: </translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="952"/>
         <source>Unable to resolve URL &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte URL &quot;%1&quot; nicht auflösen: </translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1190"/>
         <source>Another config change is still pending.</source>
-        <translation type="unfinished"></translation>
+        <translation>Eine andere Änderung ist noch im Gange.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1300"/>
         <source>Unable to minimize app.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die App kann nicht minimiert werden.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1348"/>
         <source>Unable to save settings: </source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen konnten nicht gespeichert werden: </translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1429"/>
         <source>No logfile present anyway</source>
-        <translation type="unfinished"></translation>
+        <translation>Keine Log-Datei vorhanden</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1435"/>
         <source>Waiting for backend to terminate before clearing logs …</source>
-        <translation type="unfinished"></translation>
+        <translation>Warte bis sich Backend beendet hat, bevor Logs gelöscht werden …</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1444"/>
         <source>Persistent logging disabled and logfile removed</source>
-        <translation type="unfinished"></translation>
+        <translation>Persistentes Logging ist deaktiviert und die Log-Datei gelöscht</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1446"/>
         <source>Unable to remove logfile</source>
-        <translation type="unfinished"></translation>
+        <translation>Log-Datei kann nicht gelöscht werden</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1462"/>
         <source>Another import/export still pending</source>
-        <translation type="unfinished"></translation>
+        <translation>Anderer Vorgang ist noch im Gange</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1515"/>
         <source>Settings directory was not located.</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungsverzeichnis wurde nicht gefunden.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1530"/>
         <source>Unable to extract archive: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte Archiv nicht extrahieren: %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1535"/>
         <source>Unable to create temp dir: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte temp. Verz. nicht erstellen: %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1539"/>
         <source>archiving is only supported on Android.</source>
-        <translation type="unfinished"></translation>
+        <translation>Archivieren wird nur unter Android unterstützt.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1563"/>
         <source>The Syncthing home directory under &quot;%1&quot; is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Das Syncthing-Home-Verzeichnis unter &quot;%1&quot; ist leer.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1576"/>
         <source>No Syncthing configuration file found under &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die Syncthing-Konfiguration konnte nicht unter &quot;%1&quot; gefunden werden.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1671"/>
         <source>Unable to import settings: settings directory was not located.</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen konnten nicht importiert werden: das Einstellungsverzeichnis wurde nicht gefunden.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1678"/>
         <source>Waiting for backend to terminate before importing settings …</source>
-        <translation type="unfinished"></translation>
+        <translation>Warte vor dem Import bis sich Backend beendet hat …</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1713"/>
         <source>Imported app config from &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>App-Einstellungen aus &quot;%1&quot; importiert.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1726"/>
         <source>Imported Syncthing config and database from &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing-Konfiguration und -Datenbank aus &quot;%1&quot; importiert.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1744"/>
         <source>Unable to find folders/devices in current Syncthing config.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kann Ordner/Geräte in der aktuellen Syncthing-Konfiguration nicht finden.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1759"/>
         <source>Merging %1 folders and %2 devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Importiere %1 Ordner und %1 Gerät(e)</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1761"/>
         <source>Unable to import folders/devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kann Ordner/Geräte nicht importieren</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1770"/>
         <source>Unable to remove temp dir: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Kann temp. Verz. nicht löschen: %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1775"/>
         <source>Nothing has been imported.</source>
-        <translation type="unfinished"></translation>
+        <translation>Es wurde nichts importiert.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1787"/>
         <source>Unable to import settings: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte Einstellungen nicht importieren: %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1829"/>
         <source>Waiting for backend to terminate before exporting settings …</source>
-        <translation type="unfinished"></translation>
+        <translation>Warte vor dem Export bis sich Backend beendet hat …</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1843"/>
         <source>settings directory was not located.</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungsverzeichnis wurde nicht gefunden.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1849"/>
         <source>no destination or file or directory specified/configured.</source>
-        <translation type="unfinished"></translation>
+        <translation>kein Ziel angegeben/konfiguriert.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1861"/>
         <source>Settings have been archived to &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen wurden unter &quot;%1&quot; archiviert.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1863"/>
         <source>Archiving is only supported on Android.</source>
-        <translation type="unfinished"></translation>
+        <translation>Archivieren wird nur unter Android unterstützt.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1869"/>
         <source>unable to create export directory under &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>kann Export-Verzeichnis unter &quot;%1&quot; nicht erstellen</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1882"/>
         <source>Settings have been exported to &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Einstellungen wurden nach &quot;%1&quot; exportiert.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1890"/>
         <source>Unable to export settings: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte Einstellungen nicht exportieren: %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1928"/>
         <source>Default directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Standardverzeichnis</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1944"/>
         <source>External storage %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Externer Speicher %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1953"/>
         <source>Current home directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktuelles Home-Verzeichnis</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1979"/>
         <source>Unable to move Syncthing home: settings directory was not located.</source>
-        <translation type="unfinished"></translation>
+        <translation>Das Home-Verzeichnis konnten nicht verschoben werden: das Einstellungsverzeichnis wurde nicht gefunden.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1985"/>
         <source>Waiting for backend to terminate before moving home …</source>
-        <translation type="unfinished"></translation>
+        <translation>Warte vor dem Verschieben bis sich Backend beendet hat …</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2005"/>
         <source>Home directory stays the same.</source>
-        <translation type="unfinished"></translation>
+        <translation>Das Home-Verzeichnis hat sich nicht geändert.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2016"/>
         <source>Cleaned up new home directory &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Neues Home-Verzeichnis &quot;%1&quot; wurde bereinigt.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2022"/>
         <source>Copied data from previous home directory &quot;%1&quot; to new one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Daten vom vorherigen Home-Verz. &quot;%1&quot; wurden in neues Home-Verz. kopiert.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2025"/>
         <source>Cleaned up previous home directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vorheriges Home-Verz. wurde bereinigt.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2028"/>
         <source>Configured &quot;%1&quot; as new/empty Syncthing home.</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;%1&quot; wurde als neues/leeres Home-Verz. konfiguriert.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2030"/>
         <source>Configured &quot;%1&quot; as Syncthing home.</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;%1&quot; wurde als Home-Verz. konfiguriert.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2034"/>
         <source>Unable to move home directory: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte das Home-Verz. nicht verschieben: %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2070"/>
         <source>Debugging needs to be enabled under advanced GUI settings first.</source>
-        <translation type="unfinished"></translation>
+        <translation>&quot;Debugging&quot; muss erst in den erweiterten GUI-Einstellungen aktiviert werden.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2077"/>
         <source>No destination or file or directory specified/configured.</source>
-        <translation type="unfinished"></translation>
+        <translation>Kein Ziel ausgewählt/konfiguriert.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2087"/>
         <source>Unable to open output file under &quot;%1&quot;: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte Ausgabedatei nicht unter &quot;%1&quot; öffnen: %2</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2105"/>
         <source>Unable to write bundle: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte Support-Bundle nicht speichern: %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2108"/>
         <source>Unable to download bundle: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte Support-Bundle nicht laden: %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2111"/>
         <source>Support bundle saved</source>
-        <translation type="unfinished"></translation>
+        <translation>Support-Bundle wurde erstellt</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2132"/>
         <source>Removed old database directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Altes Datenbankverzeichnis wurde gelöscht.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2134"/>
         <source>Unable to remove old database directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte altes Datenbankverzeichnis nicht löschen.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2140"/>
         <source>There was nothing to clean up.</source>
-        <translation type="unfinished"></translation>
+        <translation>Es wurde nichts zum Bereinigen gefunden.</translation>
     </message>
     <message>
         <location filename="../quick/app.h" line="152"/>
         <source>not available</source>
-        <translation type="unfinished"></translation>
+        <translation>nicht verfügbar</translation>
     </message>
 </context>
 <context>
@@ -5838,82 +5838,82 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="23"/>
         <source>Memory usage (only Go runtime)</source>
-        <translation type="unfinished"></translation>
+        <translation>RAM-Nutzung (nur Go-Runtime)</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="24"/>
         <source>Resident set size (only Go runtime)</source>
-        <translation type="unfinished"></translation>
+        <translation>Resident-Set-Size (nur Go-Runtime)</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="25"/>
         <source>NAT type</source>
-        <translation type="unfinished"></translation>
+        <translation>NAT-Typ</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="26"/>
         <source>Syncthing config directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing Konfig-Verzeichnis</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="27"/>
         <source>Syncthing data directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing Daten-Verzeichnis</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="28"/>
         <source>Syncthing database size (LevelDB)</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing Datenbankgröße (LevelDB)</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="29"/>
         <source>Syncthing database size (LevelDB, migrated)</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing Datenbankgröße (LevelDB, migriert)</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="30"/>
         <source>Syncthing database size (SQLite)</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing Datenbankgröße (SQLite)</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="31"/>
         <source>External files directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Externes Verzeichnis</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="32"/>
         <source>External storage paths</source>
-        <translation type="unfinished"></translation>
+        <translation>Pfade von externen Speichern</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="33"/>
         <source>CPU threads of system</source>
-        <translation type="unfinished"></translation>
+        <translation>CPU-Threads des Systems</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="34"/>
         <source>Memory size of system</source>
-        <translation type="unfinished"></translation>
+        <translation>RAM des Systems</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="35"/>
         <source>Number of Syncthing devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Zahl der Syncthing-Geräte</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="36"/>
         <source>Number of Syncthing folders</source>
-        <translation type="unfinished"></translation>
+        <translation>Zahl der Syncthing-Ordner</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="37"/>
         <source>Number of files managed by Syncthing</source>
-        <translation type="unfinished"></translation>
+        <translation>Zahl der Daten die von Syncthing verwaltet werden</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="38"/>
         <source>Size of files managed by Syncthing</source>
-        <translation type="unfinished"></translation>
+        <translation>Größe der Daten die von Syncthing verwaltet werden</translation>
     </message>
 </context>
 <context>
