@@ -137,7 +137,7 @@ int Application::exec(int argc, const char *const *argv)
 
     // finally do the request or establish connection
     m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents);
-    if (m_args.status.isPresent() || m_args.waitForIdle.isPresent()) {
+    if (m_args.status.isPresent() || m_args.statusPwd.isPresent() || m_args.waitForIdle.isPresent()) {
         // those arguments require establishing a connection first, the actual handler is called by handleStatusChanged() when
         // the connection has been established
         m_connection.reconnect(m_settings);
