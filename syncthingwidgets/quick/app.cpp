@@ -1078,7 +1078,7 @@ void App::handleLauncherStatusBroadcast(const QVariant &status)
     if (hasMeteredStatusChanged) {
         emit meteredStatusChanged(meteredStatus);
     }
-    if (guiUrlChanged) {
+    if (guiUrlChanged || !m_connection.isConnected()) {
         qDebug() << "GUI URL changed: " << guiUrl;
         emit syncthingGuiUrlChanged(guiUrl);
     }
