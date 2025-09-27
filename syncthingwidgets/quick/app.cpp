@@ -1131,6 +1131,7 @@ void App::handleMessageFromService(ActivityAction action, int arg1, int arg2, co
         break;
     case ActivityAction::UpdateLauncherStatus:
         QMetaObject::invokeMethod(this, "handleLauncherStatusBroadcast", Qt::QueuedConnection, Q_ARG(QVariant, deserializeVariant(variant)));
+        break;
     case ActivityAction::FlagManualStop:
         m_isManuallyStopped = true;
         break;
