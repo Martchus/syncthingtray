@@ -36,7 +36,7 @@ static void handleMessageFromService(JNIEnv *, jobject, jint what, jint arg1, ji
     if (variantArray) {
         env->GetByteArrayRegion(variantArray, 0, variantSize, reinterpret_cast<jbyte *>(variant.data()));
     }
-    appObjectForJava->handleMessageFromService(static_cast<ActivityAction>(what), arg1, arg2, QJniObject::fromLocalRef(str).toString(), variant);
+    appObjectForJava->handleMessageFromService(static_cast<ActivityAction>(what), arg1, arg2, QJniObject(str).toString(), variant);
 }
 
 static void broadcastLauncherStatus(JNIEnv *, jobject)
@@ -46,19 +46,19 @@ static void broadcastLauncherStatus(JNIEnv *, jobject)
 
 static void handleLauncherStatusBroadcast(JNIEnv *, jobject, jobject intent)
 {
-    const auto status = QAndroidIntent(QJniObject::fromLocalRef(intent)).extraVariant(QStringLiteral("status"));
+    const auto status = QAndroidIntent(QJniObject(intent)).extraVariant(QStringLiteral("status"));
     QMetaObject::invokeMethod(appObjectForJava, "handleLauncherStatusBroadcast", Qt::QueuedConnection, Q_ARG(QVariant, status));
 }
 
 static void handleMessageFromActivity(JNIEnv *, jobject, jint what, jint arg1, jint arg2, jstring str)
 {
-    appServiceObjectForJava->handleMessageFromActivity(static_cast<ServiceAction>(what), arg1, arg2, QJniObject::fromLocalRef(str).toString());
+    appServiceObjectForJava->handleMessageFromActivity(static_cast<ServiceAction>(what), arg1, arg2, QJniObject(str).toString());
 }
 
 static void handleAndroidIntent(JNIEnv *, jobject, jstring page, jboolean fromNotification)
 {
     QMetaObject::invokeMethod(appObjectForJava, "handleAndroidIntent", Qt::QueuedConnection,
-        Q_ARG(QString, QJniObject::fromLocalRef(page).toString()), Q_ARG(bool, fromNotification));
+        Q_ARG(QString, QJniObject(page).toString()), Q_ARG(bool, fromNotification));
 }
 
 static void handleStoragePermissionChanged(JNIEnv *, jobject, jboolean storagePermissionGranted)
