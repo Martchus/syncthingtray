@@ -136,9 +136,8 @@ public:
     static constexpr bool extendedClientArea()
     {
         // disable extended client areas by default as further tweaking is needed
-        // note: Safe areas are not working as expected with Qt 6.9 at all but this is fixed on dev and
-        //       thus might work with Qt 6.10.
-#ifdef SYNCTHINGTRAY_TEST_EXTENDED_CLIENT_AREA
+        // note: Safe areas are not working as expected with Qt 6.9.2 at all but this is fixed with Qt 6.9.3.
+#ifdef SYNCTHINGWIDGETS_EXTENDED_CLIENT_AREA
         return true;
 #else
         return false;

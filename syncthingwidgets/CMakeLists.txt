@@ -235,6 +235,15 @@ if (SETUP_TOOLS)
     list(APPEND REQUIRED_ICONS install info)
 endif ()
 
+# allow enabling extended client area
+option(
+    EXTENDED_CLIENT_AREA
+    "enables extended client area of Qt Quick GUI for Edge-to-edge support"
+    OFF)
+if (EXTENDED_CLIENT_AREA)
+    list(APPEND META_PRIVATE_COMPILE_DEFINITIONS SYNCTHINGWIDGETS_EXTENDED_CLIENT_AREA)
+endif ()
+
 # link also explicitly against the following Qt modules
 list(APPEND ADDITIONAL_QT_MODULES Network Concurrent)
 
