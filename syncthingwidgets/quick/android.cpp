@@ -57,8 +57,8 @@ static void handleMessageFromActivity(JNIEnv *, jobject, jint what, jint arg1, j
 
 static void handleAndroidIntent(JNIEnv *, jobject, jstring page, jboolean fromNotification)
 {
-    QMetaObject::invokeMethod(appObjectForJava, "handleAndroidIntent", Qt::QueuedConnection,
-        Q_ARG(QString, QJniObject(page).toString()), Q_ARG(bool, fromNotification));
+    QMetaObject::invokeMethod(
+        appObjectForJava, "handleAndroidIntent", Qt::QueuedConnection, Q_ARG(QString, QJniObject(page).toString()), Q_ARG(bool, fromNotification));
 }
 
 static void handleStoragePermissionChanged(JNIEnv *, jobject, jboolean storagePermissionGranted)
