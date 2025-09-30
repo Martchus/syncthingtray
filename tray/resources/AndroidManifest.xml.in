@@ -27,7 +27,8 @@
         android:requestLegacyExternalStorage="true"
         android:allowNativeHeapPointerTagging="false"
         android:allowBackup="true"
-        android:fullBackupOnly="false">
+        android:fullBackupOnly="false"
+        android:localeConfig="@xml/locale_config">
         <activity
             android:name=".Activity"
             android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density"
