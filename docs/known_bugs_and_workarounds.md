@@ -93,10 +93,24 @@ variable `PLASMA_USE_QT_SCALING=1` might help.
       The Plasmoid is *not* affected by this limitation.
     * While the tray menu is shown its entry is shown in the taskbar. Not sure whether there is a way to avoid this.
 * Qt limitations and bugs
+    * any Qt version:
+        * The notification text is not translated under Android due to https://bugreports.qt.io/browse/QTBUG-140482.
+        * Reading the initial status of the network connection requires manual workarounds on Android, see
+          https://bugreports.qt.io/browse/QTBUG-139604.
+    * Qt < 6.11:
+        * Edge-to-edge is disabled under Android due to https://bugreports.qt.io/browse/QTBUG-139690.
+    * Qt < 6.9.3:
+        * Flickering might occur under Android, see https://bugreports.qt.io/browse/QTBUG-132718.
+    * Qt = 6.9.2:
+        * Animations don't work on many platforms, see https://bugreports.qt.io/browse/QTBUG-139630.
     * Qt < 6.7:
         * The native style does not look good under Windows 11. Therefore the style "Fusion" is used instead by default.
     * Qt < 6.5:
         * The dark mode introduced in Windows 10 is not supported, see https://bugreports.qt.io/browse/QTBUG-72028.
+    * Qt < 6:
+        * The tray disconnects from the local instance when the network connection goes down. The network connection must be restored
+          or the tray restarted to be able to connect to local Syncthing again. This is caused by Qt bug
+          https://bugreports.qt.io/browse/QTBUG-60949.
     * Qt < 5.14
         * Any self-signed certificate is accepted when using Qt WebEngine due to https://bugreports.qt.io/browse/QTBUG-51176.
     * Qt < 5.9:
@@ -105,14 +119,13 @@ variable `PLASMA_USE_QT_SCALING=1` might help.
           https://codereview.qt-project.org/#/c/187069/. However, the fix is only available in Qt 5.9 and above.
         * Redirections cannot be followed (e.g. from HTTP to HTTPS) because
           `QNetworkRequest::RedirectPolicyAttribute` and `QNetworkRequest::NoLessSafeRedirectPolicy` are not available yet.
-    * any Qt version:
-        * The tray disconnects from the local instance when the network connection goes down. The network connection must be restored
-          or the tray restarted to be able to connect to local Syncthing again. This is caused by Qt bug
-          https://bugreports.qt.io/browse/QTBUG-60949.
 * KDE limitations
+    * Issues with the configuration have appeared as of some version of Plasma, see https://github.com/Martchus/syncthingtray/issues/239
+      and https://bugs.kde.org/show_bug.cgi?id=485072. It is unclear whether the problem is in Syncthing Tray or Plasma. Checkout the
+      "[Configuring Plasmoid](../README.md#required-system-configuration)" section for details.
     * High-DPI scaling of Plasmoid is broken under X11 (https://bugs.kde.org/show_bug.cgi?id=356446).
     * Plasma < 5.26.0:
         * The Plasmoid contents are possibly clipped when shown within the system notifications plasmoid.
 * Systemd integration
     * This feature relies especially on the system being correctly configured. Checkout the
-      "[Required system configuration](#required-system-configuration)" section for details.
+      "[Required system configuration](../README.md#required-system-configuration)" section for details.
