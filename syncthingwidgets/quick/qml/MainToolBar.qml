@@ -7,11 +7,12 @@ import Main
 
 ToolBar {
     id: toolBar
+    leftPadding: 0
     Material.theme: darkToolbar ? Material.Light : parent.Material.theme
     Material.background: toolBar.Material.theme === Material.Dark ? Material.primary : Material.color(Material.LightBlue, Material.Shade100)
     ColumnLayout {
         anchors.fill: parent
-        anchors.leftMargin: leftMargin
+        anchors.leftMargin: toolBar.leftMargin
         Material.theme: darkToolbar ? Material.Dark : toolBar.Material.theme
         RowLayout {
             visible: App.status.length !== 0
