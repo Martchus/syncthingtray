@@ -12,7 +12,9 @@ ApplicationWindow {
     height: 500
     title: meta.title
     font: theming.font
-    flags: App.extendedClientArea ? Qt.ExpandedClientAreaHint | Qt.NoTitleBarBackgroundHint : 0
+    flags: App.extendedClientArea ? (Qt.ExpandedClientAreaHint | Qt.NoTitleBarBackgroundHint) : (0)
+    leftPadding: 0
+    rightPadding: 0
     header: MainToolBar {
         drawer: drawer
         pageStack: pageStack
@@ -71,7 +73,9 @@ ApplicationWindow {
     PageStack {
         id: pageStack
         anchors.fill: parent
-        anchors.leftMargin: drawer.visible ? drawer.effectiveWidth : 0
+        anchors.leftMargin: drawer.visible ? drawer.effectiveWidth : parent.SafeArea.margins.left
+        anchors.rightMargin: parent.SafeArea.margins.right
+        clip: true
         window: appWindow
         onChangesMightBeDiscarded: discardChangesDialog.open()
     }

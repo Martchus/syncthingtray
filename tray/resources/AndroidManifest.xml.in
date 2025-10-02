@@ -68,6 +68,9 @@
                 android:name="android.app.background_running_after_destruction"
                 android:value="@META_BACKGROUND_RUNNING_AFTER_DESTRUCTION@" />
             <meta-data
+                android:name="android.app.extended_client_area"
+                android:value="@META_EXTENDED_CLIENT_AREA@" />
+            <meta-data
                 android:name="android.app.shortcuts"
                 android:resource="@xml/shortcuts" />
         </activity>

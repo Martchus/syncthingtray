@@ -308,6 +308,14 @@ if (ANDROID)
         set(META_BACKGROUND_RUNNING_AFTER_DESTRUCTION false)
     endif ()
 
+    # expose EXTENDED_CLIENT_AREA option from syncthingwidgets to Java code
+    option(EXTENDED_CLIENT_AREA "enables extended client area of Qt Quick GUI for Edge-to-edge support" OFF)
+    if (EXTENDED_CLIENT_AREA)
+        set(META_EXTENDED_CLIENT_AREA true)
+    else ()
+        set(META_EXTENDED_CLIENT_AREA false)
+    endif ()
+
     set(ANDROID_MANIFEST_PATH "${ANDROID_PACKAGE_SOURCE_DIR}/AndroidManifest.xml")
     configure_file("resources/AndroidManifest.xml.in" "${ANDROID_MANIFEST_PATH}" @ONLY)
     set(ANDROID_SHORTCUTS_PATH "${ANDROID_PACKAGE_SOURCE_DIR}/res/xml/shortcuts.xml")

@@ -401,7 +401,12 @@ public class Activity extends QtActivity {
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "Creating");
 
-        applyTheming();
+        // apply theming unless Qt.ExpandedClientAreaHint is used
+        Bundle md = metaData();
+        if (md != null && !md.getBoolean("android.app.extended_client_area")) {
+            applyTheming();
+        }
+
         Util.init();
 
         super.onCreate(savedInstanceState); // does *not* block, native code registering JNI functions will only run once layout is initialized

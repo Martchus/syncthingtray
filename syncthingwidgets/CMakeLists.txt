@@ -236,10 +236,7 @@ if (SETUP_TOOLS)
 endif ()
 
 # allow enabling extended client area
-option(
-    EXTENDED_CLIENT_AREA
-    "enables extended client area of Qt Quick GUI for Edge-to-edge support"
-    OFF)
+option(EXTENDED_CLIENT_AREA "enables extended client area of Qt Quick GUI for Edge-to-edge support" OFF)
 if (EXTENDED_CLIENT_AREA)
     list(APPEND META_PRIVATE_COMPILE_DEFINITIONS SYNCTHINGWIDGETS_EXTENDED_CLIENT_AREA)
 endif ()
