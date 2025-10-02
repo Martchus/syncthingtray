@@ -7,12 +7,12 @@ import Main
 
 ToolBar {
     id: toolBar
-    Material.theme: Material.Light
-    Material.background: Material.primary
+    Material.theme: darkToolbar ? Material.Light : parent.Material.theme
+    Material.background: toolBar.Material.theme === Material.Dark ? Material.primary : Material.color(Material.LightBlue, Material.Shade100)
     ColumnLayout {
         anchors.fill: parent
         anchors.leftMargin: leftMargin
-        Material.theme: Material.Dark
+        Material.theme: darkToolbar ? Material.Dark : toolBar.Material.theme
         RowLayout {
             visible: App.status.length !== 0
             CustomToolButton {
@@ -191,4 +191,5 @@ ToolBar {
     required property LeftDrawer drawer
     required property PageStack pageStack
     property real leftMargin: 0
+    property bool darkToolbar: false
 }
