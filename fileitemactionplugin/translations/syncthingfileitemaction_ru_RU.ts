@@ -36,7 +36,7 @@
     <message>
         <location filename="../syncthingdiractions.cpp" line="76"/>
         <source>Rescan interval: %1 seconds</source>
-        <translation>Интервал повторного сканирования: %1 секунд</translation>
+        <translation>Рескан: %1 секунд</translation>
     </message>
     <message numerus="yes">
         <location filename="../syncthingdiractions.cpp" line="81"/>
