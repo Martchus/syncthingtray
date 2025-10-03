@@ -359,12 +359,12 @@
     <message>
         <location filename="../syncthingservice.cpp" line="330"/>
         <source>user unit &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>пользовательский блок &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../syncthingservice.cpp" line="332"/>
         <source>system unit &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>системный блок &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../syncthingservice.cpp" line="393"/>
@@ -424,7 +424,7 @@
         <translation>
             <numerusform>%1 директория</numerusform>
             <numerusform>%1 директории</numerusform>
-            <numerusform>%1 директории</numerusform>
+            <numerusform>%1 директорий</numerusform>
         </translation>
     </message>
     <message>
@@ -453,7 +453,7 @@
     <message>
         <location filename="../utils.cpp" line="117"/>
         <source>, file system watcher enabled</source>
-        <translation>, включен наблюдатель файловой системы</translation>
+        <translation>, Включено</translation>
     </message>
     <message>
         <location filename="../utils.cpp" line="118"/>
@@ -544,7 +544,7 @@
     <message>
         <location filename="../syncthingdir.cpp" line="195"/>
         <source>Local Additions</source>
-        <translation>Местные дополнения</translation>
+        <translation>Локальные Дополнения</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="197"/>
@@ -554,7 +554,7 @@
     <message>
         <location filename="../syncthingdir.cpp" line="20"/>
         <source>Up to Date</source>
-        <translation>До настоящего времени</translation>
+        <translation>В актуальном состоянии</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="22"/>
