@@ -577,12 +577,12 @@
     <message>
         <location filename="../gui/trayicon.cpp" line="307"/>
         <source>New version - click to open updater</source>
-        <translation type="unfinished"></translation>
+        <translation>Новая версия — нажмите, чтобы открыть средство обновления</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="307"/>
         <source>Version %1 is available</source>
-        <translation type="unfinished"></translation>
+        <translation>Доступна версия %1</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="170"/>
@@ -869,7 +869,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
     <message>
         <location filename="../application/main.cpp" line="485"/>
         <source>&lt;p&gt;This can have different causes:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Data corruption occurred during the download/extraction. In this case cancelling and retrying the update will help.&lt;/li&gt;&lt;li&gt;The signing key or updating mechanism in general has changed. In this case an according release note will be present on &lt;a href=&quot;https://martchus.github.io/syncthingtray/#downloads-section&quot;&gt;the website&lt;/a&gt; and &lt;a href=&quot;https://github.com/Martchus/syncthingtray/releases&quot;&gt;GitHub&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;A bug in the newly introduced updater, see &lt;a href=&quot;https://github.com/Martchus/syncthingtray/issues&quot;&gt;issues on GitHub&lt;/a&gt; for potential bug reports.&lt;/li&gt;&lt;li&gt;Someone tries to distribute manipulated executables of Syncthing Tray.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;It is recommend to cancel the update and retry or cross-check the cause if the issue persists. If you ignore this error you &lt;i&gt;may&lt;/i&gt; install a corrupted/manipulated executable.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;Причины могут быть разными:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Произошло повреждение данных во время загрузки/извлечения. В этом случае отмена и повторная попытка обновления помогут.&lt;/li&gt;&lt;li&gt;Изменился ключ подписи или механизм обновления в целом. В этом случае соответствующее примечание к выпуску будет размещено на &lt;a href=&quot;https://martchus.github.io/syncthingtray/#downloads-section&quot;&gt;сайте&lt;/a&gt; и на &lt;a href=&quot;https://github.com/Martchus/syncthingtray/releases&quot;&gt;GitHub&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;Ошибка в недавно представленном обновлении. См. &lt;a href=&quot;https://github.com/Martchus/syncthingtray/issues&quot;&gt;проблемы на GitHub&lt;/a&gt; для потенциальных сообщений об ошибках.&lt;/li&gt;&lt;li&gt;Кто-то пытается распространять подмененные исполняемые файлы Syncthing Tray.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Рекомендуется отменить обновление и повторить попытку или перепроверить причину, если проблема не устранена. Если вы проигнорируете эту ошибку, вы &lt;i&gt;можете&lt;/i&gt; установить повреждённый/подмененный исполняемый файл.&lt;/p&gt;</translation>
     </message>
 </context>
 </TS>
