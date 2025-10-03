@@ -6,37 +6,37 @@
     <message>
         <location filename="../quick/qml/AboutDialog.qml" line="14"/>
         <source>About %1</source>
-        <translation type="unfinished"></translation>
+        <translation>О программе %1</translation>
     </message>
     <message>
         <location filename="../quick/qml/AboutDialog.qml" line="31"/>
         <source>Developed by %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Разработчик %1</translation>
     </message>
     <message>
         <location filename="../quick/qml/AboutDialog.qml" line="39"/>
         <source>App version</source>
-        <translation type="unfinished"></translation>
+        <translation>Версия</translation>
     </message>
     <message>
         <location filename="../quick/qml/AboutDialog.qml" line="54"/>
         <source>Syncthing version</source>
-        <translation type="unfinished"></translation>
+        <translation>Версия Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/AboutDialog.qml" line="69"/>
         <source>Qt version</source>
-        <translation type="unfinished"></translation>
+        <translation>Qt версия</translation>
     </message>
     <message>
         <location filename="../quick/qml/AboutDialog.qml" line="85"/>
         <source>Legal info</source>
-        <translation type="unfinished"></translation>
+        <translation>Юр. инфо</translation>
     </message>
     <message>
         <location filename="../quick/qml/AboutDialog.qml" line="91"/>
         <source>Website</source>
-        <translation type="unfinished"></translation>
+        <translation>Сайт</translation>
     </message>
 </context>
 <context>
@@ -44,37 +44,37 @@
     <message>
         <location filename="../quick/qml/AdvancedConfigPage.qml" line="14"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>Применить</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedConfigPage.qml" line="19"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Убрать</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedConfigPage.qml" line="28"/>
         <source>Remove %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Убрать %1</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedConfigPage.qml" line="32"/>
         <source>Do you really want to remove the %1?</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы действительно хотите убрать %1?</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedConfigPage.qml" line="37"/>
         <source>This will only remove the %1 from Syncthing. No files will be deleted on disk.</source>
-        <translation type="unfinished"></translation>
+        <translation>Это удалит только %1 из Syncthing. Никакие файлы с диска не будут удалены.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedConfigPage.qml" line="70"/>
         <source>The ID must not be empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Идентификатор не должен быть пустым.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedConfigPage.qml" line="80"/>
         <source>Can&apos;t apply, ID is already used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно подать заявку, идентификатор уже используется.</translation>
     </message>
 </context>
 <context>
@@ -82,12 +82,12 @@
     <message>
         <location filename="../quick/qml/AdvancedDevConfigPage.qml" line="6"/>
         <source>Advanced config of device &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Расширенная конфигурация устройства &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedDevConfigPage.qml" line="7"/>
         <source>device</source>
-        <translation type="unfinished"></translation>
+        <translation>устройство</translation>
     </message>
 </context>
 <context>
@@ -95,12 +95,12 @@
     <message>
         <location filename="../quick/qml/AdvancedDirConfigPage.qml" line="6"/>
         <source>Advanced config of folder &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Расширенная конфигурация папки &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedDirConfigPage.qml" line="7"/>
         <source>folder</source>
-        <translation type="unfinished"></translation>
+        <translation>папка</translation>
     </message>
 </context>
 <context>
@@ -108,434 +108,434 @@
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="14"/>
         <source>Advanced - changes not saved yet</source>
-        <translation type="unfinished"></translation>
+        <translation>Дополнительно — изменения еще не сохранены</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="14"/>
         <source>Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>Дополнительно</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="26"/>
         <source>Web-based GUI authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Веб-аутентификация с графическим интерфейсом</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="31"/>
         <source>Pending devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Ожидаемые устройства</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="36"/>
         <source>Pending folders</source>
-        <translation type="unfinished"></translation>
+        <translation>Ожидающие папки</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="41"/>
         <location filename="../quick/qml/AdvancedPage.qml" line="42"/>
         <source>Ignored devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Игнорируемые устройства</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="43"/>
         <source>Ignored device without ID/name</source>
-        <translation type="unfinished"></translation>
+        <translation>Игнорируемое устройство без ID/имени</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="44"/>
         <source>Contains the IDs of the devices that should be ignored. Connection attempts from these devices are logged to the console but never displayed in the UI.</source>
-        <translation type="unfinished"></translation>
+        <translation>Содержит идентификаторы устройств, которые следует игнорировать. Попытки подключения с этих устройств регистрируются в консоли, но никогда не отображаются в пользовательском интерфейсе.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="51"/>
         <source>Syncthing API and web-based GUI</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing API и веб-графический интерфейс</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="52"/>
         <source>Advanced Syncthing API and web-based GUI configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>API синхронизации и веб-графический интерфейс</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="58"/>
         <source>Various options</source>
-        <translation type="unfinished"></translation>
+        <translation>Различные варианты</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="59"/>
         <source>Various advanced options</source>
-        <translation type="unfinished"></translation>
+        <translation>Различные расширенные возможности</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="65"/>
         <source>Templates for new devices and folders</source>
-        <translation type="unfinished"></translation>
+        <translation>Шаблоны для новых устройств и папок</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="66"/>
         <source>Templates configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Конфигурация шаблонов</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="72"/>
         <source>LDAP</source>
-        <translation type="unfinished"></translation>
+        <translation>Конфигурация шаблонов</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="73"/>
         <source>LDAP configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Конфигурация шаблонов</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="78"/>
         <source>Open config file externally</source>
-        <translation type="unfinished"></translation>
+        <translation>Конфигурация шаблонов</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="107"/>
         <source>Set to require authentication for accessing the web-based GUI.</source>
-        <translation type="unfinished"></translation>
+        <translation>Установите требование аутентификации для доступа к веб-интерфейсу.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="108"/>
         <source>Contains the bcrypt hash of the password used to restrict accessing the web-based GUI. You can also enter a plain password which will then be hashed when applying the configuration.</source>
-        <translation type="unfinished"></translation>
+        <translation>Содержит bcrypt-хеш пароля, используемого для ограничения доступа к веб-интерфейсу. Вы также можете ввести простой пароль, который будет хеширован при применении конфигурации.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="111"/>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя пользователя</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="112"/>
         <source>Password (turned into bcrypt hash when saving)</source>
-        <translation type="unfinished"></translation>
+        <translation>Пароль (превращается в хэш bcrypt при сохранении)</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="117"/>
         <source>API Key</source>
-        <translation type="unfinished"></translation>
+        <translation>API-ключ</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="117"/>
         <source>If set, this is the API key that enables usage of the REST interface. The app uses the REST interface so this value must not be empty for the app to function.</source>
-        <translation type="unfinished"></translation>
+        <translation>Если задано, это ключ API, который позволяет использовать интерфейс REST. Приложение использует интерфейс REST, поэтому для его работы это значение не должно быть пустым.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="118"/>
         <source>GUI Listen Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Адрес прослушивания графического интерфейса</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="118"/>
         <source>Set the listen address.</source>
-        <translation type="unfinished"></translation>
+        <translation>Установите адрес прослушивания.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="119"/>
         <source>GUI Authentication User</source>
-        <translation type="unfinished"></translation>
+        <translation>Пользователь аутентификации GUI</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="120"/>
         <source>GUI Authentication Password (bcrypt hash!)</source>
-        <translation type="unfinished"></translation>
+        <translation>Пароль аутентификации GUI (хэш bcrypt!)</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="121"/>
         <source>Use HTTPS for GUI and API</source>
-        <translation type="unfinished"></translation>
+        <translation>Используйте HTTPS для графического интерфейса и API</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="121"/>
         <source>If enabled, TLS (HTTPS) will be enforced. Non-HTTPS requests will be redirected to HTTPS. When set to false, TLS connections are still possible but not required.</source>
-        <translation type="unfinished"></translation>
+        <translation>Если включено, TLS (HTTPS) будет использоваться принудительно. Запросы, не использующие HTTPS, будут перенаправляться на HTTPS. Если установлено значение false, TLS-подключения по-прежнему возможны, но не обязательны.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="122"/>
         <source>Prompt for basic authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>Запрос на базовую аутентификацию</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="122"/>
         <source>When this setting is enabled, the web-based GUI will respond to unauthenticated requests with a 401 response prompting for Basic Authorization, so that https://user:pass@localhost style URLs continue to work in standard browsers. Other clients that always send the Authorization request header do not need this setting.</source>
-        <translation type="unfinished"></translation>
+        <translation>Если этот параметр включен, веб-интерфейс будет отвечать на неаутентифицированные запросы кодом 401 с запросом базовой авторизации, поэтому URL-адреса в стиле https://user:pass@localhost продолжат работать в стандартных браузерах. Другим клиентам, которые всегда отправляют заголовок запроса авторизации, этот параметр не нужен.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="123"/>
         <source>Authentication mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Режим аутентификации</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="123"/>
         <source>Authentication mode to use. If not present, the authentication mode (static) is controlled by the presence of user/password fields for backward compatibility.</source>
-        <translation type="unfinished"></translation>
+        <translation>Используемый режим аутентификации. Если он отсутствует, режим аутентификации (статический) определяется наличием полей «имя пользователя» и «пароль» для обеспечения обратной совместимости.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="124"/>
         <source>Authentication using user and password.</source>
-        <translation type="unfinished"></translation>
+        <translation>Аутентификация с использованием имени пользователя и пароля.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="125"/>
         <source>LDAP authentication. Requires ldap top level config section to be present.</source>
-        <translation type="unfinished"></translation>
+        <translation>Аутентификация LDAP. Требуется наличие раздела конфигурации верхнего уровня LDAP.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="127"/>
         <source>Theme of web-based GUI</source>
-        <translation type="unfinished"></translation>
+        <translation>Тема веб-графического интерфейса</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="127"/>
         <source>The name of the theme to use.</source>
-        <translation type="unfinished"></translation>
+        <translation>Название используемой темы.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="133"/>
         <source>Profiling and Debugging</source>
-        <translation type="unfinished"></translation>
+        <translation>Профилирование и отладка</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="133"/>
         <source>This enables Profiling and additional endpoints in the REST API.</source>
-        <translation type="unfinished"></translation>
+        <translation>Это позволяет использовать профилирование и дополнительные конечные точки в REST API.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="134"/>
         <source>Enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Включено</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="134"/>
         <source>If disabled, the GUI and API will not be started. The app needs this to function.</source>
-        <translation type="unfinished"></translation>
+        <translation>Если отключено, графический интерфейс и API не будут запущены. Это необходимо для работы приложения.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="137"/>
         <source>Audit Log</source>
-        <translation type="unfinished"></translation>
+        <translation>Журнал аудита</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="137"/>
         <source>Write events to timestamped file `audit-YYYYMMDD-HHMMSS.log` within the Syncthing home directory. The path can be overidden via &quot;Audit File&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Записывать события в файл с меткой времени `audit-YYYYMMDD-HHMMSS.log` в домашнем каталоге Syncthing. Путь можно переопределить с помощью «Файл аудита».</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="138"/>
         <source>Audit File</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл аудита</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="138"/>
         <source>Path to store audit events under if &quot;Audit Log&quot; is enabled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Путь для хранения событий аудита, если включен «Журнал аудита».</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="139"/>
         <source>Sync Protocol Listen Addresses</source>
-        <translation type="unfinished"></translation>
+        <translation>Адреса прослушивания протокола синхронизации</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="139"/>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Адрес</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="139"/>
         <source>Specifies one or more listen addresses for the sync protocol. Set to default to listen on port TCP and QUIC port 22000.</source>
-        <translation type="unfinished"></translation>
+        <translation>Указывает один или несколько адресов прослушивания для протокола синхронизации. Установите значение по умолчанию для прослушивания порта TCP и порта QUIC 22000.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="140"/>
         <source>Incoming Rate Limit (KiB/s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Предел входящей скорости (КиБ/с)</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="140"/>
         <source>Incoming data rate limits, in kibibytes per second.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ограничения скорости входящих данных, в кибибайтах в секунду.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="141"/>
         <source>Outgoing Rate Limit (KiB/s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Лимит исходящей скорости (КиБ/с)</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="141"/>
         <source>Outgoing data rate limit, in kibibytes per second.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ограничение скорости исходящих данных, в кибибайтах в секунду.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="142"/>
         <source>Limit Bandwidth in LAN</source>
-        <translation type="unfinished"></translation>
+        <translation>Ограничить пропускную способность в локальной сети</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="142"/>
         <source>Whether to apply bandwidth limits to devices in the same broadcast domain as the local device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Применять ли ограничения пропускной способности к устройствам в том же широковещательном домене, что и локальное устройство.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="143"/>
         <source>NAT traversal</source>
-        <translation type="unfinished"></translation>
+        <translation>обход NAT</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="143"/>
         <source>Whether to attempt to perform a UPnP and NAT-PMP port mapping for incoming sync connections.</source>
-        <translation type="unfinished"></translation>
+        <translation>Следует ли пытаться выполнить сопоставление портов UPnP и NAT-PMP для входящих синхронизирующих подключений.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="144"/>
         <source>Local Discovery</source>
-        <translation type="unfinished"></translation>
+        <translation>Локальное Окружение</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="144"/>
         <source>Whether to send announcements to the local LAN, also use such announcements to find other devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отправлять ли объявления в локальную сеть LAN, а также использовать такие объявления для поиска других устройств.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="145"/>
         <source>Global Discovery</source>
-        <translation type="unfinished"></translation>
+        <translation>Глобальное открытие</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="145"/>
         <source>Whether to announce this device to the global announce (discovery) server, and also use it to look up other devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>Следует ли анонсировать данное устройство на глобальном сервере анонсов (обнаружения), а также использовать его для поиска других устройств.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="146"/>
         <source>Global Discovery Servers</source>
-        <translation type="unfinished"></translation>
+        <translation>Глобальные серверы обнаружения</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="146"/>
         <source>URI</source>
-        <translation type="unfinished"></translation>
+        <translation>URI</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="146"/>
         <source>A URI to a global announce (discovery) server, or the word &quot;default&quot; to include the default servers. Multiple servers can be added. The syntax for non-default entries is that of an HTTP or HTTPS URL. A number of options may be added as query options to the URL: insecure to prevent certificate validation (required for HTTP URLs) and &quot;id=&lt;device ID&gt;&quot; to perform certificate pinning. The device ID to use is printed by the discovery server on startup.</source>
-        <translation type="unfinished"></translation>
+        <translation>URI глобального сервера анонсирования (обнаружения) или слово «default» для включения серверов по умолчанию. Можно добавить несколько серверов. Синтаксис нестандартных записей соответствует синтаксису URL-адресов HTTP или HTTPS. К URL-адресу можно добавить ряд параметров запроса: insecure для предотвращения проверки сертификата (требуется для URL-адресов HTTP) и «id=&lt;device ID&gt;» для закрепления сертификата. Идентификатор устройства, который будет использоваться, выводится сервером обнаружения при запуске.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="147"/>
         <source>Relaying</source>
-        <translation type="unfinished"></translation>
+        <translation>Ретрансляция</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="147"/>
         <source>Whether relays will be connected to and potentially used for device to device connections.</source>
-        <translation type="unfinished"></translation>
+        <translation>Будут ли реле подключаться и потенциально использоваться для соединений устройств друг с другом.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="148"/>
         <source>Minimum Free Space (Home)</source>
-        <translation type="unfinished"></translation>
+        <translation>Минимальное свободное место (дома)</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="148"/>
         <location filename="../quick/qml/AdvancedPage.qml" line="153"/>
         <source>The minimum required free space that should be available on the partition holding the configuration and index. The element content is interpreted according to the given unit attribute. Accepted unit values are &quot;%&quot; (percent of the disk / volume size), kB, MB, GB and TB. Set to zero to disable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Минимально необходимое свободное пространство, которое должно быть доступно на разделе, содержащем конфигурацию и индекс. Содержимое элемента интерпретируется в соответствии с заданным атрибутом единицы измерения. Допустимые значения единиц измерения: «%» (процент от размера диска/тома), КБ, МБ, ГБ и ТБ. Установите значение 0, чтобы отключить.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="149"/>
         <source>Announce LAN Addresses</source>
-        <translation type="unfinished"></translation>
+        <translation>Объявить адреса локальной сети</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="149"/>
         <source>Enable (the default) or disable announcing private (RFC1918) LAN IP addresses to global discovery.</source>
-        <translation type="unfinished"></translation>
+        <translation>Включить (по умолчанию) или отключить объявление частных (RFC1918) IP-адресов локальной сети для глобального обнаружения.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="150"/>
         <source>Networks to consider always local</source>
-        <translation type="unfinished"></translation>
+        <translation>Сети всегда следует рассматривать как локальные</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="150"/>
         <source>Network in CIDR notation</source>
-        <translation type="unfinished"></translation>
+        <translation>Сеть в нотации CIDR</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="150"/>
         <source>Network that should be considered as local given in CIDR notation.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сеть, которую следует считать локальной, указанной в нотации CIDR.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="153"/>
         <source>Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Значение</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="154"/>
         <source>Unit</source>
-        <translation type="unfinished"></translation>
+        <translation>Еденица</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="155"/>
         <source>Percent</source>
-        <translation type="unfinished"></translation>
+        <translation>Процент</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="155"/>
         <source>Percentage of the disk/volume size</source>
-        <translation type="unfinished"></translation>
+        <translation>Процент от размера диска/тома</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="156"/>
         <source>Kilobyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Килобайт</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="156"/>
         <source>Absolute size in Kilobyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Абсолютный размер в килобайтах</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="157"/>
         <source>Megabyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Мегабайт</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="157"/>
         <source>Absolute size in Megabyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Абсолютный размер в мегабайтах</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="158"/>
         <source>Gigabyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Гигабайт</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="158"/>
         <source>Absolute size in Gigabyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Абсолютный размер в гигабайтах</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="159"/>
         <source>Terrabyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Терабайт</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="159"/>
         <source>Absolute size in Terrabyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Абсолютный размер в терабайтах</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="166"/>
         <source>Discard changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Отменить изменения</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="177"/>
         <source>Apply changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Применить изменения</translation>
     </message>
 </context>
 <context>
@@ -543,27 +543,27 @@
     <message>
         <location filename="../quick/qml/ArrayElementButtons.qml" line="10"/>
         <source>Move down</source>
-        <translation type="unfinished"></translation>
+        <translation>Двигаться вниз</translation>
     </message>
     <message>
         <location filename="../quick/qml/ArrayElementButtons.qml" line="15"/>
         <source>Move up</source>
-        <translation type="unfinished"></translation>
+        <translation>Двигаться вверх</translation>
     </message>
     <message>
         <location filename="../quick/qml/ArrayElementButtons.qml" line="21"/>
         <source>More options</source>
-        <translation type="unfinished"></translation>
+        <translation>Больше вариантов</translation>
     </message>
     <message>
         <location filename="../quick/qml/ArrayElementButtons.qml" line="28"/>
         <source>Remove</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалять</translation>
     </message>
     <message>
         <location filename="../quick/qml/ArrayElementButtons.qml" line="37"/>
         <source>Insert before</source>
-        <translation type="unfinished"></translation>
+        <translation>Вставить перед</translation>
     </message>
 </context>
 <context>
@@ -571,7 +571,7 @@
     <message>
         <location filename="../quick/qml/ChangesPage.qml" line="8"/>
         <source>Recent changes</source>
-        <translation type="unfinished">Последние изменения</translation>
+        <translation>Последние изменения</translation>
     </message>
 </context>
 <context>
@@ -579,22 +579,22 @@
     <message>
         <location filename="../quick/qml/CloseDialog.qml" line="15"/>
         <source>Do you want to shutdown Syncthing and quit the app? You can also just quit the app and keep Syncthing running in the background.</source>
-        <translation type="unfinished"></translation>
+        <translation>Хотите закрыть Syncthing и выйти из приложения? Вы также можете просто выйти из приложения и оставить Syncthing работать в фоновом режиме.</translation>
     </message>
     <message>
         <location filename="../quick/qml/CloseDialog.qml" line="21"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="../quick/qml/CloseDialog.qml" line="26"/>
         <source>Shutdown</source>
-        <translation type="unfinished"></translation>
+        <translation>Неисправность</translation>
     </message>
     <message>
         <location filename="../quick/qml/CloseDialog.qml" line="31"/>
         <source>Background</source>
-        <translation type="unfinished"></translation>
+        <translation>Фон</translation>
     </message>
 </context>
 <context>
@@ -602,12 +602,12 @@
     <message>
         <location filename="../quick/qml/CopyPasteButtons.qml" line="9"/>
         <source>Copy</source>
-        <translation type="unfinished">Копировать</translation>
+        <translation>Копировать</translation>
     </message>
     <message>
         <location filename="../quick/qml/CopyPasteButtons.qml" line="14"/>
         <source>Paste</source>
-        <translation type="unfinished"></translation>
+        <translation>Вставить</translation>
     </message>
 </context>
 <context>
@@ -658,197 +658,197 @@
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="5"/>
         <source>Config of device &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Конфигурация устройства &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="5"/>
         <source>Add new device</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить новое устройство</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="9"/>
         <source>Device ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID устройства</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="10"/>
         <source>Device Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя устройства</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="10"/>
         <source>Shown instead of Device ID. Will be updated to the name the device advertises if left empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отображается вместо идентификатора устройства. Если оставить поле пустым, оно будет обновлено до имени, которое рекламирует устройство.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="11"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation>Приостановлено</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="11"/>
         <source>Whether synchronization with this devices is (temporarily) suspended.</source>
-        <translation type="unfinished"></translation>
+        <translation>Приостановлена ​​ли (временно) синхронизация с этим устройством.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="12"/>
         <source>Introducer</source>
-        <translation type="unfinished"></translation>
+        <translation>Интродуктор</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="12"/>
         <source>Add devices from the introducer to our device list, for mutually shared folders.</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавьте устройства из презентатора в наш список устройств для совместного использования папок.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="13"/>
         <source>Auto Accept</source>
-        <translation type="unfinished"></translation>
+        <translation>Автоматическое принятие</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="13"/>
         <source>Automatically create or share folders that this device advertises at the default path.</source>
-        <translation type="unfinished"></translation>
+        <translation>Автоматически создавать или предоставлять общий доступ к папкам, которые это устройство объявляет по пути по умолчанию.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="14"/>
         <source>Addresses</source>
-        <translation type="unfinished"></translation>
+        <translation>Адреса</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="14"/>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Адрес</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="14"/>
         <source>Add addresses (e.g. &quot;tcp://ip:port&quot;, &quot;tcp://host:port&quot;) or &quot;dynamic&quot; to perform automatic discovery of the address.</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавьте адреса (например, «tcp://ip:port», «tcp://host:port») или «dynamic» для автоматического обнаружения адреса.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="15"/>
         <source>Number of Connections</source>
-        <translation type="unfinished"></translation>
+        <translation>Количество соединений</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="15"/>
         <source>When set to more than one on both devices, Syncthing will attempt to establish multiple concurrent connections. If the values differ, the highest will be used. Set to zero to let Syncthing decide.</source>
-        <translation type="unfinished"></translation>
+        <translation>Если на обоих устройствах задано значение более одного, Syncthing попытается установить несколько одновременных подключений. Если значения различаются, будет использоваться наибольшее. Установите значение 0, чтобы Syncthing принял решение.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="16"/>
         <source>Untrusted</source>
-        <translation type="unfinished"></translation>
+        <translation>Ненадежный</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="16"/>
         <source>All folders shared with this device must be protected by a password, such that all sent data is unreadable without the given password.</source>
-        <translation type="unfinished"></translation>
+        <translation>Все папки, к которым предоставлен общий доступ с этого устройства, должны быть защищены паролем, чтобы все отправленные данные были нечитаемы без указанного пароля.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="17"/>
         <source>Compression</source>
-        <translation type="unfinished"></translation>
+        <translation>Сжатие</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="17"/>
         <source>Whether to use protocol compression when sending messages to this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать ли сжатие протокола при отправке сообщений на это устройство.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="18"/>
         <source>Metadata Only</source>
-        <translation type="unfinished"></translation>
+        <translation>Только метаданные</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="18"/>
         <source>Compress metadata packets, such as index information. Metadata is usually very compression friendly so this is a good default.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сжимайте пакеты метаданных, например, информацию индекса. Метаданные обычно хорошо поддаются сжатию, поэтому этот вариант по умолчанию подходит.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="19"/>
         <source>All data</source>
-        <translation type="unfinished"></translation>
+        <translation>Все данные</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="19"/>
         <source>Compress all packets, including file data. This is recommended if the folders contents are mainly compressible data such as documents or text files.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сжимайте все пакеты, включая данные файлов. Это рекомендуется, если содержимое папок в основном состоит из сжимаемых данных, таких как документы или текстовые файлы.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="20"/>
         <source>Off</source>
-        <translation type="unfinished"></translation>
+        <translation>Выключено</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="20"/>
         <source>Disable all compression.</source>
-        <translation type="unfinished"></translation>
+        <translation>Отключить все виды сжатия.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="22"/>
         <source>Incoming Rate Limit (KiB/s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Предел входящей скорости (КиБ/с)</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="22"/>
         <source>Maximum receive rate to use for this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Максимальная скорость приема для этого устройства.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="23"/>
         <source>Outgoing Rate Limit (KiB/s)</source>
-        <translation type="unfinished"></translation>
+        <translation>Лимит исходящей скорости (КиБ/с)</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="23"/>
         <source>Maximum send rate to use for this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Максимальная скорость отправки для этого устройства.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="24"/>
         <source>Ignored folders</source>
-        <translation type="unfinished"></translation>
+        <translation>Игнорируемые папки</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="24"/>
         <source>Ignored folder without ID/label</source>
-        <translation type="unfinished"></translation>
+        <translation>Игнорируемая папка без идентификатора/метки</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="24"/>
         <source>The list of the folders that should be ignored. These folders will always be skipped when advertised from this remote device, i.e. they will be logged, but there will be no dialog shown.</source>
-        <translation type="unfinished"></translation>
+        <translation>Список папок, которые следует игнорировать. Эти папки всегда будут пропущены при объявлении с этого удалённого устройства, то есть они будут зарегистрированы, но диалоговое окно не будет показано.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="28"/>
         <source>Folder ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Идентификатор папки</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="28"/>
         <source>The ID of the folder to be ignored.</source>
-        <translation type="unfinished"></translation>
+        <translation>ID папки, которую следует игнорировать.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="29"/>
         <source>Folder Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Метка папки</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="29"/>
         <source>The label of the folder being ignored (for informative purposes).</source>
-        <translation type="unfinished"></translation>
+        <translation>Метка игнорируемой папки (в информационных целях).</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="30"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Время</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="30"/>
         <source>The time when this entry was added (for informative purposes).</source>
-        <translation type="unfinished"></translation>
+        <translation>Время добавления этой записи (для информационных целей).</translation>
     </message>
 </context>
 <context>
@@ -856,27 +856,27 @@
     <message>
         <location filename="../quick/qml/DevDelegate.qml" line="14"/>
         <source>Resume</source>
-        <translation type="unfinished"></translation>
+        <translation>Резюме</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevDelegate.qml" line="14"/>
         <source>Pause</source>
-        <translation type="unfinished"></translation>
+        <translation>Пауза</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevDelegate.qml" line="22"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактировать</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevDelegate.qml" line="27"/>
         <source>Out of Sync items</source>
-        <translation type="unfinished"></translation>
+        <translation>Несинхронизированные элементы</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevDelegate.qml" line="33"/>
         <source>Advanced config</source>
-        <translation type="unfinished"></translation>
+        <translation>Расширенная конфигурация</translation>
     </message>
 </context>
 <context>
@@ -884,22 +884,22 @@
     <message>
         <location filename="../quick/qml/DevsPage.qml" line="13"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Устройства</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevsPage.qml" line="23"/>
         <source>Add device</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить устройство</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevsPage.qml" line="30"/>
         <source>Pause all</source>
-        <translation type="unfinished"></translation>
+        <translation>Приостановить все</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevsPage.qml" line="35"/>
         <source>Resume all</source>
-        <translation type="unfinished"></translation>
+        <translation>Возобновить все</translation>
     </message>
 </context>
 <context>
@@ -907,478 +907,478 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="7"/>
         <source>Config of folder &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Конфигурация папки &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="7"/>
         <source>Add new folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить новую папку</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="11"/>
         <source>ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="11"/>
         <source>Required identifier for the folder. Must be the same on all cluster devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>Обязательный идентификатор папки. Должен быть одинаковым на всех устройствах кластера.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="12"/>
         <source>Label</source>
-        <translation type="unfinished"></translation>
+        <translation>Этикетка</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="12"/>
         <source>Optional descriptive label for the folder. Can be different on each device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Необязательная описательная метка для папки. Может отличаться на каждом устройстве.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="13"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation>Приостановлено</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="13"/>
         <source>Whether this folder is (temporarily) suspended.</source>
-        <translation type="unfinished"></translation>
+        <translation>Приостановлена ​​ли эта папка (временно).</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="14"/>
         <source>Path</source>
-        <translation type="unfinished"></translation>
+        <translation>Путь</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="14"/>
         <source>Path to the folder on the local computer. Will be created if it does not exist. The tilde character (~) can be used as a shortcut for &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Путь к папке на локальном компьютере. Будет создан, если она не существует. Символ тильды (~) можно использовать в качестве сокращения для «%1».</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="15"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Тип</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="15"/>
         <source>Controls how the folder is handled by Syncthing. Open the selection and go though the different options for details about them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Управляет обработкой папки Syncthing. Откройте выбранный файл и изучите различные параметры, чтобы узнать о них больше.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="16"/>
         <source>Files are synchronized from the cluster and changes made on this device will be sent to the rest of the cluster.</source>
-        <translation type="unfinished"></translation>
+        <translation>Файлы синхронизируются из кластера, и изменения, внесенные на этом устройстве, будут отправлены на остальную часть кластера.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="17"/>
         <source>Files are protected from changes made on other devices, but changes made on this device will be sent to the rest of the cluster.</source>
-        <translation type="unfinished"></translation>
+        <translation>Файлы защищены от изменений, внесенных на других устройствах, но изменения, внесенные на этом устройстве, будут отправлены на весь кластер.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="18"/>
         <source>Files are synchronized from the cluster, but any changes made locally will not be sent to other devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>Файлы синхронизируются из кластера, но любые изменения, внесенные локально, не будут отправлены на другие устройства.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="19"/>
         <source>Stores and syncs only encrypted data. Folders on all connected devices need to be set up with the same password or be of type &quot;Receive Encrypted&quot; too. Can only be assigned to new folders.</source>
-        <translation type="unfinished"></translation>
+        <translation>Хранит и синхронизирует только зашифрованные данные. Папки на всех подключенных устройствах должны быть настроены с одинаковым паролем или иметь тип «Получить зашифрованные». Можно назначать только новым папкам.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="21"/>
         <source>Share with</source>
-        <translation type="unfinished"></translation>
+        <translation>Поделиться с</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="21"/>
         <source>Select devices to share this folder with.</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите устройства, с которыми вы хотите поделиться этой папкой.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="22"/>
         <source>Versioning</source>
-        <translation type="unfinished"></translation>
+        <translation>Версионирование</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="22"/>
         <source>Syncthing supports archiving the old version of a file when it is deleted or replaced with a newer version from the cluster. Versioning applies to changes received from &lt;i&gt;other&lt;/i&gt; devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing поддерживает архивацию старой версии файла при его удалении или замене новой версией из кластера. Управление версиями применяется к изменениям, полученным с &lt;i&gt;других&lt;/i&gt; устройств.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="23"/>
         <source>Watch for Changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Следите за изменениями</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="23"/>
         <source>Use notifications from the filesystem to detect changed items. Watching for changes discovers most changes without periodic scanning.</source>
-        <translation type="unfinished"></translation>
+        <translation>Используйте уведомления файловой системы для обнаружения изменившихся элементов. Отслеживание изменений позволяет обнаружить большинство изменений без периодического сканирования.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="24"/>
         <source>Rescan Interval</source>
-        <translation type="unfinished"></translation>
+        <translation>Интервал повторного сканирования</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="24"/>
         <source>The frequency in which Syncthing will rescan the folder for changes. Can be set to 0 to rely on triggering rescans manually.</source>
-        <translation type="unfinished"></translation>
+        <translation>Частота, с которой Syncthing будет повторно сканировать папку на наличие изменений. Можно установить значение 0, чтобы повторное сканирование запускалось вручную.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="25"/>
         <source>Watcher Delay</source>
-        <translation type="unfinished"></translation>
+        <translation>Задержка наблюдателя</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="25"/>
         <source>The duration during which changes detected are accumulated, before a scan is scheduled. Takes only effect if &quot;Watch for Changes&quot; is enabled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Продолжительность накопления обнаруженных изменений до планирования сканирования. Действует только при включенном режиме «Слежение за изменениями».</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="26"/>
         <source>Watcher Timeout</source>
-        <translation type="unfinished"></translation>
+        <translation>Тайм-аут наблюдателя</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="26"/>
         <source>The maximum delay before a scan is triggered when a file is continuously changing. If unset or zero a default value is calculated based on &quot;Watcher Delay&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Максимальная задержка перед запуском сканирования при постоянном изменении файла. Если не задано или равно нулю, значение по умолчанию рассчитывается на основе параметра «Задержка наблюдателя».</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="27"/>
         <source>Minimum Free Disk Space</source>
-        <translation type="unfinished"></translation>
+        <translation>Минимальное свободное место на диске</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="27"/>
         <source>The minimum required free space that should be available on the disk this folder resides. The folder will be stopped when the value drops below the threshold. Set to zero to disable.</source>
-        <translation type="unfinished"></translation>
+        <translation>Минимально необходимое свободное пространство на диске, где находится эта папка. Папка будет остановлена, когда значение станет ниже порогового. Установите значение 0, чтобы отключить.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="36"/>
         <source>Block Pull Order</source>
-        <translation type="unfinished"></translation>
+        <translation>Блокировать заказ на извлечение</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="28"/>
         <source>The order in which needed files should be pulled from the cluster. It has no effect when the folder type is “send only”. Open the selection and go though the different options for details about them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Порядок, в котором следует извлекать необходимые файлы из кластера. Он не имеет значения, если тип папки — «только для отправки». Откройте выбранные папки и изучите различные варианты, чтобы получить подробную информацию.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="29"/>
         <location filename="../quick/qml/DirConfigPage.qml" line="38"/>
         <source>Random</source>
-        <translation type="unfinished"></translation>
+        <translation>Случайный</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="29"/>
         <source>Pull files in random order. This optimizes for balancing resources among the devices in a cluster.</source>
-        <translation type="unfinished"></translation>
+        <translation>Извлекайте файлы в случайном порядке. Это оптимизирует распределение ресурсов между устройствами в кластере.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="30"/>
         <source>Alphabetic</source>
-        <translation type="unfinished"></translation>
+        <translation>Алфавитный</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="30"/>
         <source>Pull files ordered by file name alphabetically.</source>
-        <translation type="unfinished"></translation>
+        <translation>Извлечь файлы, отсортированные по имени файла в алфавитном порядке.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="31"/>
         <source>Smallest First</source>
-        <translation type="unfinished"></translation>
+        <translation>Самый маленький первый</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="31"/>
         <source>Pull files ordered by file size; smallest first.</source>
-        <translation type="unfinished"></translation>
+        <translation>Извлечь файлы, отсортированные по размеру; сначала самые маленькие.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="32"/>
         <source>Largest First</source>
-        <translation type="unfinished"></translation>
+        <translation>Самый большой первый</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="32"/>
         <source>Pull files ordered by file size; largest first.</source>
-        <translation type="unfinished"></translation>
+        <translation>Извлечь файлы, отсортированные по размеру; сначала самые большие.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="33"/>
         <source>Oldest First</source>
-        <translation type="unfinished"></translation>
+        <translation>Сначала самые старые</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="33"/>
         <source>Pull files ordered by modification time; oldest first.</source>
-        <translation type="unfinished"></translation>
+        <translation>Извлечь файлы, отсортированные по времени изменения; сначала самые старые.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="34"/>
         <source>Newest First</source>
-        <translation type="unfinished"></translation>
+        <translation>Сначала самые новые</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="34"/>
         <source>Pull files ordered by modification time; newest first.</source>
-        <translation type="unfinished"></translation>
+        <translation>Извлечь файлы, отсортированные по времени изменения; сначала самые новые.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="28"/>
         <source>File Pull Order</source>
-        <translation type="unfinished"></translation>
+        <translation>Порядок извлечения файлов</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="36"/>
         <source>Order in which the blocks of a file are downloaded. This option controls how quickly different parts of the file spread between the connected devices, at the cost of causing strain on the storage. Open the selection and go though the different options for details about them.</source>
-        <translation type="unfinished"></translation>
+        <translation>Порядок загрузки блоков файла. Этот параметр управляет скоростью распространения различных частей файла между подключенными устройствами, что повышает нагрузку на хранилище. Откройте выбранные устройства и изучите различные варианты, чтобы получить подробную информацию о них.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="37"/>
         <source>Standard</source>
-        <translation type="unfinished"></translation>
+        <translation>Стандартный</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="37"/>
         <source>The blocks of a file are split into N equal continuous sequences, where N is the number of connected devices. Each device starts downloading its own sequence, after which it picks other devices sequences at random. Provides acceptable data distribution and minimal spinning disk strain.</source>
-        <translation type="unfinished"></translation>
+        <translation>Блоки файла разбиваются на N равных непрерывных последовательностей, где N — количество подключенных устройств. Каждое устройство начинает загрузку своей последовательности, после чего случайным образом выбирает последовательности других устройств. Обеспечивает приемлемое распределение данных и минимальную нагрузку на вращающийся диск.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="38"/>
         <source>The blocks of a file are downloaded in a random order. Provides great data distribution, but very taxing on spinning disk drives.</source>
-        <translation type="unfinished"></translation>
+        <translation>Блоки файла загружаются в случайном порядке. Обеспечивает отличное распределение данных, но очень нагружает вращающиеся диски.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="39"/>
         <source>In-Order</source>
-        <translation type="unfinished"></translation>
+        <translation>Чтобы</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="39"/>
         <source>The blocks of a file are downloaded sequentially, from start to finish. Spinning disk drive friendly, but provides no improvements to data distribution.</source>
-        <translation type="unfinished"></translation>
+        <translation>Блоки файла загружаются последовательно, от начала до конца. Удобно для вращающегося диска, но не улучшает распределение данных.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="41"/>
         <source>Ignore Permissions</source>
-        <translation type="unfinished"></translation>
+        <translation>Игнорировать разрешения</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="41"/>
         <source>Disables comparing and syncing file permissions. Useful on systems with nonexistent or custom permissions (e.g. FAT, exFAT, Synology, Android).</source>
-        <translation type="unfinished"></translation>
+        <translation>Отключает сравнение и синхронизацию прав доступа к файлам. Полезно в системах с несуществующими или настраиваемыми правами доступа (например, FAT, exFAT, Synology, Android).</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="42"/>
         <source>Sync Ownership</source>
-        <translation type="unfinished"></translation>
+        <translation>Синхронизация права собственности</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="42"/>
         <source>Enables sending ownership information to other devices, and applying incoming ownership information. Typically requires running with elevated privileges.</source>
-        <translation type="unfinished"></translation>
+        <translation>Позволяет отправлять информацию о владельце на другие устройства и применять полученную информацию. Обычно требует запуска с повышенными привилегиями.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="43"/>
         <source>Send Ownership</source>
-        <translation type="unfinished"></translation>
+        <translation>Отправить право собственности</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="43"/>
         <source>Enables sending ownership information to other devices, but not applying incoming ownership information. This can have a significant performance impact. Always enabled when &quot;Sync Ownership&quot; is enabled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Позволяет отправлять информацию о владельце на другие устройства, но не применять входящую информацию о владельце. Это может существенно повлиять на производительность. Всегда включено, если включена функция «Синхронизация владения».</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="44"/>
         <source>Sync Extended Attributes</source>
-        <translation type="unfinished"></translation>
+        <translation>Синхронизировать расширенные атрибуты</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="44"/>
         <source>Enables sending extended attributes to other devices, and applying incoming extended attributes. May require running with elevated privileges.</source>
-        <translation type="unfinished"></translation>
+        <translation>Позволяет отправлять расширенные атрибуты другим устройствам и применять входящие расширенные атрибуты. Может потребоваться запуск с повышенными привилегиями.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="45"/>
         <source>Send Extended Attributes</source>
-        <translation type="unfinished"></translation>
+        <translation>Отправить расширенные атрибуты</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="45"/>
         <source>Enables sending extended attributes to other devices, but not applying incoming extended attributes. This can have a significant performance impact. Always enabled when &quot;Sync Extended Attributes&quot; is enabled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Позволяет отправлять расширенные атрибуты другим устройствам, но не применять входящие расширенные атрибуты. Это может существенно повлиять на производительность. Всегда включено, если включен параметр «Синхронизировать расширенные атрибуты».</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="49"/>
         <source>There are different &lt;i&gt;versioning strategies&lt;/i&gt; to choose from. Open the selection and go through the options for details on the individual versioning strategies.</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы можете выбрать из различных &lt;i&gt;стратегий управления версиями&lt;/i&gt;. Откройте выбранные варианты и просмотрите их, чтобы узнать подробности об отдельных стратегиях управления версиями.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="50"/>
         <source>File versioning is not going to be used.</source>
-        <translation type="unfinished"></translation>
+        <translation>Управление версиями файлов использоваться не будет.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="51"/>
         <source>Files are moved to .stversions directory when replaced or deleted by Syncthing.</source>
-        <translation type="unfinished"></translation>
+        <translation>При замене или удалении с помощью Syncthing файлы перемещаются в каталог .stversions.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="52"/>
         <source>Files are moved to date stamped versions in a .stversions directory when replaced or deleted by Syncthing.</source>
-        <translation type="unfinished"></translation>
+        <translation>При замене или удалении с помощью Syncthing файлы перемещаются в версии с отметкой даты в каталоге .stversions.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="53"/>
         <source>&lt;p&gt;Files are moved to date stamped versions in a .stversions directory when replaced or deleted by Syncthing. Versions are automatically deleted if they are older than the maximum age or exceed the number of files allowed in an interval.&lt;/p&gt;&lt;p&gt;The following intervals are used: for the first hour a version is kept every 30 seconds, for the first day a version is kept every hour, for the first 30 days a version is kept every day, until the maximum age a version is kept every week.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;При замене или удалении с помощью Syncthing файлы перемещаются в каталог .stversions с отметкой даты. Версии автоматически удаляются, если они старше максимального возраста или превышают количество файлов, разрешённое для данного интервала.&lt;/p&gt;&lt;p&gt;Используются следующие интервалы: в течение первого часа версия сохраняется каждые 30 секунд, в течение первого дня версия сохраняется каждый час, в течение первых 30 дней версия сохраняется каждый день, до достижения максимального возраста версия сохраняется каждую неделю.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="54"/>
         <source>An external command handles the versioning. It has to remove the file from the shared folder. If the path to the application contains spaces, it should be quoted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Внешняя команда управляет версиями. Она должна удалить файл из общей папки. Если путь к приложению содержит пробелы, его следует заключить в кавычки.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="56"/>
         <source>Versions Path</source>
-        <translation type="unfinished"></translation>
+        <translation>Путь к версиям</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="56"/>
         <source>Path where versions should be stored (leave empty for the default .stversions directory in the shared folder).</source>
-        <translation type="unfinished"></translation>
+        <translation>Путь, по которому следует хранить версии (оставьте пустым для каталога по умолчанию .stversions в общей папке).</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="57"/>
         <source>Filesystem Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Тип файловой системы</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="57"/>
         <source>The internal file system implementation used to access this versions folder.</source>
-        <translation type="unfinished"></translation>
+        <translation>Реализация внутренней файловой системы, используемая для доступа к этой папке версий.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="58"/>
         <source>Cleanup Interval in seconds</source>
-        <translation type="unfinished"></translation>
+        <translation>Интервал очистки в секундах</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="58"/>
         <source>The interval, in seconds, for running cleanup in the versions directory. Zero to disable periodic cleaning.</source>
-        <translation type="unfinished"></translation>
+        <translation>Интервал (в секундах) для запуска очистки каталога версий. Ноль отключает периодическую очистку.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="59"/>
         <source>Additional parameters</source>
-        <translation type="unfinished"></translation>
+        <translation>Дополнительные параметры</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="62"/>
         <source>Clean Out After</source>
-        <translation type="unfinished"></translation>
+        <translation>Очистка после</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="62"/>
         <source>The number of days to keep files in the versions folder. Zero means to keep forever. Older elements encountered during cleanup are removed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Количество дней хранения файлов в папке версий. Ноль означает вечное хранение. Старые элементы, обнаруженные при очистке, удаляются.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="63"/>
         <source>Keep Versions</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранять версии</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="63"/>
         <source>The number of old versions to keep, per file.</source>
-        <translation type="unfinished"></translation>
+        <translation>Количество старых версий, которые необходимо сохранить, для каждого файла.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="64"/>
         <source>Maximum Age</source>
-        <translation type="unfinished"></translation>
+        <translation>Максимальный возраст</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="64"/>
         <source>The maximum time to keep a version, in seconds. Zero means to keep forever.</source>
-        <translation type="unfinished"></translation>
+        <translation>Максимальное время хранения версии в секундах. Ноль означает, что версия будет храниться вечно.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="65"/>
         <source>Command</source>
-        <translation type="unfinished"></translation>
+        <translation>Команда</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="65"/>
         <source>External command to execute for storing a file version about to be replaced or deleted. If the path to the application contains spaces, it should be quoted.</source>
-        <translation type="unfinished"></translation>
+        <translation>Внешняя команда, выполняемая для сохранения версии файла, которая будет заменена или удалена. Если путь к приложению содержит пробелы, его следует заключить в кавычки.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="68"/>
         <source>Value</source>
-        <translation type="unfinished"></translation>
+        <translation>Значение</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="68"/>
         <source>The minimum required free space that should be available on the disk this folder resides. The folder will be stopped when the value drops below the threshold. The value is interpreted according to the selected unit and can be set to zero to disable the check for minimum free space.</source>
-        <translation type="unfinished"></translation>
+        <translation>Минимально необходимое свободное пространство на диске, где находится эта папка. Папка будет остановлена, когда значение станет ниже порогового. Значение интерпретируется в соответствии с выбранными единицами измерения и может быть установлено равным нулю, чтобы отключить проверку минимального свободного места.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="69"/>
         <source>Unit</source>
-        <translation type="unfinished"></translation>
+        <translation>Единица</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="70"/>
         <source>Percent</source>
-        <translation type="unfinished"></translation>
+        <translation>Процент</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="70"/>
         <source>Percentage of the disk/volume size</source>
-        <translation type="unfinished"></translation>
+        <translation>Процент от размера диска/тома</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="71"/>
         <source>Kilobyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Килобайт</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="71"/>
         <source>Absolute size in Kilobyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Абсолютный размер в килобайтах</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="72"/>
         <source>Megabyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Мегабайт</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="72"/>
         <source>Absolute size in Megabyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Абсолютный размер в мегабайтах</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="73"/>
         <source>Gigabyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Гигабайт</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="73"/>
         <source>Absolute size in Gigabyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Абсолютный размер в гигабайтах</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="74"/>
         <source>Terrabyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Терабайт</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="74"/>
         <source>Absolute size in Terrabyte</source>
-        <translation type="unfinished"></translation>
+        <translation>Абсолютный размер в терабайтах</translation>
     </message>
 </context>
 <context>
@@ -1386,57 +1386,57 @@
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="14"/>
         <source>Rescan</source>
-        <translation type="unfinished"></translation>
+        <translation>Повторное сканирование</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="20"/>
         <source>Resume</source>
-        <translation type="unfinished"></translation>
+        <translation>Возобновить</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="20"/>
         <source>Pause</source>
-        <translation type="unfinished"></translation>
+        <translation>Пауза</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="25"/>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="32"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактировать</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="37"/>
         <source>Out of Sync items</source>
-        <translation type="unfinished"></translation>
+        <translation>Несинхронизированные элементы</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="49"/>
         <source>Show errors</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать ошибки</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="55"/>
         <source>Ignore patterns</source>
-        <translation type="unfinished"></translation>
+        <translation>Игнорировать шаблоны</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="60"/>
         <source>Remote files</source>
-        <translation type="unfinished"></translation>
+        <translation>Удаленные файлы</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="66"/>
         <source>Advanced config</source>
-        <translation type="unfinished"></translation>
+        <translation>Расширенная конфигурация</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="71"/>
         <source>Media rescan</source>
-        <translation type="unfinished"></translation>
+        <translation>Повторное сканирование медиа</translation>
     </message>
 </context>
 <context>
@@ -1444,7 +1444,7 @@
     <message>
         <location filename="../quick/qml/DirErrorsPage.qml" line="8"/>
         <source>Errors of folder &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибки папки &quot;%1&quot;</translation>
     </message>
 </context>
 <context>
@@ -1452,22 +1452,22 @@
     <message>
         <location filename="../quick/qml/DirListView.qml" line="12"/>
         <source>Override changes on remote devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Переопределить изменения на удаленных устройствах</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirListView.qml" line="12"/>
         <source>Revert local changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Отменить локальные изменения</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirListView.qml" line="17"/>
         <source>Do you really want to override changes on remote devices within folder &quot;%1&quot;? This will mark the local version as the latest version causing changes on all remote devices to be overridden with the version from this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы действительно хотите переопределить изменения на удалённых устройствах в папке «%1»? Это отметит локальную версию как последнюю, и изменения на всех удалённых устройствах будут переопределены версией с этого устройства.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirListView.qml" line="18"/>
         <source>Do you really want to revert the local changes on this device within folder &quot;%1&quot;? This will undo all local changes on this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы действительно хотите отменить локальные изменения на этом устройстве в папке «%1»? Это отменит все локальные изменения на этом устройстве.</translation>
     </message>
 </context>
 <context>
@@ -1475,27 +1475,27 @@
     <message>
         <location filename="../quick/qml/DirsPage.qml" line="13"/>
         <source>Folders</source>
-        <translation type="unfinished"></translation>
+        <translation>Папки</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirsPage.qml" line="23"/>
         <source>Add folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить папку</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirsPage.qml" line="30"/>
         <source>Pause all</source>
-        <translation type="unfinished"></translation>
+        <translation>Приостановить все</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirsPage.qml" line="35"/>
         <source>Resume all</source>
-        <translation type="unfinished"></translation>
+        <translation>Возобновить все</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirsPage.qml" line="40"/>
         <source>Rescan all</source>
-        <translation type="unfinished"></translation>
+        <translation>Пересканировать все</translation>
     </message>
 </context>
 <context>
@@ -1503,7 +1503,7 @@
     <message>
         <location filename="../quick/qml/DiscardChangesDialog.qml" line="14"/>
         <source>Do you really want to go back without applying changes?</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы действительно хотите вернуться без применения изменений?</translation>
     </message>
 </context>
 <context>
@@ -1511,12 +1511,12 @@
     <message>
         <location filename="../quick/qml/ErrorsPage.qml" line="8"/>
         <source>Notifications/errors</source>
-        <translation type="unfinished">Уведомления/ошибки</translation>
+        <translation>Уведомления/ошибки</translation>
     </message>
     <message>
         <location filename="../quick/qml/ErrorsPage.qml" line="12"/>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Очистить</translation>
     </message>
 </context>
 <context>
@@ -1524,7 +1524,7 @@
     <message>
         <location filename="../quick/qml/ExpandableItemDelegate.qml" line="76"/>
         <source>More actions</source>
-        <translation type="unfinished"></translation>
+        <translation>Больше действий</translation>
     </message>
 </context>
 <context>
@@ -1532,17 +1532,17 @@
     <message>
         <location filename="../quick/qml/FilesPage.qml" line="9"/>
         <source>Remote/global tree of &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Удаленное/глобальное дерево &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../quick/qml/FilesPage.qml" line="158"/>
         <source>Deletion of the following local files (will affect other devices unless ignored below!):</source>
-        <translation type="unfinished">Удаление следующих локальных файлов (повлияет на другие устройства, если не проигнорировать нижеприведенные действия!):</translation>
+        <translation>Удаление следующих локальных файлов (повлияет на другие устройства, если не проигнорировать нижеприведенные действия!):</translation>
     </message>
     <message>
         <location filename="../quick/qml/FilesPage.qml" line="174"/>
         <source>Changes to ignore patterns:</source>
-        <translation type="unfinished">Изменения для игнорирования шаблонов:</translation>
+        <translation>Изменения для игнорирования шаблонов:</translation>
     </message>
 </context>
 <context>
@@ -1550,17 +1550,17 @@
     <message>
         <location filename="../quick/qml/HelpButton.qml" line="10"/>
         <source>Open help</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть справку</translation>
     </message>
     <message>
         <location filename="../quick/qml/HelpButton.qml" line="24"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрывать</translation>
     </message>
     <message>
         <location filename="../quick/qml/HelpButton.qml" line="29"/>
         <source>Details</source>
-        <translation type="unfinished"></translation>
+        <translation>Подробности</translation>
     </message>
 </context>
 <context>
@@ -1568,52 +1568,52 @@
     <message>
         <location filename="../quick/qml/HomeDirPage.qml" line="10"/>
         <source>Move Syncthing home directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Переместить домашний каталог Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/HomeDirPage.qml" line="70"/>
         <source>Custom path</source>
-        <translation type="unfinished"></translation>
+        <translation>Пользовательский путь</translation>
     </message>
     <message>
         <location filename="../quick/qml/HomeDirPage.qml" line="76"/>
         <source>Click to select a custom path</source>
-        <translation type="unfinished"></translation>
+        <translation>Нажмите, чтобы выбрать собственный путь</translation>
     </message>
     <message>
         <location filename="../quick/qml/HomeDirPage.qml" line="96"/>
         <source>Select custom home directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите пользовательский домашний каталог</translation>
     </message>
     <message>
         <location filename="../quick/qml/HomeDirPage.qml" line="109"/>
         <source>Move home to selected path</source>
-        <translation type="unfinished"></translation>
+        <translation>Перейти домой по выбранному пути</translation>
     </message>
     <message>
         <location filename="../quick/qml/HomeDirPage.qml" line="114"/>
         <source>No directory selected.</source>
-        <translation type="unfinished"></translation>
+        <translation>Каталог не выбран.</translation>
     </message>
     <message>
         <location filename="../quick/qml/HomeDirPage.qml" line="162"/>
         <source>This is the current home directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Это текущий домашний каталог.</translation>
     </message>
     <message>
         <location filename="../quick/qml/HomeDirPage.qml" line="165"/>
         <source>Warning: This directory is not empty and its contents will be replaced with the current home directory!</source>
-        <translation type="unfinished"></translation>
+        <translation>Внимание: этот каталог не пустой и его содержимое будет заменено текущим домашним каталогом!</translation>
     </message>
     <message>
         <location filename="../quick/qml/HomeDirPage.qml" line="167"/>
         <source>Warning: This directory is not empty. Its contents will be used as new home directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Внимание: этот каталог не пустой. Его содержимое будет использовано в качестве нового домашнего каталога.</translation>
     </message>
     <message>
         <location filename="../quick/qml/HomeDirPage.qml" line="170"/>
         <source>Warning: This path can probably not be used as home directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Предупреждение: этот путь, вероятно, не может быть использован в качестве домашнего каталога.</translation>
     </message>
 </context>
 <context>
@@ -1621,17 +1621,17 @@
     <message>
         <location filename="../quick/qml/IgnorePatternPage.qml" line="9"/>
         <source>Ignore patterns of &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Игнорировать шаблоны &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../quick/qml/IgnorePatternPage.qml" line="13"/>
         <source>Edit externally</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактировать внешне</translation>
     </message>
     <message>
         <location filename="../quick/qml/IgnorePatternPage.qml" line="19"/>
         <source>Save</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранять</translation>
     </message>
 </context>
 <context>
@@ -1639,67 +1639,67 @@
     <message>
         <location filename="../quick/qml/ImportPage.qml" line="10"/>
         <source>Select settings to import</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите настройки для импорта</translation>
     </message>
     <message>
         <location filename="../quick/qml/ImportPage.qml" line="33"/>
         <source>An error occurred when checking selected directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Произошла ошибка при проверке выбранного каталога</translation>
     </message>
     <message>
         <location filename="../quick/qml/ImportPage.qml" line="61"/>
         <source>App configuration</source>
-        <translation type="unfinished"></translation>
+        <translation>Конфигурация приложения</translation>
     </message>
     <message>
         <location filename="../quick/qml/ImportPage.qml" line="68"/>
         <source>Replace the app configuration with the one from the selected directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Замените конфигурацию приложения на конфигурацию из выбранного каталога.</translation>
     </message>
     <message>
         <location filename="../quick/qml/ImportPage.qml" line="96"/>
         <source>Full Syncthing configuration and database</source>
-        <translation type="unfinished"></translation>
+        <translation>Полная конфигурация и база данных Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/ImportPage.qml" line="103"/>
         <source>Replace entire (existing) Syncthing configuration and database with the one from the selected directory. Use this with care as restoring the database is potentially dangerous.</source>
-        <translation type="unfinished"></translation>
+        <translation>Замените всю (существующую) конфигурацию и базу данных Syncthing на данные из выбранного каталога. Используйте это с осторожностью, так как восстановление базы данных потенциально опасно.</translation>
     </message>
     <message>
         <location filename="../quick/qml/ImportPage.qml" line="124"/>
         <source>Selected folders</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбранные папки</translation>
     </message>
     <message>
         <location filename="../quick/qml/ImportPage.qml" line="125"/>
         <source>Merge the selected folders into the existing Syncthing configuration. You can change paths in case they differ on this device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Объедините выбранные папки с существующей конфигурацией Syncthing. Вы можете изменить пути, если они отличаются на этом устройстве.</translation>
     </message>
     <message>
         <location filename="../quick/qml/ImportPage.qml" line="126"/>
         <source>Select folders to import</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите папки для импорта</translation>
     </message>
     <message>
         <location filename="../quick/qml/ImportPage.qml" line="141"/>
         <source>Selected devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбранные устройства</translation>
     </message>
     <message>
         <location filename="../quick/qml/ImportPage.qml" line="142"/>
         <source>Merge the selected devices into the existing Syncthing configuration.</source>
-        <translation type="unfinished"></translation>
+        <translation>Объедините выбранные устройства в существующую конфигурацию Syncthing.</translation>
     </message>
     <message>
         <location filename="../quick/qml/ImportPage.qml" line="143"/>
         <source>Select devices to import</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите устройства для импорта</translation>
     </message>
     <message>
         <location filename="../quick/qml/ImportPage.qml" line="166"/>
         <source>Import selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Импортировать выбранное</translation>
     </message>
 </context>
 <context>
@@ -1707,12 +1707,12 @@
     <message>
         <location filename="../quick/qml/InternalErrorsPage.qml" line="8"/>
         <source>Log of Syncthing API errors</source>
-        <translation type="unfinished"></translation>
+        <translation>Журнал ошибок API Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/InternalErrorsPage.qml" line="13"/>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Прозрачный</translation>
     </message>
 </context>
 <context>
@@ -1720,37 +1720,37 @@
     <message>
         <location filename="../quick/qml/LeftDrawer.qml" line="31"/>
         <source>Quit</source>
-        <translation type="unfinished"></translation>
+        <translation>Выйти</translation>
     </message>
     <message>
         <location filename="../quick/qml/LeftDrawer.qml" line="40"/>
         <source>Start</source>
-        <translation type="unfinished">Старт</translation>
+        <translation>Старт</translation>
     </message>
     <message>
         <location filename="../quick/qml/LeftDrawer.qml" line="44"/>
         <source>Folders</source>
-        <translation type="unfinished"></translation>
+        <translation>Папки</translation>
     </message>
     <message>
         <location filename="../quick/qml/LeftDrawer.qml" line="48"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Устройства</translation>
     </message>
     <message>
         <location filename="../quick/qml/LeftDrawer.qml" line="52"/>
         <source>Recent changes</source>
-        <translation type="unfinished">Последние изменения</translation>
+        <translation>Последние изменения</translation>
     </message>
     <message>
         <location filename="../quick/qml/LeftDrawer.qml" line="56"/>
         <source>Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>Дополнительно</translation>
     </message>
     <message>
         <location filename="../quick/qml/LeftDrawer.qml" line="60"/>
         <source>App settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки приложения</translation>
     </message>
 </context>
 <context>
@@ -1758,7 +1758,7 @@
     <message>
         <location filename="../quick/qml/LoadingPane.qml" line="18"/>
         <source>Loading …</source>
-        <translation type="unfinished"></translation>
+        <translation>Загрузка…</translation>
     </message>
 </context>
 <context>
@@ -1766,17 +1766,17 @@
     <message>
         <location filename="../quick/qml/LogPage.qml" line="7"/>
         <source>Syncthing log</source>
-        <translation type="unfinished"></translation>
+        <translation>Журнал Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/LogPage.qml" line="20"/>
         <source>Copy</source>
-        <translation type="unfinished">Копировать</translation>
+        <translation>Копировать</translation>
     </message>
     <message>
         <location filename="../quick/qml/LogPage.qml" line="25"/>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Очистить</translation>
     </message>
 </context>
 <context>
@@ -1784,27 +1784,27 @@
     <message>
         <location filename="../quick/qml/MainTabBar.qml" line="12"/>
         <source>Start</source>
-        <translation type="unfinished">Старт</translation>
+        <translation>Старт</translation>
     </message>
     <message>
         <location filename="../quick/qml/MainTabBar.qml" line="17"/>
         <source>Folders</source>
-        <translation type="unfinished"></translation>
+        <translation>Папки</translation>
     </message>
     <message>
         <location filename="../quick/qml/MainTabBar.qml" line="22"/>
         <source>Devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Устройства</translation>
     </message>
     <message>
         <location filename="../quick/qml/MainTabBar.qml" line="27"/>
         <source>Recent changes</source>
-        <translation type="unfinished">Последние изменения</translation>
+        <translation>Последние изменения</translation>
     </message>
     <message>
         <location filename="../quick/qml/MainTabBar.qml" line="32"/>
         <source>More</source>
-        <translation type="unfinished"></translation>
+        <translation>Более</translation>
     </message>
 </context>
 <context>
@@ -1812,57 +1812,57 @@
     <message>
         <location filename="../quick/qml/MainToolBar.qml" line="22"/>
         <source>Show notifications/errors</source>
-        <translation type="unfinished"></translation>
+        <translation>Показывать уведомления/ошибки</translation>
     </message>
     <message>
         <location filename="../quick/qml/MainToolBar.qml" line="22"/>
         <source>Syncthing backend status is problematic</source>
-        <translation type="unfinished"></translation>
+        <translation>Состояние бэкэнда Syncthing проблематично</translation>
     </message>
     <message>
         <location filename="../quick/qml/MainToolBar.qml" line="40"/>
         <source>Show API errors</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать ошибки API</translation>
     </message>
     <message>
         <location filename="../quick/qml/MainToolBar.qml" line="44"/>
         <source>Show Syncthing errors/notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>Показывать ошибки/уведомления Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/MainToolBar.qml" line="81"/>
         <source>Try to re-connect</source>
-        <translation type="unfinished"></translation>
+        <translation>Попробуйте переподключиться</translation>
     </message>
     <message>
         <location filename="../quick/qml/MainToolBar.qml" line="92"/>
         <source>Toggle menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Переключить меню</translation>
     </message>
     <message>
         <location filename="../quick/qml/MainToolBar.qml" line="99"/>
         <source>Back</source>
-        <translation type="unfinished"></translation>
+        <translation>Назад</translation>
     </message>
     <message>
         <location filename="../quick/qml/MainToolBar.qml" line="113"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation>Поиск</translation>
     </message>
     <message>
         <location filename="../quick/qml/MainToolBar.qml" line="136"/>
         <source>More</source>
-        <translation type="unfinished"></translation>
+        <translation>Далее</translation>
     </message>
     <message>
         <location filename="../quick/qml/MainToolBar.qml" line="162"/>
         <source>Searching %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Поиск %1</translation>
     </message>
     <message>
         <location filename="../quick/qml/MainToolBar.qml" line="168"/>
         <source>Clear search</source>
-        <translation type="unfinished"></translation>
+        <translation>Очистить поиск</translation>
     </message>
 </context>
 <context>
@@ -1870,7 +1870,7 @@
     <message>
         <location filename="../quick/qml/Meta.qml" line="4"/>
         <source>Syncthing</source>
-        <translation type="unfinished">Syncthing</translation>
+        <translation>Syncthing</translation>
     </message>
 </context>
 <context>
@@ -1878,38 +1878,38 @@
     <message>
         <location filename="../quick/qml/NeededPage.qml" line="10"/>
         <source>Out of Sync - %1 on %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Рассинхронизация - %1 на %2</translation>
     </message>
     <message>
         <location filename="../quick/qml/NeededPage.qml" line="11"/>
         <source>Out of Sync - %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Рассинхронизация - %1</translation>
     </message>
     <message>
         <location filename="../quick/qml/NeededPage.qml" line="15"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Обновить</translation>
     </message>
     <message>
         <location filename="../quick/qml/NeededPage.qml" line="48"/>
         <source>Move to top of queue</source>
-        <translation type="unfinished"></translation>
+        <translation>Переместить в начало очереди</translation>
     </message>
     <message>
         <location filename="../quick/qml/NeededPage.qml" line="85"/>
         <source>In progress</source>
-        <translation type="unfinished"></translation>
+        <translation>В ходе выполнения</translation>
     </message>
     <message>
         <location filename="../quick/qml/NeededPage.qml" line="86"/>
         <source>Queued</source>
-        <translation type="unfinished"></translation>
+        <translation>В очереди</translation>
     </message>
     <message>
         <location filename="../quick/qml/NeededPage.qml" line="87"/>
         <location filename="../quick/qml/NeededPage.qml" line="88"/>
         <source>Out of Sync</source>
-        <translation type="unfinished"></translation>
+        <translation>Рассинхронизация</translation>
     </message>
 </context>
 <context>
@@ -1917,17 +1917,17 @@
     <message>
         <location filename="../quick/qml/Notifications.qml" line="21"/>
         <source>Not a valid device ID.</source>
-        <translation type="unfinished"></translation>
+        <translation>Недействительный идентификатор устройства.</translation>
     </message>
     <message>
         <location filename="../quick/qml/Notifications.qml" line="34"/>
         <source>Configuration changed</source>
-        <translation type="unfinished"></translation>
+        <translation>Конфигурация изменена</translation>
     </message>
     <message>
         <location filename="../quick/qml/Notifications.qml" line="40"/>
         <source>UI disconnected from Syncthing backend</source>
-        <translation type="unfinished"></translation>
+        <translation>Пользовательский интерфейс отключен от бэкэнда Syncthing</translation>
     </message>
 </context>
 <context>
@@ -1935,70 +1935,70 @@
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="38"/>
         <source>Copy</source>
-        <translation type="unfinished">Копировать</translation>
+        <translation>Копировать</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="96"/>
         <source>Make random ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Создать случайный ID</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="161"/>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="626"/>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="692"/>
         <source>Clear</source>
-        <translation type="unfinished"></translation>
+        <translation>Прозрачный</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="170"/>
         <source>Refresh list of devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Обновить список устройств</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="186"/>
         <source>This device has already been added!</source>
-        <translation type="unfinished"></translation>
+        <translation>Это устройство уже добавлено!</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="186"/>
         <source>The device ID looks valid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Идентификатор устройства выглядит действительным.</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="186"/>
         <source>The entered device ID looks invalid!</source>
-        <translation type="unfinished"></translation>
+        <translation>Введенный идентификатор устройства выглядит недействительным!</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="287"/>
         <source>A custom value has been entered.</source>
-        <translation type="unfinished"></translation>
+        <translation>Введено пользовательское значение.</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="352"/>
         <source>Change encryption password</source>
-        <translation type="unfinished"></translation>
+        <translation>Изменить пароль шифрования</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="352"/>
         <source>Set encryption password</source>
-        <translation type="unfinished"></translation>
+        <translation>Установить пароль шифрования</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="359"/>
         <source>Set encryption password for sharing with &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Установить пароль шифрования для совместного использования с «%1»</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="366"/>
         <source>If untrusted, enter encryption password</source>
-        <translation type="unfinished"></translation>
+        <translation>Если не доверяете, введите пароль шифрования</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="632"/>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="698"/>
         <source>Edit manually</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактировать вручную</translation>
     </message>
 </context>
 <context>
@@ -2006,82 +2006,82 @@
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="75"/>
         <source>Add new value</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить новое значение</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="80"/>
         <source>Index</source>
-        <translation type="unfinished"></translation>
+        <translation>Индекс</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="80"/>
         <source>Key</source>
-        <translation type="unfinished"></translation>
+        <translation>Ключ</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="87"/>
         <source>Type</source>
-        <translation type="unfinished"></translation>
+        <translation>Тип</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="105"/>
         <source>Device ID</source>
-        <translation type="unfinished"></translation>
+        <translation>ID устройства</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="105"/>
         <source>The ID of the device to be ignored.</source>
-        <translation type="unfinished"></translation>
+        <translation>ID устройства, которое следует игнорировать.</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="106"/>
         <source>Device Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя устройства</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="106"/>
         <source>The name of the device being ignored (for informative purposes).</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя игнорируемого устройства (в информационных целях).</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="107"/>
         <source>Address</source>
-        <translation type="unfinished"></translation>
+        <translation>Адрес</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="107"/>
         <source>The address of the device being ignored (for informative purposes).</source>
-        <translation type="unfinished"></translation>
+        <translation>Адрес игнорируемого устройства (в информационных целях).</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="108"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Время</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="108"/>
         <source>The time when this entry was added (for informative purposes).</source>
-        <translation type="unfinished"></translation>
+        <translation>Время добавления этой записи (для информационных целей).</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="143"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Помощь</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="149"/>
         <source>Add</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавлять</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="275"/>
         <source>Unable to add %1 because specified index is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно добавить %1, так как указанный индекс недействителен.</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="283"/>
         <source>Unable to add %1 because specified key is invalid.</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно добавить %1, так как указанный ключ недействителен.</translation>
     </message>
 </context>
 <context>
@@ -2089,17 +2089,17 @@
     <message>
         <location filename="../quick/qml/OutOfSyncDirs.qml" line="9"/>
         <source>Out of Sync folders on %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Несинхронизированные папки на %1</translation>
     </message>
     <message>
         <location filename="../quick/qml/OutOfSyncDirs.qml" line="13"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Обновить</translation>
     </message>
     <message>
         <location filename="../quick/qml/OutOfSyncDirs.qml" line="22"/>
         <source>%1: %2 items needed, ~ %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1: необходимо %2 предметов, ~ %3</translation>
     </message>
 </context>
 <context>
@@ -2107,32 +2107,32 @@
     <message>
         <location filename="../quick/qml/PendingDevices.qml" line="9"/>
         <source>Pending devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Ожидаемые устройства</translation>
     </message>
     <message>
         <location filename="../quick/qml/PendingDevices.qml" line="13"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Обновить</translation>
     </message>
     <message>
         <location filename="../quick/qml/PendingDevices.qml" line="34"/>
         <source>Name: </source>
-        <translation type="unfinished"></translation>
+        <translation>Имя: </translation>
     </message>
     <message>
         <location filename="../quick/qml/PendingDevices.qml" line="41"/>
         <source>Address: </source>
-        <translation type="unfinished"></translation>
+        <translation>Адрес: </translation>
     </message>
     <message>
         <location filename="../quick/qml/PendingDevices.qml" line="49"/>
         <source>Ignore</source>
-        <translation type="unfinished">Игнорировать</translation>
+        <translation>Игнорировать</translation>
     </message>
     <message>
         <location filename="../quick/qml/PendingDevices.qml" line="54"/>
         <source>Add device</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить устройство</translation>
     </message>
 </context>
 <context>
@@ -2140,37 +2140,37 @@
     <message>
         <location filename="../quick/qml/PendingDirs.qml" line="9"/>
         <source>Pending folders</source>
-        <translation type="unfinished"></translation>
+        <translation>Ожидающие папки</translation>
     </message>
     <message>
         <location filename="../quick/qml/PendingDirs.qml" line="13"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Обновить</translation>
     </message>
     <message>
         <location filename="../quick/qml/PendingDirs.qml" line="36"/>
         <source>Offered by:</source>
-        <translation type="unfinished"></translation>
+        <translation>Предложил:</translation>
     </message>
     <message>
         <location filename="../quick/qml/PendingDirs.qml" line="68"/>
         <source>For selected devices:</source>
-        <translation type="unfinished"></translation>
+        <translation>Для выбранных устройств:</translation>
     </message>
     <message>
         <location filename="../quick/qml/PendingDirs.qml" line="75"/>
         <source>Ignore</source>
-        <translation type="unfinished">Игнорировать</translation>
+        <translation>Игнорировать</translation>
     </message>
     <message>
         <location filename="../quick/qml/PendingDirs.qml" line="80"/>
         <source>Share existing folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Поделиться существующей папкой</translation>
     </message>
     <message>
         <location filename="../quick/qml/PendingDirs.qml" line="80"/>
         <source>Share new folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Поделиться новой папкой</translation>
     </message>
 </context>
 <context>
@@ -2198,7 +2198,7 @@
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1828"/>
         <source>Unable to restart via &quot;%1&quot;: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно перезапустить через «%1»: %2</translation>
     </message>
     <message>
         <source>Configure autostart</source>
@@ -2355,368 +2355,368 @@
     <message>
         <location filename="../quick/app.cpp" line="202"/>
         <source>Triggered override of &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Инициировано переопределение «%1»</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="204"/>
         <source>Triggered revert of &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Инициирован возврат «%1»</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="252"/>
         <source>Checking for data to import …</source>
-        <translation type="unfinished"></translation>
+        <translation>Проверка данных для импорта…</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="254"/>
         <source>Importing configuration …</source>
-        <translation type="unfinished"></translation>
+        <translation>Импорт конфигурации…</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="256"/>
         <source>Exporting configuration …</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт конфигурации…</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="258"/>
         <source>Checking locations to move home directory …</source>
-        <translation type="unfinished"></translation>
+        <translation>Проверка мест для перемещения домашнего каталога…</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="260"/>
         <source>Moving home directory …</source>
-        <translation type="unfinished"></translation>
+        <translation>Перемещение домашнего каталога…</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="262"/>
         <source>Cleaning home directory …</source>
-        <translation type="unfinished"></translation>
+        <translation>Очистка домашнего каталога…</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="264"/>
         <source>Saving support bundle …</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранение пакета поддержки…</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="270"/>
         <source>Backend is starting …</source>
-        <translation type="unfinished"></translation>
+        <translation>Бэкэнд запускается…</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="279"/>
         <source>Saving configuration …</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранение конфигурации…</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="420"/>
         <location filename="../quick/app.cpp" line="428"/>
         <source>Unable to open &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="449"/>
         <source>Scanning is not supported.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сканирование не поддерживается.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="461"/>
         <source>Copied value</source>
-        <translation type="unfinished"></translation>
+        <translation>Скопированное значение</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="465"/>
         <source>Unable to copy value</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно скопировать значение</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="473"/>
         <source>Unable to copy &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось скопировать «%1»</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="492"/>
         <source>Unable to load ignore patterns: </source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно загрузить шаблоны игнорирования: </translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="513"/>
         <source>Unable to save ignore patterns: </source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно сохранить шаблоны игнорирования: </translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="952"/>
         <source>Unable to resolve URL &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось разрешить URL «%1».</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1190"/>
         <source>Another config change is still pending.</source>
-        <translation type="unfinished"></translation>
+        <translation>Еще одно изменение конфигурации еще не внесено.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1300"/>
         <source>Unable to minimize app.</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно свернуть приложение.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1348"/>
         <source>Unable to save settings: </source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось сохранить настройки: </translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1429"/>
         <source>No logfile present anyway</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл журнала все равно отсутствует</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1435"/>
         <source>Waiting for backend to terminate before clearing logs …</source>
-        <translation type="unfinished"></translation>
+        <translation>Ожидание завершения работы бэкэнда перед очисткой журналов…</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1444"/>
         <source>Persistent logging disabled and logfile removed</source>
-        <translation type="unfinished"></translation>
+        <translation>Постоянное ведение журнала отключено, а файл журнала удален</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1446"/>
         <source>Unable to remove logfile</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно удалить файл журнала</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1462"/>
         <source>Another import/export still pending</source>
-        <translation type="unfinished"></translation>
+        <translation>Еще один импорт/экспорт все еще находится в процессе рассмотрения</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1515"/>
         <source>Settings directory was not located.</source>
-        <translation type="unfinished"></translation>
+        <translation>Каталог настроек не найден.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1530"/>
         <source>Unable to extract archive: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось извлечь архив: %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1535"/>
         <source>Unable to create temp dir: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось создать временный каталог: %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1539"/>
         <source>archiving is only supported on Android.</source>
-        <translation type="unfinished"></translation>
+        <translation>Архивирование поддерживается только на Android.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1563"/>
         <source>The Syncthing home directory under &quot;%1&quot; is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>Домашний каталог Syncthing в «%1» пуст.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1576"/>
         <source>No Syncthing configuration file found under &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Домашний каталог Syncthing в «%1» пуст.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1671"/>
         <source>Unable to import settings: settings directory was not located.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось импортировать настройки: каталог настроек не найден.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1678"/>
         <source>Waiting for backend to terminate before importing settings …</source>
-        <translation type="unfinished"></translation>
+        <translation>Ожидание завершения работы бэкэнда перед импортом настроек…</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1713"/>
         <source>Imported app config from &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Импортирована конфигурация приложения из &quot;%1&quot;.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1726"/>
         <source>Imported Syncthing config and database from &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Импортированы конфигурация и база данных Syncthing из &quot;%1&quot;.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1744"/>
         <source>Unable to find folders/devices in current Syncthing config.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось найти папки/устройства в текущей конфигурации Syncthing.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1759"/>
         <source>Merging %1 folders and %2 devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Объединение %1 папок и %2 устройств</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1761"/>
         <source>Unable to import folders/devices.</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно импортировать папки/устройства.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1770"/>
         <source>Unable to remove temp dir: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось удалить временный каталог: %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1775"/>
         <source>Nothing has been imported.</source>
-        <translation type="unfinished"></translation>
+        <translation>Ничего не импортировалось.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1787"/>
         <source>Unable to import settings: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось импортировать настройки: %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1829"/>
         <source>Waiting for backend to terminate before exporting settings …</source>
-        <translation type="unfinished"></translation>
+        <translation>Ожидание завершения работы бэкэнда перед экспортом настроек…</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1843"/>
         <source>settings directory was not located.</source>
-        <translation type="unfinished"></translation>
+        <translation>каталог настроек не найден.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1849"/>
         <source>no destination or file or directory specified/configured.</source>
-        <translation type="unfinished"></translation>
+        <translation>не указан/не настроен пункт назначения, файл или каталог.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1861"/>
         <source>Settings have been archived to &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки архивированы в «%1».</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1863"/>
         <source>Archiving is only supported on Android.</source>
-        <translation type="unfinished"></translation>
+        <translation>Архивирование поддерживается только на Android.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1869"/>
         <source>unable to create export directory under &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>невозможно создать каталог экспорта в «%1»</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1882"/>
         <source>Settings have been exported to &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки экспортированы в «%1».</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1890"/>
         <source>Unable to export settings: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно экспортировать настройки: %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1928"/>
         <source>Default directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Каталог по умолчанию</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1944"/>
         <source>External storage %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Внешнее хранилище %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1953"/>
         <source>Current home directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Текущий домашний каталог</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1979"/>
         <source>Unable to move Syncthing home: settings directory was not located.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось переместить Syncthing домой: каталог настроек не найден.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1985"/>
         <source>Waiting for backend to terminate before moving home …</source>
-        <translation type="unfinished"></translation>
+        <translation>Ожидание завершения работы бэкэнда перед возвращением домой…</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2005"/>
         <source>Home directory stays the same.</source>
-        <translation type="unfinished"></translation>
+        <translation>Домашний каталог остается прежним.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2016"/>
         <source>Cleaned up new home directory &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Очищен новый домашний каталог «%1».</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2022"/>
         <source>Copied data from previous home directory &quot;%1&quot; to new one.</source>
-        <translation type="unfinished"></translation>
+        <translation>Данные скопированы из предыдущего домашнего каталога «%1» в новый.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2025"/>
         <source>Cleaned up previous home directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Очистил предыдущий домашний каталог.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2028"/>
         <source>Configured &quot;%1&quot; as new/empty Syncthing home.</source>
-        <translation type="unfinished"></translation>
+        <translation>Настроил «%1» как новый/пустой домашний каталог Syncthing.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2030"/>
         <source>Configured &quot;%1&quot; as Syncthing home.</source>
-        <translation type="unfinished"></translation>
+        <translation>Настроил «%1» как домашний сервер Syncthing.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2034"/>
         <source>Unable to move home directory: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно переместить домашний каталог: %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2070"/>
         <source>Debugging needs to be enabled under advanced GUI settings first.</source>
-        <translation type="unfinished"></translation>
+        <translation>Сначала необходимо включить отладку в расширенных настройках графического интерфейса.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2077"/>
         <source>No destination or file or directory specified/configured.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не указано/не настроено место назначения, файл или каталог.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2087"/>
         <source>Unable to open output file under &quot;%1&quot;: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно открыть выходной файл в разделе «%1»: %2</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2105"/>
         <source>Unable to write bundle: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно записать пакет: %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2108"/>
         <source>Unable to download bundle: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось загрузить пакет: %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2111"/>
         <source>Support bundle saved</source>
-        <translation type="unfinished"></translation>
+        <translation>Пакет поддержки сохранен</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2132"/>
         <source>Removed old database directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Удален старый каталог базы данных.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2134"/>
         <source>Unable to remove old database directory.</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно удалить старый каталог базы данных.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2140"/>
         <source>There was nothing to clean up.</source>
-        <translation type="unfinished"></translation>
+        <translation>Убирать было нечего.</translation>
     </message>
     <message>
         <location filename="../quick/app.h" line="152"/>
         <source>not available</source>
-        <translation type="unfinished"></translation>
+        <translation>нет в наличии</translation>
     </message>
 </context>
 <context>
@@ -2724,18 +2724,18 @@
     <message>
         <location filename="../quick/appbase.cpp" line="70"/>
         <source>Not connected to backend.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не подключено к бэкэнду.</translation>
     </message>
     <message>
         <location filename="../quick/appbase.cpp" line="72"/>
         <source>Waiting for backend …</source>
-        <translation type="unfinished"></translation>
+        <translation>Жду бэкэнда…</translation>
     </message>
     <message numerus="yes">
         <location filename="../quick/appbase.cpp" line="75"/>
         <source>There are %n notification(s)/error(s).</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Имеется %n уведомлений/ошибок.</numerusform>
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
@@ -2743,8 +2743,8 @@
     <message numerus="yes">
         <location filename="../quick/appbase.cpp" line="77"/>
         <source>There are %n Syncthing API error(s).</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>Имеется %n ошибок API Syncthing.</numerusform>
             <numerusform></numerusform>
             <numerusform></numerusform>
         </translation>
@@ -2752,32 +2752,32 @@
     <message>
         <location filename="../quick/appbase.cpp" line="89"/>
         <source>Unable to open settings under &quot;%1&quot;: </source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно открыть настройки в «%1»:</translation>
     </message>
     <message>
         <location filename="../quick/appbase.cpp" line="106"/>
         <source>Unable to create settings directory under &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось создать каталог настроек в «%1».</translation>
     </message>
     <message>
         <location filename="../quick/appbase.cpp" line="138"/>
         <source>Unable to read settings: </source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно прочитать настройки:</translation>
     </message>
     <message>
         <location filename="../quick/appbase.cpp" line="147"/>
         <source>Unable to restore settings: </source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно восстановить настройки: </translation>
     </message>
     <message>
         <location filename="../quick/appbase.cpp" line="148"/>
         <source>JSON document contains no object</source>
-        <translation type="unfinished"></translation>
+        <translation>Документ JSON не содержит объектов</translation>
     </message>
     <message>
         <location filename="../quick/appbase.cpp" line="191"/>
         <source>Unable to load HTTPs certificate</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось загрузить сертификат HTTPs</translation>
     </message>
 </context>
 <context>
@@ -2785,58 +2785,58 @@
     <message>
         <location filename="../quick/appservice.cpp" line="140"/>
         <source>Backend is starting …</source>
-        <translation type="unfinished"></translation>
+        <translation>Бэкэнд запускается…</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="193"/>
         <source>Unable to open persistent log file for Syncthing under &quot;%1&quot;: %2</source>
-        <translation type="unfinished"></translation>
+        <translation>Невозможно открыть постоянный файл журнала для Syncthing в разделе «%1»: %2</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="215"/>
         <source>This build of the app cannot launch Syncthing.</source>
-        <translation type="unfinished"></translation>
+        <translation>Эта сборка приложения не может запустить Syncthing.</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="275"/>
         <source>Syncthing App ran into error</source>
-        <translation type="unfinished"></translation>
+        <translation>В приложении Syncthing произошла ошибка</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="474"/>
         <source>Syncthing error/notification</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка/уведомление синхронизации</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="474"/>
         <source>%1 Syncthing errors/notifications</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 Ошибки/уведомления синхронизации</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="475"/>
         <location filename="../quick/appservice.cpp" line="495"/>
         <source>Most recent: </source>
-        <translation type="unfinished"></translation>
+        <translation>Самые последние: </translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="494"/>
         <source>Syncthing API error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка API синхронизации</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="494"/>
         <source>%1 Syncthing API errors</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="508"/>
         <source>Syncthing device wants to connect</source>
-        <translation type="unfinished"></translation>
+        <translation>Устройство Syncthing хочет подключиться</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="522"/>
         <source>Syncthing device wants to share folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Устройство Syncthing хочет предоставить общий доступ к папке</translation>
     </message>
 </context>
 <context>
@@ -3474,12 +3474,12 @@
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="686"/>
         <source>Local path</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="693"/>
         <source>Path to Unix domain socket when setting Syncthing URL to &quot;unix+http://…&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>Путь к сокету домена Unix при установке URL-адреса Syncthing на «unix+http://…»</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="481"/>
@@ -3612,7 +3612,7 @@
     <message>
         <location filename="../misc/dbusstatusnotifier.cpp" line="31"/>
         <source> - new version</source>
-        <translation type="unfinished"></translation>
+        <translation> - новая версия</translation>
     </message>
     <message>
         <location filename="../misc/dbusstatusnotifier.cpp" line="34"/>
@@ -3648,12 +3648,12 @@
     <message>
         <location filename="../misc/dbusstatusnotifier.cpp" line="61"/>
         <source>Open updater</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть обновление</translation>
     </message>
     <message>
         <location filename="../misc/dbusstatusnotifier.h" line="108"/>
         <source>Version %1 is available</source>
-        <translation type="unfinished"></translation>
+        <translation>Доступна версия %1</translation>
     </message>
 </context>
 <context>
@@ -3794,7 +3794,7 @@
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="22"/>
         <source>Open Syncthing&apos;s UI via</source>
-        <translation type="unfinished">Откройте пользовательский интерфейс Syncthing через</translation>
+        <translation>Откройте пользовательский интерфейс Syncthing через</translation>
     </message>
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="28"/>
@@ -3852,7 +3852,7 @@
     <message>
         <location filename="../settings/iconsoptionpage.ui" line="97"/>
         <source>? px</source>
-        <translation>? пикс.</translation>
+        <translation>? пикс</translation>
     </message>
     <message>
         <location filename="../settings/iconsoptionpage.ui" line="106"/>
@@ -4025,7 +4025,7 @@
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="126"/>
         <source>Log level</source>
-        <translation type="unfinished">Уровень журнала</translation>
+        <translation>Уровень журнала</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="134"/>
@@ -4234,7 +4234,7 @@
     <message>
         <location filename="../settings/wizard.cpp" line="806"/>
         <source>Warnings:</source>
-        <translation type="unfinished"></translation>
+        <translation>Предупреждения:</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="787"/>
@@ -4305,12 +4305,12 @@
     <message>
         <location filename="../settings/wizard.cpp" line="747"/>
         <source>Syncthing has been started via the systemd %1 but the automatic setup detection was not able to connect via the REST-API. If you want Syncthing Tray to connect to this instance of Syncthing you will have to configure this manually. Otherwise you should probably stop this unit before proceeding with launching Syncthing in a different way.</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing был запущен через systemd %1, но автоматическое обнаружение настройки не смогло подключиться через REST-API. Если вы хотите, чтобы Syncthing Tray подключился к этому экземпляру Syncthing, вам придётся настроить это вручную. В противном случае, вероятно, следует остановить этот модуль, прежде чем запускать Syncthing другим способом.</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="797"/>
         <source>The systemd %1 and %2 have both be detected as enabled/running. This is probably a misconfiguration.</source>
-        <translation type="unfinished"></translation>
+        <translation>Обе службы systemd %1 и %2 обнаружены как включённые и работающие. Вероятно, это неправильная конфигурация.</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="762"/>
@@ -4669,7 +4669,7 @@
     <message>
         <location filename="../misc/statusinfo.cpp" line="55"/>
         <source>Tap to connect now</source>
-        <translation type="unfinished"></translation>
+        <translation>Нажмите, чтобы подключиться сейчас</translation>
     </message>
     <message>
         <location filename="../misc/statusinfo.cpp" line="61"/>
@@ -4813,7 +4813,7 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1640"/>
         <source>since </source>
-        <translation>с</translation>
+        <translation>с </translation>
     </message>
 </context>
 <context>
@@ -4934,7 +4934,7 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../settings/wizard.cpp" line="74"/>
         <source>Setup wizard - </source>
-        <translation>Мастер настройки -</translation>
+        <translation>Мастер настройки - </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="219"/>
@@ -5132,7 +5132,7 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../quick/qml/SelectiveImportDelegate.qml" line="84"/>
         <source>Set folder path of %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Установить путь к папке %1</translation>
     </message>
 </context>
 <context>
@@ -5156,252 +5156,252 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="14"/>
         <source>App settings</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки приложения</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="25"/>
         <source>Connection to Syncthing backend</source>
-        <translation type="unfinished"></translation>
+        <translation>Подключение к бэкэнду Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="26"/>
         <source>Configure connection with Syncthing backend</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройте соединение с бэкэндом Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="31"/>
         <source>Run conditions of Syncthing backend</source>
-        <translation type="unfinished"></translation>
+        <translation>Условия запуска бэкэнда Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="32"/>
         <source>Configure when to run Syncthing backend</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройте время запуска бэкэнда Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="37"/>
         <source>Clear log file</source>
-        <translation type="unfinished"></translation>
+        <translation>Очистить файл журнала</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="38"/>
         <source>Disables persistent logging and removes the log file</source>
-        <translation type="unfinished"></translation>
+        <translation>Отключает постоянное ведение журнала и удаляет файл журнала</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="43"/>
         <source>Tweaks</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройки</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="44"/>
         <source>Configure details of the app&apos;s behavior</source>
-        <translation type="unfinished"></translation>
+        <translation>Настройте детали поведения приложения</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="49"/>
         <source>Syncthing notifications/errors</source>
-        <translation type="unfinished"></translation>
+        <translation>Уведомления/ошибки синхронизации</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="54"/>
         <source>Log of Syncthing API errors</source>
-        <translation type="unfinished"></translation>
+        <translation>Журнал ошибок API Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="59"/>
         <source>Statistics</source>
-        <translation type="unfinished"></translation>
+        <translation>Статистика</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="65"/>
         <source>Import selected settings/secrets/data of app and backend</source>
-        <translation type="unfinished"></translation>
+        <translation>Импорт выбранных настроек/секретов/данных приложения и бэкэнда</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="70"/>
         <source>Export all settings/secrets/data of app and backend</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт всех настроек/секретов/данных приложения и бэкэнда</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="75"/>
         <source>Move Syncthing home directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Переместить домашний каталог Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="80"/>
         <source>Clean Syncthing home directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Очистите домашний каталог Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="81"/>
         <source>Removes the migrated database of Syncthing v1</source>
-        <translation type="unfinished"></translation>
+        <translation>Удаляет перенесенную базу данных Syncthing v1</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="85"/>
         <source>Save support bundle</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить пакет поддержки</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="126"/>
         <source>Do you really want to delete the persistent log file?</source>
-        <translation type="unfinished"></translation>
+        <translation>Вы действительно хотите удалить постоянный файл журнала?</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="162"/>
         <source>Automatic</source>
-        <translation type="unfinished"></translation>
+        <translation>Автоматический</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="162"/>
         <source>Connect to the Syncthing backend launched via this app and disregard the settings below.</source>
-        <translation type="unfinished"></translation>
+        <translation>Подключитесь к бэкэнду Syncthing, запущенному через это приложение, и проигнорируйте настройки, указанные ниже.</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="163"/>
         <source>Syncthing URL</source>
-        <translation type="unfinished">URL-адрес Syncthing</translation>
+        <translation>URL-адрес Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="164"/>
         <source>API key</source>
-        <translation type="unfinished">API-ключ</translation>
+        <translation>API-ключ</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="165"/>
         <source>HTTPs certificate path</source>
-        <translation type="unfinished"></translation>
+        <translation>Путь сертификата HTTPS</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="166"/>
         <source>HTTP authentication</source>
-        <translation type="unfinished"></translation>
+        <translation>HTTP-аутентификация</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="169"/>
         <source>Enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Включено</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="170"/>
         <source>Username</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя пользователя</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="171"/>
         <source>Password</source>
-        <translation type="unfinished">Пароль</translation>
+        <translation>Пароль</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="174"/>
         <source>Run Syncthing</source>
-        <translation type="unfinished"></translation>
+        <translation>Запустить Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="175"/>
         <source>Log level</source>
-        <translation type="unfinished">Уровень журнала</translation>
+        <translation>Уровень журнала</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="176"/>
         <source>Debug</source>
-        <translation type="unfinished">Отлаживать</translation>
+        <translation>Отлаживать</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="177"/>
         <source>Info</source>
-        <translation type="unfinished">Информация</translation>
+        <translation>Информация</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="178"/>
         <source>Warning</source>
-        <translation type="unfinished">Предупреждение</translation>
+        <translation>Предупреждение</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="179"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="181"/>
         <source>Stop on metered network connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Остановка при лимитном сетевом подключении</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="182"/>
         <source>Write persistent log file</source>
-        <translation type="unfinished"></translation>
+        <translation>Записать постоянный файл журнала</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="182"/>
         <source>Write a persistent log file into the app directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Записать постоянный файл журнала в каталог приложения</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="183"/>
         <source>Open logs</source>
-        <translation type="unfinished"></translation>
+        <translation>Открытые журналы</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="183"/>
         <source>Show Syncthing logs since app startup</source>
-        <translation type="unfinished"></translation>
+        <translation>Показать журналы Syncthing с момента запуска приложения</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="184"/>
         <source>Open persistent logs</source>
-        <translation type="unfinished"></translation>
+        <translation>Открытые постоянные журналы</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="184"/>
         <source>Open persistent log file externally</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть постоянный файл журнала извне</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="187"/>
         <source>Import/export archive</source>
-        <translation type="unfinished"></translation>
+        <translation>Импорт/экспорт архива</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="187"/>
         <source>Import and export to/from a Zip archive</source>
-        <translation type="unfinished"></translation>
+        <translation>Импорт и экспорт в/из Zip-архива</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="188"/>
         <source>Import/export password</source>
-        <translation type="unfinished"></translation>
+        <translation>Импорт/экспорт пароля</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="188"/>
         <source>Encrypt/decrypt data via AES-256 when exporting/importing to archive</source>
-        <translation type="unfinished"></translation>
+        <translation>Шифровать/дешифровать данные с помощью AES-256 при экспорте/импорте в архив</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="189"/>
         <source>Export path</source>
-        <translation type="unfinished"></translation>
+        <translation>Путь экспорта</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="189"/>
         <source>Save exports and support bundles under fix location</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранение экспортов и поддержка пакетов в фиксированном местоположении</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="190"/>
         <source>Use Unix domain socket</source>
-        <translation type="unfinished"></translation>
+        <translation>Использовать сокет домена Unix</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="190"/>
         <source>Reduces communication overhead and makes Syncthing API and web GUI inaccessible to other apps, applied after restart</source>
-        <translation type="unfinished"></translation>
+        <translation>Снижает накладные расходы на связь и делает API Syncthing и веб-интерфейс недоступными для других приложений. Применяется после перезапуска</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="196"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>Применять</translation>
     </message>
 </context>
 <context>
@@ -5409,119 +5409,119 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="10"/>
         <source>Syncthing</source>
-        <translation type="unfinished">Syncthing</translation>
+        <translation>Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="35"/>
         <source>Request storage permission</source>
-        <translation type="unfinished"></translation>
+        <translation>Запросить разрешение на хранение</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="52"/>
         <source>Request notification permission</source>
-        <translation type="unfinished"></translation>
+        <translation>Запрос разрешения на уведомление</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="71"/>
         <source>Set password for web-based GUI</source>
-        <translation type="unfinished"></translation>
+        <translation>Установить пароль для веб-интерфейса</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="77"/>
         <source>Otherwise other apps can access the web-based GUI without authentication.</source>
-        <translation type="unfinished"></translation>
+        <translation>В противном случае другие приложения смогут получать доступ к веб-интерфейсу без аутентификации.</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="97"/>
         <source>Local sync progress</source>
-        <translation type="unfinished"></translation>
+        <translation>Прогресс локальной синхронизации</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="111"/>
         <location filename="../quick/qml/StartPage.qml" line="145"/>
         <source>Up to Date</source>
-        <translation type="unfinished"></translation>
+        <translation>В актуальном состоянии</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="111"/>
         <source>%1 %, %2 remaining</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 %, %2 осталось</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="131"/>
         <source>Remote sync progress (of connected devices)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ход удаленной синхронизации (подключенных устройств)</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="145"/>
         <source>Not available</source>
-        <translation type="unfinished"></translation>
+        <translation>Нет в наличии</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="145"/>
         <source>%1 %</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 %</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="179"/>
         <source>Status</source>
-        <translation type="unfinished"></translation>
+        <translation>Статус</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="219"/>
         <location filename="../quick/qml/StartPage.qml" line="234"/>
         <source>Own device ID</source>
-        <translation type="unfinished">Собственный идентификатор устройства</translation>
+        <translation>Собственный идентификатор устройства</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="244"/>
         <source>Copy as text</source>
-        <translation type="unfinished"></translation>
+        <translation>Копировать как текст</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="249"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрыть</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="268"/>
         <source>Traffic</source>
-        <translation type="unfinished">Трафик</translation>
+        <translation>Трафик</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="301"/>
         <source>Global state</source>
-        <translation type="unfinished"></translation>
+        <translation>Глобально</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="306"/>
         <source>Local state</source>
-        <translation type="unfinished"></translation>
+        <translation>Локально</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="320"/>
         <source>Connect other device</source>
-        <translation type="unfinished"></translation>
+        <translation>Подключить другое устройство</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="337"/>
         <source>Share folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Поделиться папкой</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="354"/>
         <source>Open Syncthing in web browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Откройте Syncthing в веб-браузере</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="365"/>
         <source>Restart Syncthing</source>
-        <translation type="unfinished"></translation>
+        <translation>Перезапустить Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="370"/>
         <source>Quit app</source>
-        <translation type="unfinished"></translation>
+        <translation>Выйти из приложения</translation>
     </message>
 </context>
 <context>
@@ -5529,7 +5529,7 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../quick/qml/Statistics.qml" line="11"/>
         <source>%1 files, %2 dirs, ~ %3</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 файлов, %2 каталогов, ~ %3</translation>
     </message>
 </context>
 <context>
@@ -5537,107 +5537,107 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="8"/>
         <source>Statistics</source>
-        <translation type="unfinished"></translation>
+        <translation>Статистика</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="13"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Обновить</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="20"/>
         <source>Platform</source>
-        <translation type="unfinished"></translation>
+        <translation>Платформа</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="21"/>
         <source>Syncthing version</source>
-        <translation type="unfinished"></translation>
+        <translation>Синхронизирующая версия</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="22"/>
         <source>Uptime</source>
-        <translation type="unfinished"></translation>
+        <translation>Время безотказной работы</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="23"/>
         <source>Memory usage (only Go runtime)</source>
-        <translation type="unfinished"></translation>
+        <translation>Использование памяти (только среда выполнения Go)</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="24"/>
         <source>Resident set size (only Go runtime)</source>
-        <translation type="unfinished"></translation>
+        <translation>Использование памяти (только выполнение среды Go)</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="25"/>
         <source>NAT type</source>
-        <translation type="unfinished"></translation>
+        <translation>Тип NAT</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="26"/>
         <source>Syncthing config directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Каталог конфигурации синхронизации</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="27"/>
         <source>Syncthing data directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Синхронизация каталога данных</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="28"/>
         <source>Syncthing database size (LevelDB)</source>
-        <translation type="unfinished"></translation>
+        <translation>Размер базы данных Syncthing (LevelDB)</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="29"/>
         <source>Syncthing database size (LevelDB, migrated)</source>
-        <translation type="unfinished"></translation>
+        <translation>Размер базы данных Syncthing (LevelDB, перенесено)</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="30"/>
         <source>Syncthing database size (SQLite)</source>
-        <translation type="unfinished"></translation>
+        <translation>Размер базы данных Syncthing (SQLite)</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="31"/>
         <source>External files directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Каталог внешних файлов</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="32"/>
         <source>External storage paths</source>
-        <translation type="unfinished"></translation>
+        <translation>Внешние пути хранения</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="33"/>
         <source>CPU threads of system</source>
-        <translation type="unfinished"></translation>
+        <translation>Потоки ЦП системы</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="34"/>
         <source>Memory size of system</source>
-        <translation type="unfinished"></translation>
+        <translation>Размер памяти системы</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="35"/>
         <source>Number of Syncthing devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Количество устройств Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="36"/>
         <source>Number of Syncthing folders</source>
-        <translation type="unfinished"></translation>
+        <translation>Количество папок Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="37"/>
         <source>Number of files managed by Syncthing</source>
-        <translation type="unfinished"></translation>
+        <translation>Количество файлов, управляемых Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="38"/>
         <source>Size of files managed by Syncthing</source>
-        <translation type="unfinished"></translation>
+        <translation>Размер файлов, управляемых Syncthing</translation>
     </message>
 </context>
 <context>
@@ -5645,18 +5645,18 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../quick/qml/webview-none/WebViewItem.qml" line="9"/>
         <source>The app has not been built with web view support so this page is not available.</source>
-        <translation type="unfinished"></translation>
+        <translation>Приложение не поддерживает веб-просмотр, поэтому эта страница недоступна.</translation>
     </message>
     <message>
         <location filename="../quick/qml/webview-none/WebViewItem.qml" line="16"/>
         <location filename="../quick/qml/webview-webview/WebViewItem.qml" line="36"/>
         <source>Open in web browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть в веб-браузере</translation>
     </message>
     <message>
         <location filename="../quick/qml/webview-webview/WebViewItem.qml" line="31"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Обновить</translation>
     </message>
 </context>
 <context>
@@ -5664,7 +5664,7 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../quick/qml/WebViewPage.qml" line="10"/>
         <source>Web-based UI</source>
-        <translation type="unfinished"></translation>
+        <translation>Веб-интерфейс</translation>
     </message>
 </context>
 </TS>
