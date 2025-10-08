@@ -94,6 +94,7 @@ bool AppearanceOptionPage::apply()
     config.writeEntry<bool>("showTabTexts", ui()->showTabTextsCheckBox->isChecked());
     config.writeEntry<bool>("showDownloads", ui()->showDownloadsCheckBox->isChecked());
     config.writeEntry<bool>("preferIconsFromTheme", ui()->preferIconsFromThemeCheckBox->isChecked());
+    config.writeEntry<bool>("defaultTab", QtGui::AppearanceOptionPage::comboBoxIndexToTabIndex(ui()->defaultTabComboBox->currentIndex()));
     config.writeEntry("passiveStates", m_passiveStatusSelection.toVariantList());
 
     return true;
@@ -108,6 +109,7 @@ void AppearanceOptionPage::reset()
     ui()->showTabTextsCheckBox->setChecked(config.readEntry<>("showTabTexts", false));
     ui()->showDownloadsCheckBox->setChecked(config.readEntry<>("showDownloads", false));
     ui()->preferIconsFromThemeCheckBox->setChecked(config.readEntry<>("preferIconsFromTheme", false));
+    ui()->defaultTabComboBox->setCurrentIndex(QtGui::AppearanceOptionPage::tabIndexToComboBoxIndex(config.readEntry<>("defaultTab", 0)));
     m_passiveStatusSelection.applyVariantList(config.readEntry("passiveStates", QVariantList()));
 }
 

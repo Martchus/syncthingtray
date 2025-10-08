@@ -34,6 +34,7 @@ PlasmaExtras.Representation {
             position: PlasmaComponents3.TabBar.Footer
             Layout.fillWidth: true
             Layout.fillHeight: true
+            currentIndex: plasmoid.defaultTab
             onCurrentIndexChanged: currentTabChanged(tabBar.currentIndex)
             TabButton {
                 id: dirsTabButton

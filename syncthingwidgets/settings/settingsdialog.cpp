@@ -543,6 +543,28 @@ AppearanceOptionPage::~AppearanceOptionPage()
 {
 }
 
+static constexpr auto tabCount = 4;
+
+int AppearanceOptionPage::tabIndexToComboBoxIndex(int tabIndex)
+{
+    if (tabIndex < 0) { // negative value means "last"
+        return tabCount;
+    } else if (tabIndex >= 0 && tabIndex < tabCount) {
+        return tabIndex;
+    } else {
+        return 0; // default
+    }
+}
+
+int AppearanceOptionPage::comboBoxIndexToTabIndex(int comboBoxIndex)
+{
+    if (comboBoxIndex >= tabCount) {
+        return -1; // negative value means "last"
+    } else {
+        return comboBoxIndex;
+    }
+}
+
 bool AppearanceOptionPage::apply()
 {
     auto &v = Settings::values();
@@ -580,6 +602,7 @@ bool AppearanceOptionPage::apply()
     }
     settings.frameStyle = style;
     settings.tabPosition = ui()->tabPosComboBox->currentIndex();
+    settings.defaultTab = comboBoxIndexToTabIndex(ui()->defaultTabComboBox->currentIndex());
 
     settings.positioning.useCursorPosition = ui()->useCursorPosCheckBox->isChecked();
     settings.positioning.useAssumedIconPosition = ui()->assumeIconPosCheckBox->isChecked();
@@ -634,6 +657,7 @@ void AppearanceOptionPage::reset()
     }
     ui()->frameShadowComboBox->setCurrentIndex(index);
     ui()->tabPosComboBox->setCurrentIndex(settings.tabPosition);
+    ui()->defaultTabComboBox->setCurrentIndex(tabIndexToComboBoxIndex(settings.defaultTab));
 
     ui()->useCursorPosCheckBox->setChecked(settings.positioning.useCursorPosition);
     ui()->assumeIconPosCheckBox->setChecked(settings.positioning.useAssumedIconPosition);

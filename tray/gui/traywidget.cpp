@@ -114,7 +114,14 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     }
 
     m_ui->setupUi(this);
+    const auto &settings = Settings::values();
     const auto tabCount = m_ui->tabWidget->count();
+    const auto appearance = settings.appearance;
+    if (appearance.defaultTab > 0 && appearance.defaultTab < tabCount) {
+        m_ui->tabWidget->setCurrentIndex(appearance.defaultTab);
+    } else if (appearance.lastTab > 0 && appearance.lastTab < tabCount) {
+        m_ui->tabWidget->setCurrentIndex(appearance.lastTab);
+    }
     m_tabTexts.reserve(tabCount);
     for (decltype(m_ui->tabWidget->count()) i = 0; i != tabCount; ++i) {
         m_tabTexts << m_ui->tabWidget->tabText(i);
@@ -122,7 +129,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
 
     // configure connection
     m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents | SyncthingConnection::PollingFlags::Errors);
-    m_connection.setInsecure(Settings::values().connection.insecure);
+    m_connection.setInsecure(settings.connection.insecure);
 
     // setup models and views
     m_ui->dirsTreeView->header()->setSortIndicator(0, Qt::AscendingOrder);
@@ -264,6 +271,7 @@ TrayWidget::~TrayWidget()
         delete s_aboutDlg;
         s_settingsDlg = nullptr;
         s_aboutDlg = nullptr;
+        Settings::values().appearance.lastTab = m_ui->tabWidget->currentIndex();
         QCoreApplication::quit();
     } else {
         auto *const remainingInstance = s_instances.front();

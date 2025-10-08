@@ -96,6 +96,8 @@ END_DECLARE_OPTION_PAGE
 BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE(AppearanceOptionPage)
 public:
 void resetPositioningSettings();
+static int tabIndexToComboBoxIndex(int tabIndex);
+static int comboBoxIndexToTabIndex(int comboBoxIndex);
 END_DECLARE_OPTION_PAGE
 
 BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_CTOR(IconsOptionPage)

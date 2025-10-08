@@ -93,6 +93,8 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     , m_webViewDlg(nullptr)
     , m_notificationsDlg(nullptr)
     , m_currentConnectionConfig(-1)
+    , m_defaultTab(config().readEntry<>("lastTab", 0))
+    , m_lastTab(m_defaultTab)
     , m_hasInternalErrors(false)
     , m_initialized(false)
     , m_showTabTexts(false)
@@ -119,6 +121,7 @@ SyncthingApplet::~SyncthingApplet()
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     delete m_webViewDlg;
 #endif
+    config().writeEntry("lastTab", m_lastTab);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     SyncthingService::setMainInstance(nullptr);
 #endif
@@ -379,6 +382,7 @@ void SyncthingApplet::triggerConnectButtonAction()
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 void SyncthingApplet::handleRelevantControlsChanged(bool visible, int tabIndex)
 {
+    m_lastTab = tabIndex;
     QtGui::handleRelevantControlsChanged(visible, tabIndex, m_connection);
 }
 #endif
@@ -735,6 +739,7 @@ void SyncthingApplet::applySettings(int changeConnectionIndex)
     setShowingTabTexts(config.readEntry<bool>("showTabTexts", false));
     setShowingDownloads(config.readEntry<bool>("showDownloads", false));
     m_iconManager.applySettings(&settings.icons.status, nullptr, settings.icons.usePaletteForStatus, false);
+    m_defaultTab = config.readEntry<>("defaultTab", 0);
 
     // restore selected states
     // note: The settings dialog writes this to the Plasmoid's config like the other settings. However, it

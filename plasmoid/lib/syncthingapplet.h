@@ -79,6 +79,7 @@ class SyncthingApplet : public Plasma::Applet {
     Q_PROPERTY(QString currentConnectionConfigName READ currentConnectionConfigName NOTIFY currentConnectionConfigIndexChanged)
     Q_PROPERTY(int currentConnectionConfigIndex READ currentConnectionConfigIndex WRITE setCurrentConnectionConfigIndex NOTIFY
             currentConnectionConfigIndexChanged)
+    Q_PROPERTY(int defaultTab READ defaultTab CONSTANT)
     Q_PROPERTY(bool startStopEnabled READ isStartStopEnabled NOTIFY settingsChanged)
     Q_PROPERTY(bool hasInternalErrors READ hasInternalErrors NOTIFY hasInternalErrorsChanged)
     Q_PROPERTY(QSize size READ size WRITE setSize NOTIFY sizeChanged)
@@ -118,6 +119,7 @@ public:
     QStringList connectionConfigNames() const;
     QString currentConnectionConfigName() const;
     int currentConnectionConfigIndex() const;
+    int defaultTab() const;
     Data::SyncthingConnectionSettings *currentConnectionConfig();
     Data::SyncthingConnectionSettings *connectionConfig(int index);
     void setCurrentConnectionConfigIndex(int index);
@@ -229,6 +231,8 @@ private:
     QtGui::WebViewDialog *m_webViewDlg;
     QDialog *m_notificationsDlg;
     int m_currentConnectionConfig;
+    int m_defaultTab;
+    int m_lastTab;
     bool m_hasInternalErrors;
     bool m_initialized;
     bool m_showTabTexts;
@@ -304,6 +308,11 @@ inline bool SyncthingApplet::isLocal() const
 inline int SyncthingApplet::currentConnectionConfigIndex() const
 {
     return m_currentConnectionConfig;
+}
+
+inline int SyncthingApplet::defaultTab() const
+{
+    return m_defaultTab;
 }
 
 inline Data::SyncthingConnectionSettings *SyncthingApplet::currentConnectionConfig()
