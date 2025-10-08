@@ -176,56 +176,56 @@
         <translation type="vanished">打开 Syncthing</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="34"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="40"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="35"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="41"/>
         <source>Folders</source>
         <translation>文件夹</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="40"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="46"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="41"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="47"/>
         <source>Devices</source>
         <translation>设备</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="46"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="52"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="47"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="53"/>
         <source>History</source>
         <translation>历史</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="52"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="58"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="53"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="59"/>
         <source>Downloads</source>
         <translation>下载</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="247"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="253"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="248"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="254"/>
         <source>Global</source>
         <translation>全局</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="254"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="260"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="255"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="261"/>
         <source>Global incoming traffic</source>
         <translation>全局下载流量</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="272"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="278"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="273"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="279"/>
         <source>Local</source>
         <translation>本地</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="279"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="285"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="280"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="286"/>
         <source>Global outgoing traffic</source>
         <translation>本地上传流量</translation>
     </message>
     <message>
-        <location filename="../package5/contents/ui/FullRepresentation.qml" line="105"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="111"/>
+        <location filename="../package5/contents/ui/FullRepresentation.qml" line="106"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="112"/>
         <source>Toggle filter</source>
         <translation>切换过滤器</translation>
     </message>
@@ -238,56 +238,86 @@
         <translation>外观</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="25"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="24"/>
         <source>Size of folder/device/download list</source>
         <translation>目录/设备/下载列表的大小</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="64"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="63"/>
         <source> x </source>
         <translation> x </translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="90"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="89"/>
         <source> grid units</source>
         <translation> 网格单元</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="108"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="107"/>
         <source>Note that the size is ignored when the Plasmoid is displayed on the desktop, in full screen mode or as entry of the system tray Plasmoid. Then the Plasmoid can be resized using Plasma&apos;s UI. On Plasma older than 5.26, when displayed as entry of the system tray Plasmoid the size can not be changed (setting a high value just leads to the contents being clipped).</source>
         <translation>请注意，当 Plasmoid 以全屏模式显示在桌面上或作为系统托盘 Plasmoid 的条目时，将忽略该大小。然后可以使用 Plasma 的用户界面调整 Plasmoid 的大小。在低于 5.26 的 Plasma 上，当显示为系统托盘 Plasmoid 的条目时，无法更改大小（设置高值只会导致内容被剪切）。</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="120"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="119"/>
         <source>Optional GUI elements</source>
         <translation>可选界面元素</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="132"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="131"/>
         <source>Downloads</source>
         <translation>下载</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="139"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="138"/>
         <source>Show tab texts</source>
         <translation>显示选项卡文本</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="148"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="147"/>
         <source>Icons</source>
         <translation>图标</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="160"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="159"/>
         <source>Prefer icons from theme over ForkAwesome icons (needs restart to apply)</source>
         <translation>更喜欢主题中的图标，而不是 forkawesome 图标（需要重新启动以应用）</translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="195"/>
+        <source>Folders</source>
+        <translation type="unfinished">文件夹</translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="200"/>
+        <source>Devices</source>
+        <translation type="unfinished">设备</translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="205"/>
+        <source>Downlods</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="210"/>
+        <source>Recent changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="215"/>
+        <source>Last</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="223"/>
+        <source>Default tab</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <source>Note that the size is ignored when the Plasmoid is displayed on the desktop or in full screen mode. When displayed as entry of the system tray Plasmoid the size can not be changed (setting a high value just leads to the contents being clipped).</source>
         <translation type="vanished">请注意，当 Plasmoid 显示在桌面上或以全屏模式显示时，将忽略大小。当显示为系统托盘条目时，大小无法更改（设置过高值只会导致内容被剪裁）。</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="169"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="168"/>
         <source>States to enable passive mode</source>
         <translation>启用被动模式的状态</translation>
     </message>
@@ -311,17 +341,17 @@
 <context>
     <name>Plasmoid::SettingsDialog</name>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="130"/>
+        <location filename="../lib/settingsdialog.cpp" line="132"/>
         <source>Plasmoid</source>
         <translation>Plasmoid</translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="140"/>
+        <location filename="../lib/settingsdialog.cpp" line="142"/>
         <source>General web view settings</source>
         <translation>常规 Web 视图设置</translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="141"/>
+        <location filename="../lib/settingsdialog.cpp" line="143"/>
         <source>Built-in web view</source>
         <translation>内置 Web 视图</translation>
     </message>
@@ -330,7 +360,7 @@
         <translation type="vanished">网页视图</translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="150"/>
+        <location filename="../lib/settingsdialog.cpp" line="152"/>
         <source>Extras</source>
         <translation>额外</translation>
     </message>
@@ -351,17 +381,17 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="515"/>
+        <location filename="../lib/syncthingapplet.cpp" line="519"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="598"/>
+        <location filename="../lib/syncthingapplet.cpp" line="602"/>
         <source>Associated directory does not exist.</source>
         <translation>关联目录不存在。</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="624"/>
+        <location filename="../lib/syncthingapplet.cpp" line="628"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation>无法与 Syncthing 建立连接。</translation>
     </message>
@@ -370,7 +400,7 @@
         <translation type="vanished">新通知</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="691"/>
+        <location filename="../lib/syncthingapplet.cpp" line="695"/>
         <source>D-Bus error - unable to </source>
         <translation>D-Bus 错误 - 无法 </translation>
     </message>
