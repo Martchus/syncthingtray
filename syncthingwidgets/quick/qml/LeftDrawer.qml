@@ -16,7 +16,9 @@ Drawer {
     CustomListView {
         id: drawerListView
         anchors.fill: parent
+        currentIndex: pageStack.currentIndex
         footer: ColumnLayout {
+            spacing: 0
             width: parent.width
             ItemDelegate {
                 Layout.fillWidth: true
@@ -65,6 +67,7 @@ Drawer {
             id: drawerDelegate
             text: name
             activeFocusOnTab: true
+            highlighted: ListView.isCurrentItem
             icon.source: App.faUrlBase + iconName
             icon.width: App.iconSize
             icon.height: App.iconSize
@@ -73,6 +76,9 @@ Drawer {
                 pageStack.setCurrentIndex(index);
                 drawer.position = drawer.initialPosition;
             }
+            required property int index
+            required property string iconName
+            required property string name
         }
     }
 
