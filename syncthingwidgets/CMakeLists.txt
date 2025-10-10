@@ -415,7 +415,15 @@ if (QUICK_GUI)
         endif ()
     endforeach ()
 
-    # set icon size
+    # configure whether a dynamic style is used
+    if (QUICK_GUI_CONTROLS_STYLE STREQUAL dynamic)
+        set_property(
+            SOURCE quick/app.cpp
+            APPEND
+            PROPERTY COMPILE_DEFINITIONS SYNCTHING_APP_DYNAMIC_STYLE)
+    endif ()
+
+    # configure icon size
     set(ICON_SIZE 16)
     set(ICON_WIDTH_DELEGATE 16)
     if (QUICK_GUI_CONTROLS_STYLE STREQUAL FluentWinUI3)

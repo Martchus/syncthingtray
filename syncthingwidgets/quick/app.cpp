@@ -37,7 +37,6 @@
 #include <QJsonValue>
 #include <QNetworkReply>
 #include <QQmlContext>
-#include <QQuickStyle>
 #include <QQuickView>
 #include <QStringBuilder>
 #include <QUrlQuery>
@@ -56,6 +55,10 @@
 #ifndef Q_OS_ANDROID
 #include <QSet>
 #include <QStorageInfo>
+#endif
+
+#ifdef SYNCTHING_APP_DYNAMIC_STYLE
+#include <QQuickStyle>
 #endif
 
 #include <cstdlib>
