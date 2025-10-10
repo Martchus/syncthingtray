@@ -90,7 +90,7 @@ StackView {
             delegate: ItemDelegate {
                 width: listView.width
                 text: label
-                icon.source: App.faUrlBase + iconName // leads to crash when closing UI with Qt < 6.8
+                icon.source: App.faUrlBase + iconName
                 icon.width: App.iconSize
                 icon.height: App.iconSize
                 onClicked: {
