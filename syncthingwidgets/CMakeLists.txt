@@ -68,7 +68,6 @@ set(QML_MAIN_FILES
     quick/qml/AdvancedDirConfigPage.qml
     quick/qml/AdvancedPage.qml
     quick/qml/ArrayElementButtons.qml
-    quick/qml/AppControl.qml
     quick/qml/AppWindow.qml
     quick/qml/ChangesPage.qml
     quick/qml/CopyPasteButtons.qml
@@ -130,6 +129,12 @@ if (ANDROID)
     list(APPEND QML_SRC_FILES quick/android.cpp)
 else ()
     list(APPEND EXCLUDED_FILES quick/android.h quick/android.cpp)
+endif ()
+option(QUICK_GUI_APP_CONTROL "enables AppControl as alternative entry point for the Qt Quick GUI" OFF)
+if (QUICK_GUI_APP_CONTROL)
+    list(APPEND QML_MAIN_FILES quick/qml/AppControl.qml)
+else ()
+    list(APPEND EXCLUDED_FILES quick/qml/AppControl.qml)
 endif ()
 
 set(TS_FILES
