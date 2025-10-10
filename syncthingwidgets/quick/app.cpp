@@ -37,6 +37,7 @@
 #include <QJsonValue>
 #include <QNetworkReply>
 #include <QQmlContext>
+#include <QQuickStyle>
 #include <QQuickView>
 #include <QStringBuilder>
 #include <QUrlQuery>
@@ -126,7 +127,8 @@ App::App(bool insecure, QObject *parent)
     , m_changesModel(m_connection)
     , m_faUrlBase(QStringLiteral("image://fa/"))
     , m_uiObjects({ &m_dirModel, &m_sortFilterDirModel, &m_devModel, &m_sortFilterDevModel, &m_changesModel })
-    , m_iconSize(16)
+    , m_iconSize(SYNCTHING_APP_ICON_SIZE)
+    , m_iconWidthDelegate(SYNCTHING_APP_ICON_WIDTH_DELEGATE)
     , m_tabIndex(-1)
     , m_importExportStatus(ImportExportStatus::None)
     , m_clearingLogfile(false)

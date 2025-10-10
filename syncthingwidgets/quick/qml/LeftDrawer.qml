@@ -24,7 +24,7 @@ Drawer {
                 Layout.fillWidth: true
                 text: Qt.application.version
                 icon.source: App.faUrlBase + "info-circle"
-                icon.width: App.iconSize
+                icon.width: App.iconWidthDelegate
                 icon.height: App.iconSize
                 onClicked: aboutDialog.visible = true
             }
@@ -32,7 +32,7 @@ Drawer {
                 Layout.fillWidth: true
                 text: qsTr("Quit")
                 icon.source: App.faUrlBase + "power-off"
-                icon.width: App.iconSize
+                icon.width: App.iconWidthDelegate
                 icon.height: App.iconSize
                 onClicked: closeDialog.visible = true
             }
@@ -69,7 +69,7 @@ Drawer {
             activeFocusOnTab: true
             highlighted: ListView.isCurrentItem
             icon.source: App.faUrlBase + iconName
-            icon.width: App.iconSize
+            icon.width: App.iconWidthDelegate
             icon.height: App.iconSize
             width: parent.width
             onClicked: {

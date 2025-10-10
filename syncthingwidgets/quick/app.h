@@ -51,6 +51,7 @@ class SYNCTHINGWIDGETS_EXPORT App : public AppBase {
     Q_PROPERTY(QString faUrlBase READ faUrlBase CONSTANT)
     Q_PROPERTY(bool darkmodeEnabled READ isDarkmodeEnabled NOTIFY darkmodeEnabledChanged)
     Q_PROPERTY(int iconSize READ iconSize CONSTANT)
+    Q_PROPERTY(int iconWidthDelegate READ iconWidthDelegate CONSTANT)
     Q_PROPERTY(bool nativePopups READ nativePopups CONSTANT)
     Q_PROPERTY(bool extendedClientArea READ extendedClientArea CONSTANT)
     Q_PROPERTY(QString syncthingVersion READ syncthingVersion CONSTANT)
@@ -174,6 +175,10 @@ public:
     int iconSize() const
     {
         return m_iconSize;
+    }
+    int iconWidthDelegate() const
+    {
+        return m_iconWidthDelegate;
     }
     const QString &status() override final;
     bool hasInternalErrors() const
@@ -427,6 +432,7 @@ private:
     std::array<QObject *, 5> m_uiObjects;
     QObjectList m_dialogs;
     int m_iconSize;
+    int m_iconWidthDelegate;
     int m_tabIndex;
     ImportExportStatus m_importExportStatus;
     bool m_clearingLogfile;

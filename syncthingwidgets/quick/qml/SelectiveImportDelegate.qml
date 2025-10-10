@@ -73,7 +73,7 @@ ItemDelegate {
                             height: visible ? implicitHeight : 0
                             text: modelData.path ?? ""
                             icon.source: App.faUrlBase + "folder-open-o"
-                            icon.width: App.iconSize
+                            icon.width: App.iconWidthDelegate
                             icon.height: App.iconSize
                             onClicked: folderDlg.open()
                         }

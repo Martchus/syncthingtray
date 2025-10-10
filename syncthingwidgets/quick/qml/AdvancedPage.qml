@@ -84,7 +84,7 @@ StackView {
                 width: listView.width
                 text: label
                 icon.source: App.faUrlBase + iconName
-                icon.width: App.iconSize
+                icon.width: App.iconWidthDelegate
                 icon.height: App.iconSize
                 onClicked: {
                     if (specialPage.length > 0) {

@@ -414,6 +414,20 @@ if (QUICK_GUI)
             list(APPEND BUNDLED_TARGETS "${CMAKE_MATCH_1}")
         endif ()
     endforeach ()
+
+    # set icon size
+    set(ICON_SIZE 16)
+    set(ICON_WIDTH_DELEGATE 16)
+    if (QUICK_GUI_CONTROLS_STYLE STREQUAL FluentWinUI3)
+        set(ICON_WIDTH_DELEGATE 24)
+    elseif (QUICK_GUI_CONTROLS_STYLE STREQUAL dynamic)
+        set(ICON_WIDTH_DELEGATE "QQuickStyle::name() == QStringLiteral(\"FluentWinUI3\") ? 24 : 16")
+    endif ()
+    set_property(
+        SOURCE quick/app.cpp
+        APPEND
+        PROPERTY COMPILE_DEFINITIONS SYNCTHING_APP_ICON_SIZE=${ICON_SIZE}
+                 SYNCTHING_APP_ICON_WIDTH_DELEGATE=${ICON_WIDTH_DELEGATE})
 endif ()
 
 # include further modules to apply configuration
