@@ -91,7 +91,11 @@ class SyncthingApplet : public Plasma::Applet {
     Q_PROPERTY(bool wipFeaturesEnabled READ areWipFeaturesEnabled CONSTANT)
 
 public:
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    SyncthingApplet(QObject *parent, const KPluginMetaData &data, const QVariantList &args);
+#else
     SyncthingApplet(QObject *parent, const QVariantList &data);
+#endif
     ~SyncthingApplet() override;
 
 public:

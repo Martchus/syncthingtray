@@ -33,6 +33,9 @@
 #include <c++utilities/conversion/stringconversion.h>
 
 #include <KConfigGroup>
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+#include <KPluginMetaData>
+#endif
 
 #include <Plasma/Theme>
 #include <plasma/plasma_export.h>
@@ -72,10 +75,11 @@ static inline QPalette paletteFromTheme(const Plasma::Theme &theme)
 #endif
 }
 
-SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    : Applet(parent, KPluginMetaData(), data)
+SyncthingApplet::SyncthingApplet(QObject *parent, const KPluginMetaData &data, const QVariantList &args)
+    : Applet(parent, data, args)
 #else
+SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     : Applet(parent, data)
 #endif
     , m_faUrl(QStringLiteral("image://fa/"))
