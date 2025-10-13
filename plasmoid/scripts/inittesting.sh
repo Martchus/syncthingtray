@@ -9,7 +9,7 @@ package_dir=$script_dir/../$2
 
 # copy the generated desktop file back into the source-tree package dir so it can actually be used
 meta_data_file=$1
-cp --target-directory="$package_dir" "$meta_data_file"
+cp -v --target-directory="$package_dir" "$meta_data_file"
 
 # install or update the package into the working directory
 if ! plasmapkg2 --install "$package_dir"; then

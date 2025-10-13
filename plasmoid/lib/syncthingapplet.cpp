@@ -48,6 +48,8 @@
 #include <QQmlEngine>
 #include <QStringBuilder>
 
+#include <iostream>
+
 using namespace std;
 using namespace Data;
 using namespace Plasma;
@@ -146,6 +148,8 @@ void SyncthingApplet::init()
     setupCommonQtApplicationAttributes();
 
     Applet::init();
+    std::cerr << "Initializing " APP_NAME ", version " APP_VERSION "\n";
+    std::cerr << "Plugin ID: " << pluginMetaData().pluginId().toStdString() << '\n';
 
     // connect signals and slots
     connect(&m_notifier, &SyncthingNotifier::statusChanged, this, &SyncthingApplet::handleConnectionStatusChanged);
