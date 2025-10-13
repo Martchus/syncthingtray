@@ -42,7 +42,7 @@ executable.
 
 It is only possible to run one `plasmashell` at a time so you have to stop your regular
 `plasmashell` first. While developing you can start e.g. `tint2` to be not without a shell.
-It works quite well within a Plasma session when both shells are placed on different screen
+It works quite well within an X11 Plasma session when both shells are placed on different screen
 edges.
 
 ## Enable QML debugging
