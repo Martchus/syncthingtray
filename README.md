@@ -275,10 +275,7 @@ The Plasmoid can be added/shown in two different ways:
       show it only when important and selecting the states in the Plasmoid's settings.
     * Configuring the size has no effect when the Plasmoid is displayed as part of the
       system tray Plasmoid.
-2. It can be added to a panel or the desktop like any other Plasmoid. **Note that under
-   recent Plasma versions the configuration no longer seems to be stored persistently.**
-   So I recommend using the previous option or following the
-   [related issue](https://github.com/Martchus/syncthingtray/issues/339) for workarounds.
+2. It can be added to a panel or the desktop like any other Plasmoid.
 
 This allows you to add multiple instances of the Plasmoid but it is recommended to pick
 only one place. For that it makes also most sense to ensure the autostart of the
