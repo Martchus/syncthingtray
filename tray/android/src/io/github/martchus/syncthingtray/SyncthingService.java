@@ -301,7 +301,9 @@ public class SyncthingService extends QtService {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        m_locale = intent.getStringExtra("locale");
+        if (intent != null) {
+            m_locale = intent.getStringExtra("locale");
+        }
         super.onStartCommand(intent, flags, startId);
         if (intent != null && "shutdown".equals(intent.getAction())) {
             sendMessageToClients(MSG_FINISH_CLIENT, 0, 0, "");
