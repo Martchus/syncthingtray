@@ -5080,7 +5080,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     </message>
     <message>
         <location filename="../misc/textviewdialog.cpp" line="69"/>
-        <source> Checkout &lt;a href=&quot;openLauncherSettings&quot;&gt;launcher settings&lt;/a&gt; for continuous log of local Syncthing instance.</source>
+        <source> Check out &lt;a href=&quot;openLauncherSettings&quot;&gt;launcher settings&lt;/a&gt; for continuous log of local Syncthing instance.</source>
         <translation> Öffne die &lt;a href=&quot;openLauncherSettings&quot;&gt;Starter-Einstellungen&lt;/a&gt; für ein kontinuierliches Log der lokalen Syncthing-Instanz.</translation>
     </message>
 </context>
@@ -5161,7 +5161,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="452"/>
-        <source>&lt;p&gt;&lt;strong&gt;You have started the standalone version of Syncthing Tray. It looks like you are on KDE Plasma, though. On KDE the preferred version of Syncthing Tray is the Plasmoid which is supposed to be used &lt;em&gt;instead&lt;/em&gt; of the standalone version.&lt;/strong&gt; Checkout the documentation about &lt;a href=&quot;%1&quot;&gt;configuring the Plasmoid&lt;/a&gt; for the best way to use Syncthing Tray on KDE. After adding Syncthing Tray as Plasmoid, you can reopen this wizard from the Plasmoid via its settings dialog.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;strong&gt;You have started the standalone version of Syncthing Tray. It looks like you are on KDE Plasma, though. On KDE the preferred version of Syncthing Tray is the Plasmoid which is supposed to be used &lt;em&gt;instead&lt;/em&gt; of the standalone version.&lt;/strong&gt; Check out the documentation about &lt;a href=&quot;%1&quot;&gt;configuring the Plasmoid&lt;/a&gt; for the best way to use Syncthing Tray on KDE. After adding Syncthing Tray as Plasmoid, you can reopen this wizard from the Plasmoid via its settings dialog.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;strong&gt;Du hast die eigenständige Version von Syncthing Tray gestartet. Es sieht allerdings so aus, also würdest du KDE Plasma verwenden. Unter KDE ist die bevorzugte Version von Syncthing Tray das Plasmoid, welches &lt;em&gt;anstelle&lt;/em&gt; der eigenständigen Version konfiguriert werden kann&lt;/strong&gt; (siehe hierfür die &lt;a href=&quot;%1&quot;&gt;Dokumentation&lt;/a&gt;). Nachdem du Syncthing Tray als Plasmoid hinzugefügt hast, kannst du diesen Assistenten erneut über die Einstellungen des Plasmoids öffnen.&lt;/p&gt;</translation>
     </message>
     <message>
@@ -5342,7 +5342,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="414"/>
-        <source>Checkout Syncthing&apos;s log for details.</source>
+        <source>Check out Syncthing&apos;s log for details.</source>
         <translation>Schaue in den Syncthing-Log für Details.</translation>
     </message>
     <message>

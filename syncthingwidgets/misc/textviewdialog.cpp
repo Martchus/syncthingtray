@@ -66,7 +66,7 @@ TextViewDialog *TextViewDialog::forLogEntries(SyncthingConnection &connection, Q
     auto *const helpLabel = new QLabel(dlg);
     auto helpText = tr("Press F5 to reload.");
     if (gui && launcher && launcher->isRunning() && connection.isLocal()) {
-        helpText += tr(" Checkout <a href=\"openLauncherSettings\">launcher settings</a> for continuous log of local Syncthing instance.");
+        helpText += tr(" Check out <a href=\"openLauncherSettings\">launcher settings</a> for continuous log of local Syncthing instance.");
         QObject::connect(helpLabel, &QLabel::linkActivated, gui, [gui](const QString &link) {
             if (link == QLatin1String("openLauncherSettings")) {
                 QMetaObject::invokeMethod(gui, "showLauncherSettings");

@@ -385,7 +385,7 @@ environment. Have it invoke
 The Plasmoid can also be shown via a hotkey by configuring one in the Plasmoid settings.
 
 ## Using the command-line interface
-Checkout `syncthingctl --help` and `syncthingtray --help` for available options. More details
+Check out `syncthingctl --help` and `syncthingtray --help` for available options. More details
 can be found in the [CLI documentation](docs/cli.md).
 
 ## Download

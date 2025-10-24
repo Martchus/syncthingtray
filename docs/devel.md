@@ -6,7 +6,7 @@ certain features.
 The application depends on [c++utilities](https://github.com/Martchus/cpp-utilities),
 [qtutilities](https://github.com/Martchus/qtutilities) and
 [qtforkawesome](https://github.com/Martchus/qtforkawesome) and is built the same way as these libraries.
-For basic instructions and platform-specific details checkout the README file of
+For basic instructions and platform-specific details check out the README file of
 [c++utilities](https://github.com/Martchus/cpp-utilities).
 
 To avoid building c++utilities/qtutilities/qtforkawesome separately, follow the instructions under
@@ -52,7 +52,7 @@ This disables handling sub processes and `QProcess` (from Qt Core) is used inste
 ---
 
 To build Syncthing itself as a library Go is required and Syncthing needs to be checked out as a Git submodule.
-Checkout the [documentation of Syncthing itself](https://docs.syncthing.net/dev/building#prerequisites) for
+Check out the [documentation of Syncthing itself](https://docs.syncthing.net/dev/building#prerequisites) for
 details.
 
 Sometimes it can be useful to use a different version of Go then what is provided by the packaging one would
@@ -63,7 +63,7 @@ command:
 go install golang.org/dl/go1.22.11@latest && $GOPATH/src/go/bin/go1.22.11 download`
 ```
 
-Checkout the [release history of Go](https://go.dev/doc/devel/release) for available versions.
+Check out the [release history of Go](https://go.dev/doc/devel/release) for available versions.
 
 Then the version can be used by adding `-DGO_BIN=$GOPATH/bin/go1.22.11` to the CMake arguments. It is not
 necessary to clean an existing build directly. All relevant parts will be re-built as necessary with the
@@ -137,7 +137,7 @@ itself is used instead of OpenSSL.)
     "$SOURCES/subdirs/syncthingtray"
    ```
     * Replace `/install/prefix` with the directory where you want to install.
-    * Checkout the "[Providing the font file](https://github.com/Martchus/qtforkawesome/#providing-the-font-file)"
+    * Check out the "[Providing the font file](https://github.com/Martchus/qtforkawesome/#providing-the-font-file)"
       section of qtforkawesome's README for details regarding the
       ForkAwesome-related parameters.
 3. Build and install everything in one step:
@@ -180,7 +180,7 @@ The files for the Dolphin integration look like this under Tumbleweed:
 /usr/share/kservices5/syncthingfileitemaction.desktop
 ```
 
-These examples were for KDE 5. It looks a bit different for KDE 6. Checkout my Arch Linux and
+These examples were for KDE 5. It looks a bit different for KDE 6. Check out my Arch Linux and
 openSUSE packaging for further examples.
 
 The directory where the `*.so` file needs to be installed to, seems to differ from distribution to
@@ -200,7 +200,7 @@ e.g. when using Fedora 39 but adding the Fedora 40 repo.
 
 ---
 
-If the Plasmoid still won't load, checkout the log of `plasmashell`/`plasmoidviewer`/`plasmawindowed`.
+If the Plasmoid still won't load, check out the log of `plasmashell`/`plasmoidviewer`/`plasmawindowed`.
 Also consider using strace to find out at which paths the shell is looking for `*.desktop` and
 `*.so` files.
 
@@ -277,10 +277,10 @@ On Windows, you'll have to use the `syncthingtray-cli` executable to see output 
   environment
 * `QT_QPA_PLATFORMTHEME`: the platform theme to use (e.g. `gtk3`) which influences file dialogs and
   other parts of the UI where Qt can make use of native APIs
-* `QSG_RHI_BACKEND`: set the underlying graphics API used by the Qt Quick GUI, checkout the
+* `QSG_RHI_BACKEND`: set the underlying graphics API used by the Qt Quick GUI, check out the
   [Qt documentation](https://doc.qt.io/qt-6/qtquick-visualcanvas-scenegraph-renderer.html#rendering-via-the-qt-rendering-hardware-interface)
   for details
-* `QT_QUICK_CONTROLS_STYLE`: the style to use in the Qt Quick GUI, checkout the
+* `QT_QUICK_CONTROLS_STYLE`: the style to use in the Qt Quick GUI, check out the
   [Qt documentation](https://doc.qt.io/qt-6/qtquickcontrols-styles.html) for available options
 * `QT_QUICK_CONTROLS_MATERIAL_THEME`/`QT_QUICK_CONTROLS_UNIVERSAL_THEME`: the theme to use in the Qt
   Quick GUI, the variable and options depend on the style being used

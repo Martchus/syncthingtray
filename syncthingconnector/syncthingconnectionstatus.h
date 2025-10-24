@@ -14,7 +14,7 @@ namespace Data {
  * are set for these.
  *
  * This is *not* a flag enum even though the "connected" states are not exclusive. That's because only one icon can be
- * shown at the same time anyway. Checkout SyncthingConnection::setStatus() for the precedence.
+ * shown at the same time anyway. Check out SyncthingConnection::setStatus() for the precedence.
  */
 enum class SyncthingStatus {
     Disconnected = 0, /**< disconnected, possibly currently connecting */

@@ -411,7 +411,7 @@ void Wizard::pollForSyncthingConfig()
 
 QString Wizard::hintAboutSyncthingLog() const
 {
-    auto res = tr("Checkout Syncthing's log for details.");
+    auto res = tr("Check out Syncthing's log for details.");
     switch (mainConfig()) {
     case MainConfiguration::LauncherExternal:
     case MainConfiguration::LauncherBuiltIn:
@@ -451,7 +451,7 @@ WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
     if (!settings.isPlasmoid && qEnvironmentVariable("XDG_CURRENT_DESKTOP").split(QChar(':')).contains(QStringLiteral("KDE"))) {
         infoText += tr("<p><strong>You have started the standalone version of Syncthing Tray. It looks like you are on KDE Plasma, though. "
                        "On KDE the preferred version of Syncthing Tray is the Plasmoid which is supposed to be used <em>instead</em> of "
-                       "the standalone version.</strong> Checkout the documentation about <a href=\"%1\">configuring the Plasmoid</a> for the "
+                       "the standalone version.</strong> Check out the documentation about <a href=\"%1\">configuring the Plasmoid</a> for the "
                        "best way to use Syncthing Tray on KDE. After adding Syncthing Tray as Plasmoid, you can reopen this wizard from the "
                        "Plasmoid via its settings dialog.</p>")
                         .arg(readmeUrl + QStringLiteral("#configuring-plasmoid"));

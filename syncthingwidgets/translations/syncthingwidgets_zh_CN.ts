@@ -4920,7 +4920,7 @@ This dialog closes automatically when the process finally terminates.</source>
     </message>
     <message>
         <location filename="../misc/textviewdialog.cpp" line="69"/>
-        <source> Checkout &lt;a href=&quot;openLauncherSettings&quot;&gt;launcher settings&lt;/a&gt; for continuous log of local Syncthing instance.</source>
+        <source> Check out &lt;a href=&quot;openLauncherSettings&quot;&gt;launcher settings&lt;/a&gt; for continuous log of local Syncthing instance.</source>
         <translation>查看 &lt;a href=&quot;openLauncherSettings&quot;&gt;启动器设置&lt;/a&gt; 获取本地同步连续不断的日志。</translation>
     </message>
 </context>
@@ -4991,7 +4991,7 @@ The Web UI will be opened in the default web browser instead.</source>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="452"/>
-        <source>&lt;p&gt;&lt;strong&gt;You have started the standalone version of Syncthing Tray. It looks like you are on KDE Plasma, though. On KDE the preferred version of Syncthing Tray is the Plasmoid which is supposed to be used &lt;em&gt;instead&lt;/em&gt; of the standalone version.&lt;/strong&gt; Checkout the documentation about &lt;a href=&quot;%1&quot;&gt;configuring the Plasmoid&lt;/a&gt; for the best way to use Syncthing Tray on KDE. After adding Syncthing Tray as Plasmoid, you can reopen this wizard from the Plasmoid via its settings dialog.&lt;/p&gt;</source>
+        <source>&lt;p&gt;&lt;strong&gt;You have started the standalone version of Syncthing Tray. It looks like you are on KDE Plasma, though. On KDE the preferred version of Syncthing Tray is the Plasmoid which is supposed to be used &lt;em&gt;instead&lt;/em&gt; of the standalone version.&lt;/strong&gt; Check out the documentation about &lt;a href=&quot;%1&quot;&gt;configuring the Plasmoid&lt;/a&gt; for the best way to use Syncthing Tray on KDE. After adding Syncthing Tray as Plasmoid, you can reopen this wizard from the Plasmoid via its settings dialog.&lt;/p&gt;</source>
         <translation>&lt;p&gt;&lt;strong&gt;您已启动 Syncthing Tray 的独立版本。不过，看起来您使用的是 KDE Plasma。在 KDE 上，Syncthing Tray 的首选版本是 Plasmoid，它应该被&lt;em&gt;用来代替&lt;/em&gt;独立版本。&lt;/strong&gt;查看有关 &lt;a href=“%1”&gt;配置 Plasmoid 的文档&lt;/a&gt;，了解在 KDE 上使用 Syncthing Tray 的最佳方式。将 Syncthing Tray 添加为 Plasmoid 后，您可以通过 Plasmoid 的设置对话框从 Plasmoid 重新打开此向导。&lt;/p&gt;</translation>
     </message>
     <message>
@@ -5164,7 +5164,7 @@ The Web UI will be opened in the default web browser instead.</source>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="414"/>
-        <source>Checkout Syncthing&apos;s log for details.</source>
+        <source>Check out Syncthing&apos;s log for details.</source>
         <translation>查看 Syncthing 的日志了解详细信息。</translation>
     </message>
     <message>

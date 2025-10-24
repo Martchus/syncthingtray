@@ -693,7 +693,7 @@
     <message>
         <location filename="../gui/traywidget.ui" line="350"/>
         <source>Click to show &lt;i&gt;new&lt;/i&gt; notifications&lt;br&gt;
-For &lt;i&gt;all&lt;/i&gt; notifications, checkout the log</source>
+For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</source>
         <translation>点击显示&lt;i&gt;新&lt;/i&gt;通知&lt;br&gt;
  对于&lt;i&gt;所有&lt;/i&gt;通知，请查看日志</translation>
     </message>

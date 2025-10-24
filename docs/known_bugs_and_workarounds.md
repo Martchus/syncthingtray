@@ -1,6 +1,6 @@
 # Known bugs and workarounds
 The following bugs are caused by dependencies or limitations of certain
-platforms. For bugs of Syncthing Tray itself, checkout the issues on GitHub.
+platforms. For bugs of Syncthing Tray itself, check out the issues on GitHub.
 
 ## Workaround positioning issues under Wayland
 The Qt Widgets based version basically works under Wayland but there are
@@ -68,7 +68,7 @@ the process needs to be restarted.
 Note that one can alternatively also enable Windows' "High contrast" setting which
 seems to bring back the traditional theming/coloring (which has normally been
 [removed](https://superuser.com/questions/949920/window-color-and-appearance-removed-in-win10)).
-Unfortunately it doesn't look very nice overall. Checkout
+Unfortunately it doesn't look very nice overall. Check out
 https://github.com/tomasz1986/classic2000 to see how Windows looks like with high
 contrast applied, or if you're in need for themes that look at least nicer than
 what's shipped with Windows.
@@ -121,11 +121,11 @@ variable `PLASMA_USE_QT_SCALING=1` might help.
           `QNetworkRequest::RedirectPolicyAttribute` and `QNetworkRequest::NoLessSafeRedirectPolicy` are not available yet.
 * KDE limitations
     * Issues with the configuration have appeared as of some version of Plasma, see https://github.com/Martchus/syncthingtray/issues/239
-      and https://bugs.kde.org/show_bug.cgi?id=485072. It is unclear whether the problem is in Syncthing Tray or Plasma. Checkout the
+      and https://bugs.kde.org/show_bug.cgi?id=485072. It is unclear whether the problem is in Syncthing Tray or Plasma. Check out the
       "[Configuring Plasmoid](../README.md#required-system-configuration)" section for details.
     * High-DPI scaling of Plasmoid is broken under X11 (https://bugs.kde.org/show_bug.cgi?id=356446).
     * Plasma < 5.26.0:
         * The Plasmoid contents are possibly clipped when shown within the system notifications plasmoid.
 * Systemd integration
-    * This feature relies especially on the system being correctly configured. Checkout the
+    * This feature relies especially on the system being correctly configured. Check out the
       "[Required system configuration](../README.md#required-system-configuration)" section for details.
