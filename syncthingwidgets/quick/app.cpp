@@ -31,6 +31,7 @@
 
 #include <QClipboard>
 #include <QDebug>
+#include <QDesktopServices>
 #include <QDir>
 #include <QGuiApplication>
 #include <QJsonDocument>
@@ -1495,6 +1496,19 @@ bool QtGui::App::openSyncthingConfigFile()
 bool QtGui::App::openSyncthingLogFile()
 {
     return openPath(syncthingLogFilePath());
+}
+
+/*!
+ * \brief Opens the specified \a url externally, e.g. using an external web browser or a custom browser tab.
+ */
+bool QtGui::App::openUrlExternally(const QUrl &url, bool viaQt)
+{
+#ifdef Q_OS_ANDROID
+    if (!viaQt) {
+        return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("openUrl", url.toString());
+    }
+#endif
+    return QDesktopServices::openUrl(url);
 }
 
 /*!

@@ -20,6 +20,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     //noinspection GradleDependency
     implementation 'androidx.core:core:1.16.0'
+    implementation "androidx.browser:browser:1.8.0"
     implementation 'net.lingala.zip4j:zip4j:2.11.5'
 }
 

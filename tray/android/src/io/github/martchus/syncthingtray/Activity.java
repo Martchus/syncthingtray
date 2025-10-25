@@ -1,5 +1,8 @@
 package io.github.martchus.syncthingtray;
 
+import static androidx.browser.customtabs.CustomTabsIntent.COLOR_SCHEME_DARK;
+import static androidx.browser.customtabs.CustomTabsIntent.COLOR_SCHEME_SYSTEM;
+
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
@@ -28,6 +31,8 @@ import android.widget.Toast;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.browser.customtabs.CustomTabColorSchemeParams;
+import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
@@ -53,6 +58,7 @@ public class Activity extends QtActivity {
 
     // various fields for activity-internal state
     private static final int STORAGE_PERMISSION_REQUEST = 100;
+    private static final int s_themeColor = 0xFF03A9F4;
     private float m_fontScale = 1.0f;
     private int m_fontWeightAdjustment = 0;
     private boolean m_storagePermissionRequested = false;
@@ -366,17 +372,48 @@ public class Activity extends QtActivity {
         }
     }
 
+    public boolean openUrl(String url) {
+        Activity activity = this;
+        runOnUiThread(new Runnable() {
+            public void run() {
+                // show the URL in a custom browser tab
+                try {
+                    CustomTabColorSchemeParams.Builder paramsBuilder = new CustomTabColorSchemeParams.Builder();
+                    paramsBuilder.setToolbarColor(s_themeColor);
+                    paramsBuilder.setNavigationBarColor(s_themeColor);
+                    CustomTabColorSchemeParams params = paramsBuilder.build();
+                    CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                    builder.setColorScheme(COLOR_SCHEME_SYSTEM);
+                    builder.setDefaultColorSchemeParams(params);
+                    builder.setShowTitle(true);
+                    builder.setExitAnimations(activity, android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                    CustomTabsIntent customTabsIntent = builder.build();
+                    customTabsIntent.launchUrl(activity, Uri.parse(url));
+                    return;
+                } catch (ActivityNotFoundException e) {
+                    Log.i(TAG, "No browser found to open " + url);
+                } catch (SecurityException e) {
+                    Log.i(TAG, "Unable to open " + url + " securely: " + e.getMessage());
+                } catch (Exception e) {
+                    Log.i(TAG, "Unable to open " + url + ": " + e.getMessage());
+                }
+                // fallback to the method provided by Qt (using QDesktopServices::openUrl()/QAndroidPlatformServices::openUrl())
+                openUrlExternally(url);
+            }
+        });
+        return true;
+    }
+
     private void applyTheming() {
         // set color to Material.LightBlue from Material.Light, in consistency with MainToolBar.qml/Theming.qml
         // note: The status/navigation bar color cannot be set anymore like this under newer Android versions. So
         //       Qt.ExpandedClientAreaHint is used instead. However, this code still seems to do *something*. With
         //       it the icons in the status bar are rendered in white (instead of black) which looks much better.
-        int color = 0xFF03A9F4;
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(color);
-        window.setNavigationBarColor(color);
+        window.setStatusBarColor(s_themeColor);
+        window.setNavigationBarColor(s_themeColor);
     }
 
     private Bundle metaData() {
@@ -535,6 +572,7 @@ public class Activity extends QtActivity {
 
     private static native void loadQtQuickGui();
     private static native void unloadQtQuickGui();
+    private static native void openUrlExternally(String url);
     private static native void handleLauncherStatusBroadcast(Intent intent);
     private static native void handleMessageFromService(int what, int arg1, int arg2, String str, byte[] variant);
     private static native void handleAndroidIntent(String page, boolean fromNotification);

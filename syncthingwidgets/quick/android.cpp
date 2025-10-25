@@ -23,6 +23,12 @@ static void unloadQtQuickGui(JNIEnv *, jobject)
     QMetaObject::invokeMethod(appObjectForJava, "destroyEngine", Qt::QueuedConnection);
 }
 
+static void openUrlExternally(JNIEnv *, jobject, jstring url)
+{
+    QMetaObject::invokeMethod(
+        appObjectForJava, "openUrlExternally", Qt::QueuedConnection, Q_ARG(QUrl, QJniObject(url).toString()), Q_ARG(bool, true));
+}
+
 static void stopLibSyncthing(JNIEnv *, jobject)
 {
     QMetaObject::invokeMethod(appServiceObjectForJava, "stopLibSyncthing", Qt::QueuedConnection);
@@ -116,8 +122,9 @@ void registerActivityJniMethods(App *app)
         { "handleNotificationPermissionChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handleNotificationPermissionChanged) },
         { "loadQtQuickGui", "()V", reinterpret_cast<void *>(JniFn::loadQtQuickGui) },
         { "unloadQtQuickGui", "()V", reinterpret_cast<void *>(JniFn::unloadQtQuickGui) },
+        { "openUrlExternally", "(Ljava/lang/String;)V", reinterpret_cast<void *>(JniFn::openUrlExternally) },
     };
-    registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 7) && registeredMethods;
+    registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 8) && registeredMethods;
     if (!registeredMethods) {
         qWarning() << "Unable to register all native activity methods in JNI environment.";
     }

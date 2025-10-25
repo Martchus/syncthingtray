@@ -343,7 +343,7 @@ Page {
             ItemDelegate {
                 Layout.fillWidth: true
                 visible: !App.usingUnixDomainSocket
-                onClicked: Qt.openUrlExternally(App.connection.syncthingUrlWithCredentials)
+                onClicked: App.openUrlExternally(App.connection.syncthingUrlWithCredentials)
                 contentItem: RowLayout {
                     spacing: 15
                     ForkAwesomeIcon {
