@@ -143,7 +143,7 @@ Page {
             text: qsTr("Help")
             enabled: objectConfigPage.helpUrl.length > 0
             icon.source: App.faUrlBase + "question"
-            onTriggered: Qt.openUrlExternally(objectConfigPage.helpUrl)
+            onTriggered: App.openUrlExternally(objectConfigPage.helpUrl)
         },
         Action {
             text: qsTr("Add")

@@ -40,6 +40,6 @@ IconOnlyButton {
     property string configCategory
 
     function openSyncthingDocs() {
-        Qt.openUrlExternally(helpButton.url);
+        App.openUrlExternally(helpButton.url);
     }
 }

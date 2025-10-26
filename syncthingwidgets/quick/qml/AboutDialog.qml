@@ -84,13 +84,13 @@ CustomDialog {
         Button {
             text: qsTr("Legal info")
             flat: true
-            onClicked: Qt.openUrlExternally(App.readmeUrl + "#legal-information")
+            onClicked: App.openUrlExternally(App.readmeUrl + "#legal-information")
             DialogButtonBox.buttonRole: DialogButtonBox.HelpRole
         }
         Button {
             text: qsTr("Website")
             flat: true
-            onClicked: Qt.openUrlExternally(App.website)
+            onClicked: App.openUrlExternally(App.website)
             DialogButtonBox.buttonRole: DialogButtonBox.HelpRole
         }
     }
