@@ -28,8 +28,6 @@ void StatusInfo::recomputeAdditionalStatusText()
         m_additionalStatusText = m_additionalDeviceInfo;
     } else if (m_additionalDeviceInfo.isEmpty()) {
         m_additionalStatusText = m_additionalStatusInfo;
-    } else if (m_additionalStatusInfo.isEmpty() && m_additionalDeviceInfo.isEmpty()) {
-        m_additionalStatusText.clear();
     } else {
         m_additionalStatusText = m_additionalStatusInfo % QChar('\n') % m_additionalDeviceInfo;
     }
