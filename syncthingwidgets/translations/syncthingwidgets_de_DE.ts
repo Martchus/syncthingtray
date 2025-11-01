@@ -5608,12 +5608,12 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="175"/>
         <source>n/a</source>
-        <translation type="unfinished"></translation>
+        <translation>nicht verfügbar</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="175"/>
         <source>URL for GUI and API access</source>
-        <translation type="unfinished"></translation>
+        <translation>URL für GUI- und API-Zugriff</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="176"/>
