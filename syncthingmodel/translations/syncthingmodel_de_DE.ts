@@ -41,7 +41,7 @@
     <message>
         <location filename="../syncthingicons.cpp" line="269"/>
         <source>No remote device connected</source>
-        <translation>Nicht mit anderen Geräten verbunden</translation>
+        <translation>Keine entfernten Geräte verbunden</translation>
     </message>
     <message>
         <location filename="../syncthingicons.cpp" line="270"/>
@@ -759,7 +759,7 @@
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="44"/>
         <source>No remote device connected</source>
-        <translation>Nicht mit anderen Geräten verbunden</translation>
+        <translation>Keine entfernten Geräte verbunden</translation>
     </message>
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="46"/>

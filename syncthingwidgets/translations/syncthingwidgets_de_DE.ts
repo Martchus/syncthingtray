@@ -4859,7 +4859,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../misc/statusinfo.cpp" line="102"/>
         <source>No remote device connected</source>
-        <translation>Nicht mit anderen Geräten verbunden</translation>
+        <translation>Keine entfernten Geräte verbunden</translation>
     </message>
     <message numerus="yes">
         <location filename="../misc/statusinfo.cpp" line="153"/>
