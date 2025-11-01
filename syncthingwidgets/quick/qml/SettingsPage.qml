@@ -172,6 +172,7 @@ StackView {
             ],
             launcher: [
                 {key: "run", label: qsTr("Run Syncthing"), statusText: Qt.binding(() => App.syncthingRunningStatus)},
+                {key: "guiUrl", type: "readonly", label: qsTr("URL for GUI and API access"), defaultValue: "", statusText: Qt.binding(() => App.syncthingGuiUrl.toString() || qsTr("n/a"))},
                 {key: "logLevel", label: qsTr("Log level"), type: "options", options: [
                     {value: "debug", label: qsTr("Debug")},
                     {value: "info", label: qsTr("Info")},

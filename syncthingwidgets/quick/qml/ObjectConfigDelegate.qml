@@ -24,10 +24,10 @@ DelegateChooser {
                     }
                     Label {
                         Layout.fillWidth: true
-                        text: displayText(modelData.value, modelData.inputMethodHints)
                         elide: Text.ElideRight
                         font.weight: Font.Light
                         wrapMode: Text.WordWrap
+                        Component.onCompleted: text = modelData.statusText ?? displayText(modelData.value, modelData.inputMethodHints)
                     }
                 }
                 ArrayElementButtons {
