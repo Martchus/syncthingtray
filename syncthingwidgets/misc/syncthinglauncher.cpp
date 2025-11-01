@@ -54,7 +54,7 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
 #endif
     , m_relevantConnection(nullptr)
     , m_guiListeningUrlSearch("Access the GUI via the following URL: ", " \n\r", std::string_view(), BufferSearch::CallbackType())
-    , m_exitSearch("Syncthing exited", "\n\r", std::string_view(), BufferSearch::CallbackType())
+    , m_exitSearch("Syncthing exited", "\n\r", std::string_view(), BufferSearch::CallbackType()) // not expected to be logged via libsyncthing
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     , m_libsyncthingLogLevel(LibSyncthing::LogLevel::Info)
 #endif
