@@ -60,7 +60,7 @@
     <message>
         <location filename="../syncthingconnection.cpp" line="475"/>
         <source>Connection configuration is insufficient.</source>
-        <translation>Verbindungskonfiguration is ungenügend</translation>
+        <translation>Verbindungskonfiguration ist ungenügend</translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="571"/>
