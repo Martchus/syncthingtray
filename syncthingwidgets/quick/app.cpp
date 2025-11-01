@@ -1507,6 +1507,8 @@ bool QtGui::App::openUrlExternally(const QUrl &url, bool viaQt)
     if (!viaQt) {
         return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("openUrl", url.toString());
     }
+#else
+    Q_UNUSED(viaQt)
 #endif
     return QDesktopServices::openUrl(url);
 }
