@@ -453,6 +453,8 @@ void SyncthingLauncher::handleProcessStateChanged(QProcess::ProcessState newStat
 void SyncthingLauncher::handleProcessFinished(int code, QProcess::ExitStatus status)
 {
     const auto &exitStatus = m_lastExitStatus.emplace(code, status);
+    m_guiListeningUrl.clear();
+    emit guiUrlChanged(m_guiListeningUrl);
     emit exited(exitStatus.code, exitStatus.status);
     if (m_logFile.isOpen()) {
         m_logFile.flush();
