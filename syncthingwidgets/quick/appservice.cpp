@@ -223,6 +223,7 @@ bool AppService::applyLauncherSettings()
         auto args = QStringList();
         args.reserve(8);
         args.append(QStringLiteral("serve"));
+        args.append(QStringLiteral("--no-browser"));
         args.append(QStringLiteral("--config"));
         args.append(m_syncthingConfigDir);
         args.append(QStringLiteral("--data"));
