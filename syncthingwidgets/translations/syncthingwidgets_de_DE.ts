@@ -579,7 +579,7 @@
     <message>
         <location filename="../quick/qml/CloseDialog.qml" line="15"/>
         <source>Do you want to shutdown Syncthing and quit the app? You can also just quit the app and keep Syncthing running in the background.</source>
-        <translation>Sollen Syncthing und die App wirklich beendet werden? Is ist auch möglich nur die App zu schließen und Syncthing weiterhin im Hintergrund auszuführen?</translation>
+        <translation>Sollen Syncthing und die App wirklich beendet werden? Es ist auch möglich nur die App zu schließen und Syncthing weiterhin im Hintergrund auszuführen?</translation>
     </message>
     <message>
         <location filename="../quick/qml/CloseDialog.qml" line="21"/>
