@@ -23,13 +23,13 @@ StackView {
                 ListElement {
                     key: "connection"
                     label: qsTr("Connection to Syncthing backend")
-                    title: qsTr("Configure connection with Syncthing backend")
+                    title: qsTr("Configure connection with the Syncthing backend")
                     iconName: "link"
                 }
                 ListElement {
                     key: "launcher"
-                    label: qsTr("Run conditions of Syncthing backend")
-                    title: qsTr("Configure when to run Syncthing backend")
+                    label: qsTr("Execution of Syncthing backend")
+                    title: qsTr("Configure how to run the Syncthing backend")
                     iconName: "terminal"
                 }
                 ListElement {

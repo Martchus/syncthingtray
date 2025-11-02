@@ -5472,17 +5472,17 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="26"/>
-        <source>Configure connection with Syncthing backend</source>
+        <source>Configure connection with the Syncthing backend</source>
         <translation>Einstellungen für die Verbindung mit dem Syncthing-Backend</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="31"/>
-        <source>Run conditions of Syncthing backend</source>
-        <translation>Laufzeitbedingungen für das Syncthing-Backend</translation>
+        <source>Execution of Syncthing backend</source>
+        <translation>Ausführung des Syncthing-Backends</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="32"/>
-        <source>Configure when to run Syncthing backend</source>
+        <source>Configure how to run the Syncthing backend</source>
         <translation>Einstellungen für das Starten des Backends</translation>
     </message>
     <message>

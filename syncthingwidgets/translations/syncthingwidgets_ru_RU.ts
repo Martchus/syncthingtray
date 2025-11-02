@@ -5196,17 +5196,17 @@ This dialog closes automatically when the process finally terminates.</source>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="26"/>
-        <source>Configure connection with Syncthing backend</source>
+        <source>Configure connection with the Syncthing backend</source>
         <translation>Настройте соединение с бэкэндом Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="31"/>
-        <source>Run conditions of Syncthing backend</source>
+        <source>Execution of Syncthing backend</source>
         <translation>Условия запуска бэкэнда Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="32"/>
-        <source>Configure when to run Syncthing backend</source>
+        <source>Configure how to run the Syncthing backend</source>
         <translation>Настройте время запуска бэкэнда Syncthing</translation>
     </message>
     <message>
