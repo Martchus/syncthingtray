@@ -173,31 +173,12 @@ bool AppService::applyLauncherSettings()
     const auto tweaksSettingsObj = m_settings.value(QLatin1String("tweaks")).toObject();
     m_launcher.setStoppingOnMeteredConnection(launcherSettingsObj.value(QLatin1String("stopOnMetered")).toBool());
     const auto shouldRun = launcherSettingsObj.value(QLatin1String("run")).toBool();
-#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-    auto options = LibSyncthing::RuntimeOptions();
-    auto customSyncthingHome = launcherSettingsObj.value(QLatin1String("stHomeDir")).toString();
+    const auto exePath = launcherSettingsObj.value(QLatin1String("exePath")).toString();
+    const auto useUnixDomainSocket = tweaksSettingsObj.value(QLatin1String("useUnixDomainSocket")).toBool();
+    const auto customSyncthingHome = launcherSettingsObj.value(QLatin1String("stHomeDir")).toString();
     m_syncthingConfigDir = customSyncthingHome.isEmpty() ? m_settingsDir->path() + QStringLiteral("/syncthing") : customSyncthingHome;
     m_syncthingDataDir = m_syncthingConfigDir;
-    options.configDir = m_syncthingConfigDir.toStdString();
-    options.dataDir = options.configDir;
-    if (tweaksSettingsObj.value(QLatin1String("useUnixDomainSocket")).toBool()) {
-        m_syncthingUnixSocketPath = settingsDir().path() + QStringLiteral("/syncthing.socket");
-        options.guiAddress = "unix://" + m_syncthingUnixSocketPath.toStdString();
-        options.flags = options.flags | LibSyncthing::RuntimeFlags::SkipPortProbing;
-    }
-    m_launcher.setLibSyncthingLogLevel(launcherSettingsObj.value(QLatin1String("logLevel")).toString());
-    if (launcherSettingsObj.value(QLatin1String("writeLogFile")).toBool()) {
-        if (!m_launcher.logFile().isOpen()) {
-            m_launcher.logFile().setFileName(syncthingLogFilePath());
-            if (!m_launcher.logFile().open(QIODeviceBase::WriteOnly | QIODeviceBase::Append | QIODeviceBase::Text)) {
-                emit error(tr("Unable to open persistent log file for Syncthing under \"%1\": %2")
-                        .arg(m_launcher.logFile().fileName(), m_launcher.logFile().errorString()));
-                return false;
-            }
-        }
-    } else {
-        m_launcher.logFile().close();
-    }
+    m_syncthingUnixSocketPath = useUnixDomainSocket ? settingsDir().path() + QStringLiteral("/syncthing.socket") : QString();
 #ifdef Q_OS_ANDROID
     if (shouldRun) {
         if (const auto ipObj = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jstring>("getGatewayIPv4"); ipObj.isValid()) {
@@ -209,13 +190,49 @@ bool AppService::applyLauncherSettings()
         }
     }
 #endif
-    m_launcher.setRunning(shouldRun, std::move(options));
+    if (exePath.isEmpty()) {
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+        auto options = LibSyncthing::RuntimeOptions();
+        options.configDir = m_syncthingConfigDir.toStdString();
+        options.dataDir = options.configDir;
+        if (!m_syncthingUnixSocketPath.isEmpty()) {
+            options.guiAddress = "unix://" + m_syncthingUnixSocketPath.toStdString();
+            options.flags = options.flags | LibSyncthing::RuntimeFlags::SkipPortProbing;
+        }
+        m_launcher.setLibSyncthingLogLevel(launcherSettingsObj.value(QLatin1String("logLevel")).toString());
+        if (launcherSettingsObj.value(QLatin1String("writeLogFile")).toBool()) {
+            if (!m_launcher.logFile().isOpen()) {
+                m_launcher.logFile().setFileName(syncthingLogFilePath());
+                if (!m_launcher.logFile().open(QIODeviceBase::WriteOnly | QIODeviceBase::Append | QIODeviceBase::Text)) {
+                    emit error(tr("Unable to open persistent log file for Syncthing under \"%1\": %2")
+                            .arg(m_launcher.logFile().fileName(), m_launcher.logFile().errorString()));
+                    return false;
+                }
+            }
+        } else {
+            m_launcher.logFile().close();
+        }
+        m_launcher.setRunning(shouldRun, std::move(options));
 #else
-    if (shouldRun) {
-        emit error(tr("This build of the app cannot launch Syncthing."));
-        return false;
-    }
+        if (shouldRun) {
+            emit error(tr("This build of the app cannot launch Syncthing."));
+            return false;
+        }
 #endif
+    } else {
+        auto args = QStringList();
+        args.reserve(8);
+        args.append(QStringLiteral("serve"));
+        args.append(QStringLiteral("--config"));
+        args.append(m_syncthingConfigDir);
+        args.append(QStringLiteral("--data"));
+        args.append(m_syncthingDataDir);
+        if (!m_syncthingUnixSocketPath.isEmpty()) {
+            args.append(QStringLiteral("--gui-address=unix://") + m_syncthingUnixSocketPath);
+            args.append(QStringLiteral("--no-port-probing"));
+        }
+        m_launcher.setRunning(shouldRun, exePath, args);
+    }
     return true;
 }
 

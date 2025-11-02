@@ -59,6 +59,7 @@ public:
     QFile &logFile();
     bool isRunning() const;
     bool isStarting() const;
+    void setRunning(bool running, const QString &program, const QStringList &arguments);
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     void setRunning(bool running, LibSyncthing::RuntimeOptions &&runtimeOptions);
 #endif
@@ -125,6 +126,7 @@ private Q_SLOTS:
     void handleOutputAvailable(int logLevel, const QByteArray &data);
 
 private:
+    bool shouldBeRunningAccordingToRuntimeConditions(bool runningEnabled);
     void resetState();
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     void handleLoggingCallback(LibSyncthing::LogLevel, const char *message, std::size_t messageSize);

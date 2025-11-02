@@ -6,7 +6,7 @@ import Main
 
 IconOnlyButton {
     id: helpButton
-    visible: modelData.helpUrl?.length > 0 || configCategory.length > 0
+    visible: helpButton.desc.length > 0 || modelData.helpUrl?.length > 0 || configCategory.length > 0
     text: qsTr("Open help")
     icon.source: App.faUrlBase + "question"
     onClicked: helpButton.desc.length > 0 ? helpDlg.open() : helpButton.openSyncthingDocs()
@@ -28,6 +28,7 @@ IconOnlyButton {
             Button {
                 text: qsTr("Details")
                 flat: true
+                enabled: helpButton.url.toString().length > 0
                 DialogButtonBox.buttonRole: DialogButtonBox.HelpRole
             }
         }

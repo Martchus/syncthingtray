@@ -1379,6 +1379,7 @@ bool App::applyLauncherSettings()
     auto launcherSettingsObj = m_settings.value(QLatin1String("launcher")).toObject();
     auto mod = false;
     ensureDefault(mod, launcherSettingsObj, QLatin1String("run"), runByDefault);
+    ensureDefault(mod, launcherSettingsObj, QLatin1String("exePath"), QString());
     ensureDefault(mod, launcherSettingsObj, QLatin1String("stopOnMetered"), false);
     ensureDefault(mod, launcherSettingsObj, QLatin1String("writeLogFile"), false);
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
@@ -1408,6 +1409,7 @@ bool App::applySettings()
         m_settings.insert(QLatin1String("tweaks"), tweaksSettings);
     }
     invalidateStatus();
+    emit info(tr("App settings saved"));
     return true;
 }
 

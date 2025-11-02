@@ -96,12 +96,31 @@ SyncthingLauncher::~SyncthingLauncher()
 #endif
 }
 
+/*!
+ * \brief Sets whether Syncthing is supposed to run or not.
+ * \remarks This function takes runtime conditions such as isStoppingOnMeteredConnection() into account.
+ */
+void SyncthingLauncher::setRunning(bool running, const QString &program, const QStringList &arguments)
+{
+    // check runtime conditions
+    auto shouldBeRunning = shouldBeRunningAccordingToRuntimeConditions(running);
+    // start/stop Syncthing
+    shouldBeRunning ? launch(program, arguments) : terminate();
+    // save runtime options so Syncthing can resume in case runtime conditions allow it
+#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+    m_lastRuntimeOptions.reset();
+#endif
+#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
+    m_lastLauncherSettings = nullptr;
+#endif
+    // emit signal in any case (even if there's no change) so runningStatus() is re-evaluated
+    emit runningChanged(shouldBeRunning);
+}
+
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
 /*!
  * \brief Sets whether Syncthing is supposed to run or not.
- * \remarks
- * - This function will takes runtime conditions such as isStoppingOnMeteredConnection() into account.
- * - This function so far only supports launching via the built-in Syncthing library.
+ * \remarks This function takes runtime conditions such as isStoppingOnMeteredConnection() into account.
  */
 void SyncthingLauncher::setRunning(bool running, LibSyncthing::RuntimeOptions &&runtimeOptions)
 {
@@ -111,17 +130,13 @@ void SyncthingLauncher::setRunning(bool running, LibSyncthing::RuntimeOptions &&
         m_stoppedMetered = running;
         shouldBeRunning = false;
     }
-    // start/stop Syncthing depending on \a running
-    if (shouldBeRunning) {
-        launch(runtimeOptions);
-    } else {
-        tearDownLibSyncthing();
-    }
+    // start/stop Syncthing
+    shouldBeRunning ? launch(runtimeOptions) : terminate();
     // save runtime options so Syncthing can resume in case runtime conditions allow it
+    m_lastRuntimeOptions = std::move(runtimeOptions);
 #if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
     m_lastLauncherSettings = nullptr;
 #endif
-    m_lastRuntimeOptions = std::move(runtimeOptions);
     // emit signal in any case (even if there's no change) so runningStatus() is re-evaluated
     emit runningChanged(shouldBeRunning);
 }
@@ -533,6 +548,19 @@ void SyncthingLauncher::handleOutputAvailable(int logLevel, const QByteArray &da
     } else {
         m_outputBuffer += data;
     }
+}
+
+/*!
+ * \brief Returns whether Syncthing should be running according to the runtime conditions and whether
+ *        running Syncthing was enabled at all.
+ */
+bool SyncthingLauncher::shouldBeRunningAccordingToRuntimeConditions(bool runningEnabled)
+{
+    if (isStoppingOnMeteredConnection() && isNetworkConnectionMetered().value_or(false)) {
+        m_stoppedMetered = runningEnabled;
+        return false;
+    }
+    return runningEnabled;
 }
 
 void SyncthingLauncher::terminateDueToMeteredConnection()
