@@ -37,7 +37,9 @@ DelegateChooser {
                 IconOnlyButton {
                     text: qsTr("Copy")
                     icon.source: App.faUrlBase + "files-o"
-                    onClicked: App.copyText(modelData.value)
+                    onClicked: App.copyText(copyText)
+                    Component.onCompleted: copyText = modelData.statusText ?? modelData.value.toString()
+                    property string copyText: ""
                 }
                 HelpButton {
                     configCategory: objectConfigPage.configCategory
