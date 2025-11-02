@@ -203,7 +203,7 @@ itself are also located within this directory when Syncthing is launched via the
 
 ### Connect to Syncthing via Unix domain socket
 When using a Unix domain socket as the Syncthing GUI address (e.g., by starting Syncthing with
-parameters such as `--gui-address=unix://%t/syncthing.socket --skip-port-probing`), you need to
+parameters such as `--gui-address=unix://%t/syncthing.socket --no-port-probing`), you need to
 specify the path to the socket as "Local path" in the advanced connection settings. This
 setting requires Qt 6.8 or higher. You still need to provide the "Syncthing URL" using the
 `unix+http` as scheme (e.g. `unix+http://127.0.0.1:8080` where the host and port are not
