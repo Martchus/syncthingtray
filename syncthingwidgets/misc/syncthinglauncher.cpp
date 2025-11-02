@@ -53,7 +53,7 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
     , m_lastLauncherSettings(nullptr)
 #endif
     , m_relevantConnection(nullptr)
-    , m_guiListeningUrlSearch("Access the GUI via the following URL: ", " \n\r", std::string_view(), BufferSearch::CallbackType())
+    , m_guiListeningUrlSearch("Access the GUI via the following URL: ", "\n\r", std::string_view(), BufferSearch::CallbackType())
     , m_exitSearch("Syncthing exited", "\n\r", std::string_view(), BufferSearch::CallbackType()) // not expected to be logged via libsyncthing
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     , m_libsyncthingLogLevel(LibSyncthing::LogLevel::Info)
@@ -527,8 +527,11 @@ void SyncthingLauncher::handleOutputAvailable(int logLevel, const QByteArray &da
         m_exitSearch.reset();
     }
     if (guiAddressOffset > exitOffset) {
-        m_guiListeningUrl.setUrl(QString::fromStdString(m_guiListeningUrlSearch.result()));
-        std::cerr << EscapeCodes::Phrases::Info << "Syncthing GUI available: " << m_guiListeningUrlSearch.result() << EscapeCodes::Phrases::End;
+        static const auto logSuffixRegex = QRegularExpression(QStringLiteral(" \\([^()]*?log[^()]+?\\)$"));
+        auto url = QString::fromStdString(m_guiListeningUrlSearch.result());
+        url.remove(logSuffixRegex);
+        m_guiListeningUrl.setUrl(url);
+        std::cerr << EscapeCodes::Phrases::Info << "Syncthing GUI available: " << url.toStdString() << EscapeCodes::Phrases::End;
         m_guiListeningUrlSearch.reset();
         emit guiUrlChanged(m_guiListeningUrl);
         emit startingChanged();
