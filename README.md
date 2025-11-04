@@ -444,6 +444,9 @@ See the [release section on GitHub](https://github.com/Martchus/syncthingtray/re
               the packages `libglx0`, `libopengl0` and `libegl1` are installed on Debian/Ubuntu)
         * Supports X11 and Wayland (set the environment variable `QT_QPA_PLATFORM=xcb` to disable
           native Wayland support if it does not work on your system)
+        * This build of Syncthing Tray bundles OpenSSL because different GNU/Linux distributions come with different incompatible
+          versions of that library. It will use your OpenSSL configuration, though. In case that config is not compatible with the
+          bundled version of OpenSSL, preventing TLS support from working, you need to set the environment variable `OPENSSL_CONF=`.
         * The built-in web view is not available in these builts as it would require shipping a full web browser engine.
           Syncthing Tray can still show the official web-based UI in a dedicated window via a Chromium-based browser you have
           already installed using its "app mode". Alternatively, use the distribution-specific builds provided for Arch Linux,
