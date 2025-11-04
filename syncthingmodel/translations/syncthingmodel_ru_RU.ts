@@ -100,7 +100,7 @@
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="214"/>
         <source>unknown</source>
-        <translation type="unfinished">неизвестный</translation>
+        <translation>неизвестный</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="136"/>
@@ -179,7 +179,7 @@
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="149"/>
         <source>Rescan interval</source>
-        <translation>Интервал повторного сканирования</translation>
+        <translation>Ресканы</translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="151"/>
@@ -229,22 +229,22 @@
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="141"/>
         <source>Global status</source>
-        <translation>Глобальный статус</translation>
+        <translation>Глобальное состояние</translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="143"/>
         <source>Local status</source>
-        <translation>Локальный статус</translation>
+        <translation>Локальное состояние</translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="145"/>
         <source>Shared with</source>
-        <translation>Поделился с</translation>
+        <translation>Доступ предоставлен</translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="147"/>
         <source>Type</source>
-        <translation>Тип</translation>
+        <translation>Тип папки</translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="155"/>
