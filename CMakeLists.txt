@@ -82,7 +82,9 @@ endif ()
 
 # allow building qtforkawesome as part of this project
 set(BUNDLED_QT_FORK_AWESOME_PATH OFF CACHE PATH "specifies the (relative) path to the qtforkawesome sources for building it together with ${META_PROJECT_NAME}")
-if(NOT BUNDLED_QT_FORK_AWESOME_PATH)
+if (NO_TRAY AND NO_FILE_ITEM_ACTION_PLUGIN AND NO_MODEL AND NO_WIDGETS AND NO_PLASMOID)
+    message(STATUS "Skipping configuration of qtforkawesome as no graphical components are built")
+elseif(NOT BUNDLED_QT_FORK_AWESOME_PATH)
     message(STATUS "Using system qtforkawesome")
 else()
     if(IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${BUNDLED_QT_FORK_AWESOME_PATH}" OR IS_DIRECTORY "${BUNDLED_QT_FORK_AWESOME_PATH}")
