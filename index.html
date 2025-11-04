@@ -156,6 +156,11 @@
               <p>Requires <code>glibc>=2.26</code>, OpenGL and libX11. The distributions openSUSE Leap 15, Fedora 27, Debian 10 and Ubuntu 18.04 are recent enough. On Debian/Ubuntu be sure the packages <code>libglx0</code>, <code>libopengl0</code> and <code>libegl1</code> are installed.</p>
               <p>These downloads cannot include the Plasmoid/Applet (for the Plasma desktop) and the Dolphin integration for technical reasons. The KDE integrations therefore need to be installed via distribution-specific packages.</p>
               <p>
+                This build of Syncthing Tray bundles OpenSSL because different GNU/Linux distributions come with different incompatible
+                versions of that library. It will use your OpenSSL configuration, though. In case that config is not compatible with the
+                bundled version of OpenSSL, preventing TLS support from working, you need to set the environment variable <code>OPENSSL_CONF=</code>.
+              </p>
+              <p>
                 The built-in web view is not available as it would require shipping a full web browser engine. Syncthing Tray can still
                 show the official web-based UI in a dedicated window via a Chromium-based browser you have already installed using its
                 "app mode". Alternatively, use the distribution-specific builds provided for Arch Linux, openSUSE and Fedora which come
