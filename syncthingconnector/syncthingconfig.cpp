@@ -93,7 +93,11 @@ static QJsonValue xmlValueToJsonValue(QStringView value)
         return QJsonValue(false);
     }
     auto isNumber = false;
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0) // could be QT_VERSION >= QT_VERSION_CHECK(5, 15, 2)
     auto number = value.toDouble(&isNumber);
+#else
+    auto number = value.toString().toDouble(&isNumber);
+#endif
     return isNumber ? QJsonValue(number) : QJsonValue(value.toString());
 }
 
