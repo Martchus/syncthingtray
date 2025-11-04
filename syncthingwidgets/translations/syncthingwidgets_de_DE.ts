@@ -1938,65 +1938,65 @@
         <translation>Kopieren</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="96"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="98"/>
         <source>Make random ID</source>
         <translation>Zufällige ID generieren</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="161"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="626"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="692"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="163"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="628"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="694"/>
         <source>Clear</source>
         <translation>Löschen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="170"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="172"/>
         <source>Refresh list of devices</source>
         <translation>Geräteliste aktualisieren</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="186"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="188"/>
         <source>This device has already been added!</source>
         <translation>Dieses Gerät wurde bereits hinzugefügt!</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="186"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="188"/>
         <source>The device ID looks valid.</source>
         <translation>Die Geräte-ID sieht gültig aus.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="186"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="188"/>
         <source>The entered device ID looks invalid!</source>
         <translation>Die eingegebene Geräte-ID sieht ungültig aus!</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="287"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="289"/>
         <source>A custom value has been entered.</source>
         <translation>Es wurde ein benutzerdefinierter Wert eingegeben.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="352"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="354"/>
         <source>Change encryption password</source>
         <translation>Passwort für Verschlüsselung ändern</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="352"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="354"/>
         <source>Set encryption password</source>
         <translation>Passwort für Verschlüsselung festlegen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="359"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="361"/>
         <source>Set encryption password for sharing with &quot;%1&quot;</source>
         <translation>Passwort für Verschlüsselung festlegen um mit &quot;%1&quot; zu teilen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="366"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="368"/>
         <source>If untrusted, enter encryption password</source>
         <translation>Gib ein Verschlüsselungspasswort ein, wenn dem Gerät nicht vertraut wird</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="632"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="698"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="634"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="700"/>
         <source>Edit manually</source>
         <translation>Manuell editieren</translation>
     </message>
@@ -2890,43 +2890,43 @@
         <translation>Diese Version der App kann Syncthing nicht ausführen.</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="292"/>
+        <location filename="../quick/appservice.cpp" line="293"/>
         <source>Syncthing App ran into error</source>
         <translation>In der Syncthing-App ist ein Fehler aufgetreten</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="491"/>
+        <location filename="../quick/appservice.cpp" line="492"/>
         <source>Syncthing error/notification</source>
         <translation>Syncthing Fehler/Benachrichtigung</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="491"/>
+        <location filename="../quick/appservice.cpp" line="492"/>
         <source>%1 Syncthing errors/notifications</source>
         <translation>%1 Syncthing Fehler/Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="492"/>
-        <location filename="../quick/appservice.cpp" line="512"/>
+        <location filename="../quick/appservice.cpp" line="493"/>
+        <location filename="../quick/appservice.cpp" line="513"/>
         <source>Most recent: </source>
         <translation>Letzte: </translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="511"/>
+        <location filename="../quick/appservice.cpp" line="512"/>
         <source>Syncthing API error</source>
         <translation>Syncthing-API-Fehler</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="511"/>
+        <location filename="../quick/appservice.cpp" line="512"/>
         <source>%1 Syncthing API errors</source>
         <translation>%1 Syncthing-API-Fehler</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="525"/>
+        <location filename="../quick/appservice.cpp" line="526"/>
         <source>Syncthing device wants to connect</source>
         <translation>Syncthing-Gerät will sich verbinden</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="539"/>
+        <location filename="../quick/appservice.cpp" line="540"/>
         <source>Syncthing device wants to share folder</source>
         <translation>Syncthing-Gerät will einen Ordner teilen</translation>
     </message>
