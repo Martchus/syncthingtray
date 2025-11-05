@@ -18,7 +18,7 @@ can be passed to CMake to influence the build.
 The following Qt modules are required (only the latest Qt 5 and Qt 6 version tested): Qt Core, Qt Concurrent,
 Qt Network, Qt D-Bus, Qt Gui, Qt Widgets, Qt Svg, Qt WebEngineWidgets/WebKitWidgets
 
-It is recommended to use at least Qt 5.14 to avoid limitations in previous versions (see
+It is recommended to use at least Qt 6.7 to avoid limitations in previous versions (see
 [the documentation on known bugs](known_bugs_and_workarounds.md) for details).
 
 The built-in web view and therefore the modules WebEngineWidgets/WebKitWidgets are optional (see
