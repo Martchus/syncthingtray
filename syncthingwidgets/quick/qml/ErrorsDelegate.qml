@@ -6,7 +6,7 @@ import Main
 
 ItemDelegate {
     width: listView.width
-    onPressAndHold: App.copyText(`${modelData.when}\n${modelData.url}: ${modelData.message}`)
+    onPressAndHold: App.copyText(`${modelData.when}\n${modelData.url ? modelData.url + ': ' : ''}${modelData.message}`)
     contentItem: GridLayout {
         columns: 2
         columnSpacing: 10
