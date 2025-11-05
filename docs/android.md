@@ -133,9 +133,6 @@ configuration from another device.
 ## Caveats on Android
 While Syncthing Tray basically works on Android, there are still some unresolved issues:
 
-* The Go runtime, and thus the service process, sometimes "panics," which still needs debugging. It
-  is restarted by Android automatically, however. (Just as it is restarted after being sometimes
-  killed forcefully by Android.)
 * The performance can be problematic due to the use of FUSE as of Android 11. Especially if you
   have many files in one directory, the performance is bad.
     * I recommend avoiding having many files in a single directory.
@@ -149,11 +146,6 @@ While Syncthing Tray basically works on Android, there are still some unresolved
       "[Using the document provider on Android](#using-the-document-provider-on-android)" for details.
 * Media rescans need to be triggered manually, but this can be easily done per folder from the UI.
 * There are probably still many small UI bugs in the Qt Quick based UI used on Android.
-* The Syncthing home directory needs to be within the private directory of the app on the main
-  storage. The app allows moving the home directory to other locations, e.g., the private directory
-  of the app on the SD card. However, Syncthing fails to open its database in other locations. (Having
-  the database on the SD card seems to work with Syncthing v2, which switched to SQLite. So, this caveat
-  will likely be removed when Syncthing v2 is released.)
 * Not all features the official web UI offers have been implemented in the Qt Quick based UI yet.
   You can easily open the official web UI in a web browser, however.
 * Some of the problems/solutions found on the

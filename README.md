@@ -265,12 +265,8 @@ The Plasmoid can be added/shown in two different ways:
     * Whether the Plasmoid is shown as part of the system tray Plasmoid can be configured
       in the settings of the system tray Plasmoid. You can access the settings of the
       system tray Plasmoid from its context-menu which can be opened by right-clicking on
-    * This is likely the preferred way of showing it and may also be the default.
       the arrow for expanding/collapsing.
-    * The list of entries in the system tray Plasmoid settings might show an
-      invalid/disabled entry for Syncthing in some cases. There should always nevertheless
-      also be a valid entry which can be used. See the
-      [related issue](https://github.com/Martchus/syncthingtray/issues/239) for details.
+    * This is likely the preferred way of showing it and may also be the default.
     * This way, it is also possible to show the icon only in certain states by choosing to
       show it only when important and selecting the states in the Plasmoid's settings.
     * Configuring the size has no effect when the Plasmoid is displayed as part of the

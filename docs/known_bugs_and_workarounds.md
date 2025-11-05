@@ -122,9 +122,6 @@ variable `PLASMA_USE_QT_SCALING=1` might help.
         * Redirections cannot be followed (e.g. from HTTP to HTTPS) because
           `QNetworkRequest::RedirectPolicyAttribute` and `QNetworkRequest::NoLessSafeRedirectPolicy` are not available yet.
 * KDE limitations
-    * Issues with the configuration have appeared as of some version of Plasma, see https://github.com/Martchus/syncthingtray/issues/239
-      and https://bugs.kde.org/show_bug.cgi?id=485072. It is unclear whether the problem is in Syncthing Tray or Plasma. Check out the
-      "[Configuring Plasmoid](../README.md#required-system-configuration)" section for details.
     * High-DPI scaling of Plasmoid is broken under X11 (https://bugs.kde.org/show_bug.cgi?id=356446).
     * Plasma < 5.26.0:
         * The Plasmoid contents are possibly clipped when shown within the system notifications plasmoid.
