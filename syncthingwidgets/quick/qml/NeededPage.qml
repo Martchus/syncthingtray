@@ -80,7 +80,6 @@ Page {
     property bool isRequestOngoing: false
     property int page: 1
     property int perPage: 25
-    property var params: devId.length > 0 ? ({folder: dirId, device: devId}) : ({folder: dirId})
     readonly property var stateLabels: ({
         progress: qsTr("In progress"),
         queued: qsTr("Queued"),
@@ -92,7 +91,7 @@ Page {
         if (isRequestOngoing) {
             return;
         }
-        const paramsWithPaging = params;
+        const paramsWithPaging = devId.length > 0 ? ({folder: dirId, device: devId}) : ({folder: dirId});
         paramsWithPaging.page = page;
         paramsWithPaging.perpage = perPage;
         isRequestOngoing = true;
