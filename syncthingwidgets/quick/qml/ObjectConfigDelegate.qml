@@ -425,7 +425,7 @@ DelegateChooser {
                 if (enabled && index < 0) {
                     devices.push({deviceID: deviceID, encryptionPassword: "", introducedBy: ""});
                     objectConfigPage.hasUnsavedChanges = true;
-                } else if (!enabled && index > 0) {
+                } else if (!enabled && index >= 0) {
                     devices.splice(index, 1);
                     objectConfigPage.hasUnsavedChanges = true;
                 }
