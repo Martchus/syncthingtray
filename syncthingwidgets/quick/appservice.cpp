@@ -119,6 +119,10 @@ AppService::AppService(bool insecure, QObject *parent)
 
 AppService::~AppService()
 {
+    if (m_launcher.isRunning()) {
+        qDebug() << "Terminating Syncthing";
+        m_launcher.terminate();
+    }
     qDebug() << "Destroying service";
     if (SyncthingLauncher::mainInstance() == &m_launcher) {
         SyncthingLauncher::setMainInstance(nullptr);
