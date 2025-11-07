@@ -21,39 +21,17 @@ Page {
             id: mainLayout
             width: mainView.width
             spacing: 0
-            ItemDelegate {
-                Layout.fillWidth: true
+            CustomDelegate {
                 onClicked: App.requestStoragePermission()
                 visible: !App.storagePermissionGranted
-                contentItem: RowLayout {
-                    spacing: 15
-                    ForkAwesomeIcon {
-                        iconName: "unlock-alt"
-                    }
-                    Label {
-                        Layout.fillWidth: true
-                        text: qsTr("Request storage permission")
-                        elide: Text.ElideRight
-                        font.weight: Font.Medium
-                    }
-                }
+                labelText: qsTr("Request storage permission")
+                iconName: "unlock-alt"
             }
-            ItemDelegate {
-                Layout.fillWidth: true
+            CustomDelegate {
                 onClicked: App.requestNotificationPermission()
                 visible: !App.notificationPermissionGranted
-                contentItem: RowLayout {
-                    spacing: 15
-                    ForkAwesomeIcon {
-                        iconName: "bell"
-                    }
-                    Label {
-                        Layout.fillWidth: true
-                        text: qsTr("Request notification permission")
-                        elide: Text.ElideRight
-                        font.weight: Font.Medium
-                    }
-                }
+                labelText: qsTr("Request notification permission")
+                iconName: "bell"
             }
             ItemDelegate {
                 Layout.fillWidth: true
@@ -306,72 +284,28 @@ Page {
                 labelText: qsTr("Local state")
                 iconName: "home"
             }
-            ItemDelegate {
-                Layout.fillWidth: true
+            CustomDelegate {
                 onClicked: pages.addDevice()
                 visible: App.connection.hasState
-                contentItem: RowLayout {
-                    spacing: 15
-                    ForkAwesomeIcon {
-                        iconName: "laptop"
-                    }
-                    Label {
-                        Layout.fillWidth: true
-                        text: qsTr("Connect other device")
-                        elide: Text.ElideRight
-                        font.weight: Font.Medium
-                    }
-                }
+                labelText: qsTr("Connect other device")
+                iconName: "laptop"
             }
-            ItemDelegate {
-                Layout.fillWidth: true
+            CustomDelegate {
                 onClicked: pages.addDir()
                 visible: App.connection.hasState
-                contentItem: RowLayout {
-                    spacing: 15
-                    ForkAwesomeIcon {
-                        iconName: "share-alt"
-                    }
-                    Label {
-                        Layout.fillWidth: true
-                        text: qsTr("Share folder")
-                        elide: Text.ElideRight
-                        font.weight: Font.Medium
-                    }
-                }
+                labelText: qsTr("Share folder")
+                iconName: "share-alt"
             }
-            ItemDelegate {
-                Layout.fillWidth: true
-                visible: !App.usingUnixDomainSocket
+            CustomDelegate {
                 onClicked: App.openUrlExternally(App.connection.syncthingUrlWithCredentials)
-                contentItem: RowLayout {
-                    spacing: 15
-                    ForkAwesomeIcon {
-                        iconName: "external-link"
-                    }
-                    Label {
-                        Layout.fillWidth: true
-                        text: qsTr("Open Syncthing in web browser")
-                        elide: Text.ElideRight
-                        font.weight: Font.Medium
-                    }
-                }
+                visible: !App.usingUnixDomainSocket
+                labelText: qsTr("Open Syncthing in web browser")
+                iconName: "external-link"
             }
-            ItemDelegate {
-                Layout.fillWidth: true
+            CustomDelegate {
                 onClicked: App.openUrlExternally(App.documentationUrl)
-                contentItem: RowLayout {
-                    spacing: 15
-                    ForkAwesomeIcon {
-                        iconName: "book"
-                    }
-                    Label {
-                        Layout.fillWidth: true
-                        text: qsTr("Open documentation")
-                        elide: Text.ElideRight
-                        font.weight: Font.Medium
-                    }
-                }
+                labelText: qsTr("Open documentation")
+                iconName: "book"
             }
         }
     }

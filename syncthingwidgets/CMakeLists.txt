@@ -72,6 +72,7 @@ set(QML_MAIN_FILES
     quick/qml/ChangesPage.qml
     quick/qml/CopyPasteButtons.qml
     quick/qml/CloseDialog.qml
+    quick/qml/CustomDelegate.qml
     quick/qml/CustomDialog.qml
     quick/qml/CustomFlickable.qml
     quick/qml/CustomListView.qml
