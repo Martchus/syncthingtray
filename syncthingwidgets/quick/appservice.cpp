@@ -333,6 +333,9 @@ void AppService::handleMessageFromActivity(ServiceAction action, int arg1, int a
     case ServiceAction::ConnectToSyncthing:
         QMetaObject::invokeMethod(connection(), "connect", Qt::QueuedConnection);
         break;
+    case ServiceAction::ReconnectToSyncthing:
+        QMetaObject::invokeMethod(connection(), "reconnect", Qt::QueuedConnection);
+        break;
     case ServiceAction::BroadcastLauncherStatus:
         QMetaObject::invokeMethod(this, "broadcastLauncherStatus", Qt::QueuedConnection);
         break;

@@ -349,6 +349,7 @@ public:
     Q_INVOKABLE void restartSyncthing();
     Q_INVOKABLE void shutdownSyncthing();
     Q_INVOKABLE void connectToSyncthing();
+    Q_INVOKABLE void reconnectToSyncthing();
 #ifdef Q_OS_ANDROID
     Q_INVOKABLE void sendMessageToService(ServiceAction action, int arg1 = 0, int arg2 = 0, const QString &str = QString());
     Q_INVOKABLE void handleMessageFromService(ActivityAction action, int arg1, int arg2, const QString &str, const QByteArray &variant);
@@ -381,6 +382,7 @@ Q_SIGNALS:
     void syncthingRestartRequested();
     void syncthingShutdownRequested();
     void syncthingConnectRequested();
+    void syncthingReconnectRequested();
     void settingsReloadRequested();
     void launcherStatusRequested();
     void stoppingLibSyncthingRequested();

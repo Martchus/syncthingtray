@@ -139,6 +139,7 @@ Page {
                         App.performHapticFeedback();
                     }
                 }
+                onPressAndHold: App.reconnectToSyncthing()
                 contentItem: RowLayout {
                     spacing: 15
                     Icon {

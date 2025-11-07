@@ -376,6 +376,8 @@ static int runApplication(int argc, const char *const *argv)
         QObject::connect(&quickApp, &App::syncthingShutdownRequested, &appService, &AppService::shutdownSyncthing);
         QObject::connect(&quickApp, &App::syncthingConnectRequested, appService.connection(),
             static_cast<void (SyncthingConnection::*)()>(&SyncthingConnection::connect));
+        QObject::connect(&quickApp, &App::syncthingReconnectRequested, appService.connection(),
+            static_cast<void (SyncthingConnection::*)()>(&SyncthingConnection::reconnect));
         QObject::connect(&quickApp, &App::settingsReloadRequested, &appService, &AppService::reloadSettings);
         QObject::connect(&quickApp, &App::launcherStatusRequested, &appService, &AppService::broadcastLauncherStatus);
         QObject::connect(&quickApp, &App::clearLogRequested, &appService, &AppService::clearLog);

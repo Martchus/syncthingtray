@@ -1683,6 +1683,17 @@ void App::connectToSyncthing()
 #endif
 }
 
+void App::reconnectToSyncthing()
+{
+    info(tr("Triggered re-connect with Syncthing backend"));
+    m_connection.reconnect();
+#ifdef Q_OS_ANDROID
+    sendMessageToService(ServiceAction::ReconnectToSyncthing);
+#else
+    emit syncthingReconnectRequested();
+#endif
+}
+
 /*!
  * \brief Imports selected settings (app-related and of Syncthing itself) from the specified \a url.
  */

@@ -21,6 +21,7 @@ enum class ServiceAction : int {
     FollowLog,
     CloseLog,
     RequestErrors,
+    ReconnectToSyncthing,
 };
 
 enum class ActivityAction : int {
