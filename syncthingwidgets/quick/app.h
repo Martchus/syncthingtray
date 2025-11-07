@@ -57,6 +57,7 @@ class SYNCTHINGWIDGETS_EXPORT App : public AppBase {
     Q_PROPERTY(QString syncthingVersion READ syncthingVersion CONSTANT)
     Q_PROPERTY(QString qtVersion READ qtVersion CONSTANT)
     Q_PROPERTY(QString readmeUrl READ readmeUrl CONSTANT)
+    Q_PROPERTY(QString documentationUrl READ documentationUrl CONSTANT)
     Q_PROPERTY(QString website READ website CONSTANT)
     Q_PROPERTY(bool hasInternalErrors READ hasInternalErrors NOTIFY hasInternalErrorsChanged)
     Q_PROPERTY(QVariantMap statistics READ statistics)
@@ -159,6 +160,10 @@ public:
     QString readmeUrl() const
     {
         return QtGui::readmeUrl();
+    }
+    QString documentationUrl() const
+    {
+        return QtGui::documentationUrl();
     }
     QString website() const;
 

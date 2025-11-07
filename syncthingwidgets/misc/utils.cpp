@@ -28,4 +28,13 @@ QString readmeUrl()
     }
 }
 
+QString documentationUrl()
+{
+#ifdef Q_OS_ANDROID
+    return QStringLiteral(APP_URL "/../doc/" PROJECT_VARNAME "/docs/android.html");
+#else
+    return QStringLiteral(APP_URL "/../doc/" PROJECT_VARNAME "/README.html");
+#endif
+}
+
 } // namespace QtGui

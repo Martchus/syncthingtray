@@ -15,6 +15,7 @@ namespace QtGui {
 
 SYNCTHINGWIDGETS_EXPORT void handleRelevantControlsChanged(bool visible, int tabIndex, Data::SyncthingConnection &connection);
 SYNCTHINGWIDGETS_EXPORT QString readmeUrl();
+SYNCTHINGWIDGETS_EXPORT QString documentationUrl();
 
 } // namespace QtGui
 

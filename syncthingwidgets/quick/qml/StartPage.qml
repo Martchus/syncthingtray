@@ -357,6 +357,22 @@ Page {
                     }
                 }
             }
+            ItemDelegate {
+                Layout.fillWidth: true
+                onClicked: App.openUrlExternally(App.documentationUrl)
+                contentItem: RowLayout {
+                    spacing: 15
+                    ForkAwesomeIcon {
+                        iconName: "book"
+                    }
+                    Label {
+                        Layout.fillWidth: true
+                        text: qsTr("Open documentation")
+                        elide: Text.ElideRight
+                        font.weight: Font.Medium
+                    }
+                }
+            }
         }
     }
     required property var pages
