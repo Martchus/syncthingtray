@@ -553,7 +553,7 @@
     <message>
         <location filename="../quick/qml/ArrayElementButtons.qml" line="21"/>
         <source>More options</source>
-        <translation>Verschieben</translation>
+        <translation>Weitere Optionen</translation>
     </message>
     <message>
         <location filename="../quick/qml/ArrayElementButtons.qml" line="28"/>
@@ -1214,6 +1214,11 @@
         <location filename="../quick/qml/DirConfigPage.qml" line="49"/>
         <source>There are different &lt;i&gt;versioning strategies&lt;/i&gt; to choose from. Open the selection and go through the options for details on the individual versioning strategies.</source>
         <translation>Es stehen verschiedene &lt;i&gt;Versionierungsstrategien&lt;/i&gt; zur Auswahl. Öffne die Auswahl und gehe die Optionen durch, um Details zu den einzelnen Versionierungsstrategien zu erhalten.</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DirConfigPage.qml" line="49"/>
+        <source>Versioning Strategy</source>
+        <translation>Versionierungsstrategie</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="50"/>
@@ -1896,18 +1901,18 @@
         <translation>Zum Anfang der Warteschlange verschieben</translation>
     </message>
     <message>
-        <location filename="../quick/qml/NeededPage.qml" line="85"/>
+        <location filename="../quick/qml/NeededPage.qml" line="84"/>
         <source>In progress</source>
         <translation>In Bearbeitung</translation>
     </message>
     <message>
-        <location filename="../quick/qml/NeededPage.qml" line="86"/>
+        <location filename="../quick/qml/NeededPage.qml" line="85"/>
         <source>Queued</source>
         <translation>In Warteschlange</translation>
     </message>
     <message>
+        <location filename="../quick/qml/NeededPage.qml" line="86"/>
         <location filename="../quick/qml/NeededPage.qml" line="87"/>
-        <location filename="../quick/qml/NeededPage.qml" line="88"/>
         <source>Out of Sync</source>
         <translation>Nicht synchronisiert</translation>
     </message>
@@ -2875,58 +2880,58 @@
 <context>
     <name>QtGui::AppService</name>
     <message>
-        <location filename="../quick/appservice.cpp" line="140"/>
+        <location filename="../quick/appservice.cpp" line="144"/>
         <source>Backend is starting …</source>
         <translation>Backend startet …</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="207"/>
+        <location filename="../quick/appservice.cpp" line="211"/>
         <source>Unable to open persistent log file for Syncthing under &quot;%1&quot;: %2</source>
         <translation>Persistente Log-Datei für Syncthing kann unter &quot;%1&quot; nicht angelegt werden: %2</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="218"/>
+        <location filename="../quick/appservice.cpp" line="222"/>
         <source>This build of the app cannot launch Syncthing.</source>
         <translation>Diese Version der App kann Syncthing nicht ausführen.</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="293"/>
+        <location filename="../quick/appservice.cpp" line="297"/>
         <source>Syncthing App ran into error</source>
         <translation>In der Syncthing-App ist ein Fehler aufgetreten</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="492"/>
+        <location filename="../quick/appservice.cpp" line="496"/>
         <source>Syncthing error/notification</source>
         <translation>Syncthing Fehler/Benachrichtigung</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="492"/>
+        <location filename="../quick/appservice.cpp" line="496"/>
         <source>%1 Syncthing errors/notifications</source>
         <translation>%1 Syncthing Fehler/Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="493"/>
-        <location filename="../quick/appservice.cpp" line="513"/>
+        <location filename="../quick/appservice.cpp" line="497"/>
+        <location filename="../quick/appservice.cpp" line="517"/>
         <source>Most recent: </source>
         <translation>Letzte: </translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="512"/>
+        <location filename="../quick/appservice.cpp" line="516"/>
         <source>Syncthing API error</source>
         <translation>Syncthing-API-Fehler</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="512"/>
+        <location filename="../quick/appservice.cpp" line="516"/>
         <source>%1 Syncthing API errors</source>
         <translation>%1 Syncthing-API-Fehler</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="526"/>
+        <location filename="../quick/appservice.cpp" line="530"/>
         <source>Syncthing device wants to connect</source>
         <translation>Syncthing-Gerät will sich verbinden</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="540"/>
+        <location filename="../quick/appservice.cpp" line="544"/>
         <source>Syncthing device wants to share folder</source>
         <translation>Syncthing-Gerät will einen Ordner teilen</translation>
     </message>

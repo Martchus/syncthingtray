@@ -46,7 +46,7 @@ AdvancedDirConfigPage {
     ]
     specialEntriesByKey: ({
         "versioning": [
-            {key: "type", type: "options", desc: qsTr("There are different <i>versioning strategies</i> to choose from. Open the selection and go through the options for details on the individual versioning strategies."), helpUrl: "https://docs.syncthing.net/users/versioning", options: [
+            {key: "type", type: "options", label: qsTr("Versioning Strategy"), desc: qsTr("There are different <i>versioning strategies</i> to choose from. Open the selection and go through the options for details on the individual versioning strategies."), helpUrl: "https://docs.syncthing.net/users/versioning", options: [
                 {value: "", label: "No File Versioning", desc: qsTr("File versioning is not going to be used.")},
                 {value: "trashcan", label: "Trash Can File Versioning", desc: qsTr("Files are moved to .stversions directory when replaced or deleted by Syncthing.")},
                 {value: "simple", label: "Simple File Versioning", desc: qsTr("Files are moved to date stamped versions in a .stversions directory when replaced or deleted by Syncthing.")},
