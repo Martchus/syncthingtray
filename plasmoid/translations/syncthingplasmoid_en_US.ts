@@ -231,7 +231,7 @@
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="205"/>
-        <source>Downlods</source>
+        <source>Downloads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

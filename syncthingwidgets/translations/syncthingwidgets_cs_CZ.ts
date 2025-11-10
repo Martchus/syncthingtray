@@ -2892,7 +2892,7 @@
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="431"/>
-        <source>Downlods</source>
+        <source>Downloads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
