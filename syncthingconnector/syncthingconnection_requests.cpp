@@ -948,17 +948,18 @@ void SyncthingConnection::readConnections()
         }
 
         const auto replyObj = replyDoc.object();
-        const QJsonObject totalObj(replyObj.value(QLatin1String("total")).toObject());
+        const auto totalObj = replyObj.value(QLatin1String("total")).toObject();
 
         // read traffic, the conversion to double is necessary because toInt() doesn't work for high values
-        const QJsonValue totalIncomingTrafficValue(totalObj.value(QLatin1String("inBytesTotal")));
-        const QJsonValue totalOutgoingTrafficValue(totalObj.value(QLatin1String("outBytesTotal")));
-        const std::uint64_t totalIncomingTraffic = totalIncomingTrafficValue.isDouble() ? jsonValueToInt(totalIncomingTrafficValue) : unknownTraffic;
-        const std::uint64_t totalOutgoingTraffic = totalOutgoingTrafficValue.isDouble() ? jsonValueToInt(totalOutgoingTrafficValue) : unknownTraffic;
-        double transferTime = 0.0;
+        const auto totalIncomingTrafficValue = totalObj.value(QLatin1String("inBytesTotal"));
+        const auto totalOutgoingTrafficValue = totalObj.value(QLatin1String("outBytesTotal"));
+        const auto totalIncomingTraffic
+            = totalIncomingTrafficValue.isDouble() ? jsonValueToInt<std::uint64_t>(totalIncomingTrafficValue) : unknownTraffic;
+        const auto totalOutgoingTraffic
+            = totalOutgoingTrafficValue.isDouble() ? jsonValueToInt<std::uint64_t>(totalOutgoingTrafficValue) : unknownTraffic;
+        auto transferTime = 0.0;
         const auto now = DateTime::gmtNow();
-        const bool hasDelta
-            = !m_lastConnectionsUpdateTime.isNull() && ((transferTime = (now - m_lastConnectionsUpdateTime).totalSeconds()) != 0.0);
+        const auto hasDelta = !m_lastConnectionsUpdateTime.isNull() && ((transferTime = (now - m_lastConnectionsUpdateTime).totalSeconds()) != 0.0);
         m_totalIncomingRate = (hasDelta && totalIncomingTraffic != unknownTraffic && m_totalIncomingTraffic != unknownTraffic)
             ? static_cast<double>(totalIncomingTraffic - m_totalIncomingTraffic) * 0.008 / transferTime
             : 0.0;
