@@ -956,8 +956,9 @@ void SyncthingConnection::readConnections()
         const std::uint64_t totalIncomingTraffic = totalIncomingTrafficValue.isDouble() ? jsonValueToInt(totalIncomingTrafficValue) : unknownTraffic;
         const std::uint64_t totalOutgoingTraffic = totalOutgoingTrafficValue.isDouble() ? jsonValueToInt(totalOutgoingTrafficValue) : unknownTraffic;
         double transferTime = 0.0;
+        const auto now = DateTime::gmtNow();
         const bool hasDelta
-            = !m_lastConnectionsUpdateTime.isNull() && ((transferTime = (DateTime::gmtNow() - m_lastConnectionsUpdateTime).totalSeconds()) != 0.0);
+            = !m_lastConnectionsUpdateTime.isNull() && ((transferTime = (now - m_lastConnectionsUpdateTime).totalSeconds()) != 0.0);
         m_totalIncomingRate = (hasDelta && totalIncomingTraffic != unknownTraffic && m_totalIncomingTraffic != unknownTraffic)
             ? static_cast<double>(totalIncomingTraffic - m_totalIncomingTraffic) * 0.008 / transferTime
             : 0.0;
@@ -1010,7 +1011,7 @@ void SyncthingConnection::readConnections()
         }
 
         m_lastConnectionsUpdateEvent = reply->property("lastEventId").toULongLong();
-        m_lastConnectionsUpdateTime = DateTime::gmtNow();
+        m_lastConnectionsUpdateTime = now;
 
         // since there seems no event for this data, keep polling
         if (m_keepPolling) {
