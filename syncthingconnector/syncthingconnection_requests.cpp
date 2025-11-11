@@ -958,8 +958,10 @@ void SyncthingConnection::readConnections()
         const auto totalOutgoingTraffic
             = totalOutgoingTrafficValue.isDouble() ? jsonValueToInt<std::uint64_t>(totalOutgoingTrafficValue) : unknownTraffic;
         auto transferTime = 0.0;
-        const auto now = DateTime::gmtNow();
-        const auto hasDelta = !m_lastConnectionsUpdateTime.isNull() && ((transferTime = (now - m_lastConnectionsUpdateTime).totalSeconds()) != 0.0);
+        const auto isPolling = m_keepPolling && (m_pollingFlags && PollingFlags::TrafficStatistics) && m_trafficPollTimer.interval();
+        const auto now = isPolling ? DateTime::gmtNow() : DateTime();
+        const auto hasDelta
+            = isPolling && !m_lastConnectionsUpdateTime.isNull() && ((transferTime = (now - m_lastConnectionsUpdateTime).totalSeconds()) != 0.0);
         m_totalIncomingRate = (hasDelta && totalIncomingTraffic != unknownTraffic && m_totalIncomingTraffic != unknownTraffic)
             ? static_cast<double>(totalIncomingTraffic - m_totalIncomingTraffic) * 0.008 / transferTime
             : 0.0;
@@ -1017,7 +1019,7 @@ void SyncthingConnection::readConnections()
         // since there seems no event for this data, keep polling
         if (m_keepPolling) {
             concludeConnection(statusRecomputationFlags);
-            if ((m_pollingFlags && PollingFlags::TrafficStatistics) && m_trafficPollTimer.interval()) {
+            if (isPolling) {
                 m_trafficPollTimer.start();
             }
         }
