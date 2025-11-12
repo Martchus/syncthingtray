@@ -58,7 +58,7 @@ QString trafficString(std::uint64_t total, double rate)
     static const QString unknownStr(QCoreApplication::translate("Data::Utils", "unknown"));
     if (rate != 0.0) {
         return total != SyncthingConnection::unknownTraffic
-            ? QStringLiteral("%1 (%2)").arg(QString::fromStdString(bitrateToString(rate, true)), QString::fromStdString(dataSizeToString(total)))
+            ? QStringLiteral("%1 (%2)").arg(QString::fromStdString(dataSizeToString(total)), QString::fromStdString(bitrateToString(rate, true)))
             : QString::fromStdString(bitrateToString(rate, true));
     } else if (total != SyncthingConnection::unknownTraffic) {
         return QString::fromStdString(dataSizeToString(total));
