@@ -959,7 +959,7 @@ void SyncthingConnection::readConnections()
             = totalOutgoingTrafficValue.isDouble() ? jsonValueToInt<std::uint64_t>(totalOutgoingTrafficValue) : unknownTraffic;
         auto transferTime = 0.0;
         const auto isPolling = m_keepPolling && (m_pollingFlags && PollingFlags::TrafficStatistics) && m_trafficPollTimer.interval();
-        const auto now = isPolling ? DateTime::gmtNow() : DateTime();
+        const auto now = isPolling ? DateTime::exactGmtNow() : DateTime();
         const auto hasDelta
             = isPolling && !m_lastConnectionsUpdateTime.isNull() && ((transferTime = (now - m_lastConnectionsUpdateTime).totalSeconds()) != 0.0);
         m_totalIncomingRate = (hasDelta && totalIncomingTraffic != unknownTraffic && m_totalIncomingTraffic != unknownTraffic)
