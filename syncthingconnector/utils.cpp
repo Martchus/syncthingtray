@@ -173,20 +173,19 @@ bool setPausedValue(QJsonObject &object, bool paused)
 bool setDirectoriesPaused(QJsonObject &syncthingConfig, const QStringList &dirIds, bool paused)
 {
     // get reference to folders array
-    const QJsonObject::Iterator foldersIterator(syncthingConfig.find(QLatin1String("folders")));
+    const auto foldersIterator(syncthingConfig.find(QLatin1String("folders")));
     if (foldersIterator == syncthingConfig.end()) {
         return false;
     }
-    QJsonValueRef folders = foldersIterator.value();
+    auto folders = QJsonValueRef(foldersIterator.value());
     if (!folders.isArray()) {
         return false;
     }
 
     // alter folders
-    bool altered = false;
-    QJsonArray foldersArray = folders.toArray();
-    for (QJsonValueRef folder : foldersArray) {
-        QJsonObject folderObj = folder.toObject();
+    auto altered = false;
+    auto foldersArray = folders.toArray();
+        auto folderObj = folder.toObject();
 
         // skip devices not matching the specified IDs or are already paused/unpaused
         if (!dirIds.isEmpty() && !dirIds.contains(folderObj.value(QLatin1String("id")).toString())) {
