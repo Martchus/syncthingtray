@@ -185,6 +185,7 @@ bool setDirectoriesPaused(QJsonObject &syncthingConfig, const QStringList &dirId
     // alter folders
     auto altered = false;
     auto foldersArray = folders.toArray();
+    for (QJsonValueRef folder : foldersArray) { // clazy:exclude=range-loop-detach
         auto folderObj = folder.toObject();
 
         // skip devices not matching the specified IDs or are already paused/unpaused
