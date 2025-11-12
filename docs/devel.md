@@ -37,9 +37,10 @@ To build the Plasmoid for the Plasma desktop, the Qt module QML and the KDE Fram
 required as well. Additionally, the Plasmoid requires the latest Qt version (5.15) for certain Qt Quick features.
 To skip building the Plasmoid, add `-DNO_PLASMOID:BOOL=ON` to the CMake arguments.
 
-To specify the major Qt version to use, set `QT_PACKAGE_PREFIX` (e.g. add `-DQT_PACKAGE_PREFIX:STRING=Qt6`
-to the CMake arguments). There's also `KF_PACKAGE_PREFIX` for KDE dependencies. Note that KDE integrations
-always require the same major Qt version as your KDE installation uses.
+To specify the major Qt version to use, set `QT_PACKAGE_PREFIX`. There's also `KF_PACKAGE_PREFIX` for KDE
+dependencies. Note that KDE integrations always require the same major Qt version as your KDE installation uses.
+Since the default Qt version is still Qt 5, you likely want to add e.g.
+`-DQT_PACKAGE_PREFIX:STRING=Qt6 -DKF_PACKAGE_PREFIX:STRING=KF6` to the CMake arguments at this point.
 
 ---
 
@@ -126,14 +127,18 @@ itself is used instead of OpenSSL.)
    [enable Windows Developer Mode](https://learn.microsoft.com/en-us/gaming/game-bar/guide/developer-mode).
    If you run into "not found" errors on symlink creation use `git reset --hard` within the repository to
    fix this.
-2. Configure the build
+2. Configure the build, e.g.:
    ```
    cd "$BUILD_DIR"
    cmake \
+    -G Ninja \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX="/install/prefix" \
     -DFORK_AWESOME_FONT_FILE="$SOURCES/forkawesome/fonts/forkawesome-webfont.woff2" \
     -DFORK_AWESOME_ICON_DEFINITIONS="$SOURCES/forkawesome/src/icons/icons.yml" \
+    -DQT_PACKAGE_PREFIX:STRING=Qt6 \
+    -DKF_PACKAGE_PREFIX:STRING=KF6 \
+    -DBUILTIN_TRANSLATIONS:BOOL=ON \
     "$SOURCES/subdirs/syncthingtray"
    ```
     * Replace `/install/prefix` with the directory where you want to install.
