@@ -348,6 +348,7 @@ WebViewDialog *showWebUI(
         Q_UNUSED(settings)
         Q_UNUSED(dlg)
         Q_UNUSED(parent)
+        Q_UNUSED(connection)
 #endif
     case Settings::WebView::Mode::Command:
         openBrowserInAppMode(url);
