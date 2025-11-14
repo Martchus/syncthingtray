@@ -94,7 +94,7 @@ bool AppearanceOptionPage::apply()
     config.writeEntry<bool>("showTabTexts", ui()->showTabTextsCheckBox->isChecked());
     config.writeEntry<bool>("showDownloads", ui()->showDownloadsCheckBox->isChecked());
     config.writeEntry<bool>("preferIconsFromTheme", ui()->preferIconsFromThemeCheckBox->isChecked());
-    config.writeEntry<bool>("defaultTab", QtGui::AppearanceOptionPage::comboBoxIndexToTabIndex(ui()->defaultTabComboBox->currentIndex()));
+    config.writeEntry<>("defaultTab", QtGui::AppearanceOptionPage::comboBoxIndexToTabIndex(ui()->defaultTabComboBox->currentIndex()));
     config.writeEntry("passiveStates", m_passiveStatusSelection.toVariantList());
 
     return true;
