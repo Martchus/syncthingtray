@@ -87,23 +87,31 @@ AppearanceOptionPage::~AppearanceOptionPage()
 {
 }
 
+/*!
+ * \brief Writes the appearance config to the applet-specific config.
+ */
 bool AppearanceOptionPage::apply()
 {
-    KConfigGroup config = m_applet->config();
-    config.writeEntry<QSize>("size", QSize(ui()->widthSpinBox->value(), ui()->heightSpinBox->value()));
-    config.writeEntry<bool>("showTabTexts", ui()->showTabTextsCheckBox->isChecked());
-    config.writeEntry<bool>("showDownloads", ui()->showDownloadsCheckBox->isChecked());
-    config.writeEntry<bool>("preferIconsFromTheme", ui()->preferIconsFromThemeCheckBox->isChecked());
-    config.writeEntry<>("defaultTab", QtGui::AppearanceOptionPage::comboBoxIndexToTabIndex(ui()->defaultTabComboBox->currentIndex()));
+    auto config = m_applet->config();
+    config.writeEntry("size", QSize(ui()->widthSpinBox->value(), ui()->heightSpinBox->value()));
+    config.writeEntry("showTabTexts", ui()->showTabTextsCheckBox->isChecked());
+    config.writeEntry("showDownloads", ui()->showDownloadsCheckBox->isChecked());
+    config.writeEntry("preferIconsFromTheme", ui()->preferIconsFromThemeCheckBox->isChecked());
+    config.writeEntry("defaultTab", QtGui::AppearanceOptionPage::comboBoxIndexToTabIndex(ui()->defaultTabComboBox->currentIndex()));
     config.writeEntry("passiveStates", m_passiveStatusSelection.toVariantList());
-
     return true;
 }
 
+/*!
+ * \brief Restores the appearance config from the applet-specific config.
+ * \remarks
+ * This function reads config entries mainly using the readEntry() overloads that take template parameters. When I remember correctly, in KF5
+ * this needed explicit use of `<>`. So I am not removing the `<>` even though it doesn't seem to be required when using KF6.
+ */
 void AppearanceOptionPage::reset()
 {
-    const KConfigGroup config = m_applet->config();
-    const auto size(config.readEntry<>("size", QSize(25, 25)));
+    const auto config = m_applet->config();
+    const auto size = config.readEntry<>("size", QSize(25, 25));
     ui()->widthSpinBox->setValue(size.width());
     ui()->heightSpinBox->setValue(size.height());
     ui()->showTabTextsCheckBox->setChecked(config.readEntry<>("showTabTexts", false));
