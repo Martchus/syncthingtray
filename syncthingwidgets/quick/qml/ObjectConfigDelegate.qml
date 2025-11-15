@@ -79,33 +79,9 @@ DelegateChooser {
                 }
             }
             onClicked: stringDlg.visible = true
-            CustomDialog {
+            EditTextFieldDialog {
                 id: stringDlg
-                title: modelData.label
-                standardButtons: objectConfigPage.standardButtons
-                width: parent.width - 20
-                contentItem: RowLayout {
-                    TextField {
-                        id: editedStringValue
-                        Layout.fillWidth: true
-                        text: modelData.value
-                        inputMethodHints: modelData.inputMethodHints ?? Qt.ImhNone
-                        enabled: modelData?.enabled ?? true
-                        onAccepted: stringDlg.accept()
-                    }
-                    IconOnlyButton {
-                        visible: editedStringValue.enabled && (modelData.random === true || modelData.key === "id")
-                        text: qsTr("Make random ID")
-                        icon.source: App.faUrlBase + "hashtag"
-                        onClicked: objectConfigPage.requestRandomValue((value) => editedStringValue.text = value)
-                    }
-                    CopyPasteButtons {
-                        edit: editedStringValue
-                    }
-                }
-                onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, editedStringValue.text)
-                onRejected: editedStringValue.text = objectConfigPage.configObject[modelData.key]
-                onHelpRequested: helpButton.clicked()
+                helpButton: helpButton
             }
             required property var modelData
         }
@@ -646,18 +622,9 @@ DelegateChooser {
                 fileMode: modelData.fileMode ?? FileDialog.OpenFile
                 onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, App.resolveUrl(fileDlg.selectedFile))
             }
-            CustomDialog {
+            EditTextFieldDialog {
                 id: manualFileDlg
-                title: modelData.label
-                standardButtons: objectConfigPage.standardButtons
-                width: parent.width - 20
-                contentItem: TextField {
-                    id: editedFileValue
-                    text: modelData.value
-                    onAccepted: manualFileDlg.accept()
-                }
-                onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, editedFileValue.text)
-                onHelpRequested: fileHelpButton.clicked()
+                helpButton: fileHelpButton
             }
             required property var modelData
         }
@@ -712,18 +679,9 @@ DelegateChooser {
                 currentFolder: encodeURIComponent(folderpathValue.text)
                 onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, App.resolveUrl(folderDlg.selectedFolder))
             }
-            CustomDialog {
+            EditTextFieldDialog {
                 id: manualFolderDlg
-                title: modelData.label
-                standardButtons: objectConfigPage.standardButtons
-                width: parent.width - 20
-                contentItem: TextField {
-                    id: editedFolderValue
-                    text: modelData.value
-                    onAccepted: manualFolderDlg.accept()
-                }
-                onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, editedFolderValue.text)
-                onHelpRequested: folderHelpButton.clicked()
+                helpButton: folderHelpButton
             }
             required property var modelData
         }

@@ -16,6 +16,11 @@ RowLayout {
         icon.source: App.faUrlBase + "clipboard"
         onClicked: edit[textProperty] = App.getClipboardText()
     }
+    IconOnlyButton {
+        text: qsTr("Clear")
+        icon.source: App.faUrlBase + "eraser"
+        onClicked: edit[textProperty] = ""
+    }
     required property Item edit
     property string textProperty: "text"
 }

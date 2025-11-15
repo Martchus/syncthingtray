@@ -88,6 +88,7 @@ set(QML_MAIN_FILES
     quick/qml/DirListView.qml
     quick/qml/DirErrorsPage.qml
     quick/qml/DirsPage.qml
+    quick/qml/EditTextFieldDialog.qml
     quick/qml/ErrorsDelegate.qml
     quick/qml/ErrorsPage.qml
     quick/qml/ExpandableDelegate.qml
