@@ -339,4 +339,16 @@ Page {
         });
         return parts.join(' ').replace(/\s+/g, ' ').trim();
     }
+
+    function requestRandomValue(cb) {
+        return App.requestFromSyncthing("GET", "svc/random/string", {length: 10}, (res, error) => {
+            if (error.length !== 0) {
+                return;
+            }
+            const value = res?.random;
+            if (typeof value === "string") {
+                cb((value.substr(0, 5) + '-' + value.substr(5, 5)).toLowerCase());
+            }
+        });
+    }
 }

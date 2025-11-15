@@ -8,7 +8,7 @@ AdvancedDirConfigPage {
     isDangerous: false
     specialEntriesOnly: true
     specialEntries: [
-        {key: "id", label: qsTr("ID"), enabled: !dirConfigPage.configObjectExists, desc: qsTr("Required identifier for the folder. Must be the same on all cluster devices.")},
+        {key: "id", label: qsTr("ID"), enabled: !dirConfigPage.configObjectExists, desc: qsTr("Required identifier for the folder. Must be the same on all cluster devices."), random: true},
         {key: "label", label: qsTr("Label"), desc: qsTr("Optional descriptive label for the folder. Can be different on each device.")},
         {key: "paused", label: qsTr("Paused"), desc: qsTr("Whether this folder is (temporarily) suspended.")},
         {key: "path", label: qsTr("Path"), enabled: !dirConfigPage.configObjectExists, type: "folderpath", desc: qsTr("Path to the folder on the local computer. Will be created if it does not exist. The tilde character (~) can be used as a shortcut for \"%1\".").arg(App.connection.tilde)},
