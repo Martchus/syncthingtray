@@ -58,11 +58,14 @@ SwipeView {
     function pop(force) {
         const currentChild = pageStack.currentChild;
         const currentPage = currentChild.currentItem ?? currentChild;
+
+        // handle "dangerous flag" and unsaved changes
         if (!force && currentPage.hasUnsavedChanges) {
             const parentPage = currentPage.parentPage;
             if (parentPage?.hasUnsavedChanges !== undefined) {
                 parentPage.hasUnsavedChanges = true;
                 currentPage.hasUnsavedChanges = false;
+                // propagate "dangerous flag" to parent page if changes on a dangerous page were made
                 if (currentPage.isDangerous) {
                     parentPage.isDangerous = true;
                 }
@@ -71,13 +74,17 @@ SwipeView {
                 return true;
             }
         }
+
+        // go back within the current page (e.g. on level up in the file browser) or go one config object page up
         const wentBack = currentPage.back?.() || currentChild.pop?.();
         const lastPageSet = setPageHistory[setPageHistory.length - 1];
         const previousPage = indexHistory[indexHistory.length - 1];
         if (currentChild.depth === 1 && lastPageSet !== undefined && lastPageSet === previousPage) {
+            // go back to where we actually came from (e.g. start page) when back on a top-level page (e.g. folders page)
             setPageHistory.pop();
             return pageStack.back() || wentBack;
         } else {
+            // go back to the previous page if we didn't go back within the current page or config object hierarchy
             return wentBack || pageStack.back();
         }
     }
