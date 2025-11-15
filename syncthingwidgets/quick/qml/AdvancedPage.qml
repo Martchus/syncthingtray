@@ -134,7 +134,7 @@ StackView {
                 {key: "enabled", label: qsTr("Enabled"), desc: qsTr("If disabled, the GUI and API will not be started. The app needs this to function.")},
             ],
             "options": [
-                {key: "auditEnabled", label: qsTr("Audit Log"), desc: qsTr("Write events to timestamped file `audit-YYYYMMDD-HHMMSS.log` within the Syncthing home directory. The path can be overidden via \"Audit File\".")},
+                {key: "auditEnabled", label: qsTr("Audit Log"), desc: qsTr("Write events to timestamped file `audit-YYYYMMDD-HHMMSS.log` within the Syncthing home directory. The path can be overridden via \"Audit File\".")},
                 {key: "auditFile", type: "filepath", fileMode: FileDialog.SaveFile, label: qsTr("Audit File"), desc: qsTr("Path to store audit events under if \"Audit Log\" is enabled.")},
                 {key: "listenAddresses", label: qsTr("Sync Protocol Listen Addresses"), itemLabel: qsTr("Address"), desc: qsTr("Specifies one or more listen addresses for the sync protocol. Set to default to listen on port TCP and QUIC port 22000.")},
                 {key: "maxRecvKbps", label: qsTr("Incoming Rate Limit (KiB/s)"), desc: qsTr("Incoming data rate limits, in kibibytes per second.")},

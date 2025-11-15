@@ -318,7 +318,7 @@
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="137"/>
-        <source>Write events to timestamped file `audit-YYYYMMDD-HHMMSS.log` within the Syncthing home directory. The path can be overidden via &quot;Audit File&quot;.</source>
+        <source>Write events to timestamped file `audit-YYYYMMDD-HHMMSS.log` within the Syncthing home directory. The path can be overridden via &quot;Audit File&quot;.</source>
         <translation>Schreibt Ereignisse in eine mit Zeitstempel versehene Datei `audit-JJJJMMTT-HHMMSS.log` im Syncthing-Home-Verzeichnis. Der Pfad kann über &quot;Audit-Datei&quot; überschrieben werden.</translation>
     </message>
     <message>
