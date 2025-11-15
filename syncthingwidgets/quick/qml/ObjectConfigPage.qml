@@ -185,6 +185,9 @@ Page {
         specialEntry.type = specialEntry.type ?? typeof specialEntry.value;
         specialEntry.label = specialEntry.label ?? uncamel(specialEntry.isArray ? specialEntry.key : specialEntry.type);
         specialEntry.desc = specialEntry.desc ?? "";
+        if (specialEntry.random && specialEntry.value?.length === 0) {
+            requestRandomValue((randomValue) => updateValue(index, specialEntry.key, randomValue));
+        }
         handleReadOnlyMode(specialEntry);
         return specialEntry;
     }
