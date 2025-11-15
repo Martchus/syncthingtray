@@ -221,11 +221,22 @@ Page {
             objectConfigPage.objectNameLabel.text = objectConfigPage.title = parentRow.label;
         }
 
-        // update "ignorePerms" when setting "path" to a place where permissions should be ignored
-        if (key === "path" && configObject.ignorePerms === false && App.shouldIgnorePermissions(value)) {
-            const ignorePermsIndex = objectConfigPage.indexByKey.ignorePerms;
-            if (ignorePermsIndex >= 0) {
-                objectConfigPage.updateValue(ignorePermsIndex, "ignorePerms", true);
+        // update other fields when setting path
+        if (key === "path") {
+            // use last path element as label if there's no label yet
+            const labelIndex = objectConfigPage.indexByKey.label;
+            if (configObject.label?.length === 0 && typeof value === "string")
+            if (labelIndex >= 0) {
+                const pathElements = value.split(/\/|\\/);
+                objectConfigPage.updateValue(labelIndex, "label", pathElements[pathElements.length - 1]);
+            }
+
+            // update "ignorePerms" when setting path to a place where permissions should be ignored
+            if (configObject.ignorePerms === false && App.shouldIgnorePermissions(value)) {
+                const ignorePermsIndex = objectConfigPage.indexByKey.ignorePerms;
+                if (ignorePermsIndex >= 0) {
+                    objectConfigPage.updateValue(ignorePermsIndex, "ignorePerms", true);
+                }
             }
         }
     }
