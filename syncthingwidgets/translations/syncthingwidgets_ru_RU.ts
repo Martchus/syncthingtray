@@ -609,6 +609,11 @@
         <source>Paste</source>
         <translation>Вставить</translation>
     </message>
+    <message>
+        <location filename="../quick/qml/CopyPasteButtons.qml" line="20"/>
+        <source>Clear</source>
+        <translation>Очистить</translation>
+    </message>
 </context>
 <context>
     <name>Data::SyncthingLauncher</name>
@@ -1512,6 +1517,14 @@
     </message>
 </context>
 <context>
+    <name>EditTextFieldDialog</name>
+    <message>
+        <location filename="../quick/qml/EditTextFieldDialog.qml" line="24"/>
+        <source>Make random ID</source>
+        <translation>Создать случайный ID</translation>
+    </message>
+</context>
+<context>
     <name>ErrorsPage</name>
     <message>
         <location filename="../quick/qml/ErrorsPage.qml" line="8"/>
@@ -1943,65 +1956,64 @@
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="98"/>
         <source>Make random ID</source>
-        <translation>Создать случайный ID</translation>
+        <translation type="vanished">Создать случайный ID</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="163"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="628"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="694"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="137"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="602"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="659"/>
         <source>Clear</source>
         <translation>Прозрачный</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="172"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="146"/>
         <source>Refresh list of devices</source>
         <translation>Обновить список устройств</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="188"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="162"/>
         <source>This device has already been added!</source>
         <translation>Это устройство уже добавлено!</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="188"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="162"/>
         <source>The device ID looks valid.</source>
         <translation>Идентификатор устройства выглядит действительным.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="188"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="162"/>
         <source>The entered device ID looks invalid!</source>
         <translation>Введенный идентификатор устройства выглядит недействительным!</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="289"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="263"/>
         <source>A custom value has been entered.</source>
         <translation>Введено пользовательское значение.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="354"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="328"/>
         <source>Change encryption password</source>
         <translation>Изменить пароль шифрования</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="354"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="328"/>
         <source>Set encryption password</source>
         <translation>Установить пароль шифрования</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="361"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="335"/>
         <source>Set encryption password for sharing with &quot;%1&quot;</source>
         <translation>Установить пароль шифрования для совместного использования с «%1»</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="368"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="342"/>
         <source>If untrusted, enter encryption password</source>
         <translation>Если не доверяете, введите пароль шифрования</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="634"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="700"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="608"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="665"/>
         <source>Edit manually</source>
         <translation>Редактировать вручную</translation>
     </message>
@@ -2079,12 +2091,12 @@
         <translation>Добавлять</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="275"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="289"/>
         <source>Unable to add %1 because specified index is invalid.</source>
         <translation>Невозможно добавить %1, так как указанный индекс недействителен.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="283"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="297"/>
         <source>Unable to add %1 because specified key is invalid.</source>
         <translation>Невозможно добавить %1, так как указанный ключ недействителен.</translation>
     </message>
@@ -2986,6 +2998,7 @@
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="340"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="431"/>
         <source>Downloads</source>
         <translation>Загрузки</translation>
     </message>
@@ -3038,11 +3051,6 @@
         <location filename="../settings/appearanceoptionpage.ui" line="426"/>
         <source>Devices</source>
         <translation type="unfinished">Устройства</translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="431"/>
-        <source>Downloads</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="436"/>

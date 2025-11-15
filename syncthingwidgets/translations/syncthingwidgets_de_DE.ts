@@ -609,6 +609,11 @@
         <source>Paste</source>
         <translation>Einfügen</translation>
     </message>
+    <message>
+        <location filename="../quick/qml/CopyPasteButtons.qml" line="20"/>
+        <source>Clear</source>
+        <translation>Löschen</translation>
+    </message>
 </context>
 <context>
     <name>Data::SyncthingLauncher</name>
@@ -1512,6 +1517,14 @@
     </message>
 </context>
 <context>
+    <name>EditTextFieldDialog</name>
+    <message>
+        <location filename="../quick/qml/EditTextFieldDialog.qml" line="24"/>
+        <source>Make random ID</source>
+        <translation>Zufällige ID generieren</translation>
+    </message>
+</context>
+<context>
     <name>ErrorsPage</name>
     <message>
         <location filename="../quick/qml/ErrorsPage.qml" line="8"/>
@@ -1943,65 +1956,64 @@
         <translation>Kopieren</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="98"/>
         <source>Make random ID</source>
-        <translation>Zufällige ID generieren</translation>
+        <translation type="vanished">Zufällige ID generieren</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="163"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="628"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="694"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="137"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="602"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="659"/>
         <source>Clear</source>
         <translation>Löschen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="172"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="146"/>
         <source>Refresh list of devices</source>
         <translation>Geräteliste aktualisieren</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="188"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="162"/>
         <source>This device has already been added!</source>
         <translation>Dieses Gerät wurde bereits hinzugefügt!</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="188"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="162"/>
         <source>The device ID looks valid.</source>
         <translation>Die Geräte-ID sieht gültig aus.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="188"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="162"/>
         <source>The entered device ID looks invalid!</source>
         <translation>Die eingegebene Geräte-ID sieht ungültig aus!</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="289"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="263"/>
         <source>A custom value has been entered.</source>
         <translation>Es wurde ein benutzerdefinierter Wert eingegeben.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="354"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="328"/>
         <source>Change encryption password</source>
         <translation>Passwort für Verschlüsselung ändern</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="354"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="328"/>
         <source>Set encryption password</source>
         <translation>Passwort für Verschlüsselung festlegen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="361"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="335"/>
         <source>Set encryption password for sharing with &quot;%1&quot;</source>
         <translation>Passwort für Verschlüsselung festlegen um mit &quot;%1&quot; zu teilen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="368"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="342"/>
         <source>If untrusted, enter encryption password</source>
         <translation>Gib ein Verschlüsselungspasswort ein, wenn dem Gerät nicht vertraut wird</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="634"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="700"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="608"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="665"/>
         <source>Edit manually</source>
         <translation>Manuell editieren</translation>
     </message>
@@ -2079,12 +2091,12 @@
         <translation>Hinzufügen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="275"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="289"/>
         <source>Unable to add %1 because specified index is invalid.</source>
         <translation>&quot;%1&quot; kann nicht hinzugefügt werden, da der Index nicht gültig ist.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="283"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="297"/>
         <source>Unable to add %1 because specified key is invalid.</source>
         <translation>&quot;%1&quot; kann nicht hinzugefügt werden, da der Schlüssel nicht gültig ist.</translation>
     </message>
@@ -3058,6 +3070,7 @@
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="340"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="431"/>
         <source>Downloads</source>
         <translation></translation>
     </message>
@@ -3110,11 +3123,6 @@
         <location filename="../settings/appearanceoptionpage.ui" line="426"/>
         <source>Devices</source>
         <translation>Geräte</translation>
-    </message>
-    <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="431"/>
-        <source>Downloads</source>
-        <translation></translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="436"/>
