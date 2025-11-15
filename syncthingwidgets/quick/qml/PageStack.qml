@@ -74,7 +74,7 @@ SwipeView {
         const wentBack = currentPage.back?.() || currentChild.pop?.();
         const lastPageSet = setPageHistory[setPageHistory.length - 1];
         const previousPage = indexHistory[indexHistory.length - 1];
-        if (lastPageSet !== undefined && lastPageSet === previousPage) {
+        if (currentChild.depth === 1 && lastPageSet !== undefined && lastPageSet === previousPage) {
             setPageHistory.pop();
             return pageStack.back() || wentBack;
         } else {
