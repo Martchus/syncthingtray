@@ -1,0 +1,56 @@
+name: Feature request
+description: File a new feature request
+labels: ["feature request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please read the following points before filing an issue:
+
+        * **Please browse through the [README](https://github.com/Martchus/syncthingtray/blob/master/README.md) before asking a question.** Maybe what you want to ask for is already implemented or [a known limitation with a documented workaround](https://github.com/Martchus/syncthingtray/blob/master/docs/known_bugs_and_workarounds.md).
+        * I cannot support all operating systems, their flavors and different tooling you might be using (Antivirus software, GNU/Linux desktop environments, AUR helpers, …). So please avoid filing feature requests specific to them and contact the respective vendors instead.
+        * I will likely have to reject feature reports about Wayland-specific behavior due to limitations of that protocol which I cannot workaround from my side.
+
+  - type: checkboxes
+    attributes:
+      label: Relevant components
+      description: What components does this feature request apply to?
+      options:
+        - label: Standalone tray application (based on Qt Widgets)
+        - label: Plasmoid/applet for Plasma desktop
+        - label: Dolphin integration
+        - label: Command line tool (`syncthingctl`)
+        - label: Integrated Syncthing instance (`libsyncthing`)
+        - label: Android app or mobile UI in general
+        - label: Backend libraries
+
+  - type: textarea
+    attributes:
+      label: Platform
+      description: Is your feature request specific to a certain platform/environment? Please specify.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Feature description
+      description: Please describe the behavior you'd like to see.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Problem or use case
+      description: Please explain which problem this would solve, or what the use case is for the feature. Keep in mind that it's more likely to be implemented if it's generally useful for a larger number of users.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Alternatives or workarounds
+      description: Please describe any alternatives or workarounds you have considered and, possibly, rejected.
+
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: Add any other context or screenshots about the feature request here.

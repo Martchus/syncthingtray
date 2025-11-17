@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Issue with Syncthing itself
+    url: https://github.com/syncthing/syncthing/issues
+    about: Please file general issues with Syncthing on their issue tracker.
+  - name: I need help / I have a question
+    url: https://github.com/Martchus/syncthingtray/discussions
+    about: Ask questions, get support, and discuss with other community members.

@@ -1,0 +1,89 @@
+name: Bug report
+description: Report an existing feature not working as designated
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please read the following points before filing an issue:
+
+        * **Do not file an issue if the executable is framed as malicious by Antivirus software.** If you have actual evidence that the executable is doing anything malicious you can of course file a report. Note that the executable being detected by Antivirus software is not good enough evidence as false positives are very common and no concrete description of the problem is provided.
+        * **Before reporting, please have a look at [known bugs and workarounds](https://github.com/Martchus/syncthingtray/blob/master/docs/known_bugs_and_workarounds.md).**
+        * I cannot support all operating systems, their flavors and different tooling you might be using (Antivirus scanners, GNU/Linux desktop environments, AUR helpers, …). So please avoid filing bug reports specific to them and contact the respective vendors instead.
+        * Adaptions for newer versions of certain platforms (or for completely new platforms) would be *feature requests* and **not** bugs. So for instance, making Syncthing Tray work under an updated/new GNU/Linux desktop environment should be filed as a feature request and *not* a bug report.
+        * I will likely have to reject bug reports about Wayland-specific problems due to limitations of that protocol which I cannot workaround from my side.
+
+  - type: checkboxes
+    attributes:
+      label: Relevant components
+      description: What components does this feature request apply to?
+      options:
+        - label: Standalone tray application (based on Qt Widgets)
+        - label: Plasmoid/applet for Plasma desktop
+        - label: Dolphin integration
+        - label: Command line tool (`syncthingctl`)
+        - label: Integrated Syncthing instance (`libsyncthing`)
+        - label: Android app or mobile UI in general
+        - label: Backend libraries
+
+  - type: textarea
+    attributes:
+      label: Syncthing Tray version
+      description: What version of Syncthing Tray are you using?
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Qt version
+      description: What version of Qt are you using?
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: C++ compiler, standard library and version
+      description: What C++ tooling did you use to build Syncthing Tray? If you are using official builds, state what build you have been using.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Platforms
+      description: What platforms (operating system and CPU architecture) are affected by the problem?
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Bug description
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: How can the issue be reproduced?
+      value: |
+        1. …
+        2. …
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
+
+  - type: textarea
+    attributes:
+      label: Additional context
+      description: Add any other context or screenshots about the feature request here.
