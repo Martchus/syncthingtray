@@ -175,15 +175,15 @@ static int assignIntegerFromArg(const Argument &arg, int &integer)
 int Application::loadConfig()
 {
     // locate and read Syncthing config file
-    QString configFile;
-    const char *configFileArgValue = m_args.configFile.firstValue();
+    auto configFile = QString();
+    const auto *const configFileArgValue = m_args.configFile.firstValue();
     if (configFileArgValue) {
         configFile = fromNativeFileName(configFileArgValue);
     } else {
         configFile = SyncthingConfig::locateConfigFile();
     }
-    SyncthingConfig config;
-    const char *apiKeyArgValue = m_args.apiKey.firstValue();
+    auto config = SyncthingConfig();
+    const auto *const apiKeyArgValue = m_args.apiKey.firstValue();
     if (!config.restore(configFile)) {
         if (configFileArgValue) {
             cerr << Phrases::Error << "Unable to locate specified Syncthing config file \"" << configFileArgValue << "\"" << Phrases::EndFlush;
@@ -221,16 +221,16 @@ int Application::loadConfig()
     }
 
     // read timeouts
-    if (const int res = assignIntegerFromArg(m_args.atLeast, m_idleDuration)) {
+    if (const auto res = assignIntegerFromArg(m_args.atLeast, m_idleDuration)) {
         return res;
     }
-    if (const int res = assignIntegerFromArg(m_args.timeout, m_idleTimeout)) {
+    if (const auto res = assignIntegerFromArg(m_args.timeout, m_idleTimeout)) {
         return res;
     }
-    if (const int res = assignIntegerFromArg(m_args.requestTimeout, m_settings.requestTimeout)) {
+    if (const auto res = assignIntegerFromArg(m_args.requestTimeout, m_settings.requestTimeout)) {
         return res;
     }
-    if (const int res = assignIntegerFromArg(m_args.requestTimeout, m_generalTimeout)) {
+    if (const auto res = assignIntegerFromArg(m_args.requestTimeout, m_generalTimeout)) {
         return res;
     }
 
