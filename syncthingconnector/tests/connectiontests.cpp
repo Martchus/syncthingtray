@@ -128,8 +128,12 @@ void ConnectionTests::setUp()
 
     // log configuration change
     if (qEnvironmentVariableIsSet("SYNCTHING_TEST_DUMP_CONFIG_UPDATES")) {
-        QObject::connect(&m_connection, &SyncthingConnection::newConfig, &m_connection,
-            [](const QJsonObject &config) { cerr << " - New config: " << QJsonDocument(config).toJson(QJsonDocument::Indented).data() << endl; });
+        QObject::connect(&m_connection, &SyncthingConnection::newConfig, &m_connection, [](const QJsonObject &config) {
+            const auto json = QJsonDocument(config).toJson(QJsonDocument::Indented);
+            cerr << " - New config: ";
+            cerr.write(json.data(), json.size());
+            cerr << '\n';
+        });
     }
 
     // log errors
