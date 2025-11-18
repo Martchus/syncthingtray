@@ -481,9 +481,9 @@ private Q_SLOTS:
     void continueReconnecting();
     void autoReconnect();
     bool setStatus(Data::SyncthingStatus status);
-    void emitError(const QString &message, const QJsonParseError &jsonError, QNetworkReply *reply, const QByteArray &response = QByteArray());
-    void emitError(const QString &message, Data::SyncthingErrorCategory category, QNetworkReply *reply);
-    void emitError(const QString &message, QNetworkReply *reply);
+    void emitError(const QString &message, const QJsonParseError &jsonError, QNetworkReply *reply, const QByteArray &response);
+    void emitError(const QString &message, Data::SyncthingErrorCategory category, QNetworkReply *reply, const QByteArray &response);
+    void emitError(const QString &message, QNetworkReply *reply, const QByteArray &response);
     void emitMyIdChanged(const QString &newId);
     void emitTildeChanged(const QString &newTilde, const QString &newPathSeparator);
     void handleFatalConnectionError();

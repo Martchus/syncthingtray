@@ -433,7 +433,7 @@ void SyncthingConnection::readDevPauseResume()
         break;
     }
     default:
-        emitError(tr("Unable to request device pause/resume: "), SyncthingErrorCategory::SpecificRequest, reply);
+        emitError(tr("Unable to request device pause/resume: "), SyncthingErrorCategory::SpecificRequest, reply, response);
     }
 }
 
@@ -537,7 +537,7 @@ void SyncthingConnection::readDirPauseResume()
         break;
     }
     default:
-        emitError(tr("Unable to request folder pause/resume: "), SyncthingErrorCategory::SpecificRequest, reply);
+        emitError(tr("Unable to request folder pause/resume: "), SyncthingErrorCategory::SpecificRequest, reply, response);
     }
 }
 
@@ -598,7 +598,7 @@ void SyncthingConnection::readRescan()
         emit rescanTriggered(reply->property("dirId").toString());
         break;
     default:
-        emitError(tr("Unable to request rescan: "), SyncthingErrorCategory::SpecificRequest, reply);
+        emitError(tr("Unable to request rescan: "), SyncthingErrorCategory::SpecificRequest, reply, response);
     }
 }
 
@@ -629,7 +629,7 @@ void SyncthingConnection::readRestart()
         emit restartTriggered();
         break;
     default:
-        emitError(tr("Unable to request restart: "), SyncthingErrorCategory::SpecificRequest, reply);
+        emitError(tr("Unable to request restart: "), SyncthingErrorCategory::SpecificRequest, reply, response);
     }
 }
 
@@ -658,7 +658,7 @@ void SyncthingConnection::readShutdown()
         emit shutdownTriggered();
         break;
     default:
-        emitError(tr("Unable to request shutdown: "), SyncthingErrorCategory::SpecificRequest, reply);
+        emitError(tr("Unable to request shutdown: "), SyncthingErrorCategory::SpecificRequest, reply, response);
     }
 }
 
@@ -694,7 +694,7 @@ void SyncthingConnection::readClearingErrors()
         }
         break;
     default:
-        emitError(tr("Unable to request clearing errors: "), SyncthingErrorCategory::SpecificRequest, reply);
+        emitError(tr("Unable to request clearing errors: "), SyncthingErrorCategory::SpecificRequest, reply, response);
     }
 }
 
@@ -718,6 +718,7 @@ void SyncthingConnection::requestConfig()
  */
 void SyncthingConnection::readConfig()
 {
+    //cerr << "error string: " << static_cast<QNetworkReply *>(QObject::sender())->readAll().toStdString() << '\n';
     auto const [reply, response] = prepareReply(m_configReply);
     if (!reply) {
         return;
@@ -745,7 +746,7 @@ void SyncthingConnection::readConfig()
     case QNetworkReply::OperationCanceledError:
         return;
     default:
-        emitError(tr("Unable to request Syncthing config: "), SyncthingErrorCategory::OverallConnection, reply);
+        emitError(tr("Unable to request Syncthing config: "), SyncthingErrorCategory::OverallConnection, reply, response);
         handleFatalConnectionError();
     }
 }
@@ -895,7 +896,7 @@ void SyncthingConnection::readStatus()
     case QNetworkReply::OperationCanceledError:
         return;
     default:
-        emitError(tr("Unable to request Syncthing status: "), SyncthingErrorCategory::OverallConnection, reply);
+        emitError(tr("Unable to request Syncthing status: "), SyncthingErrorCategory::OverallConnection, reply, response);
         handleFatalConnectionError();
     }
 }
@@ -1030,7 +1031,7 @@ void SyncthingConnection::readConnections()
         handleAdditionalRequestCanceled();
         return;
     default:
-        emitError(tr("Unable to request connections: "), SyncthingErrorCategory::OverallConnection, reply);
+        emitError(tr("Unable to request connections: "), SyncthingErrorCategory::OverallConnection, reply, response);
     }
 }
 
@@ -1109,7 +1110,7 @@ void SyncthingConnection::readErrors()
         handleAdditionalRequestCanceled();
         return;
     default:
-        emitError(tr("Unable to request errors: "), SyncthingErrorCategory::SpecificRequest, reply);
+        emitError(tr("Unable to request errors: "), SyncthingErrorCategory::SpecificRequest, reply, response);
     }
 }
 
@@ -1192,7 +1193,7 @@ void SyncthingConnection::readDirStatistics()
         handleAdditionalRequestCanceled();
         return;
     default:
-        emitError(tr("Unable to request folder statistics: "), SyncthingErrorCategory::OverallConnection, reply);
+        emitError(tr("Unable to request folder statistics: "), SyncthingErrorCategory::OverallConnection, reply, response);
     }
 }
 
@@ -1254,7 +1255,7 @@ void SyncthingConnection::readDirStatus()
         handleAdditionalRequestCanceled();
         return;
     default:
-        emitError(tr("Unable to request folder statistics: "), SyncthingErrorCategory::SpecificRequest, reply);
+        emitError(tr("Unable to request folder statistics: "), SyncthingErrorCategory::SpecificRequest, reply, response);
     }
 }
 
@@ -1316,7 +1317,7 @@ void SyncthingConnection::readDirPullErrors()
     case QNetworkReply::OperationCanceledError:
         return;
     default:
-        emitError(tr("Unable to request pull errors for folder %1: ").arg(dirId), SyncthingErrorCategory::SpecificRequest, reply);
+        emitError(tr("Unable to request pull errors for folder %1: ").arg(dirId), SyncthingErrorCategory::SpecificRequest, reply, response);
     }
 }
 
@@ -1397,7 +1398,8 @@ void SyncthingConnection::readCompletion()
         handleAdditionalRequestCanceled();
         break;
     default:
-        emitError(tr("Unable to request completion for device/folder %1/%2: ").arg(devId, dirId), SyncthingErrorCategory::SpecificRequest, reply);
+        emitError(
+            tr("Unable to request completion for device/folder %1/%2: ").arg(devId, dirId), SyncthingErrorCategory::SpecificRequest, reply, response);
     }
     ensureCompletionNotConsideredRequested(devId, devInfo, dirId, dirInfo);
 }
@@ -1456,7 +1458,7 @@ void SyncthingConnection::readDeviceStatistics()
         handleAdditionalRequestCanceled();
         return;
     default:
-        emitError(tr("Unable to request device statistics: "), SyncthingErrorCategory::OverallConnection, reply);
+        emitError(tr("Unable to request device statistics: "), SyncthingErrorCategory::OverallConnection, reply, response);
     }
 }
 
@@ -1498,7 +1500,7 @@ void SyncthingConnection::readVersion()
         handleAdditionalRequestCanceled();
         return;
     default:
-        emitError(tr("Unable to request version: "), SyncthingErrorCategory::OverallConnection, reply);
+        emitError(tr("Unable to request version: "), SyncthingErrorCategory::OverallConnection, reply, response);
     }
 }
 
@@ -1616,7 +1618,7 @@ void SyncthingConnection::readOverride()
         emit overrideTriggered(reply->property("dirId").toString());
         break;
     default:
-        emitError(tr("Unable to request directory override: "), SyncthingErrorCategory::SpecificRequest, reply);
+        emitError(tr("Unable to request directory override: "), SyncthingErrorCategory::SpecificRequest, reply, response);
     }
 }
 
@@ -1657,7 +1659,7 @@ void SyncthingConnection::readRevert()
         emit revertTriggered(reply->property("dirId").toString());
         break;
     default:
-        emitError(tr("Unable to request directory revert: "), SyncthingErrorCategory::SpecificRequest, reply);
+        emitError(tr("Unable to request directory revert: "), SyncthingErrorCategory::SpecificRequest, reply, response);
     }
 }
 
@@ -1858,7 +1860,7 @@ void SyncthingConnection::readJsonData(std::function<void(QJsonDocument &&, QStr
     }
     default:
         auto errorMessage = tr("Unable to request: ") + reply->errorString();
-        emitError(errorMessage, reply);
+        emitError(errorMessage, reply, response);
         if (callback) {
             callback(QJsonDocument(), std::move(errorMessage));
         }
@@ -1897,7 +1899,7 @@ void SyncthingConnection::readBrowse(
     }
     default:
         auto errorMessage = tr("Unable to browse \"%1\": ").arg(dirId) + reply->errorString();
-        emitError(errorMessage, reply);
+        emitError(errorMessage, reply, response);
         if (callback) {
             callback(std::move(items), std::move(errorMessage));
         }
@@ -1945,7 +1947,7 @@ void SyncthingConnection::readIgnores(const QString &dirId, std::function<void(S
     }
     default:
         auto errorMessage = tr("Unable to query ignore patterns of \"%1\": ").arg(dirId) + reply->errorString();
-        emitError(errorMessage, reply);
+        emitError(errorMessage, reply, response);
         if (callback) {
             callback(std::move(res), std::move(errorMessage));
         }
@@ -1971,7 +1973,7 @@ void SyncthingConnection::readSetIgnores(const QString &dirId, std::function<voi
     }
     default:
         auto errorMessage = tr("Unable to change ignore patterns of \"%1\": ").arg(dirId) + reply->errorString();
-        emitError(errorMessage, reply);
+        emitError(errorMessage, reply, response);
         if (callback) {
             callback(std::move(errorMessage));
         }
@@ -2032,7 +2034,7 @@ void SyncthingConnection::readPostConfig(std::function<void(QString &&)> &&callb
         break;
     default:
         auto errorMessage = tr("Unable to post config: ") + reply->errorString();
-        emitError(errorMessage, SyncthingErrorCategory::SpecificRequest, reply);
+        emitError(errorMessage, SyncthingErrorCategory::SpecificRequest, reply, response);
         if (callback) {
             callback(std::move(errorMessage));
         }
@@ -2296,7 +2298,7 @@ void SyncthingConnection::readEvents()
         }
         return;
     default:
-        emitError(tr("Unable to request Syncthing events: "), SyncthingErrorCategory::OverallConnection, reply);
+        emitError(tr("Unable to request Syncthing events: "), SyncthingErrorCategory::OverallConnection, reply, response);
         handleFatalConnectionError();
         return;
     }
@@ -2920,7 +2922,7 @@ void SyncthingConnection::readDiskEvents()
         }
         return;
     default:
-        emitError(tr("Unable to request disk events: "), SyncthingErrorCategory::OverallConnection, reply);
+        emitError(tr("Unable to request disk events: "), SyncthingErrorCategory::OverallConnection, reply, response);
         handleFatalConnectionError();
         return;
     }

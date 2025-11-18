@@ -1280,15 +1280,38 @@ void SyncthingConnection::emitError(const QString &message, const QJsonParseErro
 }
 
 /*!
+ * \brief Returns the response and appends it to \a errorMessage.
+ *
+ * This function returns the specified \a response if it is already populated implying `reply->readAll()` has
+ * already been called. Otherwise it returns `reply->readAll()`.
+ *
+ * This function also appends the trimmed response to \a errorString if it ends with "server replied: ". Not sure
+ * why it sometimes just ends like this. This seems like a Qt bug. The problem is reproducible with Qt 6.10.0
+ * when calling `syncthingctl` with e.g. `--url https://0.0.0.0:8080`. Then Syncthing returns "Host check error"
+ * (if only listening on the the loopback device) but Qt does not include this response into `reply->errorString()`.
+ */
+static QByteArray formatErrorAndResponse(QNetworkReply *reply, QString &errorString, const QByteArray &response)
+{
+    auto res = response.isEmpty() ? reply->readAll() : response;
+    if (errorString.endsWith(QLatin1String("server replied: "))) {
+        errorString += res.trimmed();
+    }
+    return res;
+}
+
+/*!
  * \brief Internally called to emit a network error (server replied error code or server could not be reached at all).
  */
-void SyncthingConnection::emitError(const QString &message, SyncthingErrorCategory category, QNetworkReply *reply)
+void SyncthingConnection::emitError(const QString &message, SyncthingErrorCategory category, QNetworkReply *reply, const QByteArray &response)
 {
+    auto error = reply->error();
+    auto errorString = reply->errorString();
+    auto resp = formatErrorAndResponse(reply, errorString, response);
     if (loggingFlags() && SyncthingConnectionLoggingFlags::ApiReplies) {
-        std::cerr << Phrases::Error << "Syncthing connection error: " << message.toLocal8Bit().data() << reply->errorString().toLocal8Bit().data()
+        std::cerr << Phrases::Error << "Syncthing connection error: " << message.toLocal8Bit().data() << errorString.toLocal8Bit().data()
                   << Phrases::End;
     }
-    emit error(message + reply->errorString(), category, reply->error(), reply->request(), reply->bytesAvailable() ? reply->readAll() : QByteArray());
+    emit this->error(message + errorString, category, error, reply->request(), resp);
 
     // request errors immediately after a failed API request so errors like "Decoding posted config: folder has empty ID" show up immediately
     if (category == SyncthingErrorCategory::SpecificRequest && m_errorsPollTimer.isActive()) {
@@ -1301,14 +1324,15 @@ void SyncthingConnection::emitError(const QString &message, SyncthingErrorCatego
  * \brief Internally called to emit a network error for a specific request (server replied error code or server could not be reached at all).
  * \remarks The \a message is supposed to already contain the error string of the reply.
  */
-void SyncthingConnection::emitError(const QString &message, QNetworkReply *reply)
+void SyncthingConnection::emitError(const QString &message, QNetworkReply *reply, const QByteArray &response)
 {
+    auto error = reply->error();
+    auto errorString = reply->errorString();
+    auto resp = formatErrorAndResponse(reply, errorString, response);
     if (loggingFlags() && SyncthingConnectionLoggingFlags::ApiReplies) {
-        std::cerr << Phrases::Error << "Syncthing API error: " << message.toLocal8Bit().data() << reply->errorString().toLocal8Bit().data()
-                  << Phrases::End;
+        std::cerr << Phrases::Error << "Syncthing API error: " << message.toLocal8Bit().data() << errorString.toLocal8Bit().data() << Phrases::End;
     }
-    emit error(message, SyncthingErrorCategory::SpecificRequest, reply->error(), reply->request(),
-        reply->bytesAvailable() ? reply->readAll() : QByteArray());
+    emit this->error(message, SyncthingErrorCategory::SpecificRequest, error, reply->request(), resp);
 }
 
 /*!
