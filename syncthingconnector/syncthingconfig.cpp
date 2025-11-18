@@ -6,6 +6,7 @@
 #include <qtutilities/misc/compat.h>
 
 #include <QFile>
+#include <QFileInfo>
 #include <QHash>
 #include <QHostAddress>
 #include <QStandardPaths>
@@ -265,6 +266,18 @@ QString SyncthingConfig::syncthingUrl() const
     }
 
     return ((guiEnforcesSecureConnection || !localConnection) ? QStringLiteral("https://") : QStringLiteral("http://")) % guiHost % guiPort;
+}
+
+SyncthingConnectInfo SyncthingConfig::syncthingConnectInfo() const
+{
+    auto res = SyncthingConnectInfo();
+    if (QFileInfo::exists(guiAddress)) {
+        res.url = guiEnforcesSecureConnection ? QStringLiteral("unix+https://localhost") : QStringLiteral("unix+http://localhost");
+        res.path = guiAddress;
+    } else {
+        res.url = syncthingUrl();
+    }
+    return res;
 }
 
 } // namespace Data

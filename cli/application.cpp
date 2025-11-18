@@ -198,9 +198,12 @@ int Application::loadConfig()
     if (const char *urlArgValue = m_args.url.firstValue()) {
         m_settings.syncthingUrl = argToQString(urlArgValue);
     } else if (!config.guiAddress.isEmpty()) {
-        m_settings.syncthingUrl = config.syncthingUrl();
+        const auto connectInfo = config.syncthingConnectInfo();
+        m_settings.syncthingUrl = connectInfo.url;
+        m_settings.localPath = connectInfo.path;
     } else {
         m_settings.syncthingUrl = QStringLiteral("http://localhost:8080");
+        m_settings.localPath.clear();
     }
     if (m_args.credentials.isPresent()) {
         m_settings.authEnabled = true;

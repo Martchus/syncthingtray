@@ -208,8 +208,14 @@ void AppBase::applySyncthingSettings()
 
 void AppBase::handleGuiUrlChanged(const QUrl &newUrl)
 {
-    if (newUrl.scheme() == QLatin1String("unix") && !m_syncthingUnixSocketPath.isEmpty()) {
+    const auto scheme = newUrl.scheme();
+    if (scheme == QLatin1String("unix") && !m_syncthingUnixSocketPath.isEmpty()) {
+        // configure HTTP via Unix domain socket (works as of Qt 6.8.0)
         m_connectionSettingsFromLauncher.syncthingUrl = QStringLiteral("unix+http://localhost");
+        m_connectionSettingsFromLauncher.localPath = m_syncthingUnixSocketPath;
+    } else if (scheme == QLatin1String("unixs") && !m_syncthingUnixSocketPath.isEmpty()) {
+        // configure HTTPs via Unix domain socket (does not work yet; tested with Qt 6.10.0)
+        m_connectionSettingsFromLauncher.syncthingUrl = QStringLiteral("unix+https://localhost");
         m_connectionSettingsFromLauncher.localPath = m_syncthingUnixSocketPath;
     } else {
 #ifndef QT_NO_SSL

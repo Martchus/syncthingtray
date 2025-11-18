@@ -168,8 +168,10 @@ bool SyncthingFileItemActionStaticData::applySyncthingConfiguration(
     }
 
     // make connection settings
-    SyncthingConnectionSettings connectionSettings;
-    connectionSettings.syncthingUrl = config.syncthingUrl();
+    auto connectInfo = config.syncthingConnectInfo();
+    auto connectionSettings = SyncthingConnectionSettings();
+    connectionSettings.syncthingUrl = connectInfo.url;
+    connectionSettings.localPath = connectInfo.path;
     connectionSettings.apiKey.append(config.guiApiKey.toUtf8());
 
     // establish connection

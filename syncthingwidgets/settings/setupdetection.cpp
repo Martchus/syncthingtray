@@ -71,7 +71,9 @@ void SetupDetection::restoreConfig()
 void SetupDetection::initConnection()
 {
     auto settings = Data::SyncthingConnectionSettings();
-    settings.syncthingUrl = config.syncthingUrl();
+    auto connectInfo = config.syncthingConnectInfo();
+    settings.syncthingUrl = connectInfo.url;
+    settings.localPath = connectInfo.path;
     settings.apiKey = config.guiApiKey.toLocal8Bit();
 #ifndef QT_NO_SSL
     settings.httpsCertPath = certPath;

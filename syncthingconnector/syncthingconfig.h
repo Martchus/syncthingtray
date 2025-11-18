@@ -15,6 +15,10 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConfigDetails {
     QJsonArray devices;
 };
 
+struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectInfo {
+    QString url, path;
+};
+
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConfig {
     QString version;
     bool guiEnabled = false;
@@ -30,6 +34,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConfig {
     static QString locateHttpsCertificate();
     bool restore(const QString &configFilePath, bool detailed = false);
     QString syncthingUrl() const;
+    SyncthingConnectInfo syncthingConnectInfo() const;
 };
 
 } // namespace Data

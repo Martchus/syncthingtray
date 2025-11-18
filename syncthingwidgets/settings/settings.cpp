@@ -667,9 +667,10 @@ Systemd::ServiceStatus Systemd::status(SyncthingConnection &connection) const
 void Connection::addConfigFromWizard(const Data::SyncthingConfig &config)
 {
     // skip if settings basically don't change
-    const auto url = config.syncthingUrl();
+    const auto connectInfo = config.syncthingConnectInfo();
     const auto apiKey = config.guiApiKey.toUtf8();
-    if (url == primary.syncthingUrl && config.guiUser == primary.userName && config.guiApiKey == primary.apiKey) {
+    if (connectInfo.url == primary.syncthingUrl && connectInfo.path == primary.localPath && config.guiUser == primary.userName
+        && config.guiApiKey == primary.apiKey) {
         primary.authEnabled = false; // just disable auth to solely rely on the API key
         primary.autoConnect = true; // ensure the connection is actually established when applying
         return;
@@ -681,8 +682,8 @@ void Connection::addConfigFromWizard(const Data::SyncthingConfig &config)
         backup.label = QCoreApplication::translate("Settings::Connection", "Backup of %1 (created by wizard)").arg(backup.label);
     }
 
-    primary.syncthingUrl = url;
-    primary.localPath.clear();
+    primary.syncthingUrl = connectInfo.url;
+    primary.localPath = connectInfo.path;
     primary.userName = config.guiUser;
     primary.authEnabled = false;
     primary.password.clear();

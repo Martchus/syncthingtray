@@ -191,8 +191,11 @@ void ConnectionOptionPage::insertFromConfigFile(bool forceFileSelection)
     }
 
     if (!config.guiAddress.isEmpty()) {
+        const auto connectInfo = config.syncthingConnectInfo();
         ui()->urlLineEdit->selectAll();
-        ui()->urlLineEdit->insert(config.syncthingUrl());
+        ui()->urlLineEdit->insert(connectInfo.url);
+        ui()->localPathLineEdit->selectAll();
+        ui()->localPathLineEdit->insert(connectInfo.path);
     }
     if (!config.guiUser.isEmpty() || !config.guiPasswordHash.isEmpty()) {
         ui()->authCheckBox->setChecked(true);
