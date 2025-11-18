@@ -25,6 +25,19 @@ Syncthing Tray, you may need to get `syncthingctl` separately, e.g., as a separa
 The exact name of the executables may also differ, e.g., the Arch Linux package uses `syncthingctl-qt6`
 and `syncthingtray-qt6` for the preferable Qt 6-based version.
 
+## TLS and the certificate
+Just like your web browser might ask you to accept a self-signed certificate when using TLS, `syncthingctl`
+will require you to specify the expected certificate via the `--cert` option.
+
+Otherwise you will run into the error `TLS error: The certificate is self-signed, and untrusted (9)`.
+
+When connecting with a local Syncthing instance, `syncthingctl` will automatically accept the certificate
+that is present in the Syncthing config directory, though. This is only possible when connecting via the
+IP address of a local network device (e.g. `127.0.0.1`).
+
+Loading the TLS certificate can be debugged by setting the environment variable
+`LIB_SYNCTHING_CONNECTOR_LOG_CERT_LOADING=1`.
+
 ## Examples
 The following sections give examples of some useful commands. For an exhaustive list of commands, use
 `--help`, as mentioned before.
