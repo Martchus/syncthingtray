@@ -7,6 +7,7 @@
 
 #include <QFile>
 #include <QHash>
+#include <QHostAddress>
 #include <QStandardPaths>
 #include <QStringBuilder>
 #include <QXmlStreamReader>
@@ -245,7 +246,25 @@ bool SyncthingConfig::restore(const QString &configFilePath, bool detailed)
 
 QString SyncthingConfig::syncthingUrl() const
 {
-    return (guiEnforcesSecureConnection || !isLocal(stripPort(guiAddress)) ? QStringLiteral("https://") : QStringLiteral("http://")) + guiAddress;
+    // split the GUI address into IP address/hostname and port
+    const auto portStart = guiAddress.indexOf(QChar(':'));
+    auto guiHost = guiAddress.mid(0, portStart);
+    const auto guiPort = portStart > 0 ? QtUtilities::midRef(guiAddress, portStart) : QtUtilities::StringView();
+    const auto guiAddress = QHostAddress(guiHost);
+
+    // check whether address is local and handle "any" addresses
+    auto localConnection = true;
+    if (guiAddress == QHostAddress::AnyIPv4) {
+        // assume local connection if address is "0.0.0.0"
+        guiHost = QStringLiteral("127.0.0.1");
+    } else if (guiAddress == QHostAddress::AnyIPv6) {
+        // assume local connection if address is "::"
+        guiHost = QStringLiteral("[::1]");
+    } else if (!isLocal(guiHost, guiAddress)) {
+        localConnection = false;
+    }
+
+    return ((guiEnforcesSecureConnection || !localConnection) ? QStringLiteral("https://") : QStringLiteral("http://")) % guiHost % guiPort;
 }
 
 } // namespace Data

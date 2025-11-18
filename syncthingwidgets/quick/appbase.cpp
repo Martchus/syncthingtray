@@ -219,7 +219,7 @@ void AppBase::handleGuiUrlChanged(const QUrl &newUrl)
         //       is disabled (because this setting is just about *enforcing* TLS).
         url.setScheme(QStringLiteral("https"));
 #endif
-        m_connectionSettingsFromLauncher.syncthingUrl = url.toString();
+        m_connectionSettingsFromLauncher.syncthingUrl = url.toString(); // is never an any address like "0.0.0.0"
         m_connectionSettingsFromLauncher.localPath.clear();
     }
     if (!m_syncthingConfig.restore(m_syncthingConfigDir + QStringLiteral("/config.xml"))) {

@@ -191,23 +191,8 @@ void ConnectionOptionPage::insertFromConfigFile(bool forceFileSelection)
     }
 
     if (!config.guiAddress.isEmpty()) {
-        const auto portStart(config.guiAddress.indexOf(QChar(':')));
-        auto guiHost(config.guiAddress.mid(0, portStart));
-        const auto guiPort = portStart > 0 ? QtUtilities::midRef(config.guiAddress, portStart) : QtUtilities::StringView();
-        const QHostAddress guiAddress(guiHost);
-        // assume local connection if address is eg. 0.0.0.0
-        auto localConnection = true;
-        if (guiAddress == QHostAddress::AnyIPv4) {
-            guiHost = QStringLiteral("127.0.0.1");
-        } else if (guiAddress == QHostAddress::AnyIPv6) {
-            guiHost = QStringLiteral("[::1]");
-        } else if (!isLocal(guiHost, guiAddress)) {
-            localConnection = false;
-        }
-        const QString guiProtocol((config.guiEnforcesSecureConnection || !localConnection) ? QStringLiteral("https://") : QStringLiteral("http://"));
-
         ui()->urlLineEdit->selectAll();
-        ui()->urlLineEdit->insert(guiProtocol % guiHost % guiPort);
+        ui()->urlLineEdit->insert(config.syncthingUrl());
     }
     if (!config.guiUser.isEmpty() || !config.guiPasswordHash.isEmpty()) {
         ui()->authCheckBox->setChecked(true);
