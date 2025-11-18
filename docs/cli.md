@@ -38,6 +38,9 @@ IP address of a local network device (e.g. `127.0.0.1`).
 Loading the TLS certificate can be debugged by setting the environment variable
 `LIB_SYNCTHING_CONNECTOR_LOG_CERT_LOADING=1`.
 
+When using generic GNU/Linux executable from the GitHub release section or the website, be sure to also
+read the remark about OpenSSL if TLS doesn't work.
+
 ## Examples
 The following sections give examples of some useful commands. For an exhaustive list of commands, use
 `--help`, as mentioned before.
