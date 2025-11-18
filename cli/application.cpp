@@ -314,12 +314,16 @@ void Application::handleError(
 
     // print error message and relevant request and response if present
     cerr << Phrases::Override << Phrases::Error << message.toLocal8Bit().data() << Phrases::End;
-    const auto url(request.url());
+    const auto url = request.url();
     if (!url.isEmpty()) {
-        cerr << "\nRequest: " << url.toString(QUrl::PrettyDecoded).toLocal8Bit().data() << '\n';
+        cerr << "Request: " << url.toString(QUrl::PrettyDecoded).toLocal8Bit().data() << '\n';
     }
     if (!response.isEmpty()) {
-        cerr << "\nResponse:\n" << response.data() << '\n';
+        cerr << "Response:\n";
+        cerr.write(response.data(), response.size());
+        if (!response.endsWith('\n')) {
+            cerr << '\n';
+        }
     }
     cerr << flush;
     QCoreApplication::exit(-3);
