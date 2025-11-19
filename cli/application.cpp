@@ -140,6 +140,9 @@ int Application::exec(int argc, const char *const *argv)
     if (m_args.status.isPresent() || m_args.statusPwd.isPresent() || m_args.waitForIdle.isPresent()) {
         // those arguments require establishing a connection first, the actual handler is called by handleStatusChanged() when
         // the connection has been established
+        if (m_args.status.isPresent()) {
+            connect(&m_connection, &SyncthingConnection::newConfigApplied, [this] { findRelevantDirsAndDevs(OperationType::Status); });
+        }
         m_connection.reconnect(m_settings);
         cerr << Phrases::Info << "Connecting to " << m_settings.syncthingUrl.toLocal8Bit().data() << " ..." << TextAttribute::Reset << flush;
     } else {
@@ -460,16 +463,26 @@ void Application::findRelevantDirsAndDevs(OperationType operationType)
 {
     int dummy;
 
+    // ensure filtering is cleared
+    m_connection.dirFilter().reset();
+    m_connection.devFilter().reset();
+
     // find relevant dirs
     const bool allDirs = m_args.allDirs.isPresent();
     if (!allDirs) {
         const Argument &dirArg = m_args.dir;
+        if (operationType == OperationType::Status) {
+            m_connection.dirFilter().emplace();
+        }
         if (dirArg.isPresent()) {
             m_relevantDirs.reserve(dirArg.occurrences());
             for (size_t i = 0; i != dirArg.occurrences(); ++i) {
                 const QString dirIdentifier(argToQString(dirArg.values(i).front()));
                 const RelevantDir relevantDir(findDirectory(dirIdentifier));
                 if (relevantDir.dirObj) {
+                    if (m_connection.dirFilter().has_value()) {
+                        m_connection.dirFilter()->insert(relevantDir.dirObj->id);
+                    }
                     m_relevantDirs.emplace_back(std::move(relevantDir));
                 }
             }
@@ -480,6 +493,9 @@ void Application::findRelevantDirsAndDevs(OperationType operationType)
     const bool allDevs = m_args.allDevs.isPresent();
     if (!allDevs) {
         Argument &devArg = m_args.dev;
+        if (operationType == OperationType::Status) {
+            m_connection.devFilter().emplace();
+        }
         if (devArg.isPresent()) {
             m_relevantDevs.reserve(devArg.occurrences());
             for (size_t i = 0; i != devArg.occurrences(); ++i) {
@@ -492,6 +508,9 @@ void Application::findRelevantDirsAndDevs(OperationType operationType)
                          << Phrases::End;
                     continue;
                 }
+                if (m_connection.devFilter().has_value()) {
+                    m_connection.devFilter()->insert(dev->id);
+                }
                 m_relevantDevs.emplace_back(dev);
             }
         }
@@ -502,15 +521,23 @@ void Application::findRelevantDirsAndDevs(OperationType operationType)
         = operationType == OperationType::Status && !m_args.stats.isPresent() && m_relevantDirs.empty() && m_relevantDevs.empty();
     if (allDirs || (!allDevs && displayEverything)) {
         m_relevantDirs.reserve(m_connection.dirInfo().size());
-        for (const SyncthingDir &dir : m_connection.dirInfo()) {
+        for (const auto &dir : m_connection.dirInfo()) {
             m_relevantDirs.emplace_back(&dir, QString());
         }
     }
     if (allDevs || (!allDirs && displayEverything)) {
         m_relevantDevs.reserve(m_connection.devInfo().size());
-        for (const SyncthingDev &dev : m_connection.devInfo()) {
+        for (const auto &dev : m_connection.devInfo()) {
             m_relevantDevs.emplace_back(&dev);
         }
+    }
+
+    // clear dir/dev filter when all dir/dev completions need to be considered after all
+    if (m_args.stats.isPresent() || !m_relevantDirs.empty()) {
+        m_connection.devFilter().reset();
+    }
+    if (m_args.stats.isPresent() || !m_relevantDevs.empty()) {
+        m_connection.dirFilter().reset();
     }
 }
 
@@ -614,8 +641,6 @@ void Application::printDev(const SyncthingDev *dev) const
 
 void Application::printStatus(const ArgumentOccurrence &)
 {
-    findRelevantDirsAndDevs(OperationType::Status);
-
     // display stats
     if (m_args.stats.isPresent() || (!m_args.dir.isPresent() && !m_args.dev.isPresent())) {
         cout << TextAttribute::Bold << "Overall statistics\n" << TextAttribute::Reset;

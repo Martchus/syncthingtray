@@ -990,11 +990,13 @@ void SyncthingConnection::continueConnecting()
     requestErrors();
     requestVersion();
     for (const SyncthingDir &dir : m_dirs) {
-        if (!m_requestCompletion || dir.paused) {
+        if (!m_requestCompletion || dir.paused || (m_dirFilter.has_value() && !m_dirFilter->contains(dir.id))) {
             continue;
         }
         for (const QString &devId : dir.deviceIds) {
-            requestCompletion(devId, dir.id);
+            if (!m_devFilter.has_value() || m_devFilter->contains(devId)) {
+                requestCompletion(devId, dir.id);
+            }
         }
     }
 

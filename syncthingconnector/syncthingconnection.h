@@ -267,6 +267,8 @@ public:
     void setPausingOnMeteredConnection(bool pausingOnMeteredConnection);
     bool isInsecure() const;
     void setInsecure(bool insecure);
+    std::optional<QSet<QString>> &dirFilter();
+    std::optional<QSet<QString>> &devFilter();
 
     // getter for information retrieved from Syncthing
     const QString &configDir() const;
@@ -560,6 +562,8 @@ private:
     SyncthingEventId m_lastEventId;
     SyncthingEventId m_lastDiskEventId;
     QHash<QString, SyncthingEventId> m_lastEventIdByMask;
+    std::optional<QSet<QString>> m_dirFilter;
+    std::optional<QSet<QString>> m_devFilter;
     QTimer m_trafficPollTimer;
     QTimer m_devStatsPollTimer;
     QTimer m_errorsPollTimer;
@@ -1022,6 +1026,24 @@ inline bool SyncthingConnection::isInsecure() const
 inline void SyncthingConnection::setInsecure(bool insecure)
 {
     m_insecure = insecure;
+}
+
+/*!
+ * \brief Returns the directory filter; if set, the completion will only be requested for the dirs with
+ *        IDs contained by the assigned filter set.
+ */
+inline std::optional<QSet<QString>> &SyncthingConnection::dirFilter()
+{
+    return m_dirFilter;
+}
+
+/*!
+ * \brief Returns the device filter; if set, the completion will only be requested for the devs with
+ *        IDs contained by the assigned filter set.
+ */
+inline std::optional<QSet<QString>> &SyncthingConnection::devFilter()
+{
+    return m_devFilter;
 }
 
 /*!
