@@ -502,13 +502,14 @@ void SyncthingProcess::start(const QStringList &programs, const QStringList &arg
         handleLeftoverProcesses();
         emit stateChanged(m_process->state = QProcess::NotRunning);
         emit finished(rc, rc != 0 ? QProcess::CrashExit : QProcess::NormalExit);
-        if (ec) {
-            const auto msg = ec.message();
-            std::cerr << EscapeCodes::Phrases::Info << "Launched process " << m_process->child.native_handle() << " exited with error: " << msg
-                      << EscapeCodes::Phrases::End;
-            QMetaObject::invokeMethod(this, "handleError", Qt::QueuedConnection, Q_ARG(int, QProcess::Crashed),
-                Q_ARG(QString, QString::fromStdString(msg)), Q_ARG(bool, false));
+        if (!ec || ec == std::errc::no_such_process || ec == std::errc::no_child_process) {
+            return;
         }
+        const auto msg = ec.message();
+        std::cerr << EscapeCodes::Phrases::Info << "Launched process " << m_process->child.native_handle() << " exited with error: " << msg
+                  << EscapeCodes::Phrases::End;
+        QMetaObject::invokeMethod(this, "handleError", Qt::QueuedConnection, Q_ARG(int, QProcess::Crashed),
+            Q_ARG(QString, QString::fromStdString(msg)), Q_ARG(bool, false));
     };
     auto errorHandler = boost::process::v1::extend::on_error = [this, maybeProcess = m_process->weak_from_this()](auto &, const std::error_code &ec) {
         const auto overallProcessLock = std::lock_guard<std::mutex>(m_processMutex);
