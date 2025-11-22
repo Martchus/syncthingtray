@@ -176,7 +176,10 @@ set(REQUIRED_ICONS
     help-contents
     question)
 
-set(QT_TESTS wizard)
+set(QT_TESTS)
+if (WIDGETS_GUI)
+    list(APPEND QT_TESTS wizard)
+endif ()
 
 # find c++utilities
 find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.31.0 REQUIRED)
