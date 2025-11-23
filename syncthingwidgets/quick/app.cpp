@@ -120,8 +120,9 @@ namespace QtGui {
  *   class via "onNativeReady" that these functions are available. This will also trigger the
  *   service startup.
  */
-App::App(bool insecure, QObject *parent)
+App::App(bool insecure, QQmlEngine *engine, QObject *parent)
     : AppBase(insecure, false, true, parent)
+    , m_engine(engine)
     , m_app(static_cast<QGuiApplication *>(QCoreApplication::instance()))
     , m_imageProvider(nullptr)
     , m_dirModel(m_connection)
@@ -337,18 +338,21 @@ bool App::nativePopups() const
 
 bool App::initEngine()
 {
-    qDebug() << "Initializing QML engine";
-    m_engine.emplace();
-    connect(
-        &*m_engine, &QQmlApplicationEngine::objectCreated, m_app,
-        [](QObject *obj, const QUrl &objUrl) {
-            if (!obj) {
-                std::cerr << "Unable to load " << objUrl.toString().toStdString() << '\n';
-                QCoreApplication::exit(EXIT_FAILURE);
-            }
-        },
-        Qt::QueuedConnection);
-    connect(&*m_engine, &QQmlApplicationEngine::quit, m_app, &QGuiApplication::quit);
+    if (!m_engine) {
+        qDebug() << "Initializing QML engine";
+        m_appEngine.emplace();
+        m_engine = &*m_appEngine;
+        connect(
+            &*m_appEngine, &QQmlApplicationEngine::objectCreated, m_app,
+            [](QObject *obj, const QUrl &objUrl) {
+                if (!obj) {
+                    std::cerr << "Unable to load " << objUrl.toString().toStdString() << '\n';
+                    QCoreApplication::exit(EXIT_FAILURE);
+                }
+            },
+            Qt::QueuedConnection);
+        connect(&*m_appEngine, &QQmlApplicationEngine::quit, m_app, &QGuiApplication::quit);
+    }
     m_engine->setProperty("app", QVariant::fromValue(this));
     return loadMain();
 }
@@ -357,23 +361,31 @@ bool App::initEngine()
 bool App::destroyEngine()
 {
     unloadMain();
-    qDebug() << "Destroying QML engine";
-    m_engine.reset();
+    if (m_appEngine) {
+        qDebug() << "Destroying QML engine";
+        if (m_engine == &*m_appEngine) {
+            m_engine = nullptr;
+        }
+        m_appEngine.reset();
+    }
     return true;
 }
 #endif
 
 bool App::loadMain()
 {
+    if (!m_appEngine) {
+        return false;
+    }
     // allow overriding QML entry point for hot-reloading; otherwise load QML module from resources
     qDebug() << "Loading Qt Quick GUI";
     if (const auto path = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_QML_ENTRY_POINT_PATH"); !path.isEmpty()) {
         qDebug() << "Path to QML entry point for Qt Quick GUI was overridden to: " << path;
-        m_engine->load(path);
+        m_appEngine->load(path);
     } else if (const auto type = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_QML_ENTRY_POINT_TYPE"); !type.isEmpty()) {
-        m_engine->loadFromModule("Main", type);
-        if (const auto rootObjects = m_engine->rootObjects(); !rootObjects.isEmpty()) {
-            auto *const window = new QQuickView(&m_engine.value(), nullptr);
+        m_appEngine->loadFromModule("Main", type);
+        if (const auto rootObjects = m_appEngine->rootObjects(); !rootObjects.isEmpty()) {
+            auto *const window = new QQuickView(&m_appEngine.value(), nullptr);
             window->loadFromModule("Main", type);
             window->setTitle(type);
             window->setWidth(700);
@@ -381,7 +393,7 @@ bool App::loadMain()
             window->setVisible(true);
         }
     } else {
-        m_engine->loadFromModule("Main", "AppWindow");
+        m_appEngine->loadFromModule("Main", "AppWindow");
     }
     m_isGuiLoaded = true;
 #ifdef Q_OS_ANDROID
@@ -394,14 +406,19 @@ bool App::reloadMain()
 {
     qDebug() << "Reloading Qt Quick GUI";
     unloadMain();
-    m_engine->clearComponentCache();
+    if (m_engine) {
+        m_engine->clearComponentCache();
+    }
     return loadMain();
 }
 
 bool App::unloadMain()
 {
+    if (!m_appEngine) {
+        return false;
+    }
     qDebug() << "Unloading Qt Quick GUI";
-    const auto rootObjects = m_engine->rootObjects();
+    const auto rootObjects = m_appEngine->rootObjects();
     for (auto *const rootObject : rootObjects) {
         rootObject->deleteLater();
     }
@@ -1039,7 +1056,7 @@ void App::handleStateChanged(Qt::ApplicationState state)
         }
         if (!m_isGuiLoaded) {
             QtUtilities::deletePipelineCacheIfNeeded();
-            m_engine ? loadMain() : initEngine();
+            m_appEngine ? loadMain() : initEngine();
         }
     }
 }

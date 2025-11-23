@@ -176,9 +176,15 @@ set(REQUIRED_ICONS
     help-contents
     question)
 
+# configure test files
 set(QT_TESTS)
+set(QT_WIDGETS_TESTS wizard)
+foreach (TEST "${QT_WIDGETS_TESTS}")
+    list(APPEND EXCLUDED_FILES "tests/${TEST}.cpp")
+endforeach ()
+list(APPEND EXCLUDED_FILES tests/tst_app.qml tests/apptests.cpp)
 if (WIDGETS_GUI)
-    list(APPEND QT_TESTS wizard)
+    list(APPEND QT_TESTS "${QT_WIDGETS_TESTS}")
 endif ()
 
 # find c++utilities
@@ -502,3 +508,24 @@ foreach (TEST ${QT_TESTS})
         set_tests_properties("${FULL_TEST_NAME_${TEST}}" PROPERTIES ENVIRONMENT "LIB_SYNCTHING_CONNECTOR_LOG_ALL=1")
     endif ()
 endforeach ()
+
+if (QUICK_GUI)
+    list(APPEND QT_QUICK_TEST_LIBRARIES ${META_TARGET_NAME})
+    use_qt_module(LIBRARIES_VARIABLE "QT_QUICK_TEST_LIBRARIES" PREFIX "${QT_PACKAGE_PREFIX}" MODULE "QuickTest")
+    configure_test_target(
+        TEST_NAME
+        "app_tests"
+        SRC_FILES
+        "tests/apptests.cpp"
+        LIBRARIES
+        "${QT_QUICK_TEST_LIBRARIES}"
+        FULL_TEST_NAME_OUT_VAR
+        FULL_TEST_NAME_APP
+        FULL_TEST_TARGET_OUT_VAR
+        FULL_TEST_TARGET_APP)
+    target_compile_definitions(
+        "${FULL_TEST_TARGET_APP}"
+        PRIVATE "QUICK_TEST_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}/tests\"")
+    set_tests_properties("${FULL_TEST_NAME_APP}" PROPERTIES RESOURCE_LOCK "syncthingtestinstance")
+    set_tests_properties("${FULL_TEST_NAME_APP}" PROPERTIES ENVIRONMENT "LIB_SYNCTHING_CONNECTOR_LOG_ALL=1")
+endif ()

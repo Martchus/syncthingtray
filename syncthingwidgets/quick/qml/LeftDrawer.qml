@@ -71,7 +71,7 @@ Drawer {
             icon.source: App.faUrlBase + iconName
             icon.width: App.iconWidthDelegate
             icon.height: App.iconSize
-            width: parent.width
+            width: drawerListView.width
             onClicked: {
                 pageStack.setCurrentIndex(index);
                 drawer.position = drawer.initialPosition;
@@ -88,4 +88,5 @@ Drawer {
     readonly property bool inPortrait: parent.width < parent.height
     readonly property double initialPosition: interactive ? 0 : 1
     readonly property int effectiveWidth: !interactive ? width : 0
+    property alias currentItem: drawerListView.currentItem
 }

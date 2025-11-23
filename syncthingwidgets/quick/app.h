@@ -87,7 +87,7 @@ class SYNCTHINGWIDGETS_EXPORT App : public AppBase {
     enum class ImportExportStatus { None, Checking, Importing, Exporting, CheckingMove, Moving, Cleaning, SavingSupportBundle };
 
 public:
-    explicit App(bool insecure, QObject *parent = nullptr);
+    explicit App(bool insecure, QQmlEngine *engine = nullptr, QObject *parent = nullptr);
     ~App();
     static App *create(QQmlEngine *, QJSEngine *engine);
 
@@ -415,7 +415,8 @@ private:
     void applyDarkmodeChange(bool isDarkColorSchemeEnabled, bool isDarkPaletteEnabled);
     QString locateSettingsExportDir();
 
-    std::optional<QQmlApplicationEngine> m_engine;
+    std::optional<QQmlApplicationEngine> m_appEngine;
+    QQmlEngine *m_engine;
     QString m_syncthingRunningStatus;
     QUrl m_syncthingGuiUrl;
     QString m_meteredStatus;
