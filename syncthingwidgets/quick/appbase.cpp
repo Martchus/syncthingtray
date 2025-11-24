@@ -1,5 +1,7 @@
 #include "./appbase.h"
 
+#include "resources/config.h"
+
 #include <syncthingmodel/syncthingicons.h>
 
 #include <QCoreApplication>
@@ -94,7 +96,10 @@ QString AppBase::openSettingFile(QFile &settingsFile, const QString &path)
 QDir &AppBase::settingsDir()
 {
     if (!m_settingsDir.has_value()) {
-        m_settingsDir.emplace(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+        m_settingsDir.emplace(qEnvironmentVariable(PROJECT_VARNAME_UPPER "_SETTINGS_DIR"));
+        if (m_settingsDir->isEmpty()) {
+            m_settingsDir.emplace(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
+        }
     }
     return m_settingsDir.value();
 }

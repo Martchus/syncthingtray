@@ -24,6 +24,8 @@ public Q_SLOTS:
         initTestSettings(Settings::values());
         initTestHomeDir(m_homeDir);
         initTestConfig();
+
+        qputenv("SYNCTHINGWIDGETS_SETTINGS_DIR", m_homeDir.path().toLocal8Bit());
     }
 
     void qmlEngineAvailable(QQmlEngine *engine)
