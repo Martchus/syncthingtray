@@ -1,10 +1,12 @@
+#include "./testhelper.h"
+
 #include "../quick/app.h"
 
 #include <QtQuickTest>
-#include <QLocale>
 #include <QQmlEngine>
 #include <QQmlContext>
 #include <QGuiApplication>
+#include <QTemporaryDir>
 
 #include <optional>
 
@@ -18,7 +20,10 @@ public:
 public Q_SLOTS:
     void applicationAvailable()
     {
-        QLocale::setDefault(QLocale::English);
+        initTestLocale();
+        initTestSettings(Settings::values());
+        initTestHomeDir(m_homeDir);
+        initTestConfig();
     }
 
     void qmlEngineAvailable(QQmlEngine *engine)
@@ -33,6 +38,7 @@ public Q_SLOTS:
 
 private:
     std::optional<QtGui::App> m_app;
+    QTemporaryDir m_homeDir;
 };
 
 QUICK_TEST_MAIN_WITH_SETUP(apptest, Setup)

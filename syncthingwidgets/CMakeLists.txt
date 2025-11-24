@@ -182,7 +182,7 @@ set(QT_WIDGETS_TESTS wizard)
 foreach (TEST "${QT_WIDGETS_TESTS}")
     list(APPEND EXCLUDED_FILES "tests/${TEST}.cpp")
 endforeach ()
-list(APPEND EXCLUDED_FILES tests/tst_app.qml tests/apptests.cpp)
+list(APPEND EXCLUDED_FILES tests/testhelper.h tests/tst_app.qml tests/apptests.cpp)
 if (WIDGETS_GUI)
     list(APPEND QT_TESTS "${QT_WIDGETS_TESTS}")
 endif ()
@@ -497,6 +497,7 @@ foreach (TEST ${QT_TESTS})
         TEST_NAME
         "${TEST}_tests"
         SRC_FILES
+        "tests/testhelper.h"
         "tests/${TEST}.cpp"
         LIBRARIES
         "${QT_TEST_LIBRARIES}"
@@ -516,6 +517,7 @@ if (QUICK_GUI)
         TEST_NAME
         "app_tests"
         SRC_FILES
+        "tests/testhelper.h"
         "tests/apptests.cpp"
         LIBRARIES
         "${QT_QUICK_TEST_LIBRARIES}"
