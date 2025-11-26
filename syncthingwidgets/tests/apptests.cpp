@@ -8,22 +8,23 @@
 
 #include "../../testhelper/helper.h"
 
-#include <QtQuickTest>
+#include <QGuiApplication>
 #include <QJsonDocument>
 #include <QJsonObject>
-#include <QQmlEngine>
 #include <QQmlContext>
-#include <QGuiApplication>
+#include <QQmlEngine>
 #include <QTemporaryDir>
+#include <QtQuickTest>
 
 #include <optional>
 
-class Setup : public QObject
-{
+class Setup : public QObject {
     Q_OBJECT
 
 public:
-    Setup() {}
+    Setup()
+    {
+    }
 
 public Q_SLOTS:
     void applicationAvailable()

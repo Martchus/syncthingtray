@@ -5,8 +5,7 @@
 
 namespace QtGui {
 
-template <typename App, typename AppService>
-void connectAppAndService(App &quickApp, AppService &appService)
+template <typename App, typename AppService> void connectAppAndService(App &quickApp, AppService &appService)
 {
     QObject::connect(&quickApp, &App::syncthingTerminationRequested, &appService, &AppService::terminateSyncthing);
     QObject::connect(&quickApp, &App::syncthingRestartRequested, &appService, &AppService::restartSyncthing);

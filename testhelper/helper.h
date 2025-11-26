@@ -418,7 +418,8 @@ bool waitForSignalsOrFail(Action action, int timeout, const SignalInfo &failure,
     return !failureEmitted && !timeoutFailed;
 }
 
-class WaitForConnected : private std::function<void(void)>, public SignalInfo<decltype(&Data::SyncthingConnection::statusChanged), std::function<void(void)>> {
+class WaitForConnected : private std::function<void(void)>,
+                         public SignalInfo<decltype(&Data::SyncthingConnection::statusChanged), std::function<void(void)>> {
 public:
     explicit WaitForConnected(const Data::SyncthingConnection &connection);
     operator bool() const;
@@ -451,7 +452,8 @@ inline WaitForConnected::operator bool() const
  */
 inline bool waitForConnected(Data::SyncthingConnection &connection, int timeout = 5000)
 {
-    return waitForSignals(std::bind(static_cast<void (Data::SyncthingConnection::*)(void)>(&Data::SyncthingConnection::connect), &connection), timeout, WaitForConnected(connection));
+    return waitForSignals(std::bind(static_cast<void (Data::SyncthingConnection::*)(void)>(&Data::SyncthingConnection::connect), &connection),
+        timeout, WaitForConnected(connection));
 }
 
 } // namespace CppUtilities

@@ -1,8 +1,9 @@
 #include "./testhelper.h"
-#include "../settings/wizard.h"
+
 #include "../misc/syncthinglauncher.h"
 #include "../settings/settings.h"
 #include "../settings/setupdetection.h"
+#include "../settings/wizard.h"
 
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"

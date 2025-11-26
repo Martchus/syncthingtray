@@ -525,9 +525,8 @@ if (QUICK_GUI)
         FULL_TEST_NAME_APP
         FULL_TEST_TARGET_OUT_VAR
         FULL_TEST_TARGET_APP)
-    target_compile_definitions(
-        "${FULL_TEST_TARGET_APP}"
-        PRIVATE "QUICK_TEST_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}/tests\"")
+    target_compile_definitions("${FULL_TEST_TARGET_APP}"
+                               PRIVATE "QUICK_TEST_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}/tests\"")
     set_tests_properties("${FULL_TEST_NAME_APP}" PROPERTIES RESOURCE_LOCK "syncthingtestinstance")
     set_tests_properties("${FULL_TEST_NAME_APP}" PROPERTIES ENVIRONMENT "LIB_SYNCTHING_CONNECTOR_LOG_ALL=1")
 endif ()
