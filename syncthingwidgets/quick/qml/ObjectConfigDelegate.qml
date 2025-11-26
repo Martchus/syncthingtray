@@ -84,6 +84,7 @@ DelegateChooser {
                 helpButton: helpButton
             }
             required property var modelData
+            property alias dialog: stringDlg
         }
     }
     DelegateChoice {
@@ -186,6 +187,7 @@ DelegateChooser {
                 }
             }
             required property var modelData
+            property alias dialog: deviceIdDlg
         }
     }
     DelegateChoice {
@@ -276,6 +278,7 @@ DelegateChooser {
                 onHelpRequested: optionsHelpButton.clicked()
             }
             required property var modelData
+            property alias dialog: optionsDlg
         }
     }
     DelegateChoice {
@@ -463,6 +466,7 @@ DelegateChooser {
                 onHelpRequested: numberHelpButton.clicked()
             }
             required property var modelData
+            property alias dialog: numberDlg
         }
     }
     DelegateChoice {
@@ -605,6 +609,7 @@ DelegateChooser {
                     onClicked: objectConfigPage.updateValue(modelData.index, modelData.key, "")
                 }
                 IconOnlyButton {
+                    id: manualFileDlgButton
                     text: qsTr("Edit manually")
                     enabled: modelData.enabled ?? true
                     icon.source: App.faUrlBase + "pencil"
@@ -627,6 +632,8 @@ DelegateChooser {
                 helpButton: fileHelpButton
             }
             required property var modelData
+            property alias manualButton: manualFileDlgButton
+            property alias dialog: manualFileDlg
         }
     }
     DelegateChoice {
@@ -662,6 +669,7 @@ DelegateChooser {
                     onClicked: objectConfigPage.updateValue(modelData.index, modelData.key, "")
                 }
                 IconOnlyButton {
+                    id: manualFolderDlgButton
                     text: qsTr("Edit manually")
                     enabled: modelData.enabled ?? true
                     icon.source: App.faUrlBase + "pencil"
@@ -684,6 +692,8 @@ DelegateChooser {
                 helpButton: folderHelpButton
             }
             required property var modelData
+            property alias manualButton: manualFolderDlgButton
+            property alias dialog: manualFolderDlg
         }
     }
     required property var objectConfigPage

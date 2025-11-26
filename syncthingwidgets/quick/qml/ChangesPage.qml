@@ -12,6 +12,7 @@ Page {
         id: mainView
         anchors.fill: parent
         model: DelegateModel {
+            id: delegateModel
             model: App.changesModel
             delegate: ItemDelegate {
                 width: mainView.width
@@ -57,4 +58,5 @@ Page {
             }
         }
     }
+    property alias model: delegateModel
 }

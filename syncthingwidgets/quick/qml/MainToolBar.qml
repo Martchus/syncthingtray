@@ -193,4 +193,5 @@ ToolBar {
     required property PageStack pageStack
     property real leftMargin: 0
     property bool darkToolbar: false
+    property alias busy: busyIndicator.running
 }

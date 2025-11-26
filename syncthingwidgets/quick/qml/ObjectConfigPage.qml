@@ -98,6 +98,7 @@ Page {
     }
 
     property alias model: objectListView.model
+    property alias listView: objectListView
     property bool specialEntriesOnly: false
     property var indexByKey: ({})
     property var specialEntriesByKey: ({

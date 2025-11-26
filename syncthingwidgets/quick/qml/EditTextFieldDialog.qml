@@ -33,4 +33,5 @@ CustomDialog {
     onRejected: textField.text = objectConfigPage.configObject[modelData.key]
     onHelpRequested: dlg.helpButton.clicked()
     required property var helpButton
+    property alias text: textField.text
 }
