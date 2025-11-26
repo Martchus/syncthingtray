@@ -22,31 +22,6 @@ using namespace CppUtilities::Literals;
 
 using namespace CPPUNIT_NS;
 
-class WaitForConnected : private function<void(void)>, public SignalInfo<decltype(&SyncthingConnection::statusChanged), function<void(void)>> {
-public:
-    WaitForConnected(const SyncthingConnection &connection);
-    operator bool() const;
-
-private:
-    const SyncthingConnection &m_connection;
-    bool m_connectedAgain;
-};
-
-WaitForConnected::WaitForConnected(const SyncthingConnection &connection)
-    : function<void(void)>([this] { m_connectedAgain = m_connectedAgain || m_connection.isConnected(); })
-    , SignalInfo<decltype(&SyncthingConnection::statusChanged), function<void(void)>>(
-          &connection, &SyncthingConnection::statusChanged, (*static_cast<const function<void(void)> *>(this)), &m_connectedAgain)
-    , m_connection(connection)
-    , m_connectedAgain(false)
-{
-}
-
-WaitForConnected::operator bool() const
-{
-    (*static_cast<const function<void(void)> *>(this))(); // if the connection has already been connected it is ok, too
-    return m_connectedAgain;
-}
-
 /*!
  * \brief The ConnectionTests class tests the SyncthingConnector.
  */
@@ -208,7 +183,7 @@ void (SyncthingConnection::*ConnectionTests::defaultDisconnect())(void)
 }
 
 /*!
- * \brief Returns a SignalInfo to wait until the connected (again).
+ * \brief Returns a SignalInfo to wait until connected (again).
  */
 WaitForConnected ConnectionTests::connectedSignal() const
 {

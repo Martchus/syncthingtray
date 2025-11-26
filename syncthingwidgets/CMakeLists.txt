@@ -59,7 +59,7 @@ set(WIDGETS_UI_FILES
     settings/mainconfigwizardpage.ui
     settings/autostartwizardpage.ui
     settings/applywizardpage.ui)
-set(QML_HEADER_FILES quick/appbase.h quick/appservice.h quick/app.h quick/scenegraph/managedtexturenode.h)
+set(QML_HEADER_FILES quick/appbase.h quick/appservice.h quick/app.h quick/helpers.h quick/scenegraph/managedtexturenode.h)
 set(QML_SRC_FILES quick/appbase.cpp quick/appservice.cpp quick/app.cpp quick/scenegraph/managedtexturenode.cpp)
 set(QML_MAIN_FILES
     quick/qml/AboutDialog.qml

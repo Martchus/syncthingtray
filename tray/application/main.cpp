@@ -17,6 +17,9 @@
 #ifdef GUI_QTQUICK
 #include <syncthingwidgets/quick/app.h>
 #include <syncthingwidgets/quick/appservice.h>
+#if !defined(Q_OS_ANDROID)
+#include <syncthingwidgets/quick/helpers.h>
+#endif
 #endif
 
 #include <syncthingmodel/syncthingicons.h>
@@ -371,20 +374,7 @@ static int runApplication(int argc, const char *const *argv)
 #endif
         auto quickApp = App(insecureArg.isPresent());
 #if !defined(Q_OS_ANDROID)
-        QObject::connect(&quickApp, &App::syncthingTerminationRequested, &appService, &AppService::terminateSyncthing);
-        QObject::connect(&quickApp, &App::syncthingRestartRequested, &appService, &AppService::restartSyncthing);
-        QObject::connect(&quickApp, &App::syncthingShutdownRequested, &appService, &AppService::shutdownSyncthing);
-        QObject::connect(&quickApp, &App::syncthingConnectRequested, appService.connection(),
-            static_cast<void (SyncthingConnection::*)()>(&SyncthingConnection::connect));
-        QObject::connect(&quickApp, &App::syncthingReconnectRequested, appService.connection(),
-            static_cast<void (SyncthingConnection::*)()>(&SyncthingConnection::reconnect));
-        QObject::connect(&quickApp, &App::settingsReloadRequested, &appService, &AppService::reloadSettings);
-        QObject::connect(&quickApp, &App::launcherStatusRequested, &appService, &AppService::broadcastLauncherStatus);
-        QObject::connect(&quickApp, &App::clearLogRequested, &appService, &AppService::clearLog);
-        QObject::connect(&quickApp, &App::replayLogRequested, &appService, &AppService::replayLog);
-        QObject::connect(&appService, &AppService::launcherStatusChanged, &quickApp, &App::handleLauncherStatusBroadcast);
-        QObject::connect(&appService, &AppService::logsAvailable, &quickApp, &App::logsAvailable);
-        QObject::connect(&appService, &AppService::error, &quickApp, &App::error);
+        connectAppAndService(quickApp, appService);
         appService.broadcastLauncherStatus();
 #endif
         const auto res = app.exec();

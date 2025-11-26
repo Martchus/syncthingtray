@@ -12,28 +12,30 @@ Item {
         closeDialog: closeDialog
     }
     ColumnLayout {
-        anchors.fill: parent
         MainToolBar {
+            Layout.fillWidth: true
             drawer: drawer
             pageStack: pageStack
         }
         PageStack {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
             id: pageStack
             window: testCase
         }
-        AboutDialog {
-            id: aboutDialog
-        }
-        CloseDialog {
-            id: closeDialog
-            meta: control.meta
-            onCloseRequested: testCase.closeRequested = true
-        }
-        DiscardChangesDialog {
-            id: discardChangesDialog
-            meta: control.meta
-            pageStack: pageStack
-        }
+    }
+    AboutDialog {
+        id: aboutDialog
+    }
+    CloseDialog {
+        id: closeDialog
+        meta: control.meta
+        onCloseRequested: testCase.closeRequested = true
+    }
+    DiscardChangesDialog {
+        id: discardChangesDialog
+        meta: control.meta
+        pageStack: pageStack
     }
 
     readonly property Notifications notifications: Notifications {
@@ -50,8 +52,18 @@ Item {
         id: testCase
         name: "AppTests"
 
+        function initTestCase() {
+
+        }
+
         function cleanup() {
             pageStack.showPage(0);
+        }
+
+        function goBackToStartPage() {
+            pageStack.pop();
+            compare(pageStack.currentPage.title, "Syncthing", "back on start page");
+            compare(drawer.currentItem.name, "Start", "drawer index updated to start page");
         }
 
         function test_miscProperties() {
@@ -109,14 +121,31 @@ Item {
             compare(addFolderPage.existing, false, "showing folder config page for new folder");
             compare(addFolderPage.isDangerous, false, "adding new folder not considered dangerous");
             const folderModel = addFolderPage.model;
-            verify(folderModel.count > 0, "model populated");
-            compare(folderModel.get(0).label, "Paused", "paused label present");
-            compare(folderModel.get(0).value, true, "paused enabled by default");
+            verify(folderModel.count > 2, "model populated");
+            compare(folderModel.get(0).label, "ID", "ID label present");
+            compare(folderModel.get(1).label, "Label", "label label present");
+            compare(folderModel.get(2).label, "Paused", "paused label present");
+            compare(folderModel.get(2).value, true, "paused enabled by default");
             compare(drawer.currentItem.name, "Folders", "drawer index updated to folders page");
 
-            pageStack.pop();
-            compare(pageStack.currentPage.title, "Syncthing", "back on start page");
-            compare(drawer.currentItem.name, "Start", "drawer index updated to start page");
+            goBackToStartPage();
+        }
+
+        function test_addingDeviceFromStartPage() {
+            pageStack.showPage(0);
+            pageStack.addDevice();
+
+            const addDevicePage = pageStack.currentPage;
+            compare(addDevicePage.title, "Add new device", "page for adding new device shown");
+            compare(addDevicePage.existing, false, "showing device config page for new device");
+            compare(addDevicePage.isDangerous, false, "adding new device not considered dangerous");
+            const deviceModel = addDevicePage.model;
+            verify(deviceModel.count > 0, "model populated");
+            compare(deviceModel.get(0).label, "Device ID", "paused label present");
+            compare(deviceModel.get(0).value, "", "paused enabled by default");
+            compare(drawer.currentItem.name, "Devices", "drawer index updated to devices page");
+
+            goBackToStartPage();
         }
     }
 }

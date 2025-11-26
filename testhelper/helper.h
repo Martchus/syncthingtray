@@ -3,6 +3,8 @@
 
 #include "./global.h"
 
+#include <syncthingconnector/syncthingconnection.h>
+
 #include <c++utilities/conversion/stringbuilder.h>
 #include <c++utilities/tests/testutils.h>
 
@@ -414,6 +416,42 @@ bool waitForSignalsOrFail(Action action, int timeout, const SignalInfo &failure,
     }
 #endif
     return !failureEmitted && !timeoutFailed;
+}
+
+class WaitForConnected : private std::function<void(void)>, public SignalInfo<decltype(&Data::SyncthingConnection::statusChanged), std::function<void(void)>> {
+public:
+    explicit WaitForConnected(const Data::SyncthingConnection &connection);
+    operator bool() const;
+
+private:
+    const Data::SyncthingConnection &m_connection;
+    bool m_connectedAgain;
+};
+
+inline WaitForConnected::WaitForConnected(const Data::SyncthingConnection &connection)
+    : function<void(void)>([this] { m_connectedAgain = m_connectedAgain || m_connection.isConnected(); })
+    , SignalInfo<decltype(&Data::SyncthingConnection::statusChanged), function<void(void)>>(
+          &connection, &Data::SyncthingConnection::statusChanged, (*static_cast<const std::function<void(void)> *>(this)), &m_connectedAgain)
+    , m_connection(connection)
+    , m_connectedAgain(false)
+{
+}
+
+inline WaitForConnected::operator bool() const
+{
+    (*static_cast<const std::function<void(void)> *>(this))(); // if the connection has already been connected it is ok, too
+    return m_connectedAgain;
+}
+
+/*!
+ * \brief Waits until connected (again).
+ * \remarks
+ * - Does nothing if already connected.
+ * - Used to keep tests passing even though Syncthing dies and restarts during the testrun.
+ */
+inline bool waitForConnected(Data::SyncthingConnection &connection, int timeout = 5000)
+{
+    return waitForSignals(std::bind(static_cast<void (Data::SyncthingConnection::*)(void)>(&Data::SyncthingConnection::connect), &connection), timeout, WaitForConnected(connection));
 }
 
 } // namespace CppUtilities

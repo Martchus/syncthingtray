@@ -43,6 +43,7 @@ public:
     virtual const QString &status();
     virtual bool isSyncthingRunning() const = 0;
 
+    Q_INVOKABLE QDir &settingsDir();
     Q_INVOKABLE bool loadSettings(bool force = false);
     Q_INVOKABLE void applyConnectionSettings(const QUrl &syncthingUrl);
     Q_INVOKABLE void applySyncthingSettings();
@@ -59,7 +60,6 @@ protected:
     static QString openSettingFile(QFile &settingsFile, const QString &path);
     static QString readSettingFile(QFile &settingsFile, QJsonObject &settings);
     QString syncthingLogFilePath() const;
-    QDir &settingsDir();
     bool openSettings();
     virtual void invalidateStatus();
     Data::IconManager &initIconManager();
