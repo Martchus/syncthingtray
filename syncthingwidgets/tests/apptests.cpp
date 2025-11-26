@@ -32,12 +32,14 @@ public Q_SLOTS:
         initTestSettings(Settings::values());
         initTestHomeDir(m_settingsDir);
         initTestConfig();
+        initTestSyncthingPath(m_syncthingPath);
 
         auto settings = QJsonObject();
         auto connectionSettings = QJsonObject();
         auto launcherSettings = QJsonObject();
         connectionSettings.insert(QStringLiteral("useLauncher"), true);
         launcherSettings.insert(QStringLiteral("run"), true);
+        launcherSettings.insert(QStringLiteral("exePath"), m_syncthingPath);
         settings.insert(QStringLiteral("connection"), connectionSettings);
         settings.insert(QStringLiteral("launcher"), launcherSettings);
 
@@ -75,6 +77,7 @@ private:
     std::optional<QtGui::App> m_app;
     std::optional<QtGui::AppService> m_service;
     QTemporaryDir m_settingsDir;
+    QString m_syncthingPath;
 };
 
 QUICK_TEST_MAIN_WITH_SETUP(apptest, Setup)
