@@ -63,8 +63,8 @@ public Q_SLOTS:
         QtGui::connectAppAndService(*m_app, *m_service);
 
         qDebug() << "Waiting for service and app to connect to Syncthing";
-        QVERIFY(waitForConnected(*m_service->connection()));
-        QVERIFY(waitForConnected(*m_app->connection()));
+        QVERIFY(waitForConnected(*m_service->connection(), 15000));
+        QVERIFY(waitForConnected(*m_app->connection(), 15000));
     }
 
     void cleanupTestCase()

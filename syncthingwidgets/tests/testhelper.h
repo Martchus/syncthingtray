@@ -43,7 +43,7 @@ inline void initTestSettings(Settings::Settings &settings)
 inline void initTestHomeDir(QTemporaryDir &homeDir)
 {
     const auto homePath = homeDir.path();
-    qDebug() << QStringLiteral("HOME dir: ") + homePath;
+    qDebug() << "HOME dir: " << homePath;
     qputenv("LIB_SYNCTHING_CONNECTOR_SYNCTHING_CONFIG_DIR", homePath.toLocal8Bit());
     QVERIFY(homeDir.isValid());
 }
