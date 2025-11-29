@@ -97,7 +97,7 @@ variable `PLASMA_USE_QT_SCALING=1` might help.
         * The notification text is not translated under Android due to https://bugreports.qt.io/browse/QTBUG-140482.
         * Reading the initial status of the network connection requires manual workarounds on Android, see
           https://bugreports.qt.io/browse/QTBUG-139604.
-    * Qt > 6.9.3, 6.10.0:
+    * Qt > 6.9.3 and < 6.10.1:
         * Text fields don't show the keyboard on first tap under Android 16, see https://bugreports.qt.io/browse/QTBUG-140897.
     * Qt < 6.11:
         * Edge-to-edge is disabled under Android due to https://bugreports.qt.io/browse/QTBUG-139690.
