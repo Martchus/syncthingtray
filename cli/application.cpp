@@ -1202,20 +1202,23 @@ RelevantDir Application::findDirectory(const QString &dirIdentifier)
     int dummy;
     RelevantDir relevantDir;
 
-    // check whether the specified identifier is a known Syncthing directory or a relative path to an item in a
-    // known Syncthing directory
-    auto firstSlash = dirIdentifier.indexOf(QChar('/'));
-    relevantDir.dirObj = m_connection.findDirInfoConsideringLabels(firstSlash >= 0 ? dirIdentifier.mid(0, firstSlash) : dirIdentifier, dummy);
-    if (relevantDir) {
-        if (firstSlash >= 0) {
-            relevantDir.subDir = dirIdentifier.mid(firstSlash + 1);
+    // check whether the specified identifier is a known Syncthing folder (matches a folder ID or label)
+    const auto isRelative = QDir::isRelativePath(dirIdentifier);
+    if (isRelative) { // check this only for relative paths, otherwise e.g. "/foo" would rescan "foo" in the first Syncthing folder with an empty label
+        // check for first slash to allow paths like "docs-misc/Notizen.txt" where "Notizen.txt" is an item within the Syncthing folder labeled "docs-misc"
+        auto firstSlash = dirIdentifier.indexOf(QChar('/'));
+        relevantDir.dirObj = m_connection.findDirInfoConsideringLabels(firstSlash >= 0 ? dirIdentifier.mid(0, firstSlash) : dirIdentifier, dummy);
+        if (relevantDir) {
+            if (firstSlash >= 0) {
+                relevantDir.subDir = dirIdentifier.mid(firstSlash + 1);
+            }
+            return relevantDir;
         }
-        return relevantDir;
     }
 
     // check whether the specified identifier is an absolute or relative path of an item inside a known Syncthing directory
-    relevantDir.dirObj = m_connection.findDirInfoByPath(
-        QDir::isRelativePath(dirIdentifier) ? QDir::currentPath() % QChar('/') % dirIdentifier : dirIdentifier, relevantDir.subDir, dummy);
+    relevantDir.dirObj
+        = m_connection.findDirInfoByPath(isRelative ? QDir::currentPath() % QChar('/') % dirIdentifier : dirIdentifier, relevantDir.subDir, dummy);
     if (relevantDir) {
         return relevantDir;
     }
