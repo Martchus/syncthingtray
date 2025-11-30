@@ -561,6 +561,7 @@ bool Application::findPwd(bool waitForConfigArg)
     // handle error
     cerr << Phrases::Error << "The current working directory \"" << pwd.toLocal8Bit().data() << "\" is not (part of) a Syncthing folder.";
     cerr << Phrases::End << flush;
+    m_requiresMainEventLoop = false;
     QCoreApplication::exit(2);
     return false;
 }
