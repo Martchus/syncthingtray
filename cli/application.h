@@ -53,6 +53,7 @@ private Q_SLOTS:
 
 private:
     int loadConfig();
+    bool applySettings();
     bool waitForConnected();
     bool waitForConfig();
     bool waitForConfigAndStatus();
@@ -88,6 +89,7 @@ private:
     bool m_preventDisconnect;
     bool m_callbacksInvoked;
     bool m_requiresMainEventLoop;
+    bool m_settingsApplied;
     std::vector<RelevantDir> m_relevantDirs;
     std::vector<const Data::SyncthingDev *> m_relevantDevs;
     RelevantDir m_pwd;

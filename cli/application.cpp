@@ -66,6 +66,7 @@ Application::Application()
     , m_preventDisconnect(false)
     , m_callbacksInvoked(false)
     , m_requiresMainEventLoop(true)
+    , m_settingsApplied(false)
     , m_generalTimeout(10000)
     , m_idleDuration(0)
     , m_idleTimeout(0)
@@ -147,7 +148,7 @@ int Application::exec(int argc, const char *const *argv)
         cerr << Phrases::Info << "Connecting to " << m_settings.syncthingUrl.toLocal8Bit().data() << " ..." << TextAttribute::Reset << flush;
     } else {
         // call handler for any other arguments directly
-        m_connection.applySettings(m_settings);
+        applySettings();
         m_args.parser.invokeCallbacks();
     }
 
@@ -197,7 +198,8 @@ int Application::loadConfig()
         }
     }
 
-    // apply settings for connection
+    // update settings for connection
+    m_settingsApplied = false;
     if (const char *urlArgValue = m_args.url.firstValue()) {
         m_settings.syncthingUrl = argToQString(urlArgValue);
     } else if (!config.guiAddress.isEmpty()) {
@@ -248,6 +250,15 @@ int Application::loadConfig()
     return 0;
 }
 
+bool Application::applySettings()
+{
+    if (!m_settingsApplied) {
+        m_settingsApplied = true;
+        return m_connection.applySettings(m_settings);
+    }
+    return false;
+}
+
 bool Application::waitForConnected()
 {
     bool isConnected = m_connection.isConnected();
@@ -260,14 +271,14 @@ bool Application::waitForConnected()
 
 bool Application::waitForConfig()
 {
-    m_connection.applySettings(m_settings);
+    applySettings();
     return waitForSignalsOrFail(bind(&SyncthingConnection::requestConfig, ref(m_connection)), m_generalTimeout,
         signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfig));
 }
 
 bool Application::waitForConfigAndStatus()
 {
-    m_connection.applySettings(m_settings);
+    applySettings();
     if (!waitForSignalsOrFail(bind(&SyncthingConnection::requestConfigAndStatus, ref(m_connection)), m_generalTimeout,
             signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfig),
             signalInfo(&m_connection, &SyncthingConnection::myIdChanged))) {
