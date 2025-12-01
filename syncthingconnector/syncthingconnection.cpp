@@ -617,6 +617,8 @@ void SyncthingConnection::continueReconnecting()
     }
 
     // cleanup information from previous connection
+    auto tempDirs = std::vector<SyncthingDir>();
+    auto tempDevs = std::vector<SyncthingDev>();
     m_keepPolling = true;
     m_statusRecomputationFlags = StatusRecomputation::None;
     m_connectionAborted = false;
@@ -639,8 +641,8 @@ void SyncthingConnection::continueReconnecting()
     m_hasEvents = false;
     m_hasDiskEvents = false;
     m_statsRequested = false;
-    m_dirs.clear();
-    m_devs.clear();
+    m_dirs.swap(tempDirs);
+    m_devs.swap(tempDevs);
     m_errors.clear();
     m_devsPausedDueToMeteredConnection.clear();
     m_lastConnectionsUpdateEvent = 0;
@@ -652,6 +654,8 @@ void SyncthingConnection::continueReconnecting()
     m_lastFileName.clear();
     m_lastFileDeleted = false;
     m_syncthingVersion.clear();
+    emit this->newDirs(m_dirs);
+    emit this->newDevices(m_devs);
     emit dirStatisticsChanged();
 
     // notify that the state/configuration has been invalidated
