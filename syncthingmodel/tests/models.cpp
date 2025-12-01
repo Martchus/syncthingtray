@@ -130,6 +130,12 @@ void ModelTests::testDevicesModel()
     QCOMPARE(model.index(2, 1, dev2Idx).data(), QStringLiteral("dynamic, tcp://192.168.1.3:22000"));
     QCOMPARE(model.index(3, 0, dev2Idx).data(), QStringLiteral("Last seen"));
     QCOMPARE(model.index(3, 1, dev2Idx).data(), QStringLiteral("never"));
+    QCOMPARE(model.index(4, 0, dev2Idx).data(), QStringLiteral("Compression"));
+    QCOMPARE(model.index(4, 1, dev2Idx).data(), QStringLiteral("metadata"));
+    QCOMPARE(model.index(5, 0, dev2Idx).data(), QStringLiteral("Certificate"));
+    QCOMPARE(model.index(5, 1, dev2Idx).data(), QStringLiteral("none"));
+    QCOMPARE(model.index(6, 0, dev2Idx).data(), QStringLiteral("Introducer"));
+    QCOMPARE(model.index(6, 1, dev2Idx).data(), QStringLiteral("no"));
 }
 
 void ModelTests::testFileModel()
