@@ -98,6 +98,11 @@
         <translation>Вводная часть</translation>
     </message>
     <message>
+        <location filename="../syncthingdevicemodel.cpp" line="189"/>
+        <source>never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../syncthingdevicemodel.cpp" line="214"/>
         <source>unknown</source>
         <translation>неизвестный</translation>
@@ -137,9 +142,8 @@
         <translation>удаленный</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="189"/>
         <source>unknown or this device</source>
-        <translation>неизвестно или это устройство</translation>
+        <translation type="vanished">неизвестно или это устройство</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="165"/>

@@ -98,6 +98,11 @@
         <translation>Zavaděč</translation>
     </message>
     <message>
+        <location filename="../syncthingdevicemodel.cpp" line="189"/>
+        <source>never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../syncthingdevicemodel.cpp" line="214"/>
         <source>unknown</source>
         <translation type="unfinished">neznámé</translation>
@@ -137,9 +142,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="189"/>
         <source>unknown or this device</source>
-        <translation>neznámé nebo vlastní zařízení</translation>
+        <translation type="vanished">neznámé nebo vlastní zařízení</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="165"/>

@@ -18,7 +18,7 @@ namespace Data {
 static int computeDeviceRowCount(const SyncthingDev &dev)
 {
     // hide connection type, last seen and everything after introducer (eg. traffic) unless connected
-    return dev.status == SyncthingDevStatus::ThisDevice ? 7 : (dev.isConnected() ? 11 : 6);
+    return dev.status == SyncthingDevStatus::ThisDevice ? 7 : (dev.isConnected() ? 11 : 7);
 }
 
 SyncthingDeviceModel::SyncthingDeviceModel(SyncthingConnection &connection, QObject *parent)
@@ -120,7 +120,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
         const auto skipRows = !dev.isConnected();
         auto row = skipRows && index.row() >= 2 ? index.row() + 2 : index.row();
         if (skipRows && row >= 5) {
-            row += 2;
+            row += dev.status == SyncthingDevStatus::ThisDevice ? 2 : 1;
         }
         switch (role) {
         case Qt::DisplayRole:
@@ -186,7 +186,7 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
                         return QVariant();
                     }
                 case 6:
-                    return dev.lastSeen.isNull() ? tr("unknown or this device")
+                    return dev.lastSeen.isNull() ? tr("never")
                                                  : QString::fromLatin1(dev.lastSeen.toString(DateTimeOutputFormat::DateAndTime, true).data());
                 case 7:
                     return dev.compression;

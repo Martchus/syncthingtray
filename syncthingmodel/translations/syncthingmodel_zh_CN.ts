@@ -98,6 +98,11 @@
         <translation>介绍人</translation>
     </message>
     <message>
+        <location filename="../syncthingdevicemodel.cpp" line="189"/>
+        <source>never</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../syncthingdevicemodel.cpp" line="214"/>
         <source>unknown</source>
         <translation type="unfinished">未知</translation>
@@ -135,9 +140,8 @@
         <translation>远程</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="189"/>
         <source>unknown or this device</source>
-        <translation>未知或本设备</translation>
+        <translation type="vanished">未知或本设备</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="165"/>

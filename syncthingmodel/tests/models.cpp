@@ -116,14 +116,20 @@ void ModelTests::testDevicesModel()
     QCOMPARE(model.index(1, 1, dev1Idx).data(), QStringLiteral("none"));
     QCOMPARE(model.index(2, 0, dev1Idx).data(), QStringLiteral("Address"));
     QCOMPARE(model.index(2, 1, dev1Idx).data(), QStringLiteral("dynamic, tcp://192.168.1.2:22000"));
+    QCOMPARE(model.index(3, 0, dev1Idx).data(), QStringLiteral("Compression"));
+    QCOMPARE(model.index(3, 1, dev1Idx).data(), QStringLiteral("metadata"));
+    QCOMPARE(model.index(4, 0, dev1Idx).data(), QStringLiteral("Certificate"));
+    QCOMPARE(model.index(4, 1, dev1Idx).data(), QStringLiteral("none"));
     QCOMPARE(model.index(5, 0, dev1Idx).data(), QStringLiteral("Introducer"));
     QCOMPARE(model.index(5, 1, dev1Idx).data(), QStringLiteral("no"));
     QCOMPARE(model.index(6, 0, dev1Idx).data(), QStringLiteral("Version"));
     QCOMPARE(model.index(6, 1, dev1Idx).data(), QStringLiteral("unknown"));
     const auto dev2Idx = model.index(1, 0);
-    QCOMPARE(model.rowCount(dev2Idx), 6);
+    QCOMPARE(model.rowCount(dev2Idx), 7);
     QCOMPARE(model.index(0, 1, dev2Idx).data(), QStringLiteral("53STGR7-YBM6FCX-PAZ2RHM-YPY6OEJ-WYHVZO7-PCKQRCK-PZLTP7T"));
     QCOMPARE(model.index(2, 1, dev2Idx).data(), QStringLiteral("dynamic, tcp://192.168.1.3:22000"));
+    QCOMPARE(model.index(3, 0, dev2Idx).data(), QStringLiteral("Last seen"));
+    QCOMPARE(model.index(3, 1, dev2Idx).data(), QStringLiteral("never"));
 }
 
 void ModelTests::testFileModel()

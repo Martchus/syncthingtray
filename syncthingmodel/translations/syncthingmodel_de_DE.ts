@@ -98,6 +98,11 @@
         <translation>Verteilergerät</translation>
     </message>
     <message>
+        <location filename="../syncthingdevicemodel.cpp" line="189"/>
+        <source>never</source>
+        <translation>niemals</translation>
+    </message>
+    <message>
         <location filename="../syncthingdevicemodel.cpp" line="214"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
@@ -136,9 +141,8 @@
         <translation>entfernt</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="189"/>
         <source>unknown or this device</source>
-        <translation>unbekannt oder eigenes Gerät</translation>
+        <translation type="vanished">unbekannt oder eigenes Gerät</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="165"/>
