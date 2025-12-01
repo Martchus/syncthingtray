@@ -2271,6 +2271,7 @@ void SyncthingConnection::readEvents()
         //       state of e.g. a directory changes before we receive the first event we would miss that state change if statistics
         //       were requested in continueConnecting().
         if (!m_statsRequested) {
+            m_statsRequested = true;
             requestConnections();
             requestDirStatistics();
             requestDeviceStatistics();
