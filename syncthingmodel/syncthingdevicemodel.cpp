@@ -17,8 +17,9 @@ namespace Data {
 
 static int computeDeviceRowCount(const SyncthingDev &dev)
 {
-    // hide connection type, last seen and everything after introducer (eg. traffic) unless connected
-    return dev.status == SyncthingDevStatus::ThisDevice ? 7 : (dev.isConnected() ? 11 : 7);
+    // hide connection type and everything after introducer (eg. traffic) unless connected
+    // treat "This Device" as unconnected as well but show the version and hide last seen
+    return !dev.isConnected() ? 7 : 11;
 }
 
 SyncthingDeviceModel::SyncthingDeviceModel(SyncthingConnection &connection, QObject *parent)
