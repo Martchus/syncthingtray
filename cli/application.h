@@ -44,6 +44,7 @@ public:
     int exec(int argc, const char *const *argv);
 
 private Q_SLOTS:
+    void invalidateDirsAndDevs();
     void handleStatusChanged(Data::SyncthingStatus newStatus);
     void handleResponse();
     void handleError(
