@@ -96,10 +96,13 @@ QString AppBase::openSettingFile(QFile &settingsFile, const QString &path)
 QDir &AppBase::settingsDir()
 {
     if (!m_settingsDir.has_value()) {
-        m_settingsDir.emplace(qEnvironmentVariable(PROJECT_VARNAME_UPPER "_SETTINGS_DIR"));
-        if (m_settingsDir->isEmpty()) {
+        const auto pathFromEnv = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_SETTINGS_DIR");
+        if (!pathFromEnv.isEmpty()) {
+            m_settingsDir.emplace(pathFromEnv);
+        } else {
             m_settingsDir.emplace(QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation));
         }
+        qDebug() << "Settings directory: " << m_settingsDir.value();
     }
     return m_settingsDir.value();
 }
