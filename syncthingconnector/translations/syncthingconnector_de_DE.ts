@@ -44,7 +44,7 @@
         <translation>verbunden, aber Verbindung zu allen entfernten Geräten getrennt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="973"/>
+        <location filename="../syncthingconnection.cpp" line="977"/>
         <source>Unable to parse timestamp &quot;%1&quot; (%2): %3</source>
         <translation>Fehler beim Parsen des Zeitstempels &quot;%1&quot; (Kontext: &quot;%2&quot;): %3</translation>
     </message>
@@ -93,12 +93,12 @@
         <translation>Fehler beim Abfragen des Syncthing-Logs: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1053"/>
+        <location filename="../syncthingconnection.cpp" line="1057"/>
         <source>Unable to locate certificate used by Syncthing.</source>
         <translation>Das SSL-Zertifikat von Syncthing kann nicht gefunden werden.</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1066"/>
+        <location filename="../syncthingconnection.cpp" line="1070"/>
         <source>Unable to load certificate used by Syncthing.</source>
         <translation>Das SSL-Zertifikat von Syncthing kann nicht ausgelesen werden.</translation>
     </message>
@@ -295,7 +295,7 @@
         <translation>Fehler beim Anfordern der letzten Änderungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1280"/>
+        <location filename="../syncthingconnection.cpp" line="1284"/>
         <source>at offset %1</source>
         <translation>bei Zeichen %1</translation>
     </message>

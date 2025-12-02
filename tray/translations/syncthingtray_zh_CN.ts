@@ -868,17 +868,17 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../application/main.cpp" line="113"/>
+        <location filename="../application/main.cpp" line="116"/>
         <source>Unable to </source>
         <translation>无法 </translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="159"/>
+        <location filename="../application/main.cpp" line="162"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the --windowed flag, though.It is also possible to start Syncthing Tray with --wait to wait until the system tray becomes available instead of showing this message.</source>
         <translation>系统托盘当前不可用。不过，您可以使用 --windowed 将托盘菜单作为常规窗口打开。也可以使用 --wait 启动 Syncthing Tray 以等待系统托盘可用，而不是显示此消息。</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="487"/>
+        <location filename="../application/main.cpp" line="477"/>
         <source>&lt;p&gt;This can have different causes:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Data corruption occurred during the download/extraction. In this case cancelling and retrying the update will help.&lt;/li&gt;&lt;li&gt;The signing key or updating mechanism in general has changed. In this case an according release note will be present on &lt;a href=&quot;https://martchus.github.io/syncthingtray/#downloads-section&quot;&gt;the website&lt;/a&gt; and &lt;a href=&quot;https://github.com/Martchus/syncthingtray/releases&quot;&gt;GitHub&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;A bug in the newly introduced updater, see &lt;a href=&quot;https://github.com/Martchus/syncthingtray/issues&quot;&gt;issues on GitHub&lt;/a&gt; for potential bug reports.&lt;/li&gt;&lt;li&gt;Someone tries to distribute manipulated executables of Syncthing Tray.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;It is recommend to cancel the update and retry or cross-check the cause if the issue persists. If you ignore this error you &lt;i&gt;may&lt;/i&gt; install a corrupted/manipulated executable.&lt;/p&gt;</source>
         <translation>&lt;p&gt;这可能有不同的原因：&lt;/p&gt;&lt;ul&gt;&lt;li&gt;下载/提取过程中发生了数据损坏。在这种情况下，取消并重试更新会有帮助。&lt;/li&gt;&lt;li&gt;签名密钥或一般更新机制已更改。在这种情况下，&lt;a href=&quot;https://martchus.github.io/syncthingtray/#downloads-section&quot;&gt;网站&lt;/a&gt;和&lt;a href=&quot;https://github.com/Martchus/syncthingtray/releases&quot;&gt;GitHub&lt;/a&gt;上会出现相应的发布说明。&lt;/li&gt;&lt;li&gt;新引入的更新程序中存在一个错误，请参见&lt;a href=&quot;https://github.com/Martchus/syncthingtray/issues&quot;&gt;GitHub 上的问题&lt;/a&gt;，以获取潜在的错误报告。&lt;/li&gt;&lt;li&gt;有人试图分发经过篡改的 Syncthing Tray 可执行文件。&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;如果问题仍然存在，建议取消更新并重试或交叉检查原因。如果您忽略此错误，则&lt;i&gt;可能&lt;/i&gt;安装了已损坏/被篡改的可执行文件。&lt;/p&gt;</translation>
     </message>
@@ -891,7 +891,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</source>
         <translation type="vanished">请注意，设置对话框允许从本地 Syncthing 配置导入 URL、凭据和 API 密钥。</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="186"/>
+        <location filename="../application/main.cpp" line="189"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation>Qt 库没有使用托盘图标支持构建。不过，您可以使用 -w 将托盘菜单作为常规窗口打开。</translation>
     </message>
