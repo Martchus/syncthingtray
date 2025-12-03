@@ -1555,7 +1555,12 @@ bool App::checkSettings(const QUrl &url, const QJSValue &callback)
             if (!m_settingsDir.has_value()) {
                 errors.append(tr("Settings directory was not located."));
             } else {
-                tempDir = m_settingsDir->path() + QString("/../import-tmp");
+                const auto extStoragePaths = externalStoragePaths();
+                if (!extStoragePaths.isEmpty()) {
+                    tempDir = extStoragePaths.back() + QString("/import-tmp");
+                } else {
+                    tempDir = m_settingsDir->path() + QString("/../import-tmp");
+                }
                 try {
                     const auto tempPath = std::filesystem::path(SYNCTHING_APP_STRING_CONVERSION(tempDir));
                     if (std::filesystem::exists(tempPath)) {
