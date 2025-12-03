@@ -1740,10 +1740,15 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
     }
 
     setImportExportStatus(ImportExportStatus::Importing);
+    struct ImportResult {
+        QString message;
+        bool hasFailed = false;
+        bool shouldReloadSettings = true;
+    };
     QtConcurrent::run([this, importSyncthingHome, availableSettings, selectedSettings, rawConfig = m_connection.rawConfig()]() mutable {
         // copy selected files from import directory to settings directory
         auto summary = QStringList();
-        auto aborted = availableSettings.value(QStringLiteral("aborted")).toBool();
+        auto aborted = selectedSettings.value(QStringLiteral("aborted")).toBool();
         auto syncthingHomePath = availableSettings.value(QStringLiteral("currentSyncthingHomePath")).toString();
         try {
             // copy app config file
@@ -1783,7 +1788,7 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
                 summary.append(tr("Imported Syncthing config and database from \"%1\".").arg(homeSrcPathStr));
             }
         } catch (const std::runtime_error &e) {
-            return std::make_pair(QString::fromUtf8(e.what()), true);
+            return ImportResult(QString::fromUtf8(e.what()), true);
         }
 
         // merge selected folders/devices into existing config
@@ -1798,7 +1803,7 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
             const auto foldersVal = rawConfig.value(QStringLiteral("folders"));
             const auto devicesVal = rawConfig.value(QStringLiteral("devices"));
             if (!foldersVal.isArray() || !devicesVal.isArray()) {
-                return std::make_pair(tr("Unable to find folders/devices in current Syncthing config."), true);
+                return ImportResult(tr("Unable to find folders/devices in current Syncthing config."), true);
             }
             auto folders = foldersVal.toArray();
             auto devices = devicesVal.toArray();
@@ -1815,7 +1820,7 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
                 if (QMetaObject::invokeMethod(&m_connection, &SyncthingConnection::postRawConfig, Qt::QueuedConnection, std::move(newConfigJson))) {
                     summary.append(tr("Merging %1 folders and %2 devices").arg(importedFolders).arg(importedDevices));
                 } else {
-                    return std::make_pair(tr("Unable to import folders/devices."), true);
+                    return ImportResult(tr("Unable to import folders/devices."), true);
                 }
             }
         }
@@ -1824,33 +1829,36 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
             try {
                 std::filesystem::remove_all(SYNCTHING_APP_STRING_CONVERSION(tempDir));
             } catch (const std::runtime_error &e) {
-                return std::make_pair(tr("Unable to remove temp dir: %1").arg(e.what()), true);
+                return ImportResult(tr("Unable to remove temp dir: %1").arg(e.what()), true);
             }
         }
 
-        if (summary.isEmpty()) {
+        const auto shouldReloadSettings = !summary.isEmpty();
+        if (summary.isEmpty() && !aborted) {
             summary.append(tr("Nothing has been imported."));
         }
-        return std::make_pair(summary.join(QChar('\n')), false);
-    }).then(this, [this, callback](const std::pair<QString, bool> &res) {
+        return ImportResult(summary.join(QChar('\n')), false, shouldReloadSettings);
+    }).then(this, [this, callback](const ImportResult &res) {
         setImportExportStatus(ImportExportStatus::None);
         m_settingsImport.first.clear();
         m_settingsImport.second.clear();
 
         if (callback.isCallable()) {
-            callback.call(QJSValueList{ QJSValue(res.first), QJSValue(res.second) });
+            callback.call(QJSValueList{ QJSValue(res.message), QJSValue(res.hasFailed) });
         }
-        if (res.second) {
-            emit error(tr("Unable to import settings: %1").arg(res.first));
-        } else {
-            emit info(res.first);
+        if (res.hasFailed) {
+            emit error(tr("Unable to import settings: %1").arg(res.message));
+        } else if (!res.message.isEmpty()) {
+            emit info(res.message);
         }
 
         // reload settings
-        m_settingsFile.close();
-        loadSettings();
-        applySettings();
-        reloadSettings();
+        if (res.shouldReloadSettings) {
+            m_settingsFile.close();
+            loadSettings();
+            applySettings();
+            reloadSettings();
+        }
     });
     return true;
 }
