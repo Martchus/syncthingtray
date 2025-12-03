@@ -128,7 +128,7 @@ Page {
                     id: foldersModel
                     Component.onCompleted: {
                         const folders = importPage.availableSettings.folders;
-                        if (Array.isArray(folders)) {
+                        if (folders?.length > 0) {
                             folders.forEach((folder, index) => foldersModel.append({index: index, displayName: folder.label?.length > 0 ? folder.label : folder.id, path: folder.path, checked: false}));
                         }
                     }
@@ -145,7 +145,7 @@ Page {
                     id: devicesModel
                     Component.onCompleted: {
                         const devices = importPage.availableSettings.devices;
-                        if (Array.isArray(devices)) {
+                        if (devices?.length > 0) {
                             devices.forEach((device, index) => devicesModel.append({index: index, displayName: device.name?.length > 0 ? `${device.name}\n${device.deviceID}` : device.deviceID, checked: false}));
                         }
                     }
@@ -155,22 +155,24 @@ Page {
     }
     required property var availableSettings
     readonly property bool isDangerous: fullImport.checked
-    property var selectedConfig: ({
-        appConfig: appConfig.checked,
-        syncthingHome: fullImport.checked,
-        selectedFolders: folderSelection.selectionEnabled ? handleSelectedIndexes(foldersModel) : [],
-        selectedDevices: deviceSelection.selectionEnabled ? handleSelectedIndexes(devicesModel) : [],
-    })
     property list<Action> actions: [
         Action {
             text: qsTr("Import selected")
             icon.source: App.faUrlBase + "download"
-            onTriggered: App.importSettings(importPage.availableSettings, importPage.selectedConfig)
+            onTriggered: App.importSettings(importPage.availableSettings, importPage.computeSelectedConfig())
         }
     ]
     function back() {
         App.importSettings(importPage.availableSettings, {aborted: true});
         return false;
+    }
+    function computeSelectedConfig() {
+        return {
+            appConfig: appConfig.checked,
+            syncthingHome: fullImport.checked,
+            selectedFolders: folderSelection.selectionEnabled ? handleSelectedIndexes(foldersModel) : [],
+            selectedDevices: deviceSelection.selectionEnabled ? handleSelectedIndexes(devicesModel) : [],
+        }
     }
     function handleSelectedIndexes(model) {
         const indexes = [];
@@ -180,7 +182,7 @@ Page {
             if (modelData.checked) {
                 // update paths
                 const path = modelData.path;
-                if (path !== undefined && Array.isArray(folders) && i < folders.length) {
+                if (path !== undefined && folders?.length > 0 && i < folders?.length) {
                     folders[i].path = path;
                 }
                 indexes.push(i);
