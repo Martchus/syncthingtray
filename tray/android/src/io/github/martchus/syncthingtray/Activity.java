@@ -26,6 +26,7 @@ import android.provider.Settings;
 import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowInsetsController;
 import android.view.WindowManager;
 import android.widget.Toast;
 import android.util.Log;
@@ -405,16 +406,29 @@ public class Activity extends QtActivity {
         return true;
     }
 
-    private void applyTheming() {
-        // set color to Material.LightBlue from Material.Light, in consistency with MainToolBar.qml/Theming.qml
-        // note: The status/navigation bar color cannot be set anymore like this under newer Android versions. So
-        //       Qt.ExpandedClientAreaHint is used instead. However, this code still seems to do *something*. With
-        //       it the icons in the status bar are rendered in white (instead of black) which looks much better.
+    private void setStatusBarColorHint(boolean isLight) {
+        // set colors similarly to how Qt does it in QtDisplayManager.java
+        // note: The handling implemented by Qt is disabled by overriding canOverrideColorSchemeHint() so we have full control over this.
         Window window = getWindow();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            WindowInsetsController controller = window.getInsetsController();
+            if (controller != null) {
+                int lightBitMask = WindowInsetsController.APPEARANCE_LIGHT_STATUS_BARS | WindowInsetsController.APPEARANCE_LIGHT_NAVIGATION_BARS;
+                int appearance = isLight ? lightBitMask : 0;
+                controller.setSystemBarsAppearance(appearance, lightBitMask);
+                return;
+            }
+        }
+
+        // set color to Material.LightBlue from Material.Light, in consistency with MainToolBar.qml/Theming.qml
+        // note: Could also set "window.setNavigationBarColor(s_themeColor);" but it looks better to keep it as-is.
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(s_themeColor);
-        window.setNavigationBarColor(s_themeColor);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            window.setStatusBarContrastEnforced(true);
+            window.setNavigationBarContrastEnforced(true);
+        }
     }
 
     private Bundle metaData() {
@@ -438,13 +452,6 @@ public class Activity extends QtActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.i(TAG, "Creating");
-
-        // apply theming unless Qt.ExpandedClientAreaHint is used
-        Bundle md = metaData();
-        if (md != null && !md.getBoolean("android.app.extended_client_area")) {
-            applyTheming();
-        }
-
         Util.init();
 
         super.onCreate(savedInstanceState); // does *not* block, native code registering JNI functions will only run once layout is initialized
@@ -480,6 +487,11 @@ public class Activity extends QtActivity {
     @Override
     public void onResume() {
         Log.i(TAG, "Resuming");
+
+        // enforce white status icons regardless of dark mode setting (as the app always uses a dark menu bar)
+        setStatusBarColorHint(false);
+
+        // handle permission changes
         if (m_storagePermissionRequested) {
             m_storagePermissionRequested = false;
             handleStoragePermissionChanged(storagePermissionGranted());

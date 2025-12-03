@@ -78,6 +78,11 @@ static void handleNotificationPermissionChanged(JNIEnv *, jobject, jboolean noti
         appObjectForJava, "handleNotificationPermissionChanged", Qt::QueuedConnection, Q_ARG(bool, notificationPermissionGranted));
 }
 
+static bool returnFalse(JNIEnv *, jobject)
+{
+    return false;
+}
+
 void registerServiceJniMethods(AppService *appService)
 {
     if (JniFn::appServiceObjectForJava) {
@@ -124,7 +129,11 @@ void registerActivityJniMethods(App *app)
         { "unloadQtQuickGui", "()V", reinterpret_cast<void *>(JniFn::unloadQtQuickGui) },
         { "openUrlExternally", "(Ljava/lang/String;)V", reinterpret_cast<void *>(JniFn::openUrlExternally) },
     };
+    static const JNINativeMethod delegateMethods[] = {
+        {"canOverrideColorSchemeHint", "()Z", reinterpret_cast<void *>(JniFn::returnFalse)},
+    };
     registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 8) && registeredMethods;
+    registeredMethods = env.registerNativeMethods("org/qtproject/qt/android/QtActivityDelegateBase", delegateMethods, 1) && registeredMethods;
     if (!registeredMethods) {
         qWarning() << "Unable to register all native activity methods in JNI environment.";
     }
