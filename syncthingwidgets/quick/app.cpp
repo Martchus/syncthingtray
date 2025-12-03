@@ -1571,7 +1571,7 @@ bool App::checkSettings(const QUrl &url, const QJSValue &callback)
                         errors.append(tr("Unable to extract archive: %1").arg(error));
                     }
                     availableSettings.insert(QStringLiteral("tempDir"), tempDir);
-                    pathStr = tempDir + QStringLiteral("/settings");
+                    pathStr = tempDir;
                 } catch (const std::runtime_error &e) {
                     errors.append(tr("Unable to create temp dir: %1").arg(e.what()));
                 }

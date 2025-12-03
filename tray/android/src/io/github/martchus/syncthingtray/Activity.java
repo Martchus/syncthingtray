@@ -336,6 +336,7 @@ public class Activity extends QtActivity {
             ZipParameters parameters = new ZipParameters();
             parameters.setCompressionMethod(CompressionMethod.DEFLATE);
             parameters.setCompressionLevel(CompressionLevel.NORMAL);
+            parameters.setIncludeRootFolder(false);
             parameters.setExcludeFileFilter(new ExcludeFileFilter() {
                 @Override
                 public boolean isExcluded(File file) {
