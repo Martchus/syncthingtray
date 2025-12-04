@@ -422,6 +422,10 @@ public class Activity extends QtActivity {
 
         // set color to Material.LightBlue from Material.Light, in consistency with MainToolBar.qml/Theming.qml
         // note: Could also set "window.setNavigationBarColor(s_themeColor);" but it looks better to keep it as-is.
+        Bundle md = metaData();
+        if (md != null && md.getBoolean("android.app.extended_client_area")) {
+            return;  // skip styling status bar if Qt.ExpandedClientAreaHint is enabled
+        }
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(s_themeColor);
