@@ -1,7 +1,9 @@
 # Using the Android app
 **The Android app is still experimental.** Use it with care and create backups of your
 configuration and data before trying it. Before filing any issues, be sure to read the section
-"[Caveats on Android](#caveats-on-android)". When building from sources, check out the
+"[Caveats on Android](#caveats-on-android)". For screenshots, check out the section
+"[Screenshots of the mobile UI](docs/screenshots.md#mobile-ui-on-android)". When building from
+sources, check out the
 [Android-specific remarks](https://github.com/Martchus/cpp-utilities/blob/master/README.md#remarks-about-building-for-android)
 of the `c++utilities` README.
 
