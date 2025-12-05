@@ -2,7 +2,7 @@
 **The Android app is still experimental.** Use it with care and create backups of your
 configuration and data before trying it. Before filing any issues, be sure to read the section
 "[Caveats on Android](#caveats-on-android)". For screenshots, check out the section
-"[Screenshots of the mobile UI](docs/screenshots.md#mobile-ui-on-android)". When building from
+"[Screenshots of the mobile UI](screenshots.md#mobile-ui-on-android)". When building from
 sources, check out the
 [Android-specific remarks](https://github.com/Martchus/cpp-utilities/blob/master/README.md#remarks-about-building-for-android)
 of the `c++utilities` README.
@@ -178,7 +178,7 @@ While Syncthing Tray basically works on Android, there are still some unresolved
   when adding a new folder or device. This can also happen when opening the Syncthing documentation
   from within the app. So if you are on a device with low memory (which makes this more likely to
   happen), you should avoid switching to another app or opening the Syncthing documentation.
-* Some Qt bugs mentioned under "[List of bugs](docs/known_bugs_and_workarounds.md#list-of-bugs)" affect
+* Some Qt bugs mentioned under "[List of bugs](known_bugs_and_workarounds.md#list-of-bugs)" affect
   the Android app.
 * The connection to Syncthing can sometimes not be restored after restarting Syncthing (e.g. to make
   an export/backup). This happens particularly often when using a UNIX domain socket. One can restart
