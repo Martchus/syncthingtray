@@ -30,12 +30,12 @@ Syncthing Tray works with Syncthing v1 and v2 (and probably v0). Syncthing Tray 
 be made to support future Syncthing versions as needed.
 
 ## Supported platforms
-Official binaries are provided for Windows (for i686, x86_64 and aarch64) and GNU/Linux (for x86_64) and can be
-downloaded from the [website](https://martchus.github.io/syncthingtray/#downloads-section) and the
-[release section on GitHub](https://github.com/Martchus/syncthingtray/releases). However, this is only a fraction of
-the available downloads. I also provide further repositories for some GNU/Linux distributions. There are
-also binaries/repositories provided by other distributors. For a list of links, check out the
-"[Download](#download)" section of this document.
+Official binaries are provided for Windows (for i686, x86_64 and aarch64), GNU/Linux (for x86_64) and Android
+(for x86_64 and aarch64). They can be downloaded from the [website](https://martchus.github.io/syncthingtray/#downloads-section)
+and the [release section on GitHub](https://github.com/Martchus/syncthingtray/releases). However, this is only a
+fraction of the available downloads. I also provide further repositories for some GNU/Linux distributions. There
+are also binaries/repositories provided by other distributors. For a list of links, check out the "[Download](#download)"
+section of this document.
 
 Syncthing Tray is known to work under:
 
