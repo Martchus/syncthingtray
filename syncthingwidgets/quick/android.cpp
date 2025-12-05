@@ -130,7 +130,7 @@ void registerActivityJniMethods(App *app)
         { "openUrlExternally", "(Ljava/lang/String;)V", reinterpret_cast<void *>(JniFn::openUrlExternally) },
     };
     static const JNINativeMethod delegateMethods[] = {
-        {"canOverrideColorSchemeHint", "()Z", reinterpret_cast<void *>(JniFn::returnFalse)},
+        { "canOverrideColorSchemeHint", "()Z", reinterpret_cast<void *>(JniFn::returnFalse) },
     };
     registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 8) && registeredMethods;
     registeredMethods = env.registerNativeMethods("org/qtproject/qt/android/QtActivityDelegateBase", delegateMethods, 1) && registeredMethods;
