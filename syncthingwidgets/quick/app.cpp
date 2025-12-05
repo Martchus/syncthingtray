@@ -1557,9 +1557,9 @@ bool App::checkSettings(const QUrl &url, const QJSValue &callback)
             } else {
                 const auto extStoragePaths = externalStoragePaths();
                 if (!extStoragePaths.isEmpty()) {
-                    tempDir = extStoragePaths.back() + QString("/import-tmp");
+                    tempDir = extStoragePaths.back() + QStringLiteral("/import-tmp");
                 } else {
-                    tempDir = m_settingsDir->path() + QString("/../import-tmp");
+                    tempDir = m_settingsDir->path() + QStringLiteral("/../import-tmp");
                 }
                 try {
                     const auto tempPath = std::filesystem::path(SYNCTHING_APP_STRING_CONVERSION(tempDir));
