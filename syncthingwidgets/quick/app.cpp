@@ -2188,7 +2188,11 @@ bool App::cleanSyncthingHomeDirectory(const QJSValue &callback)
         return false;
     }
     setImportExportStatus(ImportExportStatus::Cleaning);
-    QtConcurrent::run([this, dataDir = m_syncthingDataDir, settingsDir = m_settingsDir.has_value() ? m_settingsDir->path() : QString()]() mutable {
+    QtConcurrent::run([
+#ifdef Q_OS_ANDROID
+                          this,
+#endif
+                          dataDir = m_syncthingDataDir, settingsDir = m_settingsDir.has_value() ? m_settingsDir->path() : QString()]() mutable {
         auto summary = QStringList();
         auto error = false;
 
