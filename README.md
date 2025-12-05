@@ -10,6 +10,7 @@ The following integrations are provided:
 * Context menu extension for the [Dolphin](https://www.kde.org/applications/system/dolphin) file manager
 * Plasmoid for [KDE Plasma](https://www.kde.org/plasma-desktop)
 * [Command-line interface](docs/cli.md)
+* [Android app](docs/android.md) (still experimental)
 * Qt-ish C++ library
 
 ---
