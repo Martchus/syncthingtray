@@ -7,6 +7,7 @@ Documentation
    Introduction <README>
    docs/screenshots.md
    docs/cli.md
+   docs/terminology.md
    docs/known_bugs_and_workarounds.md
    docs/android.md
    docs/devel.md
