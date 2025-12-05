@@ -2188,10 +2188,11 @@ bool App::cleanSyncthingHomeDirectory(const QJSValue &callback)
         return false;
     }
     setImportExportStatus(ImportExportStatus::Cleaning);
-    QtConcurrent::run([dataDir = m_syncthingDataDir]() mutable {
+    QtConcurrent::run([this, dataDir = m_syncthingDataDir, settingsDir = m_settingsDir.has_value() ? m_settingsDir->path() : QString()]() mutable {
         auto summary = QStringList();
         auto error = false;
 
+        // remove old database
         if (auto oldDbDir = QDir(dataDir + QStringLiteral("/index-v0.14.0.db-migrated")); oldDbDir.exists()) {
             if (oldDbDir.removeRecursively()) {
                 summary.append(tr("Removed old database directory."));
@@ -2200,6 +2201,28 @@ bool App::cleanSyncthingHomeDirectory(const QJSValue &callback)
                 error = true;
             }
         }
+
+        // remove potential leftover directory from importing settings
+        // note: This is in accordance with paths used in checkSettings(). Normally importSettings() will clean this up. However, if the app is terminated forcefully while
+        //       the import page is shown that code might not have a chance to run.
+#ifdef Q_OS_ANDROID
+        auto tempImportPaths = externalStoragePaths();
+        auto tempImportPathsRemoved = false, tempImportPathsFailed = false;
+        tempImportPaths.append(settingsDir + QStringLiteral("/.."));
+        for (const auto &tempImportPath : tempImportPaths) {
+            if (auto tempDir = QDir(tempImportPath + QStringLiteral("/import-tmp")); tempDir.exists()) {
+                if (tempDir.removeRecursively()) {
+                    tempImportPathsRemoved = true;
+                } else {
+                    error = tempImportPathsFailed = true;
+                    summary.append(tr("Unable to remove leftovers from import under \"%1\".").arg(tempDir.path()));
+                }
+            }
+        }
+        if (tempImportPathsRemoved && !tempImportPathsFailed) {
+            summary.append(tr("Removed leftovers from import."));
+        }
+#endif
 
         if (summary.isEmpty()) {
             summary.append(tr("There was nothing to clean up."));
