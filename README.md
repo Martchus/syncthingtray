@@ -6,7 +6,7 @@ screenshots.
 
 The following integrations are provided:
 
-* Tray application (using the Qt framework)
+* Tray application
 * Context menu extension for the [Dolphin](https://www.kde.org/applications/system/dolphin) file manager
 * Plasmoid for [KDE Plasma](https://www.kde.org/plasma-desktop)
 * [Command-line interface](docs/cli.md)
