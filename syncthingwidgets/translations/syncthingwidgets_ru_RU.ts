@@ -2726,27 +2726,27 @@
         <translation>Пакет поддержки сохранен</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2198"/>
+        <location filename="../quick/app.cpp" line="2202"/>
         <source>Removed old database directory.</source>
         <translation>Удален старый каталог базы данных.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2200"/>
+        <location filename="../quick/app.cpp" line="2204"/>
         <source>Unable to remove old database directory.</source>
         <translation>Невозможно удалить старый каталог базы данных.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2218"/>
+        <location filename="../quick/app.cpp" line="2222"/>
         <source>Unable to remove leftovers from import under &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2223"/>
+        <location filename="../quick/app.cpp" line="2227"/>
         <source>Removed leftovers from import.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2228"/>
+        <location filename="../quick/app.cpp" line="2232"/>
         <source>There was nothing to clean up.</source>
         <translation>Убирать было нечего.</translation>
     </message>
@@ -2820,58 +2820,58 @@
 <context>
     <name>QtGui::AppService</name>
     <message>
-        <location filename="../quick/appservice.cpp" line="144"/>
+        <location filename="../quick/appservice.cpp" line="145"/>
         <source>Backend is starting …</source>
         <translation>Бэкэнд запускается…</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="211"/>
+        <location filename="../quick/appservice.cpp" line="212"/>
         <source>Unable to open persistent log file for Syncthing under &quot;%1&quot;: %2</source>
         <translation>Невозможно открыть постоянный файл журнала для Syncthing в разделе «%1»: %2</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="222"/>
+        <location filename="../quick/appservice.cpp" line="223"/>
         <source>This build of the app cannot launch Syncthing.</source>
         <translation>Эта сборка приложения не может запустить Syncthing.</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="297"/>
+        <location filename="../quick/appservice.cpp" line="300"/>
         <source>Syncthing App ran into error</source>
         <translation>В приложении Syncthing произошла ошибка</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="499"/>
+        <location filename="../quick/appservice.cpp" line="502"/>
         <source>Syncthing error/notification</source>
         <translation>Ошибка/уведомление синхронизации</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="499"/>
+        <location filename="../quick/appservice.cpp" line="502"/>
         <source>%1 Syncthing errors/notifications</source>
         <translation>%1 Ошибки/уведомления синхронизации</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="500"/>
-        <location filename="../quick/appservice.cpp" line="520"/>
+        <location filename="../quick/appservice.cpp" line="503"/>
+        <location filename="../quick/appservice.cpp" line="523"/>
         <source>Most recent: </source>
         <translation>Самые последние: </translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="519"/>
+        <location filename="../quick/appservice.cpp" line="522"/>
         <source>Syncthing API error</source>
         <translation>Ошибка API синхронизации</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="519"/>
+        <location filename="../quick/appservice.cpp" line="522"/>
         <source>%1 Syncthing API errors</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="533"/>
+        <location filename="../quick/appservice.cpp" line="536"/>
         <source>Syncthing device wants to connect</source>
         <translation>Устройство Syncthing хочет подключиться</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="547"/>
+        <location filename="../quick/appservice.cpp" line="550"/>
         <source>Syncthing device wants to share folder</source>
         <translation>Устройство Syncthing хочет предоставить общий доступ к папке</translation>
     </message>
@@ -5324,166 +5324,171 @@ This dialog closes automatically when the process finally terminates.</source>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="163"/>
+        <source>Pause devices on metered network connection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="164"/>
         <source>Syncthing URL</source>
         <translation>URL-адрес Syncthing</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="164"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="165"/>
         <source>API key</source>
         <translation>API-ключ</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="165"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="166"/>
         <source>HTTPs certificate path</source>
         <translation>Путь сертификата HTTPS</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="166"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="167"/>
         <source>HTTP authentication</source>
         <translation>HTTP-аутентификация</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="169"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="170"/>
         <source>Enabled</source>
         <translation>Включено</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="170"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="171"/>
         <source>Username</source>
         <translation>Имя пользователя</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="171"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="172"/>
         <source>Password</source>
         <translation>Пароль</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="174"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="175"/>
         <source>Run Syncthing</source>
         <translation>Запустить Syncthing</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="176"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="177"/>
         <source>n/a</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="176"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="177"/>
         <source>URL for GUI and API access</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="186"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="187"/>
         <source>External executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="178"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="179"/>
         <source>Log level</source>
         <translation>Уровень журнала</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="179"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="180"/>
         <source>Debug</source>
         <translation>Отлаживать</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="180"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="181"/>
         <source>Info</source>
         <translation>Информация</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="181"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="182"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="182"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="183"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="175"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="176"/>
         <source>Stop on metered network connection</source>
         <translation>Остановка при лимитном сетевом подключении</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="177"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="178"/>
         <source>Write persistent log file</source>
         <translation>Записать постоянный файл журнала</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="177"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="178"/>
         <source>Write a persistent log file into the app directory</source>
         <translation>Записать постоянный файл журнала в каталог приложения</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="184"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="185"/>
         <source>Open logs</source>
         <translation>Открытые журналы</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="184"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="185"/>
         <source>Show Syncthing logs since app startup</source>
         <translation>Показать журналы Syncthing с момента запуска приложения</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="185"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="186"/>
         <source>Open persistent logs</source>
         <translation>Открытые постоянные журналы</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="185"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="186"/>
         <source>Open persistent log file externally</source>
         <translation>Открыть постоянный файл журнала извне</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="186"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="187"/>
         <source>Start an external executable instead of using the built-in version of Syncthing. When empty, the built-in version of Syncthing is used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="189"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="190"/>
         <source>Import/export archive</source>
         <translation>Импорт/экспорт архива</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="189"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="190"/>
         <source>Import and export to/from a Zip archive</source>
         <translation>Импорт и экспорт в/из Zip-архива</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="190"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="191"/>
         <source>Import/export password</source>
         <translation>Импорт/экспорт пароля</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="190"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="191"/>
         <source>Encrypt/decrypt data via AES-256 when exporting/importing to archive</source>
         <translation>Шифровать/дешифровать данные с помощью AES-256 при экспорте/импорте в архив</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="191"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="192"/>
         <source>Export path</source>
         <translation>Путь экспорта</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="191"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="192"/>
         <source>Save exports and support bundles under fix location</source>
         <translation>Сохранение экспортов и поддержка пакетов в фиксированном местоположении</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="192"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="193"/>
         <source>Use Unix domain socket</source>
         <translation>Использовать сокет домена Unix</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="192"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="193"/>
         <source>Reduces communication overhead and makes Syncthing API and web GUI inaccessible to other apps, applied after restart</source>
         <translation>Снижает накладные расходы на связь и делает API Syncthing и веб-интерфейс недоступными для других приложений. Применяется после перезапуска</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="198"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="199"/>
         <source>Apply</source>
         <translation>Применять</translation>
     </message>
