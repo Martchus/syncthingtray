@@ -639,6 +639,7 @@ QVariantMap SyncthingLauncher::overallStatus() const
         { QStringLiteral("errorString"), errorString() },
         { QStringLiteral("runningStatus"), runningStatus() },
         { QStringLiteral("isMetered"), isMetered.has_value() ? QVariant(isMetered.value()) : QVariant() },
+        { QStringLiteral("meteredStatus"), meteredStatus() },
     };
 }
 

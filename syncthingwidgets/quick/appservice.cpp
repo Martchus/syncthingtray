@@ -100,6 +100,7 @@ AppService::AppService(bool insecure, QObject *parent)
     connect(&m_launcher, &SyncthingLauncher::runningChanged, this, &AppService::broadcastLauncherStatus);
     connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &AppService::handleGuiUrlChanged);
     connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &AppService::broadcastLauncherStatus);
+    connect(&m_launcher, &SyncthingLauncher::networkConnectionMeteredChanged, this, &AppService::broadcastLauncherStatus);
 
 #ifdef Q_OS_ANDROID
     connect(&m_notifier, &SyncthingNotifier::newDevice, this, &AppService::showNewDevice);
