@@ -199,6 +199,9 @@ void AppBase::applyConnectionSettings(const QUrl &syncthingUrl)
         emit error(tr("Unable to load HTTPs certificate"));
     }
     m_connection.setInsecure(m_insecure);
+    if (!mayPauseDevicesOnMeteredNetworkConnection()) {
+        m_connectionSettingsFromConfig.pauseOnMeteredConnection = false;
+    }
     if (m_connectToLaunched) {
         handleGuiUrlChanged(syncthingUrl);
     } else if (m_connection.applySettings(m_connectionSettingsFromConfig) || !m_connection.isConnected()) {
@@ -245,6 +248,7 @@ void AppBase::handleGuiUrlChanged(const QUrl &newUrl)
     m_connectionSettingsFromLauncher.apiKey = m_syncthingConfig.guiApiKey.toUtf8();
     m_connectionSettingsFromLauncher.authEnabled = false;
     m_connectionSettingsFromLauncher.reconnectInterval = isSyncthingRunning() ? SyncthingConnectionSettings::defaultReconnectInterval : 0;
+    m_connectionSettingsFromLauncher.pauseOnMeteredConnection = m_connectionSettingsFromConfig.pauseOnMeteredConnection;
 #ifndef QT_NO_SSL
     m_connectionSettingsFromLauncher.httpsCertPath = m_syncthingConfigDir + QStringLiteral("/https-cert.pem");
 #endif

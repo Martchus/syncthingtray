@@ -39,6 +39,10 @@ public:
     {
         return m_launcher.isRunning();
     }
+    bool mayPauseDevicesOnMeteredNetworkConnection() const override final
+    {
+        return true;
+    }
     Data::SyncthingLauncher *launcher()
     {
         return &m_launcher;

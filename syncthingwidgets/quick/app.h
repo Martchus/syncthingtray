@@ -214,6 +214,10 @@ public:
     {
         return m_isSyncthingRunning;
     }
+    bool mayPauseDevicesOnMeteredNetworkConnection() const override final
+    {
+        return false; // handle pausing of devices on metered network connection only in the service
+    }
     const QUrl &syncthingGuiUrl() const
     {
         return m_syncthingGuiUrl;

@@ -245,7 +245,9 @@ bool AppService::applyLauncherSettings()
 bool AppService::reloadSettings()
 {
     qDebug() << "Reloading settings";
-    const auto res = loadSettings(true) && applyLauncherSettings();
+    const auto res = loadSettings(true);
+    applyLauncherSettings();
+    applyConnectionSettings(m_launcher.guiUrl());
     invalidateStatus();
     return res;
 }

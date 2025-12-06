@@ -160,6 +160,7 @@ StackView {
         readonly property var specialEntries: ({
             connection: [
                 {key: "useLauncher", type: "boolean", label: qsTr("Automatic"), statusText: qsTr("Connect to the Syncthing backend launched via this app and disregard the settings below.")},
+                {key: "pauseOnMeteredConnection", type: "boolean", defaultValue: false, label: qsTr("Pause devices on metered network connection"), statusText: Qt.binding(() => App.meteredStatus)},
                 {key: "syncthingUrl", label: qsTr("Syncthing URL")},
                 {key: "apiKey", label: qsTr("API key"), inputMethodHints: Qt.ImhHiddenText | Qt.ImhSensitiveData | Qt.ImhNoAutoUppercase},
                 {key: "httpsCertPath", label: qsTr("HTTPs certificate path"), type: "filepath"},
