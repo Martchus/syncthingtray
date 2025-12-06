@@ -400,7 +400,11 @@ void SyncthingConnection::handleMeteredConnection()
 {
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
     const auto *const networkInformation = QNetworkInformation::instance();
-    if (!networkInformation || !networkInformation->supports(QNetworkInformation::Feature::Metered)) {
+    if (!networkInformation
+#ifndef Q_OS_ANDROID // see comment in loadNetworkInformationBackendForMetered()
+        || !networkInformation->supports(QNetworkInformation::Feature::Metered)
+#endif
+        ) {
         return;
     }
     if (networkInformation->isMetered() && m_pausingOnMeteredConnection) {
