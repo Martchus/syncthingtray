@@ -128,6 +128,7 @@ Page {
         "defaults.device.addresses": "dynamic",
         "allowedNetworks": "",
         "defaults.device.allowedNetworks": "",
+        "defaults.ignores.lines": "",
         "options.listenAddresses": "default",
         "options.globalAnnounceServers": "default",
         "options.alwaysLocalNet": "",
