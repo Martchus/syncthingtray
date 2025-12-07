@@ -80,24 +80,23 @@ StackView {
                     iconName: "external-link"
                 }
             }
-            delegate: ItemDelegate {
+            delegate: CustomDelegate {
                 width: listView.width
-                text: label
-                icon.source: App.faUrlBase + iconName
-                icon.width: App.iconWidthDelegate
-                icon.height: App.iconSize
+                labelText: modelData.label
+                iconName: modelData.iconName
                 onClicked: {
-                    if (specialPage.length > 0) {
-                        stackView.push(specialPage, {pages: stackView.pages}, StackView.PushTransition);
-                    } else if (func.length > 0) {
-                        App[func]();
+                    if (modelData.specialPage.length > 0) {
+                        stackView.push(modelData.specialPage, {pages: stackView.pages}, StackView.PushTransition);
+                    } else if (modelData.func.length > 0) {
+                        App[modelData.func]();
                     } else {
-                        const specialEntriesOnly = specialEntriesKey.length > 0;
-                        const se = (specialEntriesOnly ? advancedPage.specialEntries[specialEntriesKey] : advancedPage.specialEntriesByKey[key]) ?? [];
-                        const pageTitle = title.length > 0 ? title : label
-                        stackView.push("ObjectConfigPage.qml", {title: pageTitle, isDangerous: isDangerous, configObject: advancedPage.config[key], specialEntries: se, specialEntriesByKey: advancedPage.specialEntriesByKey, specialEntriesOnly: specialEntriesOnly, path: key, configCategory: `config-option-${key}`, itemLabel: itemLabel, helpUrl: helpUrl, stackView: stackView, parentPage: advancedPage, actions: [discardAction, applyAction]}, StackView.PushTransition);
+                        const specialEntriesOnly = modelData.specialEntriesKey.length > 0;
+                        const se = (specialEntriesOnly ? advancedPage.specialEntries[modelData.specialEntriesKey] : advancedPage.specialEntriesByKey[modelData.key]) ?? [];
+                        const pageTitle = modelData.title.length > 0 ? modelData.title : modelData.label
+                        stackView.push("ObjectConfigPage.qml", {title: pageTitle, isDangerous: modelData.isDangerous, configObject: advancedPage.config[modelData.key], specialEntries: se, specialEntriesByKey: advancedPage.specialEntriesByKey, specialEntriesOnly: specialEntriesOnly, path: modelData.key, configCategory: `config-option-${modelData.key}`, itemLabel: modelData.itemLabel, helpUrl: modelData.helpUrl, stackView: stackView, parentPage: advancedPage, actions: [discardAction, applyAction]}, StackView.PushTransition);
                     }
                 }
+                required property var modelData
             }
         }
 

@@ -87,22 +87,20 @@ StackView {
                     iconName: "user-md"
                 }
             }
-            delegate: ItemDelegate {
+            delegate: CustomDelegate {
                 width: listView.width
-                text: label
-                icon.source: App.faUrlBase + iconName
-                icon.width: App.iconWidthDelegate
-                icon.height: App.iconSize
+                labelText: modelData.label
+                iconName: modelData.iconName
                 onClicked: {
-                    if (key.length > 0) {
-                        appSettingsPage.openNestedSettings(title, key);
-                    } else if (functionName.length > 0) {
-                        appSettingsPage.initiateBackup(functionName, callback);
-                    } else if (callback !== undefined) {
-                        callback();
+                    if (modelData.key.length > 0) {
+                        appSettingsPage.openNestedSettings(modelData.title, modelData.key);
+                    } else if (modelData.functionName.length > 0) {
+                        appSettingsPage.initiateBackup(modelData.functionName, modelData.callback);
+                    } else if (modelData.callback !== undefined) {
+                        modelData.callback();
                     }
                 }
-
+                required property var modelData
             }
         }
 
