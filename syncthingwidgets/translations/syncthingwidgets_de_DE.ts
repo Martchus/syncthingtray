@@ -5561,7 +5561,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="70"/>
         <source>Export all settings/secrets/data of app and backend</source>
-        <translation>Exportiere alles Einstellungen/Daten/Passwörter von App und Backend</translation>
+        <translation>Exportiere alle Einstellungen/Daten/Passwörter von App und Backend</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="75"/>
