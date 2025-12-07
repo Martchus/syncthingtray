@@ -21,6 +21,7 @@ DelegateChooser {
                         text: modelData.label
                         elide: Text.ElideRight
                         font.weight: Font.Medium
+                        wrapMode: Text.WordWrap
                     }
                     Label {
                         Layout.fillWidth: true
@@ -61,6 +62,7 @@ DelegateChooser {
                         text: modelData.label
                         elide: Text.ElideRight
                         font.weight: Font.Medium
+                        wrapMode: Text.WordWrap
                     }
                     Label {
                         Layout.fillWidth: true
@@ -202,6 +204,7 @@ DelegateChooser {
                         text: modelData.label
                         elide: Text.ElideRight
                         font.weight: Font.Medium
+                        wrapMode: Text.WordWrap
                     }
                     Label {
                         Layout.fillWidth: true
@@ -428,6 +431,7 @@ DelegateChooser {
                         text: modelData.label
                         elide: Text.ElideRight
                         font.weight: Font.Medium
+                        wrapMode: Text.WordWrap
                     }
                     Label {
                         Layout.fillWidth: true
@@ -480,6 +484,7 @@ DelegateChooser {
                     text: modelData.label
                     elide: Text.ElideRight
                     font.weight: Font.Medium
+                    wrapMode: Text.WordWrap
                     readonly property int modelIndex: modelData.index
                 }
                 ArrayElementButtons {
@@ -528,6 +533,7 @@ DelegateChooser {
                         text: modelData.label
                         elide: Text.ElideRight
                         font.weight: Font.Medium
+                        wrapMode: Text.WordWrap
                     }
                     Label {
                         Layout.fillWidth: true
@@ -565,12 +571,14 @@ DelegateChooser {
                     text: modelData.label
                     elide: Text.ElideRight
                     font.weight: Font.Medium
+                    wrapMode: Text.WordWrap
                 }
                 Label {
                     Layout.fillWidth: true
                     visible: text.length > 0
                     elide: Text.ElideRight
                     font.weight: Font.Light
+                    wrapMode: Text.WordWrap
                     Component.onCompleted: text = modelData.statusText ?? ""
                 }
             }
@@ -590,12 +598,14 @@ DelegateChooser {
                         text: modelData.label
                         elide: Text.ElideRight
                         font.weight: Font.Medium
+                        wrapMode: Text.WordWrap
                     }
                     Label {
                         Layout.fillWidth: true
                         text: modelData.value
                         elide: Text.ElideRight
                         font.weight: Font.Light
+                        wrapMode: Text.WordWrap
                     }
                 }
                 ArrayElementButtons {
@@ -649,6 +659,7 @@ DelegateChooser {
                         text: modelData.label
                         elide: Text.ElideRight
                         font.weight: Font.Medium
+                        wrapMode: Text.WordWrap
                     }
                     Label {
                         id: folderpathValue
@@ -656,6 +667,7 @@ DelegateChooser {
                         text: modelData.value
                         elide: Text.ElideRight
                         font.weight: Font.Light
+                        wrapMode: Text.WordWrap
                     }
                 }
                 ArrayElementButtons {
