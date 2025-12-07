@@ -16,6 +16,7 @@ ItemDelegate {
             Layout.fillWidth: true
             elide: Text.ElideRight
             font.weight: Font.Medium
+            wrapMode: Text.WordWrap
         }
     }
     property alias labelText: label.text
