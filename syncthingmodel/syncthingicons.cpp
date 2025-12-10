@@ -510,7 +510,10 @@ void setForkAwesomeThemeOverrides()
     auto &renderer = QtForkAwesome::Renderer::global();
     renderer.addThemeOverride(QtForkAwesome::Icon::File, QStringLiteral("text-plain"));
     renderer.addThemeOverride(QtForkAwesome::Icon::Folder, QStringLiteral("folder-symbolic"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::FileO, QStringLiteral("document-multiple"));
     renderer.addThemeOverride(QtForkAwesome::Icon::FileO, QStringLiteral("text-plain"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::HddO, QStringLiteral("drive-harddisk-symbolic"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::HddO, QStringLiteral("drive"));
     renderer.addThemeOverride(QtForkAwesome::Icon::FolderO, QStringLiteral("folder-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::Sitemap, QStringLiteral("network-server-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::Download, QStringLiteral("folder-download-symbolic"));
@@ -529,6 +532,7 @@ void setForkAwesomeThemeOverrides()
     renderer.addThemeOverride(QtForkAwesome::Icon::Qrcode, QStringLiteral("qrscanner-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::Qrcode, QStringLiteral("view-barcode-qr"));
     renderer.addThemeOverride(QtForkAwesome::Icon::PowerOff, QStringLiteral("system-shutdown-symbolic"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::FileText, QStringLiteral("utilities-terminal-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::FileText, QStringLiteral("terminal-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::CloudUpload, QStringLiteral("cloud-upload"));
     renderer.addThemeOverride(QtForkAwesome::Icon::CloudDownload, QStringLiteral("cloud-download"));
