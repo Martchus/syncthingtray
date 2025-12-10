@@ -99,14 +99,17 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     , m_webViewDlg(nullptr)
     , m_notificationsDlg(nullptr)
     , m_currentConnectionConfig(-1)
-    , m_defaultTab(config().readEntry<>("lastTab", 0))
-    , m_lastTab(m_defaultTab)
     , m_hasInternalErrors(false)
     , m_initialized(false)
     , m_showTabTexts(false)
     , m_showDownloads(false)
     , m_applyingSettingsForWizard(false)
 {
+    const auto &c = config();
+    m_defaultTab = c.readEntry<>("defaultTab", 0);
+    m_lastTab = c.readEntry<>("lastTab", 0);
+    m_defaultTab = m_defaultTab < 0 ? m_lastTab : m_defaultTab;
+
     // configure connection
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents | SyncthingConnection::PollingFlags::Errors);
