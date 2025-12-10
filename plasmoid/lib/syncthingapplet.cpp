@@ -98,14 +98,18 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     , m_imageProvider(nullptr)
     , m_webViewDlg(nullptr)
     , m_notificationsDlg(nullptr)
-    , m_currentConnectionConfig(-1)
     , m_hasInternalErrors(false)
     , m_initialized(false)
     , m_showTabTexts(false)
     , m_showDownloads(false)
     , m_applyingSettingsForWizard(false)
 {
+    // load config
     const auto &c = config();
+    if (c.readEntry<>("preferIconsFromTheme", false)) {
+        Data::setForkAwesomeThemeOverrides();
+    }
+    m_currentConnectionConfig = c.readEntry<int>("selectedConfig", 0);
     m_defaultTab = c.readEntry<>("defaultTab", 0);
     m_lastTab = c.readEntry<>("lastTab", 0);
     m_defaultTab = m_defaultTab < 0 ? m_lastTab : m_defaultTab;
@@ -196,18 +200,11 @@ void SyncthingApplet::init()
     connect(&m_service, &SyncthingService::errorOccurred, this, &SyncthingApplet::handleSystemdServiceError);
 #endif
 
-    // load primary connection config
-    const auto &c = config();
-    m_currentConnectionConfig = c.readEntry<int>("selectedConfig", 0);
-
     // apply settings and connect according to settings
     const auto palette = paletteFromTheme(m_theme);
     setBrightColors(isPaletteDark(palette));
     m_iconManager.setPalette(palette);
     handleSettingsChanged();
-    if (c.readEntry<>("preferIconsFromTheme", false)) {
-        Data::setForkAwesomeThemeOverrides();
-    }
 
     // show wizard on first launch
     if (settings.firstLaunch || settings.fakeFirstLaunch) {
