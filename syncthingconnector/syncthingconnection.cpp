@@ -404,7 +404,7 @@ void SyncthingConnection::handleMeteredConnection()
 #ifndef Q_OS_ANDROID // see comment in loadNetworkInformationBackendForMetered()
         || !networkInformation->supports(QNetworkInformation::Feature::Metered)
 #endif
-        ) {
+    ) {
         return;
     }
     if (networkInformation->isMetered() && m_pausingOnMeteredConnection) {
