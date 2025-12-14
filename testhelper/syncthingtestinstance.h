@@ -8,6 +8,7 @@
 
 #include <QCoreApplication>
 #include <QProcess>
+#include <QTemporaryDir>
 
 using namespace std;
 
@@ -25,6 +26,7 @@ public:
     const QString &apiKey() const;
     const QString &syncthingPort() const;
     QCoreApplication &application();
+    const QTemporaryDir &dataDir() const;
     Data::SyncthingProcess &syncthingProcess();
 
 public:
@@ -42,6 +44,7 @@ private:
     QString m_apiKey;
     QString m_syncthingPort;
     QCoreApplication m_app;
+    QTemporaryDir m_dataDir;
     Data::SyncthingProcess m_syncthingProcess;
     bool m_interleavedOutput;
     bool m_processSupposedToRun;
@@ -60,6 +63,11 @@ inline const QString &SyncthingTestInstance::syncthingPort() const
 inline QCoreApplication &SyncthingTestInstance::application()
 {
     return m_app;
+}
+
+inline const QTemporaryDir &SyncthingTestInstance::dataDir() const
+{
+    return m_dataDir;
 }
 
 inline Data::SyncthingProcess &SyncthingTestInstance::syncthingProcess()

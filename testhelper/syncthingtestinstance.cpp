@@ -1,6 +1,8 @@
 #include "./syncthingtestinstance.h"
 #include "./helper.h"
 
+#include "resources/../../syncthingconnector/resources/config.h"
+
 #include <qtutilities/misc/compat.h>
 #include <qtutilities/misc/conversion.h>
 
@@ -30,6 +32,8 @@ SyncthingTestInstance::SyncthingTestInstance()
     , m_interleavedOutput(false)
     , m_processSupposedToRun(false)
 {
+    qputenv(PROJECT_VARNAME_UPPER "_LOCAL_DATA_DIR", m_dataDir.path().toUtf8());
+
     QObject::connect(&m_syncthingProcess, &Data::SyncthingProcess::errorOccurred, &m_syncthingProcess,
         std::bind(&SyncthingTestInstance::handleError, this, _1), Qt::QueuedConnection);
     QObject::connect(&m_syncthingProcess, &Data::SyncthingProcess::finished, &m_syncthingProcess,

@@ -13,7 +13,6 @@
 #include <c++utilities/io/ansiescapecodes.h>
 
 #include <QAuthenticator>
-#include <QDir>
 #include <QFileInfo>
 #include <QHostAddress>
 #include <QJsonArray>
@@ -22,6 +21,7 @@
 #include <QNetworkAccessManager>
 #include <QNetworkInterface>
 #include <QNetworkReply>
+#include <QStandardPaths>
 #include <QStringBuilder>
 #include <QTimer>
 
@@ -364,7 +364,9 @@ void SyncthingConnection::disablePolling()
 }
 
 /*!
- * \brief Sets whether to pause all devices on metered connections.
+ * \brief Sets whether to pause all devices, discovery and relaying on metered connections.
+ * \remark This is realized by calling the function suspendOrResume() which can also be called manually
+ *         to temporarily override this.
  */
 void SyncthingConnection::setPausingOnMeteredConnection(bool pausingOnMeteredConnection)
 {
@@ -375,13 +377,13 @@ void SyncthingConnection::setPausingOnMeteredConnection(bool pausingOnMeteredCon
             if (!m_handlingMeteredConnectionInitialized) {
                 if (const auto [networkInformation, isMetered] = loadNetworkInformationBackendForMetered(); networkInformation) {
                     QObject::connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, &SyncthingConnection::handleMeteredConnection);
+                    suspendOrResume(isMetered);
+                    return;
                 }
             }
 #endif
         }
-        if (m_hasConfig) {
-            handleMeteredConnection();
-        }
+        handleMeteredConnection();
     }
 }
 
@@ -398,32 +400,21 @@ QString SyncthingConnection::substituteTilde(const QString &path) const
  */
 void SyncthingConnection::handleMeteredConnection()
 {
-#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
-    const auto *const networkInformation = QNetworkInformation::instance();
-    if (!networkInformation
-#ifndef Q_OS_ANDROID // see comment in loadNetworkInformationBackendForMetered()
-        || !networkInformation->supports(QNetworkInformation::Feature::Metered)
-#endif
-    ) {
+    if (!m_hasConfig || m_myId.isEmpty()) {
         return;
     }
-    if (networkInformation->isMetered() && m_pausingOnMeteredConnection) {
-        auto hasDevicesToPause = false;
-        m_devsPausedDueToMeteredConnection.reserve(static_cast<qsizetype>(m_devs.size()));
-        for (const auto &device : m_devs) {
-            if (!device.paused && device.status != SyncthingDevStatus::ThisDevice) {
-                if (!m_devsPausedDueToMeteredConnection.contains(device.id)) {
-                    m_devsPausedDueToMeteredConnection << device.id;
-                    hasDevicesToPause = true;
-                }
-            }
-        }
-        if (hasDevicesToPause) {
-            pauseResumeDevice(m_devsPausedDueToMeteredConnection, true, true);
-        }
-    } else {
-        pauseResumeDevice(m_devsPausedDueToMeteredConnection, false, true);
-        m_devsPausedDueToMeteredConnection.clear();
+    if (!m_pausingOnMeteredConnection) {
+        suspendOrResume(false);
+        return;
+    }
+#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
+    const auto *const networkInformation = QNetworkInformation::instance();
+    if (networkInformation
+#ifndef Q_OS_ANDROID // see comment in loadNetworkInformationBackendForMetered()
+        && networkInformation->supports(QNetworkInformation::Feature::Metered)
+#endif
+    ) {
+        suspendOrResume(networkInformation->isMetered());
     }
 #endif
 }
@@ -648,7 +639,7 @@ void SyncthingConnection::continueReconnecting()
     m_dirs.swap(tempDirs);
     m_devs.swap(tempDevs);
     m_errors.clear();
-    m_devsPausedDueToMeteredConnection.clear();
+    m_suspendedItems.clear();
     m_lastConnectionsUpdateEvent = 0;
     m_lastConnectionsUpdateTime = DateTime();
     m_lastFileEvent = 0;
@@ -683,6 +674,9 @@ void SyncthingConnection::applyRawConfig()
 {
     readDevs(m_rawConfig.value(QLatin1String("devices")).toArray());
     readDirs(m_rawConfig.value(QLatin1String("folders")).toArray());
+    if (m_pausingOnMeteredConnection) {
+        handleMeteredConnection();
+    }
     emit newConfigApplied();
 }
 
@@ -1475,6 +1469,94 @@ SyncthingCompletion SyncthingConnection::computeOverallRemoteCompletion() const
     }
     completion.recomputePercentage();
     return completion;
+}
+
+/*!
+ * \brief Clears all fields.
+ */
+void Data::SyncthingConnection::SuspendedItems::clear()
+{
+    devIds.clear();
+    changedOptions = QJsonObject();
+    populatedForDeviceId.clear();
+}
+
+/*!
+ * \brief Restores all fields from persistent storage for \a thisDeviceId unless already populated.
+ */
+bool SyncthingConnection::SuspendedItems::restore(const QString &thisDeviceId)
+{
+    if (populatedForDeviceId == thisDeviceId) {
+        return true;
+    }
+
+    clear();
+
+    auto file = QFile(locatePersistentFile(thisDeviceId));
+    auto jsonParseError = QJsonParseError();
+    if (!file.open(QFile::ReadOnly)) {
+        return false;
+    }
+    const auto jsonData = file.readAll();
+    if (!file.error() == QFile::NoError) {
+        return false;
+    }
+    const auto jsonDoc = QJsonDocument::fromJson(jsonData, &jsonParseError);
+    if (jsonParseError.error != QJsonParseError::NoError) {
+        return false;
+    }
+    const auto jsonObj = jsonDoc.object();
+    const auto devIdsArray = jsonObj.value(QStringLiteral("devIds")).toArray();
+    devIds.reserve(devIdsArray.size());
+    for (const auto &devId : devIdsArray) {
+        devIds.append(devId.toString());
+    }
+    changedOptions = jsonObj.value(QStringLiteral("changedOptions")).toObject();
+    populatedForDeviceId = thisDeviceId;
+    return true;
+}
+
+/*!
+ * \brief Saves all fields to persistent storage.
+ */
+bool SyncthingConnection::SuspendedItems::save()
+{
+    if (populatedForDeviceId.isEmpty()) {
+        return false;
+    }
+    auto file = QFile(locatePersistentFile(populatedForDeviceId));
+    if (devIds.isEmpty() && changedOptions.isEmpty()) {
+        return file.remove() || !file.exists();
+    }
+    if (!file.open(QFile::WriteOnly | QFile::Truncate)) {
+        return false;
+    }
+    auto jsonObj = QJsonObject();
+    jsonObj.insert(QStringLiteral("devIds"), QJsonArray::fromStringList(devIds));
+    jsonObj.insert(QStringLiteral("changedOptions"), changedOptions);
+    file.write(QJsonDocument(jsonObj).toJson());
+    if (file.error() == QFile::NoError) {
+        file.flush();
+    }
+    return file.error() == QFile::NoError;
+}
+
+/*!
+ * \brief Locates the file for \a thisDeviceId in persistent storage.
+ */
+QString SyncthingConnection::SuspendedItems::locatePersistentFile(const QString &thisDeviceId)
+{
+    if (!m_persistentDir.has_value()) {
+        static const auto subDir = QStringLiteral("/suspended-items");
+        const auto pathFromEnv = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_LOCAL_DATA_DIR");
+        if (!pathFromEnv.isEmpty()) {
+            m_persistentDir.emplace(pathFromEnv + subDir);
+        } else {
+            m_persistentDir.emplace(QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation) + subDir);
+        }
+    }
+    m_persistentDir->mkpath(QStringLiteral("."));
+    return m_persistentDir->path() % QChar('/') % thisDeviceId % QStringLiteral(".json");
 }
 
 /*!

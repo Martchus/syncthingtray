@@ -11,6 +11,7 @@
 
 #include <QByteArray>
 #include <QDateTime>
+#include <QDir>
 #include <QJsonObject>
 #include <QList>
 #include <QNetworkRequest>
@@ -343,6 +344,7 @@ public Q_SLOTS:
     void rescanAllDirs();
     void restart();
     void shutdown();
+    bool suspendOrResume(bool suspend = true);
 
     // methods to GET or POST information from/to Syncthing
     void requestConfig();
@@ -415,6 +417,7 @@ Q_SIGNALS:
     void deviceResumeTriggered(const QStringList &devIds);
     void directoryPauseTriggered(const QStringList &dirIds);
     void directoryResumeTriggered(const QStringList &dirIds);
+    void suspensionOrResumeTriggered(bool suspended);
     void restartTriggered();
     void shutdownTriggered();
     void errorsCleared();
@@ -463,6 +466,7 @@ private Q_SLOTS:
     void readDirPauseResume();
     void readRestart();
     void readShutdown();
+    void readSuspend();
     void readDirStatus();
     void readDirPullErrors();
     void readDirSummary(
@@ -600,7 +604,18 @@ private:
     std::vector<SyncthingDir> m_dirs;
     std::vector<SyncthingDev> m_devs;
     std::vector<SyncthingError> m_errors;
-    QStringList m_devsPausedDueToMeteredConnection;
+    struct SuspendedItems {
+        QStringList devIds;
+        QJsonObject changedOptions;
+        QString populatedForDeviceId;
+        void clear();
+        bool restore(const QString &thisDeviceId);
+        bool save();
+
+    private:
+        QString locatePersistentFile(const QString &thisDeviceId);
+        std::optional<QDir> m_persistentDir;
+    } m_suspendedItems;
     SyncthingEventId m_lastConnectionsUpdateEvent;
     CppUtilities::DateTime m_lastConnectionsUpdateTime;
     SyncthingEventId m_lastFileEvent = 0;
@@ -1004,7 +1019,7 @@ inline void SyncthingConnection::setDiskEventLimit(int diskEventLimit)
 }
 
 /*!
- * \brief Returns whether to pause all devices on metered connections.
+ * \brief Returns whether to pause all devices, discovery and relaying on metered connections.
  */
 inline bool SyncthingConnection::isPausingOnMeteredConnection() const
 {

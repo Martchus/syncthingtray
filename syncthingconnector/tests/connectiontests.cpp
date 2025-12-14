@@ -15,6 +15,8 @@
 #include <QJsonDocument>
 #include <QStringBuilder>
 
+#include <thread>
+
 using namespace std;
 using namespace Data;
 using namespace CppUtilities;
@@ -50,6 +52,7 @@ public:
     void testConnectingWithSettings();
     void testRequestingRescan();
     void testDealingWithArbitraryConfig();
+    void testSuspendResume();
 
     void setUp() override;
     void tearDown() override;
@@ -296,6 +299,7 @@ void ConnectionTests::testConnection()
     testConnectingWithSettings();
     testRequestingRescan();
     testDealingWithArbitraryConfig();
+    testSuspendResume();
 }
 
 void ConnectionTests::testErrorCases()
@@ -664,16 +668,16 @@ void ConnectionTests::testRequestingRescan()
 
 void ConnectionTests::testDealingWithArbitraryConfig()
 {
-    cerr << "\n - Changing arbitrary config ..." << endl;
+    cerr << "\n - Changing arbitrary config ...\n";
     waitForConnected();
 
     // read some value, eg. options.relayReconnectIntervalM
-    auto rawConfig(m_connection.rawConfig());
-    auto optionsIterator(rawConfig.find(QLatin1String("options")));
+    auto rawConfig = m_connection.rawConfig();
+    auto optionsIterator = rawConfig.find(QLatin1String("options"));
     CPPUNIT_ASSERT(optionsIterator != rawConfig.end());
-    auto optionsRef(optionsIterator.value());
+    auto optionsRef = optionsIterator.value();
     CPPUNIT_ASSERT_EQUAL(QJsonValue::Object, optionsRef.type());
-    auto options(optionsRef.toObject());
+    auto options = optionsRef.toObject();
     CPPUNIT_ASSERT_EQUAL(10, options.value(QLatin1String("relayReconnectIntervalM")).toInt());
 
     // change a value
@@ -681,9 +685,9 @@ void ConnectionTests::testDealingWithArbitraryConfig()
     optionsRef = options;
 
     // expect the change via newConfig() signal
-    bool hasNewConfig = false;
+    auto hasNewConfig = false;
     const auto handleNewConfig([&hasNewConfig](const QJsonObject &newConfig) {
-        const auto newIntervall(newConfig.value(QLatin1String("options")).toObject().value(QLatin1String("relayReconnectIntervalM")).toInt());
+        const auto newIntervall = newConfig.value(QLatin1String("options")).toObject().value(QLatin1String("relayReconnectIntervalM")).toInt();
         if (newIntervall == 75) {
             hasNewConfig = true;
         }
@@ -694,4 +698,80 @@ void ConnectionTests::testDealingWithArbitraryConfig()
     waitForSignalsOrFail([this, &rawConfig] { m_connection.postConfigFromJsonObject(rawConfig); }, 10000,
         connectionSignal(&SyncthingConnection::error), connectionSignal(&SyncthingConnection::newConfigTriggered),
         connectionSignal(&SyncthingConnection::newConfig, handleNewConfig, &hasNewConfig));
+}
+
+void ConnectionTests::testSuspendResume()
+{
+    cerr << "\n - Suspending Syncthing ...\n";
+    waitForConnected();
+
+    // check config before suspending Syncthing
+    const auto myId = m_connection.myId();
+    CPPUNIT_ASSERT(!myId.isEmpty());
+    const auto rawConfig = m_connection.rawConfig();
+    const auto options = rawConfig.value(QLatin1String("options")).toObject();
+    CPPUNIT_ASSERT(options.value(QLatin1String("globalAnnounceEnabled")).toBool());
+    CPPUNIT_ASSERT(options.value(QLatin1String("localAnnounceEnabled")).toBool());
+    CPPUNIT_ASSERT(options.value(QLatin1String("relaysEnabled")).toBool());
+    const auto devices = rawConfig.value(QLatin1String("devices")).toArray();
+    for (const auto &device : devices) {
+        CPPUNIT_ASSERT(!device.toObject().value(QLatin1String("paused")).toBool());
+    }
+
+    // expect the change via newConfig() signal
+    auto hasNewConfig = false, hasSuspensionOrResumeTriggered = false, triggeringSuspension = true;
+    const auto handleNewConfig([&hasNewConfig, &triggeringSuspension](const QJsonObject &newConfig) {
+        // check some arbitrary option to determine whether this newConfig() signal was relevant
+        if (newConfig.value(QLatin1String("options")).toObject().value(QLatin1String("globalAnnounceEnabled")).toBool() != triggeringSuspension) {
+            hasNewConfig = true;
+        }
+    });
+    const auto handlesuspensionOrResumeTriggered = [&hasSuspensionOrResumeTriggered, &triggeringSuspension](bool suspend) {
+        if (triggeringSuspension == suspend) {
+            hasSuspensionOrResumeTriggered = true;
+        }
+    };
+
+    // suspend Syncthing
+    waitForSignalsOrFail([this] { CPPUNIT_ASSERT(m_connection.suspendOrResume()); }, 10000, connectionSignal(&SyncthingConnection::error),
+        connectionSignal(&SyncthingConnection::newConfig, handleNewConfig, &hasNewConfig),
+        connectionSignal(&SyncthingConnection::suspensionOrResumeTriggered, handlesuspensionOrResumeTriggered, &hasSuspensionOrResumeTriggered));
+
+    // check whether options/devices have been altered as expected
+    const auto &alteredRawConfig = m_connection.rawConfig();
+    const auto alteredOptions = rawConfig.value(QLatin1String("options")).toObject();
+    CPPUNIT_ASSERT(alteredOptions.value(QLatin1String("globalAnnounceEnabled")).toBool());
+    CPPUNIT_ASSERT(alteredOptions.value(QLatin1String("localAnnounceEnabled")).toBool());
+    CPPUNIT_ASSERT(alteredOptions.value(QLatin1String("relaysEnabled")).toBool());
+    const auto alteredDevices = alteredRawConfig.value(QLatin1String("devices")).toArray();
+    for (const auto &deviceVal : alteredDevices) {
+        const auto device = deviceVal.toObject();
+        const auto deviceId = device.value(QLatin1String("deviceID")).toString();
+        CPPUNIT_ASSERT(!deviceId.isEmpty());
+        if (deviceId != myId) {
+            CPPUNIT_ASSERT(device.value(QLatin1String("paused")).toBool());
+        }
+    }
+
+    // re-connect - that should not prevent resuming Syncthing again
+    testReconnecting();
+
+    // resume Syncthing
+    cerr << "\n - Resuming Syncthing ...\n";
+    hasNewConfig = false;
+    triggeringSuspension = false;
+    waitForSignalsOrFail([this] { CPPUNIT_ASSERT(m_connection.suspendOrResume(false)); }, 10000, connectionSignal(&SyncthingConnection::error),
+        connectionSignal(&SyncthingConnection::newConfig, handleNewConfig, &hasNewConfig),
+        connectionSignal(&SyncthingConnection::suspensionOrResumeTriggered, handlesuspensionOrResumeTriggered, &hasSuspensionOrResumeTriggered));
+
+    // check whether config is back to normal after resuming Syncthing
+    const auto configBackToNormal = rawConfig == m_connection.rawConfig();
+    if (!configBackToNormal) {
+        cerr << " - Config has NOT been restored: " << QJsonDocument(m_connection.rawConfig()).toJson().data() << '\n';
+    }
+    CPPUNIT_ASSERT(configBackToNormal);
+
+    auto suspendedItemsDir = QDir(dataDir().path());
+    CPPUNIT_ASSERT_MESSAGE("persistent storage created", suspendedItemsDir.cd(QStringLiteral("suspended-items")));
+    CPPUNIT_ASSERT_EQUAL_MESSAGE("persistent storage cleaned up", QStringList(), suspendedItemsDir.entryList(QDir::NoDotAndDotDot));
 }

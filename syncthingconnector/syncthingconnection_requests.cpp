@@ -402,9 +402,9 @@ bool SyncthingConnection::pauseResumeDevice(const QStringList &devIds, bool paus
     QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDevPauseResume);
 
     // avoid considering manually paused or resumed devices when the network connection is no longer metered
-    if (!dueToMetered && !m_devsPausedDueToMeteredConnection.isEmpty()) {
+    if (!dueToMetered && !m_suspendedItems.devIds.isEmpty()) {
         for (const auto &devId : devIds) {
-            m_devsPausedDueToMeteredConnection.removeAll(devId);
+            m_suspendedItems.devIds.removeAll(devId);
         }
     }
     return true;
@@ -602,7 +602,7 @@ void SyncthingConnection::readRescan()
     }
 }
 
-// restart/shutdown Syncthing
+// restart/shutdown/suspend Syncthing
 
 /*!
  * \brief Requests Syncthing to restart.
@@ -662,6 +662,111 @@ void SyncthingConnection::readShutdown()
     }
 }
 
+/// \cond
+static void disableOption(const QString &option, QJsonObject &optionsToModify, QJsonObject &changedOptions)
+{
+    if (const auto value = optionsToModify.value(option); value.toBool()) {
+        optionsToModify.insert(option, false);
+        changedOptions.insert(option, value);
+    }
+}
+/// \endcond
+
+/*!
+ * \brief Suspends (if \a suspend is true) or resumes (if \a suspend is false) Syncthing to deal with metered connections.
+ * \returns Returns whether this function requested changing the Syncthing config.
+ * \remarks
+ * - This function does nothing if the Syncthing devices last known "suspension state" is equal to \a suspend.
+ * - The signal suspensionOrResumeTriggered() is triggered when the request was successful. The signal error() is emitted
+ *   when the request was not successful.
+ */
+bool SyncthingConnection::suspendOrResume(bool suspend)
+{
+    if (m_myId.isEmpty() || !m_hasConfig) {
+        return false;
+    }
+    auto config = QJsonObject();
+    auto altered = false;
+    m_suspendedItems.restore(m_myId);
+    if (suspend) {
+        auto hasDevicesToPause = false;
+        m_suspendedItems.populatedForDeviceId = m_myId;
+        m_suspendedItems.devIds.reserve(static_cast<qsizetype>(m_devs.size()));
+        for (const auto &device : m_devs) {
+            if (!device.paused && device.status != SyncthingDevStatus::ThisDevice) {
+                if (!m_suspendedItems.devIds.contains(device.id)) {
+                    m_suspendedItems.devIds << device.id;
+                    hasDevicesToPause = true;
+                }
+            }
+        }
+        auto options = m_rawConfig.value(QLatin1String("options")).toObject();
+        auto &changedOptions = m_suspendedItems.changedOptions;
+        disableOption(QStringLiteral("globalAnnounceEnabled"), options, changedOptions);
+        disableOption(QStringLiteral("localAnnounceEnabled"), options, changedOptions);
+        disableOption(QStringLiteral("relaysEnabled"), options, changedOptions);
+        if (hasDevicesToPause || !changedOptions.isEmpty()) {
+            config = m_rawConfig;
+            if (!changedOptions.isEmpty()) {
+                config.insert(QStringLiteral("options"), options);
+                altered = true;
+            }
+            if (setDevicesPaused(config, m_suspendedItems.devIds, true)) {
+                altered = true;
+            }
+        }
+    } else if (!m_suspendedItems.populatedForDeviceId.isEmpty()) {
+        config = m_rawConfig;
+        if (auto optionsIter = config.find(QStringLiteral("options")); optionsIter != m_rawConfig.end()) {
+            auto options = optionsIter.value();
+            auto optionsObj = options.toObject();
+            for (auto option = m_suspendedItems.changedOptions.begin(), end = m_suspendedItems.changedOptions.end(); option != end; ++option) {
+                if (optionsObj.value(option.key()) != option.value()) {
+                    optionsObj.insert(option.key(), option.value());
+                    altered = true;
+                }
+            }
+            if (altered) {
+                options = optionsObj;
+            }
+        }
+        if (setDevicesPaused(config, m_suspendedItems.devIds, false)) {
+            altered = true;
+        }
+    }
+    if (!altered) {
+        return false;
+    }
+    auto *const reply = sendData(changeConfigVerb(), configPath(), QUrlQuery(), QJsonDocument(config).toJson(QJsonDocument::Compact));
+    reply->setProperty("suspend", suspend);
+    QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readSuspend);
+    return true;
+}
+
+/*!
+ * \brief Reads results of suspendOrResumeForMeteredConnection().
+ */
+void SyncthingConnection::readSuspend()
+{
+    auto const [reply, response] = prepareReply(false);
+    if (!reply) {
+        return;
+    }
+    const auto suspend = reply->property("suspend").toBool();
+    switch (reply->error()) {
+    case QNetworkReply::NoError:
+        if (!suspend) {
+            m_suspendedItems.clear();
+        }
+        m_suspendedItems.save();
+        suspensionOrResumeTriggered(suspend);
+        break;
+    default:
+        emitError(suspend ? tr("Unable to suspend Syncthing: ") : tr("Unable to resume Syncthing: "), SyncthingErrorCategory::SpecificRequest, reply,
+            response);
+    }
+}
+
 // clear errors
 
 /*!
@@ -718,7 +823,6 @@ void SyncthingConnection::requestConfig()
  */
 void SyncthingConnection::readConfig()
 {
-    //cerr << "error string: " << static_cast<QNetworkReply *>(QObject::sender())->readAll().toStdString() << '\n';
     auto const [reply, response] = prepareReply(m_configReply);
     if (!reply) {
         return;
@@ -736,6 +840,7 @@ void SyncthingConnection::readConfig()
 
         m_rawConfig = replyDoc.object();
         m_hasConfig = true;
+        cerr << "newConfig emitted\n";
         emit newConfig(m_rawConfig);
 
         if (m_keepPolling) {
@@ -841,9 +946,6 @@ void SyncthingConnection::readDevs(const QJsonArray &devs)
 
     m_devs.swap(newDevs);
     emit this->newDevices(m_devs);
-    if (m_pausingOnMeteredConnection) {
-        handleMeteredConnection();
-    }
 }
 
 // status of Syncthing (own ID, startup time)
