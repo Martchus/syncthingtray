@@ -389,7 +389,7 @@
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="144"/>
         <source>Local Discovery</source>
-        <translation>Lokale Erkennung</translation>
+        <translation>Lokale Gerätesuche</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="144"/>
@@ -404,12 +404,12 @@
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="145"/>
         <source>Whether to announce this device to the global announce (discovery) server, and also use it to look up other devices.</source>
-        <translation>Ob dieses Gerät dem globalen Ankündigungs- (Erkennungs-) Server bekannt gegeben und auch zum Nachschlagen anderer Geräte verwendet werden soll.</translation>
+        <translation>Ob dieses Gerät dem Server für die globale Gerätesuche bekannt gegeben werden soll und ob es zum Auffinden anderer Geräte verwendet werden soll.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="146"/>
         <source>Global Discovery Servers</source>
-        <translation>Globale Erkennungsserver</translation>
+        <translation>Server für globale Gerätesuche</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="146"/>
@@ -450,7 +450,7 @@
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="149"/>
         <source>Enable (the default) or disable announcing private (RFC1918) LAN IP addresses to global discovery.</source>
-        <translation>Aktivieren (Standard) oder Deaktivieren der Bekanntgabe privater (RFC1918) LAN-IP-Adressen an die globale Erkennung.</translation>
+        <translation>Aktivieren (Standard) oder Deaktivieren der Bekanntgabe privater (RFC1918) LAN-IP-Adressen an die globale Gerätesuche.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="150"/>
