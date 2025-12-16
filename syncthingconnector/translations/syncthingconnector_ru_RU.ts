@@ -4,57 +4,57 @@
 <context>
     <name>Data::SyncthingConnection</name>
     <message>
-        <location filename="../syncthingconnection.cpp" line="181"/>
+        <location filename="../syncthingconnection.cpp" line="182"/>
         <source>disconnected</source>
         <translation>отключен</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="183"/>
+        <location filename="../syncthingconnection.cpp" line="184"/>
         <source>reconnecting</source>
         <translation>повторное подключение</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="185"/>
+        <location filename="../syncthingconnection.cpp" line="186"/>
         <source>connected</source>
         <translation>подключен</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="187"/>
+        <location filename="../syncthingconnection.cpp" line="188"/>
         <source>connected, scanning</source>
         <translation>подключен, сканирование</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="189"/>
+        <location filename="../syncthingconnection.cpp" line="190"/>
         <source>connected, paused</source>
         <translation>подключено, приостановлено</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="191"/>
+        <location filename="../syncthingconnection.cpp" line="192"/>
         <source>connected, synchronizing</source>
         <translation>подключен, синхронизируется</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="193"/>
+        <location filename="../syncthingconnection.cpp" line="194"/>
         <source>connected, remote not in sync</source>
         <translation>подключено, удаленный не синхронизирован</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="195"/>
+        <location filename="../syncthingconnection.cpp" line="196"/>
         <source>connected, but all remote devices disconnected</source>
         <translation>подключено, но все удаленные устройства отключены</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="197"/>
+        <location filename="../syncthingconnection.cpp" line="198"/>
         <source>unknown</source>
         <translation>неизвестный</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="470"/>
+        <location filename="../syncthingconnection.cpp" line="488"/>
         <source>Connection configuration is insufficient.</source>
         <translation>Конфигурация соединения недостаточна.</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="975"/>
+        <location filename="../syncthingconnection.cpp" line="993"/>
         <source>Unable to parse timestamp &quot;%1&quot; (%2): %3</source>
         <translation>Невозможно проанализировать временную метку &quot;%1&quot; (%2): %3</translation>
     </message>
@@ -89,12 +89,12 @@
         <translation>Невозможно запросить журнал синхронизации: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1055"/>
+        <location filename="../syncthingconnection.cpp" line="1073"/>
         <source>Unable to locate certificate used by Syncthing.</source>
         <translation>Не удалось найти сертификат, используемый Syncthing.</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1068"/>
+        <location filename="../syncthingconnection.cpp" line="1086"/>
         <source>Unable to load certificate used by Syncthing.</source>
         <translation>Не удалось загрузить сертификат, используемый Syncthing.</translation>
     </message>
@@ -301,17 +301,17 @@
         <translation>Невозможно запросить события диска: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1282"/>
+        <location filename="../syncthingconnection.cpp" line="1303"/>
         <source>at offset %1</source>
         <translation>при смещении %1</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.h" line="755"/>
+        <location filename="../syncthingconnection.h" line="759"/>
         <source>connecting</source>
         <translation>подключение</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.h" line="757"/>
+        <location filename="../syncthingconnection.h" line="761"/>
         <source>, re-connect attempt every %1 ms</source>
         <translation>, попытка повторного подключения каждые %1 мс</translation>
     </message>
