@@ -61,6 +61,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     SyncthingStatusComputionFlags statusComputionFlags = SyncthingStatusComputionFlags::Default;
     bool autoConnect = false;
     bool pauseOnMeteredConnection = false;
+    bool forceSuspend = false;
 #ifndef QT_NO_SSL
     static QList<QSslError> compileSslErrors(const QSslCertificate &trustedCert);
     bool loadHttpsCert();

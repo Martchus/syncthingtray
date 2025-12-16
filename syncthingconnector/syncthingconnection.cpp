@@ -119,6 +119,7 @@ SyncthingConnection::SyncthingConnection(
     , m_recordFileChanges(false)
     , m_useDeprecatedRoutes(true)
     , m_pausingOnMeteredConnection(false)
+    , m_forceSuspend(false)
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
     , m_handlingMeteredConnectionInitialized(false)
 #endif
@@ -368,23 +369,37 @@ void SyncthingConnection::disablePolling()
  * \remark This is realized by calling the function suspendOrResume() which can also be called manually
  *         to temporarily override this.
  */
-void SyncthingConnection::setPausingOnMeteredConnection(bool pausingOnMeteredConnection)
+bool SyncthingConnection::setPausingOnMeteredConnection(bool pausingOnMeteredConnection, bool lazy)
 {
-    if (m_pausingOnMeteredConnection != pausingOnMeteredConnection) {
-        if ((m_pausingOnMeteredConnection = pausingOnMeteredConnection)) {
-            // initialize handling of metered connections
-#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
-            if (!m_handlingMeteredConnectionInitialized) {
-                if (const auto [networkInformation, isMetered] = loadNetworkInformationBackendForMetered(); networkInformation) {
-                    QObject::connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, &SyncthingConnection::handleMeteredConnection);
-                    suspendOrResume(isMetered);
-                    return;
-                }
-            }
-#endif
-        }
-        handleMeteredConnection();
+    if (m_pausingOnMeteredConnection == pausingOnMeteredConnection) {
+        return false;
     }
+    if ((m_pausingOnMeteredConnection = pausingOnMeteredConnection)) {
+        // initialize handling of metered connections
+#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
+        if (!m_forceSuspend && !m_handlingMeteredConnectionInitialized) {
+            if (const auto [networkInformation, isMetered] = loadNetworkInformationBackendForMetered(); networkInformation) {
+                QObject::connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, &SyncthingConnection::handleMeteredConnection);
+                return lazy || suspendOrResume(isMetered);
+            }
+        }
+#endif
+    }
+    return lazy || handleMeteredConnection();
+}
+
+/*!
+ * \brief Sets whether to pause all devices, discovery and relaying.
+ * \remark This is realized by calling the function suspendOrResume() which can also be called manually
+ *         to suspend only temporarily.
+ */
+bool SyncthingConnection::setForceSuspendEnabled(bool forceSuspendEnabled, bool lazy)
+{
+    if (m_forceSuspend == forceSuspendEnabled) {
+        return false;
+    }
+    m_forceSuspend = forceSuspendEnabled;
+    return lazy || handleMeteredConnection();
 }
 
 /*!
@@ -396,16 +411,18 @@ QString SyncthingConnection::substituteTilde(const QString &path) const
 }
 
 /*!
- * \brief Ensures that devices are paused/resumed depending on whether the network connection is metered.
+ * \brief Ensures that devices, discovery and relaying are enabled depending on whether suspension is enabled or the network connection is metered.
  */
-void SyncthingConnection::handleMeteredConnection()
+bool SyncthingConnection::handleMeteredConnection()
 {
     if (!m_hasConfig || m_myId.isEmpty()) {
-        return;
+        return false;
+    }
+    if (m_forceSuspend) {
+        return suspendOrResume(true);
     }
     if (!m_pausingOnMeteredConnection) {
-        suspendOrResume(false);
-        return;
+        return suspendOrResume(false);
     }
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
     const auto *const networkInformation = QNetworkInformation::instance();
@@ -414,9 +431,10 @@ void SyncthingConnection::handleMeteredConnection()
         && networkInformation->supports(QNetworkInformation::Feature::Metered)
 #endif
     ) {
-        suspendOrResume(networkInformation->isMetered());
+        return suspendOrResume(networkInformation->isMetered());
     }
 #endif
+    return false;
 }
 
 /*!
@@ -1149,7 +1167,10 @@ bool SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
     setLongPollingTimeout(connectionSettings.longPollingTimeout);
     setDiskEventLimit(connectionSettings.diskEventLimit);
     setStatusComputionFlags(connectionSettings.statusComputionFlags);
-    setPausingOnMeteredConnection(connectionSettings.pauseOnMeteredConnection);
+    if (setForceSuspendEnabled(connectionSettings.forceSuspend, true)
+        | setPausingOnMeteredConnection(connectionSettings.pauseOnMeteredConnection, true)) {
+        handleMeteredConnection();
+    }
 
     return reconnectRequired;
 }

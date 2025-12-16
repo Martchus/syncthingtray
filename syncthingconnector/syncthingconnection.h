@@ -176,6 +176,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(QJsonObject rawConfig READ rawConfig NOTIFY newConfig)
     Q_PROPERTY(bool useDeprecatedRoutes READ isUsingDeprecatedRoutes WRITE setUseDeprecatedRoutes)
     Q_PROPERTY(bool pausingOnMeteredConnection READ isPausingOnMeteredConnection WRITE setPausingOnMeteredConnection)
+    Q_PROPERTY(bool forceSuspendEnabled READ isForceSuspendEnabled WRITE setForceSuspendEnabled)
     Q_PROPERTY(bool insecure READ isInsecure WRITE setInsecure)
 
 public:
@@ -265,7 +266,9 @@ public:
     int diskEventLimit() const;
     void setDiskEventLimit(int diskEventLimit);
     bool isPausingOnMeteredConnection() const;
-    void setPausingOnMeteredConnection(bool pausingOnMeteredConnection);
+    bool setPausingOnMeteredConnection(bool pausingOnMeteredConnection, bool lazy = false);
+    bool isForceSuspendEnabled() const;
+    bool setForceSuspendEnabled(bool forceSuspendEnabled, bool lazy = false);
     bool isInsecure() const;
     void setInsecure(bool insecure);
     std::optional<QSet<QString>> &dirFilter();
@@ -498,7 +501,7 @@ private Q_SLOTS:
     void handleSslErrors(const QList<QSslError> &errors);
 #endif
     void handleRedirection(const QUrl &url);
-    void handleMeteredConnection();
+    bool handleMeteredConnection();
     void recalculateStatus();
     void invalidateHasOutOfSyncDirs();
 
@@ -636,6 +639,7 @@ private:
     bool m_recordFileChanges;
     bool m_useDeprecatedRoutes;
     bool m_pausingOnMeteredConnection;
+    bool m_forceSuspend;
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
     bool m_handlingMeteredConnectionInitialized;
 #endif
@@ -1024,6 +1028,14 @@ inline void SyncthingConnection::setDiskEventLimit(int diskEventLimit)
 inline bool SyncthingConnection::isPausingOnMeteredConnection() const
 {
     return m_pausingOnMeteredConnection;
+}
+
+/*!
+ * \brief Returns whether to pause all devices, discovery and relaying when connecting.
+ */
+inline bool SyncthingConnection::isForceSuspendEnabled() const
+{
+    return m_forceSuspend;
 }
 
 /*!

@@ -308,6 +308,7 @@ bool restore()
             connectionSettings->autoConnect = settings.value(QStringLiteral("autoConnect"), connectionSettings->autoConnect).toBool();
             connectionSettings->pauseOnMeteredConnection
                 = settings.value(QStringLiteral("pauseOnMetered"), connectionSettings->pauseOnMeteredConnection).toBool();
+            connectionSettings->forceSuspend = settings.value(QStringLiteral("forceSuspend"), connectionSettings->forceSuspend).toBool();
             const auto statusComputionFlags = settings.value(QStringLiteral("statusComputionFlags"),
                 QVariant::fromValue(static_cast<UnderlyingFlagType>(connectionSettings->statusComputionFlags)));
             if (statusComputionFlags.canConvert<UnderlyingFlagType>()) {
@@ -473,6 +474,7 @@ bool save()
         settings.setValue(QStringLiteral("longPollingTimeout"), connectionSettings->longPollingTimeout);
         settings.setValue(QStringLiteral("autoConnect"), connectionSettings->autoConnect);
         settings.setValue(QStringLiteral("pauseOnMetered"), connectionSettings->pauseOnMeteredConnection);
+        settings.setValue(QStringLiteral("forceSuspend"), connectionSettings->forceSuspend);
         settings.setValue(QStringLiteral("statusComputionFlags"),
             QVariant::fromValue(static_cast<std::underlying_type_t<Data::SyncthingStatusComputionFlags>>(connectionSettings->statusComputionFlags)));
 #ifndef QT_NO_SSL

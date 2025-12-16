@@ -733,7 +733,7 @@ void ConnectionTests::testSuspendResume()
     };
 
     // suspend Syncthing
-    waitForSignalsOrFail([this] { CPPUNIT_ASSERT(m_connection.suspendOrResume()); }, 10000, connectionSignal(&SyncthingConnection::error),
+    waitForSignalsOrFail([this] { CPPUNIT_ASSERT(m_connection.setForceSuspendEnabled(true)); }, 10000, connectionSignal(&SyncthingConnection::error),
         connectionSignal(&SyncthingConnection::newConfig, handleNewConfig, &hasNewConfig),
         connectionSignal(&SyncthingConnection::suspensionOrResumeTriggered, handlesuspensionOrResumeTriggered, &hasSuspensionOrResumeTriggered));
 
@@ -760,7 +760,7 @@ void ConnectionTests::testSuspendResume()
     cerr << "\n - Resuming Syncthing ...\n";
     hasNewConfig = false;
     triggeringSuspension = false;
-    waitForSignalsOrFail([this] { CPPUNIT_ASSERT(m_connection.suspendOrResume(false)); }, 10000, connectionSignal(&SyncthingConnection::error),
+    waitForSignalsOrFail([this] { CPPUNIT_ASSERT(m_connection.setForceSuspendEnabled(false)); }, 10000, connectionSignal(&SyncthingConnection::error),
         connectionSignal(&SyncthingConnection::newConfig, handleNewConfig, &hasNewConfig),
         connectionSignal(&SyncthingConnection::suspensionOrResumeTriggered, handlesuspensionOrResumeTriggered, &hasSuspensionOrResumeTriggered));
 

@@ -56,6 +56,7 @@ void SyncthingConnectionSettings::storeToJson(QJsonObject &object)
     advanced.insert(QLatin1String("longPollingTimeout"), longPollingTimeout);
     advanced.insert(QLatin1String("diskEventLimit"), diskEventLimit);
     advanced.insert(QLatin1String("autoConnect"), autoConnect);
+    advanced.insert(QLatin1String("forceSuspend"), forceSuspend);
     object.insert(QLatin1String("advanced"), advanced);
 #ifndef QT_NO_SSL
     object.insert(QLatin1String("httpsCertPath"), httpsCertPath);
@@ -83,6 +84,7 @@ bool SyncthingConnectionSettings::loadFromJson(const QJsonObject &object)
     diskEventLimit = advanced.value(QLatin1String("diskEventLimit")).toInt(defaultDiskEventLimit);
     statusComputionFlags = SyncthingStatusComputionFlags::Default | SyncthingStatusComputionFlags::RemoteSynchronizing;
     autoConnect = advanced.value(QLatin1String("autoConnect")).toBool(true);
+    forceSuspend = advanced.value(QLatin1String("forceSuspend")).toBool(true);
 
 #ifndef QT_NO_SSL
     httpsCertPath = object.value(QLatin1String("httpsCertPath")).toString();
