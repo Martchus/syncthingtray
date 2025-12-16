@@ -3703,8 +3703,8 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="604"/>
-        <source>Pause all devices while the local network connection is metered</source>
-        <translation>Pausiere alle Geräte solange die lokale Netzwerkverbindung getaktet ist</translation>
+        <source>Pause all devices, discovery and relaying while the local network connection is metered</source>
+        <translation>Pausiere alle Geräte, die Geräteerkennung und Relaying solange die lokale Netzwerkverbindung getaktet ist</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="461"/>
@@ -5600,8 +5600,8 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="163"/>
-        <source>Pause devices on metered network connection</source>
-        <translation>Bei getakteter Internetverbindung Geräte pausieren</translation>
+        <source>Pause devices, discovery and relaying on metered network connection</source>
+        <translation>Bei getakteter Internetverbindung Geräte, Geräteerkennung und Relaying pausieren</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="164"/>

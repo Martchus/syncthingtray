@@ -3640,8 +3640,8 @@ The Web UI will be opened in the default web browser instead.</source>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="604"/>
-        <source>Pause all devices while the local network connection is metered</source>
-        <translation>在本地网络连接按流量计费时暂停所有设备</translation>
+        <source>Pause all devices, discovery and relaying while the local network connection is metered</source>
+        <translation type="unfinished">在本地网络连接按流量计费时暂停所有设备</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="134"/>
@@ -5415,7 +5415,7 @@ The Web UI will be opened in the default web browser instead.</source>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="163"/>
-        <source>Pause devices on metered network connection</source>
+        <source>Pause devices, discovery and relaying on metered network connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

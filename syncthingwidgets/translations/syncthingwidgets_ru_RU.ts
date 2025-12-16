@@ -3601,8 +3601,8 @@
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="604"/>
-        <source>Pause all devices while the local network connection is metered</source>
-        <translation>Приостановите все устройства, пока тарифицируется подключение к локальной сети</translation>
+        <source>Pause all devices, discovery and relaying while the local network connection is metered</source>
+        <translation type="unfinished">Приостановите все устройства, пока тарифицируется подключение к локальной сети</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="461"/>
@@ -5324,7 +5324,7 @@ This dialog closes automatically when the process finally terminates.</source>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="163"/>
-        <source>Pause devices on metered network connection</source>
+        <source>Pause devices, discovery and relaying on metered network connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
