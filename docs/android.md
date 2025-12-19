@@ -183,6 +183,17 @@ While Syncthing Tray basically works on Android, there are still some unresolved
 * The connection to Syncthing can sometimes not be restored after restarting Syncthing (e.g. to make
   an export/backup). This happens particularly often when using a UNIX domain socket. One can restart
   the app to work around it.
+* Battery-life can be a problem. If you are affected I recommend disabling local discovery. Note that
+  this is a problem of Syncthing itself and there is already
+  [a discussion in the forums](https://forum.syncthing.net/t/syncthing-fork-v2-uses-far-too-much-battery-over-v1)
+  and [a potential workaround](https://github.com/syncthing/syncthing/pull/10494).
+* It is possible to pause Syncthing if the network connection is metered. There are two options for
+  this. The option in the launcher settings completely stops/starts Syncthing depending on the network
+  connection. With
+  [rescans on startup not being optional](https://github.com/syncthing/syncthing/issues/5353) this will
+  drain the battery if you have big folders. The option in the connection settings will keep Syncthing
+  running but pause devices, discovery and relaying. This will hopefully not drain the battery as much
+  but it can lead to inconsistencies, e.g. if you add a new device while the connection is metered.
 * Some of the problems/solutions found on the
   [Wiki pages of Syncthing-Fork](https://github.com/Catfriend1/syncthing-android/wiki) might help with
   Syncthing Tray on Android as well.
