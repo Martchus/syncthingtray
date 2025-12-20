@@ -472,7 +472,7 @@ endif ()
 # add Qml module
 if (QUICK_GUI)
     # workaround build errors due to implicit conversions in generated code
-    if (TREAT_WARNINGS_AS_ERRORS)
+    if (TREAT_WARNINGS_AS_ERRORS AND (CMAKE_CXX_COMPILER_ID MATCHES ".*Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU"))
         foreach (QML_FILE AdvancedDevConfigPage AdvancedDirConfigPage)
             set_source_files_properties(
                 "${CMAKE_CURRENT_BINARY_DIR}/.rcc/qmlcache/${META_TARGET_NAME}_quick/qml/${QML_FILE}_qml.cpp"
