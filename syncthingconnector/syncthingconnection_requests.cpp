@@ -680,17 +680,19 @@ static void disableOption(const QString &option, QJsonObject &optionsToModify, Q
  * - The signal suspensionOrResumeTriggered() is triggered when the request was successful. The signal error() is emitted
  *   when the request was not successful.
  */
-bool SyncthingConnection::suspendOrResume(bool suspend)
+bool SyncthingConnection::suspendOrResume(bool suspend, const QString &reason)
 {
     if (m_myId.isEmpty() || !m_hasConfig) {
         return false;
     }
     auto config = QJsonObject();
-    auto altered = false;
+    auto altered = false, reasonChanged = false, hasDevicesToPause = false;
     m_suspendedItems.restore(m_myId);
     if (suspend) {
-        auto hasDevicesToPause = false;
         m_suspendedItems.populatedForDeviceId = m_myId;
+        if ((reasonChanged = reason != m_suspendedItems.reason)) {
+            m_suspendedItems.reason = reason;
+        }
         m_suspendedItems.devIds.reserve(static_cast<qsizetype>(m_devs.size()));
         for (const auto &device : m_devs) {
             if (!device.paused && device.status != SyncthingDevStatus::ThisDevice) {
@@ -735,6 +737,9 @@ bool SyncthingConnection::suspendOrResume(bool suspend)
         }
     }
     if (!altered) {
+        if (reasonChanged && !hasDevicesToPause && m_status == SyncthingStatus::Paused) {
+            emit statusChanged(m_status);
+        }
         return false;
     }
     auto *const reply = sendData(changeConfigVerb(), configPath(), QUrlQuery(), QJsonDocument(config).toJson(QJsonDocument::Compact));
@@ -756,7 +761,11 @@ void SyncthingConnection::readSuspend()
     switch (reply->error()) {
     case QNetworkReply::NoError:
         if (!suspend) {
+            const auto emitStatusChangedForReason = m_status == SyncthingStatus::Paused && !m_suspendedItems.reason.isEmpty();
             m_suspendedItems.clear();
+            if (emitStatusChangedForReason) {
+                emit statusChanged(m_status);
+            }
         }
         m_suspendedItems.save();
         suspensionOrResumeTriggered(suspend);

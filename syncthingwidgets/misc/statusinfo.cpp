@@ -85,7 +85,7 @@ void StatusInfo::updateConnectionStatus(const SyncthingConnection &connection, c
                 m_statusIcon = icons ? &icons->scanninig : nullptr;
                 break;
             case SyncthingStatus::Paused:
-                m_statusText = QCoreApplication::translate("QtGui::StatusInfo", "At least one device is paused");
+                m_statusText = connection.pauseReason().isEmpty() ? QCoreApplication::translate("QtGui::StatusInfo", "At least one device is paused") : connection.pauseReason();
                 m_statusIcon = icons ? &icons->pause : nullptr;
                 break;
             case SyncthingStatus::Synchronizing:

@@ -380,7 +380,7 @@ bool SyncthingConnection::setPausingOnMeteredConnection(bool pausingOnMeteredCon
         if (!m_forceSuspend && !m_handlingMeteredConnectionInitialized) {
             if (const auto [networkInformation, isMetered] = loadNetworkInformationBackendForMetered(); networkInformation) {
                 QObject::connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, &SyncthingConnection::handleMeteredConnection);
-                return lazy || suspendOrResume(isMetered);
+                return lazy || suspendOrResumeDueToMeteredConnection(isMetered);
             }
         }
 #endif
@@ -419,7 +419,7 @@ bool SyncthingConnection::handleMeteredConnection()
         return false;
     }
     if (m_forceSuspend) {
-        return suspendOrResume(true);
+        return suspendOrResume(true, tr("Devices paused as Syncthing was force-suspended"));
     }
     if (!m_pausingOnMeteredConnection) {
         return suspendOrResume(false);
@@ -431,7 +431,7 @@ bool SyncthingConnection::handleMeteredConnection()
         && networkInformation->supports(QNetworkInformation::Feature::Metered)
 #endif
     ) {
-        return suspendOrResume(networkInformation->isMetered());
+        return suspendOrResumeDueToMeteredConnection(networkInformation->isMetered());
     }
 #endif
     return false;
@@ -1467,6 +1467,15 @@ void SyncthingConnection::invalidateHasOutOfSyncDirs()
 }
 
 /*!
+ * \brief Suspends or resumes Syncthing due to a metered network connection.
+ * \sa See suspendOrResume() for the general function.
+ */
+bool SyncthingConnection::suspendOrResumeDueToMeteredConnection(bool suspend)
+{
+    return suspendOrResume(suspend, tr("Devices paused due to metered network connection"));
+}
+
+/*!
  * \brief Returns syncthingUrl() with userName() and password().
  */
 QUrl SyncthingConnection::makeUrlWithCredentials() const
@@ -1500,6 +1509,7 @@ void Data::SyncthingConnection::SuspendedItems::clear()
     devIds.clear();
     changedOptions = QJsonObject();
     populatedForDeviceId.clear();
+    reason.clear();
 }
 
 /*!
@@ -1534,6 +1544,7 @@ bool SyncthingConnection::SuspendedItems::restore(const QString &thisDeviceId)
     }
     changedOptions = jsonObj.value(QStringLiteral("changedOptions")).toObject();
     populatedForDeviceId = thisDeviceId;
+    reason = jsonObj.value(QStringLiteral("reason")).toString();
     return true;
 }
 
@@ -1555,6 +1566,7 @@ bool SyncthingConnection::SuspendedItems::save()
     auto jsonObj = QJsonObject();
     jsonObj.insert(QStringLiteral("devIds"), QJsonArray::fromStringList(devIds));
     jsonObj.insert(QStringLiteral("changedOptions"), changedOptions);
+    jsonObj.insert(QStringLiteral("reason"), reason);
     file.write(QJsonDocument(jsonObj).toJson());
     if (file.error() == QFile::NoError) {
         file.flush();

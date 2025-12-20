@@ -177,6 +177,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(bool useDeprecatedRoutes READ isUsingDeprecatedRoutes WRITE setUseDeprecatedRoutes)
     Q_PROPERTY(bool pausingOnMeteredConnection READ isPausingOnMeteredConnection WRITE setPausingOnMeteredConnection)
     Q_PROPERTY(bool forceSuspendEnabled READ isForceSuspendEnabled WRITE setForceSuspendEnabled)
+    Q_PROPERTY(QString pauseReason READ pauseReason NOTIFY statusChanged)
     Q_PROPERTY(bool insecure READ isInsecure WRITE setInsecure)
 
 public:
@@ -231,6 +232,7 @@ public:
     SyncthingStatus status() const;
     QString statusText() const;
     static QString statusText(SyncthingStatus status);
+    const QString &pauseReason() const;
     SyncthingStatusComputionFlags statusComputionFlags() const;
     void setStatusComputionFlags(SyncthingStatusComputionFlags flags);
     SyncthingConnectionLoggingFlags loggingFlags() const;
@@ -347,7 +349,7 @@ public Q_SLOTS:
     void rescanAllDirs();
     void restart();
     void shutdown();
-    bool suspendOrResume(bool suspend = true);
+    bool suspendOrResume(bool suspend = true, const QString &reason = QString());
 
     // methods to GET or POST information from/to Syncthing
     void requestConfig();
@@ -504,6 +506,7 @@ private Q_SLOTS:
     bool handleMeteredConnection();
     void recalculateStatus();
     void invalidateHasOutOfSyncDirs();
+    bool suspendOrResumeDueToMeteredConnection(bool suspend);
 
 private:
     // handler to evaluate results from request...() methods
@@ -611,6 +614,7 @@ private:
         QStringList devIds;
         QJsonObject changedOptions;
         QString populatedForDeviceId;
+        QString reason;
         void clear();
         bool restore(const QString &thisDeviceId);
         bool save();
@@ -761,6 +765,17 @@ inline QString SyncthingConnection::statusText() const
         text += tr(", re-connect attempt every %1 ms").arg(m_autoReconnectTimer.interval());
     }
     return text;
+}
+
+/*!
+ * \brief Returns the reason why the connection status is paused if there's a specific reason for it (like a metered network connection).
+ * \remarks
+ * - This is only relevant when status() is SyncthingStatus::Paused.
+ * - The statusChanged() signal is emitted when this value changes as this reason is supposed to be read when updating the status.
+ */
+inline const QString &SyncthingConnection::pauseReason() const
+{
+    return !m_suspendedItems.populatedForDeviceId.isEmpty() ? m_suspendedItems.reason : m_suspendedItems.populatedForDeviceId;
 }
 
 /*!
