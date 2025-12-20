@@ -9,6 +9,7 @@
 #include "resources/../../tray/resources/config.h"
 
 #include <qtutilities/misc/compat.h>
+#include <qtutilities/misc/disablewarningsmoc.h>
 
 #include <QtTest/QtTest>
 
@@ -513,5 +514,6 @@ void WizardTests::configureSyncthingArgs(SetupDetection &setupDetection) const
     setupDetection.defaultSyncthingArgs.append(QChar('\''));
 }
 
+QT_UTILITIES_DISABLE_WARNINGS_FOR_MOC_INCLUDE
 QTEST_MAIN(WizardTests)
 #include "wizard.moc"

@@ -8,6 +8,8 @@
 
 #include "../../testhelper/helper.h"
 
+#include <qtutilities/misc/disablewarningsmoc.h>
+
 #include <QGuiApplication>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -98,6 +100,6 @@ private:
     bool m_withSyncthing = false;
 };
 
+QT_UTILITIES_DISABLE_WARNINGS_FOR_MOC_INCLUDE
 QUICK_TEST_MAIN_WITH_SETUP(apptest, Setup)
-
 #include "apptests.moc"
