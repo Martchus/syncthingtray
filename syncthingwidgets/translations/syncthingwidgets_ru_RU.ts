@@ -1223,7 +1223,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="49"/>
         <source>Versioning Strategy</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Стратегия версионирования</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="50"/>
@@ -2428,7 +2428,7 @@
         <location filename="../quick/app.cpp" line="443"/>
         <location filename="../quick/app.cpp" line="451"/>
         <source>Unable to open &quot;%1&quot;</source>
-        <translation></translation>
+        <translation>Не удалось открыть &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="472"/>
@@ -2483,7 +2483,7 @@
     <message>
         <location filename="../quick/app.cpp" line="1429"/>
         <source>App settings saved</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Настройки приложения сохранены</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1455"/>
@@ -2543,7 +2543,7 @@
     <message>
         <location filename="../quick/app.cpp" line="1710"/>
         <source>Triggered re-connect with Syncthing backend</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Вызван повторный подключение с сервером Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1728"/>
@@ -2738,12 +2738,12 @@
     <message>
         <location filename="../quick/app.cpp" line="2222"/>
         <source>Unable to remove leftovers from import under &quot;%1&quot;.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Невозможно удалить остатки импорта под &quot;%1&quot;.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2227"/>
         <source>Removed leftovers from import.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Удален остаток импорта.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="2232"/>
@@ -2863,7 +2863,7 @@
     <message>
         <location filename="../quick/appservice.cpp" line="522"/>
         <source>%1 Syncthing API errors</source>
-        <translation></translation>
+        <translation>Ошибки синхронизации %1</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="536"/>
@@ -3070,12 +3070,12 @@
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="441"/>
         <source>Last</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Последний</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="449"/>
         <source>Default tab</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">По умолчанию</translation>
     </message>
 </context>
 <context>
@@ -3537,7 +3537,7 @@
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="686"/>
         <source>Local path</source>
-        <translation></translation>
+        <translation>Локальный путь</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="693"/>
@@ -5325,7 +5325,7 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="161"/>
         <source>Pause devices, discovery and relaying on metered network connection</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Пауза устройств, обнаружения и релейинга на ограниченном сетевом подключении</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="162"/>
@@ -5370,17 +5370,17 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="175"/>
         <source>n/a</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">n/a</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="175"/>
         <source>URL for GUI and API access</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">URL для доступа к интерфейсу пользователя и API</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="185"/>
         <source>External executable</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Внешний исполняемый файл</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="177"/>
@@ -5445,7 +5445,7 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="185"/>
         <source>Start an external executable instead of using the built-in version of Syncthing. When empty, the built-in version of Syncthing is used.</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Запустить внешний исполняемый файл вместо использования встроенной версии Syncthing. При пустом значении используется встроенная версия Syncthing.</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="188"/>
@@ -5605,7 +5605,7 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="308"/>
         <source>Open documentation</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Открыть документацию</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="316"/>
