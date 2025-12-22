@@ -232,7 +232,8 @@ Translations for further locales can be added quite easily:
    `tray/translations` and the `translations` folder of `qtutilities`.
 5. Open the files with Qt Linguist to add translations. Qt Linguist is part of
    the [Qt Tools repository](http://code.qt.io/cgit/qt/qttools.git/) and its usage
-   is [well documented](http://doc.qt.io/qt-5/linguist-translators.html).
+   is [well documented](http://doc.qt.io/qt-5/linguist-translators.html). It also supports
+   [using AI](https://www.qt.io/blog/ai-powered-translation-comes-to-qt-linguist) as of Qt 6.11.
 6. If you have added translations for the mobile UI as well, it makes sense to add an entry
    for the new locale also in `tray/android/res/xml/locale_config.xml`. This is required
    for the locale to be selectable in app-specific language settings on Android.
