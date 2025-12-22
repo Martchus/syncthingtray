@@ -207,13 +207,8 @@ target_compile_options(
     PUBLIC "${META_PUBLIC_COMPILE_OPTIONS}"
     PRIVATE "${META_PRIVATE_COMPILE_OPTIONS}")
 set_target_properties(${META_TARGET_NAME}_mocked PROPERTIES CXX_STANDARD "${META_CXX_STANDARD}")
-if (TREAT_WARNINGS_AS_ERRORS
-    AND (${QT_PACKAGE_PREFIX}Core_VERSION VERSION_GREATER_EQUAL 6.11.0)
-    AND (CMAKE_CXX_COMPILER_ID MATCHES ".*Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU"))
-    set_source_files_properties(
-        "${CMAKE_CURRENT_BINARY_DIR}/${META_TARGET_NAME}_mocked_autogen/mocs_compilation.cpp"
-        PROPERTIES COMPILE_OPTIONS "-Wno-error=sign-conversion" # present in Qt 6.11.0
-    )
+if (COMMAND configure_development_warnings_for_qt)
+    configure_development_warnings_for_qt(TARGET "${META_TARGET_NAME}_mocked")
 endif ()
 
 include(Doxygen)
