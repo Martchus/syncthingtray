@@ -267,5 +267,97 @@ Item {
             const model = pageStack.currentPage.model;
             tryCompare(model, "count", 0, 5000, "no recent changes present initially");
         }
+
+        function test_advancedPage() {
+            if (!withSyncthing) {
+                skip("not testing advanced page without having Syncthing started");
+                return;
+            }
+            pageStack.setCurrentIndex(4);
+
+            const advancedPage = pageStack.currentPage;
+            compare(advancedPage.title, "Advanced", "advanced page shown");
+            compare(advancedPage.isDangerous, false, "no dangerous settings made yet");
+            compare(pageStack.currentActions.map(a => a.enabled), [false, false], "no actions enabled without changes");
+
+            const listView = advancedPage.listView;
+            const model = listView.model;
+            tryCompare(model, "count", 9, 5000, "advanced settings shown");
+            compare(model.get(5).label, "Various options");
+            listView.currentIndex = 5;
+            listView.currentItem.click();
+
+            const optionsPage = pageStack.currentPage;
+            const optionsModel = optionsPage.model;
+            const optionsListView = optionsPage.listView;
+            compare(optionsPage.title, "Various advanced options", "options page shown");
+            compare(optionsPage.isDangerous, true, "options considered dangerious");
+            tryVerify(() => optionsModel.count >= 56, 5000, "options shown");
+            compare(optionsModel.get(7).label, "Local Discovery");
+            compare(optionsModel.get(7).value, true, "local discovery enabled by default");
+            compare(optionsModel.get(8).label, "Global Discovery");
+            compare(optionsModel.get(8).value, true, "global discovery enabled by default");
+            optionsListView.currentIndex = 7;
+            optionsListView.currentItem.click();
+            tryVerify(() => optionsModel.get(7).value === false, 5000, "local discovery unselected");
+
+            pageStack.pop();
+            tryCompare(advancedPage, "title", "Advanced - changes not saved yet", 5000, "pending changes shown in title");
+            compare(advancedPage.isDangerous, true, "dangerous setting has been made yet");
+            compare(pageStack.currentActions.map(a => a.enabled), [true, true], "actions enabled with pending changes");
+            compare(listView.currentIndex, 5, "options still selected");
+            listView.currentItem.click();
+
+            const optionsPage2 = pageStack.currentPage;
+            const optionsModel2 = optionsPage2.model;
+            compare(optionsModel2.get(7).label, "Local Discovery");
+            compare(optionsModel2.get(7).value, false, "local discovery still showing as disabled");
+
+            pageStack.pop();
+            compare(advancedPage.isDangerous, true, "dangerous setting have still been made yet");
+            const applyAction = pageStack.currentActions[1];
+            compare(applyAction.text, "Apply changes");
+            applyAction.trigger();
+            wait(1); // saving might be triggered asynchronously
+            tryVerify(() => !App.savingConfig);
+
+            compare(advancedPage.title, "Advanced", "title changed back after all settings have been saved");
+            compare(advancedPage.isDangerous, false, "no dangerous settings pending anymore");
+            compare(listView.currentIndex, 5, "options still selected after saving");
+            listView.currentItem.click();
+
+            const optionsPage3 = pageStack.currentPage;
+            const optionsModel3 = optionsPage3.model;
+            const optionsListView3 = optionsPage3.listView;
+            compare(optionsModel3.get(7).label, "Local Discovery");
+            compare(optionsModel3.get(7).value, false, "local discovery still showing as disabled after saving");
+            compare(optionsModel3.get(8).label, "Global Discovery");
+            compare(optionsModel3.get(8).value, true, "global discovery still enabled after saving");
+
+            optionsListView3.currentIndex = 8;
+            optionsListView3.currentItem.click();
+            tryVerify(() => optionsModel3.get(8).value === false, 5000, "global discovery unselected");
+            pageStack.pop();
+            compare(advancedPage.title, "Advanced - changes not saved yet", "title changed again after disabling global discovery");
+            compare(advancedPage.isDangerous, true, "dangerous setting has been made again");
+            const discardAction = pageStack.currentActions[0];
+            compare(discardAction.text, "Discard changes");
+            discardAction.trigger();
+            tryCompare(advancedPage, "title", "Advanced", 5000, "title changed back after all settings have been discarded");
+            tryCompare(advancedPage, "isDangerous", false, 5000, "dangerous setting discarded");
+
+            compare(listView.currentIndex, 5, "options still selected after saving");
+            listView.currentItem.click();
+
+            const optionsPage4 = pageStack.currentPage;
+            const optionsModel4 = optionsPage4.model;
+            compare(optionsModel4.get(7).label, "Local Discovery");
+            compare(optionsModel4.get(7).value, false, "local discovery still showing as disabled after discarding");
+            compare(optionsModel4.get(8).label, "Global Discovery");
+            compare(optionsModel4.get(8).value, true, "global discovery still enabled after discarding");
+            pageStack.pop();
+
+            goBackToStartPage();
+        }
     }
 }

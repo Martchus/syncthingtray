@@ -100,6 +100,7 @@ StackView {
             }
         }
 
+        property alias listView: listView
         property var config: App.connection.rawConfig
         property bool hasUnsavedChanges: false
         property bool isDangerous: false
