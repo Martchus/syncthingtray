@@ -1682,7 +1682,7 @@
     <message>
         <location filename="../quick/qml/ImportPage.qml" line="103"/>
         <source>Replace entire (existing) Syncthing configuration and database with the one from the selected directory. Use this with care as restoring the database is potentially dangerous.</source>
-        <translation>Ersetzt die gesamte (bestehende) Syncthing-Konfiguration und -Datenbank mit der aus dem gewählten Verzeichnis. Verwende diese Option mir Vorsicht, da das Wiederherstellen der Datenbank potentiell gefährlich ist.</translation>
+        <translation>Ersetzt die gesamte (bestehende) Syncthing-Konfiguration und -Datenbank mit der aus dem gewählten Verzeichnis. Verwende diese Option mit Vorsicht, da das Wiederherstellen der Datenbank potentiell gefährlich ist.</translation>
     </message>
     <message>
         <location filename="../quick/qml/ImportPage.qml" line="124"/>
