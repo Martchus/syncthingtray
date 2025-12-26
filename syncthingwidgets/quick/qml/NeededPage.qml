@@ -47,6 +47,7 @@ Page {
                 IconOnlyButton {
                     text: qsTr("Move to top of queue")
                     icon.source: App.faUrlBase + "angle-double-up"
+                    visible: devId.length === 0
                     onClicked: App.requestFromSyncthing("POST", "db/prio", {folder: neededPage.dirId, file: modelData.name}, (res, error) => {})
                 }
             }
