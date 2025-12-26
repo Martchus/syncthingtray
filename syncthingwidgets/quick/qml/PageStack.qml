@@ -54,6 +54,10 @@ SwipeView {
     readonly property var currentDepth: currentChild?.depth ?? 1
     readonly property var currentActions: currentPage.actions ?? []
     readonly property var currentExtraActions: currentPage.extraActions ?? []
+    readonly property var indexHistory: [0]
+    readonly property var indexForward: []
+    readonly property var setPageHistory: []
+    property bool goingBackAndForth: false
     signal changesMightBeDiscarded
     function pop(force) {
         const currentChild = pageStack.currentChild;
@@ -88,10 +92,6 @@ SwipeView {
             return wentBack || pageStack.back();
         }
     }
-    readonly property var indexHistory: [0]
-    readonly property var indexForward: []
-    readonly property var setPageHistory: []
-    property bool goingBackAndForth: false
     function back() {
         if (indexHistory.length < 1) {
             return false;
