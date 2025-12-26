@@ -132,6 +132,9 @@ public class Activity extends QtActivity {
     }
 
     public void sendMessageToService(int what, int arg1, int arg2, String str) {
+        if (m_service == null) {
+            return;
+        }
         try {
             m_service.send(SyncthingService.obtainMessageWithBundle(what, arg1, arg2, SyncthingService.bundleString(str)));
         } catch (RemoteException e) {
@@ -505,6 +508,11 @@ public class Activity extends QtActivity {
             handleNotificationPermissionChanged(notificationPermissionGranted());
         }
         super.onResume();
+
+        // ensure the foreground notification is shown again when opening the app as the notification might have been dismissed
+        // note: This won't work on the initial startup as the service connection hasn't been established then. That is not a problem
+        //       as the service will also show the foreground notification once a new client has connected.
+        sendMessageToService(SyncthingService.MSG_SHOW_FOREGROUND_NOTIFICATION, 0, 0, "");
 
         // load the Qt Quick GUI again when the activity was previously destroyed
         if (m_restarting) {

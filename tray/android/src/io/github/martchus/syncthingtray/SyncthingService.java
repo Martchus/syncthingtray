@@ -60,6 +60,7 @@ public class SyncthingService extends QtService {
     public static final int MSG_REGISTER_CLIENT = 1;
     public static final int MSG_UNREGISTER_CLIENT = 2;
     public static final int MSG_FINISH_CLIENT = 3;
+    public static final int MSG_SHOW_FOREGROUND_NOTIFICATION = 4;
     // messages to invoke activity and service actions invoked from Java and C++ (keep in sync with android.h)
     public static final int MSG_SERVICE_ACTION_BROADCAST_LAUNCHER_STATUS = 105;
 
@@ -69,9 +70,13 @@ public class SyncthingService extends QtService {
             switch (msg.what) {
             case MSG_REGISTER_CLIENT:
                 m_clients.add(msg.replyTo);
+                showForegroundNotification(); // ensure notification is still shown after it might have been dismissed
                 break;
             case MSG_UNREGISTER_CLIENT:
                 m_clients.remove(msg.replyTo);
+                break;
+            case MSG_SHOW_FOREGROUND_NOTIFICATION:
+                showForegroundNotification();
                 break;
             default:
                 Bundle bundle = msg.getData();
