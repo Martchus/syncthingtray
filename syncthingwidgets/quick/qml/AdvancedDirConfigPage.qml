@@ -8,6 +8,7 @@ AdvancedConfigPage {
     entriesKey: "folders"
     isEntry: (folder) => folder.id === dirId
     configCategory: "config-option-folder"
+    componentName: "AdvancedDirConfigPage.qml"
     required property string dirName
     required property string dirId
     function makeNewConfig() {

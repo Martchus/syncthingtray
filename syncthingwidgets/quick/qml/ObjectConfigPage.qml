@@ -99,6 +99,7 @@ Page {
 
     property alias model: objectListView.model
     property alias listView: objectListView
+    property string componentName: "ObjectConfigPage.qml"
     property bool specialEntriesOnly: false
     property var indexByKey: ({})
     property var specialEntriesByKey: ({
@@ -155,6 +156,27 @@ Page {
         }
     ]
     property list<Action> extraActions: []
+
+    function topLevelObject() {
+        return objectConfigPage?.parentPage.topLevelObject?.() ?? objectConfigPage.parentObject ?? objectConfigPage.configObject;
+    }
+
+    function serialize() {
+        return {
+            "componentName": componentName,
+            "path": path,
+            "topLevelObject": topLevelObject(),
+            "isDangerous": isDangerous,
+            "hasUnsavedChanges": hasUnsavedChanges,
+            "readOnly": readOnly,
+            "specialEntries": specialEntries,
+            "specialEntriesByKey": specialEntriesByKey,
+            "specialEntriesOnly": specialEntriesOnly,
+            "itemLabel": itemLabel,
+            "configCategory": configCategory,
+            "helpUrl": helpUrl,
+        };
+    }
 
     function makeConfigRow(configEntry, index, canAdd, childObjectTemplate) {
         const key = configEntry[0];

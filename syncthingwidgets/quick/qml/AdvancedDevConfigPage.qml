@@ -8,6 +8,7 @@ AdvancedConfigPage {
     entriesKey: "devices"
     isEntry: (device) => device.deviceID === devId
     configCategory: "config-option-device"
+    componentName: "AdvancedDevConfigPage.qml"
     required property string devName
     required property string devId
     function makeNewConfig() {

@@ -8,6 +8,7 @@ import Main
 ObjectConfigPage {
     id: advancedConfigPage
     isDangerous: true
+    componentName: "AdvancedConfigPage.qml"
     Component.onCompleted: configObject = findConfigObject()
     actions: [
         Action {

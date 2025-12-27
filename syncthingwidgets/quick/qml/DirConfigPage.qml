@@ -4,6 +4,7 @@ import Main
 
 AdvancedDirConfigPage {
     id: dirConfigPage
+    componentName: "DirConfigPage.qml"
     title: existing && dirName.length > 0 ? qsTr("Config of folder \"%1\"").arg(dirName) : qsTr("Add new folder")
     isDangerous: false
     specialEntriesOnly: true

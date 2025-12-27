@@ -54,11 +54,25 @@ SwipeView {
     readonly property var currentDepth: currentChild?.depth ?? 1
     readonly property var currentActions: currentPage.actions ?? []
     readonly property var currentExtraActions: currentPage.extraActions ?? []
-    readonly property var indexHistory: [0]
-    readonly property var indexForward: []
-    readonly property var setPageHistory: []
+    property var indexHistory: [0]
+    property var indexForward: []
+    property var setPageHistory: []
     property bool goingBackAndForth: false
     signal changesMightBeDiscarded
+    function resetHistory() {
+        pageStack.indexHistory = [0];
+        pageStack.indexForward = [];
+        pageStack.setPageHistory = [];
+    }
+    function serialize() {
+        return {
+            "index": pageStack.currentIndex,
+            "indexHistory": pageStack.indexHistory,
+            "indexForward": pageStack.indexForward,
+            "setPageHistory": pageStack.setPageHistory,
+            "children": pageStack.children.map(child => child.currentItem?.serialize?.()),
+        };
+    }
     function pop(force) {
         const currentChild = pageStack.currentChild;
         const currentPage = currentChild.currentItem ?? currentChild;

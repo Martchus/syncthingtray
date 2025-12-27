@@ -68,6 +68,7 @@ Item {
 
         function cleanup() {
             while (pageStack.pop(true)) { }
+            pageStack.resetHistory();
         }
 
         function goBackToStartPage() {
@@ -86,50 +87,60 @@ Item {
             compare(pageStack.currentPage.title, "Syncthing", "start page shown initially");
             compare(drawer.currentItem.name, "Start", "drawer index initialized for start page");
             compare(toolBar.currentIndex, 0, "tab bar index initialized for start page");
+            compare(pageStack.serialize(), {"index": 0, "indexHistory": [0], "indexForward": [], "setPageHistory": [], "children": [undefined, undefined, undefined, undefined, undefined, undefined]});
 
             pageStack.showPage(1);
             compare(pageStack.currentPage.title, "Folders", "folders page shown");
             compare(drawer.currentItem.name, "Folders", "drawer index updated for folders page");
             compare(toolBar.currentIndex, 1, "tab bar index updated for folders page");
+            compare(pageStack.serialize(), {"index": 1, "indexHistory": [0, 1], "indexForward": [], "setPageHistory": [1], "children": [undefined, undefined, undefined, undefined, undefined, undefined]});
 
             pageStack.showPage(2);
             compare(pageStack.currentPage.title, "Devices", "devices page shown");
             compare(drawer.currentItem.name, "Devices", "drawer index updated for devices page");
             compare(toolBar.currentIndex, 2, "tab bar index updated for devices page");
+            compare(pageStack.serialize(), {"index": 2, "indexHistory": [0, 1, 2], "indexForward": [], "setPageHistory": [1, 2], "children": [undefined, undefined, undefined, undefined, undefined, undefined]});
 
             pageStack.showPage(3);
             compare(pageStack.currentPage.title, "Recent changes", "changes page shown");
             compare(drawer.currentItem.name, "Recent changes", "drawer index updated for changes page");
             compare(toolBar.currentIndex, 3, "tab bar index updated for changes page");
+            compare(pageStack.serialize(), {"index": 3, "indexHistory": [0, 1, 2, 3], "indexForward": [], "setPageHistory": [1, 2, 3], "children": [undefined, undefined, undefined, undefined, undefined, undefined]});
 
             pageStack.showPage(4);
             compare(pageStack.currentPage.title, "Advanced", "advanced page shown");
             compare(drawer.currentItem.name, "Advanced", "drawer index updated for advanced page");
             compare(toolBar.currentIndex, 4, "tab bar index updated for advanced page");
+            compare(pageStack.serialize(), {"index": 4, "indexHistory": [0, 1, 2, 3, 4], "indexForward": [], "setPageHistory": [1, 2, 3, 4], "children": [undefined, undefined, undefined, undefined, undefined, undefined]});
 
             pageStack.showPage(5);
             compare(pageStack.currentPage.title, "App settings", "app settings page shown");
             compare(drawer.currentItem.name, "App settings", "drawer index updated for app settings");
             compare(toolBar.currentIndex, 4, "tab bar index not changed for app settings");
+            compare(pageStack.serialize(), {"index": 5, "indexHistory": [0, 1, 2, 3, 4, 5], "indexForward": [], "setPageHistory": [1, 2, 3, 4, 5], "children": [undefined, undefined, undefined, undefined, undefined, undefined]});
 
             pageStack.pop();
             compare(pageStack.currentPage.title, "Advanced", "can go back to previous page");
             compare(drawer.currentItem.name, "Advanced", "drawer index updated when going back");
             compare(toolBar.currentIndex, 4, "tab bar index unchanged when going back from app to advanced settings");
+            compare(pageStack.serialize(), {"index": 4, "indexHistory": [0, 1, 2, 3, 4], "indexForward": [5], "setPageHistory": [1, 2, 3, 4], "children": [undefined, undefined, undefined, undefined, undefined, undefined]});
 
             pageStack.pop();
             compare(pageStack.currentPage.title, "Recent changes", "can go back further");
             compare(drawer.currentItem.name, "Recent changes", "drawer index updated when going back further");
             compare(toolBar.currentIndex, 3, "tab bar index updated when going back further to recent changes");
+            compare(pageStack.serialize(), {"index": 3, "indexHistory": [0, 1, 2, 3], "indexForward": [5, 4], "setPageHistory": [1, 2, 3], "children": [undefined, undefined, undefined, undefined, undefined, undefined]});
 
             pageStack.forward();
             compare(pageStack.currentPage.title, "Advanced", "can go forward again");
             compare(drawer.currentItem.name, "Advanced", "drawer index updated when going forward");
             compare(toolBar.currentIndex, 4, "tab bar index updated when going forward");
+            compare(pageStack.serialize(), {"index": 4, "indexHistory": [0, 1, 2, 3, 4], "indexForward": [5], "setPageHistory": [1, 2, 3], "children": [undefined, undefined, undefined, undefined, undefined, undefined]});
 
             pageStack.forward();
             compare(pageStack.currentPage.title, "App settings", "can go forward again (2)");
             compare(drawer.currentItem.name, "App settings", "drawer index updated when going forward (2)");
+            compare(pageStack.serialize(), {"index": 5, "indexHistory": [0, 1, 2, 3, 4, 5], "indexForward": [], "setPageHistory": [1, 2, 3], "children": [undefined, undefined, undefined, undefined, undefined, undefined]});
         }
 
         function test_addingFolderFromStartPage() {
@@ -297,6 +308,12 @@ Item {
             compare(optionsModel.get(7).value, true, "local discovery enabled by default");
             compare(optionsModel.get(8).label, "Global Discovery");
             compare(optionsModel.get(8).value, true, "global discovery enabled by default");
+            const state = pageStack.serialize();
+            compare(state.index, 4);
+            const settingsState = state?.children[4];
+            compare(settingsState.componentName, "ObjectConfigPage.qml", "component name serialized");
+            compare(settingsState.path, "options", "path serialized");
+            compare(settingsState.topLevelObject.options.localAnnounceEnabled, true, "local discovery initially enabled");
             optionsListView.currentIndex = 7;
             optionsListView.currentItem.click();
             tryVerify(() => optionsModel.get(7).value === false, 5000, "local discovery unselected");
@@ -312,9 +329,13 @@ Item {
             const optionsModel2 = optionsPage2.model;
             compare(optionsModel2.get(7).label, "Local Discovery");
             compare(optionsModel2.get(7).value, false, "local discovery still showing as disabled");
+            const state2 = pageStack.serialize();
+            compare(state2.index, 4);
+            const settingsState2 = state2?.children[4];
+            compare(settingsState2.topLevelObject.options.localAnnounceEnabled, false, "pending change serialized");
 
             pageStack.pop();
-            compare(advancedPage.isDangerous, true, "dangerous setting have still been made yet");
+            compare(advancedPage.isDangerous, true, "dangerous setting are still pending");
             const applyAction = pageStack.currentActions[1];
             compare(applyAction.text, "Apply changes");
             applyAction.trigger();

@@ -93,7 +93,7 @@ StackView {
                         const specialEntriesOnly = modelData.specialEntriesKey.length > 0;
                         const se = (specialEntriesOnly ? advancedPage.specialEntries[modelData.specialEntriesKey] : advancedPage.specialEntriesByKey[modelData.key]) ?? [];
                         const pageTitle = modelData.title.length > 0 ? modelData.title : modelData.label
-                        stackView.push("ObjectConfigPage.qml", {title: pageTitle, isDangerous: modelData.isDangerous, configObject: advancedPage.config[modelData.key], specialEntries: se, specialEntriesByKey: advancedPage.specialEntriesByKey, specialEntriesOnly: specialEntriesOnly, path: modelData.key, configCategory: `config-option-${modelData.key}`, itemLabel: modelData.itemLabel, helpUrl: modelData.helpUrl, stackView: stackView, parentPage: advancedPage, actions: [discardAction, applyAction]}, StackView.PushTransition);
+                        stackView.push("ObjectConfigPage.qml", {title: pageTitle, isDangerous: modelData.isDangerous, configObject: advancedPage.config[modelData.key], parentObject: advancedPage.config, specialEntries: se, specialEntriesByKey: advancedPage.specialEntriesByKey, specialEntriesOnly: specialEntriesOnly, path: modelData.key, configCategory: `config-option-${modelData.key}`, itemLabel: modelData.itemLabel, helpUrl: modelData.helpUrl, stackView: stackView, parentPage: advancedPage, actions: [discardAction, applyAction]}, StackView.PushTransition);
                     }
                 }
                 required property var modelData
