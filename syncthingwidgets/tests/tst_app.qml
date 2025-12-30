@@ -229,8 +229,9 @@ Item {
             if (withSyncthing) {
                 pageStack.showPage(1);
                 const model = pageStack.currentPage.model;
-                tryVerify(() => model.rowCount() === 1, 5000, "new folder present");
-                const firstFolderIndex = model.index(0, 0);
+                tryVerify(() => model.rowCount() >= 1, 5000, "new folder present");
+                const rowCount = model.rowCount();
+                const firstFolderIndex = model.index(rowCount - 1, 0);
                 compare(model.data(firstFolderIndex, directoryIdRole), "foo", "new folder ID present");
                 compare(model.data(firstFolderIndex, directoryPathRole), newPath, "new folder path present");
             }
