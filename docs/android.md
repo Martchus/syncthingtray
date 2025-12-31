@@ -182,8 +182,6 @@ While Syncthing Tray basically works on Android, there are still some unresolved
 * The app can display an Android notification when the service process encounters an error while
   communicating with the Syncthing backend. These error notifications do not necessarily correspond to
   the errors shown in the app UI, as those originate from the UI process.
-* Some Qt bugs mentioned under "[List of bugs](known_bugs_and_workarounds.md#list-of-bugs)" affect
-  the Android app.
 * The connection to Syncthing can sometimes not be restored after restarting Syncthing (e.g. to make
   an export/backup). This happens particularly often when using a UNIX domain socket. One can restart
   the app to work around it.
@@ -201,6 +199,8 @@ While Syncthing Tray basically works on Android, there are still some unresolved
 * Some of the problems/solutions found on the
   [Wiki pages of Syncthing-Fork](https://github.com/Catfriend1/syncthing-android/wiki) might help with
   Syncthing Tray on Android as well.
+* Some Qt bugs mentioned under "[List of bugs](known_bugs_and_workarounds.md#list-of-bugs)" affect
+  the Android app.
 
 ## Using the document provider on Android
 Syncthing Tray provides a
