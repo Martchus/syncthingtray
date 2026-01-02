@@ -19,7 +19,7 @@ ApplicationWindow {
         drawer: drawer
         pageStack: pageStack
         leftMargin: pageStack.anchors.leftMargin
-        darkToolbar: !App.extendedClientArea
+        darkToolbar: true
     }
     footer: MainTabBar {
         id: toolBar
