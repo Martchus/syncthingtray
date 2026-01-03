@@ -119,10 +119,19 @@ static void xmlAttributesToJsonObject(QXmlStreamReader &xmlReader, QJsonObject &
  */
 static void xmlElementToJsonValue(QXmlStreamReader &xmlReader, QJsonObject &object)
 {
+    // define list of elements that need to be put into an array
     static const auto arrayElements = QHash<QString, QString>{
         { QStringLiteral("device"), QStringLiteral("devices") },
         { QStringLiteral("address"), QStringLiteral("addresses") },
     };
+
+    // define list of elements that are known to be objects (so an empty element is mapped to an empty object
+    // and not an empty string)
+    static const auto objectElements = QSet<QString>{
+        QStringLiteral("versioning"),
+    };
+
+    // read element name, text and possibly nested objects
     auto name = xmlReader.name().toString();
     auto arrayName = arrayElements.find(name);
     auto text = QString();
@@ -146,17 +155,22 @@ static void xmlElementToJsonValue(QXmlStreamReader &xmlReader, QJsonObject &obje
         default:;
         }
     }
-    if (arrayName == arrayElements.cend()) {
-        object.insert(std::move(name), nestedObject.isEmpty() ? xmlValueToJsonValue(text) : std::move(nestedObject));
-    } else {
-        if (*arrayName == QLatin1String("devices")) {
-            nestedObject.insert(QStringLiteral("deviceID"), nestedObject.take(QLatin1String("id")));
-        }
-        auto valueRef = object[*arrayName];
-        auto array = valueRef.isArray() ? valueRef.toArray() : QJsonArray();
-        array.append(nestedObject.isEmpty() ? xmlValueToJsonValue(text) : std::move(nestedObject));
-        valueRef = array;
+
+    // handle special mapping of ID for device elements
+    if (arrayName != arrayElements.cend() && *arrayName == QLatin1String("devices")) {
+        nestedObject.insert(QStringLiteral("deviceID"), nestedObject.take(QLatin1String("id")));
     }
+
+    // insert/append the value into the destination object/array
+    auto value = QJsonValue(nestedObject.isEmpty() && !objectElements.contains(name) ? xmlValueToJsonValue(text) : std::move(nestedObject));
+    if (arrayName == arrayElements.cend()) {
+        object.insert(std::move(name), std::move(value));
+        return;
+    }
+    auto valueRef = object[*arrayName];
+    auto array = valueRef.isArray() ? valueRef.toArray() : QJsonArray();
+    array.append(std::move(value));
+    valueRef = array;
 }
 
 /*!
