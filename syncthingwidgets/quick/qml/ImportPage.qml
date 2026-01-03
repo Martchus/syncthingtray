@@ -153,6 +153,8 @@ Page {
             }
         }
     }
+    property alias folderSelection: folderSelection
+    property alias deviceSelection: deviceSelection
     required property var availableSettings
     readonly property bool isDangerous: fullImport.checked
     property list<Action> actions: [

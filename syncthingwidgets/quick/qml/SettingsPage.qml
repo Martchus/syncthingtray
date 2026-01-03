@@ -127,6 +127,9 @@ StackView {
             onAccepted: App.clearLogfile()
         }
 
+        property alias listView: listView
+        property alias backupFileDialog: backupFileDialog
+        property alias backupFolderDialog: backupFolderDialog
         property string currentBackupFunction
         property var currentBackupCallback
         function initiateBackup(functionName, callback) {

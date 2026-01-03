@@ -70,6 +70,7 @@ public Q_SLOTS:
         context->setContextProperty(QStringLiteral("directoryIdRole"), Data::SyncthingDirectoryModel::DirectoryId);
         context->setContextProperty(QStringLiteral("directoryPathRole"), Data::SyncthingDirectoryModel::DirectoryPath);
         context->setContextProperty(QStringLiteral("deviceStatusStringRole"), Data::SyncthingDeviceModel::DeviceStatusString);
+        context->setContextProperty(QStringLiteral("testConfigDir"), QString::fromStdString(testDirPath("testconfig")));
 
         m_service.emplace(true);
         m_app.emplace(true, engine);
@@ -93,6 +94,7 @@ public Q_SLOTS:
     }
 
 private:
+    TestApplication m_testapp;
     std::optional<QtGui::App> m_app;
     std::optional<QtGui::AppService> m_service;
     QTemporaryDir m_settingsDir;

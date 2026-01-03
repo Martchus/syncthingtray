@@ -13,6 +13,9 @@ if (QUICK_GUI)
     set(META_QT_VERSION 6.9.0)
 endif ()
 
+# use testfiles directory from syncthingconnector
+set(META_SRCDIR_REFS "${CMAKE_CURRENT_SOURCE_DIR}\n${CMAKE_CURRENT_SOURCE_DIR}/../syncthingconnector")
+
 # add project files
 set(HEADER_FILES misc/diffhighlighter.h misc/internalerror.h misc/statusinfo.h misc/syncthinglauncher.h misc/utils.h)
 set(SRC_FILES misc/diffhighlighter.cpp misc/internalerror.cpp misc/statusinfo.cpp misc/syncthinglauncher.cpp misc/utils.cpp)

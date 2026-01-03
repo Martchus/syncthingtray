@@ -1,4 +1,6 @@
 import QtQuick
+import QtQuick.Controls.Material
+import QtQuick.Dialogs
 import QtQuick.Layouts
 import QtTest
 import Main
@@ -57,13 +59,21 @@ Item {
     readonly property Meta meta: Meta {
     }
     property bool closeRequested
+    property int foldersAdded: 0
 
     TestCase {
         id: testCase
         name: "AppTests"
 
         function initTestCase() {
-            compare(App.connection.connected, withSyncthing, "connected");
+            const connection = App.connection;
+            compare(connection.connected, withSyncthing, "connected");
+            if (withSyncthing) {
+                const folders = connection.rawConfig.folders;
+                verify(Array.isArray(folders), "folders present");
+                foldersAdded = folders.length;
+            }
+            verify(foldersAdded <= 1, "zero or one folder(s) initially present");
         }
 
         function cleanup() {
@@ -216,6 +226,7 @@ Item {
                 tryVerify(() => !discardChangesDialog.visible);
                 compare(applyAction.text, "Apply");
                 applyAction.trigger();
+                foldersAdded += 1;
 
                 // going back shouldn't trigger dialog
                 wait(1); // saving might be triggered asynchronously
@@ -229,7 +240,7 @@ Item {
             if (withSyncthing) {
                 pageStack.showPage(1);
                 const model = pageStack.currentPage.model;
-                tryVerify(() => model.rowCount() >= 1, 5000, "new folder present");
+                tryVerify(() => model.rowCount() === foldersAdded, 5000, "new folder present");
                 const rowCount = model.rowCount();
                 const firstFolderIndex = model.index(rowCount - 1, 0);
                 compare(model.data(firstFolderIndex, directoryIdRole), "foo", "new folder ID present");
@@ -379,6 +390,80 @@ Item {
             compare(optionsModel4.get(8).value, true, "global discovery still enabled after discarding");
             pageStack.pop();
 
+            goBackToStartPage();
+        }
+
+        function test_settingsPage() {
+            if (!withSyncthing) {
+                skip("not testing settings and import without having Syncthing started");
+                return;
+            }
+            pageStack.setCurrentIndex(5);
+
+            const settingsPage = pageStack.currentPage;
+            compare(settingsPage.title, "App settings", "settings page shown");
+            compare(settingsPage.isDangerous, undefined, "top-level app settings not dangerous");
+
+            const listView = settingsPage.listView;
+            const model = listView.model;
+            tryCompare(model, "count", 12, 5000, "app settings shown");
+            compare(model.get(7).label, "Import selected settings/secrets/data of app and backend");
+
+            // trigger import
+            listView.currentIndex = 7;
+            const folderDlg = settingsPage.backupFolderDialog;
+            folderDlg.popupType = Popup.Item;
+            folderDlg.options |= FolderDialog.DontUseNativeDialog;
+            listView.currentItem.click();
+            tryCompare(folderDlg, "visible", true, 5000, "folder dialog shown");
+            folderDlg.selectedFolder = testConfigDir;
+            folderDlg.accept();
+            tryVerify(() => pageStack.currentPage.title.includes("import"), 5000, "import page shown");
+
+            const importPage = pageStack.currentPage;
+            compare(importPage.title, "Select settings to import", "on import page");
+            compare(importPage.isDangerous, false, "no dangerous option selected by default");
+            compare(importPage.folderSelection.selectionEnabled, false, "no folders selected by default");
+            compare(importPage.deviceSelection.selectionEnabled, false, "no devices selected by default");
+
+            const folderSelection = importPage.folderSelection;
+            const folderSelectionModel = folderSelection.model;
+            const folderSelectionView = folderSelection.selectionView;
+            folderSelection.click();
+            tryCompare(folderSelectionView, "visible", true, 5000, "folder selection shown");
+            compare(folderSelectionModel.count, 2, "two folders available for import");
+            compare(folderSelectionModel.get(0).displayName, "test1", "first folder shown");
+            verify(folderSelectionModel.get(0).path.includes("some/path/1"), "first folder path shown");
+            compare(folderSelectionModel.get(0).checked, false, "first folder not selected");
+            compare(folderSelectionModel.get(1).displayName, "Test dir 2", "second folder shown");
+            verify(folderSelectionModel.get(1).path.includes("some/path/2"), "second folder path shown");
+            compare(folderSelectionModel.get(1).checked, false, "second folder not selected");
+            folderSelectionView.currentIndex = 1;
+            folderSelectionView.currentItem.click();
+            compare(folderSelectionModel.get(0).checked, false, "first folder still not selected");
+            compare(folderSelectionModel.get(1).checked, true, "second folder selected");
+            folderSelection.accept();
+            compare(folderSelection.selectionEnabled, true, "folders have been selected");
+
+            const importAction = pageStack.currentActions[0];
+            compare(importAction.text, "Import selected");
+            importAction.trigger();
+            foldersAdded += 1;
+
+            wait(1); // import might be triggered asynchronously
+            tryVerify(() => !App.isImportExportOngoing);
+            pageStack.pop();
+
+            pageStack.setCurrentIndex(1);
+            const foldersPage = pageStack.currentPage;
+            const folderModel = foldersPage.model;
+            compare(foldersPage.title, "Folders", "on folders page");
+            tryVerify(() => folderModel.rowCount() === foldersAdded, 5000, "newly imported folder present");
+            const firstFolderIndex = folderModel.index(0, 0);
+            compare(folderModel.data(firstFolderIndex, directoryIdRole), "test2", "new folder ID present");
+            verify(folderModel.data(firstFolderIndex, directoryPathRole).includes("some/path/2"), "new folder path present");
+
+            pageStack.pop();
             goBackToStartPage();
         }
     }

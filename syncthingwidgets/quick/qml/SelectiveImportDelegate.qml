@@ -85,6 +85,7 @@ ItemDelegate {
                     currentFolder: "file://" + encodeURIComponent(modelData.path ?? "")
                     onAccepted: selectionView.model.setProperty(modelData.index, "path", App.resolveUrl(folderDlg.selectedFolder))
                 }
+                property alias folderDialog: folderDlg
                 required property var modelData
             }
         }
@@ -94,4 +95,8 @@ ItemDelegate {
     property alias dialogTitle: selectionDlg.title
     property alias model: selectionView.model
     property alias selectionEnabled: selectionEnabledSwitch.checked
+    property alias selectionView: selectionView
+    function accept() {
+        selectionDlg.accept();
+    }
 }
