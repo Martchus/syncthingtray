@@ -840,7 +840,6 @@ void SyncthingConnection::readConfig()
 
         m_rawConfig = replyDoc.object();
         m_hasConfig = true;
-        cerr << "newConfig emitted\n";
         emit newConfig(m_rawConfig);
 
         if (m_keepPolling) {
