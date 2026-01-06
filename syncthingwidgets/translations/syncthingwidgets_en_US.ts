@@ -42,37 +42,37 @@
 <context>
     <name>AdvancedConfigPage</name>
     <message>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="14"/>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="15"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="19"/>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="20"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="28"/>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="29"/>
         <source>Remove %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="32"/>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="33"/>
         <source>Do you really want to remove the %1?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="37"/>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="38"/>
         <source>This will only remove the %1 from Syncthing. No files will be deleted on disk.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="70"/>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="71"/>
         <source>The ID must not be empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="80"/>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="81"/>
         <source>Can&apos;t apply, ID is already used.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -661,197 +661,197 @@
 <context>
     <name>DevConfigPage</name>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="5"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="6"/>
         <source>Config of device &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="5"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="6"/>
         <source>Add new device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="9"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="10"/>
         <source>Device ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="10"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="11"/>
         <source>Device Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="10"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="11"/>
         <source>Shown instead of Device ID. Will be updated to the name the device advertises if left empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="11"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="12"/>
         <source>Paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="11"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="12"/>
         <source>Whether synchronization with this devices is (temporarily) suspended.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="12"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="13"/>
         <source>Introducer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="12"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="13"/>
         <source>Add devices from the introducer to our device list, for mutually shared folders.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="13"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="14"/>
         <source>Auto Accept</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="13"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="14"/>
         <source>Automatically create or share folders that this device advertises at the default path.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="14"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="15"/>
         <source>Addresses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="14"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="15"/>
         <source>Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="14"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="15"/>
         <source>Add addresses (e.g. &quot;tcp://ip:port&quot;, &quot;tcp://host:port&quot;) or &quot;dynamic&quot; to perform automatic discovery of the address.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="15"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="16"/>
         <source>Number of Connections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="15"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="16"/>
         <source>When set to more than one on both devices, Syncthing will attempt to establish multiple concurrent connections. If the values differ, the highest will be used. Set to zero to let Syncthing decide.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="16"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="17"/>
         <source>Untrusted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="16"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="17"/>
         <source>All folders shared with this device must be protected by a password, such that all sent data is unreadable without the given password.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="17"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="18"/>
         <source>Compression</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="17"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="18"/>
         <source>Whether to use protocol compression when sending messages to this device.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="18"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="19"/>
         <source>Metadata Only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="18"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="19"/>
         <source>Compress metadata packets, such as index information. Metadata is usually very compression friendly so this is a good default.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="19"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="20"/>
         <source>All data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="19"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="20"/>
         <source>Compress all packets, including file data. This is recommended if the folders contents are mainly compressible data such as documents or text files.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="20"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="21"/>
         <source>Off</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="20"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="21"/>
         <source>Disable all compression.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="22"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="23"/>
         <source>Incoming Rate Limit (KiB/s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="22"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="23"/>
         <source>Maximum receive rate to use for this device.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="23"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="24"/>
         <source>Outgoing Rate Limit (KiB/s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="23"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="24"/>
         <source>Maximum send rate to use for this device.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="24"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="25"/>
         <source>Ignored folders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="24"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="25"/>
         <source>Ignored folder without ID/label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="24"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="25"/>
         <source>The list of the folders that should be ignored. These folders will always be skipped when advertised from this remote device, i.e. they will be logged, but there will be no dialog shown.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="28"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="29"/>
         <source>Folder ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="28"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="29"/>
         <source>The ID of the folder to be ignored.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="29"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="30"/>
         <source>Folder Label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="29"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="30"/>
         <source>The label of the folder being ignored (for informative purposes).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="30"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="31"/>
         <source>Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="30"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="31"/>
         <source>The time when this entry was added (for informative purposes).</source>
         <translation type="unfinished"></translation>
     </message>
@@ -910,483 +910,483 @@
 <context>
     <name>DirConfigPage</name>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="7"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="8"/>
         <source>Config of folder &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="7"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="8"/>
         <source>Add new folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="11"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="12"/>
         <source>ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="11"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="12"/>
         <source>Required identifier for the folder. Must be the same on all cluster devices.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="12"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="13"/>
         <source>Label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="12"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="13"/>
         <source>Optional descriptive label for the folder. Can be different on each device.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="13"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="14"/>
         <source>Paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="13"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="14"/>
         <source>Whether this folder is (temporarily) suspended.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="14"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="15"/>
         <source>Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="14"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="15"/>
         <source>Path to the folder on the local computer. Will be created if it does not exist. The tilde character (~) can be used as a shortcut for &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="15"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="16"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="15"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="16"/>
         <source>Controls how the folder is handled by Syncthing. Open the selection and go though the different options for details about them.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="16"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="17"/>
         <source>Files are synchronized from the cluster and changes made on this device will be sent to the rest of the cluster.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="17"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="18"/>
         <source>Files are protected from changes made on other devices, but changes made on this device will be sent to the rest of the cluster.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="18"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="19"/>
         <source>Files are synchronized from the cluster, but any changes made locally will not be sent to other devices.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="19"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="20"/>
         <source>Stores and syncs only encrypted data. Folders on all connected devices need to be set up with the same password or be of type &quot;Receive Encrypted&quot; too. Can only be assigned to new folders.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="21"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="22"/>
         <source>Share with</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="21"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="22"/>
         <source>Select devices to share this folder with.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="22"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="23"/>
         <source>Versioning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="22"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="23"/>
         <source>Syncthing supports archiving the old version of a file when it is deleted or replaced with a newer version from the cluster. Versioning applies to changes received from &lt;i&gt;other&lt;/i&gt; devices.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="23"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="24"/>
         <source>Watch for Changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="23"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="24"/>
         <source>Use notifications from the filesystem to detect changed items. Watching for changes discovers most changes without periodic scanning.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="24"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="25"/>
         <source>Rescan Interval</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="24"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="25"/>
         <source>The frequency in which Syncthing will rescan the folder for changes. Can be set to 0 to rely on triggering rescans manually.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="25"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="26"/>
         <source>Watcher Delay</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="25"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="26"/>
         <source>The duration during which changes detected are accumulated, before a scan is scheduled. Takes only effect if &quot;Watch for Changes&quot; is enabled.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="26"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="27"/>
         <source>Watcher Timeout</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="26"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="27"/>
         <source>The maximum delay before a scan is triggered when a file is continuously changing. If unset or zero a default value is calculated based on &quot;Watcher Delay&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="27"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="28"/>
         <source>Minimum Free Disk Space</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="27"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="28"/>
         <source>The minimum required free space that should be available on the disk this folder resides. The folder will be stopped when the value drops below the threshold. Set to zero to disable.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="36"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="37"/>
         <source>Block Pull Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="28"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="29"/>
         <source>The order in which needed files should be pulled from the cluster. It has no effect when the folder type is “send only”. Open the selection and go though the different options for details about them.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="29"/>
-        <location filename="../quick/qml/DirConfigPage.qml" line="38"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="30"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="39"/>
         <source>Random</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="29"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="30"/>
         <source>Pull files in random order. This optimizes for balancing resources among the devices in a cluster.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="30"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="31"/>
         <source>Alphabetic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="30"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="31"/>
         <source>Pull files ordered by file name alphabetically.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="31"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="32"/>
         <source>Smallest First</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="31"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="32"/>
         <source>Pull files ordered by file size; smallest first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="32"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="33"/>
         <source>Largest First</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="32"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="33"/>
         <source>Pull files ordered by file size; largest first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="33"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="34"/>
         <source>Oldest First</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="33"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="34"/>
         <source>Pull files ordered by modification time; oldest first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="34"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="35"/>
         <source>Newest First</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="34"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="35"/>
         <source>Pull files ordered by modification time; newest first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="28"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="29"/>
         <source>File Pull Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="36"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="37"/>
         <source>Order in which the blocks of a file are downloaded. This option controls how quickly different parts of the file spread between the connected devices, at the cost of causing strain on the storage. Open the selection and go though the different options for details about them.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="37"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="38"/>
         <source>Standard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="37"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="38"/>
         <source>The blocks of a file are split into N equal continuous sequences, where N is the number of connected devices. Each device starts downloading its own sequence, after which it picks other devices sequences at random. Provides acceptable data distribution and minimal spinning disk strain.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="38"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="39"/>
         <source>The blocks of a file are downloaded in a random order. Provides great data distribution, but very taxing on spinning disk drives.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="39"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="40"/>
         <source>In-Order</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="39"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="40"/>
         <source>The blocks of a file are downloaded sequentially, from start to finish. Spinning disk drive friendly, but provides no improvements to data distribution.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="41"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="42"/>
         <source>Ignore Permissions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="41"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="42"/>
         <source>Disables comparing and syncing file permissions. Useful on systems with nonexistent or custom permissions (e.g. FAT, exFAT, Synology, Android).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="42"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="43"/>
         <source>Sync Ownership</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="42"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="43"/>
         <source>Enables sending ownership information to other devices, and applying incoming ownership information. Typically requires running with elevated privileges.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="43"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="44"/>
         <source>Send Ownership</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="43"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="44"/>
         <source>Enables sending ownership information to other devices, but not applying incoming ownership information. This can have a significant performance impact. Always enabled when &quot;Sync Ownership&quot; is enabled.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="44"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="45"/>
         <source>Sync Extended Attributes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="44"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="45"/>
         <source>Enables sending extended attributes to other devices, and applying incoming extended attributes. May require running with elevated privileges.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="45"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="46"/>
         <source>Send Extended Attributes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="45"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="46"/>
         <source>Enables sending extended attributes to other devices, but not applying incoming extended attributes. This can have a significant performance impact. Always enabled when &quot;Sync Extended Attributes&quot; is enabled.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="49"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="50"/>
         <source>There are different &lt;i&gt;versioning strategies&lt;/i&gt; to choose from. Open the selection and go through the options for details on the individual versioning strategies.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="49"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="50"/>
         <source>Versioning Strategy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="50"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="51"/>
         <source>File versioning is not going to be used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="51"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="52"/>
         <source>Files are moved to .stversions directory when replaced or deleted by Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="52"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="53"/>
         <source>Files are moved to date stamped versions in a .stversions directory when replaced or deleted by Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="53"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="54"/>
         <source>&lt;p&gt;Files are moved to date stamped versions in a .stversions directory when replaced or deleted by Syncthing. Versions are automatically deleted if they are older than the maximum age or exceed the number of files allowed in an interval.&lt;/p&gt;&lt;p&gt;The following intervals are used: for the first hour a version is kept every 30 seconds, for the first day a version is kept every hour, for the first 30 days a version is kept every day, until the maximum age a version is kept every week.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="54"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="55"/>
         <source>An external command handles the versioning. It has to remove the file from the shared folder. If the path to the application contains spaces, it should be quoted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="56"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="57"/>
         <source>Versions Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="56"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="57"/>
         <source>Path where versions should be stored (leave empty for the default .stversions directory in the shared folder).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="57"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="58"/>
         <source>Filesystem Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="57"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="58"/>
         <source>The internal file system implementation used to access this versions folder.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="58"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="59"/>
         <source>Cleanup Interval in seconds</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="58"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="59"/>
         <source>The interval, in seconds, for running cleanup in the versions directory. Zero to disable periodic cleaning.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="59"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="60"/>
         <source>Additional parameters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="62"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="63"/>
         <source>Clean Out After</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="62"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="63"/>
         <source>The number of days to keep files in the versions folder. Zero means to keep forever. Older elements encountered during cleanup are removed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="63"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="64"/>
         <source>Keep Versions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="63"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="64"/>
         <source>The number of old versions to keep, per file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="64"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="65"/>
         <source>Maximum Age</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="64"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="65"/>
         <source>The maximum time to keep a version, in seconds. Zero means to keep forever.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="65"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="66"/>
         <source>Command</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="65"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="66"/>
         <source>External command to execute for storing a file version about to be replaced or deleted. If the path to the application contains spaces, it should be quoted.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="68"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="69"/>
         <source>Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="68"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="69"/>
         <source>The minimum required free space that should be available on the disk this folder resides. The folder will be stopped when the value drops below the threshold. The value is interpreted according to the selected unit and can be set to zero to disable the check for minimum free space.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="69"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="70"/>
         <source>Unit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="70"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="71"/>
         <source>Percent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="70"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="71"/>
         <source>Percentage of the disk/volume size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="71"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="72"/>
         <source>Kilobyte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="71"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="72"/>
         <source>Absolute size in Kilobyte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="72"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="73"/>
         <source>Megabyte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="72"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="73"/>
         <source>Absolute size in Megabyte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="73"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="74"/>
         <source>Gigabyte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="73"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="74"/>
         <source>Absolute size in Gigabyte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="74"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="75"/>
         <source>Terrabyte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="74"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="75"/>
         <source>Absolute size in Terrabyte</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1715,7 +1715,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ImportPage.qml" line="160"/>
+        <location filename="../quick/qml/ImportPage.qml" line="162"/>
         <source>Import selected</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1914,18 +1914,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/NeededPage.qml" line="84"/>
+        <location filename="../quick/qml/NeededPage.qml" line="85"/>
         <source>In progress</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/NeededPage.qml" line="85"/>
+        <location filename="../quick/qml/NeededPage.qml" line="86"/>
         <source>Queued</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/NeededPage.qml" line="86"/>
         <location filename="../quick/qml/NeededPage.qml" line="87"/>
+        <location filename="../quick/qml/NeededPage.qml" line="88"/>
         <source>Out of Sync</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2037,62 +2037,62 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="106"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="107"/>
         <source>Device ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="106"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="107"/>
         <source>The ID of the device to be ignored.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="107"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="108"/>
         <source>Device Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="107"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="108"/>
         <source>The name of the device being ignored (for informative purposes).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="108"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="109"/>
         <source>Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="108"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="109"/>
         <source>The address of the device being ignored (for informative purposes).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="109"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="110"/>
         <source>Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="109"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="110"/>
         <source>The time when this entry was added (for informative purposes).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="145"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="146"/>
         <source>Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="151"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="152"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="291"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="313"/>
         <source>Unable to add %1 because specified index is invalid.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="299"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="321"/>
         <source>Unable to add %1 because specified key is invalid.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5141,182 +5141,182 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="160"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="163"/>
         <source>Automatic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="160"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="163"/>
         <source>Connect to the Syncthing backend launched via this app and disregard the settings below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="161"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="164"/>
         <source>Pause devices, discovery and relaying on metered network connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="162"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="165"/>
         <source>Syncthing URL</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="163"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="166"/>
         <source>API key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="164"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="167"/>
         <source>HTTPs certificate path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="165"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="168"/>
         <source>HTTP authentication</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="168"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="171"/>
         <source>Enabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="169"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="172"/>
         <source>Username</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="170"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="173"/>
         <source>Password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="173"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="176"/>
         <source>Run Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="175"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="178"/>
         <source>n/a</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="175"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="178"/>
         <source>URL for GUI and API access</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="185"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="188"/>
         <source>External executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="177"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="180"/>
         <source>Log level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="178"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="181"/>
         <source>Debug</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="179"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="182"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="180"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="183"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="181"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="184"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="174"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="177"/>
         <source>Stop on metered network connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="176"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="179"/>
         <source>Write persistent log file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="176"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="179"/>
         <source>Write a persistent log file into the app directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="183"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="186"/>
         <source>Open logs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="183"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="186"/>
         <source>Show Syncthing logs since app startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="184"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="187"/>
         <source>Open persistent logs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="184"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="187"/>
         <source>Open persistent log file externally</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="185"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="188"/>
         <source>Start an external executable instead of using the built-in version of Syncthing. When empty, the built-in version of Syncthing is used.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="188"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="191"/>
         <source>Import/export archive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="188"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="191"/>
         <source>Import and export to/from a Zip archive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="189"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="192"/>
         <source>Import/export password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="189"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="192"/>
         <source>Encrypt/decrypt data via AES-256 when exporting/importing to archive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="190"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="193"/>
         <source>Export path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="190"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="193"/>
         <source>Save exports and support bundles under fix location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="191"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="194"/>
         <source>Use Unix domain socket</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="191"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="194"/>
         <source>Reduces communication overhead and makes Syncthing API and web GUI inaccessible to other apps, applied after restart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="197"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="200"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
