@@ -240,6 +240,9 @@ function renderRelease(releaseInfo, otherReleases)
         formatted = formatted.replaceAll(/\*\*([^\*]*)\*\*/gi, '<strong>$1</strong>');
         formatted = formatted.replaceAll(/\*([^\*]*)\*/gi, '<em>$1</em>');
         formatted = formatted.replaceAll(/\~\~([^\~]*)\~\~/gi, '<del>$1</del>');
+        formatted = formatted.replaceAll(/\[([^\[\]\<\>]+)\]\(([^\(\)\<\>]+)\)/gi, '<a href="$2" target="blank">$1</a>');
+        formatted = formatted.replaceAll(/(?<!href=")(https?:\/\/([^\s\W\<\>]|(\S\S))+)/gi, '<a href="$1" target="blank">$1</a>');
+        formatted = formatted.replaceAll('\n', '<br/>');
         releaseNotesElement.insertAdjacentHTML("beforeend", formatted);
         releaseNotesElement.style.display = 'block';
     }
