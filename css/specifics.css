@@ -176,6 +176,11 @@ section, .into-text {
     border: 1px solid #ddd;
     background-color: #e5f3ff;
 }
+.downloads-platform p:after {
+    clear: both;
+    display: block;
+    content: "";
+}
 .download-remark {
     color: #555;
     font-style: italic;
