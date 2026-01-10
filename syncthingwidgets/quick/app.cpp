@@ -1740,6 +1740,9 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
     }
 
     setImportExportStatus(ImportExportStatus::Importing);
+    m_settingsImport.first.clear();
+    m_settingsImport.second.clear();
+
     struct ImportResult {
         QString message;
         bool hasFailed = false;
@@ -1840,8 +1843,6 @@ bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap
         return ImportResult(summary.join(QChar('\n')), false, shouldReloadSettings);
     }).then(this, [this, callback](const ImportResult &res) {
         setImportExportStatus(ImportExportStatus::None);
-        m_settingsImport.first.clear();
-        m_settingsImport.second.clear();
 
         if (callback.isCallable()) {
             callback.call(QJSValueList{ QJSValue(res.message), QJSValue(res.hasFailed) });
@@ -1898,6 +1899,7 @@ bool App::exportSettings(const QUrl &url, const QJSValue &callback)
     }
 
     setImportExportStatus(ImportExportStatus::Exporting);
+    m_settingsExport.reset();
 
     const auto tweaksSettings = m_settings.value(QLatin1String("tweaks")).toObject();
     QtConcurrent::run([this, url, currentHomePath = currentSyncthingHomeDir(),
@@ -1946,7 +1948,6 @@ bool App::exportSettings(const QUrl &url, const QJSValue &callback)
         }
         return std::make_pair(tr("Settings have been exported to \"%1\".").arg(path), false);
     }).then(this, [this, callback](const std::pair<QString, bool> &res) {
-        m_settingsExport.reset();
         setImportExportStatus(ImportExportStatus::None);
         if (callback.isCallable()) {
             callback.call(QJSValueList{ QJSValue(res.first), QJSValue(res.second) });
@@ -2054,6 +2055,8 @@ bool App::moveSyncthingHome(const QString &newHomeDir, const QJSValue &callback)
     }
 
     setImportExportStatus(ImportExportStatus::Moving);
+    m_homeDirMove.reset();
+
     QtConcurrent::run([newHomeDir = newHomeDir, customHomeDir = currentSyncthingHomeDir(), defaultPath = m_settingsDir.value_or(QDir()).path(),
                           rawConfig = m_connection.rawConfig()]() mutable {
         // determine paths
@@ -2101,8 +2104,6 @@ bool App::moveSyncthingHome(const QString &newHomeDir, const QJSValue &callback)
         }
         return std::make_tuple(newHomeDir, summary.join(QChar('\n')), false);
     }).then(this, [this, callback](const std::tuple<QString, QString, bool> &res) {
-        m_homeDirMove.reset();
-
         auto [setHomeDir, message, errorOccurred] = res;
         if (!setHomeDir.isNull()) {
             auto launcherSettings = m_settings.value(QLatin1String("launcher")).toObject();
