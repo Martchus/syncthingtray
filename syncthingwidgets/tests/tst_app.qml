@@ -52,6 +52,10 @@ Item {
 
     readonly property Notifications notifications: Notifications {
         pageStack: pageStack
+        onNotification: (message) => {
+            setup.debug("Notification: ", message);
+            messages.push(message);
+        }
     }
     readonly property Theming theming: Theming {
         pageStack: pageStack
@@ -60,6 +64,7 @@ Item {
     }
     property bool closeRequested
     property int foldersAdded: 0
+    property list<string> messages
 
     TestCase {
         id: testCase
@@ -450,10 +455,17 @@ Item {
             importAction.trigger();
             foldersAdded += 1;
 
+            // wait until the import is done
             wait(1); // import might be triggered asynchronously
             tryVerify(() => !App.isImportExportOngoing);
+            const importMessage = `Merging 1 folders and 0 devices`;
+            let importMessageIndex = 0;
+            tryVerify(() => (importMessageIndex = messages.indexOf(importMessage) >= 0), 5000, `received notification "${importMessage}"`);
+            tryVerify(() => messages.indexOf("App settings saved", importMessageIndex) >= 0, 5000, "received notification about settings saved");
+            tryVerify(() => messages.indexOf("Configuration changed", importMessageIndex) >= 0, 5000, "received notification about config changed");
             pageStack.pop();
 
+            // check whether imported folder shows up
             pageStack.setCurrentIndex(1);
             const foldersPage = pageStack.currentPage;
             const folderModel = foldersPage.model;
@@ -462,8 +474,24 @@ Item {
             const firstFolderIndex = folderModel.index(0, 0);
             compare(folderModel.data(firstFolderIndex, directoryIdRole), "test2", "new folder ID present");
             verify(folderModel.data(firstFolderIndex, directoryPathRole).includes("some/path/2"), "new folder path present");
-
             pageStack.pop();
+
+            // trigger export
+            compare(settingsPage.title, "App settings", "back on settings page");
+            const listView2 = settingsPage.listView;
+            compare(listView2.model.get(8).label, "Export all settings/secrets/data of app and backend");
+            listView2.currentIndex = 8;
+            listView2.currentItem.click();
+            const folderDlg2 = settingsPage.backupFolderDialog;
+            tryCompare(folderDlg2, "visible", true, 5000, "folder dialog shown");
+            folderDlg2.selectedFolder = testExportDir;
+            folderDlg2.accept();
+
+            // wait until the export is done
+            const exportMessage = `Settings have been exported to "${testExportDir}".`;
+            tryVerify(() => messages.indexOf(exportMessage) >= 0, 10000, `received notification "${exportMessage}"`);
+            verify(messages.indexOf("Another import/export still pending") < 0, "no multiple attempts to trigger an import/export was made");
+
             goBackToStartPage();
         }
     }

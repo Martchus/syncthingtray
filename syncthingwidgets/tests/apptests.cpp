@@ -10,6 +10,7 @@
 
 #include <qtutilities/misc/disablewarningsmoc.h>
 
+#include <QFileInfo>
 #include <QGuiApplication>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -29,6 +30,11 @@ public:
     }
 
 public Q_SLOTS:
+    void debug(const QString &context, const QString &message)
+    {
+        qDebug() << context.toStdString().data() << message;
+    }
+
     void applicationAvailable()
     {
         initTestLocale();
@@ -71,6 +77,8 @@ public Q_SLOTS:
         context->setContextProperty(QStringLiteral("directoryPathRole"), Data::SyncthingDirectoryModel::DirectoryPath);
         context->setContextProperty(QStringLiteral("deviceStatusStringRole"), Data::SyncthingDeviceModel::DeviceStatusString);
         context->setContextProperty(QStringLiteral("testConfigDir"), QString::fromStdString(testDirPath("testconfig")));
+        context->setContextProperty(QStringLiteral("testExportDir"), m_exportDir.path());
+        context->setContextProperty(QStringLiteral("setup"), this);
 
         m_service.emplace(true);
         m_app.emplace(true, engine);
@@ -82,8 +90,40 @@ public Q_SLOTS:
             qDebug() << "Waiting for service and app to connect to Syncthing";
             QVERIFY(waitForConnected(*m_service->connection(), 15000));
             QVERIFY(waitForConnected(*m_app->connection(), 15000));
+            qDebug() << "Service connected to Syncthing: " << m_service->connection()->syncthingVersion();
+            qDebug() << "App connected to Syncthing: " << m_app->connection()->syncthingVersion();
+            m_syncthingVersion = m_service->connection()->syncthingVersion();
         } else {
             qDebug() << "Starting test without Syncthing";
+        }
+    }
+
+    void checkExport()
+    {
+        qDebug() << "Checking exported files under: " << m_exportDir.path();
+        auto expectedFiles = QStringList();
+        expectedFiles.reserve(8);
+        expectedFiles.append(QStringList{
+            QStringLiteral("appconfig.json"),
+        });
+        if (m_withSyncthing) {
+            expectedFiles.append(QStringList{
+                QStringLiteral("syncthing/cert.pem"),
+                QStringLiteral("syncthing/config.xml"),
+                QStringLiteral("syncthing/https-cert.pem"),
+                QStringLiteral("syncthing/https-key.pem"),
+                QStringLiteral("syncthing/key.pem"),
+            });
+            if (m_syncthingVersion.startsWith(QLatin1String("v2"))) {
+                expectedFiles.append(QStringList{
+                    QStringLiteral("syncthing/index-v2"),
+                    QStringLiteral("syncthing/index-v2/main.db"),
+                });
+            }
+        }
+        for (const auto &fileName : std::as_const(expectedFiles)) {
+            const auto filePath = m_exportDir.filePath(fileName);
+            QVERIFY2(QFileInfo(filePath).size() > 0, (filePath.toStdString() + " was exported").data());
         }
     }
 
@@ -91,6 +131,7 @@ public Q_SLOTS:
     {
         m_service.reset();
         m_app.reset();
+        checkExport();
     }
 
 private:
@@ -98,7 +139,9 @@ private:
     std::optional<QtGui::App> m_app;
     std::optional<QtGui::AppService> m_service;
     QTemporaryDir m_settingsDir;
+    QTemporaryDir m_exportDir;
     QString m_syncthingPath;
+    QString m_syncthingVersion;
     bool m_withSyncthing = false;
 };
 
