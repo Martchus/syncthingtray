@@ -32,6 +32,9 @@ SyncthingTestInstance::SyncthingTestInstance()
     , m_interleavedOutput(false)
     , m_processSupposedToRun(false)
 {
+    if (const auto error = m_dataDir.errorString(); !error.isEmpty()) {
+        throw std::runtime_error("Unable to create temporary directory: " + error.toStdString());
+    }
     qputenv(PROJECT_VARNAME_UPPER "_LOCAL_DATA_DIR", m_dataDir.path().toUtf8());
 
     QObject::connect(&m_syncthingProcess, &Data::SyncthingProcess::errorOccurred, &m_syncthingProcess,

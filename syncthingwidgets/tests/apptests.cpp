@@ -42,6 +42,7 @@ public Q_SLOTS:
         initTestHomeDir(m_settingsDir);
         initTestConfig();
         initTestSyncthingPath(m_syncthingPath);
+        QCOMPARE(m_exportDir.errorString(), QString());
 
         auto hasWithSyncthing = false;
         auto withSyncthing = qEnvironmentVariableIntValue("SYNCTHINGWIDGETS_APP_TESTS_WITH_SYNCTHING", &hasWithSyncthing);
