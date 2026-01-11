@@ -44,7 +44,7 @@ inline void initTestHomeDir(QTemporaryDir &homeDir)
 {
     const auto homePath = homeDir.path();
     qDebug() << "HOME dir: " << homePath;
-    qputenv("LIB_SYNCTHING_CONNECTOR_SYNCTHING_CONFIG_DIR", homePath.toLocal8Bit());
+    qputenv("LIB_SYNCTHING_CONNECTOR_SYNCTHING_CONFIG_DIR", homePath.toUtf8());
     QCOMPARE(homeDir.errorString(), QString());
 }
 

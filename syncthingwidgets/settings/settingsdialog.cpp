@@ -968,7 +968,7 @@ QString supposedAutostartPath()
 bool setAutostartPath(const QString &path)
 {
     if (qEnvironmentVariableIsSet(PROJECT_VARNAME_UPPER "_AUTOSTART_PATH_MOCK")) {
-        return qputenv(PROJECT_VARNAME_UPPER "_AUTOSTART_PATH_MOCK", path.toLocal8Bit());
+        return qputenv(PROJECT_VARNAME_UPPER "_AUTOSTART_PATH_MOCK", path.toUtf8());
     }
 #if defined(PLATFORM_LINUX) && !defined(Q_OS_ANDROID)
     const auto configPath = QStandardPaths::writableLocation(QStandardPaths::ConfigLocation);

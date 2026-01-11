@@ -63,7 +63,7 @@ public Q_SLOTS:
         QVERIFY(settingsFile.open(QFile::WriteOnly | QFile::Truncate));
         QCOMPARE(settingsFile.write(settingsData), settingsData.size());
         QVERIFY(settingsFile.flush());
-        qputenv("SYNCTHINGWIDGETS_SETTINGS_DIR", homePath.toLocal8Bit());
+        qputenv("SYNCTHINGWIDGETS_SETTINGS_DIR", homePath.toUtf8());
 
         // use a single window; that's less noisy when running tests non-headless
         qputenv("SYNCTHINGWIDGETS_NATIVE_POPUPS", "0");
