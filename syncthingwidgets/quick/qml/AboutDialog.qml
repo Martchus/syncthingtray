@@ -8,7 +8,7 @@ CustomDialog {
     id: aboutDialog
     Material.primary: Material.LightBlue
     Material.accent: Material.LightBlue
-    width: Math.min(parent.width - 20, 400)
+    implicitWidth: 400
     focus: true
     standardButtons: Dialog.Ok
     title: qsTr("About %1").arg(Qt.application.name)

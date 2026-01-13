@@ -124,7 +124,6 @@ DelegateChooser {
                 id: deviceIdDlg
                 title: modelData.label
                 standardButtons: objectConfigPage.standardButtons
-                width: parent.width - 20
                 contentItem: ColumnLayout {
                     GridLayout {
                         columns: deviceIdDlg.width > 550 ? 2 : 1
@@ -227,7 +226,6 @@ DelegateChooser {
                 id: optionsDlg
                 title: modelData.label
                 standardButtons: objectConfigPage.standardButtons
-                width: parent.width - 20
                 contentItem: ScrollView {
                     id: optionsScrollView
                     contentWidth: availableWidth
@@ -454,7 +452,6 @@ DelegateChooser {
                 id: numberDlg
                 title: modelData.label
                 standardButtons: objectConfigPage.standardButtons
-                width: parent.width - 20
                 contentItem: TextField {
                     id: editedNumberValue
                     text: modelData.value

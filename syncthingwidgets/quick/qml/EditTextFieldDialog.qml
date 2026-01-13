@@ -9,7 +9,6 @@ CustomDialog {
     id: dlg
     title: modelData.label
     standardButtons: objectConfigPage.standardButtons
-    width: parent.width - 20
     contentItem: RowLayout {
         TextField {
             id: textField

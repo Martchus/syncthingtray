@@ -42,7 +42,7 @@ ItemDelegate {
     }
     CustomDialog {
         id: selectionDlg
-        height: parent.height - 20
+        implicitHeight: parent.height
         standardButtons: Dialog.Ok
         contentItem: CustomListView {
             id: selectionView

@@ -212,8 +212,8 @@ Page {
                     id: qrCodeDlg
                     title: qsTr("Own device ID")
                     standardButtons: Dialog.NoButton
-                    width: parent.width - 20
-                    height: Math.min(parent.height - 20, width)
+                    implicitWidth: 400
+                    implicitHeight: implicitWidth
                     onAboutToShow: App.showQrCode(qrCodeIcon)
                     contentItem: Icon {
                         id: qrCodeIcon
