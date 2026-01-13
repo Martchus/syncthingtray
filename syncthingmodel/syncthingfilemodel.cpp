@@ -273,6 +273,14 @@ SyncthingIgnores SyncthingFileModel::computeNewIgnorePatterns() const
     return newIgnorePatterns;
 }
 
+/*!
+ * \brief Computes new ignore patterns based on the present ignore patterns and staged changes as string.
+ */
+QString SyncthingFileModel::computeNewIgnorePatternsAsString() const
+{
+    return computeNewIgnorePatterns().ignore.join(QChar('\n'));
+}
+
 void SyncthingFileModel::editIgnorePatternsManually(const QString &ignorePatterns)
 {
     m_manuallyEditedIgnorePatterns = ignorePatterns;

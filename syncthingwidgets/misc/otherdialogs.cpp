@@ -273,7 +273,7 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
                 editBtn->hide();
                 b->clear();
                 highlighter->setEnabled(false);
-                b->setText(model->computeNewIgnorePatterns().ignore.join(QChar('\n')));
+                b->setText(model->computeNewIgnorePatternsAsString());
                 b->setReadOnly(false);
                 b->setUndoRedoEnabled(true);
             });

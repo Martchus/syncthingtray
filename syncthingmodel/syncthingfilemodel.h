@@ -87,6 +87,7 @@ public:
     bool hasStagedChanges() const;
     const std::vector<SyncthingIgnorePattern> &presentIgnorePatterns() const;
     SyncthingIgnores computeNewIgnorePatterns() const;
+    Q_INVOKABLE QString computeNewIgnorePatternsAsString() const;
     Q_INVOKABLE void editIgnorePatternsManually(const QString &ignorePatterns);
     Q_INVOKABLE void editLocalDeletions(const QSet<QString> &localDeletions);
     Q_INVOKABLE void editLocalDeletionsFromVariantList(const QVariantList &localDeletions);

@@ -184,6 +184,14 @@ Page {
                 }
             }
         }
+        footer: DialogButtonBox {
+            Button {
+                text: qsTr("Edit")
+                flat: true
+                onClicked: confirmActionDialog.setDiff(page.model.computeNewIgnorePatternsAsString(), false)
+                DialogButtonBox.buttonRole: DialogButtonBox.InvalidRole
+            }
+        }
         onAccepted: {
             const localDeletions = [];
             const localDeletionCount = deletionsModel.count;
@@ -194,13 +202,19 @@ Page {
                 }
             }
             page.model.editLocalDeletionsFromVariantList(localDeletions);
+            if (!diffTextArea.readOnly) {
+                page.model.editIgnorePatternsManually(diffTextArea.text);
+            }
             action?.trigger()
         }
         onRejected: action?.dismiss()
         property var action
         property var diffHighlighter: App.createDiffHighlighter(diffTextArea.textDocument.textDocument)
         property alias message: messageLabel.text
-        property alias diff: diffTextArea.text
+        function setDiff(diff, readOnly = true) {
+            diffTextArea.readOnly = readOnly;
+            diffTextArea.text = diff;
+        }
     }
     Connections {
         id: connections
@@ -214,7 +228,7 @@ Page {
             confirmActionDialog.title = action.text;
             confirmActionDialog.action = action;
             confirmActionDialog.message = message;
-            confirmActionDialog.diff = diff;
+            confirmActionDialog.setDiff(diff);
             deletionsModel.clear();
             let index = 0;
             for (const path of localDeletions) {
