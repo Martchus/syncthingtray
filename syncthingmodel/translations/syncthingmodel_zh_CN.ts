@@ -434,27 +434,27 @@
 <context>
     <name>Data::SyncthingFileModel</name>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="315"/>
+        <location filename="../syncthingfilemodel.cpp" line="323"/>
         <source>Name</source>
         <translation>名称</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="317"/>
+        <location filename="../syncthingfilemodel.cpp" line="325"/>
         <source>Size</source>
         <translation>大小</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="319"/>
+        <location filename="../syncthingfilemodel.cpp" line="327"/>
         <source>Last modified</source>
         <translation>最后修改</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="321"/>
+        <location filename="../syncthingfilemodel.cpp" line="329"/>
         <source>Ignore pattern</source>
         <translation>忽略模式</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="369"/>
+        <location filename="../syncthingfilemodel.cpp" line="377"/>
         <source>%1 elements</source>
         <translation>%1 个元素</translation>
     </message>
@@ -489,141 +489,141 @@
         <translation>不存在</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="486"/>
+        <location filename="../syncthingfilemodel.cpp" line="494"/>
         <source>Refresh</source>
         <translation>刷新</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="489"/>
+        <location filename="../syncthingfilemodel.cpp" line="497"/>
         <source>Deselect recursively</source>
         <translation>递归取消选择</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="489"/>
+        <location filename="../syncthingfilemodel.cpp" line="497"/>
         <source>Select recursively</source>
         <translation>递归选择</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="491"/>
+        <location filename="../syncthingfilemodel.cpp" line="499"/>
         <source>Deselect single item</source>
         <translation>取消选择单个项目</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="491"/>
+        <location filename="../syncthingfilemodel.cpp" line="499"/>
         <source>Select single item</source>
         <translation>选择单个项目</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="493"/>
+        <location filename="../syncthingfilemodel.cpp" line="501"/>
         <source>Open local version</source>
         <translation>打开本地版本</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="493"/>
+        <location filename="../syncthingfilemodel.cpp" line="501"/>
         <source>Copy local path</source>
         <translation>复制本地路径</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="493"/>
+        <location filename="../syncthingfilemodel.cpp" line="501"/>
         <source>Browse locally</source>
         <translation>本地浏览</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="778"/>
+        <location filename="../syncthingfilemodel.cpp" line="786"/>
         <source>Select items to sync/ignore</source>
         <translation>选择要同步/忽略的项目</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="780"/>
+        <location filename="../syncthingfilemodel.cpp" line="788"/>
         <source>Select</source>
         <translation>选择</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="785"/>
+        <location filename="../syncthingfilemodel.cpp" line="793"/>
         <source>Discard staged changes</source>
         <translation>放弃阶段更改</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="795"/>
+        <location filename="../syncthingfilemodel.cpp" line="803"/>
         <source>Uncheck all and discard staged changes</source>
         <translation>取消选中所有并放弃阶段更改</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="797"/>
+        <location filename="../syncthingfilemodel.cpp" line="805"/>
         <source>Discard</source>
         <translation>放弃</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="809"/>
+        <location filename="../syncthingfilemodel.cpp" line="817"/>
         <source>Ignore checked items (and their children)</source>
         <translation>忽略选中的项目（及其子项）</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="823"/>
+        <location filename="../syncthingfilemodel.cpp" line="831"/>
         <source>Include checked items (and their children)</source>
         <translation>包括选中的项目（及其子项）</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="862"/>
+        <location filename="../syncthingfilemodel.cpp" line="870"/>
         <source>Remove ignore patterns matching checked items (may affect other items as well)</source>
         <translation>删除忽略与选中项匹配的模式（也可能影响其他项）</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="831"/>
+        <location filename="../syncthingfilemodel.cpp" line="839"/>
         <source>Include all items by default</source>
         <translation>默认包含所有项</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="816"/>
+        <location filename="../syncthingfilemodel.cpp" line="824"/>
         <source>Ignore and locally delete checked items (and their children)</source>
         <translation>忽略并本地删除选中的项目（及其子项）</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="831"/>
+        <location filename="../syncthingfilemodel.cpp" line="839"/>
         <source>Ignore all items by default</source>
         <translation>默认忽略所有项目</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="890"/>
+        <location filename="../syncthingfilemodel.cpp" line="898"/>
         <source>Review and apply staged changes</source>
         <translation>查看和应用阶段更改</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="892"/>
+        <location filename="../syncthingfilemodel.cpp" line="900"/>
         <source>Apply</source>
         <translation>应用</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="900"/>
+        <location filename="../syncthingfilemodel.cpp" line="908"/>
         <source>Do you want to apply the following changes?</source>
         <translation>是否要应用以下更改？</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="908"/>
+        <location filename="../syncthingfilemodel.cpp" line="916"/>
         <source>Cannot apply ignore patterns while a previous request for ignore patterns is still pending.</source>
         <translation>当上一个忽略模式请求仍处于待处理状态时，无法应用忽略模式。</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="916"/>
+        <location filename="../syncthingfilemodel.cpp" line="924"/>
         <source>Unable to change ignore patterns:
 %1</source>
         <translation>无法更改忽略模式：
 %1</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="997"/>
+        <location filename="../syncthingfilemodel.cpp" line="1005"/>
         <source>Ignore patterns have been changed.</source>
         <translation>忽略模式已更改。</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="1000"/>
+        <location filename="../syncthingfilemodel.cpp" line="1008"/>
         <source>Ignore patterns have been changed but the following local files could not be deleted:
 </source>
         <translation>忽略模式已更改，但无法删除以下本地文件：
 </translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="1170"/>
+        <location filename="../syncthingfilemodel.cpp" line="1178"/>
         <source>Cannot query ignore patterns while a previous request for ignore patterns is still pending.</source>
         <translation>当上一个忽略模式请求仍处于待处理状态时，无法查询忽略模式。</translation>
     </message>

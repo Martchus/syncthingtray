@@ -500,27 +500,27 @@
 <context>
     <name>Data::SyncthingFileModel</name>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="315"/>
+        <location filename="../syncthingfilemodel.cpp" line="323"/>
         <source>Name</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="317"/>
+        <location filename="../syncthingfilemodel.cpp" line="325"/>
         <source>Size</source>
         <translation>Größe</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="319"/>
+        <location filename="../syncthingfilemodel.cpp" line="327"/>
         <source>Last modified</source>
         <translation>Zuletzt geändert</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="321"/>
+        <location filename="../syncthingfilemodel.cpp" line="329"/>
         <source>Ignore pattern</source>
         <translation>Ignoriermuster</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="369"/>
+        <location filename="../syncthingfilemodel.cpp" line="377"/>
         <source>%1 elements</source>
         <translation>%1 Elemente</translation>
     </message>
@@ -555,87 +555,87 @@
         <translation>Existiert nicht</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="486"/>
+        <location filename="../syncthingfilemodel.cpp" line="494"/>
         <source>Refresh</source>
         <translation>Aktualisieren</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="489"/>
+        <location filename="../syncthingfilemodel.cpp" line="497"/>
         <source>Deselect recursively</source>
         <translation>Abwählen (rekursiv)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="489"/>
+        <location filename="../syncthingfilemodel.cpp" line="497"/>
         <source>Select recursively</source>
         <translation>Auswählen (rekursiv)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="491"/>
+        <location filename="../syncthingfilemodel.cpp" line="499"/>
         <source>Deselect single item</source>
         <translation>Abwählen (einzelnes Element)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="491"/>
+        <location filename="../syncthingfilemodel.cpp" line="499"/>
         <source>Select single item</source>
         <translation>Auswählen (einzelnes Element)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="493"/>
+        <location filename="../syncthingfilemodel.cpp" line="501"/>
         <source>Open local version</source>
         <translation>Lokale Version öffnen</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="493"/>
+        <location filename="../syncthingfilemodel.cpp" line="501"/>
         <source>Copy local path</source>
         <translation>Lokalen Pfad kopieren</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="493"/>
+        <location filename="../syncthingfilemodel.cpp" line="501"/>
         <source>Browse locally</source>
         <translation>Im lokalen Dateibrowser öffnen</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="778"/>
+        <location filename="../syncthingfilemodel.cpp" line="786"/>
         <source>Select items to sync/ignore</source>
         <translation>Elemente zum Synchronisieren/Ignorieren auswählen</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="780"/>
+        <location filename="../syncthingfilemodel.cpp" line="788"/>
         <source>Select</source>
         <translation>Auswahl</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="785"/>
+        <location filename="../syncthingfilemodel.cpp" line="793"/>
         <source>Discard staged changes</source>
         <translation>Vorgemerkte Änderungen verwerfen</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="795"/>
+        <location filename="../syncthingfilemodel.cpp" line="803"/>
         <source>Uncheck all and discard staged changes</source>
         <translation>Vorgemerkte Änderungen und Auswahl verwerfen</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="797"/>
+        <location filename="../syncthingfilemodel.cpp" line="805"/>
         <source>Discard</source>
         <translation>Verwerfen</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="809"/>
+        <location filename="../syncthingfilemodel.cpp" line="817"/>
         <source>Ignore checked items (and their children)</source>
         <translation>Ausgewählte Elemente ignorieren (einschließlich untergeordneter Elemente)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="816"/>
+        <location filename="../syncthingfilemodel.cpp" line="824"/>
         <source>Ignore and locally delete checked items (and their children)</source>
         <translation>Ausgewählte Elemente ignorieren und lokal löschen (einschließlich untergeordneter Elemente)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="823"/>
+        <location filename="../syncthingfilemodel.cpp" line="831"/>
         <source>Include checked items (and their children)</source>
         <translation>Ausgewählte Elemente synchronisieren (einschließlich untergeordneter Elemente)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="862"/>
+        <location filename="../syncthingfilemodel.cpp" line="870"/>
         <source>Remove ignore patterns matching checked items (may affect other items as well)</source>
         <translation>Lösche Ignoriermuster die mit ausgewählten Elementen übereinstimmen (kann auch andere Elemente betreffen)</translation>
     </message>
@@ -652,12 +652,12 @@
         <translation type="vanished">Ausgewählte Elemente synchronisieren (und untergeordnete Elemente)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="831"/>
+        <location filename="../syncthingfilemodel.cpp" line="839"/>
         <source>Include all items by default</source>
         <translation>Alle Elemente standardmäßig synchronisieren</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="831"/>
+        <location filename="../syncthingfilemodel.cpp" line="839"/>
         <source>Ignore all items by default</source>
         <translation>Alle Elemente standardmäßig ignorieren</translation>
     </message>
@@ -666,46 +666,46 @@
         <translation type="vanished">Lösche Ignoriermuster die mit ausgewählten Elementen übereinstimmen (kann auch andere Elemente betreffen)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="890"/>
+        <location filename="../syncthingfilemodel.cpp" line="898"/>
         <source>Review and apply staged changes</source>
         <translation>Vorgemerkte Änderungen überprüfen und anwenden</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="892"/>
+        <location filename="../syncthingfilemodel.cpp" line="900"/>
         <source>Apply</source>
         <translation>Anwenden</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="900"/>
+        <location filename="../syncthingfilemodel.cpp" line="908"/>
         <source>Do you want to apply the following changes?</source>
         <translation>Sollen die folgenden Änderungen angewandt werden?</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="908"/>
+        <location filename="../syncthingfilemodel.cpp" line="916"/>
         <source>Cannot apply ignore patterns while a previous request for ignore patterns is still pending.</source>
         <translation>Ignoriermuster können nicht gespeichert werden, da noch eine vorherige Abfrage in Gange ist.</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="916"/>
+        <location filename="../syncthingfilemodel.cpp" line="924"/>
         <source>Unable to change ignore patterns:
 %1</source>
         <translation>Kann Ignoriermuster nicht speichern:
 %1</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="997"/>
+        <location filename="../syncthingfilemodel.cpp" line="1005"/>
         <source>Ignore patterns have been changed.</source>
         <translation>Ignoriermuster wurden gespeichert.</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="1000"/>
+        <location filename="../syncthingfilemodel.cpp" line="1008"/>
         <source>Ignore patterns have been changed but the following local files could not be deleted:
 </source>
         <translation>Ignoriermuster wurden gespeichert, aber die folgenden lokalen Dateien konnten nicht gelöscht werden:
 </translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="1170"/>
+        <location filename="../syncthingfilemodel.cpp" line="1178"/>
         <source>Cannot query ignore patterns while a previous request for ignore patterns is still pending.</source>
         <translation>Ignoriermuster können nicht abgefragt werden, da noch eine vorherige Abfrage in Gange ist.</translation>
     </message>
