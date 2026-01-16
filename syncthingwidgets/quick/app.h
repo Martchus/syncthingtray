@@ -80,6 +80,7 @@ class SYNCTHINGWIDGETS_EXPORT App : public AppBase {
     Q_PROPERTY(QFont font READ font CONSTANT)
     Q_PROPERTY(bool storagePermissionGranted READ storagePermissionGranted NOTIFY storagePermissionGrantedChanged)
     Q_PROPERTY(bool notificationPermissionGranted READ notificationPermissionGranted NOTIFY notificationPermissionGrantedChanged)
+    Q_PROPERTY(QString currentSyncthingHomeDir READ currentSyncthingHomeDir)
     Q_PROPERTY(QString closePreference READ closePreference)
     Q_PROPERTY(QObject *currentDialog READ currentDialog)
     QML_ELEMENT
