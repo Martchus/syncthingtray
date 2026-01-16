@@ -57,8 +57,12 @@ ApplicationWindow {
         }
     }
     onClosing: (event) => {
-        if (appWindow.forceClose && App.manualServiceShutdown) {
+        const closePreference = App.closePreference;
+        if ((appWindow.forceClose && App.manualServiceShutdown) || closePreference === "shutdown") {
             App.shutdownService();
+        } else if (closePreference === "background") {
+            event.accepted = false;
+            App.minimize();
         } else if (!appWindow.forceClose && App.syncthingRunning) {
             event.accepted = false;
             closeDialog.open();

@@ -1002,6 +1002,7 @@ bool App::shouldIgnorePermissions(const QString &path)
 void App::invalidateStatus()
 {
     AppBase::invalidateStatus();
+    m_closePreference.reset();
     emit statusInfoChanged();
     emit statusChanged();
 }
@@ -1416,6 +1417,7 @@ bool App::applySettings()
     applyConnectionSettings(m_syncthingGuiUrl);
     auto mod = false;
     auto tweaksSettings = m_settings.value(QLatin1String("tweaks")).toObject();
+    ensureDefault(mod, tweaksSettings, QLatin1String("closePreference"), QString());
     ensureDefault(mod, tweaksSettings, QLatin1String("exportDir"), QString());
     ensureDefault(mod, tweaksSettings, QLatin1String("useUnixDomainSocket"), false);
 #ifdef Q_OS_ANDROID
@@ -1977,6 +1979,14 @@ QVariant App::isPopulated(const QString &path) const
 QString App::currentSyncthingHomeDir() const
 {
     return m_settings.value(QLatin1String("launcher")).toObject().value(QLatin1String("stHomeDir")).toString();
+}
+
+const QString &App::closePreference()
+{
+    if (!m_closePreference.has_value()) {
+        m_closePreference.emplace(m_settings.value(QLatin1String("tweaks")).toObject().value(QLatin1String("closePreference")).toString());
+    }
+    return m_closePreference.value();
 }
 
 bool App::checkSyncthingHome(const QJSValue &callback)

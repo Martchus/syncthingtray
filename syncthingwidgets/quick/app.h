@@ -80,6 +80,7 @@ class SYNCTHINGWIDGETS_EXPORT App : public AppBase {
     Q_PROPERTY(QFont font READ font CONSTANT)
     Q_PROPERTY(bool storagePermissionGranted READ storagePermissionGranted NOTIFY storagePermissionGrantedChanged)
     Q_PROPERTY(bool notificationPermissionGranted READ notificationPermissionGranted NOTIFY notificationPermissionGrantedChanged)
+    Q_PROPERTY(QString closePreference READ closePreference)
     Q_PROPERTY(QObject *currentDialog READ currentDialog)
     QML_ELEMENT
     QML_SINGLETON
@@ -279,6 +280,7 @@ public:
     bool notificationPermissionGranted() const;
     QString currentSyncthingHomeDir() const;
     QObject *currentDialog();
+    const QString &closePreference();
 
     // helper functions
     Q_INVOKABLE bool initEngine();
@@ -440,6 +442,7 @@ private:
     std::optional<QUrl> m_settingsExport;
     std::optional<QFile> m_downloadFile;
     std::optional<QString> m_homeDirMove;
+    std::optional<QString> m_closePreference;
     QtUtilities::QtSettings m_qtSettings;
     QString m_faUrlBase;
     std::array<QObject *, 5> m_uiObjects;
