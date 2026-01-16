@@ -225,7 +225,7 @@ void SyncthingApplet::initEngine(QObject *object)
     if (!engine) {
         return;
     }
-    const auto color = m_theme.color(Plasma::Theme::TextColor, Plasma::Theme::NormalColorGroup);
+    const auto color = m_theme.color(Plasma::Theme::TextColor);
     m_imageProvider
         = new QtForkAwesome::QuickImageProvider(QtForkAwesome::Renderer::global(), color); // using global renderer for system icons override
     connect(engine, &QObject::destroyed, this, &SyncthingApplet::handleImageProviderDestroyed); // engine has ownership over image provider
@@ -721,7 +721,7 @@ void SyncthingApplet::handleThemeChanged()
         m_iconManager.setPalette(palette);
         setBrightColors(isPaletteDark(palette));
         if (m_imageProvider) {
-            m_imageProvider->setDefaultColor(m_theme.color(Plasma::Theme::TextColor, Plasma::Theme::NormalColorGroup));
+            m_imageProvider->setDefaultColor(m_theme.color(Plasma::Theme::TextColor));
         }
         emit faUrlChanged(m_faUrl = QStringLiteral("image://fa/"));
     });
