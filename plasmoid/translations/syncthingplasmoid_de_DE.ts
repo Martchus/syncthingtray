@@ -264,6 +264,7 @@
         <translation>Geräte</translation>
     </message>
     <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="131"/>
         <location filename="../lib/appearanceoptionpage.ui" line="205"/>
         <source>Downloads</source>
         <translation></translation>
@@ -304,11 +305,6 @@
         <translation>Optionale Elemente</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="131"/>
-        <source>Downloads</source>
-        <translation></translation>
-    </message>
-    <message>
         <location filename="../lib/appearanceoptionpage.ui" line="138"/>
         <source>Show tab texts</source>
         <translation>Text-Beschriftung der Tab-Buttons</translation>
@@ -343,17 +339,17 @@
 <context>
     <name>Plasmoid::SettingsDialog</name>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="132"/>
+        <location filename="../lib/settingsdialog.cpp" line="140"/>
         <source>Plasmoid</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="142"/>
+        <location filename="../lib/settingsdialog.cpp" line="150"/>
         <source>General web view settings</source>
         <translation>Allgemeine Webanzeigeneinstellungen</translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="143"/>
+        <location filename="../lib/settingsdialog.cpp" line="151"/>
         <source>Built-in web view</source>
         <translation>Eingebaute Webanzeige</translation>
     </message>
@@ -362,7 +358,7 @@
         <translation type="vanished">Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="152"/>
+        <location filename="../lib/settingsdialog.cpp" line="160"/>
         <source>Extras</source>
         <translation></translation>
     </message>
@@ -383,7 +379,7 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="527"/>
+        <location filename="../lib/syncthingapplet.cpp" line="528"/>
         <source>About</source>
         <translation>Über Syncthing Plasmoid</translation>
     </message>
@@ -392,17 +388,17 @@
         <translation type="vanished">Neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="610"/>
+        <location filename="../lib/syncthingapplet.cpp" line="611"/>
         <source>Associated directory does not exist.</source>
         <translation>Zugehöriges Verzeichnis existiert nicht.</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="636"/>
+        <location filename="../lib/syncthingapplet.cpp" line="637"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation>Verbindung zu Syncthing kann nicht hergestellt werden.</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="703"/>
+        <location filename="../lib/syncthingapplet.cpp" line="704"/>
         <source>D-Bus error - unable to </source>
         <translation>D-Bus-Fehler bei Aktion </translation>
     </message>

@@ -211,6 +211,7 @@
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="131"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="205"/>
         <source>Downloads</source>
         <translation>Загрузки</translation>
     </message>
@@ -228,11 +229,6 @@
         <location filename="../lib/appearanceoptionpage.ui" line="200"/>
         <source>Devices</source>
         <translation type="unfinished">Устройства</translation>
-    </message>
-    <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="205"/>
-        <source>Downloads</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="210"/>
@@ -281,22 +277,22 @@
 <context>
     <name>Plasmoid::SettingsDialog</name>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="132"/>
+        <location filename="../lib/settingsdialog.cpp" line="140"/>
         <source>Plasmoid</source>
         <translation>Plasmoid</translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="142"/>
+        <location filename="../lib/settingsdialog.cpp" line="150"/>
         <source>General web view settings</source>
         <translation>Общие настройки веб-просмотра</translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="143"/>
+        <location filename="../lib/settingsdialog.cpp" line="151"/>
         <source>Built-in web view</source>
         <translation>Встроенный веб-просмотр</translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="152"/>
+        <location filename="../lib/settingsdialog.cpp" line="160"/>
         <source>Extras</source>
         <translation>Дополнительно</translation>
     </message>
@@ -317,22 +313,22 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="527"/>
+        <location filename="../lib/syncthingapplet.cpp" line="528"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="610"/>
+        <location filename="../lib/syncthingapplet.cpp" line="611"/>
         <source>Associated directory does not exist.</source>
         <translation>Связанный каталог не существует.</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="636"/>
+        <location filename="../lib/syncthingapplet.cpp" line="637"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation>Не удалось установить соединение с Syncthing.</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="703"/>
+        <location filename="../lib/syncthingapplet.cpp" line="704"/>
         <source>D-Bus error - unable to </source>
         <translation>Ошибка D-Bus - невозможно </translation>
     </message>
