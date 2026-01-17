@@ -36,12 +36,12 @@ ApplicationWindow {
         [appWindow.contentItem, appWindow.header, appWindow.footer].forEach(item => item.Keys.released.connect((event) => {
             const key = event.key;
             if (key === Qt.Key_Back || (key === Qt.Key_Backspace && typeof activeFocusItem.getText !== "function")) {
+                event.accepted = true;
                 const dialog = App.currentDialog;
                 if (dialog) {
                     dialog.reject();
-                    event.accepted = true;
-                } else {
-                    event.accepted = pageStack.pop();
+                } else if (!pageStack.pop()) {
+                    appWindow.close();
                 }
             } else if (key === Qt.Key_Forward) {
                 event.accepted = pageStack.forward();
