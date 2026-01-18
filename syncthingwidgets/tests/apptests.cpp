@@ -67,6 +67,11 @@ public Q_SLOTS:
 
         // use a single window; that's less noisy when running tests non-headless
         qputenv("SYNCTHINGWIDGETS_NATIVE_POPUPS", "0");
+
+        m_testConfigDir = QString::fromStdString(testDirPath("testconfig"));
+        m_testConfigDir = QFileInfo(m_testConfigDir).absoluteFilePath();
+        QVERIFY2(!m_testConfigDir.isEmpty(), "test config dir located");
+        qDebug() << "test config dir: " << m_testConfigDir;
     }
 
     void qmlEngineAvailable(QQmlEngine *engine)
@@ -77,7 +82,7 @@ public Q_SLOTS:
         context->setContextProperty(QStringLiteral("directoryIdRole"), Data::SyncthingDirectoryModel::DirectoryId);
         context->setContextProperty(QStringLiteral("directoryPathRole"), Data::SyncthingDirectoryModel::DirectoryPath);
         context->setContextProperty(QStringLiteral("deviceStatusStringRole"), Data::SyncthingDeviceModel::DeviceStatusString);
-        context->setContextProperty(QStringLiteral("testConfigDir"), QString::fromStdString(testDirPath("testconfig")));
+        context->setContextProperty(QStringLiteral("testConfigDir"), m_testConfigDir);
         context->setContextProperty(QStringLiteral("testExportDir"), m_exportDir.path());
         context->setContextProperty(QStringLiteral("setup"), this);
 
@@ -141,6 +146,7 @@ private:
     std::optional<QtGui::AppService> m_service;
     QTemporaryDir m_settingsDir;
     QTemporaryDir m_exportDir;
+    QString m_testConfigDir;
     QString m_syncthingPath;
     QString m_syncthingVersion;
     bool m_withSyncthing = false;
