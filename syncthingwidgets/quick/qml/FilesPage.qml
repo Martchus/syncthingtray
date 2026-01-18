@@ -73,7 +73,7 @@ Page {
             TapHandler {
                 acceptedButtons: Qt.RightButton
                 acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad | PointerDevice.Stylus
-                onTapped: contextMenu.showCenteredIn(fileIcon)
+                onTapped: contextMenu.showCenteredInRight(fileIcon)
             }
             CustomMenu {
                 id: contextMenu

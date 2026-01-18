@@ -27,4 +27,7 @@ Menu {
     function showCenteredIn(item) {
         menu.popup(item, item.width / 2 - menu.width, item.height / 2)
     }
+    function showCenteredInRight(item) {
+        menu.popup(item, item.width / 2, item.height / 2);
+    }
 }
