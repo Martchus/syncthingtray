@@ -213,6 +213,12 @@ StackView {
                         }
                     }
                     App.settings = cfg;
+                    for (let i = 0, count = depth; i !== count; ++i) {
+                        const item = stackView.get(i);
+                        if (item.hasUnsavedChanges) {
+                            item.hasUnsavedChanges = false;
+                        }
+                    }
                     return true;
                 }
             }
