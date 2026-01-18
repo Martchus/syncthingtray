@@ -54,13 +54,13 @@ SwipeView {
     readonly property var currentDepth: currentChild?.depth ?? 1
     readonly property var currentActions: currentPage.actions ?? []
     readonly property var currentExtraActions: currentPage.extraActions ?? []
-    property var indexHistory: [0]
+    property var indexHistory: []
     property var indexForward: []
     property var setPageHistory: []
     property bool goingBackAndForth: false
     signal changesMightBeDiscarded
     function resetHistory() {
-        pageStack.indexHistory = [0];
+        pageStack.indexHistory = [];
         pageStack.indexForward = [];
         pageStack.setPageHistory = [];
     }
