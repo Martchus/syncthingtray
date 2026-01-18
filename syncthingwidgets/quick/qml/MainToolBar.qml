@@ -25,7 +25,7 @@ ToolBar {
                     const hasInternalErrors = App.hasInternalErrors;
                     const hasConnectionErrors = App.connection.hasErrors;
                     if (hasInternalErrors && hasConnectionErrors) {
-                        statusButtonMenu.popup(statusButton, statusButton.width / 2, statusButton.height / 2);
+                        statusButtonMenu.showCenteredIn(statusButton);
                     } else if (hasInternalErrors) {
                         statusButton.showInternalErrors();
                     } else if (hasConnectionErrors) {
@@ -34,9 +34,8 @@ ToolBar {
                         App.performHapticFeedback();
                     }
                 }
-                Menu {
+                CustomMenu {
                     id: statusButtonMenu
-                    popupType: App.nativePopups ? Popup.Native : Popup.Item
                     MenuItem {
                         text: qsTr("Show API errors")
                         onTriggered: statusButton.showInternalErrors()
@@ -135,10 +134,9 @@ ToolBar {
                     visible: pageStack.currentExtraActions.length > 0
                     icon.source: App.faUrlBase + "ellipsis-v"
                     text: qsTr("More")
-                    onClicked: pageStack.currentPage?.showExtraActions() ?? extraActionsMenu.popup(extraActionsMenuButton, extraActionsMenuButton.width / 2 - extraActionsMenu.width, extraActionsMenuButton.height / 2)
-                    Menu {
+                    onClicked: pageStack.currentPage?.showExtraActions() ?? extraActionsMenu.showCenteredIn(extraActionsMenuButton)
+                    CustomMenu {
                         id: extraActionsMenu
-                        popupType: App.nativePopups ? Popup.Native : Popup.Item
                         MenuItemInstantiator {
                             menu: extraActionsMenu
                             model: {

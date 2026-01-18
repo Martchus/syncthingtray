@@ -79,6 +79,7 @@ set(QML_MAIN_FILES
     quick/qml/CustomDialog.qml
     quick/qml/CustomFlickable.qml
     quick/qml/CustomListView.qml
+    quick/qml/CustomMenu.qml
     quick/qml/CustomToolButton.qml
     quick/qml/DetailsListView.qml
     quick/qml/DevConfigPage.qml

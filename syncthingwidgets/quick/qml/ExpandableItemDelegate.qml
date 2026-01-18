@@ -75,10 +75,9 @@ ItemDelegate {
                 visible: !buttonRepeater.visible || mainDelegate.extraActions.length > 0
                 text: qsTr("More actions")
                 icon.source: App.faUrlBase + "ellipsis-v"
-                onClicked: menu.show()
-                Menu {
+                onClicked: menu.showCenteredIn(menuButton)
+                CustomMenu {
                     id: menu
-                    popupType: App.nativePopups ? Popup.Native : Popup.Item
                     MenuItemInstantiator {
                         menu: menu
                         model: mainDelegate.actions
@@ -86,9 +85,6 @@ ItemDelegate {
                     MenuItemInstantiator {
                         menu: menu
                         model: mainDelegate.extraActions
-                    }
-                    function show() {
-                        menu.popup(menuButton, menuButton.width / 2 - menu.width, menuButton.height / 2)
                     }
                 }
             }

@@ -20,10 +20,9 @@ RowLayout {
         id: menuButton
         text: qsTr("More options")
         icon.source: App.faUrlBase + "ellipsis-v"
-        onClicked: menu.popup(menuButton, menuButton.width / 2 - menu.width, menuButton.height / 2)
-        Menu {
+        onClicked: menu.showCenteredIn(menuButton)
+        CustomMenu {
             id: menu
-            popupType: App.nativePopups ? Popup.Native : Popup.Item
             MenuItem {
                 text: qsTr("Remove")
                 Layout.preferredWidth: 36

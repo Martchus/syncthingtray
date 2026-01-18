@@ -66,18 +66,17 @@ Page {
             TapHandler {
                 acceptedDevices: PointerDevice.TouchScreen
                 onLongPressed: {
-                    contextMenu.show();
+                    contextMenu.showCenteredIn(fileIcon);
                     App.performHapticFeedback();
                 }
             }
             TapHandler {
                 acceptedButtons: Qt.RightButton
                 acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad | PointerDevice.Stylus
-                onTapped: contextMenu.show()
+                onTapped: contextMenu.showCenteredIn(fileIcon)
             }
-            Menu {
+            CustomMenu {
                 id: contextMenu
-                popupType: App.nativePopups ? Popup.Native : Popup.Item
                 Instantiator {
                     model: actions
                     delegate: MenuItem {
@@ -86,9 +85,6 @@ Page {
                     }
                     onObjectAdded: (index, object) => contextMenu.insertItem(index, object)
                     onObjectRemoved: (index, object) => contextMenu.removeItem(object)
-                }
-                function show() {
-                    contextMenu.popup(fileIcon, fileIcon.width / 2, fileIcon.height / 2)
                 }
             }
             function triggerAction(action) {
