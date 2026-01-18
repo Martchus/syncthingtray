@@ -492,6 +492,8 @@ Item {
             tryVerify(() => messages.indexOf(exportMessage) >= 0, 10000, `received notification "${exportMessage}"`);
             verify(messages.indexOf("Another import/export still pending") < 0, "no multiple attempts to trigger an import/export was made");
 
+            setup.checkExport();
+
             goBackToStartPage();
         }
     }

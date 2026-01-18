@@ -137,7 +137,6 @@ public Q_SLOTS:
     {
         m_service.reset();
         m_app.reset();
-        checkExport();
     }
 
 private:
