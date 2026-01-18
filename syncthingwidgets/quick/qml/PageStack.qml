@@ -11,9 +11,9 @@ SwipeView {
     onCurrentIndexChanged: {
         const newIndex = pageStack.currentIndex;
         const indexHistoryLength = indexHistory.length;
-        if (indexHistoryLength > 1 && indexHistory[indexHistoryLength - 2] === newIndex) {
+        if (indexHistoryLength > 0 && indexHistory[indexHistoryLength - 1] === newIndex) {
             indexHistory.pop();
-        } else {
+        } else if (newIndex !== 0 || indexHistoryLength > 0) {
             indexHistory.push(newIndex);
         }
         if (!goingBackAndForth) {
