@@ -5,7 +5,7 @@ import Main
 
 Menu {
     id: menu
-    popupType: App.nativePopups ? Popup.Window : Popup.Item
+    popupType: App.windowPopups ? Popup.Window : Popup.Item
     topMargin: contentItem.Window.window.SafeArea.margins.top
     leftMargin: contentItem.Window.window.SafeArea.margins.left
     rightMargin: contentItem.Window.window.SafeArea.margins.right

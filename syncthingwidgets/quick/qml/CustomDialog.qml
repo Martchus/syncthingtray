@@ -7,7 +7,7 @@ Dialog {
     id: dialog
     parent: Overlay.overlay
     anchors.centerIn: Overlay.overlay
-    popupType: App.nativePopups ? Popup.Native : Popup.Item
+    popupType: App.windowPopups ? Popup.Window : Popup.Item
     width: Math.min(popupType === Popup.Item ? Math.max(0, parent.width - additionalSpacing - leftMargin - rightMargin) : implicitWidth, 800)
     height: Math.min(implicitHeight, Math.max(0, parent.height - additionalSpacing - topMargin - bottomMargin))
     topMargin: parent.SafeArea.margins.top

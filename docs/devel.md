@@ -310,7 +310,8 @@ On Windows, you'll have to use the `syncthingtray-cli` executable to see output 
   setup detection
 * `SYNCTHINGTRAY_CHROMIUM_BASED_BROWSER`: override the path of the Chromium-based browser to open
   Syncthing in app mode
-* `SYNCTHINGTRAY_NATIVE_POPUPS`: set to `0` or `1` to disable/enable native popups in the Qt Quick GUI.
-  Note that this is always disabled on platforms where it doesn't work anyway.
+* `SYNCTHINGTRAY_WINDOW_POPUPS`: set to `0` or `1` to disable/enable showing popups in a separate
+  window in the Qt Quick GUI. Note that this is always disabled on platforms where it doesn't work
+  anyway.
 * `LIB_SYNCTHING_CONNECTOR_USE_DEPRECATED_ROUTES`: change whether to use deprecated routes (enabled by
   default for compatibility with older Syncthing versions, set to `0` to change the behavior)

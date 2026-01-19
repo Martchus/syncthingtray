@@ -52,7 +52,7 @@ class SYNCTHINGWIDGETS_EXPORT App : public AppBase {
     Q_PROPERTY(bool darkmodeEnabled READ isDarkmodeEnabled NOTIFY darkmodeEnabledChanged)
     Q_PROPERTY(int iconSize READ iconSize CONSTANT)
     Q_PROPERTY(int iconWidthDelegate READ iconWidthDelegate CONSTANT)
-    Q_PROPERTY(bool nativePopups READ nativePopups CONSTANT)
+    Q_PROPERTY(bool windowPopups READ windowPopups CONSTANT)
     Q_PROPERTY(bool extendedClientArea READ extendedClientArea CONSTANT)
     Q_PROPERTY(QString syncthingVersion READ syncthingVersion CONSTANT)
     Q_PROPERTY(QString qtVersion READ qtVersion CONSTANT)
@@ -130,12 +130,12 @@ public:
         emit settingsChanged(m_settings);
     }
 #if defined(Q_OS_ANDROID)
-    static constexpr bool nativePopups()
+    static constexpr bool windowPopups()
     {
         return false;
     }
 #else
-    bool nativePopups() const;
+    bool windowPopups() const;
 #endif
     static constexpr bool extendedClientArea()
     {

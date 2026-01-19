@@ -326,13 +326,13 @@ void App::statistics(QVariantMap &res) const
 }
 
 #if !(defined(Q_OS_ANDROID))
-bool App::nativePopups() const
+bool App::windowPopups() const
 {
-    static const auto enableNativePopups = [] {
+    static const auto enablewindowPopups = [] {
         auto ok = false;
-        return qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_NATIVE_POPUPS", &ok) > 0 || !ok;
+        return qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_WINDOW_POPUPS", &ok) > 0 || !ok;
     }();
-    return enableNativePopups;
+    return enablewindowPopups;
 }
 #endif
 
