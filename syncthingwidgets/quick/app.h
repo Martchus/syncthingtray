@@ -129,7 +129,7 @@ public:
         storeSettings();
         emit settingsChanged(m_settings);
     }
-#if defined(Q_OS_ANDROID) || defined(Q_OS_WINDOWS) // it leads to crashes on those platforms
+#if defined(Q_OS_ANDROID)
     static constexpr bool nativePopups()
     {
         return false;

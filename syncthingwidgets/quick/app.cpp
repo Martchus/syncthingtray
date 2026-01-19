@@ -325,7 +325,7 @@ void App::statistics(QVariantMap &res) const
     res[QStringLiteral("stSQLiteDbSize")] = formattedDatabaseSize(QStringLiteral("index-v2"), QStringLiteral("*.db*"));
 }
 
-#if !(defined(Q_OS_ANDROID) || defined(Q_OS_WINDOWS))
+#if !(defined(Q_OS_ANDROID))
 bool App::nativePopups() const
 {
     static const auto enableNativePopups = [] {
