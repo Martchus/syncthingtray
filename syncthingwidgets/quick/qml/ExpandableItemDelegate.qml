@@ -10,7 +10,7 @@ ItemDelegate {
     width: mainView.width
     activeFocusOnTab: true
     Keys.onReturnPressed: (event) => detailsView.visible = !detailsView.visible
-    Keys.onMenuPressed: (event) => menu.show()
+    Keys.onMenuPressed: (event) => menu.showCenteredIn(menuButton)
     contentItem: ColumnLayout {
         RowLayout {
             spacing: 10
@@ -103,13 +103,13 @@ ItemDelegate {
         }
         onLongPressed: {
             App.performHapticFeedback();
-            menu.show();
+            menu.showCenteredIn(menuButton);
         }
     }
     TapHandler {
         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad | PointerDevice.Stylus
         acceptedButtons: Qt.RightButton
-        onTapped: menu.show()
+        onTapped: menu.showCenteredIn(menuButton)
     }
 
     required property var modelData
