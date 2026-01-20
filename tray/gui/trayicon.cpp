@@ -128,6 +128,7 @@ void TrayIcon::handleActivated(QSystemTrayIcon::ActivationReason reason)
     case QSystemTrayIcon::Context:
         // can't catch that event on Plasma anyway
         break;
+    case QSystemTrayIcon::DoubleClick:
     case QSystemTrayIcon::MiddleClick:
         trayMenu().widget().showWebUI();
         break;
