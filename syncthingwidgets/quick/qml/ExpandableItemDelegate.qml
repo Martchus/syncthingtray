@@ -45,7 +45,7 @@ ItemDelegate {
                     anchors.fill: parent
                     onPressAndHold: {
                         storageToolTip.show(modelData.storageTooltip);
-                        App.performHapticFeedback();
+                        QuickUI.performHapticFeedback();
                     }
                 }
                 ToolTip {
@@ -74,7 +74,7 @@ ItemDelegate {
                 id: menuButton
                 visible: !buttonRepeater.visible || mainDelegate.extraActions.length > 0
                 text: qsTr("More actions")
-                icon.source: App.faUrlBase + "ellipsis-v"
+                icon.source: QuickUI.faUrlBase + "ellipsis-v"
                 onClicked: menu.showCenteredIn(menuButton)
                 CustomMenu {
                     id: menu
@@ -102,7 +102,7 @@ ItemDelegate {
             mainDelegate.forceActiveFocus(Qt.MouseFocusReason);
         }
         onLongPressed: {
-            App.performHapticFeedback();
+            QuickUI.performHapticFeedback();
             menu.showCenteredIn(menuButton);
         }
     }

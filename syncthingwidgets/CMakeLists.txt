@@ -17,8 +17,22 @@ endif ()
 set(META_SRCDIR_REFS "${CMAKE_CURRENT_SOURCE_DIR}\n${CMAKE_CURRENT_SOURCE_DIR}/../syncthingconnector")
 
 # add project files
-set(HEADER_FILES misc/diffhighlighter.h misc/internalerror.h misc/statusinfo.h misc/syncthinglauncher.h misc/utils.h)
-set(SRC_FILES misc/diffhighlighter.cpp misc/internalerror.cpp misc/statusinfo.cpp misc/syncthinglauncher.cpp misc/utils.cpp)
+set(HEADER_FILES
+    misc/diffhighlighter.h
+    misc/internalerror.h
+    misc/statusinfo.h
+    misc/syncthinglauncher.h
+    misc/utils.h
+    misc/syncthingdata.h
+    misc/syncthingmodels.h)
+set(SRC_FILES
+    misc/diffhighlighter.cpp
+    misc/internalerror.cpp
+    misc/statusinfo.cpp
+    misc/syncthinglauncher.cpp
+    misc/utils.cpp
+    misc/syncthingdata.cpp
+    misc/syncthingmodels.cpp)
 set(WIDGETS_HEADER_FILES
     settings/settings.h
     settings/settingsdialog.h
@@ -62,8 +76,10 @@ set(WIDGETS_UI_FILES
     settings/mainconfigwizardpage.ui
     settings/autostartwizardpage.ui
     settings/applywizardpage.ui)
-set(QML_HEADER_FILES quick/appbase.h quick/appservice.h quick/app.h quick/helpers.h quick/scenegraph/managedtexturenode.h)
-set(QML_SRC_FILES quick/appbase.cpp quick/appservice.cpp quick/app.cpp quick/scenegraph/managedtexturenode.cpp)
+set(QML_HEADER_FILES quick/appbase.h quick/appservice.h quick/app.h quick/quickui.h quick/helpers.h
+                     quick/scenegraph/managedtexturenode.h)
+set(QML_SRC_FILES quick/appbase.cpp quick/appservice.cpp quick/app.cpp quick/quickui.cpp
+                  quick/scenegraph/managedtexturenode.cpp)
 set(QML_MAIN_FILES
     quick/qml/AboutDialog.qml
     quick/qml/AdvancedConfigPage.qml
@@ -449,7 +465,7 @@ if (QUICK_GUI)
         set(ICON_WIDTH_DELEGATE "QQuickStyle::name() == QStringLiteral(\"FluentWinUI3\") ? 24 : 16")
     endif ()
     set_property(
-        SOURCE quick/app.cpp
+        SOURCE quick/quickui.cpp
         APPEND
         PROPERTY COMPILE_DEFINITIONS SYNCTHING_APP_ICON_SIZE=${ICON_SIZE}
                  SYNCTHING_APP_ICON_WIDTH_DELEGATE=${ICON_WIDTH_DELEGATE})
@@ -489,8 +505,8 @@ if (QUICK_GUI)
     # allow use of newer native Android APIs, see https://developer.android.com/ndk/guides/using-newer-apis
     if (ANDROID)
         set_source_files_properties(
-            "quick/app.cpp" PROPERTIES COMPILE_FLAGS
-                                       "-D__ANDROID_UNAVAILABLE_SYMBOLS_ARE_WEAK__ -Werror=unguarded-availability")
+            "quick/quickui.cpp" PROPERTIES COMPILE_FLAGS
+                                           "-D__ANDROID_UNAVAILABLE_SYMBOLS_ARE_WEAK__ -Werror=unguarded-availability")
     endif ()
 endif ()
 

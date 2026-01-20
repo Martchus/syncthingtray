@@ -86,13 +86,13 @@ AppService::AppService(bool insecure, QObject *parent)
     });
 #endif
 
-    connect(&m_connection, &SyncthingConnection::error, this, &AppService::handleConnectionError);
-    connect(&m_connection, &SyncthingConnection::statusChanged, this, &AppService::handleConnectionStatusChanged);
-    connect(&m_connection, &SyncthingConnection::newDevices, this, &AppService::handleChangedDevices);
-    connect(&m_connection, &SyncthingConnection::autoReconnectIntervalChanged, this, &AppService::invalidateStatus);
-    connect(&m_connection, &SyncthingConnection::hasOutOfSyncDirsChanged, this, &AppService::invalidateStatus);
-    connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &AppService::handleChangedDevices);
-    connect(&m_connection, &SyncthingConnection::newErrors, this, &AppService::handleNewErrors);
+    connect(m_data.connection(), &SyncthingConnection::error, this, &AppService::handleConnectionError);
+    connect(m_data.connection(), &SyncthingConnection::statusChanged, this, &AppService::handleConnectionStatusChanged);
+    connect(m_data.connection(), &SyncthingConnection::newDevices, this, &AppService::handleChangedDevices);
+    connect(m_data.connection(), &SyncthingConnection::autoReconnectIntervalChanged, this, &AppService::invalidateStatus);
+    connect(m_data.connection(), &SyncthingConnection::hasOutOfSyncDirsChanged, this, &AppService::invalidateStatus);
+    connect(m_data.connection(), &SyncthingConnection::devStatusChanged, this, &AppService::handleChangedDevices);
+    connect(m_data.connection(), &SyncthingConnection::newErrors, this, &AppService::handleNewErrors);
 
     m_launcher.setEmittingOutput(true);
     connect(&m_launcher, &SyncthingLauncher::outputAvailable, this, &AppService::gatherLogsFromBytes);
@@ -104,12 +104,12 @@ AppService::AppService(bool insecure, QObject *parent)
     connect(&m_launcher, &SyncthingLauncher::networkConnectionMeteredChanged, this, &AppService::broadcastLauncherStatus);
 
 #ifdef Q_OS_ANDROID
-    connect(&m_notifier, &SyncthingNotifier::newDevice, this, &AppService::showNewDevice);
-    connect(&m_notifier, &SyncthingNotifier::newDir, this, &AppService::showNewDir);
+    connect(m_data.notifier(), &SyncthingNotifier::newDevice, this, &AppService::showNewDevice);
+    connect(m_data.notifier(), &SyncthingNotifier::newDir, this, &AppService::showNewDir);
     connect(this, &AppService::error, this, &AppService::showError);
 #endif
 
-    m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents | SyncthingConnection::PollingFlags::RemoteIndexUpdated
+    m_data.connection()->setPollingFlags(SyncthingConnection::PollingFlags::MainEvents | SyncthingConnection::PollingFlags::RemoteIndexUpdated
         | SyncthingConnection::PollingFlags::Errors);
 
     if (!SyncthingLauncher::mainInstance()) {
@@ -266,13 +266,13 @@ void AppService::stopLibSyncthing()
 void AppService::restartSyncthing()
 {
     m_launcher.setManuallyStopped(true);
-    m_connection.restart();
+    m_data.connection()->restart();
 }
 
 void AppService::shutdownSyncthing()
 {
     m_launcher.setManuallyStopped(true);
-    m_connection.shutdown();
+    m_data.connection()->shutdown();
 }
 
 void AppService::clearLog()
@@ -335,16 +335,16 @@ void AppService::handleMessageFromActivity(ServiceAction action, int arg1, int a
         QMetaObject::invokeMethod(this, "shotdownSyncthing", Qt::QueuedConnection);
         break;
     case ServiceAction::ConnectToSyncthing:
-        QMetaObject::invokeMethod(connection(), "connect", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(m_data.connection(), "connect", Qt::QueuedConnection);
         break;
     case ServiceAction::ReconnectToSyncthing:
-        QMetaObject::invokeMethod(connection(), "reconnect", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(m_data.connection(), "reconnect", Qt::QueuedConnection);
         break;
     case ServiceAction::BroadcastLauncherStatus:
         QMetaObject::invokeMethod(this, "broadcastLauncherStatus", Qt::QueuedConnection);
         break;
     case ServiceAction::Reconnect:
-        QMetaObject::invokeMethod(connection(), "reconnect", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(m_data.connection(), "reconnect", Qt::QueuedConnection);
         break;
     case ServiceAction::ClearInternalErrorNotifications:
         QMetaObject::invokeMethod(this, "clearInternalErrors", Qt::QueuedConnection);
@@ -359,7 +359,7 @@ void AppService::handleMessageFromActivity(ServiceAction action, int arg1, int a
         m_clientsFollowingLog = false;
         break;
     case ServiceAction::RequestErrors:
-        QMetaObject::invokeMethod(connection(), "requestErrors", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(m_data.connection(), "requestErrors", Qt::QueuedConnection);
         break;
     default:;
     }
@@ -369,7 +369,7 @@ void AppService::handleMessageFromActivity(ServiceAction action, int arg1, int a
 void AppService::handleConnectionError(
     const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
 {
-    if (!InternalError::isRelevant(m_connection, category, errorMessage, networkError, false)) {
+    if (!InternalError::isRelevant(*m_data.connection(), category, errorMessage, networkError, false)) {
         return;
     }
 #ifdef Q_OS_ANDROID
@@ -428,7 +428,7 @@ void AppService::handleRunningChanged(bool isRunning)
 
 void AppService::handleChangedDevices()
 {
-    m_statusInfo.updateConnectedDevices(m_connection);
+    m_statusInfo.updateConnectedDevices(*m_data.connection());
 #ifdef Q_OS_ANDROID
     updateAndroidNotification();
 #endif
@@ -462,7 +462,7 @@ void AppService::handleConnectionStatusChanged(Data::SyncthingStatus newStatus)
 #ifdef SYNCTHINGTRAY_SERVICE_WITH_ICON_RENDERING
 void AppService::invalidateAndroidIconCache()
 {
-    m_statusInfo.updateConnectionStatus(m_connection);
+    m_statusInfo.updateConnectionStatus(*m_data.connection());
     m_androidIconCache.clear();
     updateAndroidNotification();
 }
@@ -479,7 +479,7 @@ QJniObject &AppService::makeAndroidIcon(const QIcon &icon)
 
 void AppService::updateAndroidNotification()
 {
-    const auto title = QJniObject::fromString(m_connection.isConnected() ? m_statusInfo.statusText() : status());
+    const auto title = QJniObject::fromString(m_data.connection()->isConnected() ? m_statusInfo.statusText() : status());
     const auto text = QJniObject::fromString(m_statusInfo.additionalStatusText());
     static const auto subText = QJniObject::fromString(QString());
 #ifdef SYNCTHINGTRAY_SERVICE_WITH_ICON_RENDERING

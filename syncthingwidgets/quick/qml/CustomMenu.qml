@@ -5,7 +5,7 @@ import Main
 
 Menu {
     id: menu
-    popupType: App.windowPopups ? Popup.Window : Popup.Item
+    popupType: QuickUI.windowPopups ? Popup.Window : Popup.Item
     topMargin: contentItem.Window?.window?.SafeArea?.margins.top ?? 0
     leftMargin: contentItem.Window?.window?.SafeArea?.margins.left ?? 0
     rightMargin: contentItem.Window?.window?.SafeArea?.margins.right ?? 0

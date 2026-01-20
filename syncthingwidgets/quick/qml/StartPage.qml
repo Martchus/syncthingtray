@@ -10,8 +10,8 @@ Page {
     title: qsTr("Syncthing")
     Layout.fillWidth: true
     Layout.fillHeight: true
-    property var stats: App.connection.overallDirStatistics
-    property var remoteCompletion: App.connection.overallRemoteCompletion
+    property var stats: SyncthingData.connection.overallDirStatistics
+    property var remoteCompletion: SyncthingData.connection.overallRemoteCompletion
     signal quitRequested
     CustomFlickable {
         id: mainView
@@ -43,7 +43,7 @@ Page {
                 id: authSetupDelegate
                 Layout.fillWidth: true
                 onClicked: startPage.pages.showPage(4).showGuiAuth()
-                visible: !App.usingUnixDomainSocket && App.connection.hasState && !App.connection.guiRequiringAuth
+                visible: !App.usingUnixDomainSocket && SyncthingData.connection.hasState && !SyncthingData.connection.guiRequiringAuth
                 contentItem: RowLayout {
                     spacing: 15
                     ForkAwesomeIcon {
@@ -71,7 +71,7 @@ Page {
             }
             ItemDelegate {
                 Layout.fillWidth: true
-                visible: App.connection.hasState
+                visible: SyncthingData.connection.hasState
                 contentItem: RowLayout {
                     spacing: 15
                     ForkAwesomeIcon {
@@ -105,7 +105,7 @@ Page {
             }
             ItemDelegate {
                 Layout.fillWidth: true
-                visible: App.connection.hasState
+                visible: SyncthingData.connection.hasState
                 contentItem: RowLayout {
                     spacing: 15
                     ForkAwesomeIcon {
@@ -140,13 +140,13 @@ Page {
             ItemDelegate {
                 Layout.fillWidth: true
                 onClicked: {
-                    const connection = App.connection;
+                    const connection = SyncthingData.connection;
                     if (!connection.connected && !connection.connecting) {
                         connection.connect();
                     } else if (connection.hasErrors) {
                         startPage.pages.showPage(5).push("ErrorsPage.qml", {}, StackView.PushTransition);
                     } else {
-                        App.performHapticFeedback();
+                        QuickUI.performHapticFeedback();
                     }
                 }
                 onPressAndHold: App.reconnectToSyncthing()
@@ -187,13 +187,13 @@ Page {
             }
             ItemDelegate {
                 Layout.fillWidth: true
-                visible: App.connection.hasState
+                visible: SyncthingData.connection.hasState
                 TapHandler {
                     acceptedButtons: Qt.LeftButton
                     onTapped: qrCodeDlg.open()
                     onLongPressed: {
-                        App.copyText(App.connection.myId);
-                        App.performHapticFeedback();
+                        SyncthingModels.copyText(SyncthingData.connection.myId);
+                        QuickUI.performHapticFeedback();
                     }
                 }
                 contentItem: RowLayout {
@@ -211,7 +211,7 @@ Page {
                         }
                         Label {
                             Layout.fillWidth: true
-                            text: App.connection.myId
+                            text: SyncthingData.connection.myId
                             elide: Text.ElideRight
                             wrapMode: Text.Wrap
                             font.weight: Font.Light
@@ -224,7 +224,7 @@ Page {
                     standardButtons: Dialog.NoButton
                     implicitWidth: 400
                     implicitHeight: implicitWidth
-                    onAboutToShow: App.showQrCode(qrCodeIcon)
+                    onAboutToShow: SyncthingModels.showQrCode(qrCodeIcon)
                     contentItem: Icon {
                         id: qrCodeIcon
                     }
@@ -232,7 +232,7 @@ Page {
                         Button {
                             text: qsTr("Copy as text")
                             flat: true
-                            onClicked: App.copyText(App.connection.myId)
+                            onClicked: SyncthingModels.copyText(SyncthingData.connection.myId)
                         }
                         Button {
                             text: qsTr("Close")
@@ -244,7 +244,7 @@ Page {
             }
             ItemDelegate {
                 Layout.fillWidth: true
-                visible: App.connection.hasState
+                visible: SyncthingData.connection.hasState
                 contentItem: RowLayout {
                     spacing: 15
                     ForkAwesomeIcon {
@@ -264,7 +264,7 @@ Page {
                             }
                             Label {
                                 Layout.fillWidth: true
-                                text: App.formatTraffic(App.connection.totalIncomingTraffic, App.connection.totalIncomingRate)
+                                text: SyncthingModels.formatTraffic(SyncthingData.connection.totalIncomingTraffic, SyncthingData.connection.totalIncomingRate)
                                 elide: Text.ElideRight
                                 wrapMode: Text.Wrap
                                 font.weight: Font.Light
@@ -276,7 +276,7 @@ Page {
                             }
                             Label {
                                 Layout.fillWidth: true
-                                text: App.formatTraffic(App.connection.totalOutgoingTraffic, App.connection.totalOutgoingRate)
+                                text: SyncthingModels.formatTraffic(SyncthingData.connection.totalOutgoingTraffic, SyncthingData.connection.totalOutgoingRate)
                                 elide: Text.ElideRight
                                 wrapMode: Text.Wrap
                                 font.weight: Font.Light
@@ -300,24 +300,24 @@ Page {
             }
             CustomDelegate {
                 onClicked: pages.addDevice()
-                visible: App.connection.hasState
+                visible: SyncthingData.connection.hasState
                 labelText: qsTr("Connect other device")
                 iconName: "laptop"
             }
             CustomDelegate {
                 onClicked: pages.addDir()
-                visible: App.connection.hasState
+                visible: SyncthingData.connection.hasState
                 labelText: qsTr("Share folder")
                 iconName: "share-alt"
             }
             CustomDelegate {
-                onClicked: App.openUrlExternally(App.connection.syncthingUrlWithCredentials)
+                onClicked: SyncthingModels.openUrlExternally(SyncthingData.connection.syncthingUrlWithCredentials)
                 visible: !App.usingUnixDomainSocket
                 labelText: qsTr("Open Syncthing in web browser")
                 iconName: "external-link"
             }
             CustomDelegate {
-                onClicked: App.openUrlExternally(App.documentationUrl)
+                onClicked: SyncthingModels.openUrlExternally(SyncthingData.documentationUrl)
                 labelText: qsTr("Open documentation")
                 iconName: "book"
             }
@@ -327,12 +327,12 @@ Page {
     property list<Action> actions: [
         Action {
             text: qsTr("Restart Syncthing")
-            icon.source: App.faUrlBase + "refresh"
+            icon.source: QuickUI.faUrlBase + "refresh"
             onTriggered: App.restartSyncthing()
         },
         Action {
             text: qsTr("Quit app")
-            icon.source: App.faUrlBase + "power-off"
+            icon.source: QuickUI.faUrlBase + "power-off"
             onTriggered: startPage.quitRequested()
         }
     ]

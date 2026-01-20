@@ -11,7 +11,7 @@ Page {
     actions: [
         Action {
             text: qsTr("Refresh")
-            icon.source: App.faUrlBase + "refresh"
+            icon.source: QuickUI.faUrlBase + "refresh"
             onTriggered: page.load()
         }
     ]
@@ -24,7 +24,7 @@ Page {
                 width: listView.width
                 Label {
                     Layout.fillWidth: true
-                    text: App.dirDisplayName(modelData.dirId)
+                    text: SyncthingModels.dirDisplayName(modelData.dirId)
                     elide: Text.ElideRight
                     font.weight: Font.Medium
                     wrapMode: Text.WordWrap
@@ -54,7 +54,7 @@ Page {
                                 }
                                 Label {
                                     Layout.fillWidth: true
-                                    text: App.deviceDisplayName(modelData.devId)
+                                    text: SyncthingModels.deviceDisplayName(modelData.devId)
                                     elide: Text.ElideRight
                                     font.weight: Font.Light
                                     wrapMode: Text.WordWrap
@@ -77,7 +77,7 @@ Page {
                             onClicked: page.ignoreDir(modelData.dirId, itemDelegate.computeSelectedDevs())
                         }
                         Button {
-                            text: App.hasDir(modelData.dirId) ? qsTr("Share existing folder") : qsTr("Share new folder")
+                            text: SyncthingModels.hasDir(modelData.dirId) ? qsTr("Share existing folder") : qsTr("Share new folder")
                             flat: true
                             onClicked: page.shareFolder(modelData.dirId, itemDelegate.computeSelectedDevs())
                         }
@@ -107,7 +107,7 @@ Page {
     required property list<Action> actions
 
     function load() {
-        App.requestFromSyncthing("GET", "cluster/pending/folders", {}, (res, error) => {
+        SyncthingModels.requestFromSyncthing("GET", "cluster/pending/folders", {}, (res, error) => {
             listModel.clear();
             if (error.length > 0) {
                 return;
@@ -124,7 +124,7 @@ Page {
     }
 
     function ignoreDir(dirId, selectedDevs) {
-        const cfg = App.connection.rawConfig;
+        const cfg = SyncthingData.connection.rawConfig;
         const devs = cfg.devices;
         if (!Array.isArray(devs)) {
             return false;
@@ -140,7 +140,7 @@ Page {
             }
             ignoredFolders.push({id: dirId, label: pendingFolder.Label ?? pendingFolder.label ?? "", time: new Date().toISOString()});
         }
-        App.postSyncthingConfig(cfg, (error) => {
+        SyncthingModels.postSyncthingConfig(cfg, (error) => {
             if (error.length === 0) {
                 page.load();
             }
@@ -162,6 +162,6 @@ Page {
     }
 
     function shareFolder(dirId, selectedDevs) {
-        pages.addDir(dirId, labelForDir(dirId, selectedDevs), Object.keys(selectedDevs), App.hasDir(dirId));
+        pages.addDir(dirId, labelForDir(dirId, selectedDevs), Object.keys(selectedDevs), SyncthingModels.hasDir(dirId));
     }
 }

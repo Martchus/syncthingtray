@@ -1,5 +1,7 @@
 #include "./app.h"
 
+#include "./helpers.h"
+
 #ifdef Q_OS_ANDROID
 #include "./android.h"
 #endif
@@ -11,25 +13,19 @@
 #include <syncthing/interface.h>
 #endif
 
-#include <syncthingmodel/syncthingerrormodel.h>
-#include <syncthingmodel/syncthingfilemodel.h>
 #include <syncthingmodel/syncthingicons.h>
 
 #include <syncthingconnector/syncthingconnectionsettings.h>
 #include <syncthingconnector/utils.h>
 
-#include <qtutilities/misc/desktoputils.h>
 #include <qtutilities/resources/resources.h>
 
 #include <qtforkawesome/renderer.h>
 #include <qtquickforkawesome/imageprovider.h>
 
 #include <c++utilities/conversion/stringbuilder.h>
-#include <c++utilities/conversion/stringconversion.h>
 
-#include <QClipboard>
 #include <QDebug>
-#include <QDesktopServices>
 #include <QDir>
 #include <QGuiApplication>
 #include <QJsonDocument>
@@ -42,18 +38,7 @@
 #include <QtConcurrent/QtConcurrentRun>
 
 #ifdef Q_OS_ANDROID
-#include <QFontDatabase>
 #include <QJniEnvironment>
-
-#include <android/font.h>
-#include <android/font_matcher.h>
-
-#include <dlfcn.h>
-#endif
-
-#ifndef Q_OS_ANDROID
-#include <QSet>
-#include <QStorageInfo>
 #endif
 
 #ifdef SYNCTHING_APP_DYNAMIC_STYLE
@@ -68,36 +53,6 @@
 #include <stdexcept>
 
 #include "resources/config.h"
-
-#ifdef Q_OS_WINDOWS
-#define SYNCTHING_APP_STRING_CONVERSION(s) (s).toStdWString()
-#define SYNCTHING_APP_PATH_CONVERSION(s) QString::fromStdWString((s).wstring())
-#else
-#define SYNCTHING_APP_STRING_CONVERSION(s) (s).toLocal8Bit().toStdString()
-#define SYNCTHING_APP_PATH_CONVERSION(s) QString::fromLocal8Bit((s).string())
-#endif
-
-// configure dark mode depending on the platform
-// 1. Some platforms just provide a "dark mode flag", e.g. Windows and Android. Qt can read this flag and
-//    provide a Qt::ColorScheme value. Qt will only populate an appropriate QPalette on some platforms, e.g.
-//    it does on Windows but not on Android. On platforms where Qt does not populate an appropriate palette
-//    we therefore need to go by the Qt::ColorScheme value and populate the QPalette ourselves from the colors
-//    used by the Qt Quick Controls 2 style. This behavior is enabled via SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
-//    in subsequent code.
-//    Custom icons (Syncthing icons, ForkAwesome icons) are rendered using the text color from the application
-//    QPalette. This is the reason why we still populate the QPalette in this case and don't just ignore it.
-// 2. Some platforms allow the user to configure a custom palette but do *not* provide a "dark mode flag", e.g.
-//    KDE. In this case reading the Qt::ColorScheme value from Qt is useless but QPalette will be populated. We
-//    therefore need to determine whether the current color scheme is dark from the QPalette and set the Qt
-//    Quick Controls 2 style based on that.
-#ifdef Q_OS_ANDROID
-#define SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
-#endif
-#ifdef SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
-#define SYNCTHING_APP_IS_PALETTE_DARK(palette) false
-#else
-#define SYNCTHING_APP_IS_PALETTE_DARK(palette) QtUtilities::isPaletteDark(palette)
-#endif
 
 using namespace Data;
 
@@ -124,22 +79,12 @@ App::App(bool insecure, QQmlEngine *engine, QObject *parent)
     : AppBase(insecure, false, true, parent)
     , m_engine(engine)
     , m_app(static_cast<QGuiApplication *>(QCoreApplication::instance()))
-    , m_imageProvider(nullptr)
-    , m_dirModel(m_connection)
-    , m_sortFilterDirModel(&m_dirModel)
-    , m_devModel(m_connection)
-    , m_sortFilterDevModel(&m_devModel)
-    , m_changesModel(m_connection)
-    , m_faUrlBase(QStringLiteral("image://fa/"))
-    , m_uiObjects({ &m_dirModel, &m_sortFilterDirModel, &m_devModel, &m_sortFilterDevModel, &m_changesModel })
-    , m_iconSize(SYNCTHING_APP_ICON_SIZE)
-    , m_iconWidthDelegate(SYNCTHING_APP_ICON_WIDTH_DELEGATE)
-    , m_tabIndex(-1)
+    , m_ui(m_app, m_qtSettings, m_engine)
+    , m_models(m_data, engine)
+    , m_uiObjects({ m_models.dirModel(), m_models.sortFilterDirModel(), m_models.devModel(), m_models.sortFilterDevModel(), m_models.changesModel() })
     , m_importExportStatus(ImportExportStatus::None)
+    , m_tabIndex(-1)
     , m_clearingLogfile(false)
-    , m_darkmodeEnabled(false)
-    , m_darkColorScheme(false)
-    , m_darkPalette(m_app ? SYNCTHING_APP_IS_PALETTE_DARK(m_app->palette()) : false)
     , m_isGuiLoaded(false)
     , m_unloadGuiWhenHidden(false)
     , m_isSyncthingStarting(true)
@@ -158,57 +103,27 @@ App::App(bool insecure, QQmlEngine *engine, QObject *parent)
     QtUtilities::deletePipelineCacheIfNeeded();
     loadSettings();
     applySettings();
-    if (m_app) {
-#ifdef SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
-        QtUtilities::onDarkModeChanged([this](bool darkColorScheme) { applyDarkmodeChange(darkColorScheme, m_darkPalette); }, this);
-#else
-        applyDarkmodeChange(m_darkColorScheme, m_darkPalette);
-#endif
-    }
 
     auto &iconManager = initIconManager();
     connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &App::statusInfoChanged);
 
-    // set SD card paths to show SD card icons via directory model
+    connect(m_data.connection(), &SyncthingConnection::error, this, &App::handleConnectionError);
+    connect(m_data.connection(), &SyncthingConnection::statusChanged, this, &App::handleConnectionStatusChanged);
+    connect(m_data.connection(), &SyncthingConnection::newDevices, this, &App::handleChangedDevices);
+    connect(m_data.connection(), &SyncthingConnection::autoReconnectIntervalChanged, this, &App::invalidateStatus);
+    connect(m_data.connection(), &SyncthingConnection::hasOutOfSyncDirsChanged, this, &App::invalidateStatus);
+    connect(m_data.connection(), &SyncthingConnection::devStatusChanged, this, &App::handleChangedDevices);
+    connect(m_data.connection(), &SyncthingConnection::newErrors, this, &App::handleNewErrors);
+    connect(&m_models, &SyncthingModels::info, this, &App::info);
+    connect(&m_models, &SyncthingModels::error, this, &App::error);
+    connect(&m_models, &SyncthingModels::savingConfigChanged, this, &App::invalidateStatus);
+    connect(&m_models, &SyncthingModels::hapticFeedbackRequested, &m_ui, &QuickUI::performHapticFeedback);
+    connect(&m_ui, &QuickUI::darkmodeEnabledChanged, &m_models, &SyncthingModels::setBrightColors);
 #ifdef Q_OS_ANDROID
-    qDebug() << "Loading external storage paths";
-    auto extStoragePaths = externalStoragePaths();
-    auto sdCardPaths = QStringList();
-    if (extStoragePaths.size() > 1) {
-        static constexpr auto storagePrefix = QLatin1String("/storage/");
-        sdCardPaths.reserve(extStoragePaths.size() - 1);
-        for (auto i = extStoragePaths.begin() + 1, end = extStoragePaths.end(); i != end; ++i) {
-            if (const auto &path = *i; path.startsWith(storagePrefix)) {
-                if (const auto volumeEnd = path.indexOf(QChar('/'), storagePrefix.size()); volumeEnd > 0) {
-                    sdCardPaths.emplace_back(QStringView(path.data(), volumeEnd + 1));
-                }
-            }
-        }
-    }
-    m_dirModel.setSdCardPaths(sdCardPaths);
-#endif
-
-    m_sortFilterDirModel.sort(0, Qt::AscendingOrder);
-    m_sortFilterDevModel.sort(0, Qt::AscendingOrder);
-
-    connect(&m_connection, &SyncthingConnection::error, this, &App::handleConnectionError);
-    connect(&m_connection, &SyncthingConnection::statusChanged, this, &App::handleConnectionStatusChanged);
-    connect(&m_connection, &SyncthingConnection::newDevices, this, &App::handleChangedDevices);
-    connect(&m_connection, &SyncthingConnection::autoReconnectIntervalChanged, this, &App::invalidateStatus);
-    connect(&m_connection, &SyncthingConnection::hasOutOfSyncDirsChanged, this, &App::invalidateStatus);
-    connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &App::handleChangedDevices);
-    connect(&m_connection, &SyncthingConnection::newErrors, this, &App::handleNewErrors);
-#ifdef Q_OS_ANDROID
-    connect(&m_connection, &SyncthingConnection::errorsCleared, this, [this] { sendMessageToService(ServiceAction::RequestErrors); });
+    connect(m_data.connection(), &SyncthingConnection::errorsCleared, this, [this] { sendMessageToService(ServiceAction::RequestErrors); });
 #endif
     connect(this, &App::syncthingRunningChanged, this, &App::handleRunningChanged);
     connect(this, &App::syncthingGuiUrlChanged, this, &App::handleGuiUrlChanged);
-
-    // show info when override/revert has been triggered
-    connect(&m_connection, &SyncthingConnection::overrideTriggered, this,
-        [this](const QString &dirId) { emit info(tr("Triggered override of \"%1\"").arg(dirDisplayName(dirId))); });
-    connect(&m_connection, &SyncthingConnection::revertTriggered, this,
-        [this](const QString &dirId) { emit info(tr("Triggered revert of \"%1\"").arg(dirDisplayName(dirId))); });
 
     // stop libsyncthing when the app is about to quit
     if constexpr (!isServiceShutdownManual()) {
@@ -232,19 +147,7 @@ App::~App()
 
 App *App::create(QQmlEngine *qmlEngine, QJSEngine *engine)
 {
-    auto *const app = engine->property("app").value<App *>();
-    if (qmlEngine) {
-        auto *const imageProvider = new QtForkAwesome::QuickImageProvider(Data::IconManager::instance().forkAwesomeRenderer());
-        connect(app->m_imageProvider = imageProvider, &QObject::destroyed, app, [app]() { app->m_imageProvider = nullptr; });
-        qmlEngine->addImageProvider(QStringLiteral("fa"), imageProvider);
-    }
-    QJSEngine::setObjectOwnership(app, QJSEngine::CppOwnership);
-    return app;
-}
-
-QString App::website() const
-{
-    return QStringLiteral(APP_URL);
+    return dataObjectFromProperty<App>(qmlEngine, engine);
 }
 
 const QString &App::status()
@@ -277,64 +180,17 @@ const QString &App::status()
             return m_status.emplace(tr("Backend is starting …"));
         }
     }
-    switch (m_connection.status()) {
+    switch (m_data.connection()->status()) {
     case Data::SyncthingStatus::Disconnected:
     case Data::SyncthingStatus::Reconnecting:
         break;
     default:
-        if (m_pendingConfigChange.reply) {
+        if (m_models.pendingConfigChange().reply) {
             return m_status.emplace(tr("Saving configuration …"));
         }
     }
     return AppBase::status();
 }
-
-qint64 App::databaseSize(const QString &path, const QString &extension) const
-{
-    const auto dir = QDir(m_syncthingDataDir % QChar('/') % path);
-    const auto files = dir.entryInfoList({ extension }, QDir::Files);
-    return std::accumulate(files.begin(), files.end(), qint64(), [](auto size, const auto &file) { return size + file.size(); });
-}
-
-QVariant App::formattedDatabaseSize(const QString &path, const QString &extension) const
-{
-    const auto size = databaseSize(path, extension);
-    return size > 0 ? QVariant(QString::fromStdString(CppUtilities::dataSizeToString(static_cast<std::uint64_t>(size)))) : QVariant();
-}
-
-QVariantMap App::statistics() const
-{
-    auto stats = QVariantMap();
-    statistics(stats);
-    return stats;
-}
-
-void App::statistics(QVariantMap &res) const
-{
-#ifdef Q_OS_ANDROID
-    res[QStringLiteral("extFilesDir")] = externalFilesDir();
-    res[QStringLiteral("extStoragePaths")] = externalStoragePaths();
-#endif
-    if (!m_connectToLaunched) {
-        return;
-    }
-    res[QStringLiteral("stConfigDir")] = m_syncthingConfigDir;
-    res[QStringLiteral("stDataDir")] = m_syncthingDataDir;
-    res[QStringLiteral("stLevelDbSize")] = formattedDatabaseSize(QStringLiteral("index-v0.14.0.db"), QStringLiteral("*.ldb"));
-    res[QStringLiteral("stLevelDbMigratedSize")] = formattedDatabaseSize(QStringLiteral("index-v0.14.0.db-migrated"), QStringLiteral("*.ldb"));
-    res[QStringLiteral("stSQLiteDbSize")] = formattedDatabaseSize(QStringLiteral("index-v2"), QStringLiteral("*.db*"));
-}
-
-#if !(defined(Q_OS_ANDROID))
-bool App::windowPopups() const
-{
-    static const auto enablewindowPopups = [] {
-        auto ok = false;
-        return qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_WINDOW_POPUPS", &ok) > 0 || !ok;
-    }();
-    return enablewindowPopups;
-}
-#endif
 
 bool App::initEngine()
 {
@@ -353,7 +209,10 @@ bool App::initEngine()
             Qt::QueuedConnection);
         connect(&*m_appEngine, &QQmlApplicationEngine::quit, m_app, &QGuiApplication::quit);
     }
-    m_engine->setProperty("app", QVariant::fromValue(this));
+    dataObjectToProperty(m_engine, &m_data);
+    dataObjectToProperty(m_engine, &m_models);
+    dataObjectToProperty(m_engine, &m_ui);
+    dataObjectToProperty(m_engine, this);
     return loadMain();
 }
 
@@ -435,122 +294,47 @@ void App::shutdownService()
 #endif
 }
 
-bool App::openPath(const QString &path)
-{
-    if (QtUtilities::openLocalFileOrDir(path)) {
-        return true;
-    }
-    emit error(tr("Unable to open \"%1\"").arg(path));
-    return false;
-}
-
-bool App::openPath(const QString &dirId, const QString &relativePath)
-{
-    const auto fullPath = m_connection.fullPath(dirId, relativePath);
-    if (fullPath.isEmpty()) {
-        emit error(tr("Unable to open \"%1\"").arg(relativePath));
-    } else if (openPath(fullPath)) {
-        return true;
-    }
-    return false;
-}
-
-/*!
- * \brief Triggers a scan of \a path via the underlying OS.
- * \remarks So far only supported under Android where it is used to discover media files.
- */
-bool App::scanPath(const QString &path)
+bool App::storagePermissionGranted() const
 {
 #ifdef Q_OS_ANDROID
-    if (QJniObject(QNativeInterface::QAndroidApplication::context())
-            .callMethod<jboolean>("scanPath", "(Ljava/lang/String;)Z", QJniObject::fromString(path))) {
-        return true;
+    if (!m_storagePermissionGranted.has_value()) {
+        m_storagePermissionGranted = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("storagePermissionGranted");
     }
+    return m_storagePermissionGranted.value();
 #else
-    Q_UNUSED(path)
+    return true;
 #endif
-    emit error(tr("Scanning is not supported."));
-    return false;
 }
 
-bool App::copyText(const QString &text)
+bool App::notificationPermissionGranted() const
 {
-    if (auto *const clipboard = QGuiApplication::clipboard()) {
-        clipboard->setText(text);
 #ifdef Q_OS_ANDROID
-        // do not emit info as Android will show a message about it automatically
-        performHapticFeedback();
+    if (!m_notificationPermissionGranted.has_value()) {
+        m_notificationPermissionGranted
+            = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("notificationPermissionGranted");
+    }
+    return m_notificationPermissionGranted.value();
 #else
-        emit info(tr("Copied value"));
+    return true;
 #endif
-        return true;
-    }
-    emit info(tr("Unable to copy value"));
+}
+
+bool App::requestStoragePermission()
+{
+#ifdef Q_OS_ANDROID
+    return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("requestStoragePermission");
+#else
     return false;
+#endif
 }
 
-bool App::copyPath(const QString &dirId, const QString &relativePath)
+bool App::requestNotificationPermission()
 {
-    const auto fullPath = m_connection.fullPath(dirId, relativePath);
-    if (fullPath.isEmpty()) {
-        emit error(tr("Unable to copy \"%1\"").arg(relativePath));
-    } else if (copyText(fullPath)) {
-        return true;
-    }
+#ifdef Q_OS_ANDROID
+    return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("requestNotificationPermission");
+#else
     return false;
-}
-
-QString App::getClipboardText() const
-{
-    if (auto *const clipboard = QGuiApplication::clipboard()) {
-        return clipboard->text();
-    }
-    return QString();
-}
-
-bool App::loadIgnorePatterns(const QString &dirId, QObject *textArea)
-{
-    auto res = m_connection.ignores(dirId, [this, textArea](SyncthingIgnores &&ignores, QString &&error) {
-        if (!error.isEmpty()) {
-            emit this->error(tr("Unable to load ignore patterns: ") + error);
-        }
-        textArea->setProperty("text", ignores.ignore.join(QChar('\n')));
-        textArea->setProperty("enabled", true);
-    });
-    connect(textArea, &QObject::destroyed, res.reply, &QNetworkReply::deleteLater);
-    connect(this, &QObject::destroyed, [connection = res.connection] { disconnect(connection); });
-    return true;
-}
-
-bool App::saveIgnorePatterns(const QString &dirId, QObject *textArea)
-{
-    textArea->setProperty("enabled", false);
-    const auto text = textArea->property("text");
-    if (text.userType() != QMetaType::QString) {
-        textArea->setProperty("enabled", true);
-        return false;
-    }
-    auto res = m_connection.setIgnores(
-        dirId, SyncthingIgnores{ .ignore = text.toString().split(QChar('\n')), .expanded = QStringList() }, [this, textArea](QString &&error) {
-            if (!error.isEmpty()) {
-                emit this->error(tr("Unable to save ignore patterns: ") + error);
-            }
-            textArea->setProperty("enabled", true);
-        });
-    connect(textArea, &QObject::destroyed, res.reply, &QNetworkReply::deleteLater);
-    connect(this, &QObject::destroyed, [connection = res.connection] { disconnect(connection); });
-    return true;
-}
-
-bool App::openIgnorePatterns(const QString &dirId)
-{
-    return openPath(dirId, QStringLiteral(".stignore"));
-}
-
-bool App::loadErrors(QObject *listView)
-{
-    listView->setProperty("model", QVariant::fromValue(new Data::SyncthingErrorModel(m_connection, listView)));
-    return true;
+#endif
 }
 
 bool App::showLog(QObject *textArea)
@@ -577,42 +361,82 @@ void App::clearLog()
 #endif
 }
 
-bool App::showQrCode(Icon *icon)
+bool App::loadDirErrors(const QString &dirId, QObject *view)
 {
-    if (m_connection.myId().isEmpty()) {
-        return false;
-    }
-    connect(&m_connection, &Data::SyncthingConnection::qrCodeAvailable, icon,
-        [icon, requestedId = m_connection.myId(), this](const QString &id, const QByteArray &data) {
-            if (id == requestedId) {
-                disconnect(&m_connection, nullptr, icon, nullptr);
-                icon->setSource(QImage::fromData(data));
-            }
-        });
-    m_connection.requestQrCode(m_connection.myId());
+    auto connection
+        = connect(m_data.connection(), &Data::SyncthingConnection::dirStatusChanged, view, [this, dirId, view](const Data::SyncthingDir &dir) {
+              if (dir.id != dirId) {
+                  return;
+              }
+              auto array = m_engine->newArray(static_cast<quint32>(dir.itemErrors.size()));
+              auto index = quint32();
+              for (const auto &itemError : dir.itemErrors) {
+                  auto error = m_engine->newObject();
+                  error.setProperty(QStringLiteral("path"), itemError.path);
+                  error.setProperty(QStringLiteral("message"), itemError.message);
+                  array.setProperty(index++, error);
+              }
+              view->setProperty("model", array.toVariant());
+              view->setProperty("enabled", true);
+          });
+    connect(this, &QObject::destroyed, [connection] { disconnect(connection); });
+    m_data.connection()->requestDirPullErrors(dirId);
     return true;
 }
 
-bool App::loadDirErrors(const QString &dirId, QObject *view)
+bool App::eventFilter(QObject *object, QEvent *event)
 {
-    auto connection = connect(&m_connection, &Data::SyncthingConnection::dirStatusChanged, view, [this, dirId, view](const Data::SyncthingDir &dir) {
-        if (dir.id != dirId) {
-            return;
+    if (object != m_app) {
+        return false;
+    }
+    switch (event->type()) {
+    case QEvent::ApplicationPaletteChange:
+        qDebug() << "Application palette has changed";
+        if (m_app) {
+            const auto palette = m_app->palette();
+            IconManager::instance(&palette).setPalette(palette);
+            if (m_ui.imageProvider()) {
+                m_ui.imageProvider()->setDefaultColor(palette.color(QPalette::Normal, QPalette::Text));
+            }
+#ifndef SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
+            m_ui.applyDarkmodeChange(palette);
+#endif
         }
-        auto array = m_engine->newArray(static_cast<quint32>(dir.itemErrors.size()));
-        auto index = quint32();
-        for (const auto &itemError : dir.itemErrors) {
-            auto error = m_engine->newObject();
-            error.setProperty(QStringLiteral("path"), itemError.path);
-            error.setProperty(QStringLiteral("message"), itemError.message);
-            array.setProperty(index++, error);
-        }
-        view->setProperty("model", array.toVariant());
-        view->setProperty("enabled", true);
-    });
-    connect(this, &QObject::destroyed, [connection] { disconnect(connection); });
-    m_connection.requestDirPullErrors(dirId);
-    return true;
+        break;
+    default:;
+    }
+    return false;
+}
+
+void App::handleConnectionError(
+    const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
+{
+    if (!InternalError::isRelevant(*m_data.connection(), category, errorMessage, networkError, false, m_isManuallyStopped)) {
+        return;
+    }
+    qWarning() << "Connection error: " << errorMessage;
+    auto error = InternalError(errorMessage, request.url(), response);
+    emit internalError(error);
+    const auto emitHasInternalErrorsChanged = m_internalErrors.isEmpty();
+    m_internalErrors.emplace_back(QVariant::fromValue(std::move(error)));
+    if (emitHasInternalErrorsChanged) {
+        invalidateStatus();
+        emit hasInternalErrorsChanged();
+    }
+}
+
+void App::setCurrentControls(bool visible, int tabIndex)
+{
+    auto flags = m_data.connection()->pollingFlags();
+    if (tabIndex < 0) {
+        tabIndex = m_tabIndex;
+    } else {
+        m_tabIndex = tabIndex;
+    }
+    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::TrafficStatistics, visible && tabIndex == 0);
+    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DeviceStatistics, visible && tabIndex == 2);
+    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DiskEvents, visible && tabIndex == 3);
+    m_data.connection()->setPollingFlags(flags);
 }
 
 bool App::loadStatistics(const QJSValue &callback)
@@ -620,7 +444,7 @@ bool App::loadStatistics(const QJSValue &callback)
     if (!callback.isCallable()) {
         return false;
     }
-    auto query = m_connection.requestJsonData(
+    auto query = m_data.connection()->requestJsonData(
         QByteArrayLiteral("GET"), QStringLiteral("svc/report"), QUrlQuery(), QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
             auto report = doc.object().toVariantMap();
             report[QStringLiteral("uptime")] = QString::fromStdString(CppUtilities::TimeSpan::fromSeconds(report[QStringLiteral("uptime")].toDouble())
@@ -639,364 +463,6 @@ bool App::loadStatistics(const QJSValue &callback)
     connect(this, &QObject::destroyed, query.reply, &QNetworkReply::deleteLater);
     connect(this, &QObject::destroyed, [c = query.connection] { disconnect(c); });
     return true;
-}
-
-bool App::showError(const QString &errorMessage)
-{
-    emit error(errorMessage);
-    return true;
-}
-
-Data::SyncthingFileModel *App::createFileModel(const QString &dirId, QObject *parent)
-{
-    auto row = int();
-    auto dirInfo = m_connection.findDirInfo(dirId, row);
-    if (!dirInfo) {
-        return nullptr;
-    }
-    auto model = new Data::SyncthingFileModel(m_connection, *dirInfo, parent);
-    connect(model, &Data::SyncthingFileModel::notification, this,
-        [this](const QString &type, const QString &message, const QString &details = QString()) {
-            type == QStringLiteral("error") ? emit error(message, details) : emit info(message, details);
-        });
-    return model;
-}
-
-DiffHighlighter *App::createDiffHighlighter(QTextDocument *parent)
-{
-    return new DiffHighlighter(parent);
-}
-
-#ifdef Q_OS_ANDROID
-#define REQUIRES_ANDROID_API(x) __attribute__((__availability__(android, introduced = x)))
-#define ANDROID_API_AT_LEAST(x) __builtin_available(android x, *)
-
-struct FontFunctions {
-    explicit FontFunctions(void *libandroid) REQUIRES_ANDROID_API(29)
-        : FontMatcher_create(reinterpret_cast<decltype(&AFontMatcher_create)>(dlsym(libandroid, "AFontMatcher_create")))
-        , FontMatcher_destroy(reinterpret_cast<decltype(&AFontMatcher_destroy)>(dlsym(libandroid, "AFontMatcher_destroy")))
-        , FontMatcher_match(reinterpret_cast<decltype(&AFontMatcher_match)>(dlsym(libandroid, "AFontMatcher_match")))
-        , FontMatcher_setStyle(reinterpret_cast<decltype(&AFontMatcher_setStyle)>(dlsym(libandroid, "AFontMatcher_setStyle")))
-        , Font_getFontFilePath(reinterpret_cast<decltype(&AFont_getFontFilePath)>(dlsym(libandroid, "AFont_getFontFilePath")))
-        , Font_close(reinterpret_cast<decltype(&AFont_close)>(dlsym(libandroid, "AFont_close")))
-    {
-    }
-    operator bool() const REQUIRES_ANDROID_API(29)
-    {
-        return FontMatcher_create && FontMatcher_destroy && FontMatcher_match && FontMatcher_setStyle && Font_getFontFilePath && Font_close;
-    }
-    decltype(&AFontMatcher_create) FontMatcher_create REQUIRES_ANDROID_API(29);
-    decltype(&AFontMatcher_destroy) FontMatcher_destroy REQUIRES_ANDROID_API(29);
-    decltype(&AFontMatcher_match) FontMatcher_match REQUIRES_ANDROID_API(29);
-    decltype(&AFontMatcher_setStyle) FontMatcher_setStyle REQUIRES_ANDROID_API(29);
-    decltype(&AFont_getFontFilePath) Font_getFontFilePath REQUIRES_ANDROID_API(29);
-    decltype(&AFont_close) Font_close REQUIRES_ANDROID_API(29);
-};
-
-static void loadSystemFont(std::string_view fontPath, QString &fontFamily)
-{
-    auto fontFile = QFile(QString::fromUtf8(fontPath.data(), static_cast<qsizetype>(fontPath.size())));
-    if (!fontFile.open(QFile::ReadOnly)) {
-        qDebug() << "Unable to open font file: " << fontPath;
-        return;
-    }
-    if (const auto fontID = QFontDatabase::addApplicationFontFromData(fontFile.readAll()); fontID != -1) {
-        if (const auto families = QFontDatabase::applicationFontFamilies(fontID); !families.isEmpty() && fontFamily.isEmpty()) {
-            qDebug() << "Loaded font file: " << fontPath;
-            fontFamily = families.front();
-        }
-    } else {
-        qDebug() << "Unable to load font file: " << fontPath;
-    }
-}
-
-static void matchAndLoadDefaultFont(const FontFunctions &fontFn, AFontMatcher *matcher, std::uint16_t weight, QString &fontFamily)
-    REQUIRES_ANDROID_API(34)
-{
-    fontFn.FontMatcher_setStyle(matcher, weight, false);
-    if (auto *const font = fontFn.FontMatcher_match(matcher, "FontFamily.Default", reinterpret_cast<const uint16_t *>(u"foobar"), 3, nullptr)) {
-        auto path = std::string_view(fontFn.Font_getFontFilePath(font));
-        qDebug() << "Found system font: " << path;
-        loadSystemFont(path, fontFamily);
-        fontFn.Font_close(font);
-    }
-}
-
-/*!
- * \brief Loads the default system font on Android 14 and newer.
- * \remarks The API would be available as of Android 10 (API 29) but using it leads to crashes. Not sure about
- *          Android 11, 12 and 13 so only enabling this as of Android 14.
- */
-static QString loadDefaultSystemFonts()
-{
-    auto defaultSystemFontFamily = QString();
-    if (ANDROID_API_AT_LEAST(34)) {
-        qDebug() << "Loading default system fonts";
-        auto *const libandroid = dlopen("libandroid.so", RTLD_LOCAL);
-        if (!libandroid) {
-            qDebug() << "Failed to open libandroid.so: " << dlerror();
-            return defaultSystemFontFamily;
-        }
-        const auto fontFn = FontFunctions(libandroid);
-        if (!fontFn) {
-            qDebug() << "Failed loading font functions in libandroid.so.";
-            dlclose(libandroid);
-            return defaultSystemFontFamily;
-        }
-        if (auto *const m = fontFn.FontMatcher_create()) {
-            qDebug() << "Instantiated matcher";
-            matchAndLoadDefaultFont(fontFn, m, AFONT_WEIGHT_NORMAL, defaultSystemFontFamily);
-            matchAndLoadDefaultFont(fontFn, m, AFONT_WEIGHT_THIN, defaultSystemFontFamily);
-            matchAndLoadDefaultFont(fontFn, m, AFONT_WEIGHT_LIGHT, defaultSystemFontFamily);
-            matchAndLoadDefaultFont(fontFn, m, AFONT_WEIGHT_MEDIUM, defaultSystemFontFamily);
-            matchAndLoadDefaultFont(fontFn, m, AFONT_WEIGHT_BOLD, defaultSystemFontFamily);
-            fontFn.FontMatcher_destroy(m);
-        }
-        dlclose(libandroid);
-    }
-    return defaultSystemFontFamily;
-}
-#endif
-
-QString App::fontFamily() const
-{
-#ifdef Q_OS_ANDROID
-    static const auto defaultSystemFontFamily = loadDefaultSystemFonts();
-    if (defaultSystemFontFamily.isEmpty()) {
-        qDebug() << "Unable to determine/load system font family.";
-    } else {
-        qDebug() << "System font family: " << defaultSystemFontFamily;
-        return defaultSystemFontFamily;
-    }
-#endif
-    return QString();
-}
-
-qreal App::fontScale() const
-{
-#ifdef Q_OS_ANDROID
-    return qreal(QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jfloat>("fontScale", "()F"));
-#else
-    return qreal(1.0);
-#endif
-}
-
-int App::fontWeightAdjustment() const
-{
-#ifdef Q_OS_ANDROID
-    return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jint>("fontWeightAdjustment", "()I");
-#else
-    return 0;
-#endif
-}
-
-/*!
- * \brief Return the font applying extra settings where necessary.
- * \remarks On some platforms like on Android this is required because Qt does not read these settings.
- */
-QFont App::font() const
-{
-    auto f = QFont();
-    if (const auto family = fontFamily(); !family.isEmpty()) {
-        f.setFamily(family);
-    }
-    if (const auto scale = fontScale(); scale != qreal(1.0)) {
-        f.setPixelSize(static_cast<int>(static_cast<qreal>(f.pixelSize()) * scale));
-        f.setPointSizeF(f.pointSizeF() * scale);
-    }
-    if (const auto weightAdjustment = fontWeightAdjustment(); weightAdjustment != 0) {
-        f.setWeight(static_cast<QFont::Weight>(f.weight() + weightAdjustment));
-    }
-    return f;
-}
-
-bool App::storagePermissionGranted() const
-{
-#ifdef Q_OS_ANDROID
-    if (!m_storagePermissionGranted.has_value()) {
-        m_storagePermissionGranted = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("storagePermissionGranted");
-    }
-    return m_storagePermissionGranted.value();
-#else
-    return true;
-#endif
-}
-
-bool App::notificationPermissionGranted() const
-{
-#ifdef Q_OS_ANDROID
-    if (!m_notificationPermissionGranted.has_value()) {
-        m_notificationPermissionGranted
-            = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("notificationPermissionGranted");
-    }
-    return m_notificationPermissionGranted.value();
-#else
-    return true;
-#endif
-}
-
-QString App::externalFilesDir() const
-{
-#ifdef Q_OS_ANDROID
-    return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jstring>("externalFilesDir").toString();
-#else
-    return QString();
-#endif
-}
-
-QStringList App::externalStoragePaths() const
-{
-    auto paths = QStringList();
-#ifdef Q_OS_ANDROID
-    auto env = QJniEnvironment();
-    const auto pathArray
-        = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jobjectArray>("externalStoragePaths", "()[Ljava/lang/String;");
-    const auto pathArrayObj = pathArray.object<jobjectArray>();
-    const auto pathArrayLength = env->GetArrayLength(pathArrayObj);
-    paths.reserve(pathArrayLength);
-    for (int i = 0; i != pathArrayLength; ++i) {
-        paths.append((QJniObject::fromLocalRef(env->GetObjectArrayElement(pathArrayObj, i)).toString()));
-    }
-#endif
-    return paths;
-}
-
-bool App::requestStoragePermission()
-{
-#ifdef Q_OS_ANDROID
-    return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("requestStoragePermission");
-#else
-    return false;
-#endif
-}
-
-bool App::requestNotificationPermission()
-{
-#ifdef Q_OS_ANDROID
-    return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("requestNotificationPermission");
-#else
-    return false;
-#endif
-}
-
-void App::addDialog(QObject *dialog)
-{
-    m_dialogs.append(dialog);
-    connect(dialog, &QObject::destroyed, this, &App::removeDialog);
-}
-
-void App::removeDialog(QObject *dialog)
-{
-    disconnect(dialog, &QObject::destroyed, this, &App::removeDialog);
-    m_dialogs.removeAll(dialog);
-}
-
-bool App::eventFilter(QObject *object, QEvent *event)
-{
-    if (object != m_app) {
-        return false;
-    }
-    switch (event->type()) {
-    case QEvent::ApplicationPaletteChange:
-        qDebug() << "Application palette has changed";
-        if (m_app) {
-            const auto palette = m_app->palette();
-            IconManager::instance(&palette).setPalette(palette);
-            if (m_imageProvider) {
-                m_imageProvider->setDefaultColor(palette.color(QPalette::Normal, QPalette::Text));
-            }
-#ifndef SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
-            applyDarkmodeChange(m_darkColorScheme, SYNCTHING_APP_IS_PALETTE_DARK(palette));
-#endif
-        }
-        break;
-    default:;
-    }
-    return false;
-}
-
-void App::handleConnectionError(
-    const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
-{
-    if (!InternalError::isRelevant(m_connection, category, errorMessage, networkError, false, m_isManuallyStopped)) {
-        return;
-    }
-    qWarning() << "Connection error: " << errorMessage;
-    auto error = InternalError(errorMessage, request.url(), response);
-    emit internalError(error);
-    const auto emitHasInternalErrorsChanged = m_internalErrors.isEmpty();
-    m_internalErrors.emplace_back(QVariant::fromValue(std::move(error)));
-    if (emitHasInternalErrorsChanged) {
-        invalidateStatus();
-        emit hasInternalErrorsChanged();
-    }
-}
-
-void App::setCurrentControls(bool visible, int tabIndex)
-{
-    auto flags = m_connection.pollingFlags();
-    if (tabIndex < 0) {
-        tabIndex = m_tabIndex;
-    } else {
-        m_tabIndex = tabIndex;
-    }
-    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::TrafficStatistics, visible && tabIndex == 0);
-    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DeviceStatistics, visible && tabIndex == 2);
-    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DiskEvents, visible && tabIndex == 3);
-    m_connection.setPollingFlags(flags);
-}
-
-bool App::performHapticFeedback()
-{
-#ifdef Q_OS_ANDROID
-    return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("performHapticFeedback");
-#else
-    return false;
-#endif
-}
-
-bool App::showToast(const QString &message)
-{
-#ifdef Q_OS_ANDROID
-    return QJniObject(QNativeInterface::QAndroidApplication::context())
-        .callMethod<jboolean>("showToast", "(Ljava/lang/String;)Z", QJniObject::fromString(message));
-#else
-    Q_UNUSED(message)
-    return false;
-#endif
-}
-
-QString App::resolveUrl(const QUrl &url)
-{
-#if defined(Q_OS_ANDROID)
-    const auto urlString = url.toString(QUrl::FullyEncoded);
-    const auto path = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jstring>("resolveUri", urlString).toString();
-    if (path.isEmpty()) {
-        showToast(tr("Unable to resolve URL \"%1\".").arg(urlString));
-    }
-    return path.isEmpty() ? urlString : path;
-#elif defined(Q_OS_WINDOWS)
-    auto path = url.path();
-    while (path.startsWith(QChar('/'))) {
-        path.remove(0, 1);
-    }
-    return path;
-#else
-    return url.path();
-#endif
-}
-
-bool App::shouldIgnorePermissions(const QString &path)
-{
-#ifdef Q_OS_ANDROID
-    // QStorageInfo only returns "fuse" on Android but we can assume that permissions should be generally ignored
-    Q_UNUSED(path)
-    return true;
-#else
-    static const auto problematicFileSystems = QSet<QByteArray>({ QByteArrayLiteral("fat"), QByteArrayLiteral("vfat"), QByteArrayLiteral("exfat") });
-    const auto storageInfo = QStorageInfo(path);
-    return storageInfo.isValid() && problematicFileSystems.contains(storageInfo.fileSystemType());
-#endif
 }
 
 void App::invalidateStatus()
@@ -1026,7 +492,7 @@ void App::handleRunningChanged(bool isRunning)
 
 void App::handleChangedDevices()
 {
-    m_statusInfo.updateConnectedDevices(m_connection);
+    m_statusInfo.updateConnectedDevices(*m_data.connection());
     emit statusInfoChanged();
 }
 
@@ -1102,7 +568,7 @@ void App::handleLauncherStatusBroadcast(const QVariant &status)
     if (hasMeteredStatusChanged) {
         emit meteredStatusChanged(meteredStatus);
     }
-    if (guiUrlChanged || !m_connection.isConnected()) {
+    if (guiUrlChanged || !m_data.connection()->isConnected()) {
         qDebug() << "GUI URL changed: " << guiUrl;
         emit syncthingGuiUrlChanged(guiUrl);
     }
@@ -1209,120 +675,11 @@ void App::clearInternalErrors()
     emit hasInternalErrorsChanged();
 }
 
-bool App::postSyncthingConfig(const QJsonObject &rawConfig, const QJSValue &callback)
-{
-    if (m_pendingConfigChange.reply) {
-        emit error(tr("Another config change is still pending."));
-        return false;
-    }
-    m_pendingConfigChange = m_connection.postConfigFromJsonObject(rawConfig, [this, callback](QString &&error) {
-        m_pendingConfigChange.reply = nullptr;
-        emit savingConfigChanged(false);
-        invalidateStatus();
-        if (callback.isCallable()) {
-            callback.call(QJSValueList{ error });
-        }
-    });
-    connect(this, &QObject::destroyed, m_pendingConfigChange.reply, &QNetworkReply::deleteLater);
-    connect(this, &QObject::destroyed, [c = m_pendingConfigChange.connection] { disconnect(c); });
-    emit savingConfigChanged(true);
-    invalidateStatus();
-    return true;
-}
-
-bool App::invokeDirAction(const QString &dirId, const QString &action)
-{
-    if (action == QLatin1String("override")) {
-        m_connection.requestOverride(dirId);
-        return true;
-    } else if (action == QLatin1String("revert")) {
-        m_connection.requestRevert(dirId);
-        return true;
-    }
-    return false;
-}
-
-bool QtGui::App::requestFromSyncthing(const QString &verb, const QString &path, const QVariantMap &parameters, const QJSValue &callback)
-{
-    auto params = QUrlQuery();
-    for (const auto &parameter : parameters.asKeyValueRange()) {
-        params.addQueryItem(parameter.first, parameter.second.toString());
-    }
-    auto query = m_connection.requestJsonData(verb.toUtf8(), path, params, QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
-        if (callback.isCallable()) {
-            callback.call(QJSValueList({ m_engine->toScriptValue(doc.object()), QJSValue(std::move(error)) }));
-        }
-    });
-    connect(this, &QObject::destroyed, query.reply, &QNetworkReply::deleteLater);
-    connect(this, &QObject::destroyed, [c = query.connection] { disconnect(c); });
-    return true;
-}
-
-QString App::formatDataSize(quint64 size) const
-{
-    return QString::fromStdString(CppUtilities::dataSizeToString(size));
-}
-
-QString App::formatTraffic(quint64 total, double rate) const
-{
-    return trafficString(total, rate);
-}
-
-bool QtGui::App::hasDevice(const QString &id)
-{
-    auto row = 0;
-    return m_connection.findDevInfo(id, row) != nullptr;
-}
-
-bool QtGui::App::hasDir(const QString &id)
-{
-    auto row = 0;
-    return m_connection.findDirInfo(id, row) != nullptr;
-}
-
-QString App::deviceDisplayName(const QString &id) const
-{
-    auto row = 0;
-    auto info = m_connection.findDevInfo(id, row);
-    return info != nullptr ? info->displayName() : id;
-}
-
-QString App::dirDisplayName(const QString &id) const
-{
-    auto row = 0;
-    auto info = m_connection.findDirInfo(id, row);
-    return info != nullptr ? info->displayName() : id;
-}
-
-QVariantList App::computeDirsNeedingItems(const QModelIndex &devProxyModelIndex) const
-{
-    const auto *const devInfo = m_devModel.devInfo(m_sortFilterDevModel.mapToSource(devProxyModelIndex));
-    auto dirs = QVariantList();
-    if (!devInfo) {
-        return dirs;
-    }
-    dirs.reserve(static_cast<QStringList::size_type>(devInfo->completionByDir.size()));
-    for (const auto &[dirId, completion] : devInfo->completionByDir) {
-        if (completion.needed.items < 1) {
-            continue;
-        }
-        auto row = 0;
-        auto dirNeedInfo = QVariantMap();
-        auto *const dirInfo = m_connection.findDirInfo(dirId, row);
-        dirNeedInfo.insert(QStringLiteral("dirId"), dirId);
-        dirNeedInfo.insert(QStringLiteral("dirName"), dirInfo ? dirInfo->displayName() : dirId);
-        dirNeedInfo.insert(QStringLiteral("items"), completion.needed.items);
-        dirNeedInfo.insert(QStringLiteral("bytes"), completion.needed.bytes);
-        dirs.emplace_back(std::move(dirNeedInfo));
-    }
-    return dirs;
-}
-
 bool App::minimize()
 {
 #ifdef Q_OS_ANDROID
     if (!QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("minimize", "()Z")) {
-        emit showError(tr("Unable to minimize app."));
+        emit error(tr("Unable to minimize app."));
         return false;
     }
     m_unloadGuiWhenHidden = true;
@@ -1338,23 +695,6 @@ bool App::minimize()
 void App::quit()
 {
     m_app->quit();
-}
-
-void App::setPalette(const QColor &foreground, const QColor &background)
-{
-#ifdef SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
-    if (m_app) {
-        auto palette = m_app->palette();
-        palette.setColor(QPalette::Active, QPalette::Text, foreground);
-        palette.setColor(QPalette::Active, QPalette::Base, background);
-        palette.setColor(QPalette::Active, QPalette::WindowText, foreground);
-        palette.setColor(QPalette::Active, QPalette::Window, background);
-        m_app->setPalette(palette);
-    }
-#else
-    Q_UNUSED(foreground)
-    Q_UNUSED(background)
-#endif
 }
 
 bool App::storeSettings()
@@ -1484,6 +824,22 @@ bool App::clearLogfile()
     return storeSettings() && ok;
 }
 
+/*!
+ * \brief Opens the Syncthing config file in the standard editor.
+ */
+bool App::openSyncthingConfigFile()
+{
+    return m_models.openPath(m_syncthingConfigDir + QStringLiteral("/config.xml"));
+}
+
+/*!
+ * \brief Opens the Syncthing log file in the standard editor.
+ */
+bool App::openSyncthingLogFile()
+{
+    return m_models.openPath(syncthingLogFilePath());
+}
+
 bool App::checkOngoingImportExport()
 {
     if (m_importExportStatus != ImportExportStatus::None) {
@@ -1504,37 +860,6 @@ void App::setImportExportStatus(ImportExportStatus importExportStatus)
 }
 
 /*!
- * \brief Opens the Syncthing config file in the standard editor.
- */
-bool QtGui::App::openSyncthingConfigFile()
-{
-    return openPath(m_syncthingConfigDir + QStringLiteral("/config.xml"));
-}
-
-/*!
- * \brief Opens the Syncthing log file in the standard editor.
- */
-bool QtGui::App::openSyncthingLogFile()
-{
-    return openPath(syncthingLogFilePath());
-}
-
-/*!
- * \brief Opens the specified \a url externally, e.g. using an external web browser or a custom browser tab.
- */
-bool QtGui::App::openUrlExternally(const QUrl &url, bool viaQt)
-{
-#ifdef Q_OS_ANDROID
-    if (!viaQt) {
-        return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("openUrl", url.toString());
-    }
-#else
-    Q_UNUSED(viaQt)
-#endif
-    return QDesktopServices::openUrl(url);
-}
-
-/*!
  * \brief Checks the location specified via \a url for settings to import.
  * \remarks The \a url is passed by value for consistency with other functions.
  */
@@ -1549,8 +874,10 @@ bool App::checkSettings(QUrl url, const QJSValue &callback)
                           asArchive = tweaksSettings.value(QLatin1String("importExportAsArchive")).toBool(),
                           encryptionPassword = tweaksSettings.value(QLatin1String("importExportEncryptionPassword")).toString()]() mutable {
         auto availableSettings = QVariantMap();
-        auto pathStr = resolveUrl(url);
+        auto pathStr = m_models.resolveUrl(url);
+#ifdef Q_OS_ANDROID
         auto tempDir = QString();
+#endif
         auto errors = QStringList();
 
         if (asArchive) {
@@ -1558,7 +885,7 @@ bool App::checkSettings(QUrl url, const QJSValue &callback)
             if (!m_settingsDir.has_value()) {
                 errors.append(tr("Settings directory was not located."));
             } else {
-                const auto extStoragePaths = externalStoragePaths();
+                const auto extStoragePaths = m_models.externalStoragePaths();
                 if (!extStoragePaths.isEmpty()) {
                     tempDir = extStoragePaths.back() + QStringLiteral("/import-tmp");
                 } else {
@@ -1700,7 +1027,7 @@ void App::shutdownSyncthing()
 
 void App::connectToSyncthing()
 {
-    m_connection.connect();
+    m_data.connection()->connect();
 #ifdef Q_OS_ANDROID
     sendMessageToService(ServiceAction::ConnectToSyncthing);
 #else
@@ -1710,8 +1037,8 @@ void App::connectToSyncthing()
 
 void App::reconnectToSyncthing()
 {
-    info(tr("Triggered re-connect with Syncthing backend"));
-    m_connection.reconnect();
+    emit info(tr("Triggered re-connect with Syncthing backend"));
+    m_data.connection()->reconnect();
 #ifdef Q_OS_ANDROID
     sendMessageToService(ServiceAction::ReconnectToSyncthing);
 #else
@@ -1753,7 +1080,7 @@ bool App::importSettings(QVariantMap availableSettings, QVariantMap selectedSett
         bool hasFailed = false;
         bool shouldReloadSettings = true;
     };
-    QtConcurrent::run([this, importSyncthingHome, availableSettings, selectedSettings, rawConfig = m_connection.rawConfig()]() mutable {
+    QtConcurrent::run([this, importSyncthingHome, availableSettings, selectedSettings, rawConfig = m_data.connection()->rawConfig()]() mutable {
         // copy selected files from import directory to settings directory
         auto summary = QStringList();
         auto aborted = selectedSettings.value(QStringLiteral("aborted")).toBool();
@@ -1825,7 +1152,8 @@ bool App::importSettings(QVariantMap availableSettings, QVariantMap selectedSett
                     rawConfig.insert(QStringLiteral("devices"), devices);
                 }
                 auto newConfigJson = QJsonDocument(rawConfig).toJson(QJsonDocument::Compact);
-                if (QMetaObject::invokeMethod(&m_connection, &SyncthingConnection::postRawConfig, Qt::QueuedConnection, std::move(newConfigJson))) {
+                if (QMetaObject::invokeMethod(
+                        m_data.connection(), &SyncthingConnection::postRawConfig, Qt::QueuedConnection, std::move(newConfigJson))) {
                     summary.append(tr("Merging %1 folders and %2 devices").arg(importedFolders).arg(importedDevices));
                 } else {
                     return ImportResult(tr("Unable to import folders/devices."), true);
@@ -1924,7 +1252,7 @@ bool App::exportSettings(QUrl url, const QJSValue &callback)
             }
             path = makeExportPath(exportDir, QStringLiteral("syncthing-app-backup"), asArchive ? QStringLiteral(".zip") : QString());
         } else {
-            path = resolveUrl(url);
+            path = m_models.resolveUrl(url);
         }
 
         if (asArchive) {
@@ -1969,18 +1297,6 @@ bool App::exportSettings(QUrl url, const QJSValue &callback)
     return true;
 }
 
-/*!
- * \brief Returns whether \a path is populated if it points to a directory usable as Syncthing home.
- */
-QVariant App::isPopulated(const QString &path) const
-{
-    auto ec = std::error_code();
-    const auto stdPath = std::filesystem::path(SYNCTHING_APP_STRING_CONVERSION(path));
-    const auto status = std::filesystem::symlink_status(stdPath, ec);
-    const auto existing = std::filesystem::exists(status);
-    return (existing && !std::filesystem::is_directory(status)) ? QVariant() : QVariant(existing && !std::filesystem::is_empty(stdPath, ec));
-}
-
 QString App::currentSyncthingHomeDir() const
 {
     return m_settings.value(QLatin1String("launcher")).toObject().value(QLatin1String("stHomeDir")).toString();
@@ -1994,6 +1310,42 @@ const QString &App::closePreference()
     return m_closePreference.value();
 }
 
+qint64 App::databaseSize(const QString &path, const QString &extension) const
+{
+    const auto dir = QDir(m_syncthingDataDir % QChar('/') % path);
+    const auto files = dir.entryInfoList({ extension }, QDir::Files);
+    return std::accumulate(files.begin(), files.end(), qint64(), [](auto size, const auto &file) { return size + file.size(); });
+}
+
+QVariant App::formattedDatabaseSize(const QString &path, const QString &extension) const
+{
+    const auto size = databaseSize(path, extension);
+    return size > 0 ? QVariant(QString::fromStdString(CppUtilities::dataSizeToString(static_cast<std::uint64_t>(size)))) : QVariant();
+}
+
+QVariantMap App::statistics() const
+{
+    auto stats = QVariantMap();
+    statistics(stats);
+    return stats;
+}
+
+void App::statistics(QVariantMap &res) const
+{
+#ifdef Q_OS_ANDROID
+    res[QStringLiteral("extFilesDir")] = m_models.externalFilesDir();
+    res[QStringLiteral("extStoragePaths")] = m_models.externalStoragePaths();
+#endif
+    if (!m_connectToLaunched) {
+        return;
+    }
+    res[QStringLiteral("stConfigDir")] = m_syncthingConfigDir;
+    res[QStringLiteral("stDataDir")] = m_syncthingDataDir;
+    res[QStringLiteral("stLevelDbSize")] = formattedDatabaseSize(QStringLiteral("index-v0.14.0.db"), QStringLiteral("*.ldb"));
+    res[QStringLiteral("stLevelDbMigratedSize")] = formattedDatabaseSize(QStringLiteral("index-v0.14.0.db-migrated"), QStringLiteral("*.ldb"));
+    res[QStringLiteral("stSQLiteDbSize")] = formattedDatabaseSize(QStringLiteral("index-v2"), QStringLiteral("*.db*"));
+}
+
 /*!
  * \brief Checks the current location of the Syncthing home directory and where it could be moved.
  */
@@ -2004,14 +1356,14 @@ bool App::checkSyncthingHome(const QJSValue &callback)
     }
     setImportExportStatus(ImportExportStatus::CheckingMove);
     QtConcurrent::run([this, defaultPath = m_settingsDir.value_or(QDir()).path(), currentVal = currentSyncthingHomeDir()]() mutable {
-        const auto externalDirs = externalStoragePaths();
+        const auto externalDirs = m_models.externalStoragePaths();
         auto availableDirs = QVariantList();
         auto defaultDir = QVariantMap();
         defaultDir[QStringLiteral("path")] = (defaultPath += QStringLiteral("/syncthing"));
         defaultDir[QStringLiteral("value")] = QString();
         defaultDir[QStringLiteral("label")] = tr("Default directory");
         defaultDir[QStringLiteral("selected")] = currentVal.isEmpty();
-        defaultDir[QStringLiteral("populated")] = isPopulated(defaultPath);
+        defaultDir[QStringLiteral("populated")] = m_models.isPopulated(defaultPath);
         availableDirs.reserve(externalDirs.size() + 1);
         availableDirs.emplace_back(defaultDir);
         auto externalStorageNumber = 0;
@@ -2027,7 +1379,7 @@ bool App::checkSyncthingHome(const QJSValue &callback)
             dir[QStringLiteral("value")] = path;
             dir[QStringLiteral("label")] = tr("External storage %1").arg(++externalStorageNumber);
             dir[QStringLiteral("selected")] = isCurrentPath;
-            dir[QStringLiteral("populated")] = isPopulated(path);
+            dir[QStringLiteral("populated")] = m_models.isPopulated(path);
             availableDirs.emplace_back(dir);
         }
         if (!currentVal.isEmpty() && !hasCurrentPath) {
@@ -2036,13 +1388,13 @@ bool App::checkSyncthingHome(const QJSValue &callback)
             dir[QStringLiteral("value")] = currentVal;
             dir[QStringLiteral("label")] = tr("Current home directory");
             dir[QStringLiteral("selected")] = true;
-            dir[QStringLiteral("populated")] = isPopulated(currentVal);
+            dir[QStringLiteral("populated")] = m_models.isPopulated(currentVal);
             availableDirs.emplace_back(dir);
         }
         auto currentHome = currentVal.isEmpty() ? defaultPath : currentVal;
         auto homeDirInfo = QVariantMap();
         homeDirInfo[QStringLiteral("currentHome")] = currentHome;
-        homeDirInfo[QStringLiteral("currentHomePopulated")] = isPopulated(currentHome);
+        homeDirInfo[QStringLiteral("currentHomePopulated")] = m_models.isPopulated(currentHome);
         homeDirInfo[QStringLiteral("availableDirs")] = std::move(availableDirs);
         return homeDirInfo;
     }).then(this, [this, callback](const QVariantMap &homeDirInfo) {
@@ -2081,7 +1433,7 @@ bool App::moveSyncthingHome(QString newHomeDir, const QJSValue &callback)
     m_homeDirMove.newHomeDir.reset();
 
     QtConcurrent::run([newHomeDir = newHomeDir, customHomeDir = currentSyncthingHomeDir(), defaultPath = m_settingsDir.value_or(QDir()).path(),
-                          rawConfig = m_connection.rawConfig()]() mutable {
+                          rawConfig = m_data.connection()->rawConfig()]() mutable {
         // determine paths
         const auto sourceDir = customHomeDir.isEmpty() ? defaultPath + QStringLiteral("/syncthing") : customHomeDir;
         const auto sourceDirStd = std::filesystem::path(SYNCTHING_APP_STRING_CONVERSION(sourceDir));
@@ -2156,7 +1508,7 @@ bool App::saveSupportBundle(QUrl url, const QJSValue &callback)
     if (checkOngoingImportExport()) {
         return false;
     }
-    const auto debuggingSetting = m_connection.rawConfig().value(QLatin1String("gui")).toObject().value(QLatin1String("debugging"));
+    const auto debuggingSetting = m_data.connection()->rawConfig().value(QLatin1String("gui")).toObject().value(QLatin1String("debugging"));
     if (!debuggingSetting.isUndefined() && !debuggingSetting.toBool()) {
         // before Syncthing commit d682220305a07d2fa31825a4d377d20eb0e1f1fb the route for creating a debug bundle needs to be enabled
         // explicitly
@@ -2173,7 +1525,7 @@ bool App::saveSupportBundle(QUrl url, const QJSValue &callback)
         }
         path = makeExportPath(exportDir, QStringLiteral("syncthing-app-support-bundle"), QStringLiteral(".zip"));
     } else {
-        path = resolveUrl(url);
+        path = m_models.resolveUrl(url);
     }
     m_download.outputFile.emplace(path);
     if (!m_download.outputFile->open(QFile::WriteOnly | QFile::Truncate)) {
@@ -2181,7 +1533,7 @@ bool App::saveSupportBundle(QUrl url, const QJSValue &callback)
         return false;
     }
     setImportExportStatus(ImportExportStatus::SavingSupportBundle);
-    auto *const reply = m_connection.downloadSupportBundle().reply;
+    auto *const reply = m_data.connection()->downloadSupportBundle().reply;
     connect(reply, &QNetworkReply::readyRead, this, [this, reply] {
         m_download.outputFile->write(reply->readAll());
         if (m_download.outputFile->error() != QFile::NoError) {
@@ -2201,7 +1553,7 @@ bool App::saveSupportBundle(QUrl url, const QJSValue &callback)
             errors << tr("Unable to download bundle: %1").arg(reply->errorString());
         }
         m_download.outputFile.reset();
-        emit errors.isEmpty() ? info(tr("Support bundle saved")) : error(message = errors.join(QChar('\n')));
+        errors.isEmpty() ? emit info(tr("Support bundle saved")) : emit error(message = errors.join(QChar('\n')));
         setImportExportStatus(ImportExportStatus::None);
         if (callback.isCallable()) {
             callback.call(QJSValueList{ QJSValue(message), QJSValue(errors.isEmpty()) });
@@ -2241,7 +1593,7 @@ bool App::cleanSyncthingHomeDirectory(const QJSValue &callback)
         // note: This is in accordance with paths used in checkSettings(). Normally importSettings() will clean this up. However, if the app is terminated forcefully while
         //       the import page is shown that code might not have a chance to run.
 #ifdef Q_OS_ANDROID
-        auto tempImportPaths = externalStoragePaths();
+        auto tempImportPaths = m_models.externalStoragePaths();
         auto tempImportPathsRemoved = false, tempImportPathsFailed = false;
         tempImportPaths.append(settingsDir + QStringLiteral("/.."));
         for (const auto &tempImportPath : tempImportPaths) {
@@ -2273,23 +1625,6 @@ bool App::cleanSyncthingHomeDirectory(const QJSValue &callback)
         applySettings();
     });
     return true;
-}
-
-void App::applyDarkmodeChange(bool isDarkColorSchemeEnabled, bool isDarkPaletteEnabled)
-{
-    m_darkColorScheme = isDarkColorSchemeEnabled;
-    m_darkPalette = isDarkPaletteEnabled;
-    const auto isDarkmodeEnabled = m_darkColorScheme || m_darkPalette;
-    m_qtSettings.reapplyDefaultIconTheme(isDarkmodeEnabled);
-    if (isDarkmodeEnabled == m_darkmodeEnabled) {
-        return;
-    }
-    qDebug() << "Darkmode has changed: " << isDarkmodeEnabled;
-    m_darkmodeEnabled = isDarkmodeEnabled;
-    m_dirModel.setBrightColors(isDarkmodeEnabled);
-    m_devModel.setBrightColors(isDarkmodeEnabled);
-    m_changesModel.setBrightColors(isDarkmodeEnabled);
-    emit darkmodeEnabledChanged(isDarkmodeEnabled);
 }
 
 } // namespace QtGui

@@ -31,6 +31,6 @@ CustomDialog {
             }
         }
     }
-    onAccepted: App.openUrlExternally(currentUrl)
+    onAccepted: SyncthingModels.openUrlExternally(currentUrl)
     property url currentUrl
 }

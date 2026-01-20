@@ -58,7 +58,7 @@ CustomDialog {
             Label {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
-                text: App.syncthingVersion
+                text: SyncthingData.syncthingVersion
                 font.weight: Font.Light
                 horizontalAlignment: Qt.AlignHCenter
                 elide: Qt.ElideRight
@@ -73,7 +73,7 @@ CustomDialog {
             Label {
                 Layout.alignment: Qt.AlignHCenter
                 Layout.fillWidth: true
-                text: App.qtVersion
+                text: SyncthingData.qtVersion
                 font.weight: Font.Light
                 horizontalAlignment: Qt.AlignHCenter
                 elide: Qt.ElideRight
@@ -84,13 +84,13 @@ CustomDialog {
         Button {
             text: qsTr("Legal info")
             flat: true
-            onClicked: App.openUrlExternally(App.readmeUrl + "#legal-information")
+            onClicked: SyncthingModels.openUrlExternally(SyncthingData.readmeUrl + "#legal-information")
             DialogButtonBox.buttonRole: DialogButtonBox.HelpRole
         }
         Button {
             text: qsTr("Website")
             flat: true
-            onClicked: App.openUrlExternally(App.website)
+            onClicked: SyncthingModels.openUrlExternally(SyncthingData.website)
             DialogButtonBox.buttonRole: DialogButtonBox.HelpRole
         }
     }

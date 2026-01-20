@@ -160,7 +160,7 @@ Page {
     property list<Action> actions: [
         Action {
             text: qsTr("Import selected")
-            icon.source: App.faUrlBase + "download"
+            icon.source: QuickUI.faUrlBase + "download"
             onTriggered: App.importSettings(importPage.availableSettings, importPage.computeSelectedConfig())
         }
     ]

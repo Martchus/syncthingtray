@@ -12,8 +12,8 @@ Instantiator {
         visible: enabled
         height: visible ? implicitHeight : 0
         icon.source: modelData.icon.source
-        icon.width: App.iconSize
-        icon.height: App.iconSize
+        icon.width: QuickUI.iconSize
+        icon.height: QuickUI.iconSize
         onTriggered: modelData?.trigger()
     }
     required property Menu menu

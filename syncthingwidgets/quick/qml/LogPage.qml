@@ -18,12 +18,12 @@ Page {
     property list<Action> actions: [
         Action {
             text: qsTr("Copy")
-            icon.source: App.faUrlBase + "files-o"
-            onTriggered: App.copyText(textArea.text)
+            icon.source: QuickUI.faUrlBase + "files-o"
+            onTriggered: SyncthingModels.copyText(textArea.text)
         },
         Action {
             text: qsTr("Clear")
-            icon.source: App.faUrlBase + "undo"
+            icon.source: QuickUI.faUrlBase + "undo"
             onTriggered: {
                 App.clearLog();
                 textArea.clear();

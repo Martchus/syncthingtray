@@ -157,13 +157,13 @@ Page {
         Action {
             text: qsTr("Help")
             enabled: objectConfigPage.helpUrl.length > 0
-            icon.source: App.faUrlBase + "question"
-            onTriggered: App.requestOpeningUrl(objectConfigPage.helpUrl)
+            icon.source: QuickUI.faUrlBase + "question"
+            onTriggered: QuickUI.requestOpeningUrl(objectConfigPage.helpUrl)
         },
         Action {
             text: qsTr("Add")
             enabled: objectConfigPage.canAdd
-            icon.source: App.faUrlBase + "plus"
+            icon.source: QuickUI.faUrlBase + "plus"
             onTriggered: objectConfigPage.showNewValueDialog()
         }
     ]
@@ -269,7 +269,7 @@ Page {
             }
 
             // update "ignorePerms" when setting path to a place where permissions should be ignored
-            if (configObject.ignorePerms === false && App.shouldIgnorePermissions(value)) {
+            if (configObject.ignorePerms === false && SyncthingModels.shouldIgnorePermissions(value)) {
                 const ignorePermsIndex = objectConfigPage.indexByKey.ignorePerms;
                 if (ignorePermsIndex >= 0) {
                     objectConfigPage.updateValue(ignorePermsIndex, "ignorePerms", true);
@@ -323,7 +323,7 @@ Page {
                     listModel.set(i, {index: i, key: i});
                 }
             } else {
-                App.showError(qsTr("Unable to add %1 because specified index is invalid.").arg(typeof object));
+                QuickUI.showError(qsTr("Unable to add %1 because specified index is invalid.").arg(typeof object));
                 return;
             }
         } else {
@@ -331,7 +331,7 @@ Page {
                 objectConfigPage.configObject[key] = object;
                 listModel.append(objectConfigPage.makeConfigRow([key, object], listModel.count))
             } else {
-                App.showError(qsTr("Unable to add %1 because specified key is invalid.").arg(typeof object));
+                QuickUI.showError(qsTr("Unable to add %1 because specified key is invalid.").arg(typeof object));
                 return;
             }
         }
@@ -392,7 +392,7 @@ Page {
     }
 
     function requestRandomValue(cb) {
-        return App.requestFromSyncthing("GET", "svc/random/string", {length: 10}, (res, error) => {
+        return SyncthingModels.requestFromSyncthing("GET", "svc/random/string", {length: 10}, (res, error) => {
             if (error.length !== 0) {
                 return;
             }

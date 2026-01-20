@@ -29,12 +29,12 @@ ColumnLayout {
     property list<Action> actions: [
         Action {
             text: qsTr("Refresh")
-            icon.source: App.faUrlBase + "refresh"
+            icon.source: QuickUI.faUrlBase + "refresh"
             onTriggered: webView.reload()
         },
         Action {
             text: qsTr("Open in web browser")
-            icon.source: App.faUrlBase + "external-link"
+            icon.source: QuickUI.faUrlBase + "external-link"
             onTriggered: Qt.openUrlExternally(webViewItem.url)
         }
     ]

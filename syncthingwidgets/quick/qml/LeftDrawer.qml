@@ -23,17 +23,17 @@ Drawer {
             ItemDelegate {
                 Layout.fillWidth: true
                 text: Qt.application.version
-                icon.source: App.faUrlBase + "info-circle"
-                icon.width: App.iconWidthDelegate
-                icon.height: App.iconSize
+                icon.source: QuickUI.faUrlBase + "info-circle"
+                icon.width: QuickUI.iconSize
+                icon.height: QuickUI.iconSize
                 onClicked: aboutDialog.visible = true
             }
             ItemDelegate {
                 Layout.fillWidth: true
                 text: qsTr("Quit")
-                icon.source: App.faUrlBase + "power-off"
-                icon.width: App.iconWidthDelegate
-                icon.height: App.iconSize
+                icon.source: QuickUI.faUrlBase + "power-off"
+                icon.width: QuickUI.iconSize
+                icon.height: QuickUI.iconSize
                 onClicked: closeDialog.visible = true
             }
         }
@@ -68,9 +68,9 @@ Drawer {
             text: name
             activeFocusOnTab: true
             highlighted: ListView.isCurrentItem
-            icon.source: App.faUrlBase + iconName
-            icon.width: App.iconWidthDelegate
-            icon.height: App.iconSize
+            icon.source: QuickUI.faUrlBase + iconName
+            icon.width: QuickUI.iconSize
+            icon.height: QuickUI.iconSize
             width: drawerListView.width
             onClicked: {
                 pageStack.setCurrentIndex(index);

@@ -21,7 +21,7 @@ CustomDialog {
         IconOnlyButton {
             visible: textField.enabled && (modelData.random === true || modelData.key === "id")
             text: qsTr("Make random ID")
-            icon.source: App.faUrlBase + "hashtag"
+            icon.source: QuickUI.faUrlBase + "hashtag"
             onClicked: objectConfigPage.requestRandomValue((value) => textField.text = value)
         }
         CopyPasteButtons {

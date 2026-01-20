@@ -19,11 +19,11 @@ ToolBar {
             CustomToolButton {
                 id: statusButton
                 visible: !busyIndicator.running
-                icon.source: App.faUrlBase + "exclamation-triangle"
-                text: App.hasInternalErrors || App.connection.hasErrors ? qsTr("Show notifications/errors") : qsTr("Syncthing backend status is problematic")
+                icon.source: QuickUI.faUrlBase + "exclamation-triangle"
+                text: App.hasInternalErrors || SyncthingData.connection.hasErrors ? qsTr("Show notifications/errors") : qsTr("Syncthing backend status is problematic")
                 onClicked: {
                     const hasInternalErrors = App.hasInternalErrors;
-                    const hasConnectionErrors = App.connection.hasErrors;
+                    const hasConnectionErrors = SyncthingData.connection.hasErrors;
                     if (hasInternalErrors && hasConnectionErrors) {
                         statusButtonMenu.showCenteredIn(statusButton);
                     } else if (hasInternalErrors) {
@@ -31,7 +31,7 @@ ToolBar {
                     } else if (hasConnectionErrors) {
                         statusButton.showConnectionErrors();
                     } else {
-                        App.performHapticFeedback();
+                        QuickUI.performHapticFeedback();
                     }
                 }
                 CustomMenu {
@@ -61,7 +61,7 @@ ToolBar {
             BusyIndicator {
                 id: busyIndicator
                 Material.accent: Material.foreground
-                running: App.connection.connecting || App.syncthingStarting || App.savingConfig || App.importExportOngoing
+                running: SyncthingData.connection.connecting || App.syncthingStarting || App.savingConfig || App.importExportOngoing
                 visible: running
                 Layout.preferredWidth: statusButton.width - Layout.margins * 2
                 Layout.preferredHeight: statusButton.height - Layout.margins * 2
@@ -76,8 +76,8 @@ ToolBar {
                 Layout.fillWidth: true
             }
             CustomToolButton {
-                visible: !App.connection.connected
-                icon.source: App.faUrlBase + "refresh"
+                visible: !SyncthingData.connection.connected
+                icon.source: QuickUI.faUrlBase + "refresh"
                 text: qsTr("Try to re-connect")
                 onClicked: App.connectToSyncthing()
             }
@@ -88,14 +88,14 @@ ToolBar {
             RowLayout {
                 CustomToolButton {
                     visible: !backButton.visible
-                    icon.source: App.faUrlBase + "bars"
+                    icon.source: QuickUI.faUrlBase + "bars"
                     text: qsTr("Toggle menu")
                     onClicked: drawer.visible ? drawer.close() : drawer.open()
                 }
                 CustomToolButton {
                     id: backButton
                     visible: pageStack.currentDepth > 1
-                    icon.source: App.faUrlBase + "arrow-left"
+                    icon.source: QuickUI.faUrlBase + "arrow-left"
                     text: qsTr("Back")
                     onClicked: pageStack.pop()
                 }
@@ -109,7 +109,7 @@ ToolBar {
                 }
                 CustomToolButton {
                     visible: toolBarStack.searchAvailable
-                    icon.source: App.faUrlBase + "search"
+                    icon.source: QuickUI.faUrlBase + "search"
                     text: qsTr("Search")
                     onClicked: searchTextArea.focus = true
                 }
@@ -132,7 +132,7 @@ ToolBar {
                 CustomToolButton {
                     id: extraActionsMenuButton
                     visible: pageStack.currentExtraActions.length > 0
-                    icon.source: App.faUrlBase + "ellipsis-v"
+                    icon.source: QuickUI.faUrlBase + "ellipsis-v"
                     text: qsTr("More")
                     onClicked: pageStack.currentPage?.showExtraActions() ?? extraActionsMenu.showCenteredIn(extraActionsMenuButton)
                     CustomMenu {
@@ -163,7 +163,7 @@ ToolBar {
                 }
                 CustomToolButton {
                     id: clearSearchButton
-                    icon.source: App.faUrlBase + "times-circle-o"
+                    icon.source: QuickUI.faUrlBase + "times-circle-o"
                     text: qsTr("Clear search")
                     onClicked: searchTextArea.clear()
                 }

@@ -60,14 +60,14 @@ Page {
                 acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad | PointerDevice.Stylus
                 onLongPressed: {
                     itemDelegate.toggle();
-                    App.performHapticFeedback();
+                    QuickUI.performHapticFeedback();
                 }
             }
             TapHandler {
                 acceptedDevices: PointerDevice.TouchScreen
                 onLongPressed: {
                     contextMenu.showCenteredInRight(fileIcon);
-                    App.performHapticFeedback();
+                    QuickUI.performHapticFeedback();
                 }
             }
             TapHandler {
@@ -205,7 +205,7 @@ Page {
         }
         onRejected: action?.dismiss()
         property var action
-        property var diffHighlighter: App.createDiffHighlighter(diffTextArea.textDocument.textDocument)
+        property var diffHighlighter: SyncthingModels.createDiffHighlighter(diffTextArea.textDocument.textDocument)
         property alias message: messageLabel.text
         function setDiff(diff, readOnly = true) {
             diffTextArea.readOnly = readOnly;
@@ -265,7 +265,7 @@ Page {
 
     required property string dirName
     required property string dirId
-    property var model: App.createFileModel(dirId, listView)
+    property var model: SyncthingModels.createFileModel(dirId, listView)
     property string path: model.path(delegateModel.rootIndex)
     property var modelActions: []
     property var extraActions: []

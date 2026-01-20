@@ -15,31 +15,31 @@ StackView {
         Layout.fillHeight: true
         DirListView {
             id: dirsListView
-            mainModel: App.sortFilterDirModel
+            mainModel: SyncthingModels.sortFilterDirModel
             stackView: stackView
         }
         property list<Action> actions: [
             Action {
                 text: qsTr("Add folder")
-                icon.source: App.faUrlBase + "plus"
+                icon.source: QuickUI.faUrlBase + "plus"
                 onTriggered: stackView.add()
             }
         ]
         property list<Action> extraActions: [
             Action {
                 text: qsTr("Pause all")
-                icon.source: App.faUrlBase + "pause"
-                onTriggered: App.connection.pauseAllDirs()
+                icon.source: QuickUI.faUrlBase + "pause"
+                onTriggered: SyncthingData.connection.pauseAllDirs()
             },
             Action {
                 text: qsTr("Resume all")
-                icon.source: App.faUrlBase + "play"
-                onTriggered: App.connection.resumeAllDirs()
+                icon.source: QuickUI.faUrlBase + "play"
+                onTriggered: SyncthingData.connection.resumeAllDirs()
             },
             Action {
                 text: qsTr("Rescan all")
-                icon.source: App.faUrlBase + "refresh"
-                onTriggered: App.connection.rescanAllDirs()
+                icon.source: QuickUI.faUrlBase + "refresh"
+                onTriggered: SyncthingData.connection.rescanAllDirs()
             }
         ]
         property alias model: dirsListView.mainModel

@@ -11,7 +11,7 @@ ObjectConfigPage {
     actions: [
         Action {
             text: qsTr("Refresh")
-            icon.source: App.faUrlBase + "refresh"
+            icon.source: QuickUI.faUrlBase + "refresh"
             onTriggered: page.loadStatistics()
         }
     ]

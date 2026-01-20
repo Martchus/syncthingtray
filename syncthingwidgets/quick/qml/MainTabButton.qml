@@ -6,11 +6,11 @@ import Main
 TabButton {
     display: parent.width > 400 ? AbstractButton.TextUnderIcon : AbstractButton.IconOnly
     font.pointSize: 7
-    icon.source: App.faUrlBase + iconName
-    icon.width: App.iconSize
-    icon.height: App.iconSize
+    icon.source: QuickUI.faUrlBase + iconName
+    icon.width: QuickUI.iconSize
+    icon.height: QuickUI.iconSize
     onClicked: pageStack.setCurrentIndex(tabIndex)
-    onPressAndHold: App.performHapticFeedback()
+    onPressAndHold: QuickUI.performHapticFeedback()
     ToolTip.visible: hovered || pressed
     ToolTip.text: text
     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval

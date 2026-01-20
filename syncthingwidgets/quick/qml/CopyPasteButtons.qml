@@ -7,18 +7,18 @@ import Main
 RowLayout {
     IconOnlyButton {
         text: qsTr("Copy")
-        icon.source: App.faUrlBase + "files-o"
-        onClicked: App.copyText(edit[textProperty])
+        icon.source: QuickUI.faUrlBase + "files-o"
+        onClicked: SyncthingModels.copyText(edit[textProperty])
     }
     IconOnlyButton {
         text: qsTr("Paste")
         enabled: edit.enabled
-        icon.source: App.faUrlBase + "clipboard"
-        onClicked: edit[textProperty] = App.getClipboardText()
+        icon.source: QuickUI.faUrlBase + "clipboard"
+        onClicked: edit[textProperty] = SyncthingModels.getClipboardText()
     }
     IconOnlyButton {
         text: qsTr("Clear")
-        icon.source: App.faUrlBase + "eraser"
+        icon.source: QuickUI.faUrlBase + "eraser"
         onClicked: edit[textProperty] = ""
     }
     required property Item edit

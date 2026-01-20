@@ -13,11 +13,11 @@ Page {
         anchors.fill: parent
         model: DelegateModel {
             id: delegateModel
-            model: App.changesModel
+            model: SyncthingModels.changesModel
             delegate: ItemDelegate {
                 width: mainView.width
-                onClicked: App.openPath(modelData.directoryId, modelData.path)
-                onPressAndHold: App.copyPath(modelData.directoryId, modelData.path)
+                onClicked: SyncthingModels.openPath(modelData.directoryId, modelData.path)
+                onPressAndHold: SyncthingModels.copyPath(modelData.directoryId, modelData.path)
                 contentItem: GridLayout {
                     id: gridLayout
                     columns: width < 500 ? 2 : 8
@@ -41,8 +41,8 @@ Page {
                         font.weight: Font.Light
                     }
                     Icon {
-                        Layout.preferredWidth: App.iconSize
-                        Layout.preferredHeight: App.iconSize
+                        Layout.preferredWidth: QuickUI.iconSize
+                        Layout.preferredHeight: QuickUI.iconSize
                         source: modelData.actionIcon
                         width: 16
                         height: 16

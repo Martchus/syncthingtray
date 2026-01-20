@@ -24,7 +24,7 @@ namespace QtGui {
 
 AppBase::AppBase(bool insecure, bool textOnly, bool clickToConnect, QObject *parent)
     : QObject(parent)
-    , m_notifier(m_connection)
+    , m_data(nullptr)
     , m_statusInfo(textOnly, clickToConnect)
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     , m_connectToLaunched(true)
@@ -45,17 +45,18 @@ AppBase::AppBase(bool insecure, bool textOnly, bool clickToConnect, QObject *par
     }
 #endif
 
-    m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents | SyncthingConnection::PollingFlags::Errors);
-    m_connection.setAutoReconnectInterval(0); // avoid initial "Trying to reconnect …" status when using launcher but running Syncthing is disabled
+    m_data.connection()->setAutoReconnectInterval(
+        0); // avoid initial "Trying to reconnect …" status when using launcher but running Syncthing is disabled
     m_connectionSettingsFromLauncher.reconnectInterval = 0; // enable automatic reconnects only via handleGuiUrlChanged()
     m_connectionSettingsFromLauncher.statusComputionFlags += SyncthingStatusComputionFlags::RemoteSynchronizing;
     m_connectionSettingsFromConfig.statusComputionFlags += SyncthingStatusComputionFlags::RemoteSynchronizing;
 #ifdef Q_OS_ANDROID
-    m_notifier.setEnabledNotifications(
-        SyncthingHighLevelNotification::ConnectedDisconnected | SyncthingHighLevelNotification::NewDevice | SyncthingHighLevelNotification::NewDir);
+    static constexpr auto n
+        = SyncthingHighLevelNotification::ConnectedDisconnected | SyncthingHighLevelNotification::NewDevice | SyncthingHighLevelNotification::NewDir;
 #else
-    m_notifier.setEnabledNotifications(SyncthingHighLevelNotification::ConnectedDisconnected);
+    static constexpr auto n = SyncthingHighLevelNotification::ConnectedDisconnected;
 #endif
+    m_data.notifier()->setEnabledNotifications(n);
 }
 
 AppBase::~AppBase()
@@ -67,13 +68,13 @@ const QString &AppBase::status()
     if (m_status.has_value()) {
         return *m_status;
     }
-    switch (m_connection.status()) {
+    switch (m_data.connection()->status()) {
     case Data::SyncthingStatus::Disconnected:
         return m_status.emplace(tr("Not connected to backend."));
     case Data::SyncthingStatus::Reconnecting:
         return m_status.emplace(tr("Waiting for backend …"));
     default:
-        if (const auto errorCount = m_connection.errors().size()) {
+        if (const auto errorCount = m_data.connection()->errors().size()) {
             return m_status.emplace(tr("There are %n notification(s)/error(s).", nullptr, static_cast<int>(errorCount)));
         } else if (const auto internalErrorCount = m_internalErrors.size()) {
             return m_status.emplace(tr("There are %n Syncthing API error(s).", nullptr, static_cast<int>(internalErrorCount)));
@@ -126,8 +127,8 @@ bool AppBase::openSettings()
 void AppBase::invalidateStatus()
 {
     m_status.reset();
-    m_statusInfo.updateConnectionStatus(m_connection);
-    m_statusInfo.updateConnectedDevices(m_connection);
+    m_statusInfo.updateConnectionStatus(*m_data.connection());
+    m_statusInfo.updateConnectedDevices(*m_data.connection());
 }
 
 Data::IconManager &AppBase::initIconManager()
@@ -196,14 +197,14 @@ void AppBase::applyConnectionSettings(const QUrl &syncthingUrl)
     if (!couldLoadCertificate) {
         emit error(tr("Unable to load HTTPs certificate"));
     }
-    m_connection.setInsecure(m_insecure);
+    m_data.connection()->setInsecure(m_insecure);
     if (!mayPauseDevicesOnMeteredNetworkConnection()) {
         m_connectionSettingsFromConfig.pauseOnMeteredConnection = false;
     }
     if (m_connectToLaunched) {
         handleGuiUrlChanged(syncthingUrl);
-    } else if (m_connection.applySettings(m_connectionSettingsFromConfig) || !m_connection.isConnected()) {
-        m_connection.reconnect();
+    } else if (m_data.connection()->applySettings(m_connectionSettingsFromConfig) || !m_data.connection()->isConnected()) {
+        m_data.connection()->reconnect();
     }
 }
 
@@ -254,10 +255,10 @@ void AppBase::handleGuiUrlChanged(const QUrl &newUrl)
     if (m_connectToLaunched) {
         invalidateStatus();
         if (newUrl.isEmpty()) {
-            m_connection.setAutoReconnectInterval(0);
-            m_connection.disconnect();
-        } else if (m_connection.applySettings(m_connectionSettingsFromLauncher) || !m_connection.isConnected()) {
-            m_connection.reconnect();
+            m_data.connection()->setAutoReconnectInterval(0);
+            m_data.connection()->disconnect();
+        } else if (m_data.connection()->applySettings(m_connectionSettingsFromLauncher) || !m_data.connection()->isConnected()) {
+            m_data.connection()->reconnect();
         }
     }
 }

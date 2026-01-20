@@ -7,48 +7,48 @@ import Main
 Page {
     id: page
     title: qsTr("Ignore patterns of \"%1\"").arg(dirName)
-    Component.onCompleted: App.loadIgnorePatterns(dirId, textArea)
+    Component.onCompleted: SyncthingModels.loadIgnorePatterns(dirId, textArea)
     property list<Action> actions: [
         Action {
             text: qsTr("Help")
-            icon.source: App.faUrlBase + "question"
+            icon.source: QuickUI.faUrlBase + "question"
             onTriggered: helpDialog.visible = true
         },
         Action {
             text: qsTr("Save")
-            icon.source: App.faUrlBase + "floppy-o"
-            onTriggered: App.saveIgnorePatterns(page.dirId, textArea)
+            icon.source: QuickUI.faUrlBase + "floppy-o"
+            onTriggered: SyncthingModels.saveIgnorePatterns(page.dirId, textArea)
         }
     ]
     property list<Action> extraActions: [
         Action {
             text: qsTr("Undo")
-            icon.source: App.faUrlBase + "undo"
+            icon.source: QuickUI.faUrlBase + "undo"
             onTriggered: textArea.undo()
             enabled: textArea.canUndo
         },
         Action {
             text: qsTr("Redo")
-            icon.source: App.faUrlBase + "repeat"
+            icon.source: QuickUI.faUrlBase + "repeat"
             onTriggered: textArea.redo()
             enabled: textArea.canRedo
         },
         Action {
             text: qsTr("Clear")
-            icon.source: App.faUrlBase + "eraser"
+            icon.source: QuickUI.faUrlBase + "eraser"
             onTriggered: textArea.clear()
             enabled: textArea.length > 0
         },
         Action {
             text: qsTr("Ignore all")
-            icon.source: App.faUrlBase + "filter"
-            onTriggered: textArea.append((App.connection.pathSeparator || "/") + "**")
+            icon.source: QuickUI.faUrlBase + "filter"
+            onTriggered: textArea.append((SyncthingData.connection.pathSeparator || "/") + "**")
         },
         Action {
             text: qsTr("Edit externally")
-            icon.source: App.faUrlBase + "external-link"
-            enabled: App.connection.isLocal
-            onTriggered: App.openIgnorePatterns(page.dirId)
+            icon.source: QuickUI.faUrlBase + "external-link"
+            enabled: SyncthingData.connection.isLocal
+            onTriggered: SyncthingModels.openIgnorePatterns(page.dirId)
         }
     ]
     ScrollView {
@@ -91,7 +91,7 @@ Page {
             Button {
                 text: qsTr("Full documentation")
                 flat: true
-                onClicked: App.requestOpeningUrl("https://docs.syncthing.net/users/ignoring")
+                onClicked: QuickUI.requestOpeningUrl("https://docs.syncthing.net/users/ignoring")
                 DialogButtonBox.buttonRole: DialogButtonBox.HelpRole
             }
         }

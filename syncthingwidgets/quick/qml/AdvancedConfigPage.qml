@@ -13,12 +13,12 @@ ObjectConfigPage {
     actions: [
         Action {
             text: qsTr("Apply")
-            icon.source: App.faUrlBase + "check"
+            icon.source: QuickUI.faUrlBase + "check"
             onTriggered: advancedConfigPage.applyChanges()
         },
         Action {
             text: qsTr("Remove")
-            icon.source: App.faUrlBase + "trash-o"
+            icon.source: QuickUI.faUrlBase + "trash-o"
             enabled: advancedConfigPage.configObjectExists
             onTriggered: removeDialog.open()
         }
@@ -49,7 +49,7 @@ ObjectConfigPage {
     property bool isNew: false
 
     function findConfigObject() {
-        const cfg = App.connection.rawConfig;
+        const cfg = SyncthingData.connection.rawConfig;
         const entries = cfg !== undefined ? cfg[entriesKey] : undefined;
         const entry = Array.isArray(entries) ? entries.find(advancedConfigPage.isEntry) : undefined;
         return (advancedConfigPage.configObjectExists = (entry !== undefined)) ? entry : advancedConfigPage.makeNewConfig();
@@ -60,7 +60,7 @@ ObjectConfigPage {
     }
 
     function applyChanges() {
-        const cfg = App.connection.rawConfig;
+        const cfg = SyncthingData.connection.rawConfig;
         const entries = cfg !== undefined ? cfg[entriesKey] : undefined;
         if (!Array.isArray(entries)) {
             return false;
@@ -68,7 +68,7 @@ ObjectConfigPage {
         advancedConfigPage.updateIdentification();
         const cfgObj = configObject;
         if (isPresentEmptyString(cfgObj.id) || isPresentEmptyString(cfgObj.deviceID)) {
-            App.showError(qsTr("The ID must not be empty."));
+            QuickUI.showError(qsTr("The ID must not be empty."));
             return false;
         }
         const index = entries.findIndex(advancedConfigPage.isEntry);
@@ -78,10 +78,10 @@ ObjectConfigPage {
         } else if (!supposedToExist && index < 0) {
             entries.push(cfgObj);
         } else {
-            App.showError(qsTr("Can't apply, ID is already used."));
+            QuickUI.showError(qsTr("Can't apply, ID is already used."));
             return false;
         }
-        App.postSyncthingConfig(cfg, (error) => {
+        SyncthingModels.postSyncthingConfig(cfg, (error) => {
             if (error.length === 0) {
                 advancedConfigPage.configObjectExists = true;
                 advancedConfigPage.hasUnsavedChanges = false;
@@ -92,7 +92,7 @@ ObjectConfigPage {
     }
 
     function removeConfigObject() {
-        const cfg = App.connection.rawConfig;
+        const cfg = SyncthingData.connection.rawConfig;
         const entries = cfg !== undefined ? cfg[entriesKey] : undefined;
         if (!Array.isArray(entries)) {
             return false;
@@ -102,7 +102,7 @@ ObjectConfigPage {
             return false;
         }
         entries.splice(index, 1);
-        App.postSyncthingConfig(cfg, (error) => {
+        SyncthingModels.postSyncthingConfig(cfg, (error) => {
             advancedConfigPage.configObjectExists = false;
             advancedConfigPage.hasUnsavedChanges = false;
         });

@@ -11,7 +11,7 @@ Page {
     actions: [
         Action {
             text: qsTr("Refresh")
-            icon.source: App.faUrlBase + "refresh"
+            icon.source: QuickUI.faUrlBase + "refresh"
             onTriggered: page.loadDirs()
         }
     ]
@@ -19,8 +19,8 @@ Page {
         id: outOfSyncDirsListView
         delegate: ItemDelegate {
             width: outOfSyncDirsListView.width
-            text: qsTr("%1: %2 items needed, ~ %3").arg(modelData.dirName).arg(modelData.items).arg(App.formatDataSize(modelData.bytes))
-            icon.source: App.faUrlBase + "folder-o"
+            text: qsTr("%1: %2 items needed, ~ %3").arg(modelData.dirName).arg(modelData.items).arg(SyncthingModels.formatDataSize(modelData.bytes))
+            icon.source: QuickUI.faUrlBase + "folder-o"
             onClicked: page.stackView.push("NeededPage.qml", {devLabel: page.devLabel, devId: page.devId, dirLabel: modelData.dirName, dirId: modelData.dirId}, StackView.PushTransition)
             required property var modelData
         }
@@ -32,6 +32,6 @@ Page {
     required property var stackView
     required property list<Action> actions
     function loadDirs() {
-        outOfSyncDirsListView.model = App.computeDirsNeedingItems(devFilterModel.index(dirIndex, 0));
+        outOfSyncDirsListView.model = SyncthingModels.computeDirsNeedingItems(devFilterModel.index(dirIndex, 0));
     }
 }

@@ -13,7 +13,7 @@ Page {
     actions: [
         Action {
             text: qsTr("Refresh")
-            icon.source: App.faUrlBase + "refresh"
+            icon.source: QuickUI.faUrlBase + "refresh"
             onTriggered: neededPage.refresh()
         }
     ]
@@ -39,16 +39,16 @@ Page {
                     }
                     Label {
                         Layout.alignment: Qt.AlignTop
-                        text: App.formatDataSize(modelData.size ?? 0)
+                        text: SyncthingModels.formatDataSize(modelData.size ?? 0)
                         elide: Text.ElideRight
                         font.weight: Font.Light
                     }
                 }
                 IconOnlyButton {
                     text: qsTr("Move to top of queue")
-                    icon.source: App.faUrlBase + "angle-double-up"
+                    icon.source: QuickUI.faUrlBase + "angle-double-up"
                     visible: devId.length === 0
-                    onClicked: App.requestFromSyncthing("POST", "db/prio", {folder: neededPage.dirId, file: modelData.name}, (res, error) => {})
+                    onClicked: SyncthingModels.requestFromSyncthing("POST", "db/prio", {folder: neededPage.dirId, file: modelData.name}, (res, error) => {})
                 }
             }
             required property var modelData
@@ -96,7 +96,7 @@ Page {
         paramsWithPaging.page = page;
         paramsWithPaging.perpage = perPage;
         isRequestOngoing = true;
-        App.requestFromSyncthing("GET", route, paramsWithPaging, (res, error) => {
+        SyncthingModels.requestFromSyncthing("GET", route, paramsWithPaging, (res, error) => {
             isRequestOngoing = false;
             if (page === 1) {
                 listModel.clear();

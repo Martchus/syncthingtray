@@ -14,7 +14,7 @@ Label {
     property list<Action> actions: [
         Action {
             text: qsTr("Open in web browser")
-            icon.source: App.faUrlBase + "external-link"
+            icon.source: QuickUI.faUrlBase + "external-link"
             onTriggered: Qt.openUrlExternally(webViewItem.url)
         }
     ]

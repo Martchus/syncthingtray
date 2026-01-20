@@ -19,7 +19,7 @@ ExpandableListView {
             elide: Label.ElideRight
             wrapMode: Text.WordWrap
         }
-        onAccepted: App.invokeDirAction(confirmDirActionDlg.dirId, confirmDirActionDlg.action)
+        onAccepted: SyncthingModels.invokeDirAction(confirmDirActionDlg.dirId, confirmDirActionDlg.action)
         property string dirId
         property string dirLabel
         property string action

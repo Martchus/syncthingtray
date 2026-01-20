@@ -11,7 +11,7 @@ Pane {
             Layout.fillWidth: true
         }
         BusyIndicator {
-            Layout.preferredWidth: App.iconSize * 2
+            Layout.preferredWidth: QuickUI.iconSize * 2
             Layout.preferredHeight: Layout.preferredWidth
         }
         Label {

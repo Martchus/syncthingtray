@@ -27,18 +27,24 @@ QtObject {
         function onNewDirTriggered(devId, dirId, dirLabel) {
             pageStack.addDir(dirId, dirLabel, [devId]);
         }
+    }
+    readonly property Connections uiConnections: Connections {
+        target: QuickUI
+        function onError(message) {
+            showNotifiction(message);
+        }
         function onOpeningUrlRequested(url) {
             openingUrlRequested(url);
         }
     }
     readonly property Connections connectionConnections: Connections {
-        target: App.connection
+        target: SyncthingData.connection
         function onNewConfigTriggered() {
             showNotifiction(qsTr("Configuration changed"));
         }
     }
     readonly property Connections notifierConnections: Connections {
-        target: App.notifier
+        target: SyncthingData.notifier
         function onDisconnected() {
             showNotifiction(qsTr("UI disconnected from Syncthing backend"));
         }
@@ -48,7 +54,7 @@ QtObject {
     signal openingUrlRequested(url: url)
 
     function showNotifiction(message) {
-        return App.showToast(message) || notification(message);
+        return QuickUI.showToast(message) || notification(message);
     }
 
     required property PageStack pageStack

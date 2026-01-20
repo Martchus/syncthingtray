@@ -230,7 +230,7 @@ StackView {
         property list<Action> actions: [
             Action {
                 text: qsTr("Apply")
-                icon.source: App.faUrlBase + "check"
+                icon.source: QuickUI.faUrlBase + "check"
                 onTriggered: {
                     const cfg = App.settings;
                     for (let i = 0, count = model.count; i !== count; ++i) {

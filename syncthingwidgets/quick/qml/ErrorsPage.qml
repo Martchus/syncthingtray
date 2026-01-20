@@ -6,12 +6,12 @@ import Main
 
 Page {
     title: qsTr("Notifications/errors")
-    Component.onCompleted: App.loadErrors(listView)
+    Component.onCompleted: SyncthingModels.loadErrors(listView)
     actions: [
         Action {
             text: qsTr("Clear")
-            icon.source: App.faUrlBase + "trash"
-            onTriggered: App.connection.requestClearingErrors()
+            icon.source: QuickUI.faUrlBase + "trash"
+            onTriggered: SyncthingData.connection.requestClearingErrors()
         }
     ]
     CustomListView {

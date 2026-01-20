@@ -2,9 +2,9 @@
 #define SYNCTHING_TRAY_APP_BASE_H
 
 #include <syncthingwidgets/misc/statusinfo.h>
+#include <syncthingwidgets/misc/syncthingmodels.h>
 
 #include <syncthingconnector/syncthingconfig.h>
-#include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/syncthingconnectionsettings.h>
 #include <syncthingconnector/syncthingconnectionstatus.h>
 #include <syncthingconnector/syncthingnotifier.h>
@@ -23,8 +23,7 @@ namespace QtGui {
 
 class SYNCTHINGWIDGETS_EXPORT AppBase : public QObject {
     Q_OBJECT
-    Q_PROPERTY(Data::SyncthingConnection *connection READ connection CONSTANT)
-    Q_PROPERTY(Data::SyncthingNotifier *notifier READ notifier CONSTANT)
+    Q_PROPERTY(SyncthingData *data READ data CONSTANT)
     Q_PROPERTY(QString status READ status NOTIFY statusChanged)
 
 public:
@@ -32,14 +31,7 @@ public:
     ~AppBase();
 
     // properties
-    Data::SyncthingConnection *connection()
-    {
-        return &m_connection;
-    }
-    Data::SyncthingNotifier *notifier()
-    {
-        return &m_notifier;
-    }
+    SyncthingData *data();
     virtual const QString &status();
     virtual bool isSyncthingRunning() const = 0;
     virtual bool mayPauseDevicesOnMeteredNetworkConnection() const = 0;
@@ -66,8 +58,7 @@ protected:
     Data::IconManager &initIconManager();
 
 protected:
-    Data::SyncthingConnection m_connection;
-    Data::SyncthingNotifier m_notifier;
+    SyncthingData m_data;
     Data::SyncthingConnectionSettings m_connectionSettingsFromLauncher;
     Data::SyncthingConnectionSettings m_connectionSettingsFromConfig;
     Data::SyncthingConfig m_syncthingConfig;
@@ -83,6 +74,11 @@ protected:
     bool m_connectToLaunched;
     bool m_insecure;
 };
+
+inline SyncthingData *AppBase::data()
+{
+    return &m_data;
+}
 
 /*
  * \brief Returns the path of the Syncthing log file.

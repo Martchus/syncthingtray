@@ -72,9 +72,9 @@ ItemDelegate {
                             visible: modelData.path !== undefined
                             height: visible ? implicitHeight : 0
                             text: modelData.path ?? ""
-                            icon.source: App.faUrlBase + "folder-open-o"
-                            icon.width: App.iconWidthDelegate
-                            icon.height: App.iconSize
+                            icon.source: QuickUI.faUrlBase + "folder-open-o"
+                            icon.width: QuickUI.iconSize
+                            icon.height: QuickUI.iconSize
                             onClicked: folderDlg.open()
                         }
                     }
@@ -83,7 +83,7 @@ ItemDelegate {
                     id: folderDlg
                     title: qsTr("Set folder path of %1").arg(modelData.displayName)
                     currentFolder: "file://" + encodeURIComponent(modelData.path ?? "")
-                    onAccepted: selectionView.model.setProperty(modelData.index, "path", App.resolveUrl(folderDlg.selectedFolder))
+                    onAccepted: selectionView.model.setProperty(modelData.index, "path", SyncthingModels.resolveUrl(folderDlg.selectedFolder))
                 }
                 property alias folderDialog: folderDlg
                 required property var modelData

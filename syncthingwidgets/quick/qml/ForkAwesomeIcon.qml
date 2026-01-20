@@ -7,7 +7,7 @@ Image {
     Layout.preferredWidth: size
     Layout.preferredHeight: size
     Layout.maximumWidth: size
-    source: `${App.faUrlBase}${iconName}::${App.darkmodeEnabled}`
+    source: `${QuickUI.faUrlBase}${iconName}::${QuickUI.darkmodeEnabled}`
     width: size
     height: size
     property int size: 16

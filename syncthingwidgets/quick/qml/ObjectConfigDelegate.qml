@@ -37,8 +37,8 @@ DelegateChooser {
                 }
                 IconOnlyButton {
                     text: qsTr("Copy")
-                    icon.source: App.faUrlBase + "files-o"
-                    onClicked: App.copyText(copyText)
+                    icon.source: QuickUI.faUrlBase + "files-o"
+                    onClicked: SyncthingModels.copyText(copyText)
                     Component.onCompleted: copyText = modelData.statusText ?? modelData.value.toString()
                     property string copyText: ""
                 }
@@ -119,7 +119,7 @@ DelegateChooser {
                     configCategory: objectConfigPage.configCategory
                 }
             }
-            onClicked: (modelData.enabled ?? true) ? deviceIdDlg.visible = true : App.performHapticFeedback()
+            onClicked: (modelData.enabled ?? true) ? deviceIdDlg.visible = true : QuickUI.performHapticFeedback()
             CustomDialog {
                 id: deviceIdDlg
                 title: modelData.label
@@ -138,7 +138,7 @@ DelegateChooser {
                             IconOnlyButton {
                                 text: qsTr("Clear")
                                 enabled: modelData.enabled ?? true
-                                icon.source: App.faUrlBase + "undo"
+                                icon.source: QuickUI.faUrlBase + "undo"
                                 onClicked: {
                                     editedDeviceIdValue.currentIndex = -1;
                                     editedDeviceIdValue.editText = "";
@@ -146,7 +146,7 @@ DelegateChooser {
                             }
                             IconOnlyButton {
                                 text: qsTr("Refresh list of devices")
-                                icon.source: App.faUrlBase + "refresh"
+                                icon.source: QuickUI.faUrlBase + "refresh"
                                 onClicked: deviceIdDlg.refreshDeviceList()
                             }
                             CopyPasteButtons {
@@ -164,7 +164,7 @@ DelegateChooser {
                             text: devideIdInfo.isIdValid ? (devideIdInfo.isIdExisting ? qsTr("This device has already been added!") : qsTr("The device ID looks valid.")) : qsTr("The entered device ID looks invalid!")
                         }
                         property bool isIdValid: editedDeviceIdValue.editText.match(validIdRegex)
-                        property bool isIdExisting: (modelData?.enabled ?? true) && App.hasDevice(editedDeviceIdValue.editText)
+                        property bool isIdExisting: (modelData?.enabled ?? true) && SyncthingModels.hasDevice(editedDeviceIdValue.editText)
                         property bool isIdOk: isIdValid && !isIdExisting
                         property var validIdRegex: /^[0-9A-z]{7}(-[0-9A-z]{7}){7}$/
                     }
@@ -178,7 +178,7 @@ DelegateChooser {
                 onRejected: editedDeviceIdValue.editText = objectConfigPage.configObject[modelData.key]
                 onHelpRequested: deviceIdHelpButton.clicked()
                 function refreshDeviceList() {
-                    App.requestFromSyncthing("GET", "system/discovery", {}, (res, error) => {
+                    SyncthingModels.requestFromSyncthing("GET", "system/discovery", {}, (res, error) => {
                                                  const currentIndex = editedDeviceIdValue.currentIndex;
                                                  const currentText = editedDeviceIdValue.editText;
                                                  editedDeviceIdValue.model = Object.keys(res);
@@ -318,7 +318,7 @@ DelegateChooser {
                                 Label {
                                     id: deviceNameOrIdLabel
                                     Layout.fillWidth: true
-                                    text: App.connection.deviceNameOrId(modelData.deviceID)
+                                    text: SyncthingData.connection.deviceNameOrId(modelData.deviceID)
                                     elide: Text.ElideRight
                                     font.weight: Font.Light
                                 }
@@ -331,7 +331,7 @@ DelegateChooser {
                                     id: encryptionButton
                                     text: deviceEntry.isEncryptionEnabled ? qsTr("Change encryption password") : qsTr("Set encryption password")
                                     enabled: deviceSwitch.checked
-                                    icon.source: App.faUrlBase + (deviceEntry.isEncryptionEnabled ? "lock" : "unlock")
+                                    icon.source: QuickUI.faUrlBase + (deviceEntry.isEncryptionEnabled ? "lock" : "unlock")
                                     onClicked: encryptionPasswordDlg.open()
                                 }
                                 CustomDialog {
@@ -355,7 +355,7 @@ DelegateChooser {
                                         devicesDelegate.setDeviceProperty(modelData.deviceID, "encryptionPassword", encryptionKeyValue.text);
                                     }
                                     onRejected: encryptionKeyValue.text = Qt.binding(() => modelData.encryptionPassword)
-                                    onHelpRequested: App.requestOpeningUrl("https://docs.syncthing.net/users/untrusted.html")
+                                    onHelpRequested: QuickUI.requestOpeningUrl("https://docs.syncthing.net/users/untrusted.html")
                                 }
                             }
                             onClicked: deviceSwitch.toggle()
@@ -370,7 +370,7 @@ DelegateChooser {
                 const devices = [];
                 const idsToSelect = modelData.selectIds;
                 const sharedDevices = objectConfigPage.configObject[modelData.key];
-                const myId = App.connection.myId;
+                const myId = SyncthingData.connection.myId;
                 if (typeof idsToSelect === "object") {
                     for (const idToSelect of idsToSelect) {
                         if (idToSelect !== myId) {
@@ -383,7 +383,7 @@ DelegateChooser {
                         devices.push(sharedDev);
                     }
                 }
-                const otherDevices = App.connection.deviceIds;
+                const otherDevices = SyncthingData.connection.deviceIds;
                 for (const otherDevID of otherDevices) {
                     if (otherDevID !== myId && devices.find((existingDev) => existingDev.deviceID === otherDevID) === undefined) {
                         devices.push({deviceID: otherDevID, encryptionPassword: "", introducedBy: ""});
@@ -612,14 +612,14 @@ DelegateChooser {
                 IconOnlyButton {
                     text: qsTr("Clear")
                     enabled: modelData.enabled ?? true
-                    icon.source: App.faUrlBase + "undo"
+                    icon.source: QuickUI.faUrlBase + "undo"
                     onClicked: objectConfigPage.updateValue(modelData.index, modelData.key, "")
                 }
                 IconOnlyButton {
                     id: manualFileDlgButton
                     text: qsTr("Edit manually")
                     enabled: modelData.enabled ?? true
-                    icon.source: App.faUrlBase + "pencil"
+                    icon.source: QuickUI.faUrlBase + "pencil"
                     onClicked: manualFileDlg.open()
                 }
                 HelpButton {
@@ -632,7 +632,7 @@ DelegateChooser {
                 id: fileDlg
                 title: modelData.label
                 fileMode: modelData.fileMode ?? FileDialog.OpenFile
-                onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, App.resolveUrl(fileDlg.selectedFile))
+                onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, SyncthingModels.resolveUrl(fileDlg.selectedFile))
             }
             EditTextFieldDialog {
                 id: manualFileDlg
@@ -674,14 +674,14 @@ DelegateChooser {
                 IconOnlyButton {
                     text: qsTr("Clear")
                     enabled: modelData.enabled ?? true
-                    icon.source: App.faUrlBase + "undo"
+                    icon.source: QuickUI.faUrlBase + "undo"
                     onClicked: objectConfigPage.updateValue(modelData.index, modelData.key, "")
                 }
                 IconOnlyButton {
                     id: manualFolderDlgButton
                     text: qsTr("Edit manually")
                     enabled: modelData.enabled ?? true
-                    icon.source: App.faUrlBase + "pencil"
+                    icon.source: QuickUI.faUrlBase + "pencil"
                     onClicked: manualFolderDlg.open()
                 }
                 HelpButton {
@@ -694,7 +694,7 @@ DelegateChooser {
                 id: folderDlg
                 title: modelData.label
                 currentFolder: encodeURIComponent(folderpathValue.text)
-                onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, App.resolveUrl(folderDlg.selectedFolder))
+                onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, SyncthingModels.resolveUrl(folderDlg.selectedFolder))
             }
             EditTextFieldDialog {
                 id: manualFolderDlg

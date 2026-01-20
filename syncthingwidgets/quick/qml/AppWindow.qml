@@ -12,7 +12,7 @@ ApplicationWindow {
     height: 500
     title: meta.title
     font: theming.font
-    flags: App.extendedClientArea ? (Qt.Window | Qt.ExpandedClientAreaHint | Qt.NoTitleBarBackgroundHint) : (Qt.Window)
+    flags: QuickUI.extendedClientArea ? (Qt.Window | Qt.ExpandedClientAreaHint | Qt.NoTitleBarBackgroundHint) : (Qt.Window)
     leftPadding: 0
     rightPadding: 0
     header: MainToolBar {
@@ -37,7 +37,7 @@ ApplicationWindow {
             const key = event.key;
             if (key === Qt.Key_Back || (key === Qt.Key_Backspace && typeof activeFocusItem.getText !== "function")) {
                 event.accepted = true;
-                const dialog = App.currentDialog;
+                const dialog = QuickUI.currentDialog;
                 if (dialog) {
                     dialog.reject();
                 } else if (!pageStack.pop()) {

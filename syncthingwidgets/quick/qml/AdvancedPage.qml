@@ -118,7 +118,7 @@ StackView {
         }
 
         property alias listView: listView
-        property var config: App.connection.rawConfig
+        property var config: SyncthingData.connection.rawConfig
         property bool hasUnsavedChanges: false
         property bool isDangerous: false
         readonly property string usernameDesc: qsTr("Set to require authentication for accessing the web-based GUI.")
@@ -193,10 +193,10 @@ StackView {
             Action {
                 id: discardAction
                 text: qsTr("Discard changes")
-                icon.source: App.faUrlBase + "undo"
+                icon.source: QuickUI.faUrlBase + "undo"
                 enabled: advancedPage.hasUnsavedChanges
                 onTriggered: {
-                    advancedPage.config = App.connection.rawConfig;
+                    advancedPage.config = SyncthingData.connection.rawConfig;
                     advancedPage.hasUnsavedChanges = false;
                     advancedPage.isDangerous = false;
                 }
@@ -204,15 +204,15 @@ StackView {
             Action {
                 id: applyAction
                 text: qsTr("Apply changes")
-                icon.source: App.faUrlBase + "check"
+                icon.source: QuickUI.faUrlBase + "check"
                 enabled: advancedPage.hasUnsavedChanges
                 onTriggered: {
-                    const cfg = App.connection.rawConfig;
+                    const cfg = SyncthingData.connection.rawConfig;
                     for (let i = 0, count = model.count; i !== count; ++i) {
                         const entryKey = model.get(i).key;
                         cfg[entryKey] = advancedPage.config[entryKey]
                     }
-                    App.postSyncthingConfig(cfg, (error) => {
+                    SyncthingModels.postSyncthingConfig(cfg, (error) => {
                         if (error.length === 0) {
                             const currentPage = stackView.currentItem;
                             if (currentPage) {

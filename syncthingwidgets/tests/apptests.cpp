@@ -94,11 +94,11 @@ public Q_SLOTS:
 
         if (m_withSyncthing) {
             qDebug() << "Waiting for service and app to connect to Syncthing";
-            QVERIFY(waitForConnected(*m_service->connection(), 15000));
-            QVERIFY(waitForConnected(*m_app->connection(), 15000));
-            qDebug() << "Service connected to Syncthing: " << m_service->connection()->syncthingVersion();
-            qDebug() << "App connected to Syncthing: " << m_app->connection()->syncthingVersion();
-            m_syncthingVersion = m_service->connection()->syncthingVersion();
+            QVERIFY(waitForConnected(*m_service->data()->connection(), 15000));
+            QVERIFY(waitForConnected(*m_app->data()->connection(), 15000));
+            qDebug() << "Service connected to Syncthing: " << m_service->data()->connection()->syncthingVersion();
+            qDebug() << "App connected to Syncthing: " << m_app->data()->connection()->syncthingVersion();
+            m_syncthingVersion = m_service->data()->connection()->syncthingVersion();
         } else {
             qDebug() << "Starting test without Syncthing";
         }

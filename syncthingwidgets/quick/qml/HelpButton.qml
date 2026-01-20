@@ -8,7 +8,7 @@ IconOnlyButton {
     id: helpButton
     visible: helpButton.desc.length > 0 || modelData.helpUrl?.length > 0 || (configCategory.length > 0 && !Array.isArray(configObject))
     text: qsTr("Open help")
-    icon.source: App.faUrlBase + "question"
+    icon.source: QuickUI.faUrlBase + "question"
     onClicked: helpButton.desc.length > 0 ? helpDlg.open() : helpButton.openSyncthingDocs()
 
     CustomDialog {
@@ -41,6 +41,6 @@ IconOnlyButton {
     property string configCategory
 
     function openSyncthingDocs() {
-        App.requestOpeningUrl(helpButton.url);
+        SyncthingModels.requestOpeningUrl(helpButton.url);
     }
 }

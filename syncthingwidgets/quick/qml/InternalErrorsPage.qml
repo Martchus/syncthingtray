@@ -11,7 +11,7 @@ Page {
     actions: [
         Action {
             text: qsTr("Clear")
-            icon.source: App.faUrlBase + "trash"
+            icon.source: QuickUI.faUrlBase + "trash"
             onTriggered: {
                 App.clearInternalErrors();
                 listView.model = App.internalErrors();

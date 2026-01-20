@@ -95,7 +95,7 @@ Page {
         id: customDirDlg
         title: qsTr("Select custom home directory")
         onAccepted: {
-            page.customDirPath = App.resolveUrl(customDirDlg.selectedFolder);
+            page.customDirPath = SyncthingModels.resolveUrl(customDirDlg.selectedFolder);
             page.setSelectedDir(-1);
         }
     }
@@ -107,11 +107,11 @@ Page {
     property list<Action> actions: [
         Action {
             text: qsTr("Move home to selected path")
-            icon.source: App.faUrlBase + "download"
+            icon.source: QuickUI.faUrlBase + "download"
             onTriggered: {
                 const selectedDir = page.findSelectedDir();
                 selectedDir === undefined
-                        ? App.showError(qsTr("No directory selected."))
+                        ? QuickUI.showError(qsTr("No directory selected."))
                         : App.moveSyncthingHome(selectedDir, () => page.load())
             }
         }
@@ -135,7 +135,7 @@ Page {
         return (populated === undefined || populated === null) ? (-1) : (populated ? 1 : 0);
     }
     function isPopulated(dir) {
-        return page.populatedPropertyToInt(App.isPopulated(dir));
+        return page.populatedPropertyToInt(SyncthingModels.isPopulated(dir));
     }
     function findSelectedDir() {
         const model = dirsView.model;

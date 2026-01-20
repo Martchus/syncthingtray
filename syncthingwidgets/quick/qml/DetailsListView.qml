@@ -57,7 +57,7 @@ ListView {
                     horizontalAlignment: Qt.AlignRight
                     MouseArea {
                         anchors.fill: parent
-                        onPressAndHold: App.copyText(detailValue)
+                        onPressAndHold: SyncthingModels.copyText(detailValue)
                     }
                 }
             }

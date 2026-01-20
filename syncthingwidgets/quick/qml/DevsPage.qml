@@ -15,26 +15,26 @@ StackView {
         Layout.fillHeight: true
         DevListView {
             id: devsListView
-            mainModel: App.sortFilterDevModel
+            mainModel: SyncthingModels.sortFilterDevModel
             stackView: stackView
         }
         property list<Action> actions: [
             Action {
                 text: qsTr("Add device")
-                icon.source: App.faUrlBase + "plus"
+                icon.source: QuickUI.faUrlBase + "plus"
                 onTriggered: stackView.add()
             }
         ]
         property list<Action> extraActions: [
             Action {
                 text: qsTr("Pause all")
-                icon.source: App.faUrlBase + "pause"
-                onTriggered: App.connection.pauseAllDevs()
+                icon.source: QuickUI.faUrlBase + "pause"
+                onTriggered: SyncthingData.connection.pauseAllDevs()
             },
             Action {
                 text: qsTr("Resume all")
-                icon.source: App.faUrlBase + "play"
-                onTriggered: App.connection.resumeAllDevs()
+                icon.source: QuickUI.faUrlBase + "play"
+                onTriggered: SyncthingData.connection.resumeAllDevs()
             }
         ]
         property alias model: devsListView.mainModel
