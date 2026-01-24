@@ -66,7 +66,7 @@ public Q_SLOTS:
         qputenv("SYNCTHINGWIDGETS_SETTINGS_DIR", homePath.toUtf8());
 
         // use a single window; that's less noisy when running tests non-headless
-        qputenv("SYNCTHINGWIDGETS_NATIVE_POPUPS", "0");
+        qputenv("SYNCTHINGWIDGETS_WINDOW_POPUPS", "0");
 
         m_testConfigDir = QString::fromStdString(testDirPath("testconfig"));
         m_testConfigDir = QFileInfo(m_testConfigDir).absoluteFilePath();
