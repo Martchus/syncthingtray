@@ -15,18 +15,11 @@
 #include "../misc/syncthinglauncher.h"
 #include "../misc/utils.h"
 
-#include <syncthingmodel/syncthingdevicemodel.h>
-#include <syncthingmodel/syncthingdirectorymodel.h>
-#include <syncthingmodel/syncthingfilemodel.h>
-#include <syncthingmodel/syncthingrecentchangesmodel.h>
-#include <syncthingmodel/syncthingsortfiltermodel.h>
-
 #include <qtutilities/settingsdialog/qtsettings.h>
 
 #include <QJSValue>
 #include <QJsonObject>
 #include <QQmlApplicationEngine>
-#include <QtVersion>
 
 #include <array>
 #include <atomic>
@@ -55,8 +48,6 @@ class SYNCTHINGWIDGETS_EXPORT App : public AppBase {
     Q_PROPERTY(int iconWidthDelegate READ iconWidthDelegate CONSTANT)
     Q_PROPERTY(bool windowPopups READ windowPopups CONSTANT)
     Q_PROPERTY(bool extendedClientArea READ extendedClientArea CONSTANT)
-    Q_PROPERTY(QString syncthingVersion READ syncthingVersion CONSTANT)
-    Q_PROPERTY(QString qtVersion READ qtVersion CONSTANT)
     Q_PROPERTY(QString readmeUrl READ readmeUrl CONSTANT)
     Q_PROPERTY(QString documentationUrl READ documentationUrl CONSTANT)
     Q_PROPERTY(QString website READ website CONSTANT)
@@ -95,26 +86,6 @@ public:
     static App *create(QQmlEngine *, QJSEngine *engine);
 
     // properties
-    Data::SyncthingDirectoryModel *dirModel()
-    {
-        return &m_dirModel;
-    }
-    Data::SyncthingSortFilterModel *sortFilterDirModel()
-    {
-        return &m_sortFilterDirModel;
-    }
-    Data::SyncthingDeviceModel *devModel()
-    {
-        return &m_devModel;
-    }
-    Data::SyncthingSortFilterModel *sortFilterDevModel()
-    {
-        return &m_sortFilterDevModel;
-    }
-    Data::SyncthingRecentChangesModel *changesModel()
-    {
-        return &m_changesModel;
-    }
     const QString &faUrlBase()
     {
         return m_faUrlBase;
@@ -147,18 +118,6 @@ public:
 #else
         return false;
 #endif
-    }
-    QString syncthingVersion() const
-    {
-#ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-        return Data::SyncthingLauncher::libSyncthingVersionInfo().remove(0, 11);
-#else
-        return tr("not available");
-#endif
-    }
-    QString qtVersion() const
-    {
-        return QString::fromUtf8(qVersion());
     }
     QString readmeUrl() const
     {
@@ -193,10 +152,6 @@ public:
     {
         return !m_internalErrors.isEmpty();
     }
-    qint64 databaseSize(const QString &path, const QString &extension) const;
-    QVariant formattedDatabaseSize(const QString &path, const QString &extension) const;
-    QVariantMap statistics() const;
-    void statistics(QVariantMap &res) const;
     bool isSavingConfig() const
     {
         return m_pendingConfigChange.reply != nullptr;
@@ -298,54 +253,19 @@ public:
     Q_INVOKABLE bool applySettings();
     Q_INVOKABLE bool reloadSettings();
     Q_INVOKABLE bool clearLogfile();
+    Q_INVOKABLE QVariantList internalErrors() const;
+    Q_INVOKABLE void clearInternalErrors();
     Q_INVOKABLE bool cleanSyncthingHomeDirectory(const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool checkOngoingImportExport();
-    Q_INVOKABLE bool openSyncthingConfigFile();
-    Q_INVOKABLE bool openSyncthingLogFile();
-    Q_INVOKABLE bool openUrlExternally(const QUrl &url, bool viaQt = false);
     Q_INVOKABLE bool checkSettings(QUrl url, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool importSettings(QVariantMap availableSettings, QVariantMap selectedSettings, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool exportSettings(QUrl url, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool checkSyncthingHome(const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool moveSyncthingHome(QString newHomeDir, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool saveSupportBundle(QUrl url, const QJSValue &callback = QJSValue());
-    Q_INVOKABLE bool openPath(const QString &path);
-    Q_INVOKABLE bool openPath(const QString &dirId, const QString &relativePath);
-    Q_INVOKABLE bool scanPath(const QString &path);
-    Q_INVOKABLE bool copyText(const QString &text);
-    Q_INVOKABLE bool copyPath(const QString &dirId, const QString &relativePath);
-    Q_INVOKABLE QString getClipboardText() const;
-    Q_INVOKABLE bool loadIgnorePatterns(const QString &dirId, QObject *textArea);
-    Q_INVOKABLE bool saveIgnorePatterns(const QString &dirId, QObject *textArea);
-    Q_INVOKABLE bool openIgnorePatterns(const QString &dirId);
-    Q_INVOKABLE bool loadErrors(QObject *listView);
-    Q_INVOKABLE bool showLog(QObject *textArea);
-    Q_INVOKABLE void clearLog();
-    Q_INVOKABLE bool showQrCode(Icon *icon);
-    Q_INVOKABLE bool loadDirErrors(const QString &dirId, QObject *view);
-    Q_INVOKABLE bool loadStatistics(const QJSValue &callback);
-    Q_INVOKABLE bool showError(const QString &errorMessage);
     Q_INVOKABLE void setCurrentControls(bool visible, int tabIndex = -1);
     Q_INVOKABLE bool performHapticFeedback();
     Q_INVOKABLE bool showToast(const QString &message);
-    Q_INVOKABLE QString resolveUrl(const QUrl &url);
-    Q_INVOKABLE bool shouldIgnorePermissions(const QString &path);
-    Q_INVOKABLE Data::SyncthingFileModel *createFileModel(const QString &dirId, QObject *parent);
-    Q_INVOKABLE QtGui::DiffHighlighter *createDiffHighlighter(QTextDocument *parent);
-    Q_INVOKABLE QVariantList internalErrors() const;
-    Q_INVOKABLE void clearInternalErrors();
-    Q_INVOKABLE bool postSyncthingConfig(const QJsonObject &rawConfig, const QJSValue &callback = QJSValue());
-    Q_INVOKABLE bool invokeDirAction(const QString &dirId, const QString &action);
-    Q_INVOKABLE bool requestFromSyncthing(
-        const QString &verb, const QString &path, const QVariantMap &parameters, const QJSValue &callback = QJSValue());
-    Q_INVOKABLE QString formatDataSize(quint64 size) const;
-    Q_INVOKABLE QString formatTraffic(quint64 total, double rate) const;
-    Q_INVOKABLE bool hasDevice(const QString &id);
-    Q_INVOKABLE bool hasDir(const QString &id);
-    Q_INVOKABLE QString deviceDisplayName(const QString &id) const;
-    Q_INVOKABLE QString dirDisplayName(const QString &id) const;
-    Q_INVOKABLE QVariantList computeDirsNeedingItems(const QModelIndex &devProxyModelIndex) const;
-    Q_INVOKABLE QVariant isPopulated(const QString &path) const;
     Q_INVOKABLE bool minimize();
     Q_INVOKABLE void quit();
     Q_INVOKABLE void setPalette(const QColor &foreground, const QColor &background);
@@ -430,11 +350,7 @@ private:
     QString m_meteredStatus;
     QGuiApplication *m_app;
     QtForkAwesome::QuickImageProvider *m_imageProvider;
-    Data::SyncthingDirectoryModel m_dirModel;
-    Data::SyncthingSortFilterModel m_sortFilterDirModel;
-    Data::SyncthingDeviceModel m_devModel;
-    Data::SyncthingSortFilterModel m_sortFilterDevModel;
-    Data::SyncthingRecentChangesModel m_changesModel;
+    SyncthingModels m_models;
     Data::SyncthingConnection::QueryResult m_pendingConfigChange;
 #ifdef Q_OS_ANDROID
     mutable std::optional<bool> m_storagePermissionGranted;

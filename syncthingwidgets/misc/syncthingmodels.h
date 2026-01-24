@@ -1,12 +1,19 @@
 #ifndef SYNCTHING_DATA_MODELS_H
 #define SYNCTHING_DATA_MODELS_H
 
-#include <syncthingwidgets/misc/syncthinglauncher.h>
+#include "./syncthinglauncher.h"
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+#include "./diffhighlighter.h"
+#include "../quick/quickicon.h"
+#endif
 
 #include <syncthingmodel/syncthingdevicemodel.h>
 #include <syncthingmodel/syncthingdirectorymodel.h>
 #include <syncthingmodel/syncthingrecentchangesmodel.h>
 #include <syncthingmodel/syncthingsortfiltermodel.h>
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+#include <syncthingmodel/syncthingfilemodel.h>
+#endif
 
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/syncthingnotifier.h>
@@ -15,7 +22,11 @@
 #include <QtVersion>
 
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+#include <QJSValue>
 #include <QtQmlIntegration/qqmlintegration.h>
+
+QT_FORWARD_DECLARE_CLASS(QQmlEngine)
+QT_FORWARD_DECLARE_CLASS(QJSEngine)
 #endif
 
 namespace QtGui {
@@ -59,6 +70,9 @@ public:
         return QString::fromUtf8(qVersion());
     }
 
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+#endif
+
 private:
     Data::SyncthingConnection m_connection;
     Data::SyncthingNotifier m_notifier;
@@ -77,6 +91,7 @@ class SYNCTHINGWIDGETS_EXPORT SyncthingModels : public QObject {
 #endif
 
 public:
+    explicit SyncthingModels(Data::SyncthingConnection &data, QObject *parent = nullptr);
     explicit SyncthingModels(SyncthingData &data, QObject *parent = nullptr);
     ~SyncthingModels() override;
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
@@ -101,9 +116,10 @@ public:
     }
     Data::SyncthingRecentChangesModel *changesModel()
     {
-        return &m_changesModel;
+        return &m_recentChangesModel;
     }
 
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
     Q_INVOKABLE bool openSyncthingConfigFile();
     Q_INVOKABLE bool openSyncthingLogFile();
     Q_INVOKABLE bool openUrlExternally(const QUrl &url, bool viaQt = false);
@@ -127,8 +143,10 @@ public:
     Q_INVOKABLE bool shouldIgnorePermissions(const QString &path);
     Q_INVOKABLE Data::SyncthingFileModel *createFileModel(const QString &dirId, QObject *parent);
     Q_INVOKABLE QtGui::DiffHighlighter *createDiffHighlighter(QTextDocument *parent);
-    Q_INVOKABLE QVariantList internalErrors() const;
-    Q_INVOKABLE void clearInternalErrors();
+    qint64 databaseSize(const QString &path, const QString &extension) const;
+    QVariant formattedDatabaseSize(const QString &path, const QString &extension) const;
+    QVariantMap statistics() const;
+    void statistics(QVariantMap &res) const;
     Q_INVOKABLE bool postSyncthingConfig(const QJsonObject &rawConfig, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool invokeDirAction(const QString &dirId, const QString &action);
     Q_INVOKABLE bool requestFromSyncthing(
@@ -141,6 +159,7 @@ public:
     Q_INVOKABLE QString dirDisplayName(const QString &id) const;
     Q_INVOKABLE QVariantList computeDirsNeedingItems(const QModelIndex &devProxyModelIndex) const;
     Q_INVOKABLE QVariant isPopulated(const QString &path) const;
+#endif
 
 private:
     Data::SyncthingDirectoryModel m_dirModel;
