@@ -5736,12 +5736,12 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="181"/>
         <source>Debug</source>
-        <translation>Fehlerbehebung</translation>
+        <translation>Debug</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="182"/>
         <source>Info</source>
-        <translation></translation>
+        <translation>Info</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="183"/>
