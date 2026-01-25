@@ -4,14 +4,12 @@
 #include "./android.h"
 #endif
 
-#include "resources/config.h"
+#include "../misc/internalerror.h"
+#include "../misc/otherdialogs.h"
 
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
 #include <syncthing/interface.h>
 #endif
-
-#include <syncthingwidgets/misc/internalerror.h>
-#include <syncthingwidgets/misc/otherdialogs.h>
 
 #include <syncthingmodel/syncthingerrormodel.h>
 #include <syncthingmodel/syncthingfilemodel.h>
@@ -68,6 +66,8 @@
 #include <iostream>
 #include <numeric>
 #include <stdexcept>
+
+#include "resources/config.h"
 
 #ifdef Q_OS_WINDOWS
 #define SYNCTHING_APP_STRING_CONVERSION(s) (s).toStdWString()

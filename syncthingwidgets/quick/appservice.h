@@ -3,8 +3,8 @@
 
 #include "./appbase.h"
 
-#include <syncthingwidgets/misc/internalerror.h>
-#include <syncthingwidgets/misc/syncthinglauncher.h>
+#include "../misc/internalerror.h"
+#include "../misc/syncthinglauncher.h"
 
 #include <QJsonObject>
 #include <QUrl>
