@@ -556,12 +556,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ArrayElementButtons.qml" line="28"/>
+        <location filename="../quick/qml/ArrayElementButtons.qml" line="27"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ArrayElementButtons.qml" line="37"/>
+        <location filename="../quick/qml/ArrayElementButtons.qml" line="36"/>
         <source>Insert before</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1553,17 +1553,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/FilesPage.qml" line="158"/>
+        <location filename="../quick/qml/FilesPage.qml" line="154"/>
         <source>Deletion of the following local files (will affect other devices unless ignored below!):</source>
         <translation type="unfinished">删除以下本地文件（除非下面忽略，否则会影响其他设备！）：</translation>
     </message>
     <message>
-        <location filename="../quick/qml/FilesPage.qml" line="174"/>
+        <location filename="../quick/qml/FilesPage.qml" line="170"/>
         <source>Changes to ignore patterns:</source>
         <translation type="unfinished">更改以忽略模式：</translation>
     </message>
     <message>
-        <location filename="../quick/qml/FilesPage.qml" line="189"/>
+        <location filename="../quick/qml/FilesPage.qml" line="185"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1908,47 +1908,47 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainToolBar.qml" line="41"/>
+        <location filename="../quick/qml/MainToolBar.qml" line="40"/>
         <source>Show API errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainToolBar.qml" line="45"/>
+        <location filename="../quick/qml/MainToolBar.qml" line="44"/>
         <source>Show Syncthing errors/notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainToolBar.qml" line="82"/>
+        <location filename="../quick/qml/MainToolBar.qml" line="81"/>
         <source>Try to re-connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainToolBar.qml" line="93"/>
+        <location filename="../quick/qml/MainToolBar.qml" line="92"/>
         <source>Toggle menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainToolBar.qml" line="100"/>
+        <location filename="../quick/qml/MainToolBar.qml" line="99"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainToolBar.qml" line="114"/>
+        <location filename="../quick/qml/MainToolBar.qml" line="113"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainToolBar.qml" line="137"/>
+        <location filename="../quick/qml/MainToolBar.qml" line="136"/>
         <source>More</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainToolBar.qml" line="163"/>
+        <location filename="../quick/qml/MainToolBar.qml" line="161"/>
         <source>Searching %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainToolBar.qml" line="169"/>
+        <location filename="../quick/qml/MainToolBar.qml" line="167"/>
         <source>Clear search</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2279,7 +2279,7 @@
         <translation>无法确定网络连接是否按流量计费，假设连接不按流量计费。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1840"/>
+        <location filename="../settings/settingsdialog.cpp" line="1822"/>
         <source>Unable to restart via &quot;%1&quot;: %2</source>
         <translation>无法通过 “%1” 重新启动： %2</translation>
     </message>
@@ -2895,58 +2895,64 @@
 <context>
     <name>QtGui::AppService</name>
     <message>
-        <location filename="../quick/appservice.cpp" line="145"/>
+        <location filename="../quick/appservice.cpp" line="146"/>
         <source>Backend is starting …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="212"/>
+        <location filename="../quick/appservice.cpp" line="213"/>
         <source>Unable to open persistent log file for Syncthing under &quot;%1&quot;: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="223"/>
+        <location filename="../quick/appservice.cpp" line="224"/>
         <source>This build of the app cannot launch Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="300"/>
+        <location filename="../quick/appservice.cpp" line="301"/>
         <source>Syncthing App ran into error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="502"/>
+        <location filename="../quick/appservice.cpp" line="418"/>
+        <source>An error occurred when running Syncthing: %2
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/appservice.cpp" line="517"/>
         <source>Syncthing error/notification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="502"/>
+        <location filename="../quick/appservice.cpp" line="517"/>
         <source>%1 Syncthing errors/notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="503"/>
-        <location filename="../quick/appservice.cpp" line="523"/>
+        <location filename="../quick/appservice.cpp" line="518"/>
+        <location filename="../quick/appservice.cpp" line="538"/>
         <source>Most recent: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="522"/>
+        <location filename="../quick/appservice.cpp" line="537"/>
         <source>Syncthing API error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="522"/>
+        <location filename="../quick/appservice.cpp" line="537"/>
         <source>%1 Syncthing API errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="536"/>
+        <location filename="../quick/appservice.cpp" line="551"/>
         <source>Syncthing device wants to connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="550"/>
+        <location filename="../quick/appservice.cpp" line="565"/>
         <source>Syncthing device wants to share folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3431,7 +3437,7 @@ The Web UI will be opened in the default web browser instead.</source>
     </message>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="1782"/>
+        <location filename="../settings/settingsdialog.cpp" line="1764"/>
         <source>Built-in web view</source>
         <translation>内置 Web 视图</translation>
     </message>
@@ -3451,7 +3457,7 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation>当前未显示时保持网页视图运行</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1784"/>
+        <location filename="../settings/settingsdialog.cpp" line="1766"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
         <translation>Syncthing Tray 尚未使用 Qt WebKit 或 Qt WebEngine 构建以支持 Web 视图。</translation>
     </message>
@@ -3976,12 +3982,12 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1758"/>
+        <location filename="../settings/settingsdialog.cpp" line="1740"/>
         <source>Custom command to launch Syncthing&apos;s UI - </source>
         <translation>启动 Syncthing 用户界面的自定义命令 - </translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1759"/>
+        <location filename="../settings/settingsdialog.cpp" line="1741"/>
         <source>&lt;p&gt;Enter a custom command to launch Syncthing&apos;s UI. The expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; will be replaced with the Syncthing-URL.&lt;/p&gt;&lt;p&gt;Leave the command empty to use the auto-detection.&lt;/p&gt;</source>
         <translation>&lt;p&gt;输入自定义命令以启动 Syncthing 的用户界面。表达式 &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; 将被替换为 Syncthing 网址.&lt;/p&gt;&lt;p&gt; 留空命令以使用自动检测。&lt;/p&gt;</translation>
     </message>
@@ -4339,42 +4345,36 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation>%1 崩溃，退出代码为 %2</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1426"/>
         <source>failed to start (e.g. executable does not exist or not permission error)</source>
-        <translation>启动失败（例如可执行文件不存在或没有权限）</translation>
+        <translation type="vanished">启动失败（例如可执行文件不存在或没有权限）</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1429"/>
         <source>process crashed</source>
-        <translation>进程崩溃</translation>
+        <translation type="vanished">进程崩溃</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1432"/>
         <source>timeout error</source>
-        <translation>超时错误</translation>
+        <translation type="vanished">超时错误</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1435"/>
         <source>read error</source>
-        <translation>读取错误</translation>
+        <translation type="vanished">读取错误</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1438"/>
         <source>write error</source>
-        <translation>写入错误</translation>
+        <translation type="vanished">写入错误</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1441"/>
         <source>unknown process error</source>
-        <translation>未知进程错误</translation>
+        <translation type="vanished">未知进程错误</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1444"/>
+        <location filename="../settings/settingsdialog.cpp" line="1426"/>
         <source>An error occurred when running %1: %2</source>
         <translation>运行 %1 时出错: %2</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1497"/>
+        <location filename="../settings/settingsdialog.cpp" line="1479"/>
         <source>Kill launched instance</source>
         <translation>强制终止启动的实例</translation>
     </message>
@@ -4710,37 +4710,37 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1872"/>
+        <location filename="../settings/settingsdialog.cpp" line="1854"/>
         <source>Tray</source>
         <translation>托盘</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1880"/>
+        <location filename="../settings/settingsdialog.cpp" line="1862"/>
         <source>Web view</source>
         <translation>网页视图</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1887"/>
+        <location filename="../settings/settingsdialog.cpp" line="1869"/>
         <source>Startup</source>
         <translation>启动</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1889"/>
+        <location filename="../settings/settingsdialog.cpp" line="1871"/>
         <source>additional tool</source>
         <translation>附加工具</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1889"/>
+        <location filename="../settings/settingsdialog.cpp" line="1871"/>
         <source>Extra launcher</source>
         <translation>额外启动器</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1930"/>
+        <location filename="../settings/settingsdialog.cpp" line="1912"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1936"/>
+        <location filename="../settings/settingsdialog.cpp" line="1918"/>
         <source>Start wizard</source>
         <translation>开始向导</translation>
     </message>
@@ -4943,8 +4943,8 @@ This dialog closes automatically when the process finally terminates.</source>
         <location filename="../settings/systemdoptionpage.ui" line="117"/>
         <location filename="../settings/systemdoptionpage.ui" line="172"/>
         <location filename="../settings/systemdoptionpage.ui" line="261"/>
-        <location filename="../settings/settingsdialog.cpp" line="1657"/>
-        <location filename="../settings/settingsdialog.cpp" line="1666"/>
+        <location filename="../settings/settingsdialog.cpp" line="1639"/>
+        <location filename="../settings/settingsdialog.cpp" line="1648"/>
         <source>unknown</source>
         <translation>未知</translation>
     </message>
@@ -4979,27 +4979,27 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation>禁用</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1533"/>
+        <location filename="../settings/settingsdialog.cpp" line="1515"/>
         <source>Reload all unit files</source>
         <translation>重新加载所有单元文件</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1592"/>
+        <location filename="../settings/settingsdialog.cpp" line="1574"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation>无法同时显示 systemd 服务和内部启动器的启动/停止按钮。 systemd 服务优先。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1598"/>
+        <location filename="../settings/settingsdialog.cpp" line="1580"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation>无法同时考虑 systemd 服务和内部启动器进行重新连接。 systemd 服务优先。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1630"/>
+        <location filename="../settings/settingsdialog.cpp" line="1612"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation>指定的单位不活动或不存在</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1652"/>
+        <location filename="../settings/settingsdialog.cpp" line="1634"/>
         <source>since </source>
         <translation>自从 </translation>
     </message>

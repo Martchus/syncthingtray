@@ -365,6 +365,39 @@
     </message>
 </context>
 <context>
+    <name>Data::SyncthingProcess</name>
+    <message>
+        <location filename="../syncthingprocess.cpp" line="248"/>
+        <source>failed to start (e.g. executable does not exist or not permission error)</source>
+        <translation>не удалось запустить (например, исполняемый файл не существует или нет разрешения)</translation>
+    </message>
+    <message>
+        <location filename="../syncthingprocess.cpp" line="250"/>
+        <source>process crashed</source>
+        <translation>процесс завершился сбоем</translation>
+    </message>
+    <message>
+        <location filename="../syncthingprocess.cpp" line="252"/>
+        <source>timeout error</source>
+        <translation>ошибка тайм-аута</translation>
+    </message>
+    <message>
+        <location filename="../syncthingprocess.cpp" line="254"/>
+        <source>read error</source>
+        <translation>ошибка чтения</translation>
+    </message>
+    <message>
+        <location filename="../syncthingprocess.cpp" line="256"/>
+        <source>write error</source>
+        <translation>ошибка записи</translation>
+    </message>
+    <message>
+        <location filename="../syncthingprocess.cpp" line="258"/>
+        <source>unknown process error</source>
+        <translation>неизвестная ошибка процесса</translation>
+    </message>
+</context>
+<context>
     <name>Data::SyncthingService</name>
     <message>
         <location filename="../syncthingservice.cpp" line="330"/>

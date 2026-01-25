@@ -556,12 +556,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ArrayElementButtons.qml" line="28"/>
+        <location filename="../quick/qml/ArrayElementButtons.qml" line="27"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ArrayElementButtons.qml" line="37"/>
+        <location filename="../quick/qml/ArrayElementButtons.qml" line="36"/>
         <source>Insert before</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1553,17 +1553,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/FilesPage.qml" line="158"/>
+        <location filename="../quick/qml/FilesPage.qml" line="154"/>
         <source>Deletion of the following local files (will affect other devices unless ignored below!):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/FilesPage.qml" line="174"/>
+        <location filename="../quick/qml/FilesPage.qml" line="170"/>
         <source>Changes to ignore patterns:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/FilesPage.qml" line="189"/>
+        <location filename="../quick/qml/FilesPage.qml" line="185"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1908,47 +1908,47 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainToolBar.qml" line="41"/>
+        <location filename="../quick/qml/MainToolBar.qml" line="40"/>
         <source>Show API errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainToolBar.qml" line="45"/>
+        <location filename="../quick/qml/MainToolBar.qml" line="44"/>
         <source>Show Syncthing errors/notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainToolBar.qml" line="82"/>
+        <location filename="../quick/qml/MainToolBar.qml" line="81"/>
         <source>Try to re-connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainToolBar.qml" line="93"/>
+        <location filename="../quick/qml/MainToolBar.qml" line="92"/>
         <source>Toggle menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainToolBar.qml" line="100"/>
+        <location filename="../quick/qml/MainToolBar.qml" line="99"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainToolBar.qml" line="114"/>
+        <location filename="../quick/qml/MainToolBar.qml" line="113"/>
         <source>Search</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainToolBar.qml" line="137"/>
+        <location filename="../quick/qml/MainToolBar.qml" line="136"/>
         <source>More</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainToolBar.qml" line="163"/>
+        <location filename="../quick/qml/MainToolBar.qml" line="161"/>
         <source>Searching %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainToolBar.qml" line="169"/>
+        <location filename="../quick/qml/MainToolBar.qml" line="167"/>
         <source>Clear search</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2279,7 +2279,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1840"/>
+        <location filename="../settings/settingsdialog.cpp" line="1822"/>
         <source>Unable to restart via &quot;%1&quot;: %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2735,58 +2735,64 @@
 <context>
     <name>QtGui::AppService</name>
     <message>
-        <location filename="../quick/appservice.cpp" line="145"/>
+        <location filename="../quick/appservice.cpp" line="146"/>
         <source>Backend is starting …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="212"/>
+        <location filename="../quick/appservice.cpp" line="213"/>
         <source>Unable to open persistent log file for Syncthing under &quot;%1&quot;: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="223"/>
+        <location filename="../quick/appservice.cpp" line="224"/>
         <source>This build of the app cannot launch Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="300"/>
+        <location filename="../quick/appservice.cpp" line="301"/>
         <source>Syncthing App ran into error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="502"/>
+        <location filename="../quick/appservice.cpp" line="418"/>
+        <source>An error occurred when running Syncthing: %2
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/appservice.cpp" line="517"/>
         <source>Syncthing error/notification</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="502"/>
+        <location filename="../quick/appservice.cpp" line="517"/>
         <source>%1 Syncthing errors/notifications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="503"/>
-        <location filename="../quick/appservice.cpp" line="523"/>
+        <location filename="../quick/appservice.cpp" line="518"/>
+        <location filename="../quick/appservice.cpp" line="538"/>
         <source>Most recent: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="522"/>
+        <location filename="../quick/appservice.cpp" line="537"/>
         <source>Syncthing API error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="522"/>
+        <location filename="../quick/appservice.cpp" line="537"/>
         <source>%1 Syncthing API errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="536"/>
+        <location filename="../quick/appservice.cpp" line="551"/>
         <source>Syncthing device wants to connect</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="550"/>
+        <location filename="../quick/appservice.cpp" line="565"/>
         <source>Syncthing device wants to share folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3252,7 +3258,7 @@
     <name>QtGui::BuiltinWebViewOptionPage</name>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="1782"/>
+        <location filename="../settings/settingsdialog.cpp" line="1764"/>
         <source>Built-in web view</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3272,7 +3278,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1784"/>
+        <location filename="../settings/settingsdialog.cpp" line="1766"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3794,12 +3800,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1758"/>
+        <location filename="../settings/settingsdialog.cpp" line="1740"/>
         <source>Custom command to launch Syncthing&apos;s UI - </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1759"/>
+        <location filename="../settings/settingsdialog.cpp" line="1741"/>
         <source>&lt;p&gt;Enter a custom command to launch Syncthing&apos;s UI. The expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; will be replaced with the Syncthing-URL.&lt;/p&gt;&lt;p&gt;Leave the command empty to use the auto-detection.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4139,41 +4145,11 @@
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1426"/>
-        <source>failed to start (e.g. executable does not exist or not permission error)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/settingsdialog.cpp" line="1429"/>
-        <source>process crashed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/settingsdialog.cpp" line="1432"/>
-        <source>timeout error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/settingsdialog.cpp" line="1435"/>
-        <source>read error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/settingsdialog.cpp" line="1438"/>
-        <source>write error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/settingsdialog.cpp" line="1441"/>
-        <source>unknown process error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/settingsdialog.cpp" line="1444"/>
         <source>An error occurred when running %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1497"/>
+        <location filename="../settings/settingsdialog.cpp" line="1479"/>
         <source>Kill launched instance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4501,37 +4477,37 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1872"/>
+        <location filename="../settings/settingsdialog.cpp" line="1854"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1880"/>
+        <location filename="../settings/settingsdialog.cpp" line="1862"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1887"/>
+        <location filename="../settings/settingsdialog.cpp" line="1869"/>
         <source>Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1889"/>
+        <location filename="../settings/settingsdialog.cpp" line="1871"/>
         <source>additional tool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1889"/>
+        <location filename="../settings/settingsdialog.cpp" line="1871"/>
         <source>Extra launcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1930"/>
+        <location filename="../settings/settingsdialog.cpp" line="1912"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1936"/>
+        <location filename="../settings/settingsdialog.cpp" line="1918"/>
         <source>Start wizard</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4712,8 +4688,8 @@ This dialog closes automatically when the process finally terminates.</source>
         <location filename="../settings/systemdoptionpage.ui" line="117"/>
         <location filename="../settings/systemdoptionpage.ui" line="172"/>
         <location filename="../settings/systemdoptionpage.ui" line="261"/>
-        <location filename="../settings/settingsdialog.cpp" line="1657"/>
-        <location filename="../settings/settingsdialog.cpp" line="1666"/>
+        <location filename="../settings/settingsdialog.cpp" line="1639"/>
+        <location filename="../settings/settingsdialog.cpp" line="1648"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4753,27 +4729,27 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1533"/>
+        <location filename="../settings/settingsdialog.cpp" line="1515"/>
         <source>Reload all unit files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1592"/>
+        <location filename="../settings/settingsdialog.cpp" line="1574"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1598"/>
+        <location filename="../settings/settingsdialog.cpp" line="1580"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1630"/>
+        <location filename="../settings/settingsdialog.cpp" line="1612"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1652"/>
+        <location filename="../settings/settingsdialog.cpp" line="1634"/>
         <source>since </source>
         <translation type="unfinished"></translation>
     </message>
