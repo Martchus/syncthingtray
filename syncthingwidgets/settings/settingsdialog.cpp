@@ -1421,25 +1421,7 @@ void LauncherOptionPage::handleSyncthingError(QProcess::ProcessError error)
         errorString = m_process->errorString();
     }
     if (errorString.isEmpty()) {
-        switch (error) {
-        case QProcess::FailedToStart:
-            errorString = tr("failed to start (e.g. executable does not exist or not permission error)");
-            break;
-        case QProcess::Crashed:
-            errorString = tr("process crashed");
-            break;
-        case QProcess::Timedout:
-            errorString = tr("timeout error");
-            break;
-        case QProcess::ReadError:
-            errorString = tr("read error");
-            break;
-        case QProcess::WriteError:
-            errorString = tr("write error");
-            break;
-        default:
-            errorString = tr("unknown process error");
-        }
+        errorString = SyncthingProcess::genericErrorString(error);
     }
     cursor.insertText(tr("An error occurred when running %1: %2").arg(m_tool.isEmpty() ? QStringLiteral("Syncthing") : m_tool, errorString));
     cursor.insertBlock();

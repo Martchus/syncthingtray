@@ -74,11 +74,13 @@ private Q_SLOTS:
     void handleConnectionError(const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request,
         const QByteArray &response);
     void invalidateStatus() override;
-    void gatherLogs(const QByteArray &newOutput);
+    void gatherLogsFromString(const QString &newOutput);
+    void gatherLogsFromBytes(const QByteArray &newOutput);
     void handleRunningChanged(bool isRunning);
     void handleChangedDevices();
     void handleNewErrors(const std::vector<Data::SyncthingError> &errors);
     void handleConnectionStatusChanged(Data::SyncthingStatus newStatus);
+    void handleSyncthingError(QProcess::ProcessError error);
 #ifdef Q_OS_ANDROID
 #ifdef SYNCTHINGTRAY_SERVICE_WITH_ICON_RENDERING
     void invalidateAndroidIconCache();

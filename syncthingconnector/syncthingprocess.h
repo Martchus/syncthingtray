@@ -70,6 +70,7 @@ public:
     static SyncthingProcess *mainInstance();
     static void setMainInstance(SyncthingProcess *mainInstance);
     static QStringList splitArguments(const QString &arguments);
+    static QString genericErrorString(QProcess::ProcessError error);
     void reportError(QProcess::ProcessError error, const QString &errorString);
 #ifdef LIB_SYNCTHING_CONNECTOR_PROCESS_IO_DEV_BASED
     QProcess::ProcessState state() const;

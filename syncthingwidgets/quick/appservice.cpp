@@ -95,7 +95,8 @@ AppService::AppService(bool insecure, QObject *parent)
     connect(&m_connection, &SyncthingConnection::newErrors, this, &AppService::handleNewErrors);
 
     m_launcher.setEmittingOutput(true);
-    connect(&m_launcher, &SyncthingLauncher::outputAvailable, this, &AppService::gatherLogs);
+    connect(&m_launcher, &SyncthingLauncher::outputAvailable, this, &AppService::gatherLogsFromBytes);
+    connect(&m_launcher, &SyncthingLauncher::errorOccurred, this, &AppService::handleSyncthingError, Qt::QueuedConnection);
     connect(&m_launcher, &SyncthingLauncher::runningChanged, this, &AppService::handleRunningChanged);
     connect(&m_launcher, &SyncthingLauncher::runningChanged, this, &AppService::broadcastLauncherStatus);
     connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &AppService::handleGuiUrlChanged);
@@ -389,18 +390,32 @@ void AppService::invalidateStatus()
 #endif
 }
 
-void AppService::gatherLogs(const QByteArray &newOutput)
+void AppService::gatherLogsFromString(const QString &newOutput)
 {
-    const auto asText = QString::fromUtf8(newOutput);
 #ifdef Q_OS_ANDROID
     if (m_clientsFollowingLog) {
         QJniObject(QNativeInterface::QAndroidApplication::context())
-            .callMethod<jint>("sendMessageToClients", static_cast<jint>(ActivityAction::AppendLog), 0, 0, asText);
+            .callMethod<jint>("sendMessageToClients", static_cast<jint>(ActivityAction::AppendLog), 0, 0, newOutput);
     }
 #else
-    emit logsAvailable(asText);
+    emit logsAvailable(newOutput);
 #endif
-    m_log.append(asText);
+    m_log.append(newOutput);
+}
+
+void AppService::gatherLogsFromBytes(const QByteArray &newOutput)
+{
+    gatherLogsFromString(QString::fromUtf8(newOutput));
+}
+
+void AppService::handleSyncthingError(QProcess::ProcessError error)
+{
+    auto errorString = m_launcher.errorString();
+    if (errorString.isEmpty()) {
+        errorString = SyncthingProcess::genericErrorString(error);
+    }
+    auto lineBreak = m_log.isEmpty() || m_log.endsWith(QChar('\n')) ? QString() : QStringLiteral("\n");
+    gatherLogsFromString(lineBreak + tr("An error occurred when running Syncthing: %2\n").arg(errorString));
 }
 
 void AppService::handleRunningChanged(bool isRunning)

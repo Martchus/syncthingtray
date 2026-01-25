@@ -239,6 +239,27 @@ QStringList SyncthingProcess::splitArguments(const QString &arguments)
 }
 
 /*!
+ * \brief Returns a generic error string for \a error.
+ */
+QString SyncthingProcess::genericErrorString(QProcess::ProcessError error)
+{
+    switch (error) {
+    case QProcess::FailedToStart:
+        return tr("failed to start (e.g. executable does not exist or not permission error)");
+    case QProcess::Crashed:
+        return tr("process crashed");
+    case QProcess::Timedout:
+        return tr("timeout error");
+    case QProcess::ReadError:
+        return tr("read error");
+    case QProcess::WriteError:
+        return tr("write error");
+    default:
+        return tr("unknown process error");
+    }
+}
+
+/*!
  * \brief Emits errorOccurred() as if the specified \a error had occurred and sets the specified \a errorString.
  * \remarks May be called if a precondition for starting the process (that is checked outside of the SyncthingProcess
  *          class itself) has failed (instead of starting the process).
