@@ -3811,7 +3811,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <location filename="../settings/connectionoptionpage.ui" line="539"/>
         <location filename="../settings/connectionoptionpage.ui" line="591"/>
         <source> ms</source>
-        <translation>ms</translation>
+        <translation> ms</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="97"/>
