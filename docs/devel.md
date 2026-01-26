@@ -47,8 +47,12 @@ Since the default Qt version is still Qt 5, you likely want to add e.g.
 The following Boost libraries are required: `Boost.Asio`, `Boost.Process`, `Boost.Filesystem`
 
 The launcher uses these libraries by default to handle sub processes correctly (and avoid leftover processes).
+When using Boost.Process, the executable directory will also be appended to the search paths used when looking
+up the location of relative program paths.
+
 Add `-DUSE_BOOST_PROCESS:BOOL:OFF` to the CMake arguments to get rid of the dependency to Boost libraries.
-This disables handling sub processes and `QProcess` (from Qt Core) is used instead.
+This disables handling sub processes and considering the executable directory. The built-in launcher will still
+generally work as `QProcess` (from Qt Core) is used instead.
 
 ---
 

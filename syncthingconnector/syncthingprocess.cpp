@@ -576,7 +576,21 @@ void SyncthingProcess::start(const QStringList &programs, const QStringList &arg
         }
         hasProgram = true;
         if (path.is_relative()) {
-            path = boost::process::v1::search_path(path);
+            static const auto searchPaths = [] {
+                auto paths = ::boost::this_process::path();
+                if (const auto appDir = QCoreApplication::applicationDirPath(); !appDir.isEmpty()) {
+                    // fallback to app dir like it is done when locating settings and translations
+                    // note: This is mostly useful under Windows where one might store `syncthingtray.exe` and `syncthing.exe` in
+                    //       the same directory and the lookup is expected to work even if a different working directory is used.
+                    // note: This fallback is *not* present when QProcess is used as it does not seem to allow appending additional
+                    //       search paths easily. One would have to implement functions like `boost::this_process::path()` and
+                    //       `boost::process::v1::search_path()` manually and supply an absolute path. This is not worth is
+                    //       considering Boost.Process is favourable anyway.
+                    paths.emplace_back(LIB_SYNCTHING_CONNECTOR_STRING_CONVERSION(appDir));
+                }
+                return paths;
+            }();
+            path = boost::process::v1::search_path(path, searchPaths);
         }
         if (!path.empty()) {
             break;
