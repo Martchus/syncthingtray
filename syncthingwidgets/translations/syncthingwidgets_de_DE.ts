@@ -818,7 +818,7 @@
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="25"/>
         <source>Ignored folder without ID/label</source>
-        <translation>Ignorierte Ordner ohne ID/label</translation>
+        <translation>Ignorierter Ordner ohne ID/label</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="25"/>
