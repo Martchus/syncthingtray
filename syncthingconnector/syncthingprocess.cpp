@@ -1,13 +1,10 @@
 #include "./syncthingprocess.h"
 #include "./syncthingconnection.h"
 
+#include <QCoreApplication>
 #include <QEventLoop>
 #include <QStringBuilder>
 #include <QTimer>
-
-#ifdef Q_OS_WINDOWS
-#include <QCoreApplication>
-#endif
 
 // uncomment to enforce stopSyncthing() via REST-API (for testing)
 //#define LIB_SYNCTHING_CONNECTOR_ENFORCE_STOP_VIA_API
