@@ -375,32 +375,32 @@
 <context>
     <name>Data::SyncthingProcess</name>
     <message>
-        <location filename="../syncthingprocess.cpp" line="248"/>
+        <location filename="../syncthingprocess.cpp" line="245"/>
         <source>failed to start (e.g. executable does not exist or not permission error)</source>
         <translation>Start fehlgeschlagen (z. B. weil Programmdatei nicht existiert oder nicht ausführbar ist)</translation>
     </message>
     <message>
-        <location filename="../syncthingprocess.cpp" line="250"/>
+        <location filename="../syncthingprocess.cpp" line="247"/>
         <source>process crashed</source>
         <translation>Prozess ist abgestürzt</translation>
     </message>
     <message>
-        <location filename="../syncthingprocess.cpp" line="252"/>
+        <location filename="../syncthingprocess.cpp" line="249"/>
         <source>timeout error</source>
         <translation>Time-out</translation>
     </message>
     <message>
-        <location filename="../syncthingprocess.cpp" line="254"/>
+        <location filename="../syncthingprocess.cpp" line="251"/>
         <source>read error</source>
         <translation>Lesefehler</translation>
     </message>
     <message>
-        <location filename="../syncthingprocess.cpp" line="256"/>
+        <location filename="../syncthingprocess.cpp" line="253"/>
         <source>write error</source>
         <translation>Schreibfehler</translation>
     </message>
     <message>
-        <location filename="../syncthingprocess.cpp" line="258"/>
+        <location filename="../syncthingprocess.cpp" line="255"/>
         <source>unknown process error</source>
         <translation>unbekannter Fehler</translation>
     </message>
