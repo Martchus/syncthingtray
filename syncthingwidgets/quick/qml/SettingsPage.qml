@@ -166,6 +166,18 @@ StackView {
                 {key: "apiKey", label: qsTr("API key"), inputMethodHints: Qt.ImhHiddenText | Qt.ImhSensitiveData | Qt.ImhNoAutoUppercase},
                 {key: "httpsCertPath", label: qsTr("HTTPs certificate path"), type: "filepath"},
                 {key: "httpAuth", label: qsTr("HTTP authentication")},
+                {key: "advanced", label: qsTr("Advanced")},
+            ],
+            advanced: [
+                {key: "requestTimeout", label: qsTr("Transfer timeout"), desc: qsTr("The timeout for normal requests via the REST-API in milliseconds. Set to 0 for no limit."), helpUrl: ""},
+                {key: "longPollingTimeout", label: qsTr("Long polling interval"), desc: qsTr("The timeout for event API requests using long polling in milliseconds. Set to 0 to use the default limit of Syncthing."), helpUrl: ""},
+                {key: "diskEventLimit", label: qsTr("Limit for recent changes"), desc: qsTr("The maximum number of recent changes to query/buffer."), helpUrl: ""},
+                {key: "trafficPollInterval", label: qsTr("Poll interval for traffic"), desc: qsTr("The poll interval for traffic statistics in milliseconds."), helpUrl: ""},
+                {key: "devStatsPollInterval", label: qsTr("Poll interval for device statistics"), desc: qsTr("The poll interval for device statistics in milliseconds."), helpUrl: ""},
+                {key: "errorsPollInterval", label: qsTr("Poll interval for errors"), desc: qsTr("The poll interval for errors in milliseconds."), helpUrl: ""},
+                {key: "reconnectInterval", label: qsTr("Re-connect interval"), desc: qsTr("The interval for re-connect attempts in milliseconds."), helpUrl: ""},
+                {key: "localPath", type: "filepath", label: qsTr("Local path"), desc: qsTr("The path to the Unix domain socket when setting the Syncthing URL to \"unix+http://…\"."), helpUrl: ""},
+                {key: "specialEntriesOnly", value: true},
             ],
             httpAuth: [
                 {key: "enabled", label: qsTr("Enabled")},

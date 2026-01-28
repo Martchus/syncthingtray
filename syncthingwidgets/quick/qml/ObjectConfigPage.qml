@@ -35,6 +35,10 @@ Page {
                     objectConfigPage.specialEntries.forEach((specialEntry) => {
                         const key = specialEntry.key;
                         const cond = specialEntry.cond;
+                        if (key === "specialEntriesOnly") {
+                            objectConfigPage.specialEntriesOnly = specialEntry.value;
+                            return;
+                        }
                         if ((typeof cond !== "function") || cond(objectConfigPage)) {
                             const init = specialEntry.init;
                             if (typeof init === "function") {
