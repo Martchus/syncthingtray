@@ -53,6 +53,7 @@ void SyncthingConnectionSettings::storeToJson(QJsonObject &object)
     advanced.insert(QLatin1String("devStatsPollInterval"), devStatsPollInterval);
     advanced.insert(QLatin1String("errorsPollInterval"), errorsPollInterval);
     advanced.insert(QLatin1String("reconnectInterval"), reconnectInterval);
+    advanced.insert(QLatin1String("requestTimeout"), requestTimeout);
     advanced.insert(QLatin1String("longPollingTimeout"), longPollingTimeout);
     advanced.insert(QLatin1String("diskEventLimit"), diskEventLimit);
     advanced.insert(QLatin1String("autoConnect"), autoConnect);
@@ -79,7 +80,7 @@ bool SyncthingConnectionSettings::loadFromJson(const QJsonObject &object)
     devStatsPollInterval = advanced.value(QLatin1String("devStatsPollInterval")).toInt(defaultDevStatusPollInterval);
     errorsPollInterval = advanced.value(QLatin1String("errorsPollInterval")).toInt(defaultErrorsPollInterval);
     reconnectInterval = advanced.value(QLatin1String("reconnectInterval")).toInt(defaultReconnectInterval);
-    requestTimeout = advanced.value(QLatin1String("longPollingTimeout")).toInt(defaultRequestTimeout);
+    requestTimeout = advanced.value(QLatin1String("requestTimeout")).toInt(defaultRequestTimeout);
     longPollingTimeout = advanced.value(QLatin1String("longPollingTimeout")).toInt(defaultLongPollingTimeout);
     diskEventLimit = advanced.value(QLatin1String("diskEventLimit")).toInt(defaultDiskEventLimit);
     statusComputionFlags = SyncthingStatusComputionFlags::Default | SyncthingStatusComputionFlags::RemoteSynchronizing;
