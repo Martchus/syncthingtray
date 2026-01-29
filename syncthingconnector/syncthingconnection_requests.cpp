@@ -45,7 +45,7 @@ inline QString formatQueryItem(const QString &value)
 /*!
  * \brief Prepares a request for the specified \a path and \a query.
  */
-QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const QUrlQuery &query, bool rest, bool longPolling)
+QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const QUrlQuery &query, bool rest, Timeout timeout)
 {
     auto url = makeUrlWithCredentials();
     auto basePath = url.path();
@@ -54,13 +54,13 @@ QNetworkRequest SyncthingConnection::prepareRequest(const QString &path, const Q
     }
     url.setPath(rest ? (basePath % QStringLiteral("rest/") % path) : (basePath + path));
     url.setQuery(query);
-    return prepareRequest(url, longPolling);
+    return prepareRequest(url, timeout);
 }
 
 /*!
  * \brief Prepares a request for the specified \a url.
  */
-QNetworkRequest SyncthingConnection::prepareRequest(const QUrl &url, bool longPolling)
+QNetworkRequest SyncthingConnection::prepareRequest(const QUrl &url, Timeout timeout)
 {
     auto request = QNetworkRequest(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, QByteArrayLiteral("application/x-www-form-urlencoded"));
@@ -71,8 +71,17 @@ QNetworkRequest SyncthingConnection::prepareRequest(const QUrl &url, bool longPo
     request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
 #endif
 #if (QT_VERSION >= QT_VERSION_CHECK(5, 15, 0))
-    // give it a few seconds more time than the actual long polling interval set via the timeout query parameter
-    request.setTransferTimeout(longPolling ? (m_longPollingTimeout ? m_longPollingTimeout + 5000 : 0) : m_requestTimeout);
+    switch (timeout) {
+    case Timeout::Default:
+        request.setTransferTimeout(m_requestTimeout);
+        break;
+    case Timeout::LongPolling:
+        // give it a few seconds more time than the actual long polling interval set via the timeout query parameter
+        request.setTransferTimeout(m_longPollingTimeout ? m_longPollingTimeout + 5000 : 0);
+        break;
+    default:
+        request.setTransferTimeout(0);
+    }
 #endif
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 8, 0))
     // set full local server name to support connecting to Unix domain sockets
@@ -86,10 +95,10 @@ QNetworkRequest SyncthingConnection::prepareRequest(const QUrl &url, bool longPo
 /*!
  * \brief Requests asynchronously data using the rest API.
  */
-QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQuery &query, bool rest, bool longPolling)
+QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQuery &query, bool rest, Timeout timeout)
 {
 #if !defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) && !defined(LIB_SYNCTHING_CONNECTOR_MOCKED)
-    auto *const reply = networkAccessManager().get(prepareRequest(path, query, rest, longPolling));
+    auto *const reply = networkAccessManager().get(prepareRequest(path, query, rest, timeout));
 #ifndef QT_NO_SSL
     QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
 #endif
@@ -99,7 +108,7 @@ QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQ
     }
     return reply;
 #else
-    Q_UNUSED(longPolling)
+    Q_UNUSED(timeout)
     return MockedReply::forRequest(QStringLiteral("GET"), path, query, rest);
 #endif
 }
@@ -107,10 +116,10 @@ QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQ
 /*!
  * \brief Posts asynchronously data using the rest API.
  */
-QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuery &query, const QByteArray &data)
+QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuery &query, const QByteArray &data, Timeout timeout)
 {
 #if !defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) && !defined(LIB_SYNCTHING_CONNECTOR_MOCKED)
-    auto *const reply = networkAccessManager().post(prepareRequest(path, query), data);
+    auto *const reply = networkAccessManager().post(prepareRequest(path, query, true, timeout), data);
 #ifndef QT_NO_SSL
     QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
 #endif
@@ -121,6 +130,7 @@ QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuer
     return reply;
 #else
     Q_UNUSED(data)
+    Q_UNUSED(timeout)
     return MockedReply::forRequest(QStringLiteral("POST"), path, query, true);
 #endif
 }
@@ -128,10 +138,11 @@ QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuer
 /*!
  * \brief Invokes an asynchronous request using the rest API.
  */
-QNetworkReply *SyncthingConnection::sendData(const QByteArray &verb, const QString &path, const QUrlQuery &query, const QByteArray &data)
+QNetworkReply *SyncthingConnection::sendData(
+    const QByteArray &verb, const QString &path, const QUrlQuery &query, const QByteArray &data, Timeout timeout)
 {
 #if !defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) && !defined(LIB_SYNCTHING_CONNECTOR_MOCKED)
-    auto *const reply = networkAccessManager().sendCustomRequest(prepareRequest(path, query), verb, data);
+    auto *const reply = networkAccessManager().sendCustomRequest(prepareRequest(path, query, true, timeout), verb, data);
 #ifndef QT_NO_SSL
     QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
 #endif
@@ -142,6 +153,7 @@ QNetworkReply *SyncthingConnection::sendData(const QByteArray &verb, const QStri
     return reply;
 #else
     Q_UNUSED(data)
+    Q_UNUSED(timeout)
     return MockedReply::forRequest(verb, path, query, true);
 #endif
 }
@@ -578,7 +590,7 @@ void SyncthingConnection::rescan(const QString &dirId, const QString &relpath)
     if (!relpath.isEmpty()) {
         query.addQueryItem(QStringLiteral("sub"), formatQueryItem(relpath));
     }
-    auto *const reply = postData(QStringLiteral("db/scan"), query);
+    auto *const reply = postData(QStringLiteral("db/scan"), query, QByteArray(), Timeout::None);
     reply->setProperty("dirId", dirId);
     QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readRescan);
 }
@@ -1770,7 +1782,7 @@ void SyncthingConnection::readRevert()
 SyncthingConnection::QueryResult SyncthingConnection::sendCustomRequest(
     const QByteArray &verb, const QUrl &url, const QMap<QByteArray, QByteArray> &headers, QIODevice *data)
 {
-    auto request = prepareRequest(url, false);
+    auto request = prepareRequest(url, Timeout::Default);
     request.setTransferTimeout(0);
     for (auto i = headers.cbegin(), end = headers.cend(); i != end; ++i) {
         request.setRawHeader(i.key(), i.value());
@@ -1783,10 +1795,10 @@ SyncthingConnection::QueryResult SyncthingConnection::sendCustomRequest(
  * \brief Performs a generic HTTP request to the Syncthing REST-API.
  */
 SyncthingConnection::QueryResult SyncthingConnection::requestJsonData(const QByteArray &verb, const QString &path, const QUrlQuery &query,
-    const QByteArray &data, std::function<void(QJsonDocument &&, QString &&)> &&callback, bool rest, bool longPolling)
+    const QByteArray &data, std::function<void(QJsonDocument &&, QString &&)> &&callback, bool rest, Timeout timeout)
 {
 #if !defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) && !defined(LIB_SYNCTHING_CONNECTOR_MOCKED)
-    auto *const reply = networkAccessManager().sendCustomRequest(prepareRequest(path, query, rest, longPolling), verb, data);
+    auto *const reply = networkAccessManager().sendCustomRequest(prepareRequest(path, query, rest, timeout), verb, data);
 #ifndef QT_NO_SSL
     QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
 #endif
@@ -1797,7 +1809,7 @@ SyncthingConnection::QueryResult SyncthingConnection::requestJsonData(const QByt
 #else
     Q_UNUSED(data)
     Q_UNUSED(rest)
-    Q_UNUSED(longPolling)
+    Q_UNUSED(timeout)
     auto *const reply = MockedReply::forRequest(verb, path, query, true);
 #endif
     return { reply,
@@ -2329,8 +2341,8 @@ void SyncthingConnection::requestEvents()
     } else if (m_longPollingTimeout) {
         query.addQueryItem(QStringLiteral("timeout"), QString::number(m_longPollingTimeout / 1000));
     }
-    QObject::connect(m_eventsReply = requestData(QStringLiteral("events"), query, true, m_hasEvents), &QNetworkReply::finished, this,
-        &SyncthingConnection::readEvents);
+    QObject::connect(m_eventsReply = requestData(QStringLiteral("events"), query, true, m_hasEvents ? Timeout::LongPolling : Timeout::Default),
+        &QNetworkReply::finished, this, &SyncthingConnection::readEvents);
 }
 
 /*!
@@ -2979,8 +2991,9 @@ void SyncthingConnection::requestDiskEvents(int limit)
     } else if (m_longPollingTimeout) {
         query.addQueryItem(QStringLiteral("timeout"), QString::number(m_longPollingTimeout / 1000));
     }
-    QObject::connect(m_diskEventsReply = requestData(QStringLiteral("events/disk"), query, true, m_hasDiskEvents), &QNetworkReply::finished, this,
-        &SyncthingConnection::readDiskEvents);
+    QObject::connect(
+        m_diskEventsReply = requestData(QStringLiteral("events/disk"), query, true, m_hasDiskEvents ? Timeout::LongPolling : Timeout::Default),
+        &QNetworkReply::finished, this, &SyncthingConnection::readDiskEvents);
 }
 
 /*!

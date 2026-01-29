@@ -371,9 +371,14 @@ public Q_SLOTS:
 
 public:
     // methods to GET or POST information from/to Syncthing (non-slots)
+    enum class Timeout {
+        Default,
+        LongPolling,
+        None,
+    };
     QueryResult requestJsonData(const QByteArray &verb, const QString &path, const QUrlQuery &query, const QByteArray &data,
         std::function<void(QJsonDocument &&, QString &&)> &&callback = std::function<void(QJsonDocument &&, QString &&)>(), bool rest = true,
-        bool longPolling = false);
+        Timeout timeout = Timeout::Default);
     QueryResult browse(const QString &dirId, const QString &prefix, int level,
         std::function<void(std::vector<std::unique_ptr<SyncthingItem>> &&, QString &&)> &&callback);
     QueryResult ignores(const QString &dirId, std::function<void(SyncthingIgnores &&, QString &&)> &&callback);
@@ -527,11 +532,12 @@ private:
         QNetworkReply *reply;
         QByteArray response;
     };
-    QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true, bool longPolling = false);
-    QNetworkRequest prepareRequest(const QUrl &url, bool longPolling = false);
-    QNetworkReply *requestData(const QString &path, const QUrlQuery &query, bool rest = true, bool longPolling = false);
-    QNetworkReply *postData(const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray());
-    QNetworkReply *sendData(const QByteArray &verb, const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray());
+    QNetworkRequest prepareRequest(const QString &path, const QUrlQuery &query, bool rest = true, Timeout timeout = Timeout::Default);
+    QNetworkRequest prepareRequest(const QUrl &url, Timeout timeout = Timeout::Default);
+    QNetworkReply *requestData(const QString &path, const QUrlQuery &query, bool rest = true, Timeout timeout = Timeout::Default);
+    QNetworkReply *postData(const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray(), Timeout timeout = Timeout::Default);
+    QNetworkReply *sendData(const QByteArray &verb, const QString &path, const QUrlQuery &query, const QByteArray &data = QByteArray(),
+        Timeout timeout = Timeout::Default);
     Reply prepareReply(bool readData = true, bool handleAborting = true);
     Reply prepareReply(QNetworkReply *&expectedReply, bool readData = true, bool handleAborting = true);
     Reply prepareReply(QList<QNetworkReply *> &expectedReplies, bool readData = true, bool handleAborting = true);
