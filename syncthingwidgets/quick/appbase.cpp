@@ -179,9 +179,10 @@ void AppBase::applyConnectionSettings(const QUrl &syncthingUrl)
     auto connectionSettings = m_settings.value(QLatin1String("connection"));
     auto connectionSettingsObj = connectionSettings.toObject();
     auto couldLoadCertificate = false;
-    auto modified = !connectionSettings.isObject();
-    if (!modified) {
+    if (connectionSettings.isObject()) {
         couldLoadCertificate = m_connectionSettingsFromConfig.loadFromJson(connectionSettingsObj);
+        // store the object again to make sure newly added fields are present
+        m_connectionSettingsFromConfig.storeToJson(connectionSettingsObj);
     } else {
         m_connectionSettingsFromConfig.storeToJson(connectionSettingsObj);
         couldLoadCertificate = m_connectionSettingsFromConfig.loadHttpsCert();
@@ -190,11 +191,8 @@ void AppBase::applyConnectionSettings(const QUrl &syncthingUrl)
     m_connectToLaunched = useLauncherVal.toBool(m_connectToLaunched);
     if (!useLauncherVal.isBool()) {
         connectionSettingsObj.insert(QStringLiteral("useLauncher"), m_connectToLaunched);
-        modified = true;
     }
-    if (modified) {
-        m_settings.insert(QLatin1String("connection"), connectionSettingsObj);
-    }
+    m_settings.insert(QLatin1String("connection"), connectionSettingsObj);
     if (!couldLoadCertificate) {
         emit error(tr("Unable to load HTTPs certificate"));
     }
