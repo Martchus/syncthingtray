@@ -28,6 +28,7 @@ Page {
                     listModel.clear();
 
                     let index = 0;
+                    let category = undefined;
                     let configObject = objectConfigPage.configObject;
                     if (configObject === undefined) {
                         return;
@@ -47,9 +48,10 @@ Page {
                             const value = configObject[key];
                             if ((value !== undefined && value !== null) || !specialEntry.optional) {
                                 indexByKey[key] = index;
-                                const row = objectConfigPage.makeConfigRowForSpecialEntry(specialEntry, value, index);
+                                const row = objectConfigPage.makeConfigRowForSpecialEntry(specialEntry, value, index, category);
                                 if (row) {
                                     listModel.append(row);
+                                    category = row.category;
                                     ++index;
                                 }
                                 return;
@@ -57,6 +59,10 @@ Page {
                         }
                         indexByKey[key] = -1;
                     });
+                    if (category !== undefined) {
+                        category = qsTr("Miscellaneous");
+                        objectListView.section.property = "category";
+                    }
                     if (objectConfigPage.specialEntriesOnly) {
                         return;
                     }
@@ -64,13 +70,28 @@ Page {
                         const key = configEntry[0];
                         if (indexByKey[key] === undefined) {
                             indexByKey[key] = index;
-                            listModel.append(objectConfigPage.makeConfigRow(configEntry, index++));
+                            listModel.append(objectConfigPage.makeConfigRow(configEntry, index++, category));
                         }
                     });
                 }
             }
             delegate: ObjectConfigDelegate {
                 objectConfigPage: objectConfigPage
+            }
+            section.delegate: RowLayout {
+                spacing: 10
+                Label {
+                    Layout.fillWidth: true
+                    Layout.margins: 15
+                    Layout.topMargin: 20
+                    Layout.bottomMargin: 10
+                    text: parent.section
+                    color: Material.accent
+                    elide: Text.ElideRight
+                    font.weight: Font.Medium
+                    wrapMode: Text.WordWrap
+                }
+                required property string section
             }
         }
     }
@@ -182,11 +203,11 @@ Page {
         };
     }
 
-    function makeConfigRow(configEntry, index, canAdd, childObjectTemplate) {
+    function makeConfigRow(configEntry, index, canAdd, childObjectTemplate, category = undefined) {
         const key = configEntry[0];
         const value = configEntry[1];
         const isArray = Array.isArray(objectConfigPage.configObject);
-        const row = {key: key, value: value, type: typeof value, index: index, isArray: isArray, desc: ""};
+        const row = {key: key, value: value, type: typeof value, index: index, category: category, isArray: isArray, desc: ""};
         isArray ? computeArrayElementLabel(row) : (row.label = uncamel(key));
         handleReadOnlyMode(row);
         return row;
@@ -204,11 +225,12 @@ Page {
         row.label = itemLabel.length ? itemLabel : uncamel(typeof row.value);
     }
 
-    function makeConfigRowForSpecialEntry(specialEntry, value, index) {
+    function makeConfigRowForSpecialEntry(specialEntry, value, index, category = undefined) {
         if ((specialEntry.value = value ?? specialEntry.defaultValue) === undefined) {
             return undefined;
         }
         specialEntry.index = index;
+        specialEntry.category = specialEntry.category ?? category;
         specialEntry.isArray = Array.isArray(objectConfigPage.configObject);
         specialEntry.type = specialEntry.type ?? typeof specialEntry.value;
         specialEntry.label = specialEntry.label ?? uncamel(specialEntry.isArray ? specialEntry.key : specialEntry.type);

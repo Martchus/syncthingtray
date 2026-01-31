@@ -7,10 +7,10 @@ AdvancedDevConfigPage {
     isDangerous: false
     specialEntriesOnly: true
     specialEntries: [
-        {key: "deviceID", label: qsTr("Device ID"), enabled: !devConfigPage.configObjectExists, type: "deviceid", helpUrl: "https://docs.syncthing.net/dev/device-ids.html#device-ids"},
+        {key: "deviceID", label: qsTr("Device ID"), enabled: !devConfigPage.configObjectExists, type: "deviceid", helpUrl: "https://docs.syncthing.net/dev/device-ids.html#device-ids", category: qsTr("General")},
         {key: "name", label: qsTr("Device Name"), desc: qsTr("Shown instead of Device ID. Will be updated to the name the device advertises if left empty.")},
         {key: "paused", label: qsTr("Paused"), desc: qsTr("Whether synchronization with this devices is (temporarily) suspended.")},
-        {key: "introducer", label: qsTr("Introducer"), desc: qsTr("Add devices from the introducer to our device list, for mutually shared folders.")},
+        {key: "introducer", label: qsTr("Introducer"), desc: qsTr("Add devices from the introducer to our device list, for mutually shared folders."), category: qsTr("Advanced")},
         {key: "autoAcceptFolders", label: qsTr("Auto Accept"), desc: qsTr("Automatically create or share folders that this device advertises at the default path.")},
         {key: "addresses", label: qsTr("Addresses"), itemLabel: qsTr("Address"), desc: qsTr("Add addresses (e.g. \"tcp://ip:port\", \"tcp://host:port\") or \"dynamic\" to perform automatic discovery of the address."), helpUrl: "https://docs.syncthing.net/users/config#listen-addresses"},
         {key: "numConnections", label: qsTr("Number of Connections"), desc: qsTr("When set to more than one on both devices, Syncthing will attempt to establish multiple concurrent connections. If the values differ, the highest will be used. Set to zero to let Syncthing decide."), helpUrl: "https://docs.syncthing.net/advanced/device-numconnections"},

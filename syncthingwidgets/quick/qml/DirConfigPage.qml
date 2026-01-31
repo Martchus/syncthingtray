@@ -9,7 +9,7 @@ AdvancedDirConfigPage {
     isDangerous: false
     specialEntriesOnly: true
     specialEntries: [
-        {key: "id", label: qsTr("ID"), enabled: !dirConfigPage.configObjectExists, desc: qsTr("Required identifier for the folder. Must be the same on all cluster devices."), random: true},
+        {key: "id", label: qsTr("ID"), enabled: !dirConfigPage.configObjectExists, desc: qsTr("Required identifier for the folder. Must be the same on all cluster devices."), random: true, category: qsTr("General")},
         {key: "label", label: qsTr("Label"), desc: qsTr("Optional descriptive label for the folder. Can be different on each device.")},
         {key: "paused", label: qsTr("Paused"), desc: qsTr("Whether this folder is (temporarily) suspended.")},
         {key: "path", label: qsTr("Path"), enabled: !dirConfigPage.configObjectExists, type: "folderpath", desc: qsTr("Path to the folder on the local computer. Will be created if it does not exist. The tilde character (~) can be used as a shortcut for \"%1\".").arg(App.connection.tilde)},
@@ -23,7 +23,7 @@ AdvancedDirConfigPage {
         {key: "versioning", label: qsTr("Versioning"), desc: qsTr("Syncthing supports archiving the old version of a file when it is deleted or replaced with a newer version from the cluster. Versioning applies to changes received from <i>other</i> devices."), helpUrl: "https://docs.syncthing.net/users/versioning"},
         {key: "fsWatcherEnabled", label: qsTr("Watch for Changes"), desc: qsTr("Use notifications from the filesystem to detect changed items. Watching for changes discovers most changes without periodic scanning."), helpUrl: "https://docs.syncthing.net/users/syncing#scanning"},
         {key: "rescanIntervalS", label: qsTr("Rescan Interval"), desc: qsTr("The frequency in which Syncthing will rescan the folder for changes. Can be set to 0 to rely on triggering rescans manually.")},
-        {key: "fsWatcherDelayS", label: qsTr("Watcher Delay"), desc: qsTr("The duration during which changes detected are accumulated, before a scan is scheduled. Takes only effect if \"Watch for Changes\" is enabled.")},
+        {key: "fsWatcherDelayS", label: qsTr("Watcher Delay"), desc: qsTr("The duration during which changes detected are accumulated, before a scan is scheduled. Takes only effect if \"Watch for Changes\" is enabled."), category: qsTr("Advanced")},
         {key: "fsWatcherTimeoutS", label: qsTr("Watcher Timeout"), desc: qsTr("The maximum delay before a scan is triggered when a file is continuously changing. If unset or zero a default value is calculated based on \"Watcher Delay\".")},
         {key: "minDiskFree", label: qsTr("Minimum Free Disk Space"), desc: qsTr("The minimum required free space that should be available on the disk this folder resides. The folder will be stopped when the value drops below the threshold. Set to zero to disable.")},
         {key: "order", label: qsTr("File Pull Order"), type: "options", desc: qsTr("The order in which needed files should be pulled from the cluster. It has no effect when the folder type is “send only”. Open the selection and go though the different options for details about them."), options: [

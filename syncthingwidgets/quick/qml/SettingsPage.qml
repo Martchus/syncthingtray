@@ -160,22 +160,22 @@ StackView {
         property var config: App.settings
         readonly property var specialEntries: ({
             connection: [
-                {key: "useLauncher", type: "boolean", label: qsTr("Automatic"), statusText: qsTr("Connect to the Syncthing backend launched via this app and disregard the settings below.")},
+                {key: "useLauncher", type: "boolean", label: qsTr("Automatic"), statusText: qsTr("Connect to the Syncthing backend launched via this app and disregard the manual settings below."), category: qsTr("General")},
                 {key: "pauseOnMeteredConnection", type: "boolean", defaultValue: false, label: qsTr("Pause devices, discovery and relaying on metered network connection"), statusText: Qt.binding(() => App.meteredStatus)},
-                {key: "syncthingUrl", label: qsTr("Syncthing URL")},
+                {key: "advanced", label: qsTr("Advanced")},
+                {key: "syncthingUrl", label: qsTr("Syncthing URL"), category: qsTr("Manual connection settings")},
                 {key: "apiKey", label: qsTr("API key"), inputMethodHints: Qt.ImhHiddenText | Qt.ImhSensitiveData | Qt.ImhNoAutoUppercase},
                 {key: "httpsCertPath", label: qsTr("HTTPs certificate path"), type: "filepath"},
                 {key: "httpAuth", label: qsTr("HTTP authentication")},
-                {key: "advanced", label: qsTr("Advanced")},
             ],
             advanced: [
-                {key: "requestTimeout", label: qsTr("Transfer timeout"), desc: qsTr("The timeout for normal requests via the REST-API in milliseconds. Set to 0 for no limit."), helpUrl: ""},
-                {key: "longPollingTimeout", label: qsTr("Long polling interval"), desc: qsTr("The timeout for event API requests using long polling in milliseconds. Set to 0 to use the default limit of Syncthing."), helpUrl: ""},
-                {key: "diskEventLimit", label: qsTr("Limit for recent changes"), desc: qsTr("The maximum number of recent changes to query/buffer."), helpUrl: ""},
-                {key: "trafficPollInterval", label: qsTr("Poll interval for traffic"), desc: qsTr("The poll interval for traffic statistics in milliseconds."), helpUrl: ""},
+                {key: "requestTimeout", label: qsTr("Transfer timeout"), desc: qsTr("The timeout for normal requests via the REST-API in milliseconds. Set to 0 for no limit."), helpUrl: "", category: qsTr("Timeouts")},
+                {key: "longPollingTimeout", label: qsTr("Long polling timeout/interval"), desc: qsTr("The timeout for event API requests using long polling in milliseconds. Set to 0 to use the default limit of Syncthing."), helpUrl: ""},
+                {key: "trafficPollInterval", label: qsTr("Poll interval for traffic"), desc: qsTr("The poll interval for traffic statistics in milliseconds."), helpUrl: "", category: qsTr("Polling")},
                 {key: "devStatsPollInterval", label: qsTr("Poll interval for device statistics"), desc: qsTr("The poll interval for device statistics in milliseconds."), helpUrl: ""},
                 {key: "errorsPollInterval", label: qsTr("Poll interval for errors"), desc: qsTr("The poll interval for errors in milliseconds."), helpUrl: ""},
                 {key: "reconnectInterval", label: qsTr("Re-connect interval"), desc: qsTr("The interval for re-connect attempts in milliseconds."), helpUrl: ""},
+                {key: "diskEventLimit", label: qsTr("Limit for recent changes"), desc: qsTr("The maximum number of recent changes to query/buffer."), helpUrl: "", category: qsTr("Miscellaneous")},
                 {key: "localPath", type: "filepath", label: qsTr("Local path"), desc: qsTr("The path to the Unix domain socket when setting the Syncthing URL to \"unix+http://…\"."), helpUrl: ""},
                 {key: "specialEntriesOnly", value: true},
             ],
@@ -185,10 +185,10 @@ StackView {
                 {key: "password", label: qsTr("Password"), inputMethodHints: Qt.ImhHiddenText | Qt.ImhSensitiveData | Qt.ImhNoAutoUppercase},
             ],
             launcher: [
-                {key: "run", label: qsTr("Run Syncthing"), statusText: Qt.binding(() => App.syncthingRunningStatus)},
+                {key: "run", label: qsTr("Run Syncthing"), statusText: Qt.binding(() => App.syncthingRunningStatus), category: qsTr("General")},
                 {key: "stopOnMetered", label: qsTr("Stop on metered network connection"), statusText: Qt.binding(() => App.meteredStatus)},
                 {key: "guiUrl", type: "readonly", label: qsTr("URL for GUI and API access"), defaultValue: "", statusText: Qt.binding(() => App.syncthingGuiUrl.toString() || qsTr("n/a"))},
-                {key: "writeLogFile", label: qsTr("Write persistent log file"), statusText: qsTr("Write a persistent log file into the app directory")},
+                {key: "writeLogFile", label: qsTr("Write persistent log file"), statusText: qsTr("Write a persistent log file into the app directory"), category: qsTr("Logging")},
                 {key: "logLevel", label: qsTr("Log level"), type: "options", options: [
                     {value: "debug", label: qsTr("Debug")},
                     {value: "info", label: qsTr("Info")},
@@ -197,14 +197,14 @@ StackView {
                 ]},
                 {key: "openLogs", label: qsTr("Open logs"), statusText: qsTr("Show Syncthing logs since app startup"), defaultValue: () => stackView.push("LogPage.qml", {}, StackView.PushTransition)},
                 {key: "openPersistentLogs", label: qsTr("Open persistent logs"), statusText: qsTr("Open persistent log file externally"), defaultValue: () => App.openSyncthingLogFile()},
-                {key: "exePath", type: "filepath", label: qsTr("External executable"), helpUrl: "", desc: qsTr("Start an external executable instead of using the built-in version of Syncthing. When empty, the built-in version of Syncthing is used.")},
+                {key: "exePath", type: "filepath", label: qsTr("External executable"), helpUrl: "", desc: qsTr("Start an external executable instead of using the built-in version of Syncthing. When empty, the built-in version of Syncthing is used."), category: qsTr("Advanced")},
             ],
             tweaks: [
-                {key: "importExportAsArchive", type: "boolean", defaultValue: false, label: qsTr("Import/export archive"), statusText: qsTr("Import and export to/from a Zip archive")},
+                {key: "importExportAsArchive", type: "boolean", defaultValue: false, label: qsTr("Import/export archive"), statusText: qsTr("Import and export to/from a Zip archive"), category: qsTr("Import/export")},
                 {key: "importExportEncryptionPassword", type: "string", inputMethodHints: Qt.ImhHiddenText | Qt.ImhSensitiveData | Qt.ImhNoAutoUppercase, defaultValue: "", label: qsTr("Import/export password"), statusText: qsTr("Encrypt/decrypt data via AES-256 when exporting/importing to archive")},
                 {key: "exportDir", type: "folderpath", defaultValue: "", label: qsTr("Export path"), statusText: qsTr("Save exports and support bundles under fix location")},
-                {key: "useUnixDomainSocket", type: "boolean", defaultValue: false, label: qsTr("Use Unix domain socket"), statusText: qsTr("Reduces communication overhead and makes Syncthing API and web GUI inaccessible to other apps, applied after restart")},
-                {key: "closePreference", label: qsTr("Close preference"), type: "options", options: [
+                {key: "useUnixDomainSocket", type: "boolean", defaultValue: false, label: qsTr("Use Unix domain socket"), statusText: qsTr("Reduces communication overhead and makes Syncthing API and web GUI inaccessible to other apps, applied after restart"), category: qsTr("Backend")},
+                {key: "closePreference", label: qsTr("Close preference"), type: "options", category: qsTr("Interface"), options: [
                     {value: "", label: qsTr("Ask")},
                     {value: "background", label: qsTr("Keep Syncthing in background")},
                     {value: "shutdown", label: qsTr("Shut Syncthing down")},
