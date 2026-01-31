@@ -128,42 +128,42 @@
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="209"/>
+        <location filename="../gui/trayicon.cpp" line="210"/>
         <source>Error</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="229"/>
+        <location filename="../gui/trayicon.cpp" line="230"/>
         <source>Launcher error</source>
         <translation>Starter-Fehler</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="245"/>
+        <location filename="../gui/trayicon.cpp" line="246"/>
         <source>Syncthing notification - click to dismiss</source>
         <translation>Neue Syncthing-Benachrichtigung</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="275"/>
+        <location filename="../gui/trayicon.cpp" line="276"/>
         <source>Syncthing device wants to connect - click for web UI</source>
         <translation>Neues Gerät möchte verbinden</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="292"/>
+        <location filename="../gui/trayicon.cpp" line="293"/>
         <source>New Syncthing folder - click for web UI</source>
         <translation>Neuer Syncthing-Ordner</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="307"/>
+        <location filename="../gui/trayicon.cpp" line="308"/>
         <source>New version - click to open updater</source>
         <translation>Neue version verfügbar</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="307"/>
+        <location filename="../gui/trayicon.cpp" line="308"/>
         <source>Version %1 is available</source>
         <translation>Version %1 ist verfügbar</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="170"/>
+        <location filename="../gui/trayicon.cpp" line="171"/>
         <source>Disconnected from Syncthing</source>
         <translation>Verbindung zu Syncthing getrennt</translation>
     </message>

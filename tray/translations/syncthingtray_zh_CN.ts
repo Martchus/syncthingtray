@@ -566,42 +566,42 @@
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="170"/>
+        <location filename="../gui/trayicon.cpp" line="171"/>
         <source>Disconnected from Syncthing</source>
         <translation>从 Syncthing 断开连接</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="209"/>
+        <location filename="../gui/trayicon.cpp" line="210"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="229"/>
+        <location filename="../gui/trayicon.cpp" line="230"/>
         <source>Launcher error</source>
         <translation>启动器错误</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="245"/>
+        <location filename="../gui/trayicon.cpp" line="246"/>
         <source>Syncthing notification - click to dismiss</source>
         <translation>Syncthing 通知 - 点击解除</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="275"/>
+        <location filename="../gui/trayicon.cpp" line="276"/>
         <source>Syncthing device wants to connect - click for web UI</source>
         <translation>Syncthing 设备想要连接 - 点击打开网页 UI</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="292"/>
+        <location filename="../gui/trayicon.cpp" line="293"/>
         <source>New Syncthing folder - click for web UI</source>
         <translation>新 Syncthing 目录 - 点击打开网页 UI</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="307"/>
+        <location filename="../gui/trayicon.cpp" line="308"/>
         <source>New version - click to open updater</source>
         <translation>新版本 - 单击以打开更新程序</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="307"/>
+        <location filename="../gui/trayicon.cpp" line="308"/>
         <source>Version %1 is available</source>
         <translation>版本 %1 已可用</translation>
     </message>

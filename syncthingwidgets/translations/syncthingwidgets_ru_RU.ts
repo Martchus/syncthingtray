@@ -676,6 +676,11 @@
         <translation>ID устройства</translation>
     </message>
     <message>
+        <location filename="../quick/qml/DevConfigPage.qml" line="10"/>
+        <source>General</source>
+        <translation type="unfinished">Общее</translation>
+    </message>
+    <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="11"/>
         <source>Device Name</source>
         <translation>Имя устройства</translation>
@@ -704,6 +709,11 @@
         <location filename="../quick/qml/DevConfigPage.qml" line="13"/>
         <source>Add devices from the introducer to our device list, for mutually shared folders.</source>
         <translation>Добавьте устройства из презентатора в наш список устройств для совместного использования папок.</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DevConfigPage.qml" line="13"/>
+        <source>Advanced</source>
+        <translation type="unfinished">Дополнительно</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="14"/>
@@ -1134,6 +1144,16 @@
         <location filename="../quick/qml/DirConfigPage.qml" line="29"/>
         <source>File Pull Order</source>
         <translation>Порядок извлечения файлов</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DirConfigPage.qml" line="12"/>
+        <source>General</source>
+        <translation type="unfinished">Общее</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DirConfigPage.qml" line="26"/>
+        <source>Advanced</source>
+        <translation type="unfinished">Дополнительно</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="37"/>
@@ -2091,82 +2111,87 @@
 <context>
     <name>ObjectConfigPage</name>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="79"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="63"/>
+        <source>Miscellaneous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="100"/>
         <source>Add new value</source>
         <translation>Добавить новое значение</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="84"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="105"/>
         <source>Index</source>
         <translation>Индекс</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="84"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="105"/>
         <source>Key</source>
         <translation>Ключ</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="91"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="112"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="111"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="132"/>
         <source>Device ID</source>
         <translation>ID устройства</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="111"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="132"/>
         <source>The ID of the device to be ignored.</source>
         <translation>ID устройства, которое следует игнорировать.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="112"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="133"/>
         <source>Device Name</source>
         <translation>Имя устройства</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="112"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="133"/>
         <source>The name of the device being ignored (for informative purposes).</source>
         <translation>Имя игнорируемого устройства (в информационных целях).</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="113"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="134"/>
         <source>Address</source>
         <translation>Адрес</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="113"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="134"/>
         <source>The address of the device being ignored (for informative purposes).</source>
         <translation>Адрес игнорируемого устройства (в информационных целях).</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="114"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="135"/>
         <source>Time</source>
         <translation>Время</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="114"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="135"/>
         <source>The time when this entry was added (for informative purposes).</source>
         <translation>Время добавления этой записи (для информационных целей).</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="150"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="171"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="156"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="177"/>
         <source>Add</source>
         <translation>Добавлять</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="317"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="339"/>
         <source>Unable to add %1 because specified index is invalid.</source>
         <translation>Невозможно добавить %1, так как указанный индекс недействителен.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="325"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="347"/>
         <source>Unable to add %1 because specified key is invalid.</source>
         <translation>Невозможно добавить %1, так как указанный ключ недействителен.</translation>
     </message>
@@ -2882,7 +2907,7 @@
         <translation>Документ JSON не содержит объектов</translation>
     </message>
     <message>
-        <location filename="../quick/appbase.cpp" line="199"/>
+        <location filename="../quick/appbase.cpp" line="197"/>
         <source>Unable to load HTTPs certificate</source>
         <translation>Не удалось загрузить сертификат HTTPs</translation>
     </message>
@@ -5388,9 +5413,8 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation>Автоматический</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="163"/>
         <source>Connect to the Syncthing backend launched via this app and disregard the settings below.</source>
-        <translation>Подключитесь к бэкэнду Syncthing, запущенному через это приложение, и проигнорируйте настройки, указанные ниже.</translation>
+        <translation type="vanished">Подключитесь к бэкэнду Syncthing, запущенному через это приложение, и проигнорируйте настройки, указанные ниже.</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="164"/>
@@ -5398,27 +5422,28 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="unfinished">Пауза устройств, обнаружения и релейинга на ограниченном сетевом подключении</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="165"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="166"/>
         <source>Syncthing URL</source>
         <translation>URL-адрес Syncthing</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="166"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="167"/>
         <source>API key</source>
         <translation>API-ключ</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="167"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="168"/>
         <source>HTTPs certificate path</source>
         <translation>Путь сертификата HTTPS</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="168"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="169"/>
         <source>HTTP authentication</source>
         <translation>HTTP-аутентификация</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="169"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="165"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="200"/>
         <source>Advanced</source>
         <translation type="unfinished">Дополнительно</translation>
     </message>
@@ -5428,37 +5453,32 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="unfinished">Истекло время передачи</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="173"/>
-        <source>Long polling interval</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="174"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="178"/>
         <source>Limit for recent changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="174"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="178"/>
         <source>The maximum number of recent changes to query/buffer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="175"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="174"/>
         <source>Poll interval for traffic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="176"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="175"/>
         <source>Poll interval for device statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="177"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="176"/>
         <source>Poll interval for errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="178"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="177"/>
         <source>Re-connect interval</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5533,8 +5553,29 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation>Остановка при лимитном сетевом подключении</translation>
     </message>
     <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="163"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="188"/>
+        <source>General</source>
+        <translation type="unfinished">Общее</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="163"/>
+        <source>Connect to the Syncthing backend launched via this app and disregard the manual settings below.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="166"/>
+        <source>Manual connection settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../quick/qml/SettingsPage.qml" line="172"/>
         <source>The timeout for normal requests via the REST-API in milliseconds. Set to 0 for no limit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="172"/>
+        <source>Timeouts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5543,23 +5584,38 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="175"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="173"/>
+        <source>Long polling timeout/interval</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="174"/>
         <source>The poll interval for traffic statistics in milliseconds.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="176"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="174"/>
+        <source>Polling</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="175"/>
         <source>The poll interval for device statistics in milliseconds.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="177"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="176"/>
         <source>The poll interval for errors in milliseconds.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="178"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="177"/>
         <source>The interval for re-connect attempts in milliseconds.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="178"/>
+        <source>Miscellaneous</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5576,6 +5632,11 @@ This dialog closes automatically when the process finally terminates.</source>
         <location filename="../quick/qml/SettingsPage.qml" line="191"/>
         <source>Write a persistent log file into the app directory</source>
         <translation>Записать постоянный файл журнала в каталог приложения</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="191"/>
+        <source>Logging</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="198"/>
@@ -5613,6 +5674,11 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation>Импорт и экспорт в/из Zip-архива</translation>
     </message>
     <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="203"/>
+        <source>Import/export</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../quick/qml/SettingsPage.qml" line="204"/>
         <source>Import/export password</source>
         <translation>Импорт/экспорт пароля</translation>
@@ -5643,8 +5709,18 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation>Снижает накладные расходы на связь и делает API Syncthing и веб-интерфейс недоступными для других приложений. Применяется после перезапуска</translation>
     </message>
     <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="206"/>
+        <source>Backend</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../quick/qml/SettingsPage.qml" line="207"/>
         <source>Close preference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="207"/>
+        <source>Interface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
