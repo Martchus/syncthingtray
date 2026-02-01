@@ -66,6 +66,12 @@ Item {
     property int foldersAdded: 0
     property list<string> messages
 
+    readonly property int optionsIndex: 6
+    readonly property int importIndex: 6
+    readonly property int exportIndex: 7
+    readonly property int localDiscoveryIndex: 7
+    readonly property int globalDiscoveryIndex: 8
+
     TestCase {
         id: testCase
         name: "AppTests"
@@ -311,8 +317,8 @@ Item {
             const listView = advancedPage.listView;
             const model = listView.model;
             tryCompare(model, "count", 9, 5000, "advanced settings shown");
-            compare(model.get(6).label, "Various options");
-            listView.currentIndex = 6;
+            compare(model.get(optionsIndex).label, "Various options");
+            listView.currentIndex = optionsIndex;
             listView.currentItem.click();
 
             const optionsPage = pageStack.currentPage;
@@ -331,21 +337,21 @@ Item {
             compare(settingsState.componentName, "ObjectConfigPage.qml", "component name serialized");
             compare(settingsState.path, "options", "path serialized");
             compare(settingsState.topLevelObject.options.localAnnounceEnabled, true, "local discovery initially enabled");
-            optionsListView.currentIndex = 7;
+            optionsListView.currentIndex = localDiscoveryIndex;
             optionsListView.currentItem.click();
-            tryVerify(() => optionsModel.get(7).value === false, 5000, "local discovery unselected");
+            tryVerify(() => optionsModel.get(localDiscoveryIndex).value === false, 5000, "local discovery unselected");
 
             pageStack.pop();
             tryCompare(advancedPage, "title", "Advanced - changes not saved yet", 5000, "pending changes shown in title");
             compare(advancedPage.isDangerous, true, "dangerous setting has been made yet");
             compare(pageStack.currentActions.map(a => a.enabled), [true, true], "actions enabled with pending changes");
-            compare(listView.currentIndex, 6, "options still selected");
+            compare(listView.currentIndex, optionsIndex, "options still selected");
             listView.currentItem.click();
 
             const optionsPage2 = pageStack.currentPage;
             const optionsModel2 = optionsPage2.model;
-            compare(optionsModel2.get(7).label, "Local Discovery");
-            compare(optionsModel2.get(7).value, false, "local discovery still showing as disabled");
+            compare(optionsModel2.get(localDiscoveryIndex).label, "Local Discovery");
+            compare(optionsModel2.get(localDiscoveryIndex).value, false, "local discovery still showing as disabled");
             const state2 = pageStack.serialize();
             compare(state2.index, 4);
             const settingsState2 = state2?.children[4];
@@ -361,20 +367,20 @@ Item {
 
             compare(advancedPage.title, "Advanced", "title changed back after all settings have been saved");
             compare(advancedPage.isDangerous, false, "no dangerous settings pending anymore");
-            compare(listView.currentIndex, 6, "options still selected after saving");
+            compare(listView.currentIndex, optionsIndex, "options still selected after saving");
             listView.currentItem.click();
 
             const optionsPage3 = pageStack.currentPage;
             const optionsModel3 = optionsPage3.model;
             const optionsListView3 = optionsPage3.listView;
-            compare(optionsModel3.get(7).label, "Local Discovery");
-            compare(optionsModel3.get(7).value, false, "local discovery still showing as disabled after saving");
-            compare(optionsModel3.get(8).label, "Global Discovery");
-            compare(optionsModel3.get(8).value, true, "global discovery still enabled after saving");
+            compare(optionsModel3.get(localDiscoveryIndex).label, "Local Discovery");
+            compare(optionsModel3.get(localDiscoveryIndex).value, false, "local discovery still showing as disabled after saving");
+            compare(optionsModel3.get(globalDiscoveryIndex).label, "Global Discovery");
+            compare(optionsModel3.get(globalDiscoveryIndex).value, true, "global discovery still enabled after saving");
 
-            optionsListView3.currentIndex = 8;
+            optionsListView3.currentIndex = globalDiscoveryIndex;
             optionsListView3.currentItem.click();
-            tryVerify(() => optionsModel3.get(8).value === false, 5000, "global discovery unselected");
+            tryVerify(() => optionsModel3.get(globalDiscoveryIndex).value === false, 5000, "global discovery unselected");
             pageStack.pop();
             compare(advancedPage.title, "Advanced - changes not saved yet", "title changed again after disabling global discovery");
             compare(advancedPage.isDangerous, true, "dangerous setting has been made again");
@@ -384,15 +390,15 @@ Item {
             tryCompare(advancedPage, "title", "Advanced", 5000, "title changed back after all settings have been discarded");
             tryCompare(advancedPage, "isDangerous", false, 5000, "dangerous setting discarded");
 
-            compare(listView.currentIndex, 6, "options still selected after saving");
+            compare(listView.currentIndex, optionsIndex, "options still selected after saving");
             listView.currentItem.click();
 
             const optionsPage4 = pageStack.currentPage;
             const optionsModel4 = optionsPage4.model;
-            compare(optionsModel4.get(7).label, "Local Discovery");
-            compare(optionsModel4.get(7).value, false, "local discovery still showing as disabled after discarding");
-            compare(optionsModel4.get(8).label, "Global Discovery");
-            compare(optionsModel4.get(8).value, true, "global discovery still enabled after discarding");
+            compare(optionsModel4.get(localDiscoveryIndex).label, "Local Discovery");
+            compare(optionsModel4.get(localDiscoveryIndex).value, false, "local discovery still showing as disabled after discarding");
+            compare(optionsModel4.get(globalDiscoveryIndex).label, "Global Discovery");
+            compare(optionsModel4.get(globalDiscoveryIndex).value, true, "global discovery still enabled after discarding");
             pageStack.pop();
 
             goBackToStartPage();
@@ -412,10 +418,10 @@ Item {
             const listView = settingsPage.listView;
             const model = listView.model;
             tryCompare(model, "count", 12, 5000, "app settings shown");
-            compare(model.get(6).label, "Import selected settings/secrets/data of app and backend");
+            compare(model.get(importIndex).label, "Import selected settings/secrets/data of app and backend");
 
             // trigger import
-            listView.currentIndex = 6;
+            listView.currentIndex = importIndex;
             const folderDlg = settingsPage.backupFolderDialog;
             folderDlg.popupType = Popup.Item;
             folderDlg.options |= FolderDialog.DontUseNativeDialog;
@@ -479,8 +485,8 @@ Item {
             // trigger export
             compare(settingsPage.title, "App settings", "back on settings page");
             const listView2 = settingsPage.listView;
-            compare(listView2.model.get(7).label, "Export all settings/secrets/data of app and backend");
-            listView2.currentIndex = 7;
+            compare(listView2.model.get(exportIndex).label, "Export all settings/secrets/data of app and backend");
+            listView2.currentIndex = exportIndex;
             listView2.currentItem.click();
             const folderDlg2 = settingsPage.backupFolderDialog;
             tryCompare(folderDlg2, "visible", true, 5000, "folder dialog shown");
