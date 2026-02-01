@@ -6,7 +6,7 @@ import Main
 QtObject {
     Material.theme: App.darkmodeEnabled ? Material.Dark : Material.Light
     Material.primary: pageStack.currentPage.isDangerous ? Material.Red : Material.LightBlue
-    Material.accent: App.darkmodeEnabled ? Material.color(Material.LightBlue, Material.Shade200) : Material.primary
+    Material.accent: App.darkmodeEnabled ? Material.color(pageStack.currentPage.isDangerous ? Material.Red : Material.LightBlue, Material.Shade200) : Material.primary
     Material.onForegroundChanged: App.setPalette(Material.foreground, Material.background)
 
     // propagate palette of Qt Quick Controls 2 style to regular QPalette of QGuiApplication for icon rendering
