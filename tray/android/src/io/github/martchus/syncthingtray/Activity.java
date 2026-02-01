@@ -110,12 +110,14 @@ public class Activity extends QtActivity {
                 m_service.send(msg);
                 sendMessageToService(SyncthingService.MSG_SERVICE_ACTION_BROADCAST_LAUNCHER_STATUS, 0, 0, "");
             } catch (RemoteException e) {
+                Log.w(TAG, "Unable to register with service: " + e.getMessage());
             }
         }
 
         public void onServiceDisconnected(ComponentName className) {
             Log.i(TAG, "Disconnected from service, trying to restart");
             m_service = null;
+            m_isBound = false;
             if (!Activity.this.isFinishing()) {
                 startSyncthingService();
                 connectToService();
@@ -138,7 +140,7 @@ public class Activity extends QtActivity {
         try {
             m_service.send(SyncthingService.obtainMessageWithBundle(what, arg1, arg2, SyncthingService.bundleString(str)));
         } catch (RemoteException e) {
-            showToast("Unable to send message to background service: " + e.toString());
+            showToast("Unable to send message to background service: " + e.getMessage());
         }
     }
 
@@ -153,6 +155,7 @@ public class Activity extends QtActivity {
                 msg.replyTo = m_messenger;
                 m_service.send(msg);
             } catch (RemoteException e) {
+                Log.w(TAG, "Unable to unregister from service: " + e.getMessage());
             }
         }
         unbindService(m_connection);

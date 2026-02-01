@@ -124,6 +124,7 @@ public class SyncthingService extends QtService {
                 m_clients.get(i).send(obtainMessageWithBundle(what, arg1, arg2, data));
                 ++messagesSent;
             } catch (RemoteException e) {
+                Log.w(TAG, "Unable to send message to frontend: " + e.getMessage());
                 m_clients.remove(i); // remove presumably dead client
             }
         }
