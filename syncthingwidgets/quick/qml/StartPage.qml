@@ -21,19 +21,26 @@ Page {
             id: mainLayout
             width: mainView.width
             spacing: 0
+            SectionHeader {
+                section: qsTr("Pending setup tasks")
+                visible: storagePermissionDelegate.visible || notificationPermissionDelegate.visible || authSetupDelegate.visible
+            }
             CustomDelegate {
+                id: storagePermissionDelegate
                 onClicked: App.requestStoragePermission()
                 visible: !App.storagePermissionGranted
                 labelText: qsTr("Request storage permission")
                 iconName: "unlock-alt"
             }
             CustomDelegate {
+                id: notificationPermissionDelegate
                 onClicked: App.requestNotificationPermission()
                 visible: !App.notificationPermissionGranted
                 labelText: qsTr("Request notification permission")
                 iconName: "bell"
             }
             ItemDelegate {
+                id: authSetupDelegate
                 Layout.fillWidth: true
                 onClicked: startPage.pages.showPage(4).showGuiAuth()
                 visible: !App.usingUnixDomainSocket && App.connection.hasState && !App.connection.guiRequiringAuth
@@ -58,6 +65,9 @@ Page {
                         }
                     }
                 }
+            }
+            SectionHeader {
+                section: qsTr("Status and statistics")
             }
             ItemDelegate {
                 Layout.fillWidth: true
@@ -284,6 +294,9 @@ Page {
                 stats: startPage.stats.local
                 labelText: qsTr("Local state")
                 iconName: "home"
+            }
+            SectionHeader {
+                section: qsTr("Getting started")
             }
             CustomDelegate {
                 onClicked: pages.addDevice()

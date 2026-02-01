@@ -127,6 +127,7 @@ set(QML_MAIN_FILES
     quick/qml/StartPage.qml
     quick/qml/Statistics.qml
     quick/qml/StatisticsPage.qml
+    quick/qml/SectionHeader.qml
     quick/qml/Theming.qml)
 list(APPEND EXCLUDED_FILES ${QML_MAIN_FILES} quick/qml/WebViewPage.qml quick/qml/webview-webview/WebViewItem.qml
      quick/qml/webview-none/WebViewItem.qml)

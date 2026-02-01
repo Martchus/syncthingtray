@@ -78,20 +78,7 @@ Page {
             delegate: ObjectConfigDelegate {
                 objectConfigPage: objectConfigPage
             }
-            section.delegate: RowLayout {
-                spacing: 10
-                Label {
-                    Layout.fillWidth: true
-                    Layout.margins: 15
-                    Layout.topMargin: 20
-                    Layout.bottomMargin: 10
-                    text: parent.section
-                    color: Material.accent
-                    elide: Text.ElideRight
-                    font.weight: Font.Medium
-                    wrapMode: Text.WordWrap
-                }
-                required property string section
+            section.delegate: SectionHeader {
             }
         }
     }

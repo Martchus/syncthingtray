@@ -24,67 +24,79 @@ StackView {
                     key: "connection"
                     label: qsTr("Connection to Syncthing backend")
                     title: qsTr("Configure connection with the Syncthing backend")
+                    category: qsTr("Configuration")
                     iconName: "link"
                 }
                 ListElement {
                     key: "launcher"
                     label: qsTr("Execution of Syncthing backend")
                     title: qsTr("Configure how to run the Syncthing backend")
+                    category: qsTr("Configuration")
                     iconName: "terminal"
-                }
-                ListElement {
-                    callback: () => deleteLogFileDialog.open()
-                    label: qsTr("Clear log file")
-                    title: qsTr("Disables persistent logging and removes the log file")
-                    iconName: "trash-o"
                 }
                 ListElement {
                     key: "tweaks"
                     label: qsTr("Tweaks")
                     title: qsTr("Configure details of the app's behavior")
+                    category: qsTr("Configuration")
                     iconName: "cogs"
                 }
                 ListElement {
                     callback: () => stackView.push("ErrorsPage.qml", {}, StackView.PushTransition)
                     label: qsTr("Syncthing notifications/errors")
+                    category: qsTr("Diagnostics")
                     iconName: "exclamation-triangle"
                 }
                 ListElement {
                     callback: () => stackView.push("InternalErrorsPage.qml", {}, StackView.PushTransition)
                     label: qsTr("Log of Syncthing API errors")
+                    category: qsTr("Diagnostics")
                     iconName: "exclamation-circle"
                 }
                 ListElement {
                     callback: () => stackView.push("StatisticsPage.qml", {stackView: stackView}, StackView.PushTransition)
                     label: qsTr("Statistics")
+                    category: qsTr("Diagnostics")
                     iconName: "area-chart"
                 }
                 ListElement {
                     functionName: "checkSettings"
                     callback: (availableSettings) => stackView.push("ImportPage.qml", {availableSettings: availableSettings}, StackView.PushTransition)
                     label: qsTr("Import selected settings/secrets/data of app and backend")
+                    category: qsTr("Backup")
                     iconName: "download"
                 }
                 ListElement {
                     functionName: "exportSettings"
                     label: qsTr("Export all settings/secrets/data of app and backend")
+                    category: qsTr("Backup")
                     iconName: "floppy-o"
                 }
                 ListElement {
                     callback: () => stackView.push("HomeDirPage.qml", {}, StackView.PushTransition)
                     label: qsTr("Move Syncthing home directory")
+                    category: qsTr("Maintenance actions")
                     iconName: "folder-open-o"
+                }
+                ListElement {
+                    label: qsTr("Save support bundle")
+                    functionName: "saveSupportBundle"
+                    category: qsTr("Maintenance actions")
+                    iconName: "user-md"
                 }
                 ListElement {
                     callback: () => App.cleanSyncthingHomeDirectory()
                     label: qsTr("Clean Syncthing home directory")
                     title: qsTr("Removes the migrated database of Syncthing v1")
+                    category: qsTr("Maintenance actions")
                     iconName: "eraser"
                 }
                 ListElement {
-                    label: qsTr("Save support bundle")
-                    functionName: "saveSupportBundle"
-                    iconName: "user-md"
+                    callback: () => deleteLogFileDialog.open()
+                    label: qsTr("Clear log file")
+                    title: qsTr("Disables persistent logging and removes the log file")
+                    category: qsTr("Maintenance actions")
+                    iconName: "trash-o"
                 }
             }
             delegate: CustomDelegate {
@@ -101,6 +113,9 @@ StackView {
                     }
                 }
                 required property var modelData
+            }
+            section.property: "category"
+            section.delegate: SectionHeader {
             }
         }
 

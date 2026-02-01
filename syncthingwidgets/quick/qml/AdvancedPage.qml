@@ -24,16 +24,27 @@ StackView {
                     key: "gui"
                     specialEntriesKey: "guiAuth"
                     label: qsTr("Web-based GUI authentication")
+                    category: qsTr("Authentication")
                     iconName: "key-modern"
+                }
+                ListElement {
+                    key: "ldap"
+                    label: qsTr("LDAP")
+                    title: qsTr("LDAP configuration")
+                    category: qsTr("Authentication")
+                    isDangerous: false
+                    iconName: "address-card"
                 }
                 ListElement {
                     specialPage: "PendingDevices.qml"
                     label: qsTr("Pending devices")
+                    category: qsTr("Pending/ignored devices and folders")
                     iconName: "laptop"
                 }
                 ListElement {
                     specialPage: "PendingDirs.qml"
                     label: qsTr("Pending folders")
+                    category: qsTr("Pending/ignored devices and folders")
                     iconName: "folder"
                 }
                 ListElement {
@@ -42,6 +53,7 @@ StackView {
                     title: qsTr("Ignored devices")
                     itemLabel: qsTr("Ignored device without ID/name")
                     desc: qsTr("Contains the IDs of the devices that should be ignored. Connection attempts from these devices are logged to the console but never displayed in the UI.")
+                    category: qsTr("Pending/ignored devices and folders")
                     isDangerous: false
                     helpUrl: "https://docs.syncthing.net/users/config#config-option-configuration.remoteignoreddevice"
                     iconName: "filter"
@@ -50,6 +62,7 @@ StackView {
                     key: "gui"
                     label: qsTr("Syncthing API and web-based GUI")
                     title: qsTr("Advanced Syncthing API and web-based GUI configuration")
+                    category: qsTr("Advanced configuration")
                     isDangerous: true
                     iconName: "cogs"
                 }
@@ -57,6 +70,7 @@ StackView {
                     key: "options"
                     label: qsTr("Various options")
                     title: qsTr("Various advanced options")
+                    category: qsTr("Advanced configuration")
                     isDangerous: true
                     iconName: "toggle-on"
                 }
@@ -64,18 +78,13 @@ StackView {
                     key: "defaults"
                     label: qsTr("Templates for new devices and folders")
                     title: qsTr("Templates configuration")
+                    category: qsTr("Advanced configuration")
                     isDangerous: true
                     iconName: "puzzle-piece"
                 }
                 ListElement {
-                    key: "ldap"
-                    label: qsTr("LDAP")
-                    title: qsTr("LDAP configuration")
-                    isDangerous: false
-                    iconName: "address-card"
-                }
-                ListElement {
                     label: qsTr("Open config file externally")
+                    category: qsTr("Advanced configuration")
                     func: "openSyncthingConfigFile"
                     iconName: "external-link"
                 }
@@ -97,6 +106,9 @@ StackView {
                     }
                 }
                 required property var modelData
+            }
+            section.property: "category"
+            section.delegate: SectionHeader {
             }
         }
 
