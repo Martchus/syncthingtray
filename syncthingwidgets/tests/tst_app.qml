@@ -311,8 +311,8 @@ Item {
             const listView = advancedPage.listView;
             const model = listView.model;
             tryCompare(model, "count", 9, 5000, "advanced settings shown");
-            compare(model.get(5).label, "Various options");
-            listView.currentIndex = 5;
+            compare(model.get(6).label, "Various options");
+            listView.currentIndex = 6;
             listView.currentItem.click();
 
             const optionsPage = pageStack.currentPage;
@@ -339,7 +339,7 @@ Item {
             tryCompare(advancedPage, "title", "Advanced - changes not saved yet", 5000, "pending changes shown in title");
             compare(advancedPage.isDangerous, true, "dangerous setting has been made yet");
             compare(pageStack.currentActions.map(a => a.enabled), [true, true], "actions enabled with pending changes");
-            compare(listView.currentIndex, 5, "options still selected");
+            compare(listView.currentIndex, 6, "options still selected");
             listView.currentItem.click();
 
             const optionsPage2 = pageStack.currentPage;
@@ -361,7 +361,7 @@ Item {
 
             compare(advancedPage.title, "Advanced", "title changed back after all settings have been saved");
             compare(advancedPage.isDangerous, false, "no dangerous settings pending anymore");
-            compare(listView.currentIndex, 5, "options still selected after saving");
+            compare(listView.currentIndex, 6, "options still selected after saving");
             listView.currentItem.click();
 
             const optionsPage3 = pageStack.currentPage;
@@ -384,7 +384,7 @@ Item {
             tryCompare(advancedPage, "title", "Advanced", 5000, "title changed back after all settings have been discarded");
             tryCompare(advancedPage, "isDangerous", false, 5000, "dangerous setting discarded");
 
-            compare(listView.currentIndex, 5, "options still selected after saving");
+            compare(listView.currentIndex, 6, "options still selected after saving");
             listView.currentItem.click();
 
             const optionsPage4 = pageStack.currentPage;
@@ -412,10 +412,10 @@ Item {
             const listView = settingsPage.listView;
             const model = listView.model;
             tryCompare(model, "count", 12, 5000, "app settings shown");
-            compare(model.get(7).label, "Import selected settings/secrets/data of app and backend");
+            compare(model.get(6).label, "Import selected settings/secrets/data of app and backend");
 
             // trigger import
-            listView.currentIndex = 7;
+            listView.currentIndex = 6;
             const folderDlg = settingsPage.backupFolderDialog;
             folderDlg.popupType = Popup.Item;
             folderDlg.options |= FolderDialog.DontUseNativeDialog;
@@ -479,8 +479,8 @@ Item {
             // trigger export
             compare(settingsPage.title, "App settings", "back on settings page");
             const listView2 = settingsPage.listView;
-            compare(listView2.model.get(8).label, "Export all settings/secrets/data of app and backend");
-            listView2.currentIndex = 8;
+            compare(listView2.model.get(7).label, "Export all settings/secrets/data of app and backend");
+            listView2.currentIndex = 7;
             listView2.currentItem.click();
             const folderDlg2 = settingsPage.backupFolderDialog;
             tryCompare(folderDlg2, "visible", true, 5000, "folder dialog shown");
