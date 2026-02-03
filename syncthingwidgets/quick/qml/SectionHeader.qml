@@ -7,7 +7,7 @@ RowLayout {
     width: parent.width
     Label {
         Layout.fillWidth: true
-        Layout.margins: 15
+        Layout.margins: 16
         Layout.topMargin: 20
         Layout.bottomMargin: 10
         text: parent.section
