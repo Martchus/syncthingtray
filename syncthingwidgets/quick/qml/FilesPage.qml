@@ -66,7 +66,7 @@ Page {
             TapHandler {
                 acceptedDevices: PointerDevice.TouchScreen
                 onLongPressed: {
-                    contextMenu.showCenteredIn(fileIcon);
+                    contextMenu.showCenteredInRight(fileIcon);
                     App.performHapticFeedback();
                 }
             }
