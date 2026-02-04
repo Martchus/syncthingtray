@@ -67,10 +67,11 @@ manage ignore patterns. To use this, one would:
 0. Read the [documentation on ignore patterns](https://docs.syncthing.net/users/ignoring.html).
 1. Add a new folder keeping the setting "Paused" enabled to prevent Syncthing from immediately
     pulling files.
-2. Add `/**` as ignore pattern to ignore everything by default.
+2. Add `/**` as ignore pattern to ignore everything by default. This can be done by clicking the
+   menu action "Ignore all" in the ignore pattern editor.
 3. Resume the folder and wait until it is idle.
 4. Open the "Remote files" browser for the folder and select directories and files to synchronize.
-5. Review the changes to the ignore pattern and apply them if everything looks right. In this
+5. Review the changes to the ignore patterns and apply them if everything looks right. In this
    last step you can also do manual changes, e.g. replacing certain path elements with globbing.
 
 ## Testing the app without migrating
