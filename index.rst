@@ -13,3 +13,7 @@ Documentation
    docs/devel.md
    plasmoid/testing.md
    fileitemactionplugin/testing.md
+
+.. |date| date::
+
+Last updated on |date|
