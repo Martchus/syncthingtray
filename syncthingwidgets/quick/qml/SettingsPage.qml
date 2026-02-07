@@ -60,6 +60,12 @@ StackView {
                     iconName: "area-chart"
                 }
                 ListElement {
+                    label: qsTr("Save support bundle")
+                    functionName: "saveSupportBundle"
+                    category: qsTr("Diagnostics")
+                    iconName: "user-md"
+                }
+                ListElement {
                     functionName: "checkSettings"
                     callback: (availableSettings) => stackView.push("ImportPage.qml", {availableSettings: availableSettings}, StackView.PushTransition)
                     label: qsTr("Import selected settings/secrets/data of app and backend")
@@ -77,12 +83,6 @@ StackView {
                     label: qsTr("Move Syncthing home directory")
                     category: qsTr("Maintenance actions")
                     iconName: "folder-open-o"
-                }
-                ListElement {
-                    label: qsTr("Save support bundle")
-                    functionName: "saveSupportBundle"
-                    category: qsTr("Maintenance actions")
-                    iconName: "user-md"
                 }
                 ListElement {
                     callback: () => App.cleanSyncthingHomeDirectory()
