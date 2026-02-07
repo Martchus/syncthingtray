@@ -33,7 +33,7 @@ The screenshots are not up-to-date.
 ![Folders (darkmode)](/tray/resources/screenshots/mobile/dark-folders.jpg)
 ![Folder config](/tray/resources/screenshots/mobile/folder-config.jpg)
 
-![App settings](/tray/resources/screenshots/mobile/settings.jpg)
+![App settings](/tray/resources/screenshots/mobile/app-settings.jpg)
 ![Import](/tray/resources/screenshots/mobile/import.jpg)
 ![Run configuration](/tray/resources/screenshots/mobile/run-config.jpg)
 ![Tweaks](/tray/resources/screenshots/mobile/tweaks.jpg)
