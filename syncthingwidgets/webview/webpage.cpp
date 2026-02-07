@@ -85,7 +85,8 @@ WebPage::WebPage(WebViewDialog *dlg, SYNCTHINGWIDGETS_WEB_VIEW *view)
 
 bool WebPage::isSamePage(const QUrl &url1, const QUrl &url2)
 {
-    if (url1.scheme() == url2.scheme() && url1.host() == url2.host() && url1.port() == url2.port()) {
+    if ((url1.scheme() == url2.scheme() || (url1.scheme() == QStringLiteral("http") && url2.scheme() == QStringLiteral("https")))
+        && url1.host() == url2.host() && url1.port() == url2.port()) {
         QString path1 = url1.path();
         while (path1.endsWith(QChar('/'))) {
             path1.resize(path1.size() - 1);
@@ -139,8 +140,7 @@ bool WebPage::canIgnoreCertificateError(const QWebEngineCertificateError &certif
 
     // ignore only certificate errors matching the expected URL of the Syncthing instance
     const auto urlWithError = certificateError.url();
-    const auto expectedUrl = m_view->url();
-    if (urlWithError.scheme() != expectedUrl.scheme() || urlWithError.host() != expectedUrl.host()) {
+    if (urlWithError.scheme() != QStringLiteral("https") || urlWithError.host() != m_view->url().host()) {
         return false;
     }
 
