@@ -30,14 +30,15 @@ The screenshots are not up-to-date.
 ## Mobile UI on Android
 ![Startpage](/tray/resources/screenshots/mobile/startpage.jpg)
 ![Folders](/tray/resources/screenshots/mobile/folders.jpg)
-![Folders](/tray/resources/screenshots/mobile/folders-2.jpg)
 ![Folders (darkmode)](/tray/resources/screenshots/mobile/dark-folders.jpg)
 ![Folder config](/tray/resources/screenshots/mobile/folder-config.jpg)
 
+![App settings](/tray/resources/screenshots/mobile/settings.jpg)
 ![Import](/tray/resources/screenshots/mobile/import.jpg)
-![Run config](/tray/resources/screenshots/mobile/run-config.jpg)
+![Run configuration](/tray/resources/screenshots/mobile/run-config.jpg)
+![Tweaks](/tray/resources/screenshots/mobile/tweaks.jpg)
 
 ![Devices](/tray/resources/screenshots/mobile/dark-devices.jpg)
-![Advanced](/tray/resources/screenshots/mobile/dark-advanced.jpg)
+![Advanced Syncthing configuration](/tray/resources/screenshots/mobile/dark-advanced.jpg)
 ![File tree 1](/tray/resources/screenshots/mobile/dark-file-tree-1.jpg)
 ![File tree 2](/tray/resources/screenshots/mobile/dark-file-tree-2.jpg)
