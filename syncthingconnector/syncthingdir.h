@@ -115,6 +115,7 @@ public:
     constexpr bool isNull() const;
     constexpr bool operator==(const SyncthingStatistics &other) const;
     constexpr bool operator!=(const SyncthingStatistics &other) const;
+    static constexpr int computeCompletionPercentage(quint64 globalBytes, quint64 neededBytes);
     SyncthingStatistics &operator+=(const SyncthingStatistics &other);
     QString bytesAsString() const;
 };
@@ -135,6 +136,11 @@ constexpr bool SyncthingStatistics::operator!=(const SyncthingStatistics &other)
     return !(*this == other);
 }
 
+constexpr int SyncthingStatistics::computeCompletionPercentage(quint64 globalBytes, quint64 neededBytes)
+{
+    return globalBytes ? static_cast<int>((globalBytes - neededBytes) * 100 / globalBytes) : 100;
+}
+
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     explicit SyncthingDir(const QString &id = QString(), const QString &label = QString(), const QString &path = QString());
     bool assignStatus(const QString &statusStr, SyncthingEventId eventId, CppUtilities::DateTime time);
@@ -148,6 +154,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     bool areRemotesUpToDate() const;
     bool isUnshared() const;
     bool isOutOfSync() const;
+    constexpr int computeCompletionPercentage() const;
 
     QString id;
     QString label;
@@ -227,6 +234,11 @@ inline bool SyncthingDir::isUnshared() const
 inline bool SyncthingDir::isOutOfSync() const
 {
     return !paused && status == SyncthingDirStatus::OutOfSync;
+}
+
+constexpr int SyncthingDir::computeCompletionPercentage() const
+{
+    return SyncthingStatistics::computeCompletionPercentage(globalStats.bytes, neededStats.bytes);
 }
 
 inline bool SyncthingDir::assignStatus(SyncthingDirStatus newStatus, SyncthingEventId eventId, CppUtilities::DateTime time)

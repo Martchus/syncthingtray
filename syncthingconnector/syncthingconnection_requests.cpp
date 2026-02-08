@@ -2217,7 +2217,7 @@ void SyncthingConnection::readDirSummary(SyncthingEventId eventId, DateTime even
         dir.assignStatus(state, eventId, lastStatusUpdate);
     }
 
-    dir.completionPercentage = globalStats.bytes ? static_cast<int>((globalStats.bytes - neededStats.bytes) * 100 / globalStats.bytes) : 100;
+    dir.completionPercentage = dir.computeCompletionPercentage();
 
     emit dirStatusChanged(dir, index);
     if (neededStats.isNull() && previouslyUpdated && (previouslyNeeded || globalStats != previouslyGlobal)) {
@@ -2853,7 +2853,7 @@ void SyncthingConnection::readLocalFolderCompletion(
     neededStats.total = jsonValueToInt(eventData.value(QLatin1String("needItems")), static_cast<double>(neededStats.files));
     dirInfo.lastStatisticsUpdateEvent = eventId;
     dirInfo.lastStatisticsUpdateTime = eventTime;
-    dirInfo.completionPercentage = globalStats.bytes ? static_cast<int>((globalStats.bytes - neededStats.bytes) * 100 / globalStats.bytes) : 100;
+    dirInfo.completionPercentage = dirInfo.computeCompletionPercentage();
     emit dirStatusChanged(dirInfo, index);
     if (neededStats.isNull() && previouslyUpdated && (previouslyNeeded || globalStats != previouslyGlobal)
         && dirInfo.status != SyncthingDirStatus::WaitingToScan && dirInfo.status != SyncthingDirStatus::Scanning) {
