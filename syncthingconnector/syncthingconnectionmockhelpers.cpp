@@ -6,8 +6,8 @@
 #include <c++utilities/tests/testutils.h>
 
 #include <QDebug>
-#include <QJsonDocument>
 #include <QJsonArray>
+#include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
 #include <QTimer>
@@ -29,13 +29,16 @@ namespace Data {
  */
 namespace TestData {
 LIB_SYNCTHING_CONNECTOR_EXPORT extern bool initialized;
-LIB_SYNCTHING_CONNECTOR_EXPORT extern std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty, browse, needed, pendingFolders, pendingDevices;
+LIB_SYNCTHING_CONNECTOR_EXPORT extern std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3,
+    pullErrors, connections, version, empty, browse, needed, pendingFolders, pendingDevices;
 LIB_SYNCTHING_CONNECTOR_EXPORT extern std::string events[7];
 
-#if (defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) && !defined(LIB_SYNCTHING_CONNECTOR_MOCKED)) || (!defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) && defined(LIB_SYNCTHING_CONNECTOR_MOCKED))
+#if (defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) && !defined(LIB_SYNCTHING_CONNECTOR_MOCKED))                                                 \
+    || (!defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) && defined(LIB_SYNCTHING_CONNECTOR_MOCKED))
 #define LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED_IMPLEMENTATION
 bool initialized = false;
-std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty, browse, needed, pendingFolders, pendingDevices;
+std::string config, status, folderStats, deviceStats, errors, folderStatus, folderStatus2, folderStatus3, pullErrors, connections, version, empty,
+    browse, needed, pendingFolders, pendingDevices;
 std::string events[7];
 #endif
 } // namespace TestData
@@ -51,7 +54,7 @@ static std::string readMockFile(const std::string &filePath)
         return readFile(filePath);
     } catch (const std::ios_base::failure &failure) {
         std::cerr << Phrases::Error << "An IO error occurred when reading mock config file \"" << filePath << "\": " << failure.what()
-             << Phrases::EndFlush;
+                  << Phrases::EndFlush;
         std::exit(-2);
     }
 }
