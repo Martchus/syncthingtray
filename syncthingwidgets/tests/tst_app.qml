@@ -67,8 +67,8 @@ Item {
     property list<string> messages
 
     readonly property int optionsIndex: 6
-    readonly property int importIndex: 6
-    readonly property int exportIndex: 7
+    readonly property int importIndex: 7
+    readonly property int exportIndex: importIndex + 1
     readonly property int localDiscoveryIndex: 7
     readonly property int globalDiscoveryIndex: 8
 
