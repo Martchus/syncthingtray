@@ -92,11 +92,11 @@ Page {
                                 Layout.fillWidth: true
                                 id: progressBar
                                 from: 0
-                                to: stats.local.total + stats.needed.total
-                                value: stats.local.bytes + stats.needed.bytes
+                                to: 100
+                                value: stats.completionPercentage
                             }
                             Label {
-                                text: progressBar.position >= 1 ? qsTr("Up to Date") : qsTr("%1 %, %2 remaining").arg(Math.round(progressBar.position) * 100).arg(stats.needed.bytesAsString)
+                                text: progressBar.position >= 1 ? qsTr("Up to Date") : qsTr("%1 %, %2 remaining").arg(Math.floor(progressBar.position * 100)).arg(stats.needed.bytesAsString)
                                 font.weight: Font.Light
                             }
                         }

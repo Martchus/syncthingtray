@@ -255,6 +255,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingOverallDirStatistics {
     Q_PROPERTY(SyncthingStatistics local MEMBER local)
     Q_PROPERTY(SyncthingStatistics global MEMBER global)
     Q_PROPERTY(SyncthingStatistics needed MEMBER needed)
+    Q_PROPERTY(int completionPercentage READ computeCompletionPercentage)
 
 public:
     explicit SyncthingOverallDirStatistics();
@@ -265,6 +266,7 @@ public:
     SyncthingStatistics needed;
 
     bool isNull() const;
+    constexpr int computeCompletionPercentage() const;
 };
 
 inline SyncthingOverallDirStatistics::SyncthingOverallDirStatistics()
@@ -274,6 +276,11 @@ inline SyncthingOverallDirStatistics::SyncthingOverallDirStatistics()
 inline bool SyncthingOverallDirStatistics::isNull() const
 {
     return local.isNull() && global.isNull();
+}
+
+constexpr int SyncthingOverallDirStatistics::computeCompletionPercentage() const
+{
+    return SyncthingStatistics::computeCompletionPercentage(global.bytes, needed.bytes);
 }
 
 } // namespace Data
