@@ -99,11 +99,17 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingStatistics {
     Q_PROPERTY(quint64 total MEMBER total)
 
 public:
+    /// \brief The size of pending deletions, dirs, files and symlinks.
     quint64 bytes = 0;
+    /// \brief The number of pending deletions.
     quint64 deletes = 0;
+    /// \brief The number of dirs.
     quint64 dirs = 0;
+    /// \brief The number of files.
     quint64 files = 0;
+    /// \brief The number of symlinks.
     quint64 symlinks = 0;
+    /// \brief The number of pending deletions, dirs, files and symlinks.
     quint64 total = 0;
 
     constexpr bool isNull() const;
