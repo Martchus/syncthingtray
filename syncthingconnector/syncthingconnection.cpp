@@ -444,8 +444,7 @@ bool SyncthingConnection::handleMeteredConnection()
  * the connection to the currently configured instance is established. Use reconnect() to connect to
  * a different instance.
  *
- * \remarks Does not clear data from a previous connection (except error items). Use reconnect() if that
- *          is required.
+ * \remarks Does not clear data from a previous connection. Use reconnect() if that is required.
  */
 void SyncthingConnection::connect()
 {
