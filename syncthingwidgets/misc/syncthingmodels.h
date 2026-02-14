@@ -120,8 +120,6 @@ public:
     }
 
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
-    Q_INVOKABLE bool openSyncthingConfigFile();
-    Q_INVOKABLE bool openSyncthingLogFile();
     Q_INVOKABLE bool openUrlExternally(const QUrl &url, bool viaQt = false);
     Q_INVOKABLE bool openPath(const QString &path);
     Q_INVOKABLE bool openPath(const QString &dirId, const QString &relativePath);
@@ -137,16 +135,10 @@ public:
     Q_INVOKABLE void clearLog();
     Q_INVOKABLE bool showQrCode(Icon *icon);
     Q_INVOKABLE bool loadDirErrors(const QString &dirId, QObject *view);
-    Q_INVOKABLE bool loadStatistics(const QJSValue &callback);
-    Q_INVOKABLE bool showError(const QString &errorMessage);
     Q_INVOKABLE QString resolveUrl(const QUrl &url);
     Q_INVOKABLE bool shouldIgnorePermissions(const QString &path);
     Q_INVOKABLE Data::SyncthingFileModel *createFileModel(const QString &dirId, QObject *parent);
     Q_INVOKABLE QtGui::DiffHighlighter *createDiffHighlighter(QTextDocument *parent);
-    qint64 databaseSize(const QString &path, const QString &extension) const;
-    QVariant formattedDatabaseSize(const QString &path, const QString &extension) const;
-    QVariantMap statistics() const;
-    void statistics(QVariantMap &res) const;
     Q_INVOKABLE bool postSyncthingConfig(const QJsonObject &rawConfig, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool invokeDirAction(const QString &dirId, const QString &action);
     Q_INVOKABLE bool requestFromSyncthing(
@@ -162,6 +154,7 @@ public:
 #endif
 
 private:
+    Data::SyncthingConnection &m_connection;
     Data::SyncthingDirectoryModel m_dirModel;
     Data::SyncthingSortFilterModel m_sortFilterDirModel;
     Data::SyncthingDeviceModel m_devModel;

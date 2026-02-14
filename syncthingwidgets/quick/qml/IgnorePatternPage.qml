@@ -49,7 +49,7 @@ Page {
             icon.source: App.faUrlBase + "external-link"
             enabled: App.connection.isLocal
             onTriggered: App.openIgnorePatterns(page.dirId)
-        },
+        }
     ]
     ScrollView {
         anchors.fill: parent
