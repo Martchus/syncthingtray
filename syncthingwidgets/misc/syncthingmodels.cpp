@@ -1,12 +1,21 @@
 #include "./syncthingmodels.h"
 
+#include <qtutilities/misc/desktoputils.h>
+
+#include <QDesktopServices>
+#include <QNetworkReply>
+
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+#include <QJSEngine>
+#endif
+
 namespace QtGui {
 
 SyncthingData::SyncthingData(QObject *parent)
     : QObject(parent)
     , m_notifier(m_connection)
 {
-    m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents | SyncthingConnection::PollingFlags::Errors);
+    m_connection.setPollingFlags(Data::SyncthingConnection::PollingFlags::MainEvents | Data::SyncthingConnection::PollingFlags::Errors);
 }
 
 SyncthingData::~SyncthingData()
@@ -28,8 +37,9 @@ SyncthingData *SyncthingData::create(QQmlEngine *qmlEngine, QJSEngine *engine)
 }
 #endif
 
-SyncthingModels::SyncthingModels(Data::SyncthingConnection &connection, QObject *parent = nullptr)
+SyncthingModels::SyncthingModels(Data::SyncthingConnection &connection, QObject *parent)
     : QObject(parent)
+    , m_connection(connection)
     , m_dirModel(connection)
     , m_sortFilterDirModel(&m_dirModel)
     , m_devModel(connection)
@@ -40,7 +50,7 @@ SyncthingModels::SyncthingModels(Data::SyncthingConnection &connection, QObject 
 }
 
 SyncthingModels::SyncthingModels(SyncthingData &data, QObject *parent)
-    : SyncthingMOdels(data.connection(), parent)
+    : SyncthingModels(*data.connection(), parent)
 {
 }
 
@@ -48,44 +58,7 @@ SyncthingModels::~SyncthingModels()
 {
 }
 
-
-qint64 App::databaseSize(const QString &path, const QString &extension) const
-{
-    const auto dir = QDir(m_syncthingDataDir % QChar('/') % path);
-    const auto files = dir.entryInfoList({ extension }, QDir::Files);
-    return std::accumulate(files.begin(), files.end(), qint64(), [](auto size, const auto &file) { return size + file.size(); });
-}
-
-QVariant App::formattedDatabaseSize(const QString &path, const QString &extension) const
-{
-    const auto size = databaseSize(path, extension);
-    return size > 0 ? QVariant(QString::fromStdString(CppUtilities::dataSizeToString(static_cast<std::uint64_t>(size)))) : QVariant();
-}
-
-QVariantMap App::statistics() const
-{
-    auto stats = QVariantMap();
-    statistics(stats);
-    return stats;
-}
-
-void App::statistics(QVariantMap &res) const
-{
-#ifdef Q_OS_ANDROID
-    res[QStringLiteral("extFilesDir")] = externalFilesDir();
-    res[QStringLiteral("extStoragePaths")] = externalStoragePaths();
-#endif
-    if (!m_connectToLaunched) {
-        return;
-    }
-    res[QStringLiteral("stConfigDir")] = m_syncthingConfigDir;
-    res[QStringLiteral("stDataDir")] = m_syncthingDataDir;
-    res[QStringLiteral("stLevelDbSize")] = formattedDatabaseSize(QStringLiteral("index-v0.14.0.db"), QStringLiteral("*.ldb"));
-    res[QStringLiteral("stLevelDbMigratedSize")] = formattedDatabaseSize(QStringLiteral("index-v0.14.0.db-migrated"), QStringLiteral("*.ldb"));
-    res[QStringLiteral("stSQLiteDbSize")] = formattedDatabaseSize(QStringLiteral("index-v2"), QStringLiteral("*.db*"));
-}
-
-bool App::openPath(const QString &path)
+bool SyncthingModels::openPath(const QString &path)
 {
     if (QtUtilities::openLocalFileOrDir(path)) {
         return true;
@@ -94,7 +67,7 @@ bool App::openPath(const QString &path)
     return false;
 }
 
-bool App::openPath(const QString &dirId, const QString &relativePath)
+bool SyncthingModels::openPath(const QString &dirId, const QString &relativePath)
 {
     const auto fullPath = m_connection.fullPath(dirId, relativePath);
     if (fullPath.isEmpty()) {
@@ -109,7 +82,7 @@ bool App::openPath(const QString &dirId, const QString &relativePath)
  * \brief Triggers a scan of \a path via the underlying OS.
  * \remarks So far only supported under Android where it is used to discover media files.
  */
-bool App::scanPath(const QString &path)
+bool SyncthingModels::scanPath(const QString &path)
 {
 #ifdef Q_OS_ANDROID
     if (QJniObject(QNativeInterface::QAndroidApplication::context())
@@ -123,7 +96,7 @@ bool App::scanPath(const QString &path)
     return false;
 }
 
-bool App::copyText(const QString &text)
+bool SyncthingModels::copyText(const QString &text)
 {
     if (auto *const clipboard = QGuiApplication::clipboard()) {
         clipboard->setText(text);
@@ -139,7 +112,7 @@ bool App::copyText(const QString &text)
     return false;
 }
 
-bool App::copyPath(const QString &dirId, const QString &relativePath)
+bool SyncthingModels::copyPath(const QString &dirId, const QString &relativePath)
 {
     const auto fullPath = m_connection.fullPath(dirId, relativePath);
     if (fullPath.isEmpty()) {
@@ -150,7 +123,7 @@ bool App::copyPath(const QString &dirId, const QString &relativePath)
     return false;
 }
 
-QString App::getClipboardText() const
+QString SyncthingModels::getClipboardText() const
 {
     if (auto *const clipboard = QGuiApplication::clipboard()) {
         return clipboard->text();
@@ -158,9 +131,9 @@ QString App::getClipboardText() const
     return QString();
 }
 
-bool App::loadIgnorePatterns(const QString &dirId, QObject *textArea)
+bool SyncthingModels::loadIgnorePatterns(const QString &dirId, QObject *textArea)
 {
-    auto res = m_connection.ignores(dirId, [this, textArea](SyncthingIgnores &&ignores, QString &&error) {
+    auto res = m_connection.ignores(dirId, [this, textArea](Data::SyncthingIgnores &&ignores, QString &&error) {
         if (!error.isEmpty()) {
             emit this->error(tr("Unable to load ignore patterns: ") + error);
         }
@@ -172,7 +145,7 @@ bool App::loadIgnorePatterns(const QString &dirId, QObject *textArea)
     return true;
 }
 
-bool App::saveIgnorePatterns(const QString &dirId, QObject *textArea)
+bool SyncthingModels::saveIgnorePatterns(const QString &dirId, QObject *textArea)
 {
     textArea->setProperty("enabled", false);
     const auto text = textArea->property("text");
@@ -192,18 +165,18 @@ bool App::saveIgnorePatterns(const QString &dirId, QObject *textArea)
     return true;
 }
 
-bool App::openIgnorePatterns(const QString &dirId)
+bool SyncthingModels::openIgnorePatterns(const QString &dirId)
 {
     return openPath(dirId, QStringLiteral(".stignore"));
 }
 
-bool App::loadErrors(QObject *listView)
+bool SyncthingModels::loadErrors(QObject *listView)
 {
     listView->setProperty("model", QVariant::fromValue(new Data::SyncthingErrorModel(m_connection, listView)));
     return true;
 }
 
-bool App::showLog(QObject *textArea)
+bool SyncthingModels::showLog(QObject *textArea)
 {
     textArea->setProperty("text", QString());
     connect(this, &App::logsAvailable, textArea, [textArea](const QString &newLogs) {
@@ -218,7 +191,7 @@ bool App::showLog(QObject *textArea)
     return true;
 }
 
-void App::clearLog()
+void SyncthingModels::clearLog()
 {
 #ifdef Q_OS_ANDROID
     sendMessageToService(ServiceAction::ClearLog);
@@ -227,7 +200,7 @@ void App::clearLog()
 #endif
 }
 
-bool App::showQrCode(Icon *icon)
+bool SyncthingModels::showQrCode(Icon *icon)
 {
     if (m_connection.myId().isEmpty()) {
         return false;
@@ -243,7 +216,7 @@ bool App::showQrCode(Icon *icon)
     return true;
 }
 
-bool App::loadDirErrors(const QString &dirId, QObject *view)
+bool SyncthingModels::loadDirErrors(const QString &dirId, QObject *view)
 {
     auto connection = connect(&m_connection, &Data::SyncthingConnection::dirStatusChanged, view, [this, dirId, view](const Data::SyncthingDir &dir) {
         if (dir.id != dirId) {
@@ -265,39 +238,7 @@ bool App::loadDirErrors(const QString &dirId, QObject *view)
     return true;
 }
 
-bool App::loadStatistics(const QJSValue &callback)
-{
-    if (!callback.isCallable()) {
-        return false;
-    }
-    auto query = m_connection.requestJsonData(
-        QByteArrayLiteral("GET"), QStringLiteral("svc/report"), QUrlQuery(), QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
-            auto report = doc.object().toVariantMap();
-            report[QStringLiteral("uptime")] = QString::fromStdString(CppUtilities::TimeSpan::fromSeconds(report[QStringLiteral("uptime")].toDouble())
-                    .toString(CppUtilities::TimeSpanOutputFormat::WithMeasures));
-            report[QStringLiteral("memoryUsage")] = QString::fromStdString(
-                CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report.take(QStringLiteral("memoryUsageMiB")).toDouble() * 1024 * 1024)));
-            report[QStringLiteral("processRSS")] = QString::fromStdString(
-                CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report.take(QStringLiteral("processRSSMiB")).toDouble() * 1024 * 1024)));
-            report[QStringLiteral("memorySize")] = QString::fromStdString(
-                CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report[QStringLiteral("memorySize")].toDouble() * 1024 * 1024)));
-            report[QStringLiteral("totSize")] = QString::fromStdString(
-                CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report.take(QStringLiteral("totMiB")).toDouble() * 1024 * 1024)));
-            statistics(report);
-            callback.call(QJSValueList({ m_engine->toScriptValue(report), QJSValue(std::move(error)) }));
-        });
-    connect(this, &QObject::destroyed, query.reply, &QNetworkReply::deleteLater);
-    connect(this, &QObject::destroyed, [c = query.connection] { disconnect(c); });
-    return true;
-}
-
-bool App::showError(const QString &errorMessage)
-{
-    emit error(errorMessage);
-    return true;
-}
-
-Data::SyncthingFileModel *App::createFileModel(const QString &dirId, QObject *parent)
+Data::SyncthingFileModel *SyncthingModels::createFileModel(const QString &dirId, QObject *parent)
 {
     auto row = int();
     auto dirInfo = m_connection.findDirInfo(dirId, row);
@@ -312,12 +253,12 @@ Data::SyncthingFileModel *App::createFileModel(const QString &dirId, QObject *pa
     return model;
 }
 
-DiffHighlighter *App::createDiffHighlighter(QTextDocument *parent)
+DiffHighlighter *SyncthingModels::createDiffHighlighter(QTextDocument *parent)
 {
     return new DiffHighlighter(parent);
 }
 
-QString App::resolveUrl(const QUrl &url)
+QString SyncthingModels::resolveUrl(const QUrl &url)
 {
 #if defined(Q_OS_ANDROID)
     const auto urlString = url.toString(QUrl::FullyEncoded);
@@ -337,7 +278,7 @@ QString App::resolveUrl(const QUrl &url)
 #endif
 }
 
-bool App::shouldIgnorePermissions(const QString &path)
+bool SyncthingModels::shouldIgnorePermissions(const QString &path)
 {
 #ifdef Q_OS_ANDROID
     // QStorageInfo only returns "fuse" on Android but we can assume that permissions should be generally ignored
@@ -351,7 +292,7 @@ bool App::shouldIgnorePermissions(const QString &path)
 }
 
 
-bool App::postSyncthingConfig(const QJsonObject &rawConfig, const QJSValue &callback)
+bool SyncthingModels::postSyncthingConfig(const QJsonObject &rawConfig, const QJSValue &callback)
 {
     if (m_pendingConfigChange.reply) {
         emit error(tr("Another config change is still pending."));
@@ -372,7 +313,7 @@ bool App::postSyncthingConfig(const QJsonObject &rawConfig, const QJSValue &call
     return true;
 }
 
-bool App::invokeDirAction(const QString &dirId, const QString &action)
+bool SyncthingModels::invokeDirAction(const QString &dirId, const QString &action)
 {
     if (action == QLatin1String("override")) {
         m_connection.requestOverride(dirId);
@@ -384,7 +325,7 @@ bool App::invokeDirAction(const QString &dirId, const QString &action)
     return false;
 }
 
-bool QtGui::App::requestFromSyncthing(const QString &verb, const QString &path, const QVariantMap &parameters, const QJSValue &callback)
+bool SyncthingModels::requestFromSyncthing(const QString &verb, const QString &path, const QVariantMap &parameters, const QJSValue &callback)
 {
     auto params = QUrlQuery();
     for (const auto &parameter : parameters.asKeyValueRange()) {
@@ -400,43 +341,43 @@ bool QtGui::App::requestFromSyncthing(const QString &verb, const QString &path, 
     return true;
 }
 
-QString App::formatDataSize(quint64 size) const
+QString SyncthingModels::formatDataSize(quint64 size) const
 {
     return QString::fromStdString(CppUtilities::dataSizeToString(size));
 }
 
-QString App::formatTraffic(quint64 total, double rate) const
+QString SyncthingModels::formatTraffic(quint64 total, double rate) const
 {
     return trafficString(total, rate);
 }
 
-bool QtGui::App::hasDevice(const QString &id)
+bool SyncthingModels::hasDevice(const QString &id)
 {
     auto row = 0;
     return m_connection.findDevInfo(id, row) != nullptr;
 }
 
-bool QtGui::App::hasDir(const QString &id)
+bool SyncthingModels::hasDir(const QString &id)
 {
     auto row = 0;
     return m_connection.findDirInfo(id, row) != nullptr;
 }
 
-QString App::deviceDisplayName(const QString &id) const
+QString SyncthingModels::deviceDisplayName(const QString &id) const
 {
     auto row = 0;
     auto info = m_connection.findDevInfo(id, row);
     return info != nullptr ? info->displayName() : id;
 }
 
-QString App::dirDisplayName(const QString &id) const
+QString SyncthingModels::dirDisplayName(const QString &id) const
 {
     auto row = 0;
     auto info = m_connection.findDirInfo(id, row);
     return info != nullptr ? info->displayName() : id;
 }
 
-QVariantList App::computeDirsNeedingItems(const QModelIndex &devProxyModelIndex) const
+QVariantList SyncthingModels::computeDirsNeedingItems(const QModelIndex &devProxyModelIndex) const
 {
     const auto *const devInfo = m_devModel.devInfo(m_sortFilterDevModel.mapToSource(devProxyModelIndex));
     auto dirs = QVariantList();
@@ -461,25 +402,9 @@ QVariantList App::computeDirsNeedingItems(const QModelIndex &devProxyModelIndex)
 }
 
 /*!
- * \brief Opens the Syncthing config file in the standard editor.
- */
-bool QtGui::App::openSyncthingConfigFile()
-{
-    return openPath(m_syncthingConfigDir + QStringLiteral("/config.xml"));
-}
-
-/*!
- * \brief Opens the Syncthing log file in the standard editor.
- */
-bool QtGui::App::openSyncthingLogFile()
-{
-    return openPath(syncthingLogFilePath());
-}
-
-/*!
  * \brief Opens the specified \a url externally, e.g. using an external web browser or a custom browser tab.
  */
-bool QtGui::App::openUrlExternally(const QUrl &url, bool viaQt)
+bool SyncthingModels::openUrlExternally(const QUrl &url, bool viaQt)
 {
 #ifdef Q_OS_ANDROID
     if (!viaQt) {
@@ -494,7 +419,7 @@ bool QtGui::App::openUrlExternally(const QUrl &url, bool viaQt)
 /*!
  * \brief Returns whether \a path is populated if it points to a directory usable as Syncthing home.
  */
-QVariant App::isPopulated(const QString &path) const
+QVariant SyncthingModels::isPopulated(const QString &path) const
 {
     auto ec = std::error_code();
     const auto stdPath = std::filesystem::path(SYNCTHING_APP_STRING_CONVERSION(path));

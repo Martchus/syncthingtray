@@ -12,6 +12,7 @@
 #include "../misc/internalerror.h"
 #include "../misc/otherdialogs.h"
 #include "../misc/statusinfo.h"
+#include "../misc/syncthingmodels.h"
 #include "../misc/syncthinglauncher.h"
 #include "../misc/utils.h"
 
@@ -238,6 +239,10 @@ public:
     QString currentSyncthingHomeDir() const;
     QObject *currentDialog();
     const QString &closePreference();
+    qint64 databaseSize(const QString &path, const QString &extension) const;
+    QVariant formattedDatabaseSize(const QString &path, const QString &extension) const;
+    QVariantMap statistics() const;
+    void statistics(QVariantMap &res) const;
 
     // helper functions
     Q_INVOKABLE bool initEngine();
@@ -253,6 +258,8 @@ public:
     Q_INVOKABLE bool applySettings();
     Q_INVOKABLE bool reloadSettings();
     Q_INVOKABLE bool clearLogfile();
+    Q_INVOKABLE bool openSyncthingConfigFile();
+    Q_INVOKABLE bool openSyncthingLogFile();
     Q_INVOKABLE QVariantList internalErrors() const;
     Q_INVOKABLE void clearInternalErrors();
     Q_INVOKABLE bool cleanSyncthingHomeDirectory(const QJSValue &callback = QJSValue());
@@ -264,7 +271,9 @@ public:
     Q_INVOKABLE bool moveSyncthingHome(QString newHomeDir, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool saveSupportBundle(QUrl url, const QJSValue &callback = QJSValue());
     Q_INVOKABLE void setCurrentControls(bool visible, int tabIndex = -1);
+    Q_INVOKABLE bool loadStatistics(const QJSValue &callback);
     Q_INVOKABLE bool performHapticFeedback();
+    Q_INVOKABLE bool showError(const QString &errorMessage);
     Q_INVOKABLE bool showToast(const QString &message);
     Q_INVOKABLE bool minimize();
     Q_INVOKABLE void quit();
