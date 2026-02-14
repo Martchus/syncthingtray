@@ -28,8 +28,9 @@ and announcements of new features.
 Issues can be created on GitHub but please check the
 [documentation on known bugs and workarounds](docs/known_bugs_and_workarounds.md) before.
 
-Syncthing Tray works with Syncthing v1 and v2 (and probably v0). Syncthing Tray is maintained, and updates will
-be made to support future Syncthing versions as needed.
+Syncthing Tray works with Syncthing v2. It also very likely still works with Syncthing v1 (and even v0) but this
+is not regularly tested anymore. Syncthing Tray is maintained, and updates will be made to support future Syncthing
+versions as needed.
 
 ## Supported platforms
 Official binaries are provided for Windows (for i686, x86_64 and aarch64), GNU/Linux (for x86_64) and Android
