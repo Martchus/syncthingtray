@@ -492,7 +492,7 @@ There is separate [documentation on these topics](docs/devel.md).
 
 ## Legal information
 ### Copyright notice and license
-Copyright © 2016-2025 Marius Kittler
+Copyright © 2016-2026 Marius Kittler
 
 All code - unless stated otherwise in a comment on top of the file - is licensed under [GPL-2-or-later](LICENSE). This does *not* apply
 to code contained in Git repositories included as Git submodule (which contain their own README and licensing information).
