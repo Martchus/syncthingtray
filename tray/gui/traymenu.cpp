@@ -23,11 +23,20 @@
 #define QT_SUPPORTS_SYSTEM_WINDOW_COMMANDS
 #endif
 
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+#define QT_PLATFORM_MAY_NOT_SUPPORT_POPUP
+#define QT_PLATFORM_POPUP_FLAGS_SPECIFIER
+#else
+#define QT_PLATFORM_POPUP_FLAGS_SPECIFIER constexpr
+#endif
+
 using namespace QtUtilities;
 
 namespace QtGui {
 
 static constexpr auto border = 10;
+
+static QT_PLATFORM_POPUP_FLAGS_SPECIFIER auto popupFlags = Qt::FramelessWindowHint | Qt::Popup;
 
 #ifdef TRAY_MENU_HANDLE_WINDOWS11_STYLE
 static bool isWindows11Style(const QWidget *widget)
@@ -47,13 +56,35 @@ TrayMenu::TrayMenu(TrayIcon *trayIcon, QWidget *parent)
     , m_isWindows11Style(isWindows11Style(this))
 #endif
 {
+    // disable use of the popup type under platforms that don't support it and emulate closing the window by checking
+    // the application state
+    // note: The Wayland platform does not support popups without a parent that received input events. Trying to show
+    //       the menu as popup would lead to "qt.qpa.wayland: Failed to create grabbing popup. Ensure popup … has a
+    //       transientParent set and that parent window has received input." and the menu would not show up. This is
+    //       not always/everywhere reproducible but it is nevertheless best to avoid using a popup completely.
+#ifdef QT_PLATFORM_MAY_NOT_SUPPORT_POPUP
+    if (QGuiApplication::platformName() == QStringLiteral("wayland")) {
+        popupFlags = Qt::Dialog | Qt::FramelessWindowHint | Qt::CustomizeWindowHint;
+        QObject::connect(qGuiApp, &QGuiApplication::applicationStateChanged, this, [this](Qt::ApplicationState state) {
+            // close the menu if the application becomes inactive
+            // note: This is not perfect as the menu will stay open if another window is active.
+            switch (state) {
+            case Qt::ApplicationInactive:
+                close();
+                break;
+            default:;
+            }
+        });
+    }
+#endif
+
     setObjectName(QStringLiteral("QtGui::TrayMenu"));
     setLayout(m_layout);
     updateContentMargins();
     m_layout->setSpacing(0);
     m_layout->addWidget(m_trayWidget = new TrayWidget(this));
     setPlatformMenu(nullptr);
-    setWindowFlags(Qt::FramelessWindowHint | Qt::Popup);
+    setWindowFlags(popupFlags);
     setWindowIcon(m_trayWidget->windowIcon());
 }
 
@@ -140,7 +171,7 @@ void TrayMenu::setWindowType(WindowType windowType)
     auto flags = Qt::WindowFlags();
     switch (m_windowType = windowType) {
     case WindowType::Popup:
-        flags = Qt::FramelessWindowHint | Qt::Popup;
+        flags = popupFlags;
         break;
     case WindowType::NormalWindow:
         flags = Qt::Window;
