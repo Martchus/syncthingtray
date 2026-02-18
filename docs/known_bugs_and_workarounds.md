@@ -2,26 +2,34 @@
 The following bugs are caused by dependencies or limitations of certain
 platforms. For bugs of Syncthing Tray itself, check out the issues on GitHub.
 
-## Workaround positioning issues under Wayland
-The stand-alone tray application (Qt Widgets based) basically works under
-Wayland but there are positioning issues and the settings regarding positioning
-have no effect (see "[List of bugs](#list-of-bugs)" section below). Under
-KDE/Wayland one should simply use the Plasmoid instead of the stand-alone
-version. Otherwise, one can workaround this limitation by telling the window
-manager how to place the window, e.g. under Sway one could add a configuration
-like this:
+## Workaround issues under Wayland
+The stand-alone tray application basically works under Wayland but there are
+positioning issues and the settings regarding positioning have no effect (see
+"[List of bugs](#list-of-bugs)" section below). **Under KDE/Wayland one should
+simply use the Plasmoid instead of the stand-alone version.**
 
-```
-for_window [title="^Syncthing Tray( \(.*\))?$"] floating enable, border none, resize set 450 400, move position 916 0
-```
+Otherwise, one can workaround this limitation by telling the window manager how
+to place the window, e.g.:
+
+* Under Sway one can add a configuration like this:
+  ```
+  for_window [title="^Syncthing Tray( \(.*\))?$"] floating enable, border none, resize set 450 400, move position 916 0
+  ```
+* Under KWin one can add a
+  [KWin rule](https://raw.githubusercontent.com/Martchus/syncthingtray/refs/heads/master/tray/resources/wayland-positioning-workaround.kwinrule).
+
+It is also not possible to use a popup window under Wayland. Therefore a normal
+window without title bar is used. It will be closed manually when no windows are
+active anymore to emulate the auto-closing behavior of a popup window.
 
 Alternatively, one can also configure Syncthing Tray to use a normal window in
 the appearance settings. That doesn't fix the positioning issue but then it
-looks just like a normal application so not being positioned in the tray area is
-less problematic.
+becomes less problematic as Syncthing Tray will look and behave just like a
+normal application.
 
-You can also select the window type "None". This disables Syncthing Tray's own UI
-completely and instead opens Syncthing directly when the tray icon is clicked.
+You can also select the window type "None" in the appearance settings. This
+disables Syncthing Tray's own UI completely and instead opens Syncthing directly
+when the tray icon is clicked.
 
 ## Tweak GUI settings for dark mode under Windows
 The dark mode introduced in Windows 10 does not affect traditional desktop
