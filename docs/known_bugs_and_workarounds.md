@@ -3,11 +3,13 @@ The following bugs are caused by dependencies or limitations of certain
 platforms. For bugs of Syncthing Tray itself, check out the issues on GitHub.
 
 ## Workaround positioning issues under Wayland
-The Qt Widgets based version basically works under Wayland but there are
-positioning issues and the settings regarding positioning have no effect (see
-"[List of bugs](#list-of-bugs)" section below). One can workaround this limitation by telling the
-window manager how to place the window, e.g. under Sway one could add a
-configuration like this:
+The stand-alone tray application (Qt Widgets based) basically works under
+Wayland but there are positioning issues and the settings regarding positioning
+have no effect (see "[List of bugs](#list-of-bugs)" section below). Under
+KDE/Wayland one should simply use the Plasmoid instead of the stand-alone
+version. Otherwise, one can workaround this limitation by telling the window
+manager how to place the window, e.g. under Sway one could add a configuration
+like this:
 
 ```
 for_window [title="^Syncthing Tray( \(.*\))?$"] floating enable, border none, resize set 450 400, move position 916 0
