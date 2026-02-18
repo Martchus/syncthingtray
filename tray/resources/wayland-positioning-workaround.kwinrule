@@ -1,0 +1,8 @@
+[Syncthing Tray]
+Description=Syncthing Tray
+placement=7
+placementrule=2
+title=^Syncthing Tray( \\(.*\\))?$
+titlematch=3
+wmclass=syncthingtray
+wmclassmatch=2
