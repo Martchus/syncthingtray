@@ -1536,6 +1536,7 @@ bool QtGui::App::openUrlExternally(const QUrl &url, bool viaQt)
 
 /*!
  * \brief Checks the location specified via \a url for settings to import.
+ * \remarks The \a url is passed by value for consistency with other functions.
  */
 bool App::checkSettings(QUrl url, const QJSValue &callback)
 {
@@ -1720,6 +1721,9 @@ void App::reconnectToSyncthing()
 
 /*!
  * \brief Imports selected settings (app-related and of Syncthing itself) from the specified \a url.
+ * \remarks
+ * - The settings are passed by value so m_settingsImport can be passed despite being cleared by this function.
+ * - The \a callback argument is there for consistency; it might not be reliably called, though.
  */
 bool App::importSettings(QVariantMap availableSettings, QVariantMap selectedSettings, const QJSValue &callback)
 {
@@ -1886,6 +1890,9 @@ static QString makeExportPath(const QString &dir, const QString &name, const QSt
 
 /*!
  * \brief Exports all settings (app-related and of Syncthing itself) to the specified \a url.
+ * \remarks
+ * - The \a url is passed by value so m_settingsExport can be passed despite being cleared by this function.
+ * - The \a callback argument is there for consistency; it might not be reliably called, though.
  */
 bool App::exportSettings(QUrl url, const QJSValue &callback)
 {
@@ -1989,6 +1996,9 @@ const QString &App::closePreference()
     return m_closePreference.value();
 }
 
+/*!
+ * \brief Checks the current location of the Syncthing home directory and where it could be moved.
+ */
 bool App::checkSyncthingHome(const QJSValue &callback)
 {
     if (checkOngoingImportExport()) {
@@ -2046,6 +2056,12 @@ bool App::checkSyncthingHome(const QJSValue &callback)
     return true;
 }
 
+/*!
+ * \brief Moves the Syncthing home directory to the specified \a newHomeDir.
+ * \remarks
+ * - The \a newHomeDir argument is passed by value so m_homeDirMove can be passed despite being cleared by this function.
+ * - The \a callback argument is there for consistency; it might not be reliably called, though.
+ */
 bool App::moveSyncthingHome(QString newHomeDir, const QJSValue &callback)
 {
     if (checkOngoingImportExport()) {
@@ -2134,6 +2150,10 @@ bool App::moveSyncthingHome(QString newHomeDir, const QJSValue &callback)
     return true;
 }
 
+/*!
+ * \brief Downloads a support bundle from Syncthing and stores it at the specified \a url.
+ * \remarks The \a url argument is passed by value for consistency.
+ */
 bool App::saveSupportBundle(QUrl url, const QJSValue &callback)
 {
     if (checkOngoingImportExport()) {
@@ -2193,6 +2213,9 @@ bool App::saveSupportBundle(QUrl url, const QJSValue &callback)
     return true;
 }
 
+/*!
+ * \brief Cleans the Syncthing home directory.
+ */
 bool App::cleanSyncthingHomeDirectory(const QJSValue &callback)
 {
     if (checkOngoingImportExport()) {
