@@ -49,12 +49,12 @@
         <translation>неизвестный</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="488"/>
+        <location filename="../syncthingconnection.cpp" line="487"/>
         <source>Connection configuration is insufficient.</source>
         <translation>Конфигурация соединения недостаточна.</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="993"/>
+        <location filename="../syncthingconnection.cpp" line="992"/>
         <source>Unable to parse timestamp &quot;%1&quot; (%2): %3</source>
         <translation>Невозможно проанализировать временную метку &quot;%1&quot; (%2): %3</translation>
     </message>
@@ -89,12 +89,12 @@
         <translation>Невозможно запросить журнал синхронизации: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1073"/>
+        <location filename="../syncthingconnection.cpp" line="1072"/>
         <source>Unable to locate certificate used by Syncthing.</source>
         <translation>Не удалось найти сертификат, используемый Syncthing.</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1086"/>
+        <location filename="../syncthingconnection.cpp" line="1085"/>
         <source>Unable to load certificate used by Syncthing.</source>
         <translation>Не удалось загрузить сертификат, используемый Syncthing.</translation>
     </message>
@@ -301,7 +301,7 @@
         <translation>Невозможно запросить события диска: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1303"/>
+        <location filename="../syncthingconnection.cpp" line="1302"/>
         <source>at offset %1</source>
         <translation>при смещении %1</translation>
     </message>

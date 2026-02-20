@@ -213,348 +213,348 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="119"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="124"/>
         <source>Set to require authentication for accessing the web-based GUI.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="120"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="125"/>
         <source>Contains the bcrypt hash of the password used to restrict accessing the web-based GUI. You can also enter a plain password which will then be hashed when applying the configuration.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="123"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="128"/>
         <source>Username</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="124"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="129"/>
         <source>Password (turned into bcrypt hash when saving)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="129"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="134"/>
         <source>API Key</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="129"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="134"/>
         <source>If set, this is the API key that enables usage of the REST interface. The app uses the REST interface so this value must not be empty for the app to function.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="130"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="135"/>
         <source>GUI Listen Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="130"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="135"/>
         <source>Set the listen address.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="131"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="136"/>
         <source>GUI Authentication User</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="132"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="137"/>
         <source>GUI Authentication Password (bcrypt hash!)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="133"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="138"/>
         <source>Use HTTPS for GUI and API</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="133"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="138"/>
         <source>If enabled, TLS (HTTPS) will be enforced. Non-HTTPS requests will be redirected to HTTPS. When set to false, TLS connections are still possible but not required.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="134"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="139"/>
         <source>Prompt for basic authentication</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="134"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="139"/>
         <source>When this setting is enabled, the web-based GUI will respond to unauthenticated requests with a 401 response prompting for Basic Authorization, so that https://user:pass@localhost style URLs continue to work in standard browsers. Other clients that always send the Authorization request header do not need this setting.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="135"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="140"/>
         <source>Authentication mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="135"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="140"/>
         <source>Authentication mode to use. If not present, the authentication mode (static) is controlled by the presence of user/password fields for backward compatibility.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="136"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="141"/>
         <source>Authentication using user and password.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="137"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="142"/>
         <source>LDAP authentication. Requires ldap top level config section to be present.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="139"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="144"/>
         <source>Theme of web-based GUI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="139"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="144"/>
         <source>The name of the theme to use.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="145"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="150"/>
         <source>Profiling and Debugging</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="145"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="150"/>
         <source>This enables Profiling and additional endpoints in the REST API.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="146"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="151"/>
         <source>Enabled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="146"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="151"/>
         <source>If disabled, the GUI and API will not be started. The app needs this to function.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="149"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="154"/>
         <source>Audit Log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="149"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="154"/>
         <source>Write events to timestamped file `audit-YYYYMMDD-HHMMSS.log` within the Syncthing home directory. The path can be overridden via &quot;Audit File&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="150"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="155"/>
         <source>Audit File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="150"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="155"/>
         <source>Path to store audit events under if &quot;Audit Log&quot; is enabled.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="151"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="156"/>
         <source>Sync Protocol Listen Addresses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="151"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="156"/>
         <source>Address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="151"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="156"/>
         <source>Specifies one or more listen addresses for the sync protocol. Set to default to listen on port TCP and QUIC port 22000.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="152"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="157"/>
         <source>Incoming Rate Limit (KiB/s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="152"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="157"/>
         <source>Incoming data rate limits, in kibibytes per second.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="153"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="158"/>
         <source>Outgoing Rate Limit (KiB/s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="153"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="158"/>
         <source>Outgoing data rate limit, in kibibytes per second.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="154"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="159"/>
         <source>Limit Bandwidth in LAN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="154"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="159"/>
         <source>Whether to apply bandwidth limits to devices in the same broadcast domain as the local device.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="155"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="160"/>
         <source>NAT traversal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="155"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="160"/>
         <source>Whether to attempt to perform a UPnP and NAT-PMP port mapping for incoming sync connections.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="156"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="161"/>
         <source>Local Discovery</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="156"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="161"/>
         <source>Whether to send announcements to the local LAN, also use such announcements to find other devices.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="157"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="162"/>
         <source>Global Discovery</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="157"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="162"/>
         <source>Whether to announce this device to the global announce (discovery) server, and also use it to look up other devices.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="158"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="163"/>
         <source>Global Discovery Servers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="158"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="163"/>
         <source>URI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="158"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="163"/>
         <source>A URI to a global announce (discovery) server, or the word &quot;default&quot; to include the default servers. Multiple servers can be added. The syntax for non-default entries is that of an HTTP or HTTPS URL. A number of options may be added as query options to the URL: insecure to prevent certificate validation (required for HTTP URLs) and &quot;id=&lt;device ID&gt;&quot; to perform certificate pinning. The device ID to use is printed by the discovery server on startup.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="159"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="164"/>
         <source>Relaying</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="159"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="164"/>
         <source>Whether relays will be connected to and potentially used for device to device connections.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="160"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="165"/>
         <source>Minimum Free Space (Home)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="160"/>
         <location filename="../quick/qml/AdvancedPage.qml" line="165"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="170"/>
         <source>The minimum required free space that should be available on the partition holding the configuration and index. The element content is interpreted according to the given unit attribute. Accepted unit values are &quot;%&quot; (percent of the disk / volume size), kB, MB, GB and TB. Set to zero to disable.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="161"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="166"/>
         <source>Announce LAN Addresses</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="161"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="166"/>
         <source>Enable (the default) or disable announcing private (RFC1918) LAN IP addresses to global discovery.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="162"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="167"/>
         <source>Networks to consider always local</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="162"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="167"/>
         <source>Network in CIDR notation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="162"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="167"/>
         <source>Network that should be considered as local given in CIDR notation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="165"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="170"/>
         <source>Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="166"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="171"/>
         <source>Unit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="167"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="172"/>
         <source>Percent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="167"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="172"/>
         <source>Percentage of the disk/volume size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="168"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="173"/>
         <source>Kilobyte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="168"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="173"/>
         <source>Absolute size in Kilobyte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="169"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="174"/>
         <source>Megabyte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="169"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="174"/>
         <source>Absolute size in Megabyte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="170"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="175"/>
         <source>Gigabyte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="170"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="175"/>
         <source>Absolute size in Gigabyte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="171"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="176"/>
         <source>Terrabyte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="171"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="176"/>
         <source>Absolute size in Terrabyte</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="178"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="183"/>
         <source>Discard changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="189"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="194"/>
         <source>Apply changes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2636,247 +2636,247 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1558"/>
+        <location filename="../quick/app.cpp" line="1559"/>
         <source>Settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1578"/>
+        <location filename="../quick/app.cpp" line="1579"/>
         <source>Unable to extract archive: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1583"/>
+        <location filename="../quick/app.cpp" line="1584"/>
         <source>Unable to create temp dir: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1587"/>
+        <location filename="../quick/app.cpp" line="1588"/>
         <source>archiving is only supported on Android.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1611"/>
+        <location filename="../quick/app.cpp" line="1612"/>
         <source>The Syncthing home directory under &quot;%1&quot; is empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1624"/>
+        <location filename="../quick/app.cpp" line="1625"/>
         <source>No Syncthing configuration file found under &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1712"/>
+        <location filename="../quick/app.cpp" line="1713"/>
         <source>Triggered re-connect with Syncthing backend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1730"/>
+        <location filename="../quick/app.cpp" line="1732"/>
         <source>Unable to import settings: settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1737"/>
+        <location filename="../quick/app.cpp" line="1739"/>
         <source>Waiting for backend to terminate before importing settings …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1780"/>
+        <location filename="../quick/app.cpp" line="1783"/>
         <source>Imported app config from &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1793"/>
+        <location filename="../quick/app.cpp" line="1796"/>
         <source>Imported Syncthing config and database from &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1811"/>
+        <location filename="../quick/app.cpp" line="1814"/>
         <source>Unable to find folders/devices in current Syncthing config.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1826"/>
+        <location filename="../quick/app.cpp" line="1829"/>
         <source>Merging %1 folders and %2 devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1828"/>
+        <location filename="../quick/app.cpp" line="1831"/>
         <source>Unable to import folders/devices.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1837"/>
+        <location filename="../quick/app.cpp" line="1840"/>
         <source>Unable to remove temp dir: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1843"/>
+        <location filename="../quick/app.cpp" line="1846"/>
         <source>Nothing has been imported.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1853"/>
+        <location filename="../quick/app.cpp" line="1856"/>
         <source>Unable to import settings: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1897"/>
+        <location filename="../quick/app.cpp" line="1901"/>
         <source>Waiting for backend to terminate before exporting settings …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1912"/>
+        <location filename="../quick/app.cpp" line="1917"/>
         <source>settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1918"/>
+        <location filename="../quick/app.cpp" line="1923"/>
         <source>no destination or file or directory specified/configured.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1930"/>
+        <location filename="../quick/app.cpp" line="1935"/>
         <source>Settings have been archived to &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1932"/>
+        <location filename="../quick/app.cpp" line="1937"/>
         <source>Archiving is only supported on Android.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1938"/>
+        <location filename="../quick/app.cpp" line="1943"/>
         <source>unable to create export directory under &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1951"/>
+        <location filename="../quick/app.cpp" line="1956"/>
         <source>Settings have been exported to &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1958"/>
+        <location filename="../quick/app.cpp" line="1963"/>
         <source>Unable to export settings: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2004"/>
+        <location filename="../quick/app.cpp" line="2012"/>
         <source>Default directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2020"/>
+        <location filename="../quick/app.cpp" line="2028"/>
         <source>External storage %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2029"/>
+        <location filename="../quick/app.cpp" line="2037"/>
         <source>Current home directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2055"/>
+        <location filename="../quick/app.cpp" line="2067"/>
         <source>Unable to move Syncthing home: settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2061"/>
+        <location filename="../quick/app.cpp" line="2073"/>
         <source>Waiting for backend to terminate before moving home …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2083"/>
+        <location filename="../quick/app.cpp" line="2096"/>
         <source>Home directory stays the same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2094"/>
+        <location filename="../quick/app.cpp" line="2107"/>
         <source>Cleaned up new home directory &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2100"/>
+        <location filename="../quick/app.cpp" line="2113"/>
         <source>Copied data from previous home directory &quot;%1&quot; to new one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2103"/>
+        <location filename="../quick/app.cpp" line="2116"/>
         <source>Cleaned up previous home directory.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2106"/>
+        <location filename="../quick/app.cpp" line="2119"/>
         <source>Configured &quot;%1&quot; as new/empty Syncthing home.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2108"/>
+        <location filename="../quick/app.cpp" line="2121"/>
         <source>Configured &quot;%1&quot; as Syncthing home.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2112"/>
+        <location filename="../quick/app.cpp" line="2125"/>
         <source>Unable to move home directory: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2146"/>
+        <location filename="../quick/app.cpp" line="2163"/>
         <source>Debugging needs to be enabled under advanced GUI settings first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2153"/>
+        <location filename="../quick/app.cpp" line="2170"/>
         <source>No destination or file or directory specified/configured.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2163"/>
+        <location filename="../quick/app.cpp" line="2180"/>
         <source>Unable to open output file under &quot;%1&quot;: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2181"/>
+        <location filename="../quick/app.cpp" line="2198"/>
         <source>Unable to write bundle: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2184"/>
+        <location filename="../quick/app.cpp" line="2201"/>
         <source>Unable to download bundle: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2187"/>
+        <location filename="../quick/app.cpp" line="2204"/>
         <source>Support bundle saved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2213"/>
+        <location filename="../quick/app.cpp" line="2233"/>
         <source>Removed old database directory.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2215"/>
+        <location filename="../quick/app.cpp" line="2235"/>
         <source>Unable to remove old database directory.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2233"/>
+        <location filename="../quick/app.cpp" line="2253"/>
         <source>Unable to remove leftovers from import under &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2238"/>
+        <location filename="../quick/app.cpp" line="2258"/>
         <source>Removed leftovers from import.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="2243"/>
+        <location filename="../quick/app.cpp" line="2263"/>
         <source>There was nothing to clean up.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.h" line="155"/>
+        <location filename="../quick/app.h" line="156"/>
         <source>not available</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5485,17 +5485,17 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="65"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="71"/>
         <source>Import selected settings/secrets/data of app and backend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="71"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="77"/>
         <source>Export all settings/secrets/data of app and backend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="77"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="83"/>
         <source>Move Syncthing home directory</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5510,7 +5510,7 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="82"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="63"/>
         <source>Save support bundle</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5671,17 +5671,17 @@ The Web UI will be opened in the default web browser instead.</source>
         <location filename="../quick/qml/SettingsPage.qml" line="47"/>
         <location filename="../quick/qml/SettingsPage.qml" line="53"/>
         <location filename="../quick/qml/SettingsPage.qml" line="59"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="65"/>
         <source>Diagnostics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="66"/>
         <location filename="../quick/qml/SettingsPage.qml" line="72"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="78"/>
         <source>Backup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="78"/>
         <location filename="../quick/qml/SettingsPage.qml" line="84"/>
         <location filename="../quick/qml/SettingsPage.qml" line="91"/>
         <location filename="../quick/qml/SettingsPage.qml" line="98"/>

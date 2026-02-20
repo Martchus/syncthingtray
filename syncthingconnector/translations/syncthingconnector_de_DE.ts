@@ -44,7 +44,7 @@
         <translation>verbunden, aber Verbindung zu allen entfernten Geräten getrennt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="993"/>
+        <location filename="../syncthingconnection.cpp" line="992"/>
         <source>Unable to parse timestamp &quot;%1&quot; (%2): %3</source>
         <translation>Fehler beim Parsen des Zeitstempels &quot;%1&quot; (Kontext: &quot;%2&quot;): %3</translation>
     </message>
@@ -58,7 +58,7 @@
         <translation>Verbindungsstatus unbekannt</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="488"/>
+        <location filename="../syncthingconnection.cpp" line="487"/>
         <source>Connection configuration is insufficient.</source>
         <translation>Verbindungskonfiguration ist ungenügend</translation>
     </message>
@@ -93,12 +93,12 @@
         <translation>Fehler beim Abfragen des Syncthing-Logs: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1073"/>
+        <location filename="../syncthingconnection.cpp" line="1072"/>
         <source>Unable to locate certificate used by Syncthing.</source>
         <translation>Das SSL-Zertifikat von Syncthing kann nicht gefunden werden.</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1086"/>
+        <location filename="../syncthingconnection.cpp" line="1085"/>
         <source>Unable to load certificate used by Syncthing.</source>
         <translation>Das SSL-Zertifikat von Syncthing kann nicht ausgelesen werden.</translation>
     </message>
@@ -305,7 +305,7 @@
         <translation>Fehler beim Anfordern der letzten Änderungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection.cpp" line="1303"/>
+        <location filename="../syncthingconnection.cpp" line="1302"/>
         <source>at offset %1</source>
         <translation>bei Zeichen %1</translation>
     </message>
