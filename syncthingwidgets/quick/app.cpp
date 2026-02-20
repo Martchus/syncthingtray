@@ -1537,7 +1537,7 @@ bool QtGui::App::openUrlExternally(const QUrl &url, bool viaQt)
 /*!
  * \brief Checks the location specified via \a url for settings to import.
  */
-bool App::checkSettings(const QUrl &url, const QJSValue &callback)
+bool App::checkSettings(QUrl url, const QJSValue &callback)
 {
     if (checkOngoingImportExport()) {
         return false;
@@ -1721,7 +1721,7 @@ void App::reconnectToSyncthing()
 /*!
  * \brief Imports selected settings (app-related and of Syncthing itself) from the specified \a url.
  */
-bool App::importSettings(const QVariantMap &availableSettings, const QVariantMap &selectedSettings, const QJSValue &callback)
+bool App::importSettings(QVariantMap availableSettings, QVariantMap selectedSettings, const QJSValue &callback)
 {
     if (checkOngoingImportExport()) {
         return false;
@@ -1887,7 +1887,7 @@ static QString makeExportPath(const QString &dir, const QString &name, const QSt
 /*!
  * \brief Exports all settings (app-related and of Syncthing itself) to the specified \a url.
  */
-bool App::exportSettings(const QUrl &url, const QJSValue &callback)
+bool App::exportSettings(QUrl url, const QJSValue &callback)
 {
     if (checkOngoingImportExport()) {
         return false;
@@ -2046,7 +2046,7 @@ bool App::checkSyncthingHome(const QJSValue &callback)
     return true;
 }
 
-bool App::moveSyncthingHome(const QString &newHomeDir, const QJSValue &callback)
+bool App::moveSyncthingHome(QString newHomeDir, const QJSValue &callback)
 {
     if (checkOngoingImportExport()) {
         return false;
@@ -2134,7 +2134,7 @@ bool App::moveSyncthingHome(const QString &newHomeDir, const QJSValue &callback)
     return true;
 }
 
-bool App::saveSupportBundle(const QUrl &url, const QJSValue &callback)
+bool App::saveSupportBundle(QUrl url, const QJSValue &callback)
 {
     if (checkOngoingImportExport()) {
         return false;

@@ -302,12 +302,12 @@ public:
     Q_INVOKABLE bool openSyncthingConfigFile();
     Q_INVOKABLE bool openSyncthingLogFile();
     Q_INVOKABLE bool openUrlExternally(const QUrl &url, bool viaQt = false);
-    Q_INVOKABLE bool checkSettings(const QUrl &url, const QJSValue &callback = QJSValue());
-    Q_INVOKABLE bool importSettings(const QVariantMap &availableSettings, const QVariantMap &selectedSettings, const QJSValue &callback = QJSValue());
-    Q_INVOKABLE bool exportSettings(const QUrl &url, const QJSValue &callback = QJSValue());
+    Q_INVOKABLE bool checkSettings(QUrl url, const QJSValue &callback = QJSValue());
+    Q_INVOKABLE bool importSettings(QVariantMap availableSettings, QVariantMap selectedSettings, const QJSValue &callback = QJSValue());
+    Q_INVOKABLE bool exportSettings(QUrl url, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool checkSyncthingHome(const QJSValue &callback = QJSValue());
-    Q_INVOKABLE bool moveSyncthingHome(const QString &newHomeDir, const QJSValue &callback = QJSValue());
-    Q_INVOKABLE bool saveSupportBundle(const QUrl &url, const QJSValue &callback = QJSValue());
+    Q_INVOKABLE bool moveSyncthingHome(QString newHomeDir, const QJSValue &callback = QJSValue());
+    Q_INVOKABLE bool saveSupportBundle(QUrl url, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool openPath(const QString &path);
     Q_INVOKABLE bool openPath(const QString &dirId, const QString &relativePath);
     Q_INVOKABLE bool scanPath(const QString &path);
