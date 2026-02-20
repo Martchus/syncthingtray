@@ -2778,7 +2778,7 @@
     <message>
         <location filename="../quick/app.cpp" line="1829"/>
         <source>Merging %1 folders and %2 devices</source>
-        <translation>Importiere %1 Ordner und %1 Gerät(e)</translation>
+        <translation>Importiere %1 Ordner und %2 Gerät(e)</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1831"/>
