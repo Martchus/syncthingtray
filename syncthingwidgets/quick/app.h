@@ -23,6 +23,7 @@
 
 #include <qtutilities/settingsdialog/qtsettings.h>
 
+#include <QJSValue>
 #include <QJsonObject>
 #include <QQmlApplicationEngine>
 #include <QtVersion>
@@ -439,10 +440,22 @@ private:
     mutable std::optional<bool> m_storagePermissionGranted;
     mutable std::optional<bool> m_notificationPermissionGranted;
 #endif
-    std::pair<QVariantMap, QVariantMap> m_settingsImport;
-    std::optional<QUrl> m_settingsExport;
-    std::optional<QFile> m_downloadFile;
-    std::optional<QString> m_homeDirMove;
+    struct {
+        QVariantMap availableSettings;
+        QVariantMap selectedSettings;
+        QJSValue callback;
+    } m_settingsImport;
+    struct {
+        std::optional<QUrl> url;
+        QJSValue callback;
+    } m_settingsExport;
+    struct {
+        std::optional<QFile> outputFile;
+    } m_download;
+    struct {
+        std::optional<QString> newHomeDir;
+        QJSValue callback;
+    } m_homeDirMove;
     std::optional<QString> m_closePreference;
     QtUtilities::QtSettings m_qtSettings;
     QString m_faUrlBase;

@@ -1012,12 +1012,12 @@ void App::handleRunningChanged(bool isRunning)
     if (m_connectToLaunched) {
         invalidateStatus();
     }
-    if (!m_settingsImport.first.isEmpty() && !isRunning) {
-        importSettings(m_settingsImport.first, m_settingsImport.second);
-    } else if (m_settingsExport.has_value() && !isRunning) {
-        exportSettings(m_settingsExport.value());
-    } else if (m_homeDirMove.has_value()) {
-        moveSyncthingHome(m_homeDirMove.value());
+    if (!m_settingsImport.availableSettings.isEmpty() && !isRunning) {
+        importSettings(m_settingsImport.availableSettings, m_settingsImport.selectedSettings, m_settingsImport.callback);
+    } else if (m_settingsExport.url.has_value() && !isRunning) {
+        exportSettings(m_settingsExport.url.value(), m_settingsExport.callback);
+    } else if (m_homeDirMove.newHomeDir.has_value()) {
+        moveSyncthingHome(m_homeDirMove.newHomeDir.value(), m_homeDirMove.callback);
     } else if (m_clearingLogfile) {
         m_clearingLogfile = false;
         clearLogfile();
@@ -1721,9 +1721,7 @@ void App::reconnectToSyncthing()
 
 /*!
  * \brief Imports selected settings (app-related and of Syncthing itself) from the specified \a url.
- * \remarks
- * - The settings are passed by value so m_settingsImport can be passed despite being cleared by this function.
- * - The \a callback argument is there for consistency; it might not be reliably called, though.
+ * \remarks The settings are passed by value so m_settingsImport can be passed despite being cleared by this function.
  */
 bool App::importSettings(QVariantMap availableSettings, QVariantMap selectedSettings, const QJSValue &callback)
 {
@@ -1739,15 +1737,16 @@ bool App::importSettings(QVariantMap availableSettings, QVariantMap selectedSett
     const auto importSyncthingHome = selectedSettings.value(QStringLiteral("syncthingHome")).toBool();
     if (importSyncthingHome && m_isSyncthingRunning) {
         emit info(tr("Waiting for backend to terminate before importing settings …"));
-        m_settingsImport.first = availableSettings;
-        m_settingsImport.second = selectedSettings;
+        m_settingsImport.availableSettings = availableSettings;
+        m_settingsImport.selectedSettings = selectedSettings;
+        m_settingsImport.callback = callback;
         terminateSyncthing();
         return false;
     }
 
     setImportExportStatus(ImportExportStatus::Importing);
-    m_settingsImport.first.clear();
-    m_settingsImport.second.clear();
+    m_settingsImport.availableSettings.clear();
+    m_settingsImport.selectedSettings.clear();
 
     struct ImportResult {
         QString message;
@@ -1890,9 +1889,7 @@ static QString makeExportPath(const QString &dir, const QString &name, const QSt
 
 /*!
  * \brief Exports all settings (app-related and of Syncthing itself) to the specified \a url.
- * \remarks
- * - The \a url is passed by value so m_settingsExport can be passed despite being cleared by this function.
- * - The \a callback argument is there for consistency; it might not be reliably called, though.
+ * \remarks The \a url is passed by value so m_settingsExport can be passed despite being cleared by this function.
  */
 bool App::exportSettings(QUrl url, const QJSValue &callback)
 {
@@ -1902,13 +1899,14 @@ bool App::exportSettings(QUrl url, const QJSValue &callback)
 
     if (m_isSyncthingRunning) {
         emit info(tr("Waiting for backend to terminate before exporting settings …"));
-        m_settingsExport = url;
+        m_settingsExport.url = url;
+        m_settingsExport.callback = callback;
         terminateSyncthing();
         return false;
     }
 
     setImportExportStatus(ImportExportStatus::Exporting);
-    m_settingsExport.reset();
+    m_settingsExport.url.reset();
 
     const auto tweaksSettings = m_settings.value(QLatin1String("tweaks")).toObject();
     QtConcurrent::run([this, url, currentHomePath = currentSyncthingHomeDir(),
@@ -2058,9 +2056,7 @@ bool App::checkSyncthingHome(const QJSValue &callback)
 
 /*!
  * \brief Moves the Syncthing home directory to the specified \a newHomeDir.
- * \remarks
- * - The \a newHomeDir argument is passed by value so m_homeDirMove can be passed despite being cleared by this function.
- * - The \a callback argument is there for consistency; it might not be reliably called, though.
+ * \remarks The \a newHomeDir argument is passed by value so m_homeDirMove can be passed despite being cleared by this function.
  */
 bool App::moveSyncthingHome(QString newHomeDir, const QJSValue &callback)
 {
@@ -2075,13 +2071,14 @@ bool App::moveSyncthingHome(QString newHomeDir, const QJSValue &callback)
     // stop Syncthing if necessary
     if (m_isSyncthingRunning) {
         emit info(tr("Waiting for backend to terminate before moving home …"));
-        m_homeDirMove = newHomeDir;
+        m_homeDirMove.newHomeDir = newHomeDir;
+        m_homeDirMove.callback = callback;
         terminateSyncthing();
         return false;
     }
 
     setImportExportStatus(ImportExportStatus::Moving);
-    m_homeDirMove.reset();
+    m_homeDirMove.newHomeDir.reset();
 
     QtConcurrent::run([newHomeDir = newHomeDir, customHomeDir = currentSyncthingHomeDir(), defaultPath = m_settingsDir.value_or(QDir()).path(),
                           rawConfig = m_connection.rawConfig()]() mutable {
@@ -2178,32 +2175,32 @@ bool App::saveSupportBundle(QUrl url, const QJSValue &callback)
     } else {
         path = resolveUrl(url);
     }
-    m_downloadFile.emplace(path);
-    if (!m_downloadFile->open(QFile::WriteOnly | QFile::Truncate)) {
-        emit error(tr("Unable to open output file under \"%1\": %2").arg(path, m_downloadFile->errorString()));
+    m_download.outputFile.emplace(path);
+    if (!m_download.outputFile->open(QFile::WriteOnly | QFile::Truncate)) {
+        emit error(tr("Unable to open output file under \"%1\": %2").arg(path, m_download.outputFile->errorString()));
         return false;
     }
     setImportExportStatus(ImportExportStatus::SavingSupportBundle);
     auto *const reply = m_connection.downloadSupportBundle().reply;
     connect(reply, &QNetworkReply::readyRead, this, [this, reply] {
-        m_downloadFile->write(reply->readAll());
-        if (m_downloadFile->error() != QFile::NoError) {
+        m_download.outputFile->write(reply->readAll());
+        if (m_download.outputFile->error() != QFile::NoError) {
             reply->abort();
         }
     });
     connect(reply, &QNetworkReply::finished, this, [this, reply, callback] {
         reply->deleteLater();
-        m_downloadFile->write(reply->readAll());
-        m_downloadFile->flush();
+        m_download.outputFile->write(reply->readAll());
+        m_download.outputFile->flush();
         auto errors = QStringList();
         auto message = QString();
-        if (m_downloadFile->error() != QFile::NoError) {
-            errors << tr("Unable to write bundle: %1").arg(m_downloadFile->errorString());
+        if (m_download.outputFile->error() != QFile::NoError) {
+            errors << tr("Unable to write bundle: %1").arg(m_download.outputFile->errorString());
         }
         if (const auto replyError = reply->error(); replyError != QNetworkReply::NoError && replyError != QNetworkReply::OperationCanceledError) {
             errors << tr("Unable to download bundle: %1").arg(reply->errorString());
         }
-        m_downloadFile.reset();
+        m_download.outputFile.reset();
         emit errors.isEmpty() ? info(tr("Support bundle saved")) : error(message = errors.join(QChar('\n')));
         setImportExportStatus(ImportExportStatus::None);
         if (callback.isCallable()) {
