@@ -31,6 +31,12 @@ You can also select the window type "None" in the appearance settings. This
 disables Syncthing Tray's own UI completely and instead opens Syncthing directly
 when the tray icon is clicked.
 
+Note that use of Layer Shell, which could potentially help, has not been
+implemented yet. Using Layer Shell would be quite some effort. One had to add
+settings in Syncthing Tray to decide where/how to display the popup as this
+could still not be automatically determined. One also had to add support in Qt
+for using different Wayland shells in one application.
+
 ## Tweak GUI settings for dark mode under Windows
 The dark mode introduced in Windows 10 does not affect traditional desktop
 applications like Syncthing Tray. As of version 6.7 the underlying toolkit Qt
