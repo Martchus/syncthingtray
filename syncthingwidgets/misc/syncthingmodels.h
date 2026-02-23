@@ -3,8 +3,8 @@
 
 #include "./syncthinglauncher.h"
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
-#include "./diffhighlighter.h"
 #include "../quick/quickicon.h"
+#include "./diffhighlighter.h"
 #endif
 
 #include <syncthingmodel/syncthingdevicemodel.h>
@@ -27,6 +27,14 @@
 
 QT_FORWARD_DECLARE_CLASS(QQmlEngine)
 QT_FORWARD_DECLARE_CLASS(QJSEngine)
+#endif
+
+#ifdef Q_OS_WINDOWS
+#define SYNCTHING_APP_STRING_CONVERSION(s) (s).toStdWString()
+#define SYNCTHING_APP_PATH_CONVERSION(s) QString::fromStdWString((s).wstring())
+#else
+#define SYNCTHING_APP_STRING_CONVERSION(s) (s).toLocal8Bit().toStdString()
+#define SYNCTHING_APP_PATH_CONVERSION(s) QString::fromLocal8Bit((s).string())
 #endif
 
 namespace QtGui {
@@ -85,18 +93,22 @@ class SYNCTHINGWIDGETS_EXPORT SyncthingModels : public QObject {
     Q_PROPERTY(Data::SyncthingDeviceModel *devModel READ devModel CONSTANT)
     Q_PROPERTY(Data::SyncthingSortFilterModel *sortFilterDevModel READ sortFilterDevModel CONSTANT)
     Q_PROPERTY(Data::SyncthingRecentChangesModel *changesModel READ changesModel CONSTANT)
+    Q_PROPERTY(bool savingConfig READ isSavingConfig NOTIFY savingConfigChanged)
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
     QML_ELEMENT
     QML_SINGLETON
 #endif
 
 public:
-    explicit SyncthingModels(Data::SyncthingConnection &data, QObject *parent = nullptr);
-    explicit SyncthingModels(SyncthingData &data, QObject *parent = nullptr);
+    explicit SyncthingModels(Data::SyncthingConnection &data, QQmlEngine *engine = nullptr, QObject *parent = nullptr);
+    explicit SyncthingModels(SyncthingData &data, QQmlEngine *engine = nullptr, QObject *parent = nullptr);
     ~SyncthingModels() override;
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
     static SyncthingModels *create(QQmlEngine *, QJSEngine *engine);
 #endif
+
+    QString externalFilesDir() const;
+    QStringList externalStoragePaths() const;
 
     Data::SyncthingDirectoryModel *dirModel()
     {
@@ -118,6 +130,14 @@ public:
     {
         return &m_recentChangesModel;
     }
+    Data::SyncthingConnection::QueryResult &pendingConfigChange()
+    {
+        return m_pendingConfigChange;
+    }
+    bool isSavingConfig() const
+    {
+        return m_pendingConfigChange.reply != nullptr;
+    }
 
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
     Q_INVOKABLE bool openUrlExternally(const QUrl &url, bool viaQt = false);
@@ -134,7 +154,6 @@ public:
     Q_INVOKABLE bool showLog(QObject *textArea);
     Q_INVOKABLE void clearLog();
     Q_INVOKABLE bool showQrCode(Icon *icon);
-    Q_INVOKABLE bool loadDirErrors(const QString &dirId, QObject *view);
     Q_INVOKABLE QString resolveUrl(const QUrl &url);
     Q_INVOKABLE bool shouldIgnorePermissions(const QString &path);
     Q_INVOKABLE Data::SyncthingFileModel *createFileModel(const QString &dirId, QObject *parent);
@@ -153,6 +172,11 @@ public:
     Q_INVOKABLE QVariant isPopulated(const QString &path) const;
 #endif
 
+Q_SIGNALS:
+    void info(const QString &infoMessage, const QString &details = QString());
+    void error(const QString &errorMessage, const QString &details = QString());
+    void savingConfigChanged(bool isSavingConfig);
+
 private:
     Data::SyncthingConnection &m_connection;
     Data::SyncthingDirectoryModel m_dirModel;
@@ -160,6 +184,10 @@ private:
     Data::SyncthingDeviceModel m_devModel;
     Data::SyncthingSortFilterModel m_sortFilterDevModel;
     Data::SyncthingRecentChangesModel m_recentChangesModel;
+    Data::SyncthingConnection::QueryResult m_pendingConfigChange;
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+    QQmlEngine *m_engine;
+#endif
 };
 
 } // namespace QtGui

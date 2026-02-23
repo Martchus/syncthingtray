@@ -11,22 +11,19 @@
 #include <syncthing/interface.h>
 #endif
 
-#include <syncthingmodel/syncthingerrormodel.h>
-#include <syncthingmodel/syncthingfilemodel.h>
 #include <syncthingmodel/syncthingicons.h>
 
 #include <syncthingconnector/syncthingconnectionsettings.h>
 #include <syncthingconnector/utils.h>
 
+#include <qtutilities/misc/desktoputils.h>
 #include <qtutilities/resources/resources.h>
 
 #include <qtforkawesome/renderer.h>
 #include <qtquickforkawesome/imageprovider.h>
 
 #include <c++utilities/conversion/stringbuilder.h>
-#include <c++utilities/conversion/stringconversion.h>
 
-#include <QClipboard>
 #include <QDebug>
 #include <QDir>
 #include <QGuiApplication>
@@ -49,11 +46,6 @@
 #include <dlfcn.h>
 #endif
 
-#ifndef Q_OS_ANDROID
-#include <QSet>
-#include <QStorageInfo>
-#endif
-
 #ifdef SYNCTHING_APP_DYNAMIC_STYLE
 #include <QQuickStyle>
 #endif
@@ -66,14 +58,6 @@
 #include <stdexcept>
 
 #include "resources/config.h"
-
-#ifdef Q_OS_WINDOWS
-#define SYNCTHING_APP_STRING_CONVERSION(s) (s).toStdWString()
-#define SYNCTHING_APP_PATH_CONVERSION(s) QString::fromStdWString((s).wstring())
-#else
-#define SYNCTHING_APP_STRING_CONVERSION(s) (s).toLocal8Bit().toStdString()
-#define SYNCTHING_APP_PATH_CONVERSION(s) QString::fromLocal8Bit((s).string())
-#endif
 
 // configure dark mode depending on the platform
 // 1. Some platforms just provide a "dark mode flag", e.g. Windows and Android. Qt can read this flag and
@@ -123,9 +107,9 @@ App::App(bool insecure, QQmlEngine *engine, QObject *parent)
     , m_engine(engine)
     , m_app(static_cast<QGuiApplication *>(QCoreApplication::instance()))
     , m_imageProvider(nullptr)
-    , m_models(m_connection)
+    , m_models(m_connection, engine)
     , m_faUrlBase(QStringLiteral("image://fa/"))
-    , m_uiObjects({ &m_dirModel, &m_sortFilterDirModel, &m_devModel, &m_sortFilterDevModel, &m_changesModel })
+    , m_uiObjects({ m_models.dirModel(), m_models.sortFilterDirModel(), m_models.devModel(), m_models.sortFilterDevModel(), m_models.changesModel() })
     , m_iconSize(SYNCTHING_APP_ICON_SIZE)
     , m_iconWidthDelegate(SYNCTHING_APP_ICON_WIDTH_DELEGATE)
     , m_tabIndex(-1)
@@ -163,28 +147,6 @@ App::App(bool insecure, QQmlEngine *engine, QObject *parent)
     auto &iconManager = initIconManager();
     connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &App::statusInfoChanged);
 
-    // set SD card paths to show SD card icons via directory model
-#ifdef Q_OS_ANDROID
-    qDebug() << "Loading external storage paths";
-    auto extStoragePaths = externalStoragePaths();
-    auto sdCardPaths = QStringList();
-    if (extStoragePaths.size() > 1) {
-        static constexpr auto storagePrefix = QLatin1String("/storage/");
-        sdCardPaths.reserve(extStoragePaths.size() - 1);
-        for (auto i = extStoragePaths.begin() + 1, end = extStoragePaths.end(); i != end; ++i) {
-            if (const auto &path = *i; path.startsWith(storagePrefix)) {
-                if (const auto volumeEnd = path.indexOf(QChar('/'), storagePrefix.size()); volumeEnd > 0) {
-                    sdCardPaths.emplace_back(QStringView(path.data(), volumeEnd + 1));
-                }
-            }
-        }
-    }
-    m_dirModel.setSdCardPaths(sdCardPaths);
-#endif
-
-    m_sortFilterDirModel.sort(0, Qt::AscendingOrder);
-    m_sortFilterDevModel.sort(0, Qt::AscendingOrder);
-
     connect(&m_connection, &SyncthingConnection::error, this, &App::handleConnectionError);
     connect(&m_connection, &SyncthingConnection::statusChanged, this, &App::handleConnectionStatusChanged);
     connect(&m_connection, &SyncthingConnection::newDevices, this, &App::handleChangedDevices);
@@ -192,17 +154,15 @@ App::App(bool insecure, QQmlEngine *engine, QObject *parent)
     connect(&m_connection, &SyncthingConnection::hasOutOfSyncDirsChanged, this, &App::invalidateStatus);
     connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &App::handleChangedDevices);
     connect(&m_connection, &SyncthingConnection::newErrors, this, &App::handleNewErrors);
+    connect(&m_models, &SyncthingModels::info, this, &App::info);
+    connect(&m_models, &SyncthingModels::error, this, &App::error);
+    connect(&m_models, &SyncthingModels::savingConfigChanged, this, &App::savingConfigChanged);
+    connect(&m_models, &SyncthingModels::savingConfigChanged, this, &App::invalidateStatus);
 #ifdef Q_OS_ANDROID
     connect(&m_connection, &SyncthingConnection::errorsCleared, this, [this] { sendMessageToService(ServiceAction::RequestErrors); });
 #endif
     connect(this, &App::syncthingRunningChanged, this, &App::handleRunningChanged);
     connect(this, &App::syncthingGuiUrlChanged, this, &App::handleGuiUrlChanged);
-
-    // show info when override/revert has been triggered
-    connect(&m_connection, &SyncthingConnection::overrideTriggered, this,
-        [this](const QString &dirId) { emit info(tr("Triggered override of \"%1\"").arg(dirDisplayName(dirId))); });
-    connect(&m_connection, &SyncthingConnection::revertTriggered, this,
-        [this](const QString &dirId) { emit info(tr("Triggered revert of \"%1\"").arg(dirDisplayName(dirId))); });
 
     // stop libsyncthing when the app is about to quit
     if constexpr (!isServiceShutdownManual()) {
@@ -276,7 +236,7 @@ const QString &App::status()
     case Data::SyncthingStatus::Reconnecting:
         break;
     default:
-        if (m_pendingConfigChange.reply) {
+        if (m_models.pendingConfigChange().reply) {
             return m_status.emplace(tr("Saving configuration …"));
         }
     }
@@ -561,32 +521,6 @@ bool App::notificationPermissionGranted() const
 #endif
 }
 
-QString App::externalFilesDir() const
-{
-#ifdef Q_OS_ANDROID
-    return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jstring>("externalFilesDir").toString();
-#else
-    return QString();
-#endif
-}
-
-QStringList App::externalStoragePaths() const
-{
-    auto paths = QStringList();
-#ifdef Q_OS_ANDROID
-    auto env = QJniEnvironment();
-    const auto pathArray
-        = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jobjectArray>("externalStoragePaths", "()[Ljava/lang/String;");
-    const auto pathArrayObj = pathArray.object<jobjectArray>();
-    const auto pathArrayLength = env->GetArrayLength(pathArrayObj);
-    paths.reserve(pathArrayLength);
-    for (int i = 0; i != pathArrayLength; ++i) {
-        paths.append((QJniObject::fromLocalRef(env->GetObjectArrayElement(pathArrayObj, i)).toString()));
-    }
-#endif
-    return paths;
-}
-
 bool App::requestStoragePermission()
 {
 #ifdef Q_OS_ANDROID
@@ -615,6 +549,52 @@ void App::removeDialog(QObject *dialog)
 {
     disconnect(dialog, &QObject::destroyed, this, &App::removeDialog);
     m_dialogs.removeAll(dialog);
+}
+
+bool App::showLog(QObject *textArea)
+{
+    textArea->setProperty("text", QString());
+    connect(this, &App::logsAvailable, textArea, [textArea](const QString &newLogs) {
+        QMetaObject::invokeMethod(textArea, "insert", Q_ARG(int, textArea->property("length").toInt()), Q_ARG(QString, newLogs));
+    });
+#ifdef Q_OS_ANDROID
+    connect(textArea, &QObject::destroyed, this, [this] { sendMessageToService(ServiceAction::CloseLog); });
+    sendMessageToService(ServiceAction::FollowLog);
+#else
+    emit replayLogRequested();
+#endif
+    return true;
+}
+
+void App::clearLog()
+{
+#ifdef Q_OS_ANDROID
+    sendMessageToService(ServiceAction::ClearLog);
+#else
+    emit clearLogRequested();
+#endif
+}
+
+bool App::loadDirErrors(const QString &dirId, QObject *view)
+{
+    auto connection = connect(&m_connection, &Data::SyncthingConnection::dirStatusChanged, view, [this, dirId, view](const Data::SyncthingDir &dir) {
+        if (dir.id != dirId) {
+            return;
+        }
+        auto array = m_engine->newArray(static_cast<quint32>(dir.itemErrors.size()));
+        auto index = quint32();
+        for (const auto &itemError : dir.itemErrors) {
+            auto error = m_engine->newObject();
+            error.setProperty(QStringLiteral("path"), itemError.path);
+            error.setProperty(QStringLiteral("message"), itemError.message);
+            array.setProperty(index++, error);
+        }
+        view->setProperty("model", array.toVariant());
+        view->setProperty("enabled", true);
+    });
+    connect(this, &QObject::destroyed, [connection] { disconnect(connection); });
+    m_connection.requestDirPullErrors(dirId);
+    return true;
 }
 
 bool App::eventFilter(QObject *object, QEvent *event)
@@ -1105,7 +1085,7 @@ bool App::clearLogfile()
  */
 bool App::openSyncthingConfigFile()
 {
-    return openPath(m_syncthingConfigDir + QStringLiteral("/config.xml"));
+    return m_models.openPath(m_syncthingConfigDir + QStringLiteral("/config.xml"));
 }
 
 /*!
@@ -1113,7 +1093,7 @@ bool App::openSyncthingConfigFile()
  */
 bool App::openSyncthingLogFile()
 {
-    return openPath(syncthingLogFilePath());
+    return m_models.openPath(syncthingLogFilePath());
 }
 
 bool App::checkOngoingImportExport()

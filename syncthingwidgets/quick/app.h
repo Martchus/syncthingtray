@@ -12,8 +12,8 @@
 #include "../misc/internalerror.h"
 #include "../misc/otherdialogs.h"
 #include "../misc/statusinfo.h"
-#include "../misc/syncthingmodels.h"
 #include "../misc/syncthinglauncher.h"
+#include "../misc/syncthingmodels.h"
 #include "../misc/utils.h"
 
 #include <qtutilities/settingsdialog/qtsettings.h>
@@ -54,7 +54,6 @@ class SYNCTHINGWIDGETS_EXPORT App : public AppBase {
     Q_PROPERTY(QString website READ website CONSTANT)
     Q_PROPERTY(bool hasInternalErrors READ hasInternalErrors NOTIFY hasInternalErrorsChanged)
     Q_PROPERTY(QVariantMap statistics READ statistics)
-    Q_PROPERTY(bool savingConfig READ isSavingConfig NOTIFY savingConfigChanged)
     Q_PROPERTY(bool syncthingStarting READ isSyncthingStarting NOTIFY syncthingStartingChanged)
     Q_PROPERTY(bool syncthingRunning READ isSyncthingRunning NOTIFY syncthingRunningChanged)
     Q_PROPERTY(QUrl syncthingGuiUrl READ syncthingGuiUrl NOTIFY syncthingGuiUrlChanged)
@@ -155,7 +154,7 @@ public:
     }
     bool isSavingConfig() const
     {
-        return m_pendingConfigChange.reply != nullptr;
+        return m_models.isSavingConfig();
     }
     bool isImportExportOngoing() const
     {
@@ -282,6 +281,9 @@ public:
     Q_INVOKABLE bool requestNotificationPermission();
     Q_INVOKABLE void addDialog(QObject *dialog);
     Q_INVOKABLE void removeDialog(QObject *dialog);
+    Q_INVOKABLE bool showLog(QObject *textArea);
+    Q_INVOKABLE void clearLog();
+    Q_INVOKABLE bool loadDirErrors(const QString &dirId, QObject *view);
     Q_INVOKABLE void terminateSyncthing();
     Q_INVOKABLE void restartSyncthing();
     Q_INVOKABLE void shutdownSyncthing();
@@ -346,8 +348,6 @@ private Q_SLOTS:
 #endif
 
 private:
-    QString externalFilesDir() const;
-    QStringList externalStoragePaths() const;
     void setImportExportStatus(ImportExportStatus importExportStatus);
     void applyDarkmodeChange(bool isDarkColorSchemeEnabled, bool isDarkPaletteEnabled);
     QString locateSettingsExportDir();
@@ -360,7 +360,6 @@ private:
     QGuiApplication *m_app;
     QtForkAwesome::QuickImageProvider *m_imageProvider;
     SyncthingModels m_models;
-    Data::SyncthingConnection::QueryResult m_pendingConfigChange;
 #ifdef Q_OS_ANDROID
     mutable std::optional<bool> m_storagePermissionGranted;
     mutable std::optional<bool> m_notificationPermissionGranted;

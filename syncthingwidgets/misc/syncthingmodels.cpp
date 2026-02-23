@@ -2,12 +2,31 @@
 
 #include <qtutilities/misc/desktoputils.h>
 
+#include <QClipboard>
 #include <QDesktopServices>
 #include <QNetworkReply>
+#include <QUrlQuery>
 
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
 #include <QJSEngine>
+#include <QQmlEngine>
 #endif
+
+#ifdef Q_OS_ANDROID
+#include <QDebug>
+#include <QJniEnvironment>
+#include <QJniObject>
+#else
+#include <QSet>
+#include <QStorageInfo>
+#endif
+
+#include <syncthingmodel/syncthingerrormodel.h>
+#include <syncthingmodel/syncthingfilemodel.h>
+
+#include <syncthingconnector/utils.h>
+
+#include <c++utilities/conversion/stringconversion.h>
 
 namespace QtGui {
 
@@ -37,7 +56,7 @@ SyncthingData *SyncthingData::create(QQmlEngine *qmlEngine, QJSEngine *engine)
 }
 #endif
 
-SyncthingModels::SyncthingModels(Data::SyncthingConnection &connection, QObject *parent)
+SyncthingModels::SyncthingModels(Data::SyncthingConnection &connection, QQmlEngine *engine, QObject *parent)
     : QObject(parent)
     , m_connection(connection)
     , m_dirModel(connection)
@@ -45,17 +64,70 @@ SyncthingModels::SyncthingModels(Data::SyncthingConnection &connection, QObject 
     , m_devModel(connection)
     , m_sortFilterDevModel(&m_devModel)
     , m_recentChangesModel(connection)
+    , m_engine(engine)
 {
+    // set SD card paths to show SD card icons via directory model
+#ifdef Q_OS_ANDROID
+    qDebug() << "Loading external storage paths";
+    auto extStoragePaths = externalStoragePaths();
+    auto sdCardPaths = QStringList();
+    if (extStoragePaths.size() > 1) {
+        static constexpr auto storagePrefix = QLatin1String("/storage/");
+        sdCardPaths.reserve(extStoragePaths.size() - 1);
+        for (auto i = extStoragePaths.begin() + 1, end = extStoragePaths.end(); i != end; ++i) {
+            if (const auto &path = *i; path.startsWith(storagePrefix)) {
+                if (const auto volumeEnd = path.indexOf(QChar('/'), storagePrefix.size()); volumeEnd > 0) {
+                    sdCardPaths.emplace_back(QStringView(path.data(), volumeEnd + 1));
+                }
+            }
+        }
+    }
+    m_dirModel.setSdCardPaths(sdCardPaths);
+#endif
 
+    m_sortFilterDirModel.sort(0, Qt::AscendingOrder);
+    m_sortFilterDevModel.sort(0, Qt::AscendingOrder);
+
+    // show info when override/revert has been triggered
+    connect(&m_connection, &Data::SyncthingConnection::overrideTriggered, this,
+        [this](const QString &dirId) { emit info(tr("Triggered override of \"%1\"").arg(dirDisplayName(dirId))); });
+    connect(&m_connection, &Data::SyncthingConnection::revertTriggered, this,
+        [this](const QString &dirId) { emit info(tr("Triggered revert of \"%1\"").arg(dirDisplayName(dirId))); });
 }
 
-SyncthingModels::SyncthingModels(SyncthingData &data, QObject *parent)
-    : SyncthingModels(*data.connection(), parent)
+SyncthingModels::SyncthingModels(SyncthingData &data, QQmlEngine *engine, QObject *parent)
+    : SyncthingModels(*data.connection(), engine, parent)
 {
 }
 
 SyncthingModels::~SyncthingModels()
 {
+}
+
+QString SyncthingModels::externalFilesDir() const
+{
+#ifdef Q_OS_ANDROID
+    return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jstring>("externalFilesDir").toString();
+#else
+    return QString();
+#endif
+}
+
+QStringList SyncthingModels::externalStoragePaths() const
+{
+    auto paths = QStringList();
+#ifdef Q_OS_ANDROID
+    auto env = QJniEnvironment();
+    const auto pathArray
+        = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jobjectArray>("externalStoragePaths", "()[Ljava/lang/String;");
+    const auto pathArrayObj = pathArray.object<jobjectArray>();
+    const auto pathArrayLength = env->GetArrayLength(pathArrayObj);
+    paths.reserve(pathArrayLength);
+    for (int i = 0; i != pathArrayLength; ++i) {
+        paths.append((QJniObject::fromLocalRef(env->GetObjectArrayElement(pathArrayObj, i)).toString()));
+    }
+#endif
+    return paths;
 }
 
 bool SyncthingModels::openPath(const QString &path)
@@ -154,7 +226,7 @@ bool SyncthingModels::saveIgnorePatterns(const QString &dirId, QObject *textArea
         return false;
     }
     auto res = m_connection.setIgnores(
-        dirId, SyncthingIgnores{ .ignore = text.toString().split(QChar('\n')), .expanded = QStringList() }, [this, textArea](QString &&error) {
+        dirId, Data::SyncthingIgnores{ .ignore = text.toString().split(QChar('\n')), .expanded = QStringList() }, [this, textArea](QString &&error) {
             if (!error.isEmpty()) {
                 emit this->error(tr("Unable to save ignore patterns: ") + error);
             }
@@ -176,30 +248,6 @@ bool SyncthingModels::loadErrors(QObject *listView)
     return true;
 }
 
-bool SyncthingModels::showLog(QObject *textArea)
-{
-    textArea->setProperty("text", QString());
-    connect(this, &App::logsAvailable, textArea, [textArea](const QString &newLogs) {
-        QMetaObject::invokeMethod(textArea, "insert", Q_ARG(int, textArea->property("length").toInt()), Q_ARG(QString, newLogs));
-    });
-#ifdef Q_OS_ANDROID
-    connect(textArea, &QObject::destroyed, this, [this] { sendMessageToService(ServiceAction::CloseLog); });
-    sendMessageToService(ServiceAction::FollowLog);
-#else
-    emit replayLogRequested();
-#endif
-    return true;
-}
-
-void SyncthingModels::clearLog()
-{
-#ifdef Q_OS_ANDROID
-    sendMessageToService(ServiceAction::ClearLog);
-#else
-    emit clearLogRequested();
-#endif
-}
-
 bool SyncthingModels::showQrCode(Icon *icon)
 {
     if (m_connection.myId().isEmpty()) {
@@ -213,28 +261,6 @@ bool SyncthingModels::showQrCode(Icon *icon)
             }
         });
     m_connection.requestQrCode(m_connection.myId());
-    return true;
-}
-
-bool SyncthingModels::loadDirErrors(const QString &dirId, QObject *view)
-{
-    auto connection = connect(&m_connection, &Data::SyncthingConnection::dirStatusChanged, view, [this, dirId, view](const Data::SyncthingDir &dir) {
-        if (dir.id != dirId) {
-            return;
-        }
-        auto array = m_engine->newArray(static_cast<quint32>(dir.itemErrors.size()));
-        auto index = quint32();
-        for (const auto &itemError : dir.itemErrors) {
-            auto error = m_engine->newObject();
-            error.setProperty(QStringLiteral("path"), itemError.path);
-            error.setProperty(QStringLiteral("message"), itemError.message);
-            array.setProperty(index++, error);
-        }
-        view->setProperty("model", array.toVariant());
-        view->setProperty("enabled", true);
-    });
-    connect(this, &QObject::destroyed, [connection] { disconnect(connection); });
-    m_connection.requestDirPullErrors(dirId);
     return true;
 }
 
@@ -291,7 +317,6 @@ bool SyncthingModels::shouldIgnorePermissions(const QString &path)
 #endif
 }
 
-
 bool SyncthingModels::postSyncthingConfig(const QJsonObject &rawConfig, const QJSValue &callback)
 {
     if (m_pendingConfigChange.reply) {
@@ -301,7 +326,6 @@ bool SyncthingModels::postSyncthingConfig(const QJsonObject &rawConfig, const QJ
     m_pendingConfigChange = m_connection.postConfigFromJsonObject(rawConfig, [this, callback](QString &&error) {
         m_pendingConfigChange.reply = nullptr;
         emit savingConfigChanged(false);
-        invalidateStatus();
         if (callback.isCallable()) {
             callback.call(QJSValueList{ error });
         }
@@ -309,7 +333,6 @@ bool SyncthingModels::postSyncthingConfig(const QJsonObject &rawConfig, const QJ
     connect(this, &QObject::destroyed, m_pendingConfigChange.reply, &QNetworkReply::deleteLater);
     connect(this, &QObject::destroyed, [c = m_pendingConfigChange.connection] { disconnect(c); });
     emit savingConfigChanged(true);
-    invalidateStatus();
     return true;
 }
 
@@ -332,7 +355,7 @@ bool SyncthingModels::requestFromSyncthing(const QString &verb, const QString &p
         params.addQueryItem(parameter.first, parameter.second.toString());
     }
     auto query = m_connection.requestJsonData(verb.toUtf8(), path, params, QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
-        if (callback.isCallable()) {
+        if (m_engine && callback.isCallable()) {
             callback.call(QJSValueList({ m_engine->toScriptValue(doc.object()), QJSValue(std::move(error)) }));
         }
     });
@@ -348,7 +371,7 @@ QString SyncthingModels::formatDataSize(quint64 size) const
 
 QString SyncthingModels::formatTraffic(quint64 total, double rate) const
 {
-    return trafficString(total, rate);
+    return Data::trafficString(total, rate);
 }
 
 bool SyncthingModels::hasDevice(const QString &id)
@@ -433,8 +456,6 @@ SyncthingModels *SyncthingModels::create(QQmlEngine *qmlEngine, QJSEngine *engin
 {
     return dataObjectFromProperty<SyncthingModels>(qmlEngine, engine, "models");
 }
-
-
 
 #endif
 
