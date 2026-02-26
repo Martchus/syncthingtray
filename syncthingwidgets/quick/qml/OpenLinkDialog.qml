@@ -8,6 +8,7 @@ CustomDialog {
     Material.primary: Material.LightBlue
     Material.accent: Material.LightBlue
     title: meta.title
+    implicitWidth: 500
     contentItem: ColumnLayout {
         Layout.fillWidth: true
         Label {
