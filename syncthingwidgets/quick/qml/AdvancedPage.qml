@@ -176,6 +176,18 @@ StackView {
                    {value: "TB", label: qsTr("Terrabyte"), desc: qsTr("Absolute size in Terrabyte")},
                ]},
             ],
+            "ldap": [
+               {key: "address", label: qsTr("Address"), desc: qsTr("Set to the address of the LDAP server, with hostname and port. For example, <code>dc1.example.com:389</code> for standard LDAP, or <code>dc1.example.com:636 for LDAPS. (See also <em>Transport</em>)")},
+               {key: "bindDN", label: qsTr("Bind DN"), desc: qsTr("This is the pattern for the bind user. The special token <code>%s</code> must be inserted to represent the username entered by the user at the login prompt. Typical examples are <code>%s@ad.example.com</code> for Active Directory or something like <code>CN=%s,CN=Users,DC=example,DC=com</code> for standard LDAP servers.")},
+               {key: "transport", label: qsTr("Transport"), type: "options", options: [
+                   {value: "nontls", label: qsTr("non-TLS"), desc: qsTr("Non secure connection.")},
+                   {value: "tls", label: qsTr("TLS"), desc: qsTr("TLS secured connection.")},
+                   {value: "starttls", label: qsTr("StartTLS"), desc: qsTr("StartTLS connection mode.")},
+               ]},
+               {key: "insecureSkipVerify", label: qsTr("Skip certificate verification (insecure!)"), desc: qsTr("When set, this option disables all certificate verification for LDAPS. Use with care and only when absolutely necessary.")},
+               {key: "searchBaseDN", label: qsTr("Search Base DN"), desc: qsTr("Optional, base DN to use for user searches.")},
+               {key: "searchFilter", label: qsTr("Search Filter"), desc: qsTr("Optional, search filter to use for user searches.")},
+            ],
         })
         property list<Action> actions: [
             Action {
