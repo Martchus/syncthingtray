@@ -363,6 +363,10 @@ public:
     Q_INVOKABLE void handleMessageFromService(ActivityAction action, int arg1, int arg2, const QString &str, const QByteArray &variant);
 #endif
     Q_INVOKABLE void handleLauncherStatusBroadcast(const QVariant &status);
+    Q_INVOKABLE void requestOpeningUrl(const QUrl &url)
+    {
+        emit openingUrlRequested(url);
+    }
 
 Q_SIGNALS:
     void darkmodeEnabledChanged(bool darkmodeEnabled);
@@ -385,6 +389,7 @@ Q_SIGNALS:
     void newDirTriggered(const QString &devId, const QString &dirId, const QString &dirLabel);
     void storagePermissionGrantedChanged(bool storagePermissionGranted);
     void notificationPermissionGrantedChanged(bool notificationPermissionGranted);
+    void openingUrlRequested(const QUrl &url);
 #ifndef Q_OS_ANDROID
     void syncthingTerminationRequested();
     void syncthingRestartRequested();

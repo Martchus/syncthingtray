@@ -97,6 +97,9 @@ ApplicationWindow {
         meta: appWindow.meta
         pageStack: pageStack
     }
+    OpenLinkDialog {
+        id: openLinkDialog
+    }
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.ForwardButton | Qt.BackButton
@@ -120,6 +123,10 @@ ApplicationWindow {
         onNotification: (message) => {
             notifictionToolTip.text = notifictionToolTip.visible ? `${notifictionToolTip.text}\n${message}` : message;
             notifictionToolTip.open();
+        }
+        onOpeningUrlRequested: (url) => {
+            openLinkDialog.currentUrl = url;
+            openLinkDialog.open();
         }
     }
     readonly property Theming theming: Theming {

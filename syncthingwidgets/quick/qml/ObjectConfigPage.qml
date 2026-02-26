@@ -158,7 +158,7 @@ Page {
             text: qsTr("Help")
             enabled: objectConfigPage.helpUrl.length > 0
             icon.source: App.faUrlBase + "question"
-            onTriggered: App.openUrlExternally(objectConfigPage.helpUrl)
+            onTriggered: App.requestOpeningUrl(objectConfigPage.helpUrl)
         },
         Action {
             text: qsTr("Add")

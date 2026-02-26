@@ -355,7 +355,7 @@ DelegateChooser {
                                         devicesDelegate.setDeviceProperty(modelData.deviceID, "encryptionPassword", encryptionKeyValue.text);
                                     }
                                     onRejected: encryptionKeyValue.text = Qt.binding(() => modelData.encryptionPassword)
-                                    onHelpRequested: App.openUrlExternally("https://docs.syncthing.net/users/untrusted.html")
+                                    onHelpRequested: App.requestOpeningUrl("https://docs.syncthing.net/users/untrusted.html")
                                 }
                             }
                             onClicked: deviceSwitch.toggle()

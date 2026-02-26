@@ -27,6 +27,9 @@ QtObject {
         function onNewDirTriggered(devId, dirId, dirLabel) {
             pageStack.addDir(dirId, dirLabel, [devId]);
         }
+        function onOpeningUrlRequested(url) {
+            openingUrlRequested(url);
+        }
     }
     readonly property Connections connectionConnections: Connections {
         target: App.connection
@@ -42,6 +45,8 @@ QtObject {
     }
 
     signal notification(message: string)
+    signal openingUrlRequested(url: url)
+
     function showNotifiction(message) {
         return App.showToast(message) || notification(message);
     }

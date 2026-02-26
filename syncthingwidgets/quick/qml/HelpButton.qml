@@ -41,6 +41,6 @@ IconOnlyButton {
     property string configCategory
 
     function openSyncthingDocs() {
-        App.openUrlExternally(helpButton.url);
+        App.requestOpeningUrl(helpButton.url);
     }
 }

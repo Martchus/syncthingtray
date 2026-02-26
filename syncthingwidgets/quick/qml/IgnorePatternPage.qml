@@ -91,7 +91,7 @@ Page {
             Button {
                 text: qsTr("Full documentation")
                 flat: true
-                onClicked: App.openUrlExternally("https://docs.syncthing.net/users/ignoring")
+                onClicked: App.requestOpeningUrl("https://docs.syncthing.net/users/ignoring")
                 DialogButtonBox.buttonRole: DialogButtonBox.HelpRole
             }
         }

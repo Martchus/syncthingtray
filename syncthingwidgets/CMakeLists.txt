@@ -118,6 +118,7 @@ set(QML_MAIN_FILES
     quick/qml/Notifications.qml
     quick/qml/ObjectConfigDelegate.qml
     quick/qml/ObjectConfigPage.qml
+    quick/qml/OpenLinkDialog.qml
     quick/qml/OutOfSyncDirs.qml
     quick/qml/PageStack.qml
     quick/qml/PendingDevices.qml
