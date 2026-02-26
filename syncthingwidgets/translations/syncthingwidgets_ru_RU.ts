@@ -359,6 +359,7 @@
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="156"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="180"/>
         <source>Address</source>
         <translation>Адрес</translation>
     </message>
@@ -549,12 +550,92 @@
         <translation>Абсолютный размер в терабайтах</translation>
     </message>
     <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="180"/>
+        <source>Set to the address of the LDAP server, with hostname and port. For example, &lt;code&gt;dc1.example.com:389&lt;/code&gt; for standard LDAP, or &lt;code&gt;dc1.example.com:636 for LDAPS. (See also &lt;em&gt;Transport&lt;/em&gt;)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="181"/>
+        <source>This is the pattern for the bind user. The special token &lt;code&gt;%s&lt;/code&gt; must be inserted to represent the username entered by the user at the login prompt. Typical examples are &lt;code&gt;%s@ad.example.com&lt;/code&gt; for Active Directory or something like &lt;code&gt;CN=%s,CN=Users,DC=example,DC=com&lt;/code&gt; for standard LDAP servers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="181"/>
+        <source>Bind DN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="182"/>
+        <source>Transport</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="183"/>
+        <source>non-TLS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="183"/>
+        <source>Non secure connection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="184"/>
+        <source>TLS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="184"/>
+        <source>TLS secured connection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="185"/>
+        <source>StartTLS connection mode.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="185"/>
+        <source>StartTLS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="187"/>
+        <source>Skip certificate verification (insecure!)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="187"/>
+        <source>When set, this option disables all certificate verification for LDAPS. Use with care and only when absolutely necessary.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="188"/>
+        <source>Search Base DN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="188"/>
+        <source>Optional, base DN to use for user searches.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="189"/>
+        <source>Search Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="189"/>
+        <source>Optional, search filter to use for user searches.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="195"/>
         <source>Discard changes</source>
         <translation>Отменить изменения</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="194"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="206"/>
         <source>Apply changes</source>
         <translation>Применить изменения</translation>
     </message>
@@ -2049,12 +2130,12 @@
         <translation>Недействительный идентификатор устройства.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/Notifications.qml" line="34"/>
+        <location filename="../quick/qml/Notifications.qml" line="37"/>
         <source>Configuration changed</source>
         <translation>Конфигурация изменена</translation>
     </message>
     <message>
-        <location filename="../quick/qml/Notifications.qml" line="40"/>
+        <location filename="../quick/qml/Notifications.qml" line="43"/>
         <source>UI disconnected from Syncthing backend</source>
         <translation>Пользовательский интерфейс отключен от бэкэнда Syncthing</translation>
     </message>
@@ -2215,6 +2296,19 @@
         <location filename="../quick/qml/ObjectConfigPage.qml" line="334"/>
         <source>Unable to add %1 because specified key is invalid.</source>
         <translation>Невозможно добавить %1, так как указанный ключ недействителен.</translation>
+    </message>
+</context>
+<context>
+    <name>OpenLinkDialog</name>
+    <message>
+        <location filename="../quick/qml/OpenLinkDialog.qml" line="15"/>
+        <source>Do you want to open &quot;%1&quot;?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/OpenLinkDialog.qml" line="27"/>
+        <source>Android may decide to stop the current activity to free memory. So when going back to the Syncthing App, the app UI might be reset and unsaved changes be lost.</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -4868,6 +4962,13 @@
     </message>
 </context>
 <context>
+    <name>QtGui::SyncthingData</name>
+    <message>
+        <source>not available</source>
+        <translation type="obsolete">нет в наличии</translation>
+    </message>
+</context>
+<context>
     <name>QtGui::SyncthingKiller</name>
     <message>
         <location filename="../misc/syncthingkiller.cpp" line="58"/>
@@ -4886,6 +4987,53 @@ This dialog closes automatically when the process finally terminates.</source>
         <location filename="../misc/syncthingkiller.cpp" line="65"/>
         <source>Kill process</source>
         <translation>Убить процесс</translation>
+    </message>
+</context>
+<context>
+    <name>QtGui::SyncthingModels</name>
+    <message>
+        <source>Triggered override of &quot;%1&quot;</source>
+        <translation type="obsolete">Инициировано переопределение «%1»</translation>
+    </message>
+    <message>
+        <source>Triggered revert of &quot;%1&quot;</source>
+        <translation type="obsolete">Инициирован возврат «%1»</translation>
+    </message>
+    <message>
+        <source>Unable to open &quot;%1&quot;</source>
+        <translation type="obsolete">Не удалось открыть &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <source>Scanning is not supported.</source>
+        <translation type="obsolete">Сканирование не поддерживается.</translation>
+    </message>
+    <message>
+        <source>Copied value</source>
+        <translation type="obsolete">Скопированное значение</translation>
+    </message>
+    <message>
+        <source>Unable to copy value</source>
+        <translation type="obsolete">Невозможно скопировать значение</translation>
+    </message>
+    <message>
+        <source>Unable to copy &quot;%1&quot;</source>
+        <translation type="obsolete">Не удалось скопировать «%1»</translation>
+    </message>
+    <message>
+        <source>Unable to load ignore patterns: </source>
+        <translation type="obsolete">Невозможно загрузить шаблоны игнорирования: </translation>
+    </message>
+    <message>
+        <source>Unable to save ignore patterns: </source>
+        <translation type="obsolete">Невозможно сохранить шаблоны игнорирования: </translation>
+    </message>
+    <message>
+        <source>Unable to resolve URL &quot;%1&quot;.</source>
+        <translation type="obsolete">Не удалось разрешить URL «%1».</translation>
+    </message>
+    <message>
+        <source>Another config change is still pending.</source>
+        <translation type="obsolete">Еще одно изменение конфигурации еще не внесено.</translation>
     </message>
 </context>
 <context>
@@ -6047,6 +6195,45 @@ This dialog closes automatically when the process finally terminates.</source>
         <location filename="../quick/qml/StatisticsPage.qml" line="38"/>
         <source>Size of files managed by Syncthing</source>
         <translation>Размер файлов, управляемых Syncthing</translation>
+    </message>
+</context>
+<context>
+    <name>SyncthingModels</name>
+    <message>
+        <source>Unable to open &quot;%1&quot;</source>
+        <translation type="obsolete">Не удалось открыть &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <source>Scanning is not supported.</source>
+        <translation type="obsolete">Сканирование не поддерживается.</translation>
+    </message>
+    <message>
+        <source>Copied value</source>
+        <translation type="obsolete">Скопированное значение</translation>
+    </message>
+    <message>
+        <source>Unable to copy value</source>
+        <translation type="obsolete">Невозможно скопировать значение</translation>
+    </message>
+    <message>
+        <source>Unable to copy &quot;%1&quot;</source>
+        <translation type="obsolete">Не удалось скопировать «%1»</translation>
+    </message>
+    <message>
+        <source>Unable to load ignore patterns: </source>
+        <translation type="obsolete">Невозможно загрузить шаблоны игнорирования: </translation>
+    </message>
+    <message>
+        <source>Unable to save ignore patterns: </source>
+        <translation type="obsolete">Невозможно сохранить шаблоны игнорирования: </translation>
+    </message>
+    <message>
+        <source>Unable to resolve URL &quot;%1&quot;.</source>
+        <translation type="obsolete">Не удалось разрешить URL «%1».</translation>
+    </message>
+    <message>
+        <source>Another config change is still pending.</source>
+        <translation type="obsolete">Еще одно изменение конфигурации еще не внесено.</translation>
     </message>
 </context>
 <context>

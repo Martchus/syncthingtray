@@ -359,6 +359,7 @@
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="156"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="180"/>
         <source>Address</source>
         <translation type="unfinished"></translation>
     </message>
@@ -549,12 +550,92 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="180"/>
+        <source>Set to the address of the LDAP server, with hostname and port. For example, &lt;code&gt;dc1.example.com:389&lt;/code&gt; for standard LDAP, or &lt;code&gt;dc1.example.com:636 for LDAPS. (See also &lt;em&gt;Transport&lt;/em&gt;)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="181"/>
+        <source>This is the pattern for the bind user. The special token &lt;code&gt;%s&lt;/code&gt; must be inserted to represent the username entered by the user at the login prompt. Typical examples are &lt;code&gt;%s@ad.example.com&lt;/code&gt; for Active Directory or something like &lt;code&gt;CN=%s,CN=Users,DC=example,DC=com&lt;/code&gt; for standard LDAP servers.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="181"/>
+        <source>Bind DN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="182"/>
+        <source>Transport</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="183"/>
+        <source>non-TLS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="183"/>
+        <source>Non secure connection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="184"/>
+        <source>TLS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="184"/>
+        <source>TLS secured connection.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="185"/>
+        <source>StartTLS connection mode.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="185"/>
+        <source>StartTLS</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="187"/>
+        <source>Skip certificate verification (insecure!)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="187"/>
+        <source>When set, this option disables all certificate verification for LDAPS. Use with care and only when absolutely necessary.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="188"/>
+        <source>Search Base DN</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="188"/>
+        <source>Optional, base DN to use for user searches.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="189"/>
+        <source>Search Filter</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="189"/>
+        <source>Optional, search filter to use for user searches.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="195"/>
         <source>Discard changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="194"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="206"/>
         <source>Apply changes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2049,12 +2130,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/Notifications.qml" line="34"/>
+        <location filename="../quick/qml/Notifications.qml" line="37"/>
         <source>Configuration changed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/Notifications.qml" line="40"/>
+        <location filename="../quick/qml/Notifications.qml" line="43"/>
         <source>UI disconnected from Syncthing backend</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2210,6 +2291,19 @@
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="334"/>
         <source>Unable to add %1 because specified key is invalid.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>OpenLinkDialog</name>
+    <message>
+        <location filename="../quick/qml/OpenLinkDialog.qml" line="15"/>
+        <source>Do you want to open &quot;%1&quot;?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/OpenLinkDialog.qml" line="27"/>
+        <source>Android may decide to stop the current activity to free memory. So when going back to the Syncthing App, the app UI might be reset and unsaved changes be lost.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

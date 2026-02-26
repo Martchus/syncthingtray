@@ -179,7 +179,7 @@
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="32"/>
         <source>LDAP</source>
-        <translation></translation>
+        <translation>LDAP</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="27"/>
@@ -359,6 +359,7 @@
     </message>
     <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="156"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="180"/>
         <source>Address</source>
         <translation>Adresse</translation>
     </message>
@@ -549,12 +550,92 @@
         <translation>Absolute Größe in Terrabyte</translation>
     </message>
     <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="180"/>
+        <source>Set to the address of the LDAP server, with hostname and port. For example, &lt;code&gt;dc1.example.com:389&lt;/code&gt; for standard LDAP, or &lt;code&gt;dc1.example.com:636 for LDAPS. (See also &lt;em&gt;Transport&lt;/em&gt;)</source>
+        <translation>Setze die Adresse des LDAP-Servers, mit Hostnamen und Port. Zum Beispiel &lt;code&gt;dc1.example.com:389&lt;/code&gt; für Standard-LDAP oder &lt;code&gt;dc1.example.com:636 für LDAPS. (Siehe auch &lt;em&gt;Transport&lt;/em&gt;)</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="181"/>
+        <source>This is the pattern for the bind user. The special token &lt;code&gt;%s&lt;/code&gt; must be inserted to represent the username entered by the user at the login prompt. Typical examples are &lt;code&gt;%s@ad.example.com&lt;/code&gt; for Active Directory or something like &lt;code&gt;CN=%s,CN=Users,DC=example,DC=com&lt;/code&gt; for standard LDAP servers.</source>
+        <translation>Dies ist das Muster für den Bind-Benutzer. Der spezielle Token &lt;code&gt;%s&lt;/code&gt; muss eingesetzt werden, um den vom Benutzer am Anmelde-Prompt eingegebenen Benutzernamen darzustellen. Typische Beispiele sind &lt;code&gt;%s@ad.example.com&lt;/code&gt; für Active Directory oder &lt;code&gt;CN=%s,CN=Users,DC=example,DC=com&lt;/code&gt; für Standard-LDAP-Server.</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="181"/>
+        <source>Bind DN</source>
+        <translation>Bind-DN</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="182"/>
+        <source>Transport</source>
+        <translation>Transport</translation>
+    </message>
+    <message>
         <location filename="../quick/qml/AdvancedPage.qml" line="183"/>
+        <source>non-TLS</source>
+        <translation>kein TLS</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="183"/>
+        <source>Non secure connection.</source>
+        <translation>Nicht sichere Verbindung.</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="184"/>
+        <source>TLS</source>
+        <translation>TLS-gesicherte Verbindung.</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="184"/>
+        <source>TLS secured connection.</source>
+        <translation>TLS-gesicherte Verbindung.</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="185"/>
+        <source>StartTLS connection mode.</source>
+        <translation>StartTLS-Verbindungsmodus.</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="185"/>
+        <source>StartTLS</source>
+        <translation>StartTLS</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="187"/>
+        <source>Skip certificate verification (insecure!)</source>
+        <translation>Zertifikatsüberprüfung deaktivieren (unsicher!)</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="187"/>
+        <source>When set, this option disables all certificate verification for LDAPS. Use with care and only when absolutely necessary.</source>
+        <translation>Wenn aktiviert, wird die Zertifikatsüberprüfung für LDAPS komplett deaktiviert. Verwende diese Option mit Vorsicht und nur dann, wenn es absolut notwendig ist.</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="188"/>
+        <source>Search Base DN</source>
+        <translation>Search-Base-DN</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="188"/>
+        <source>Optional, base DN to use for user searches.</source>
+        <translation>Optionale Basis-DN für Benutzerabfragen.</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="189"/>
+        <source>Search Filter</source>
+        <translation>Suchfilter</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="189"/>
+        <source>Optional, search filter to use for user searches.</source>
+        <translation>Optionaler Suchfilter für Benutzerabfragen.</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/AdvancedPage.qml" line="195"/>
         <source>Discard changes</source>
         <translation>Änderungen verwerfen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedPage.qml" line="194"/>
+        <location filename="../quick/qml/AdvancedPage.qml" line="206"/>
         <source>Apply changes</source>
         <translation>Änderungen anwenden</translation>
     </message>
@@ -2049,12 +2130,12 @@
         <translation>Keine gültige Geräte-ID.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/Notifications.qml" line="34"/>
+        <location filename="../quick/qml/Notifications.qml" line="37"/>
         <source>Configuration changed</source>
         <translation>Konfiguration geändert</translation>
     </message>
     <message>
-        <location filename="../quick/qml/Notifications.qml" line="40"/>
+        <location filename="../quick/qml/Notifications.qml" line="43"/>
         <source>UI disconnected from Syncthing backend</source>
         <translation>UI vom Syncthing-Backend getrennt</translation>
     </message>
@@ -2215,6 +2296,19 @@
         <location filename="../quick/qml/ObjectConfigPage.qml" line="334"/>
         <source>Unable to add %1 because specified key is invalid.</source>
         <translation>&quot;%1&quot; kann nicht hinzugefügt werden, da der Schlüssel nicht gültig ist.</translation>
+    </message>
+</context>
+<context>
+    <name>OpenLinkDialog</name>
+    <message>
+        <location filename="../quick/qml/OpenLinkDialog.qml" line="15"/>
+        <source>Do you want to open &quot;%1&quot;?</source>
+        <translation>Soll &quot;%1&quot; geöffnet werden?</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/OpenLinkDialog.qml" line="27"/>
+        <source>Android may decide to stop the current activity to free memory. So when going back to the Syncthing App, the app UI might be reset and unsaved changes be lost.</source>
+        <translation>Android wird möglicherweise die aktuelle Aktivität schließen, um Arbeitsspeicher freizugeben. Das bedeutet, dass beim Zurückgehen zur Syncthing App die Oberfläche zurück gesetzt sein kann und nicht gespeicherte Änderungen verlohren gehen.</translation>
     </message>
 </context>
 <context>
@@ -5081,6 +5175,13 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     </message>
 </context>
 <context>
+    <name>QtGui::SyncthingData</name>
+    <message>
+        <source>not available</source>
+        <translation type="obsolete">nicht verfügbar</translation>
+    </message>
+</context>
+<context>
     <name>QtGui::SyncthingKiller</name>
     <message>
         <location filename="../misc/syncthingkiller.cpp" line="58"/>
@@ -5100,6 +5201,53 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <location filename="../misc/syncthingkiller.cpp" line="65"/>
         <source>Kill process</source>
         <translation>Prozess töten</translation>
+    </message>
+</context>
+<context>
+    <name>QtGui::SyncthingModels</name>
+    <message>
+        <source>Triggered override of &quot;%1&quot;</source>
+        <translation type="obsolete">&quot;%1&quot; wird überschrieben</translation>
+    </message>
+    <message>
+        <source>Triggered revert of &quot;%1&quot;</source>
+        <translation type="obsolete">&quot;%1&quot; wird zurückgesetzt</translation>
+    </message>
+    <message>
+        <source>Unable to open &quot;%1&quot;</source>
+        <translation type="obsolete">Kann &quot;%1&quot; nicht öffnen</translation>
+    </message>
+    <message>
+        <source>Scanning is not supported.</source>
+        <translation type="obsolete">Scannen wird nicht unterstützt.</translation>
+    </message>
+    <message>
+        <source>Copied value</source>
+        <translation type="obsolete">Wert kopiert</translation>
+    </message>
+    <message>
+        <source>Unable to copy value</source>
+        <translation type="obsolete">Wert konnte nicht kopiert werden</translation>
+    </message>
+    <message>
+        <source>Unable to copy &quot;%1&quot;</source>
+        <translation type="obsolete">&quot;%1&quot; konnte nicht kopiert werden</translation>
+    </message>
+    <message>
+        <source>Unable to load ignore patterns: </source>
+        <translation type="obsolete">Konnte Ignoriermuster nicht laden: </translation>
+    </message>
+    <message>
+        <source>Unable to save ignore patterns: </source>
+        <translation type="obsolete">Konnte Ignoriermuster nicht speichern: </translation>
+    </message>
+    <message>
+        <source>Unable to resolve URL &quot;%1&quot;.</source>
+        <translation type="obsolete">Konnte URL &quot;%1&quot; nicht auflösen: </translation>
+    </message>
+    <message>
+        <source>Another config change is still pending.</source>
+        <translation type="obsolete">Eine andere Änderung ist noch im Gange.</translation>
     </message>
 </context>
 <context>
@@ -6328,6 +6476,45 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <location filename="../quick/qml/StatisticsPage.qml" line="38"/>
         <source>Size of files managed by Syncthing</source>
         <translation>Größe der Daten die von Syncthing verwaltet werden</translation>
+    </message>
+</context>
+<context>
+    <name>SyncthingModels</name>
+    <message>
+        <source>Unable to open &quot;%1&quot;</source>
+        <translation type="obsolete">Kann &quot;%1&quot; nicht öffnen</translation>
+    </message>
+    <message>
+        <source>Scanning is not supported.</source>
+        <translation type="obsolete">Scannen wird nicht unterstützt.</translation>
+    </message>
+    <message>
+        <source>Copied value</source>
+        <translation type="obsolete">Wert kopiert</translation>
+    </message>
+    <message>
+        <source>Unable to copy value</source>
+        <translation type="obsolete">Wert konnte nicht kopiert werden</translation>
+    </message>
+    <message>
+        <source>Unable to copy &quot;%1&quot;</source>
+        <translation type="obsolete">&quot;%1&quot; konnte nicht kopiert werden</translation>
+    </message>
+    <message>
+        <source>Unable to load ignore patterns: </source>
+        <translation type="obsolete">Konnte Ignoriermuster nicht laden: </translation>
+    </message>
+    <message>
+        <source>Unable to save ignore patterns: </source>
+        <translation type="obsolete">Konnte Ignoriermuster nicht speichern: </translation>
+    </message>
+    <message>
+        <source>Unable to resolve URL &quot;%1&quot;.</source>
+        <translation type="obsolete">Konnte URL &quot;%1&quot; nicht auflösen: </translation>
+    </message>
+    <message>
+        <source>Another config change is still pending.</source>
+        <translation type="obsolete">Eine andere Änderung ist noch im Gange.</translation>
     </message>
 </context>
 <context>
