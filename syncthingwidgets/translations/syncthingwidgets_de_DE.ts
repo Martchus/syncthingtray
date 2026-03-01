@@ -2301,12 +2301,17 @@
 <context>
     <name>OpenLinkDialog</name>
     <message>
-        <location filename="../quick/qml/OpenLinkDialog.qml" line="15"/>
+        <location filename="../quick/qml/OpenLinkDialog.qml" line="10"/>
+        <source>Open URL</source>
+        <translation>URL öffnen</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/OpenLinkDialog.qml" line="16"/>
         <source>Do you want to open &quot;%1&quot;?</source>
         <translation>Soll &quot;%1&quot; geöffnet werden?</translation>
     </message>
     <message>
-        <location filename="../quick/qml/OpenLinkDialog.qml" line="27"/>
+        <location filename="../quick/qml/OpenLinkDialog.qml" line="28"/>
         <source>Android may decide to stop the current activity to free memory. So when going back to the Syncthing App, the app UI might be reset and unsaved changes be lost.</source>
         <translation>Android wird möglicherweise die aktuelle Aktivität schließen, um Arbeitsspeicher freizugeben. Das bedeutet, dass beim Zurückgehen zur Syncthing App die Oberfläche zurück gesetzt sein kann und nicht gespeicherte Änderungen verlohren gehen.</translation>
     </message>
