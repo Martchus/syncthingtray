@@ -7,7 +7,7 @@ import Main
 CustomDialog {
     Material.primary: Material.LightBlue
     Material.accent: Material.LightBlue
-    title: meta.title
+    title: qsTr("Open URL")
     implicitWidth: 500
     contentItem: ColumnLayout {
         Layout.fillWidth: true
