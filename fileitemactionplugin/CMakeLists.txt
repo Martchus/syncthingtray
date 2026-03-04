@@ -17,7 +17,7 @@ set(TS_FILES
     translations/${META_PROJECT_NAME}_en_US.ts)
 
 # find c++utilities
-find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.20.0 REQUIRED)
+find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.33.0 REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${CPP_UTILITIES_MODULE_DIRS})
 
 # find qtutilities
