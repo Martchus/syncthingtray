@@ -418,9 +418,15 @@ See the [release section on GitHub](https://github.com/Martchus/syncthingtray/re
         * `syncthingplasmoid`/`syncthingplasmoid-qt6`: applet/plasmoid for Plasma desktop
         * `syncthingfileitemaction`/`syncthingfileitemaction-qt6`: Dolphin/KIO integration
         * `syncthingctl`/`syncthingctl-qt6`: command-line interface
-* Debian ≥12 "bookworm" and its derivatives (Ubuntu, Pop!_OS, etc, but not Neon)
-    * `sudo apt install syncthingtray-kde-plasma` if using KDE Plasma; otherwise, `sudo apt install syncthingtray`.
-    * Installation from a Software Centre such as [GNOME Software](https://apps.gnome.org/en-GB/app/org.gnome.Software) or
+* Debian and its derivatives like Ubuntu
+    * *Some* versions of Debian provide packages for Syncthing Tray. Those packages *may* be available on *some* versions
+      of *some* Debian derivats as well (e.g. Ubuntu, Pop!_OS, …). KDE neon is known to **not** support the packages. If
+      your concrete distribution/version does not provide packages you will have to look into other options.
+    * Install packages via:
+        * `sudo apt install syncthingtray` for the generic tray application
+        * `sudo apt install syncthingtray-kde-plasma` for the Plasmoid and other KDE integrations which is recommended if
+          using KDE Plasma
+    * Installation from a software center such as [GNOME Software](https://apps.gnome.org/en-GB/app/org.gnome.Software) or
       [Discover](https://apps.kde.org/en-gb/discover/) should be possible as well.
 * Exherbo
     * packages for my other project "Tag Editor" and dependencies could serve as a base and are provided
