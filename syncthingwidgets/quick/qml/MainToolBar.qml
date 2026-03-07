@@ -95,7 +95,7 @@ ToolBar {
                 CustomToolButton {
                     id: backButton
                     visible: pageStack.currentDepth > 1
-                    icon.source: App.faUrlBase + "chevron-left"
+                    icon.source: App.faUrlBase + "arrow-left"
                     text: qsTr("Back")
                     onClicked: pageStack.pop()
                 }
