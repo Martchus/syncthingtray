@@ -117,15 +117,15 @@ if (ANDROID)
     set(META_CXX_STANDARD 20)
 endif ()
 
-# determine required version of c++utilities
+# configure optional features
 option(
     SETUP_TOOLS
     "enables setup tools; needs qtutilities and syncthingwidgets built with this option as well; makes likely sense to disable when distributing via a package manager"
     OFF)
 option(USE_LIBSYNCTHING "whether libsyncthing should be included for syncthingtray's CLI" OFF)
-set(CPP_UTILITIES_REQUIRED_VERSION 5.33.0)
 
 # find c++utilities
+set(CPP_UTILITIES_REQUIRED_VERSION 5.33.0)
 find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} ${CPP_UTILITIES_REQUIRED_VERSION}
              REQUIRED)
 use_cpp_utilities()
