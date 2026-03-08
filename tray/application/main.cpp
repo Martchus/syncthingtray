@@ -309,6 +309,9 @@ static int runApplication(int argc, const char *const *argv)
     });
 #endif
     parser.parseArgs(argc, argv);
+    if (parser.helpArg().isPresent()) {
+        return EXIT_SUCCESS;
+    }
 
 #ifdef GUI_QTWIDGETS
     // quit already running application if quit is present
