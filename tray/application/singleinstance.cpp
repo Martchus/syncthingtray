@@ -12,6 +12,7 @@
 #include <QStringBuilder>
 #include <QThread>
 
+#include <cstdlib>
 #include <iostream>
 #include <memory>
 

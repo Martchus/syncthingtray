@@ -81,6 +81,7 @@ Q_IMPORT_QML_PLUGIN(WebViewItemPlugin)
 #include <QWebEngineUrlScheme>
 #endif
 
+#include <cstdlib>
 #include <iostream>
 
 #ifdef Q_OS_ANDROID
