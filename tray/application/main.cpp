@@ -264,7 +264,6 @@ static int runApplication(int argc, const char *const *argv)
     cliArg.setFlags(Argument::Flags::Greedy, true);
     cliArg.setValueCompletionBehavior(ValueCompletionBehavior::PreDefinedValues | ValueCompletionBehavior::InvokeCallback);
     cliArg.setCallback([](const ArgumentOccurrence &occurrence) {
-        CMD_UTILS_START_CONSOLE;
         std::exit(static_cast<int>(LibSyncthing::runCli(occurrence.values)));
     });
     cliArg.setSubArguments({ &cliHelp });
@@ -274,7 +273,6 @@ static int runApplication(int argc, const char *const *argv)
     syncthingArg.setFlags(Argument::Flags::Greedy, true);
     syncthingArg.setValueCompletionBehavior(ValueCompletionBehavior::PreDefinedValues | ValueCompletionBehavior::InvokeCallback);
     syncthingArg.setCallback([](const ArgumentOccurrence &occurrence) {
-        CMD_UTILS_START_CONSOLE;
         std::exit(static_cast<int>(LibSyncthing::runCommand(occurrence.values)));
     });
     syncthingArg.setSubArguments({ &syncthingHelp });
@@ -547,6 +545,7 @@ CPP_UTILITIES_MAIN_EXPORT int main(int argc, char *argv[])
     SET_APPLICATION_INFO;
     CMD_UTILS_CONVERT_ARGS_TO_UTF8;
     CMD_UTILS_HANDLE_VIRTUAL_TERMINAL_PROCESSING;
+    CMD_UTILS_START_CONSOLE;
 #ifdef Q_OS_ANDROID
     // prevent crashes on exit, see https://doc.qt.io/qt-6/android-environment-variables.html
     qputenv("QT_ANDROID_NO_EXIT_CALL", "1");
