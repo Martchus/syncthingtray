@@ -125,8 +125,7 @@ bool SyncthingIgnorePattern::matches(const QString &path, QChar pathSeparator) c
 #else
         const
 #endif
-        auto genericPathSeparator
-        = QChar('/');
+        auto genericPathSeparator = QChar('/');
     const auto matchFromRoot = *globIter == pathSeparator || *globIter == genericPathSeparator;
     if (matchFromRoot) {
         ++globIter;

@@ -263,18 +263,14 @@ static int runApplication(int argc, const char *const *argv)
     cliArg.setRequiredValueCount(Argument::varValueCount);
     cliArg.setFlags(Argument::Flags::Greedy, true);
     cliArg.setValueCompletionBehavior(ValueCompletionBehavior::PreDefinedValues | ValueCompletionBehavior::InvokeCallback);
-    cliArg.setCallback([](const ArgumentOccurrence &occurrence) {
-        std::exit(static_cast<int>(LibSyncthing::runCli(occurrence.values)));
-    });
+    cliArg.setCallback([](const ArgumentOccurrence &occurrence) { std::exit(static_cast<int>(LibSyncthing::runCli(occurrence.values))); });
     cliArg.setSubArguments({ &cliHelp });
     auto syncthingArg = OperationArgument("syncthing", '\0', "runs Syncthing");
     auto syncthingHelp = ConfigValueArgument("help", 'h', "lists Syncthing's top-level commands");
     syncthingArg.setRequiredValueCount(Argument::varValueCount);
     syncthingArg.setFlags(Argument::Flags::Greedy, true);
     syncthingArg.setValueCompletionBehavior(ValueCompletionBehavior::PreDefinedValues | ValueCompletionBehavior::InvokeCallback);
-    syncthingArg.setCallback([](const ArgumentOccurrence &occurrence) {
-        std::exit(static_cast<int>(LibSyncthing::runCommand(occurrence.values)));
-    });
+    syncthingArg.setCallback([](const ArgumentOccurrence &occurrence) { std::exit(static_cast<int>(LibSyncthing::runCommand(occurrence.values))); });
     syncthingArg.setSubArguments({ &syncthingHelp });
 #endif
 #ifdef Q_OS_ANDROID

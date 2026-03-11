@@ -290,8 +290,7 @@ static void openBrowserInAppMode(const QString &url)
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     const
 #endif
-        auto customCommand
-        = Data::SyncthingProcess::splitArguments(QString(configuredCustomCommand).replace(QLatin1String("%SYNCTHING_URL%"), url));
+        auto customCommand = Data::SyncthingProcess::splitArguments(QString(configuredCustomCommand).replace(QLatin1String("%SYNCTHING_URL%"), url));
     const auto appList = customCommand.isEmpty() ? chromiumBasedBrowserBinaries() : QStringList{ customCommand.first() };
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
     customCommand.removeFirst();
