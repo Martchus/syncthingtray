@@ -43,9 +43,6 @@ class SYNCTHINGWIDGETS_EXPORT App : public AppBase {
     Q_PROPERTY(QString syncthingRunningStatus READ syncthingRunningStatus NOTIFY syncthingRunningStatusChanged)
     Q_PROPERTY(QString meteredStatus READ meteredStatus NOTIFY meteredStatusChanged)
     Q_PROPERTY(bool importExportOngoing READ isImportExportOngoing NOTIFY importExportOngoingChanged)
-    Q_PROPERTY(QString statusText READ statusText NOTIFY statusInfoChanged)
-    Q_PROPERTY(QIcon statusIcon READ statusIcon NOTIFY statusInfoChanged)
-    Q_PROPERTY(QString additionalStatusText READ additionalStatusText NOTIFY statusInfoChanged)
     Q_PROPERTY(bool manualServiceShutdown READ isServiceShutdownManual CONSTANT)
     Q_PROPERTY(bool storagePermissionGranted READ storagePermissionGranted NOTIFY storagePermissionGrantedChanged)
     Q_PROPERTY(bool notificationPermissionGranted READ notificationPermissionGranted NOTIFY notificationPermissionGrantedChanged)
@@ -113,18 +110,6 @@ public:
     const QString &meteredStatus() const
     {
         return m_meteredStatus;
-    }
-    const QString &statusText() const
-    {
-        return m_statusInfo.statusText();
-    }
-    const QIcon &statusIcon() const
-    {
-        return m_statusInfo.statusIcon();
-    }
-    const QString &additionalStatusText() const
-    {
-        return m_statusInfo.additionalStatusText();
     }
     /*!
      * \brief Whether the shutdown of the accomanying AppService is manual.
@@ -209,7 +194,6 @@ Q_SIGNALS:
     void syncthingRunningStatusChanged(const QString &syncthingRunningStatus);
     void meteredStatusChanged(const QString &meteredStatus);
     void importExportOngoingChanged(bool importExportOngoing);
-    void statusInfoChanged();
     void textShared(const QString &text);
     void newDeviceTriggered(const QString &devId);
     void newDirTriggered(const QString &devId, const QString &dirId, const QString &dirLabel);

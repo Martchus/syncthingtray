@@ -8,9 +8,10 @@
 
 namespace QtGui {
 
-SyncthingData::SyncthingData(QObject *parent)
+SyncthingData::SyncthingData(QObject *parent, bool textOnly, bool clickToConnect)
     : QObject(parent)
     , m_notifier(m_connection)
+    , m_statusInfo(textOnly, clickToConnect)
 {
     m_connection.setPollingFlags(Data::SyncthingConnection::PollingFlags::MainEvents | Data::SyncthingConnection::PollingFlags::Errors);
 }

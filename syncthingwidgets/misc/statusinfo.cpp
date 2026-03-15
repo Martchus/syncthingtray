@@ -7,15 +7,15 @@
 #include <syncthingmodel/syncthingicons.h>
 
 #include <QCoreApplication>
-#include <QIcon>
 #include <QStringBuilder>
 
 using namespace Data;
 
 namespace QtGui {
 
-StatusInfo::StatusInfo(bool textOnly, bool clickToConnect)
-    : m_statusText(QCoreApplication::translate("QtGui::StatusInfo", "Initializing …"))
+StatusInfo::StatusInfo(bool textOnly, bool clickToConnect, QObject *parent)
+    : QObject(parent)
+    , m_statusText(QCoreApplication::translate("QtGui::StatusInfo", "Initializing …"))
     , m_statusIcon(textOnly ? nullptr : &trayIcons().disconnected)
     , m_textOnly(textOnly)
     , m_clickToConnect(clickToConnect)

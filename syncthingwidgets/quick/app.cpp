@@ -105,7 +105,7 @@ App::App(bool insecure, QQmlEngine *engine, QObject *parent)
     applySettings();
 
     auto &iconManager = initIconManager();
-    connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &App::statusInfoChanged);
+    connect(&iconManager, &Data::IconManager::statusIconsChanged, m_data.statusInfo(), &StatusInfo::statusInfoChanged);
 
     connect(m_data.connection(), &SyncthingConnection::error, this, &App::handleConnectionError);
     connect(m_data.connection(), &SyncthingConnection::statusChanged, this, &App::handleConnectionStatusChanged);
@@ -469,7 +469,7 @@ void App::invalidateStatus()
 {
     AppBase::invalidateStatus();
     m_closePreference.reset();
-    emit statusInfoChanged();
+    emit m_data.statusInfo()->statusInfoChanged();
     emit statusChanged();
 }
 
@@ -492,8 +492,8 @@ void App::handleRunningChanged(bool isRunning)
 
 void App::handleChangedDevices()
 {
-    m_statusInfo.updateConnectedDevices(*m_data.connection());
-    emit statusInfoChanged();
+    m_data.updateDeviceInfo();
+    emit m_data.statusInfo()->statusInfoChanged();
 }
 
 void App::handleNewErrors(const std::vector<Data::SyncthingError> &errors)

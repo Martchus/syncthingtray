@@ -24,8 +24,7 @@ namespace QtGui {
 
 AppBase::AppBase(bool insecure, bool textOnly, bool clickToConnect, QObject *parent)
     : QObject(parent)
-    , m_data(nullptr)
-    , m_statusInfo(textOnly, clickToConnect)
+    , m_data(nullptr, textOnly, clickToConnect)
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     , m_connectToLaunched(true)
 #else
@@ -127,8 +126,8 @@ bool AppBase::openSettings()
 void AppBase::invalidateStatus()
 {
     m_status.reset();
-    m_statusInfo.updateConnectionStatus(*m_data.connection());
-    m_statusInfo.updateConnectedDevices(*m_data.connection());
+    m_data.updateStatusInfo();
+    m_data.updateDeviceInfo();
 }
 
 Data::IconManager &AppBase::initIconManager()

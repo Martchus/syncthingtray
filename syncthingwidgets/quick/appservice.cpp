@@ -428,7 +428,7 @@ void AppService::handleRunningChanged(bool isRunning)
 
 void AppService::handleChangedDevices()
 {
-    m_statusInfo.updateConnectedDevices(*m_data.connection());
+    m_data.updateDeviceInfo();
 #ifdef Q_OS_ANDROID
     updateAndroidNotification();
 #endif
@@ -462,7 +462,7 @@ void AppService::handleConnectionStatusChanged(Data::SyncthingStatus newStatus)
 #ifdef SYNCTHINGTRAY_SERVICE_WITH_ICON_RENDERING
 void AppService::invalidateAndroidIconCache()
 {
-    m_statusInfo.updateConnectionStatus(*m_data.connection());
+    m_data.updateStatusInfo();
     m_androidIconCache.clear();
     updateAndroidNotification();
 }
@@ -479,8 +479,9 @@ QJniObject &AppService::makeAndroidIcon(const QIcon &icon)
 
 void AppService::updateAndroidNotification()
 {
-    const auto title = QJniObject::fromString(m_data.connection()->isConnected() ? m_statusInfo.statusText() : status());
-    const auto text = QJniObject::fromString(m_statusInfo.additionalStatusText());
+    const auto &statusInfo = *m_data.statusInfo();
+    const auto title = QJniObject::fromString(m_data.connection()->isConnected() ? statusInfo.statusText() : status());
+    const auto text = QJniObject::fromString(statusInfo.additionalStatusText());
     static const auto subText = QJniObject::fromString(QString());
 #ifdef SYNCTHINGTRAY_SERVICE_WITH_ICON_RENDERING
     const auto &icon = makeAndroidIcon(m_statusInfo.statusIcon());

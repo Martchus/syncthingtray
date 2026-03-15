@@ -67,7 +67,6 @@ protected:
     QJsonObject m_settings;
     QVariantList m_internalErrors;
     std::optional<QString> m_status;
-    StatusInfo m_statusInfo;
     QString m_syncthingConfigDir;
     QString m_syncthingDataDir;
     QString m_syncthingUnixSocketPath;

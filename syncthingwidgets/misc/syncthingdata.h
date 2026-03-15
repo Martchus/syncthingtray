@@ -1,6 +1,7 @@
 #ifndef SYNCTHINGWIDGETS_DATA_H
 #define SYNCTHINGWIDGETS_DATA_H
 
+#include "./statusinfo.h"
 #include "./syncthinglauncher.h"
 #include "./utils.h"
 
@@ -24,6 +25,7 @@ class SYNCTHINGWIDGETS_EXPORT SyncthingData : public QObject {
     Q_OBJECT
     Q_PROPERTY(Data::SyncthingConnection *connection READ connection CONSTANT)
     Q_PROPERTY(Data::SyncthingNotifier *notifier READ notifier CONSTANT)
+    Q_PROPERTY(StatusInfo *statusInfo READ statusInfo CONSTANT)
     Q_PROPERTY(QString syncthingVersion READ syncthingVersion CONSTANT)
     Q_PROPERTY(QString qtVersion READ qtVersion CONSTANT)
     Q_PROPERTY(QString readmeUrl READ readmeUrl CONSTANT)
@@ -35,7 +37,8 @@ class SYNCTHINGWIDGETS_EXPORT SyncthingData : public QObject {
 #endif
 
 public:
-    explicit SyncthingData(QObject *parent); // avoid "parent = nullptr" to make it non-default constructable so create() is used
+    explicit SyncthingData(QObject *parent, bool textOnly = false,
+        bool clickToConnect = false); // avoid "parent = nullptr" to make it non-default constructable so create() is used
     ~SyncthingData() override;
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
     static SyncthingData *create(QQmlEngine *, QJSEngine *engine);
@@ -48,6 +51,10 @@ public:
     Data::SyncthingNotifier *notifier()
     {
         return &m_notifier;
+    }
+    StatusInfo *statusInfo()
+    {
+        return &m_statusInfo;
     }
     QString syncthingVersion() const
     {
@@ -71,10 +78,25 @@ public:
     }
     QString website() const;
 
+public Q_SLOTS:
+    void updateStatusInfo(const QString &configurationName = QString());
+    void updateDeviceInfo();
+
 private:
     Data::SyncthingConnection m_connection;
     Data::SyncthingNotifier m_notifier;
+    StatusInfo m_statusInfo;
 };
+
+inline void SyncthingData::updateStatusInfo(const QString &configurationName)
+{
+    m_statusInfo.updateConnectionStatus(m_connection, configurationName);
+}
+
+inline void SyncthingData::updateDeviceInfo()
+{
+    m_statusInfo.updateConnectedDevices(m_connection);
+}
 
 } // namespace QtGui
 

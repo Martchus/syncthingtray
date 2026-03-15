@@ -159,7 +159,7 @@ Page {
                         Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
                         width: 16
                         height: 16
-                        source: App.statusIcon
+                        source: SyncthingData.statusInfo.statusIcon
                     }
                     ColumnLayout {
                         Layout.fillWidth: true
@@ -171,13 +171,13 @@ Page {
                         }
                         Label {
                             Layout.fillWidth: true
-                            text: App.statusText
+                            text: SyncthingData.statusInfo.statusText
                             font.weight: Font.Light
                             wrapMode: Text.Wrap
                         }
                         Label {
                             Layout.fillWidth: true
-                            text: App.additionalStatusText
+                            text: SyncthingData.statusInfo.additionalStatusText
                             font.weight: Font.Light
                             wrapMode: Text.Wrap
                             visible: text.length > 0

@@ -3,9 +3,9 @@
 
 #include "../global.h"
 
+#include <QIcon>
+#include <QObject>
 #include <QString>
-
-QT_FORWARD_DECLARE_CLASS(QIcon)
 
 namespace Data {
 class SyncthingConnection;
@@ -13,17 +13,25 @@ class SyncthingConnection;
 
 namespace QtGui {
 
-class SYNCTHINGWIDGETS_EXPORT StatusInfo {
+class SYNCTHINGWIDGETS_EXPORT StatusInfo : public QObject {
+    Q_OBJECT
+    Q_PROPERTY(QString statusText READ statusText NOTIFY statusInfoChanged)
+    Q_PROPERTY(QString additionalStatusText READ additionalStatusText NOTIFY statusInfoChanged)
+    Q_PROPERTY(QIcon statusIcon READ statusIcon NOTIFY statusInfoChanged)
+
 public:
-    explicit StatusInfo(bool textOnly = false, bool clickToConnect = false);
-    explicit StatusInfo(
-        const Data::SyncthingConnection &connection, const QString &configurationName = QString(), bool textOnly = false, bool clickToConnect = true);
+    explicit StatusInfo(bool textOnly = false, bool clickToConnect = false, QObject *parent = nullptr);
+    explicit StatusInfo(const Data::SyncthingConnection &connection, const QString &configurationName = QString(), bool textOnly = false,
+        bool clickToConnect = true, QObject *parent = nullptr);
 
     const QString &statusText() const;
     const QString &additionalStatusText() const;
     const QIcon &statusIcon() const;
     void updateConnectionStatus(const Data::SyncthingConnection &connection, const QString &configurationName = QString());
     void updateConnectedDevices(const Data::SyncthingConnection &connection);
+
+Q_SIGNALS:
+    void statusInfoChanged();
 
 private:
     void recomputeAdditionalStatusText();
@@ -37,8 +45,10 @@ private:
     bool m_clickToConnect;
 };
 
-inline StatusInfo::StatusInfo(const Data::SyncthingConnection &connection, const QString &configurationName, bool textOnly, bool clickToConnect)
-    : m_statusIcon(nullptr)
+inline StatusInfo::StatusInfo(
+    const Data::SyncthingConnection &connection, const QString &configurationName, bool textOnly, bool clickToConnect, QObject *parent)
+    : QObject(parent)
+    , m_statusIcon(nullptr)
     , m_textOnly(textOnly)
     , m_clickToConnect(clickToConnect)
 {
