@@ -143,22 +143,22 @@
         <translation>Oznámení ze Syncthing – kliknutím zahodíte</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="276"/>
+        <location filename="../gui/trayicon.cpp" line="279"/>
         <source>Syncthing device wants to connect - click for web UI</source>
         <translation>Syncthing zařízení se chce připojit – klikněte pro webové rozhraní</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="293"/>
+        <location filename="../gui/trayicon.cpp" line="296"/>
         <source>New Syncthing folder - click for web UI</source>
         <translation>Nový Syncthing adresář – klikněte pro webové rozhraní</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="308"/>
+        <location filename="../gui/trayicon.cpp" line="311"/>
         <source>New version - click to open updater</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="308"/>
+        <location filename="../gui/trayicon.cpp" line="311"/>
         <source>Version %1 is available</source>
         <translation type="unfinished"></translation>
     </message>
@@ -440,17 +440,17 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</source>
 <context>
     <name>main</name>
     <message>
-        <location filename="../application/main.cpp" line="116"/>
+        <location filename="../application/main.cpp" line="117"/>
         <source>Unable to </source>
         <translation>Nedaří se </translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="162"/>
+        <location filename="../application/main.cpp" line="163"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the --windowed flag, though.It is also possible to start Syncthing Tray with --wait to wait until the system tray becomes available instead of showing this message.</source>
         <translation>Oznamovací oblast systémového panelu je (pro tuto chvíli) nedostupná. Je možné otevřít nabídku oznamovací oblasti jako běžné okno pomocí příznaku „--windowed“. Dále je možné spustit s volbou „--wait“ a čekat na to, až bude oznamovací oblast k dispozici (namísto zobrazení této zprávy).</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="477"/>
+        <location filename="../application/main.cpp" line="475"/>
         <source>&lt;p&gt;This can have different causes:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Data corruption occurred during the download/extraction. In this case cancelling and retrying the update will help.&lt;/li&gt;&lt;li&gt;The signing key or updating mechanism in general has changed. In this case an according release note will be present on &lt;a href=&quot;https://martchus.github.io/syncthingtray/#downloads-section&quot;&gt;the website&lt;/a&gt; and &lt;a href=&quot;https://github.com/Martchus/syncthingtray/releases&quot;&gt;GitHub&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;A bug in the newly introduced updater, see &lt;a href=&quot;https://github.com/Martchus/syncthingtray/issues&quot;&gt;issues on GitHub&lt;/a&gt; for potential bug reports.&lt;/li&gt;&lt;li&gt;Someone tries to distribute manipulated executables of Syncthing Tray.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;It is recommend to cancel the update and retry or cross-check the cause if the issue persists. If you ignore this error you &lt;i&gt;may&lt;/i&gt; install a corrupted/manipulated executable.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -463,7 +463,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</source>
         <translation type="vanished">Poznamenejme, že dialog nastavení umožňuje importovat URL adresu, přihlašovací údaje a klíč k API z místního nastavení Syncthing.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="189"/>
+        <location filename="../application/main.cpp" line="190"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation>Knihovny Qt byly sestaveny bez podpory pro ikonu v oznamovací oblasti. Měli byste otevřít nabídku pro oznamovací oblast jako běžné okno pomocí příznaku -w.</translation>
     </message>
