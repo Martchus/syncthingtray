@@ -1,6 +1,7 @@
 #ifndef TRAY_WIDGET_H
 #define TRAY_WIDGET_H
 
+#include <syncthingwidgets/misc/statusinfo.h>
 #include <syncthingwidgets/settings/settings.h>
 #include <syncthingwidgets/webview/webviewdefs.h>
 
@@ -58,6 +59,7 @@ public:
     const Data::SyncthingConnection &connection() const;
     Data::SyncthingNotifier &notifier();
     const Data::SyncthingNotifier &notifier() const;
+    StatusInfo &statusInfo();
     QMenu *connectionsMenu();
     static const std::vector<TrayWidget *> &instances();
     Data::SyncthingConnectionSettings *selectedConnection();
@@ -139,6 +141,7 @@ private:
     QPushButton *m_internalErrorsButton;
     Data::SyncthingConnection m_connection;
     Data::SyncthingNotifier m_notifier;
+    StatusInfo m_statusInfo;
     Data::SyncthingDirectoryModel m_dirModel;
     Data::SyncthingSortFilterModel m_sortFilterDirModel;
     Data::SyncthingDeviceModel m_devModel;
@@ -180,6 +183,11 @@ inline Data::SyncthingNotifier &TrayWidget::notifier()
 inline const Data::SyncthingNotifier &TrayWidget::notifier() const
 {
     return m_notifier;
+}
+
+inline StatusInfo &TrayWidget::statusInfo()
+{
+    return m_statusInfo;
 }
 
 inline QMenu *TrayWidget::connectionsMenu()

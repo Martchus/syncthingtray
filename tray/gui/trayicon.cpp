@@ -252,8 +252,11 @@ void TrayIcon::showSyncthingNotification(CppUtilities::DateTime when, const QStr
 void TrayIcon::updateStatusIconAndText()
 {
     auto &trayWidget = trayMenu().widget();
-    const auto statusInfo = StatusInfo(trayMenu().widget().connection(),
-        TrayWidget::instances().size() > 1 && trayWidget.selectedConnection() ? trayWidget.selectedConnection()->label : QString());
+    auto &statusInfo = trayWidget.statusInfo();
+    auto &connection = trayWidget.connection();
+    statusInfo.updateConnectionStatus(
+        connection, TrayWidget::instances().size() > 1 && trayWidget.selectedConnection() ? trayWidget.selectedConnection()->label : QString());
+    statusInfo.updateConnectedDevices(connection);
     if (statusInfo.additionalStatusText().isEmpty()) {
         setToolTip(statusInfo.statusText());
     } else {
