@@ -41,6 +41,6 @@ IconOnlyButton {
     property string configCategory
 
     function openSyncthingDocs() {
-        SyncthingModels.requestOpeningUrl(helpButton.url);
+        QuickUI.requestOpeningUrl(helpButton.url);
     }
 }
