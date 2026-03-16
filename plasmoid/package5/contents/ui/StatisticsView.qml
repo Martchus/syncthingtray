@@ -18,7 +18,7 @@ RowLayout {
     }
     IconLabel {
         iconSource: plasmoid.nativeInterface.faUrl + "hdd-o"
-        text: statistics.bytes !== undefined ? plasmoid.nativeInterface.models.formatFileSize(
+        text: statistics.bytes !== undefined ? plasmoid.nativeInterface.models.formatDataSize(
                                                    statistics.bytes) : "?"
         tooltip: context + qsTr(" size")
     }
