@@ -77,7 +77,7 @@ Item {
         name: "AppTests"
 
         function initTestCase() {
-            const connection = App.connection;
+            const connection = SyncthingData.connection;
             compare(connection.connected, withSyncthing, "connected");
             if (withSyncthing) {
                 const folders = connection.rawConfig.folders;
@@ -241,7 +241,7 @@ Item {
 
                 // going back shouldn't trigger dialog
                 wait(1); // saving might be triggered asynchronously
-                tryVerify(() => !App.savingConfig);
+                tryVerify(() => !SyncthingModels.savingConfig);
                 goBackToStartPage();
             }
 
@@ -363,7 +363,7 @@ Item {
             compare(applyAction.text, "Apply changes");
             applyAction.trigger();
             wait(1); // saving might be triggered asynchronously
-            tryVerify(() => !App.savingConfig);
+            tryVerify(() => !SyncthingModels.savingConfig);
 
             compare(advancedPage.title, "Advanced", "title changed back after all settings have been saved");
             compare(advancedPage.isDangerous, false, "no dangerous settings pending anymore");
