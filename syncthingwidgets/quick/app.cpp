@@ -1522,7 +1522,6 @@ bool App::saveSupportBundle(QUrl url, const QJSValue &callback)
         if (exportDir.isEmpty()) {
             emit error(tr("No destination or file or directory specified/configured."));
             return false;
-            ;
         }
         path = makeExportPath(exportDir, QStringLiteral("syncthing-app-support-bundle"), QStringLiteral(".zip"));
     } else {
@@ -1597,7 +1596,7 @@ bool App::cleanSyncthingHomeDirectory(const QJSValue &callback)
         auto tempImportPaths = m_models.externalStoragePaths();
         auto tempImportPathsRemoved = false, tempImportPathsFailed = false;
         tempImportPaths.append(settingsDir + QStringLiteral("/.."));
-        for (const auto &tempImportPath : tempImportPaths) {
+        for (const auto &tempImportPath : std::as_const(tempImportPaths)) {
             if (auto tempDir = QDir(tempImportPath + QStringLiteral("/import-tmp")); tempDir.exists()) {
                 if (tempDir.removeRecursively()) {
                     tempImportPathsRemoved = true;
