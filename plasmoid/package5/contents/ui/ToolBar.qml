@@ -106,7 +106,7 @@ RowLayout {
         state: {
             var nativeInterface = plasmoid.nativeInterface
             // the systemd unit status is only relevant when connected to the local instance
-            if (!nativeInterface.local
+            if (!nativeInterface.data.connection.local
                     || !nativeInterface.startStopEnabled) {
                 return "irrelevant"
             }
@@ -136,7 +136,7 @@ RowLayout {
     PlasmaComponents3.ToolButton {
         id: showNewNotifications
         icon.name: "emblem-warning"
-        visible: plasmoid.nativeInterface.connection.hasErrors
+        visible: plasmoid.nativeInterface.data.connection.hasErrors
         onClicked: {
             plasmoid.nativeInterface.showNotificationsDialog()
             plasmoid.expanded = false
@@ -199,7 +199,7 @@ RowLayout {
     ToolButton {
         id: rescanAllDirsButton
         icon.source: plasmoid.nativeInterface.faUrl + "refresh"
-        onClicked: plasmoid.nativeInterface.connection.rescanAllDirs()
+        onClicked: plasmoid.nativeInterface.data.connection.rescanAllDirs()
         PlasmaComponents3.ToolTip {
             text: qsTr("Rescan all folders")
         }

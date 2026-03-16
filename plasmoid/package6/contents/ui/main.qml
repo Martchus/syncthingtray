@@ -30,8 +30,8 @@ PlasmoidItem {
         plasmoid.handleRelevantControlsChanged(expanded, currentTabIndex)
     }
 
-    toolTipMainText: Plasmoid.statusText
-    toolTipSubText: Plasmoid.additionalStatusText
+    toolTipMainText: Plasmoid.data.statusInfo.statusText
+    toolTipSubText: Plasmoid.data.statusInfo.additionalStatusText
     toolTipItem: ToolTipView {}
 
     Plasmoid.contextualActions: [
@@ -43,7 +43,7 @@ PlasmoidItem {
         PlasmaCore.Action {
             text: qsTr("Rescan all folders")
             icon.name: "folder-sync"
-            onTriggered: Plasmoid.connection.rescanAllDirs()
+            onTriggered: Plasmoid.data.connection.rescanAllDirs()
         },
         PlasmaCore.Action {
             text: qsTr("Show own device ID")
@@ -53,7 +53,7 @@ PlasmoidItem {
         PlasmaCore.Action {
             text: qsTr("Restart Syncthing")
             icon.name: "system-reboot"
-            onTriggered: Plasmoid.connection.restart()
+            onTriggered: Plasmoid.data.connection.restart()
         },
         PlasmaCore.Action {
             text: qsTr("Log")

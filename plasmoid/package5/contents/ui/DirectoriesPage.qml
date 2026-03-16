@@ -32,7 +32,7 @@ ColumnLayout {
 
         contentItem: TopLevelView {
             id: directoryView
-            model: plasmoid.nativeInterface.sortFilterDirModel
+            model: plasmoid.nativeInterface.models.sortFilterDirModel
 
             delegate: TopLevelItem {
                 id: item
@@ -93,7 +93,7 @@ ColumnLayout {
                                 icon.source: plasmoid.nativeInterface.faUrl + "refresh"
                                 tooltip: qsTr("Rescan")
                                 enabled: !paused
-                                onClicked: plasmoid.nativeInterface.connection.rescan(
+                                onClicked: plasmoid.nativeInterface.data.connection.rescan(
                                                dirId)
                             }
                             TinyButton {
@@ -101,8 +101,8 @@ ColumnLayout {
                                 icon.source: plasmoid.nativeInterface.faUrl + (paused ? "play" : "pause")
                                 tooltip: paused ? qsTr("Resume") : qsTr("Pause")
                                 onClicked: {
-                                    paused ? plasmoid.nativeInterface.connection.resumeDirectories(
-                                                 [dirId]) : plasmoid.nativeInterface.connection.pauseDirectories(
+                                    paused ? plasmoid.nativeInterface.data.connection.resumeDirectories(
+                                                 [dirId]) : plasmoid.nativeInterface.data.connection.pauseDirectories(
                                                  [dirId])
                                 }
                             }
@@ -111,7 +111,7 @@ ColumnLayout {
                                 icon.source: plasmoid.nativeInterface.faUrl + "folder"
                                 tooltip: qsTr("Open in file browser")
                                 onClicked: {
-                                    Qt.openUrlExternally(plasmoid.nativeInterface.substituteTilde(path))
+                                    Qt.openUrlExternally(plasmoid.nativeInterface.data.connection.substituteTilde(path))
                                     plasmoid.expanded = false
                                 }
                             }
@@ -125,7 +125,7 @@ ColumnLayout {
                         Layout.topMargin: 3
 
                         model: DelegateModel {
-                            model: plasmoid.nativeInterface.dirModel
+                            model: plasmoid.nativeInterface.models.dirModel
                             rootIndex: directoryView.model.mapToSource(directoryView.model.index(index, 0))
                             delegate: DetailItem {
                                 width: detailsView.width

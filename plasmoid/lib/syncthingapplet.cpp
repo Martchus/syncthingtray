@@ -85,14 +85,9 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     , m_faUrl(QStringLiteral("image://fa/"))
     , m_iconManager(IconManager::instance(&m_palette))
     , m_aboutDlg(nullptr)
-    , m_connection()
-    , m_notifier(m_connection)
-    , m_dirModel(m_connection)
-    , m_sortFilterDirModel(&m_dirModel)
-    , m_devModel(m_connection)
-    , m_sortFilterDevModel(&m_devModel)
-    , m_downloadModel(m_connection)
-    , m_recentChangesModel(m_connection)
+    , m_data(nullptr)
+    , m_models(m_data)
+    , m_downloadModel(*m_data.connection())
     , m_settingsDlg(nullptr)
     , m_wizard(nullptr)
     , m_imageProvider(nullptr)
@@ -115,17 +110,11 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     m_defaultTab = m_defaultTab < 0 ? m_lastTab : m_defaultTab;
 
     // configure connection
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
-    m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents | SyncthingConnection::PollingFlags::Errors);
-#endif
-    m_connection.setInsecure(Settings::values().connection.insecure);
+    m_data.connection()->setInsecure(Settings::values().connection.insecure);
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    m_notifier.setService(&m_service);
+    m_data.notifier()->setService(&m_service);
 #endif
-
-    m_sortFilterDirModel.sort(0, Qt::AscendingOrder);
-    m_sortFilterDevModel.sort(0, Qt::AscendingOrder);
 }
 
 SyncthingApplet::~SyncthingApplet()
@@ -163,23 +152,25 @@ void SyncthingApplet::init()
     std::cerr << "Plugin ID: " << pluginMetaData().pluginId().toStdString() << '\n';
 
     // connect signals and slots
-    connect(&m_notifier, &SyncthingNotifier::statusChanged, this, &SyncthingApplet::handleConnectionStatusChanged);
-    connect(&m_notifier, &SyncthingNotifier::syncComplete, &m_dbusNotifier, &DBusStatusNotifier::showSyncComplete);
-    connect(&m_notifier, &SyncthingNotifier::disconnected, &m_dbusNotifier, &DBusStatusNotifier::showDisconnect);
-    connect(&m_connection, &SyncthingConnection::autoReconnectIntervalChanged, this, &SyncthingApplet::updateStatusIconAndTooltip);
-    connect(&m_connection, &SyncthingConnection::hasOutOfSyncDirsChanged, this, &SyncthingApplet::updateStatusIconAndTooltip);
-    connect(&m_connection, &SyncthingConnection::newDevices, this, &SyncthingApplet::handleDevicesChanged);
-    connect(&m_connection, &SyncthingConnection::devStatusChanged, this, &SyncthingApplet::handleDevicesChanged);
-    connect(&m_connection, &SyncthingConnection::error, this, &SyncthingApplet::handleInternalError);
-    connect(&m_connection, &SyncthingConnection::trafficChanged, this, &SyncthingApplet::trafficChanged);
-    connect(&m_connection, &SyncthingConnection::dirStatisticsChanged, this, &SyncthingApplet::handleDirStatisticsChanged);
-    connect(&m_connection, &SyncthingConnection::newNotification, this, &SyncthingApplet::handleNewNotification);
-    connect(&m_connection, &SyncthingConnection::newErrors, this, &SyncthingApplet::updateStatusIconAndTooltip);
-    connect(&m_notifier, &SyncthingNotifier::newDevice, &m_dbusNotifier, &DBusStatusNotifier::showNewDev);
-    connect(&m_notifier, &SyncthingNotifier::newDir, &m_dbusNotifier, &DBusStatusNotifier::showNewDir);
-    connect(&m_dbusNotifier, &DBusStatusNotifier::connectRequested, &m_connection,
+    auto *const connection = m_data.connection();
+    auto *const notifier = m_data.notifier();
+    connect(notifier, &SyncthingNotifier::statusChanged, this, &SyncthingApplet::handleConnectionStatusChanged);
+    connect(notifier, &SyncthingNotifier::syncComplete, &m_dbusNotifier, &DBusStatusNotifier::showSyncComplete);
+    connect(notifier, &SyncthingNotifier::disconnected, &m_dbusNotifier, &DBusStatusNotifier::showDisconnect);
+    connect(connection, &SyncthingConnection::autoReconnectIntervalChanged, this, &SyncthingApplet::updateStatusIconAndTooltip);
+    connect(connection, &SyncthingConnection::hasOutOfSyncDirsChanged, this, &SyncthingApplet::updateStatusIconAndTooltip);
+    connect(connection, &SyncthingConnection::newDevices, this, &SyncthingApplet::handleDevicesChanged);
+    connect(connection, &SyncthingConnection::devStatusChanged, this, &SyncthingApplet::handleDevicesChanged);
+    connect(connection, &SyncthingConnection::error, this, &SyncthingApplet::handleInternalError);
+    connect(connection, &SyncthingConnection::trafficChanged, this, &SyncthingApplet::trafficChanged);
+    connect(connection, &SyncthingConnection::dirStatisticsChanged, this, &SyncthingApplet::handleDirStatisticsChanged);
+    connect(connection, &SyncthingConnection::newNotification, this, &SyncthingApplet::handleNewNotification);
+    connect(connection, &SyncthingConnection::newErrors, this, &SyncthingApplet::updateStatusIconAndTooltip);
+    connect(notifier, &SyncthingNotifier::newDevice, &m_dbusNotifier, &DBusStatusNotifier::showNewDev);
+    connect(notifier, &SyncthingNotifier::newDir, &m_dbusNotifier, &DBusStatusNotifier::showNewDir);
+    connect(&m_dbusNotifier, &DBusStatusNotifier::connectRequested, connection,
         static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
-    connect(&m_dbusNotifier, &DBusStatusNotifier::dismissNotificationsRequested, &m_connection, &SyncthingConnection::requestClearingErrors);
+    connect(&m_dbusNotifier, &DBusStatusNotifier::dismissNotificationsRequested, connection, &SyncthingConnection::requestClearingErrors);
     connect(&m_dbusNotifier, &DBusStatusNotifier::showNotificationsRequested, this, &SyncthingApplet::showNotificationsDialog);
     connect(&m_dbusNotifier, &DBusStatusNotifier::errorDetailsRequested, this, &SyncthingApplet::showInternalErrorsDialog);
     connect(&m_dbusNotifier, &DBusStatusNotifier::webUiRequested, this, &SyncthingApplet::showWebUI);
@@ -232,16 +223,11 @@ void SyncthingApplet::initEngine(QObject *object)
     engine->addImageProvider(QStringLiteral("fa"), m_imageProvider);
 }
 
-QIcon SyncthingApplet::statusIcon() const
-{
-    return m_statusInfo.statusIcon();
-}
-
 QString SyncthingApplet::connectButtonState() const
 {
-    switch (m_connection.status()) {
+    switch (m_data.connection()->status()) {
     case Data::SyncthingStatus::Disconnected:
-        return m_connection.isConnecting() ? QStringLiteral("connecting") : QStringLiteral("disconnected");
+        return m_data.connection()->isConnecting() ? QStringLiteral("connecting") : QStringLiteral("disconnected");
     case Data::SyncthingStatus::Reconnecting:
         return QStringLiteral("connecting");
     case Data::SyncthingStatus::Paused:
@@ -253,22 +239,22 @@ QString SyncthingApplet::connectButtonState() const
 
 QString SyncthingApplet::incomingTraffic() const
 {
-    return trafficString(m_connection.totalIncomingTraffic(), m_connection.totalIncomingRate());
+    return m_data.formatIncomingTraffic();
 }
 
 bool SyncthingApplet::hasIncomingTraffic() const
 {
-    return m_connection.totalIncomingRate() > 0.0;
+    return m_data.connection()->totalIncomingRate() > 0.0;
 }
 
 QString SyncthingApplet::outgoingTraffic() const
 {
-    return trafficString(m_connection.totalOutgoingTraffic(), m_connection.totalOutgoingRate());
+    return m_data.formatOutgoingTraffic();
 }
 
 bool SyncthingApplet::hasOutgoingTraffic() const
 {
-    return m_connection.totalOutgoingRate() > 0.0;
+    return m_data.connection()->totalOutgoingRate() > 0.0;
 }
 
 SyncthingStatistics SyncthingApplet::globalStatistics() const
@@ -319,26 +305,25 @@ void SyncthingApplet::setCurrentConnectionConfigIndex(int index)
     bool reconnectRequired = false;
     if (index != m_currentConnectionConfig && index >= 0 && static_cast<unsigned>(index) <= settings.connection.secondary.size()) {
         auto &selectedConfig = index == 0 ? settings.connection.primary : settings.connection.secondary[static_cast<unsigned>(index) - 1];
-        reconnectRequired = m_connection.applySettings(selectedConfig);
+        reconnectRequired = m_data.connection()->applySettings(selectedConfig);
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
         if (m_webViewDlg) {
-            m_webViewDlg->applySettings(selectedConfig, false, &m_connection);
+            m_webViewDlg->applySettings(selectedConfig, false, m_data.connection());
         }
 #endif
         config().writeEntry<int>("selectedConfig", index);
         emit currentConnectionConfigIndexChanged(m_currentConnectionConfig = index);
-        emit localChanged();
     }
 
     // apply systemd settings, reconnect if required and possible
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     const auto systemdConsideredForReconnect
-        = settings.systemd.apply(m_connection, currentConnectionConfig(), reconnectRequired).consideredForReconnect;
+        = settings.systemd.apply(*m_data.connection(), currentConnectionConfig(), reconnectRequired).consideredForReconnect;
 #else
     const auto systemdConsideredForReconnect = false;
 #endif
-    if (!systemdConsideredForReconnect && (reconnectRequired || !m_connection.isConnected())) {
-        m_connection.reconnect();
+    if (!systemdConsideredForReconnect && (reconnectRequired || !m_data.connection()->isConnected())) {
+        m_data.connection()->reconnect();
     } else {
         concludeWizard();
     }
@@ -361,30 +346,31 @@ bool SyncthingApplet::hasInternalErrors() const
 void SyncthingApplet::setPassiveStates(const QList<QtUtilities::ChecklistItem> &passiveStates)
 {
     m_passiveSelectionModel.setItems(passiveStates);
-    const auto currentState = static_cast<int>(m_connection.status());
+    const auto currentState = static_cast<int>(m_data.connection()->status());
     setPassive(currentState >= 0 && currentState < passiveStates.size() && passiveStates.at(currentState).isChecked());
 }
 
 void SyncthingApplet::updateStatusIconAndTooltip()
 {
-    m_statusInfo.updateConnectionStatus(m_connection);
-    m_statusInfo.updateConnectedDevices(m_connection);
+    m_data.updateStatusInfo();
+    m_data.updateDeviceInfo();
+    emit m_data.statusInfo()->statusInfoChanged();
     emit connectionStatusChanged();
 }
 
 void SyncthingApplet::triggerConnectButtonAction()
 {
-    switch (m_connection.status()) {
+    switch (m_data.connection()->status()) {
     case Data::SyncthingStatus::Disconnected:
-        m_connection.connect();
+        m_data.connection()->connect();
         break;
     case Data::SyncthingStatus::Reconnecting:
         break;
     case Data::SyncthingStatus::Paused:
-        m_connection.resumeAllDevs();
+        m_data.connection()->resumeAllDevs();
         break;
     default:
-        m_connection.pauseAllDevs();
+        m_data.connection()->pauseAllDevs();
     }
 }
 
@@ -392,7 +378,7 @@ void SyncthingApplet::triggerConnectButtonAction()
 void SyncthingApplet::handleRelevantControlsChanged(bool visible, int tabIndex)
 {
     m_lastTab = tabIndex;
-    QtGui::handleRelevantControlsChanged(visible, tabIndex, m_connection);
+    QtGui::handleRelevantControlsChanged(visible, tabIndex, *m_data.connection());
 }
 #endif
 
@@ -408,16 +394,6 @@ QIcon SyncthingApplet::loadForkAwesomeIcon(const QString &name, int size) const
     return QtForkAwesome::isIconValid(icon)
         ? QIcon(QtForkAwesome::Renderer::global().pixmap(icon, QSize(size, size), QGuiApplication::palette().color(QPalette::WindowText)))
         : QIcon();
-}
-
-QString SyncthingApplet::formatFileSize(quint64 fileSizeInByte) const
-{
-    return QString::fromStdString(dataSizeToString(fileSizeInByte));
-}
-
-QString SyncthingApplet::substituteTilde(const QString &path) const
-{
-    return Data::substituteTilde(path, m_connection.tilde(), m_connection.pathSeparator());
 }
 
 bool SyncthingApplet::areWipFeaturesEnabled() const
@@ -482,13 +458,13 @@ void SyncthingApplet::concludeWizard(const QString &errorMessage)
     }
     m_applyingSettingsForWizard = false;
     if (m_wizard) {
-        m_wizard->handleConfigurationApplied(errorMessage, &m_connection);
+        m_wizard->handleConfigurationApplied(errorMessage, m_data.connection());
     }
 }
 
 void SyncthingApplet::showWebUI()
 {
-    auto *const dlg = QtGui::showWebUI(m_connection.syncthingUrl(), currentConnectionConfig(), m_webViewDlg, nullptr, &m_connection);
+    auto *const dlg = QtGui::showWebUI(m_data.connection()->syncthingUrl(), currentConnectionConfig(), m_webViewDlg, nullptr, m_data.connection());
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     if (!dlg) {
         return;
@@ -506,7 +482,7 @@ void SyncthingApplet::showWebUI()
 
 void SyncthingApplet::showLog()
 {
-    auto *const dlg = TextViewDialog::forLogEntries(m_connection);
+    auto *const dlg = TextViewDialog::forLogEntries(*m_data.connection());
     dlg->setAttribute(Qt::WA_DeleteOnClose, true);
     centerWidget(dlg);
     dlg->show();
@@ -514,7 +490,7 @@ void SyncthingApplet::showLog()
 
 void SyncthingApplet::showOwnDeviceId()
 {
-    auto *const dlg = ownDeviceIdDialog(m_connection);
+    auto *const dlg = ownDeviceIdDialog(*m_data.connection());
     dlg->setAttribute(Qt::WA_DeleteOnClose, true);
     centerWidget(dlg);
     dlg->show();
@@ -538,7 +514,7 @@ void SyncthingApplet::showAboutDialog()
 void SyncthingApplet::showNotificationsDialog()
 {
     if (!m_notificationsDlg) {
-        m_notificationsDlg = errorNotificationsDialog(m_connection);
+        m_notificationsDlg = errorNotificationsDialog(*m_data.connection());
         m_notificationsDlg->setAttribute(Qt::WA_DeleteOnClose, true);
         connect(m_notificationsDlg, &QDialog::destroyed, this, &SyncthingApplet::handleNotificationsDialogDeleted);
     }
@@ -557,12 +533,12 @@ void SyncthingApplet::showInternalErrorsDialog()
 void SyncthingApplet::showDirectoryErrors(const QString &dirId)
 {
     auto row = 0;
-    auto *const dir = m_connection.findDirInfo(dirId, row);
+    auto *const dir = m_data.connection()->findDirInfo(dirId, row);
     if (!dir) {
         return;
     }
-    m_connection.requestDirPullErrors(dirId);
-    auto *const dlg = new DirectoryErrorsDialog(m_connection, *dir);
+    m_data.connection()->requestDirPullErrors(dirId);
+    auto *const dlg = new DirectoryErrorsDialog(*m_data.connection(), *dir);
     dlg->setAttribute(Qt::WA_DeleteOnClose, true);
     centerWidget(dlg);
     dlg->show();
@@ -570,15 +546,15 @@ void SyncthingApplet::showDirectoryErrors(const QString &dirId)
 
 void SyncthingApplet::browseRemoteFiles(const QString &dirId)
 {
-    if (auto row = 0; auto *const dir = m_connection.findDirInfo(dirId, row)) {
-        showCenteredDialog(QtGui::browseRemoteFilesDialog(m_connection, *dir));
+    if (auto row = 0; auto *const dir = m_data.connection()->findDirInfo(dirId, row)) {
+        showCenteredDialog(QtGui::browseRemoteFilesDialog(*m_data.connection(), *dir));
     }
 }
 
 void SyncthingApplet::showIgnorePatterns(const QString &dirId)
 {
-    if (auto row = 0; auto *const dir = m_connection.findDirInfo(dirId, row)) {
-        showCenteredDialog(QtGui::ignorePatternsDialog(m_connection, *dir));
+    if (auto row = 0; auto *const dir = m_data.connection()->findDirInfo(dirId, row)) {
+        showCenteredDialog(QtGui::ignorePatternsDialog(*m_data.connection(), *dir));
     }
 }
 
@@ -596,7 +572,7 @@ void SyncthingApplet::copyToClipboard(const QString &text)
 
 void SyncthingApplet::copyToClipboard(const QString &dirId, const QString &relativePath)
 {
-    if (const auto fullPath = m_connection.fullPath(dirId, relativePath); !fullPath.isEmpty()) {
+    if (const auto fullPath = m_data.connection()->fullPath(dirId, relativePath); !fullPath.isEmpty()) {
         QGuiApplication::clipboard()->setText(fullPath);
     } else {
         QGuiApplication::clipboard()->setText(relativePath);
@@ -605,7 +581,7 @@ void SyncthingApplet::copyToClipboard(const QString &dirId, const QString &relat
 
 void SyncthingApplet::openLocalFileOrDir(const QString &dirId, const QString &relativePath)
 {
-    if (const auto fullPath = m_connection.fullPath(dirId, relativePath); !fullPath.isEmpty()) {
+    if (const auto fullPath = m_data.connection()->fullPath(dirId, relativePath); !fullPath.isEmpty()) {
         QtUtilities::openLocalFileOrDir(fullPath);
     } else {
         QMessageBox::warning(nullptr, QStringLiteral(APP_NAME), tr("Associated directory does not exist."));
@@ -646,14 +622,15 @@ void SyncthingApplet::handleConnectionStatusChanged(Data::SyncthingStatus previo
 
 void SyncthingApplet::handleDevicesChanged()
 {
-    m_statusInfo.updateConnectedDevices(m_connection);
+    m_data.updateDeviceInfo();
+    emit m_data.statusInfo()->statusInfoChanged();
     emit connectionStatusChanged();
 }
 
 void SyncthingApplet::handleInternalError(
     const QString &errorMsg, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
 {
-    if (!InternalError::isRelevant(m_connection, category, errorMsg, networkError)) {
+    if (!InternalError::isRelevant(*m_data.connection(), category, errorMsg, networkError)) {
         return;
     }
     auto error = InternalError(errorMsg, request.url(), response);
@@ -668,7 +645,7 @@ void SyncthingApplet::handleInternalError(
 
 void SyncthingApplet::handleDirStatisticsChanged()
 {
-    m_overallStats = m_connection.computeOverallDirStatistics();
+    m_overallStats = m_data.connection()->computeOverallDirStatistics();
     emit statisticsChanged();
 }
 
@@ -729,10 +706,8 @@ void SyncthingApplet::handleThemeChanged()
 
 void SyncthingApplet::setBrightColors(bool brightColors)
 {
-    m_dirModel.setBrightColors(brightColors);
-    m_devModel.setBrightColors(brightColors);
+    m_models.setBrightColors(brightColors);
     m_downloadModel.setBrightColors(brightColors);
-    m_recentChangesModel.setBrightColors(brightColors);
 }
 
 void SyncthingApplet::applySettings(int changeConnectionIndex)
@@ -741,7 +716,7 @@ void SyncthingApplet::applySettings(int changeConnectionIndex)
     const auto &settings = Settings::values();
 
     // apply notification settings
-    settings.apply(m_notifier);
+    settings.apply(*m_data.notifier());
 
     // apply appearance settings
     setSize(config.readEntry<QSize>("size", QSize(25, 25)));
@@ -774,7 +749,7 @@ void SyncthingApplet::applySettings(int changeConnectionIndex)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 void SyncthingApplet::handleSystemdStatusChanged()
 {
-    Settings::values().systemd.apply(m_connection, currentConnectionConfig());
+    Settings::values().systemd.apply(*m_data.connection(), currentConnectionConfig());
 }
 #endif
 

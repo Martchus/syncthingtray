@@ -26,7 +26,7 @@ public:
 public Q_SLOTS:
     void showDisconnect();
     void hideDisconnect();
-    void showInternalError(const InternalError &error);
+    void showInternalError(const QtGui::InternalError &error);
     void showLauncherError(const QString &errorMessage, const QString &additionalInfo);
     void showSyncthingNotification(CppUtilities::DateTime when, const QString &message);
     void showSyncComplete(const QString &message);

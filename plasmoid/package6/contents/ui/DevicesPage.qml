@@ -18,7 +18,7 @@ Item {
 
         contentItem: TopLevelView {
             id: deviceView
-            model: plasmoid.sortFilterDevModel
+            model: plasmoid.models.sortFilterDevModel
 
             delegate: TopLevelItem {
                 id: item
@@ -65,8 +65,8 @@ Item {
                                 tooltip: paused ? qsTr("Resume") : qsTr("Pause")
                                 enabled: !isThisDevice
                                 onClicked: {
-                                    paused ? plasmoid.connection.resumeDevice(
-                                                 [devId]) : plasmoid.connection.pauseDevice(
+                                    paused ? plasmoid.data.connection.resumeDevice(
+                                                 [devId]) : plasmoid.data.connection.pauseDevice(
                                                  [devId])
                                 }
                             }
@@ -80,7 +80,7 @@ Item {
                         Layout.topMargin: 3
 
                         model: DelegateModel {
-                            model: plasmoid.devModel
+                            model: plasmoid.models.devModel
                             rootIndex: deviceView.model.mapToSource(deviceView.model.index(index, 0))
                             delegate: DetailItem {
                                 width: detailsView.width

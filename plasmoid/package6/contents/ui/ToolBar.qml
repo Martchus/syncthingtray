@@ -106,7 +106,7 @@ RowLayout {
         ]
         state: {
             // the systemd unit status is only relevant when connected to the local instance
-            if (!plasmoid.local || !plasmoid.startStopEnabled) {
+            if (!plasmoid.data.connection.local || !plasmoid.startStopEnabled) {
                 return "irrelevant"
             }
             // show start/stop button only when the configured unit is available
@@ -135,7 +135,7 @@ RowLayout {
     PlasmaComponents3.ToolButton {
         id: showNewNotifications
         icon.name: "emblem-warning"
-        visible: plasmoid.connection.hasErrors
+        visible: plasmoid.data.connection.hasErrors
         onClicked: {
             plasmoid.showNotificationsDialog()
             plasmoid.expanded = false
@@ -198,7 +198,7 @@ RowLayout {
     ToolButton {
         id: rescanAllDirsButton
         icon.source: plasmoid.faUrl + "refresh"
-        onClicked: plasmoid.connection.rescanAllDirs()
+        onClicked: plasmoid.data.connection.rescanAllDirs()
         PlasmaComponents3.ToolTip {
             text: qsTr("Rescan all folders")
         }

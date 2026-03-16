@@ -21,7 +21,7 @@ MouseArea {
     Kirigami.Icon {
         id: icon
         anchors.fill: parent
-        source: plasmoid.statusIcon
+        source: plasmoid.data.statusInfo.statusIcon
         active: parent.containsMouse
     }
 }

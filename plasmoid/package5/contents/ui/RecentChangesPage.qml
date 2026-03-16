@@ -17,7 +17,7 @@ Item {
 
         contentItem: TopLevelView {
             id: recentChangesView
-            model: plasmoid.nativeInterface.recentChangesModel
+            model: plasmoid.nativeInterface.models.changesModel
             delegate: TopLevelItem {
                 width: recentChangesView.effectiveWidth()
                 ColumnLayout {

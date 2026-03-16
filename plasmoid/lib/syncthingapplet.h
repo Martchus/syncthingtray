@@ -2,18 +2,12 @@
 #define SYNCTHINGAPPLET_H
 
 #include <syncthingwidgets/misc/dbusstatusnotifier.h>
-#include <syncthingwidgets/misc/statusinfo.h>
+#include <syncthingwidgets/misc/syncthingmodels.h>
 #include <syncthingwidgets/webview/webviewdefs.h>
 
-#include <syncthingmodel/syncthingdevicemodel.h>
-#include <syncthingmodel/syncthingdirectorymodel.h>
 #include <syncthingmodel/syncthingdownloadmodel.h>
-#include <syncthingmodel/syncthingrecentchangesmodel.h>
-#include <syncthingmodel/syncthingsortfiltermodel.h>
 #include <syncthingmodel/syncthingstatusselectionmodel.h>
 
-#include <syncthingconnector/syncthingconnection.h>
-#include <syncthingconnector/syncthingnotifier.h>
 #include <syncthingconnector/syncthingservice.h>
 
 #include <qtutilities/aboutdialog/aboutdialog.h>
@@ -53,21 +47,13 @@ class SettingsDialog;
 
 class SyncthingApplet : public Plasma::Applet {
     Q_OBJECT
-    Q_PROPERTY(Data::SyncthingConnection *connection READ connection CONSTANT)
-    Q_PROPERTY(Data::SyncthingDirectoryModel *dirModel READ dirModel CONSTANT)
-    Q_PROPERTY(Data::SyncthingSortFilterModel *sortFilterDirModel READ sortFilterDirModel CONSTANT)
-    Q_PROPERTY(Data::SyncthingDeviceModel *devModel READ devModel CONSTANT)
-    Q_PROPERTY(Data::SyncthingSortFilterModel *sortFilterDevModel READ sortFilterDevModel CONSTANT)
+    Q_PROPERTY(QtGui::SyncthingData *data READ data CONSTANT)
+    Q_PROPERTY(QtGui::SyncthingModels *models READ models CONSTANT)
     Q_PROPERTY(Data::SyncthingDownloadModel *downloadModel READ downloadModel CONSTANT)
-    Q_PROPERTY(Data::SyncthingRecentChangesModel *recentChangesModel READ recentChangesModel CONSTANT)
     Q_PROPERTY(Data::SyncthingStatusSelectionModel *passiveSelectionModel READ passiveSelectionModel CONSTANT)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     Q_PROPERTY(Data::SyncthingService *service READ service CONSTANT)
 #endif
-    Q_PROPERTY(bool local READ isLocal NOTIFY localChanged)
-    Q_PROPERTY(QString statusText READ statusText NOTIFY connectionStatusChanged)
-    Q_PROPERTY(QString additionalStatusText READ additionalStatusText NOTIFY connectionStatusChanged)
-    Q_PROPERTY(QIcon statusIcon READ statusIcon NOTIFY connectionStatusChanged)
     Q_PROPERTY(QString connectButtonState READ connectButtonState NOTIFY connectionStatusChanged)
     Q_PROPERTY(QString incomingTraffic READ incomingTraffic NOTIFY trafficChanged)
     Q_PROPERTY(bool hasIncomingTraffic READ hasIncomingTraffic NOTIFY trafficChanged)
@@ -99,19 +85,11 @@ public:
     ~SyncthingApplet() override;
 
 public:
-    Data::SyncthingConnection *connection() const;
-    Data::SyncthingDirectoryModel *dirModel() const;
-    Data::SyncthingSortFilterModel *sortFilterDirModel() const;
-    Data::SyncthingDeviceModel *devModel() const;
-    Data::SyncthingSortFilterModel *sortFilterDevModel() const;
+    QtGui::SyncthingData *data() const;
+    QtGui::SyncthingModels *models() const;
     Data::SyncthingDownloadModel *downloadModel() const;
-    Data::SyncthingRecentChangesModel *recentChangesModel() const;
     Data::SyncthingStatusSelectionModel *passiveSelectionModel() const;
     Data::SyncthingService *service() const;
-    bool isLocal() const;
-    QString statusText() const;
-    QString additionalStatusText() const;
-    QIcon statusIcon() const;
     QIcon syncthingIcon() const;
     QString connectButtonState() const;
     QString incomingTraffic() const;
@@ -140,8 +118,6 @@ public:
     void setPassiveStates(const QList<QtUtilities::ChecklistItem> &passiveStates);
     QString faUrl();
     Q_INVOKABLE QIcon loadForkAwesomeIcon(const QString &name, int size = 32) const;
-    Q_INVOKABLE QString formatFileSize(quint64 fileSizeInByte) const;
-    Q_INVOKABLE QString substituteTilde(const QString &path) const;
     bool areWipFeaturesEnabled() const;
 
 public Q_SLOTS:
@@ -169,7 +145,6 @@ public Q_SLOTS:
     void saveSettings();
 
 Q_SIGNALS:
-    void localChanged();
     void connectionStatusChanged();
     void trafficChanged();
     void statisticsChanged();
@@ -214,19 +189,13 @@ private:
     QPalette m_palette;
     Data::IconManager &m_iconManager;
     QtUtilities::AboutDialog *m_aboutDlg;
-    Data::SyncthingConnection m_connection;
+    QtGui::SyncthingData m_data;
+    QtGui::SyncthingModels m_models;
     Data::SyncthingOverallDirStatistics m_overallStats;
-    Data::SyncthingNotifier m_notifier;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     Data::SyncthingService m_service;
 #endif
-    QtGui::StatusInfo m_statusInfo;
-    Data::SyncthingDirectoryModel m_dirModel;
-    Data::SyncthingSortFilterModel m_sortFilterDirModel;
-    Data::SyncthingDeviceModel m_devModel;
-    Data::SyncthingSortFilterModel m_sortFilterDevModel;
     Data::SyncthingDownloadModel m_downloadModel;
-    Data::SyncthingRecentChangesModel m_recentChangesModel;
     Data::SyncthingStatusSelectionModel m_passiveSelectionModel;
     SettingsDialog *m_settingsDlg;
     QtGui::Wizard *m_wizard;
@@ -245,39 +214,19 @@ private:
     QSize m_size;
 };
 
-inline Data::SyncthingConnection *SyncthingApplet::connection() const
+inline QtGui::SyncthingData *SyncthingApplet::data() const
 {
-    return const_cast<Data::SyncthingConnection *>(&m_connection);
+    return const_cast<QtGui::SyncthingData *>(&m_data);
 }
 
-inline Data::SyncthingDirectoryModel *SyncthingApplet::dirModel() const
+inline QtGui::SyncthingModels *SyncthingApplet::models() const
 {
-    return const_cast<Data::SyncthingDirectoryModel *>(&m_dirModel);
-}
-
-inline Data::SyncthingSortFilterModel *SyncthingApplet::sortFilterDirModel() const
-{
-    return const_cast<Data::SyncthingSortFilterModel *>(&m_sortFilterDirModel);
-}
-
-inline Data::SyncthingDeviceModel *SyncthingApplet::devModel() const
-{
-    return const_cast<Data::SyncthingDeviceModel *>(&m_devModel);
-}
-
-inline Data::SyncthingSortFilterModel *SyncthingApplet::sortFilterDevModel() const
-{
-    return const_cast<Data::SyncthingSortFilterModel *>(&m_sortFilterDevModel);
+    return const_cast<QtGui::SyncthingModels *>(&m_models);
 }
 
 inline Data::SyncthingDownloadModel *SyncthingApplet::downloadModel() const
 {
     return const_cast<Data::SyncthingDownloadModel *>(&m_downloadModel);
-}
-
-inline Data::SyncthingRecentChangesModel *SyncthingApplet::recentChangesModel() const
-{
-    return const_cast<Data::SyncthingRecentChangesModel *>(&m_recentChangesModel);
 }
 
 inline Data::SyncthingStatusSelectionModel *SyncthingApplet::passiveSelectionModel() const
@@ -292,21 +241,6 @@ inline Data::SyncthingService *SyncthingApplet::service() const
 #else
     return nullptr;
 #endif
-}
-
-inline QString SyncthingApplet::statusText() const
-{
-    return m_statusInfo.statusText();
-}
-
-inline QString SyncthingApplet::additionalStatusText() const
-{
-    return m_statusInfo.additionalStatusText();
-}
-
-inline bool SyncthingApplet::isLocal() const
-{
-    return m_connection.isLocal();
 }
 
 inline int SyncthingApplet::currentConnectionConfigIndex() const

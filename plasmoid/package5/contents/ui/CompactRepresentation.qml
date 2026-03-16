@@ -11,7 +11,7 @@ MouseArea {
     PlasmaCore.IconItem {
         id: icon
         anchors.fill: parent
-        source: plasmoid.nativeInterface.statusIcon
+        source: plasmoid.nativeInterface.data.statusInfo.statusIcon
         active: parent.containsMouse
     }
 }

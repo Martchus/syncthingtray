@@ -9,7 +9,7 @@ RowLayout {
 
     PlasmaCore.IconItem {
         id: tooltipIcon
-        source: plasmoid.nativeInterface.statusIcon
+        source: plasmoid.nativeInterface.data.statusInfo.statusIcon
         Layout.alignment: Qt.AlignCenter
         visible: true
         implicitWidth: units.iconSizes.large

@@ -9,7 +9,7 @@ RowLayout {
 
     Kirigami.Icon {
         id: tooltipIcon
-        source: plasmoid.statusIcon
+        source: plasmoid.data.statusInfo.statusIcon
         Layout.alignment: Qt.AlignCenter
         visible: true
         implicitWidth: Kirigami.Units.iconSizes.large
@@ -26,11 +26,11 @@ RowLayout {
             id: tooltipMaintext
             level: 3
             elide: Text.ElideRight
-            text: plasmoid.statusText
+            text: plasmoid.data.statusInfo.statusText
         }
         PlasmaComponents3.Label {
             id: tooltipSubtext
-            text: plasmoid.additionalStatusText
+            text: plasmoid.data.statusInfo.additionalStatusText
             opacity: 0.6
         }
     }

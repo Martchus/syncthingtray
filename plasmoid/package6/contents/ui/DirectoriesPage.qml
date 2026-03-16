@@ -33,7 +33,7 @@ ColumnLayout {
 
         contentItem: TopLevelView {
             id: directoryView
-            model: plasmoid.sortFilterDirModel
+            model: plasmoid.models.sortFilterDirModel
 
             delegate: TopLevelItem {
                 id: item
@@ -95,7 +95,7 @@ ColumnLayout {
                                 icon.source: plasmoid.faUrl + "refresh"
                                 tooltip: qsTr("Rescan")
                                 enabled: !paused
-                                onClicked: plasmoid.connection.rescan(
+                                onClicked: plasmoid.data.connection.rescan(
                                                dirId)
                             }
                             TinyButton {
@@ -103,8 +103,8 @@ ColumnLayout {
                                 icon.source: plasmoid.faUrl + (paused ? "play" : "pause")
                                 tooltip: paused ? qsTr("Resume") : qsTr("Pause")
                                 onClicked: {
-                                    paused ? plasmoid.connection.resumeDirectories(
-                                                 [dirId]) : plasmoid.connection.pauseDirectories(
+                                    paused ? plasmoid.data.connection.resumeDirectories(
+                                                 [dirId]) : plasmoid.data.connection.pauseDirectories(
                                                  [dirId])
                                 }
                             }
@@ -113,7 +113,7 @@ ColumnLayout {
                                 icon.source: plasmoid.faUrl + "folder"
                                 tooltip: qsTr("Open in file browser")
                                 onClicked: {
-                                    Qt.openUrlExternally(plasmoid.substituteTilde(path))
+                                    Qt.openUrlExternally(plasmoid.data.connection.substituteTilde(path))
                                     plasmoid.expanded = false
                                 }
                             }
@@ -127,7 +127,7 @@ ColumnLayout {
                         Layout.topMargin: 3
 
                         model: DelegateModel {
-                            model: plasmoid.dirModel
+                            model: plasmoid.models.dirModel
                             rootIndex: directoryView.model.mapToSource(directoryView.model.index(index, 0))
                             delegate: DetailItem {
                                 width: detailsView.width

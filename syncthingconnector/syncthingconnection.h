@@ -131,7 +131,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(QUrl syncthingUrlWithCredentials READ makeUrlWithCredentials NOTIFY syncthingUrlChanged)
     Q_PROPERTY(QString localPath READ localPath WRITE setLocalPath)
     Q_PROPERTY(QByteArray apiKey READ apiKey WRITE setApiKey)
-    Q_PROPERTY(bool isLocal READ isLocal)
+    Q_PROPERTY(bool isLocal READ isLocal NOTIFY syncthingUrlChanged)
     Q_PROPERTY(QString user READ user)
     Q_PROPERTY(QString password READ password)
     Q_PROPERTY(Data::SyncthingStatus status READ status NOTIFY statusChanged)

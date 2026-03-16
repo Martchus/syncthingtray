@@ -80,6 +80,11 @@ SyncthingModels::~SyncthingModels()
 {
 }
 
+QString SyncthingModels::formatDataSize(quint64 size) const
+{
+    return QString::fromStdString(CppUtilities::dataSizeToString(size));
+}
+
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
 SyncthingModels *SyncthingModels::create(QQmlEngine *qmlEngine, QJSEngine *engine)
 {
@@ -344,11 +349,6 @@ bool SyncthingModels::requestFromSyncthing(const QString &verb, const QString &p
     connect(this, &QObject::destroyed, query.reply, &QNetworkReply::deleteLater);
     connect(this, &QObject::destroyed, [c = query.connection] { disconnect(c); });
     return true;
-}
-
-QString SyncthingModels::formatDataSize(quint64 size) const
-{
-    return QString::fromStdString(CppUtilities::dataSizeToString(size));
 }
 
 QString SyncthingModels::formatTraffic(quint64 total, double rate) const

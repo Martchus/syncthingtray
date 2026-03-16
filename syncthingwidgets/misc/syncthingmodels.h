@@ -56,9 +56,6 @@ public:
     static SyncthingModels *create(QQmlEngine *, QJSEngine *engine);
 #endif
 
-    QString externalFilesDir() const;
-    QStringList externalStoragePaths() const;
-
     Data::SyncthingDirectoryModel *dirModel()
     {
         return &m_dirModel;
@@ -105,7 +102,13 @@ public:
     }
 #endif
 
+    // functions used by mobile UI and Plasmoid
+    Q_INVOKABLE QString formatDataSize(quint64 size) const;
+
+    // functions only used by mobile UI
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+    Q_INVOKABLE QString externalFilesDir() const;
+    Q_INVOKABLE QStringList externalStoragePaths() const;
     Q_INVOKABLE bool openUrlExternally(const QUrl &url, bool viaQt = false);
     Q_INVOKABLE bool openPath(const QString &path);
     Q_INVOKABLE bool openPath(const QString &dirId, const QString &relativePath);
@@ -126,7 +129,6 @@ public:
     Q_INVOKABLE bool invokeDirAction(const QString &dirId, const QString &action);
     Q_INVOKABLE bool requestFromSyncthing(
         const QString &verb, const QString &path, const QVariantMap &parameters, const QJSValue &callback = QJSValue());
-    Q_INVOKABLE QString formatDataSize(quint64 size) const;
     Q_INVOKABLE QString formatTraffic(quint64 total, double rate) const;
     Q_INVOKABLE bool hasDevice(const QString &id);
     Q_INVOKABLE bool hasDir(const QString &id);

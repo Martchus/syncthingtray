@@ -15,8 +15,8 @@ Item {
         Layout.minimumHeight: units.gridUnit * plasmoid.nativeInterface.size.height
     }
     Plasmoid.icon: "syncthingtray"
-    Plasmoid.toolTipMainText: plasmoid.nativeInterface.statusText
-    Plasmoid.toolTipSubText: plasmoid.nativeInterface.additionalStatusText
+    Plasmoid.toolTipMainText: plasmoid.nativeInterface.data.statusInfo.statusText
+    Plasmoid.toolTipSubText: plasmoid.nativeInterface.data.statusInfo.additionalStatusText
     Plasmoid.toolTipItem: ToolTipView {}
 
     Plasmoid.hideOnWindowDeactivate: true
@@ -34,11 +34,11 @@ Item {
     }
 
     function action_rescanAllDirs() {
-        plasmoid.nativeInterface.connection.rescanAllDirs()
+        plasmoid.nativeInterface.data.connection.rescanAllDirs()
     }
 
     function action_restartSyncthing() {
-        plasmoid.nativeInterface.connection.restart()
+        plasmoid.nativeInterface.data.connection.restart()
     }
 
     function action_showLog() {

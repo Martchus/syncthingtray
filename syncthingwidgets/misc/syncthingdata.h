@@ -48,6 +48,10 @@ public:
     {
         return &m_connection;
     }
+    const Data::SyncthingConnection *connection() const
+    {
+        return &m_connection;
+    }
     Data::SyncthingNotifier *notifier()
     {
         return &m_notifier;
