@@ -1589,6 +1589,23 @@ bool App::cleanSyncthingHomeDirectory(const QJSValue &callback)
             }
         }
 
+        // remove old support bundles
+        // note: Syncthing stores the support bundle when downloading one via the API in the local data directory as well.
+        auto dataDirectory = QDir(dataDir);
+        auto supportBundlePaths = dataDirectory.entryList(QStringList(QStringLiteral("support-bundle-*")), QDir::Files);
+        auto supportBundlesRemoved = false, supportBundlesFailed = false;
+        for (const auto &supportBundle : std::as_const(supportBundlePaths)) {
+            if (dataDirectory.remove(supportBundle)) {
+                supportBundlesRemoved = true;
+            } else if (!supportBundlesFailed) {
+                error = supportBundlesFailed = true;
+                summary.append(tr("Unable to remove all support bundles."));
+            }
+        }
+        if (supportBundlesRemoved && !supportBundlesFailed) {
+            summary.append(tr("Support bundles have been removed."));
+        }
+
         // remove potential leftover directory from importing settings
         // note: This is in accordance with paths used in checkSettings(). Normally importSettings() will clean this up. However, if the app is terminated forcefully while
         //       the import page is shown that code might not have a chance to run.
