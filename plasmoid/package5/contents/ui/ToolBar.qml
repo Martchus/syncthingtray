@@ -55,7 +55,7 @@ RowLayout {
             }
         ]
         state: plasmoid.nativeInterface.connectButtonState
-        onClicked: plasmoid.nativeInterface.triggerConnectButtonAction()
+        onClicked: plasmoid.nativeInterface.data.connection.changeStatus()
         PlasmaComponents3.ToolTip {
             text: connectButton.text
         }

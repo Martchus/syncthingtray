@@ -210,7 +210,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
 #endif
 
     // connect signals and slots
-    connect(m_ui->statusPushButton, &QPushButton::clicked, this, &TrayWidget::changeStatus);
+    connect(m_ui->statusPushButton, &QPushButton::clicked, m_data.connection(), &SyncthingConnection::changeStatus);
     connect(m_ui->aboutPushButton, &QPushButton::clicked, this, &TrayWidget::showAboutDialog);
     connect(m_ui->webUiPushButton, &QPushButton::clicked, this, &TrayWidget::showWebUI);
     connect(m_ui->settingsPushButton, &QPushButton::clicked, this, &TrayWidget::showSettingsDialog);
@@ -821,28 +821,6 @@ void TrayWidget::showRecentChangesContextMenu(const QPoint &position)
 void TrayWidget::handleCurrentTabChanged(int index)
 {
     QtGui::handleRelevantControlsChanged(!isHidden(), index, *m_data.connection());
-}
-
-void TrayWidget::changeStatus()
-{
-    switch (m_data.connection()->status()) {
-    case SyncthingStatus::Disconnected:
-        m_data.connection()->connect();
-        break;
-    case SyncthingStatus::Reconnecting:
-        break;
-    case SyncthingStatus::Idle:
-    case SyncthingStatus::Scanning:
-    case SyncthingStatus::Synchronizing:
-    case SyncthingStatus::RemoteNotInSync:
-    case SyncthingStatus::NoRemoteConnected:
-        m_data.connection()->pauseAllDevs();
-        break;
-    case SyncthingStatus::Paused:
-        m_data.connection()->resumeAllDevs();
-        break;
-    default:;
-    }
 }
 
 void TrayWidget::updateTraffic()

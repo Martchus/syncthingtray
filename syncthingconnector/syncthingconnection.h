@@ -348,6 +348,7 @@ public Q_SLOTS:
     void restart();
     void shutdown();
     bool suspendOrResume(bool suspend = true);
+    void changeStatus();
 
     // methods to GET or POST information from/to Syncthing
     void requestConfig();

@@ -755,6 +755,23 @@ bool SyncthingConnection::suspendOrResume(bool suspend)
     return true;
 }
 
+void SyncthingConnection::changeStatus()
+{
+    switch (m_status) {
+    case SyncthingStatus::Disconnected:
+        connect();
+        break;
+    case SyncthingStatus::Reconnecting:
+        break;
+    case SyncthingStatus::Paused:
+        resumeAllDevs();
+        break;
+    default:
+        pauseAllDevs();
+        break;
+    }
+}
+
 /*!
  * \brief Reads results of suspendOrResumeForMeteredConnection().
  */

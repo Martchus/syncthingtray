@@ -93,7 +93,6 @@ private Q_SLOTS:
     void showIgnorePatterns(const Data::SyncthingDir &dir);
     void showRecentChangesContextMenu(const QPoint &position);
     void handleCurrentTabChanged(int index);
-    void changeStatus();
     void updateTraffic();
     bool updateTrafficText();
     void updateOverallStatistics();

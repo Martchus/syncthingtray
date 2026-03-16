@@ -138,7 +138,6 @@ public Q_SLOTS:
     void copyToClipboard(const QString &dirId, const QString &relativePath);
     void openLocalFileOrDir(const QString &dirId, const QString &relativePath);
     void updateStatusIconAndTooltip();
-    void triggerConnectButtonAction();
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     void handleRelevantControlsChanged(bool visible, int index);
 #endif

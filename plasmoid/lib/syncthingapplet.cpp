@@ -358,22 +358,6 @@ void SyncthingApplet::updateStatusIconAndTooltip()
     emit connectionStatusChanged();
 }
 
-void SyncthingApplet::triggerConnectButtonAction()
-{
-    switch (m_data.connection()->status()) {
-    case Data::SyncthingStatus::Disconnected:
-        m_data.connection()->connect();
-        break;
-    case Data::SyncthingStatus::Reconnecting:
-        break;
-    case Data::SyncthingStatus::Paused:
-        m_data.connection()->resumeAllDevs();
-        break;
-    default:
-        m_data.connection()->pauseAllDevs();
-    }
-}
-
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 void SyncthingApplet::handleRelevantControlsChanged(bool visible, int tabIndex)
 {
