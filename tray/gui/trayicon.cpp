@@ -43,9 +43,9 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     , m_messageClickedAction(TrayIconMessageClickedAction::None)
 {
     // get widget, connection and notifier
-    const auto &widget(trayMenu().widget());
-    const auto &connection(widget.connection());
-    const auto &notifier(widget.notifier());
+    auto &widget = trayMenu().widget();
+    auto *const connection = widget.data().connection();
+    auto *const notifier = widget.data().notifier();
 
     // set context menu
 #ifndef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
@@ -60,7 +60,7 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     connect(m_contextMenu.addAction(
                 QIcon::fromTheme(QStringLiteral("folder-sync"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/folder-sync.svg"))),
                 tr("Rescan all")),
-        &QAction::triggered, &widget.connection(), &SyncthingConnection::rescanAllDirs);
+        &QAction::triggered, connection, &SyncthingConnection::rescanAllDirs);
     connect(m_contextMenu.addAction(
                 QIcon::fromTheme(QStringLiteral("text-x-generic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/mimetypes/text-x-generic.svg"))),
                 tr("Log")),
@@ -73,8 +73,8 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     auto *const notificationsAction = m_contextMenu.addAction(
         QIcon::fromTheme(QStringLiteral("emblem-warning"), QIcon(QStringLiteral(":/icons/hicolor/scalable/emblems/8/emblem-warning.svg"))),
         tr("Show notifications/errors"));
-    notificationsAction->setVisible(widget.connection().hasErrors());
-    connect(&widget.connection(), &SyncthingConnection::newErrors, notificationsAction,
+    notificationsAction->setVisible(connection->hasErrors());
+    connect(connection, &SyncthingConnection::newErrors, notificationsAction,
         [notificationsAction](const std::vector<SyncthingError> &errors) { notificationsAction->setVisible(!errors.empty()); });
     connect(notificationsAction, &QAction::triggered, &widget, &TrayWidget::showNotifications);
     m_contextMenu.addMenu(trayMenu().widget().connectionsMenu());
@@ -92,28 +92,28 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     // connect signals and slots
     connect(this, &TrayIcon::activated, this, &TrayIcon::handleActivated);
     connect(this, &TrayIcon::messageClicked, this, &TrayIcon::handleMessageClicked);
-    connect(&connection, &SyncthingConnection::error, this, &TrayIcon::showInternalError);
-    connect(&connection, &SyncthingConnection::newNotification, this, &TrayIcon::showSyncthingNotification);
-    connect(&notifier, &SyncthingNotifier::syncthingProcessError, this, &TrayIcon::showLauncherError);
-    connect(&notifier, &SyncthingNotifier::disconnected, this, &TrayIcon::showDisconnected);
-    connect(&notifier, &SyncthingNotifier::syncComplete, this, &TrayIcon::showSyncComplete);
-    connect(&notifier, &SyncthingNotifier::newDevice, this, &TrayIcon::showNewDev);
-    connect(&notifier, &SyncthingNotifier::newDir, this, &TrayIcon::showNewDir);
-    connect(&connection, &SyncthingConnection::statusChanged, this, &TrayIcon::updateStatusIconAndText);
-    connect(&connection, &SyncthingConnection::autoReconnectIntervalChanged, this, &TrayIcon::updateStatusIconAndText);
-    connect(&connection, &SyncthingConnection::hasOutOfSyncDirsChanged, this, &TrayIcon::updateStatusIconAndText);
-    connect(&connection, &SyncthingConnection::newDevices, this, &TrayIcon::updateStatusIconAndText);
-    connect(&connection, &SyncthingConnection::devStatusChanged, this, &TrayIcon::updateStatusIconAndText);
+    connect(connection, &SyncthingConnection::error, this, &TrayIcon::showInternalError);
+    connect(connection, &SyncthingConnection::newNotification, this, &TrayIcon::showSyncthingNotification);
+    connect(notifier, &SyncthingNotifier::syncthingProcessError, this, &TrayIcon::showLauncherError);
+    connect(notifier, &SyncthingNotifier::disconnected, this, &TrayIcon::showDisconnected);
+    connect(notifier, &SyncthingNotifier::syncComplete, this, &TrayIcon::showSyncComplete);
+    connect(notifier, &SyncthingNotifier::newDevice, this, &TrayIcon::showNewDev);
+    connect(notifier, &SyncthingNotifier::newDir, this, &TrayIcon::showNewDir);
+    connect(connection, &SyncthingConnection::statusChanged, this, &TrayIcon::updateStatusIconAndText);
+    connect(connection, &SyncthingConnection::autoReconnectIntervalChanged, this, &TrayIcon::updateStatusIconAndText);
+    connect(connection, &SyncthingConnection::hasOutOfSyncDirsChanged, this, &TrayIcon::updateStatusIconAndText);
+    connect(connection, &SyncthingConnection::newDevices, this, &TrayIcon::updateStatusIconAndText);
+    connect(connection, &SyncthingConnection::devStatusChanged, this, &TrayIcon::updateStatusIconAndText);
     connect(&IconManager::instance(), &IconManager::statusIconsChanged, this, &TrayIcon::updateStatusIconAndText);
 #ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
-    connect(&m_dbusNotifier, &DBusStatusNotifier::connectRequested, &connection,
+    connect(&m_dbusNotifier, &DBusStatusNotifier::connectRequested, connection,
         static_cast<void (SyncthingConnection::*)(void)>(&SyncthingConnection::connect));
-    connect(&m_dbusNotifier, &DBusStatusNotifier::dismissNotificationsRequested, &connection, &SyncthingConnection::requestClearingErrors);
+    connect(&m_dbusNotifier, &DBusStatusNotifier::dismissNotificationsRequested, connection, &SyncthingConnection::requestClearingErrors);
     connect(&m_dbusNotifier, &DBusStatusNotifier::showNotificationsRequested, &widget, &TrayWidget::showNotifications);
     connect(&m_dbusNotifier, &DBusStatusNotifier::errorDetailsRequested, this, &TrayIcon::showInternalErrorsDialog);
     connect(&m_dbusNotifier, &DBusStatusNotifier::webUiRequested, &widget, &TrayWidget::showWebUI);
     connect(&m_dbusNotifier, &DBusStatusNotifier::updateSettingsRequested, &widget, &TrayWidget::showUpdateSettings);
-    connect(&notifier, &SyncthingNotifier::connected, &m_dbusNotifier, &DBusStatusNotifier::hideDisconnect);
+    connect(notifier, &SyncthingNotifier::connected, &m_dbusNotifier, &DBusStatusNotifier::hideDisconnect);
 #endif
 
     // apply settings, this also establishes the connection to Syncthing (according to settings)
@@ -145,7 +145,7 @@ void TrayIcon::handleMessageClicked()
     case TrayIconMessageClickedAction::None:
         return;
     case TrayIconMessageClickedAction::DismissNotification:
-        trayMenu().widget().connection().requestClearingErrors();
+        trayMenu().widget().data().connection()->requestClearingErrors();
         break;
     case TrayIconMessageClickedAction::ShowInternalErrors:
         showInternalErrorsDialog();
@@ -195,7 +195,7 @@ void TrayIcon::handleErrorsCleared()
 void TrayIcon::showInternalError(
     const QString &errorMessage, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
 {
-    if (!InternalError::isRelevant(trayMenu().widget().connection(), category, errorMessage, networkError)) {
+    if (!InternalError::isRelevant(*trayMenu().widget().data().connection(), category, errorMessage, networkError)) {
         return;
     }
     auto error = InternalError(errorMessage, request.url(), response);
@@ -252,11 +252,10 @@ void TrayIcon::showSyncthingNotification(CppUtilities::DateTime when, const QStr
 void TrayIcon::updateStatusIconAndText()
 {
     auto &trayWidget = trayMenu().widget();
-    auto &statusInfo = trayWidget.statusInfo();
-    auto &connection = trayWidget.connection();
-    statusInfo.updateConnectionStatus(
-        connection, TrayWidget::instances().size() > 1 && trayWidget.selectedConnection() ? trayWidget.selectedConnection()->label : QString());
-    statusInfo.updateConnectedDevices(connection);
+    auto &data = trayWidget.data();
+    auto &statusInfo = *data.statusInfo();
+    data.updateStatusInfo(TrayWidget::instances().size() > 1 && trayWidget.selectedConnection() ? trayWidget.selectedConnection()->label : QString());
+    data.updateDeviceInfo();
     if (statusInfo.additionalStatusText().isEmpty()) {
         setToolTip(statusInfo.statusText());
     } else {

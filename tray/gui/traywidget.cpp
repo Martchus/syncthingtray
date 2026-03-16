@@ -81,13 +81,9 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     , m_webViewDlg(nullptr)
     , m_notificationsDlg(nullptr)
     , m_internalErrorsButton(nullptr)
-    , m_notifier(m_connection)
-    , m_dirModel(m_connection)
-    , m_sortFilterDirModel(&m_dirModel)
-    , m_devModel(m_connection)
-    , m_sortFilterDevModel(&m_devModel)
-    , m_dlModel(m_connection)
-    , m_recentChangesModel(m_connection)
+    , m_data(nullptr)
+    , m_models(m_data)
+    , m_dlModel(*m_data.connection())
     , m_selectedConnection(nullptr)
     , m_startStopButtonTarget(StartStopButtonTarget::None)
     , m_tabTextsShown(true)
@@ -128,16 +124,15 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     }
 
     // configure connection
-    m_connection.setPollingFlags(SyncthingConnection::PollingFlags::MainEvents | SyncthingConnection::PollingFlags::Errors);
-    m_connection.setInsecure(settings.connection.insecure);
+    m_data.connection()->setInsecure(settings.connection.insecure);
 
     // setup models and views
     m_ui->dirsTreeView->header()->setSortIndicator(0, Qt::AscendingOrder);
-    m_ui->dirsTreeView->setModel(&m_sortFilterDirModel);
+    m_ui->dirsTreeView->setModel(m_models.sortFilterDirModel());
     m_ui->devsTreeView->header()->setSortIndicator(0, Qt::AscendingOrder);
-    m_ui->devsTreeView->setModel(&m_sortFilterDevModel);
+    m_ui->devsTreeView->setModel(m_models.sortFilterDevModel());
     m_ui->downloadsTreeView->setModel(&m_dlModel);
-    m_ui->recentChangesTreeView->setModel(&m_recentChangesModel);
+    m_ui->recentChangesTreeView->setModel(m_models.changesModel());
     m_ui->recentChangesTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
     setBrightColorsOfModelsAccordingToPalette();
 
@@ -200,7 +195,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
         connect(m_internalErrorsButton, &QPushButton::clicked, this, &TrayWidget::showInternalErrorsDialog);
         cornerFrameLayout->addWidget(m_internalErrorsButton);
         if (!m_menu) {
-            connect(&m_connection, &SyncthingConnection::error, this, &TrayWidget::showInternalError);
+            connect(m_data.connection(), &SyncthingConnection::error, this, &TrayWidget::showInternalError);
         }
 #ifndef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
     }
@@ -219,10 +214,10 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     connect(m_ui->aboutPushButton, &QPushButton::clicked, this, &TrayWidget::showAboutDialog);
     connect(m_ui->webUiPushButton, &QPushButton::clicked, this, &TrayWidget::showWebUI);
     connect(m_ui->settingsPushButton, &QPushButton::clicked, this, &TrayWidget::showSettingsDialog);
-    connect(&m_connection, &SyncthingConnection::statusChanged, this, &TrayWidget::handleStatusChanged);
-    connect(&m_connection, &SyncthingConnection::trafficChanged, this, &TrayWidget::updateTraffic);
-    connect(&m_connection, &SyncthingConnection::dirStatisticsChanged, this, &TrayWidget::updateOverallStatistics);
-    connect(&m_connection, &SyncthingConnection::newErrors, this, &TrayWidget::handleNewErrors);
+    connect(m_data.connection(), &SyncthingConnection::statusChanged, this, &TrayWidget::handleStatusChanged);
+    connect(m_data.connection(), &SyncthingConnection::trafficChanged, this, &TrayWidget::updateTraffic);
+    connect(m_data.connection(), &SyncthingConnection::dirStatisticsChanged, this, &TrayWidget::updateOverallStatistics);
+    connect(m_data.connection(), &SyncthingConnection::newErrors, this, &TrayWidget::handleNewErrors);
     connect(m_ui->dirsTreeView, &DirView::openDir, this, &TrayWidget::openDir);
     connect(m_ui->dirsTreeView, &DirView::scanDir, this, &TrayWidget::scanDir);
     connect(m_ui->dirsTreeView, &DirView::pauseResumeDir, this, &TrayWidget::pauseResumeDir);
@@ -233,14 +228,14 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     connect(m_ui->downloadsTreeView, &DownloadView::openItemDir, this, &TrayWidget::openItemDir);
     connect(m_ui->recentChangesTreeView, &QTreeView::customContextMenuRequested, this, &TrayWidget::showRecentChangesContextMenu);
     connect(m_ui->tabWidget, &QTabWidget::currentChanged, this, &TrayWidget::handleCurrentTabChanged);
-    connect(scanAllButton, &QPushButton::clicked, &m_connection, &SyncthingConnection::rescanAllDirs);
+    connect(scanAllButton, &QPushButton::clicked, m_data.connection(), &SyncthingConnection::rescanAllDirs);
     connect(viewIdButton, &QPushButton::clicked, this, &TrayWidget::showOwnDeviceId);
     connect(showLogButton, &QPushButton::clicked, this, &TrayWidget::showLog);
     connect(m_ui->notificationsPushButton, &QPushButton::clicked, this, &TrayWidget::showNotifications);
     connect(restartButton, &QPushButton::clicked, this, &TrayWidget::restartSyncthing);
     connect(m_connectionsActionGroup, &QActionGroup::triggered, this, &TrayWidget::handleConnectionSelected);
     connect(m_ui->actionShowNotifications, &QAction::triggered, this, &TrayWidget::showNotifications);
-    connect(m_ui->actionDismissNotifications, &QAction::triggered, &m_connection, &Data::SyncthingConnection::requestClearingErrors);
+    connect(m_ui->actionDismissNotifications, &QAction::triggered, m_data.connection(), &Data::SyncthingConnection::requestClearingErrors);
     connect(m_ui->startStopPushButton, &QPushButton::clicked, this, &TrayWidget::toggleRunning);
     if (const auto *const launcher = SyncthingLauncher::mainInstance()) {
         connect(launcher, &SyncthingLauncher::runningChanged, this, &TrayWidget::handleLauncherStatusChanged);
@@ -287,7 +282,7 @@ TrayWidget::~TrayWidget()
 SettingsDialog *TrayWidget::settingsDialog()
 {
     if (!s_settingsDlg) {
-        s_settingsDlg = new SettingsDialog(s_instances.size() < 2 ? &m_connection : nullptr);
+        s_settingsDlg = new SettingsDialog(s_instances.size() < 2 ? m_data.connection() : nullptr);
         connect(s_settingsDlg, &SettingsDialog::wizardRequested, this, &TrayWidget::showWizard);
         connect(s_settingsDlg, &SettingsDialog::applied, &TrayWidget::applySettingsOnAllInstances);
         if (m_menu) {
@@ -345,7 +340,7 @@ void TrayWidget::applySettingsChangesFromWizard()
     // consider the settings applied instantly if there's no tray widget instance
     if (s_instances.empty()) {
         if (s_wizard) {
-            s_wizard->handleConfigurationApplied(QString(), &m_connection);
+            s_wizard->handleConfigurationApplied(QString(), m_data.connection());
         }
         return;
     }
@@ -396,7 +391,7 @@ void TrayWidget::showAboutDialog()
 
 void TrayWidget::showWebUI()
 {
-    auto *const dlg = QtGui::showWebUI(m_connection.syncthingUrl(), m_selectedConnection, m_webViewDlg, this, &m_connection);
+    auto *const dlg = QtGui::showWebUI(m_data.connection()->syncthingUrl(), m_selectedConnection, m_webViewDlg, this, m_data.connection());
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     if (!dlg) {
         return;
@@ -413,14 +408,14 @@ void TrayWidget::showWebUI()
 
 void TrayWidget::showOwnDeviceId()
 {
-    auto *const dlg = ownDeviceIdDialog(m_connection);
+    auto *const dlg = ownDeviceIdDialog(*m_data.connection());
     dlg->setAttribute(Qt::WA_DeleteOnClose, true);
     showDialog(dlg, centerWidgetAvoidingOverflow(dlg));
 }
 
 void TrayWidget::showLog()
 {
-    auto *const dlg = TextViewDialog::forLogEntries(m_connection, this);
+    auto *const dlg = TextViewDialog::forLogEntries(*m_data.connection(), this);
     dlg->setAttribute(Qt::WA_DeleteOnClose, true);
     showDialog(dlg, centerWidgetAvoidingOverflow(dlg));
 }
@@ -428,7 +423,7 @@ void TrayWidget::showLog()
 void TrayWidget::showNotifications()
 {
     if (!m_notificationsDlg) {
-        m_notificationsDlg = errorNotificationsDialog(m_connection);
+        m_notificationsDlg = errorNotificationsDialog(*m_data.connection());
         m_notificationsDlg->setAttribute(Qt::WA_DeleteOnClose, true);
         connect(m_notificationsDlg, &QDialog::destroyed, this, &TrayWidget::handleNotificationsDialogDeleted);
     }
@@ -450,7 +445,7 @@ void TrayWidget::showUsingPositioningSettings()
 void TrayWidget::showInternalError(
     const QString &errorMessage, SyncthingErrorCategory category, int networkError, const QNetworkRequest &request, const QByteArray &response)
 {
-    if (!InternalError::isRelevant(connection(), category, errorMessage, networkError)) {
+    if (!InternalError::isRelevant(*m_data.connection(), category, errorMessage, networkError)) {
         return;
     }
     InternalErrorsDialog::addError(errorMessage, request.url(), response);
@@ -478,7 +473,7 @@ void TrayWidget::restartSyncthing()
     if (QMessageBox::warning(
             this, QCoreApplication::applicationName(), tr("Do you really want to restart Syncthing?"), QMessageBox::Yes, QMessageBox::No)
         == QMessageBox::Yes) {
-        m_connection.restart();
+        m_data.connection()->restart();
     }
 }
 
@@ -502,7 +497,7 @@ void TrayWidget::handleStatusChanged(SyncthingStatus status)
     switch (status) {
     case SyncthingStatus::Disconnected:
     case SyncthingStatus::Reconnecting:
-        if (status == SyncthingStatus::Reconnecting || m_connection.isConnecting()) {
+        if (status == SyncthingStatus::Reconnecting || m_data.connection()->isConnecting()) {
             m_ui->statusPushButton->setText(tr("Connecting …"));
             m_ui->statusPushButton->setToolTip(tr("Establishing connection to Syncthing …"));
             m_ui->statusPushButton->setIcon(QIcon(QStringLiteral("refresh.fa")));
@@ -580,10 +575,10 @@ void TrayWidget::applySettings(const QString &connectionConfig)
     }
     m_ui->connectionsPushButton->setText(m_selectedConnection->label);
     m_ui->connectionsPushButton->setHidden(secondaryConnectionSettings.empty());
-    const bool reconnectRequired = m_connection.applySettings(*m_selectedConnection);
+    const bool reconnectRequired = m_data.connection()->applySettings(*m_selectedConnection);
 
     // apply notification settings
-    settings.apply(m_notifier);
+    settings.apply(*m_data.notifier());
 
     // apply systemd and launcher settings enforcing a reconnect if required and possible
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -599,13 +594,13 @@ void TrayWidget::applySettings(const QString &connectionConfig)
     m_ui->startStopPushButton->setVisible(showStartStopButton);
     if (reconnectRequired && !systemdOrLauncherRelevantForReconnect) {
         // simply enforce the reconnect for this connection if the systemd or launcher status are relevant for it
-        m_connection.reconnect();
+        m_data.connection()->reconnect();
     }
 
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     // web view
     if (m_webViewDlg) {
-        m_webViewDlg->applySettings(*m_selectedConnection, false, &m_connection);
+        m_webViewDlg->applySettings(*m_selectedConnection, false, m_data.connection());
     }
 #endif
 
@@ -680,7 +675,7 @@ bool TrayWidget::event(QEvent *event)
     case QEvent::LanguageChange:
         m_ui->retranslateUi(this);
         applyLauncherSettings(false, true, false);
-        handleStatusChanged(m_connection.status());
+        handleStatusChanged(m_data.connection()->status());
         updateIconAndTooltip();
         break;
 #if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
@@ -698,13 +693,13 @@ bool TrayWidget::event(QEvent *event)
 void TrayWidget::showEvent(QShowEvent *event)
 {
     Q_UNUSED(event)
-    QtGui::handleRelevantControlsChanged(true, m_ui->tabWidget->currentIndex(), m_connection);
+    QtGui::handleRelevantControlsChanged(true, m_ui->tabWidget->currentIndex(), *m_data.connection());
 }
 
 void TrayWidget::hideEvent(QHideEvent *event)
 {
     Q_UNUSED(event)
-    QtGui::handleRelevantControlsChanged(false, m_ui->tabWidget->currentIndex(), m_connection);
+    QtGui::handleRelevantControlsChanged(false, m_ui->tabWidget->currentIndex(), *m_data.connection());
 }
 
 void TrayWidget::applySettingsOnAllInstances()
@@ -722,7 +717,7 @@ void TrayWidget::applySettingsOnAllInstances()
 
 void TrayWidget::openDir(const SyncthingDir &dir)
 {
-    const auto path = substituteTilde(dir.path, m_connection.tilde(), m_connection.pathSeparator());
+    const auto path = substituteTilde(dir.path, m_data.connection()->tilde(), m_data.connection()->pathSeparator());
     if (QDir(path).exists()) {
         openLocalFileOrDir(path);
     } else {
@@ -743,35 +738,35 @@ void TrayWidget::openItemDir(const SyncthingItemDownloadProgress &item)
 
 void TrayWidget::scanDir(const SyncthingDir &dir)
 {
-    m_connection.rescan(dir.id);
+    m_data.connection()->rescan(dir.id);
 }
 
 void TrayWidget::pauseResumeDev(const SyncthingDev &dev)
 {
     if (dev.paused) {
-        m_connection.resumeDevice(QStringList(dev.id));
+        m_data.connection()->resumeDevice(QStringList(dev.id));
     } else {
-        m_connection.pauseDevice(QStringList(dev.id));
+        m_data.connection()->pauseDevice(QStringList(dev.id));
     }
 }
 
 void TrayWidget::pauseResumeDir(const SyncthingDir &dir)
 {
     if (dir.paused) {
-        m_connection.resumeDirectories(QStringList(dir.id));
+        m_data.connection()->resumeDirectories(QStringList(dir.id));
     } else {
-        m_connection.pauseDirectories(QStringList(dir.id));
+        m_data.connection()->pauseDirectories(QStringList(dir.id));
     }
 }
 
 void TrayWidget::browseRemoteFiles(const Data::SyncthingDir &dir)
 {
-    showCenteredDialog(browseRemoteFilesDialog(m_connection, dir, this), QSize(600, 500));
+    showCenteredDialog(browseRemoteFilesDialog(*m_data.connection(), dir, this), QSize(600, 500));
 }
 
 void TrayWidget::showIgnorePatterns(const Data::SyncthingDir &dir)
 {
-    showCenteredDialog(ignorePatternsDialog(m_connection, dir, this), QSize(600, 500));
+    showCenteredDialog(ignorePatternsDialog(*m_data.connection(), dir, this), QSize(600, 500));
 }
 
 void TrayWidget::showRecentChangesContextMenu(const QPoint &position)
@@ -789,7 +784,8 @@ void TrayWidget::showRecentChangesContextMenu(const QPoint &position)
                 auto &indexToCopy = indexesToCopy.front();
                 auto toCopy = indexToCopy.data(role).toString();
                 if (role == SyncthingRecentChangesModel::Path) {
-                    if (const auto fullPath = m_connection.fullPath(indexToCopy.data(SyncthingRecentChangesModel::DirectoryId).toString(), toCopy);
+                    if (const auto fullPath
+                        = m_data.connection()->fullPath(indexToCopy.data(SyncthingRecentChangesModel::DirectoryId).toString(), toCopy);
                         !fullPath.isEmpty()) {
                         toCopy = fullPath;
                     }
@@ -800,7 +796,7 @@ void TrayWidget::showRecentChangesContextMenu(const QPoint &position)
     };
     auto menu = QMenu(this);
     if (auto index = indexes.front(); index.data(SyncthingRecentChangesModel::Action).toString() != QLatin1String("deleted")) {
-        if (const auto fullPath = m_connection.fullPath(
+        if (const auto fullPath = m_data.connection()->fullPath(
                 index.data(SyncthingRecentChangesModel::DirectoryId).toString(), index.data(SyncthingRecentChangesModel::Path).toString());
             !fullPath.isEmpty()) {
             connect(menu.addAction(QIcon::fromTheme(
@@ -824,14 +820,14 @@ void TrayWidget::showRecentChangesContextMenu(const QPoint &position)
 
 void TrayWidget::handleCurrentTabChanged(int index)
 {
-    QtGui::handleRelevantControlsChanged(!isHidden(), index, m_connection);
+    QtGui::handleRelevantControlsChanged(!isHidden(), index, *m_data.connection());
 }
 
 void TrayWidget::changeStatus()
 {
-    switch (m_connection.status()) {
+    switch (m_data.connection()->status()) {
     case SyncthingStatus::Disconnected:
-        m_connection.connect();
+        m_data.connection()->connect();
         break;
     case SyncthingStatus::Reconnecting:
         break;
@@ -840,10 +836,10 @@ void TrayWidget::changeStatus()
     case SyncthingStatus::Synchronizing:
     case SyncthingStatus::RemoteNotInSync:
     case SyncthingStatus::NoRemoteConnected:
-        m_connection.pauseAllDevs();
+        m_data.connection()->pauseAllDevs();
         break;
     case SyncthingStatus::Paused:
-        m_connection.resumeAllDevs();
+        m_data.connection()->resumeAllDevs();
         break;
     default:;
     }
@@ -863,14 +859,14 @@ bool TrayWidget::updateTrafficText()
     }
 
     // update text and whether to use active/inactive icons
-    m_ui->inTrafficLabel->setText(trafficString(m_connection.totalIncomingTraffic(), m_connection.totalIncomingRate()));
-    m_ui->outTrafficLabel->setText(trafficString(m_connection.totalOutgoingTraffic(), m_connection.totalOutgoingRate()));
+    m_ui->inTrafficLabel->setText(m_data.formatIncomingTraffic());
+    m_ui->outTrafficLabel->setText(m_data.formatOutgoingTraffic());
     return true;
 }
 
 void TrayWidget::updateOverallStatistics()
 {
-    const auto overallStats = m_connection.computeOverallDirStatistics();
+    const auto overallStats = m_data.connection()->computeOverallDirStatistics();
     m_ui->globalStatisticsLabel->setText(directoryStatusString(overallStats.global));
     m_ui->localStatisticsLabel->setText(directoryStatusString(overallStats.local));
 }
@@ -898,7 +894,7 @@ void TrayWidget::toggleRunning()
     case StartStopButtonTarget::Launcher:
         if (auto *const launcher = SyncthingLauncher::mainInstance()) {
             if (launcher->isRunning()) {
-                launcher->terminate(&m_connection);
+                launcher->terminate(m_data.connection());
             } else {
                 launcher->launch(Settings::values().launcher);
             }
@@ -911,7 +907,7 @@ void TrayWidget::toggleRunning()
 Settings::Launcher::LauncherStatus TrayWidget::handleLauncherStatusChanged()
 {
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    const auto systemdStatus = Settings::values().systemd.status(m_connection);
+    const auto systemdStatus = Settings::values().systemd.status(*m_data.connection());
     const auto launcherStatus = applyLauncherSettings(false, systemdStatus.consideredForReconnect, systemdStatus.showStartStopButton);
     const auto showStartStopButton = systemdStatus.showStartStopButton || launcherStatus.showStartStopButton;
 #else
@@ -936,8 +932,8 @@ Settings::Launcher::LauncherStatus TrayWidget::applyLauncherSettings(bool reconn
 {
     // update connection
     const auto &launcherSettings = Settings::values().launcher;
-    const auto launcherStatus = skipApplyingToConnection ? launcherSettings.status(m_connection)
-                                                         : launcherSettings.apply(m_connection, m_selectedConnection, reconnectRequired);
+    const auto launcherStatus = skipApplyingToConnection ? launcherSettings.status(*m_data.connection())
+                                                         : launcherSettings.apply(*m_data.connection(), m_selectedConnection, reconnectRequired);
 
     if (skipStartStopButton || !launcherStatus.showStartStopButton) {
         return launcherStatus;
@@ -977,7 +973,7 @@ Settings::Systemd::ServiceStatus TrayWidget::applySystemdSettings(bool reconnect
 {
     // update connection
     const auto &systemdSettings = Settings::values().systemd;
-    const auto serviceStatus = systemdSettings.apply(m_connection, m_selectedConnection, reconnectRequired);
+    const auto serviceStatus = systemdSettings.apply(*m_data.connection(), m_selectedConnection, reconnectRequired);
 
     if (!serviceStatus.showStartStopButton) {
         return serviceStatus;
@@ -1019,13 +1015,13 @@ void TrayWidget::handleConnectionSelected(QAction *connectionAction)
         m_selectedConnection
             = (index == 0) ? &Settings::values().connection.primary : &Settings::values().connection.secondary[static_cast<size_t>(index - 1)];
         m_ui->connectionsPushButton->setText(m_selectedConnection->label);
-        m_connection.reconnect(*m_selectedConnection);
+        m_data.connection()->reconnect(*m_selectedConnection);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
         handleSystemdStatusChanged();
 #endif
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
         if (m_webViewDlg) {
-            m_webViewDlg->applySettings(*m_selectedConnection, false, &m_connection);
+            m_webViewDlg->applySettings(*m_selectedConnection, false, m_data.connection());
         }
 #endif
     }
@@ -1033,7 +1029,7 @@ void TrayWidget::handleConnectionSelected(QAction *connectionAction)
 
 void TrayWidget::handleNewErrors()
 {
-    m_ui->notificationsPushButton->setVisible(m_connection.hasErrors());
+    m_ui->notificationsPushButton->setVisible(m_data.connection()->hasErrors());
     updateIconAndTooltip();
 }
 
@@ -1044,7 +1040,7 @@ void TrayWidget::concludeWizard(const QString &errorMessage)
     }
     m_applyingSettingsForWizard = false;
     if (s_wizard) {
-        s_wizard->handleConfigurationApplied(errorMessage, &m_connection);
+        s_wizard->handleConfigurationApplied(errorMessage, m_data.connection());
     }
 }
 
@@ -1076,10 +1072,8 @@ void TrayWidget::setBrightColorsOfModelsAccordingToPalette()
     auto &qtSettings = Settings::values().qt;
     qtSettings.reevaluatePaletteAndDefaultIconTheme();
     const auto brightColors = qtSettings.isPaletteDark();
-    m_dirModel.setBrightColors(brightColors);
-    m_devModel.setBrightColors(brightColors);
+    m_models.setBrightColors(brightColors);
     m_dlModel.setBrightColors(brightColors);
-    m_recentChangesModel.setBrightColors(brightColors);
 }
 
 void TrayWidget::setLabelPixmaps()
@@ -1106,9 +1100,9 @@ void TrayWidget::setTrafficPixmaps(bool recompute)
     }
 
     m_ui->trafficInTextLabel->setPixmap(
-        m_connection.totalIncomingRate() > 0.0 ? m_trafficIcons.downloadIconActive : m_trafficIcons.downloadIconInactive);
+        m_data.connection()->totalIncomingRate() > 0.0 ? m_trafficIcons.downloadIconActive : m_trafficIcons.downloadIconInactive);
     m_ui->trafficOutTextLabel->setPixmap(
-        m_connection.totalOutgoingRate() > 0.0 ? m_trafficIcons.uploadIconActive : m_trafficIcons.uploadIconInactive);
+        m_data.connection()->totalOutgoingRate() > 0.0 ? m_trafficIcons.uploadIconActive : m_trafficIcons.uploadIconInactive);
 }
 
 void TrayWidget::connectWithUpdateNotifier()

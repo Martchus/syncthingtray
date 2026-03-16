@@ -1,18 +1,12 @@
 #ifndef TRAY_WIDGET_H
 #define TRAY_WIDGET_H
 
-#include <syncthingwidgets/misc/statusinfo.h>
+#include <syncthingwidgets/misc/syncthingmodels.h>
 #include <syncthingwidgets/settings/settings.h>
 #include <syncthingwidgets/webview/webviewdefs.h>
 
-#include <syncthingmodel/syncthingdevicemodel.h>
-#include <syncthingmodel/syncthingdirectorymodel.h>
 #include <syncthingmodel/syncthingdownloadmodel.h>
-#include <syncthingmodel/syncthingrecentchangesmodel.h>
-#include <syncthingmodel/syncthingsortfiltermodel.h>
 
-#include <syncthingconnector/syncthingconnection.h>
-#include <syncthingconnector/syncthingnotifier.h>
 #include <syncthingconnector/syncthingprocess.h>
 
 #include <QWidget>
@@ -55,11 +49,7 @@ public:
     explicit TrayWidget(TrayMenu *parent = nullptr);
     ~TrayWidget() override;
 
-    Data::SyncthingConnection &connection();
-    const Data::SyncthingConnection &connection() const;
-    Data::SyncthingNotifier &notifier();
-    const Data::SyncthingNotifier &notifier() const;
-    StatusInfo &statusInfo();
+    SyncthingData &data();
     QMenu *connectionsMenu();
     static const std::vector<TrayWidget *> &instances();
     Data::SyncthingConnectionSettings *selectedConnection();
@@ -139,15 +129,9 @@ private:
     QDialog *m_notificationsDlg;
     QFrame *m_cornerFrame;
     QPushButton *m_internalErrorsButton;
-    Data::SyncthingConnection m_connection;
-    Data::SyncthingNotifier m_notifier;
-    StatusInfo m_statusInfo;
-    Data::SyncthingDirectoryModel m_dirModel;
-    Data::SyncthingSortFilterModel m_sortFilterDirModel;
-    Data::SyncthingDeviceModel m_devModel;
-    Data::SyncthingSortFilterModel m_sortFilterDevModel;
+    SyncthingData m_data;
+    SyncthingModels m_models;
     Data::SyncthingDownloadModel m_dlModel;
-    Data::SyncthingRecentChangesModel m_recentChangesModel;
     QMenu *m_connectionsMenu;
     QActionGroup *m_connectionsActionGroup;
     Data::SyncthingConnectionSettings *m_selectedConnection;
@@ -165,29 +149,9 @@ private:
     static std::vector<TrayWidget *> s_instances;
 };
 
-inline Data::SyncthingConnection &TrayWidget::connection()
+inline SyncthingData &TrayWidget::data()
 {
-    return m_connection;
-}
-
-inline const Data::SyncthingConnection &TrayWidget::connection() const
-{
-    return m_connection;
-}
-
-inline Data::SyncthingNotifier &TrayWidget::notifier()
-{
-    return m_notifier;
-}
-
-inline const Data::SyncthingNotifier &TrayWidget::notifier() const
-{
-    return m_notifier;
-}
-
-inline StatusInfo &TrayWidget::statusInfo()
-{
-    return m_statusInfo;
+    return m_data;
 }
 
 inline QMenu *TrayWidget::connectionsMenu()

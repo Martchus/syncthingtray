@@ -78,6 +78,9 @@ public:
     }
     QString website() const;
 
+    Q_INVOKABLE QString formatIncomingTraffic() const;
+    Q_INVOKABLE QString formatOutgoingTraffic() const;
+
 public Q_SLOTS:
     void updateStatusInfo(const QString &configurationName = QString());
     void updateDeviceInfo();
@@ -96,6 +99,16 @@ inline void SyncthingData::updateStatusInfo(const QString &configurationName)
 inline void SyncthingData::updateDeviceInfo()
 {
     m_statusInfo.updateConnectedDevices(m_connection);
+}
+
+inline QString SyncthingData::formatIncomingTraffic() const
+{
+    return Data::trafficString(m_connection.totalIncomingTraffic(), m_connection.totalIncomingRate());
+}
+
+inline QString SyncthingData::formatOutgoingTraffic() const
+{
+    return Data::trafficString(m_connection.totalOutgoingTraffic(), m_connection.totalOutgoingRate());
 }
 
 } // namespace QtGui
