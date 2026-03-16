@@ -55,6 +55,11 @@ public:
     ~QuickUI() override;
     static QuickUI *create(QQmlEngine *, QJSEngine *engine);
 
+    void setEngine(QQmlEngine *engine)
+    {
+        m_engine = engine;
+    }
+
     const QString &faUrlBase()
     {
         return m_faUrlBase;

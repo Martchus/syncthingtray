@@ -98,6 +98,12 @@ public:
         return false;
 #endif
     }
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+    void setEngine(QQmlEngine *engine)
+    {
+        m_engine = engine;
+    }
+#endif
 
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
     Q_INVOKABLE bool openUrlExternally(const QUrl &url, bool viaQt = false);

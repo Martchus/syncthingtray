@@ -63,7 +63,8 @@ namespace QtGui {
  * \brief The App class provides various functionality for the Qt Quick GUI.
  * \remarks
  * - This class is backed by AppService which manages the runtime of Syncthing.
- * - This class provides the Qml engine and is accessible from Qml via the App singleton.
+ * - This class provides the Qml engine (unless supplied externally, e.g. for testing) and is
+ *   accessible from Qml via the App singleton.
  * - Under Android this class is accompanied by the Java class Activity which implements certain
  *   Android-specific functionality in Java.
  */
@@ -80,7 +81,7 @@ App::App(bool insecure, QQmlEngine *engine, QObject *parent)
     , m_engine(engine)
     , m_app(static_cast<QGuiApplication *>(QCoreApplication::instance()))
     , m_ui(m_app, m_qtSettings, m_engine)
-    , m_models(m_data, engine)
+    , m_models(m_data, m_engine)
     , m_uiObjects({ m_models.dirModel(), m_models.sortFilterDirModel(), m_models.devModel(), m_models.sortFilterDevModel(), m_models.changesModel() })
     , m_importExportStatus(ImportExportStatus::None)
     , m_tabIndex(-1)

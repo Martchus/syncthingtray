@@ -3,6 +3,8 @@
 
 #include <syncthingconnector/syncthingconnection.h>
 
+#include <c++utilities/misc/traits.h>
+
 #include <QJSEngine>
 #include <QQmlEngine>
 
@@ -16,9 +18,14 @@
 
 namespace QtGui {
 
-template <typename SyncthingClass> void dataObjectToProperty(QJSEngine *engine, SyncthingClass *dataObject)
+CPP_UTILITIES_TRAITS_DEFINE_TYPE_CHECK(HasEngine, std::declval<T &>().setEngine(nullptr));
+
+template <typename SyncthingClass> void dataObjectToProperty(QQmlEngine *qmlEngine, SyncthingClass *dataObject)
 {
-    engine->setProperty(SyncthingClass::staticMetaObject.className(), QVariant::fromValue(dataObject));
+    qmlEngine->setProperty(SyncthingClass::staticMetaObject.className(), QVariant::fromValue(dataObject));
+    if constexpr (HasEngine<SyncthingClass>()) {
+        dataObject->setEngine(qmlEngine);
+    }
 }
 
 template <typename SyncthingClass> SyncthingClass *dataObjectFromProperty(QQmlEngine *qmlEngine, QJSEngine *engine)
