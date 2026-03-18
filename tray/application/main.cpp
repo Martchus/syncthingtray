@@ -250,11 +250,13 @@ static int runApplication(int argc, const char *const *argv)
     auto quitArg = OperationArgument("quit", '\0', "quits the currently running instance");
     quitArg.setFlags(Argument::Flags::Deprecated, true); // hide as only used internally for --replace
     auto &widgetsGuiArg = qtConfigArgs.qtWidgetsGuiArg();
+    widgetsGuiArg.setDescription("shows a tray icon for Syncthing");
     widgetsGuiArg.addSubArguments({ &windowedArg, &showWebUiArg, &triggerArg, &waitForTrayArg, &connectionArg, &configPathArg, &singleInstanceArg,
         &newInstanceArg, &replaceArg, &showWizardArg, &assumeFirstLaunchArg, &wipArg, &insecureArg });
 #endif
 #ifdef GUI_QTQUICK
     auto &quickGuiArg = qtConfigArgs.qtQuickGuiArg();
+    quickGuiArg.setDescription("opens a mobile-optimized UI to run and access Syncthing");
     quickGuiArg.addSubArgument(&insecureArg);
 #endif
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
