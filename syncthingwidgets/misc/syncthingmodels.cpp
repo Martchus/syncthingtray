@@ -32,6 +32,16 @@
 
 namespace QtGui {
 
+/*!
+ * \class SyncthingModels
+ * \brief The SyncthingModels class contains models and helper functions for accessing Syncthing data and
+ *        functions.
+ * \remarks
+ * - An instance of this class is used in most UI components to avoid specifying these fields repeatedly in all
+ *   those places.
+ * - This class is available as singleton in Qml code.
+ */
+
 SyncthingModels::SyncthingModels(Data::SyncthingConnection &connection, QQmlEngine *engine, QObject *parent)
     : QObject(parent)
     , m_connection(connection)

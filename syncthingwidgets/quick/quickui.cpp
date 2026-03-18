@@ -52,6 +52,12 @@ namespace QtGui {
  *    Quick Controls 2 style based on that.
  */
 
+/*!
+ * \class QuickUI
+ * \brief The QuickUI class contains helper functions for the Qt Quick GUI.
+ * \remarks This class is available as singleton in Qml code.
+ */
+
 QuickUI::QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQmlEngine *engine, QObject *parent)
     : QObject(parent)
     , m_app(app)
