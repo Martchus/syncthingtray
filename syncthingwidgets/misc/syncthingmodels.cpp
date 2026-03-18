@@ -40,8 +40,14 @@ SyncthingModels::SyncthingModels(Data::SyncthingConnection &connection, QQmlEngi
     , m_devModel(connection)
     , m_sortFilterDevModel(&m_devModel)
     , m_recentChangesModel(connection)
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
     , m_engine(engine)
+#endif
 {
+#ifndef SYNCTHINGWIDGETS_GUI_QTQUICK
+    Q_UNUSED(engine)
+#endif
+
     // set SD card paths to show SD card icons via directory model
 #ifdef Q_OS_ANDROID
     qDebug() << "Loading external storage paths";
@@ -65,10 +71,12 @@ SyncthingModels::SyncthingModels(Data::SyncthingConnection &connection, QQmlEngi
     m_sortFilterDevModel.sort(0, Qt::AscendingOrder);
 
     // show info when override/revert has been triggered
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
     connect(&m_connection, &Data::SyncthingConnection::overrideTriggered, this,
         [this](const QString &dirId) { emit info(tr("Triggered override of \"%1\"").arg(dirDisplayName(dirId))); });
     connect(&m_connection, &Data::SyncthingConnection::revertTriggered, this,
         [this](const QString &dirId) { emit info(tr("Triggered revert of \"%1\"").arg(dirDisplayName(dirId))); });
+#endif
 }
 
 SyncthingModels::SyncthingModels(SyncthingData &data, QQmlEngine *engine, QObject *parent)

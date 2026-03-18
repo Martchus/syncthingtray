@@ -28,9 +28,10 @@
 #include <QJSValue>
 #include <QtQmlIntegration/qqmlintegration.h>
 
-QT_FORWARD_DECLARE_CLASS(QQmlEngine)
 QT_FORWARD_DECLARE_CLASS(QJSEngine)
 #endif
+
+QT_FORWARD_DECLARE_CLASS(QQmlEngine)
 
 namespace QtGui {
 
@@ -102,8 +103,9 @@ public:
     }
 #endif
 
-    // functions used by mobile UI and Plasmoid
+    // functions used by different UIs
     Q_INVOKABLE QString formatDataSize(quint64 size) const;
+    Q_INVOKABLE void setBrightColors(bool brightColors);
 
     // functions only used by mobile UI
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
@@ -136,7 +138,6 @@ public:
     Q_INVOKABLE QString dirDisplayName(const QString &id) const;
     Q_INVOKABLE QVariantList computeDirsNeedingItems(const QModelIndex &devProxyModelIndex) const;
     Q_INVOKABLE QVariant isPopulated(const QString &path) const;
-    Q_INVOKABLE void setBrightColors(bool brightColors);
 #endif
 
 Q_SIGNALS:
@@ -160,14 +161,12 @@ private:
 #endif
 };
 
-#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
 inline void SyncthingModels::setBrightColors(bool brightColors)
 {
     m_dirModel.setBrightColors(brightColors);
     m_devModel.setBrightColors(brightColors);
     m_recentChangesModel.setBrightColors(brightColors);
 }
-#endif
 
 } // namespace QtGui
 
