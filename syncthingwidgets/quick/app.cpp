@@ -105,6 +105,10 @@ App::App(bool insecure, QQmlEngine *engine, QObject *parent)
     loadSettings();
     applySettings();
 
+    // apply dark mode setting to models and keep it in sync
+    m_models.setBrightColors(m_ui.isDarkmodeEnabled());
+    connect(&m_ui, &QuickUI::darkmodeEnabledChanged, &m_models, &SyncthingModels::setBrightColors);
+
     auto &iconManager = initIconManager();
     connect(&iconManager, &Data::IconManager::statusIconsChanged, m_data.statusInfo(), &StatusInfo::statusInfoChanged);
 
@@ -119,7 +123,6 @@ App::App(bool insecure, QQmlEngine *engine, QObject *parent)
     connect(&m_models, &SyncthingModels::error, this, &App::error);
     connect(&m_models, &SyncthingModels::savingConfigChanged, this, &App::invalidateStatus);
     connect(&m_models, &SyncthingModels::hapticFeedbackRequested, &m_ui, &QuickUI::performHapticFeedback);
-    connect(&m_ui, &QuickUI::darkmodeEnabledChanged, &m_models, &SyncthingModels::setBrightColors);
 #ifdef Q_OS_ANDROID
     connect(m_data.connection(), &SyncthingConnection::errorsCleared, this, [this] { sendMessageToService(ServiceAction::RequestErrors); });
 #endif
