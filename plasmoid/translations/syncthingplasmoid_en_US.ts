@@ -313,22 +313,22 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="528"/>
+        <location filename="../lib/syncthingapplet.cpp" line="488"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="611"/>
+        <location filename="../lib/syncthingapplet.cpp" line="571"/>
         <source>Associated directory does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="637"/>
+        <location filename="../lib/syncthingapplet.cpp" line="597"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="704"/>
+        <location filename="../lib/syncthingapplet.cpp" line="665"/>
         <source>D-Bus error - unable to </source>
         <translation type="unfinished"></translation>
     </message>
