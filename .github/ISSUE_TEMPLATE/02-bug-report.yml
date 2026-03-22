@@ -12,6 +12,7 @@ body:
         * I cannot support all operating systems, their flavors and different tooling you might be using (Antivirus scanners, GNU/Linux desktop environments, AUR helpers, …). So please avoid filing bug reports specific to them and contact the respective vendors instead.
         * Adaptions for newer versions of certain platforms (or for completely new platforms) would be *feature requests* and **not** bugs. So for instance, making Syncthing Tray work under an updated/new GNU/Linux desktop environment should be filed as a feature request and *not* a bug report.
         * I will likely have to reject bug reports about Wayland-specific problems due to limitations of that protocol which I cannot workaround from my side.
+        * Issues must be written in English. Use a translator if needed. Issues written in other languages will be deleted.
 
   - type: checkboxes
     attributes:
