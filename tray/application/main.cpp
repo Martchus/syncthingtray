@@ -9,17 +9,20 @@
 #endif
 
 #include <syncthingwidgets/misc/syncthinglauncher.h>
-#ifdef GUI_QTWIDGETS
+#if defined(GUI_QTWIDGETS)
 #include <syncthingwidgets/settings/settings.h>
 #include <syncthingwidgets/settings/settingsdialog.h>
 #include <syncthingwidgets/webview/webviewdialog.h>
 #endif
-#ifdef GUI_QTQUICK
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_APP)
 #include <syncthingwidgets/quick/app.h>
 #include <syncthingwidgets/quick/appservice.h>
 #if !defined(Q_OS_ANDROID)
 #include <syncthingwidgets/quick/helpers.h>
 #endif
+#endif
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+#include <syncthingwidgets/quick/quickui.h>
 #endif
 
 #include <syncthingmodel/syncthingicons.h>
@@ -257,6 +260,10 @@ static int runApplication(int argc, const char *const *argv)
 #ifdef GUI_QTQUICK
     auto &quickGuiArg = qtConfigArgs.qtQuickGuiArg();
     quickGuiArg.setDescription("opens a mobile-optimized UI to run and access Syncthing");
+    auto modeArg = ConfigValueArgument("mode", '\0', "the mode to start the Qt Quick GUI in", { "mode" });
+    modeArg.setPreDefinedCompletionValues(QuickUI::modes().data());
+    modeArg.markAsDeprecated(); // still experimental, so hide for now
+    quickGuiArg.addSubArgument(&modeArg);
     quickGuiArg.addSubArgument(&insecureArg);
 #endif
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
@@ -311,6 +318,24 @@ static int runApplication(int argc, const char *const *argv)
         return EXIT_SUCCESS;
     }
 
+    // configure Qt Widgets GUI and Qt Quick GUI desktop mode
+#if defined(GUI_QTWIDGETS)
+    const auto widgetsGuiPresent = widgetsGuiArg.isPresent();
+#else
+    constexpr auto widgetsGuiPresent = false;
+#endif
+#if defined(GUI_QTQUICK)
+    const auto mode = std::string_view(modeArg.firstValueOr(QuickUI::primaryMode().data()));
+#endif
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+#ifndef GUI_QTWIDGETS
+#error "Qt Widgets GUI needs to be enabled to compile with desktop mode support of Qt Quick GUI."
+#endif
+    const auto quickDesktopGuiPresent = quickGuiArg.isPresent() && mode == "desktop";
+#else
+    constexpr auto quickDesktopGuiPresent = false;
+#endif
+
 #ifdef GUI_QTWIDGETS
     // quit already running application if quit is present
     static auto firstRun = true;
@@ -321,7 +346,7 @@ static int runApplication(int argc, const char *const *argv)
     }
 #endif
 
-#ifdef Q_OS_ANDROID
+#if defined(Q_OS_ANDROID) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_APP)
     if (serviceArg.isPresent()) {
         qDebug() << "Initializing service";
         SET_QT_APPLICATION_INFO;
@@ -347,9 +372,9 @@ static int runApplication(int argc, const char *const *argv)
     }
 #endif
 
-#ifdef GUI_QTQUICK
-    if (quickGuiArg.isPresent()) {
-        qDebug() << "Initializing Qt Quick GUI";
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_APP)
+    if (quickGuiArg.isPresent() && mode == "app") {
+        qDebug() << "Initializing Qt Quick GUI to launch app";
 #ifdef SYNCTHINGTRAY_FORCE_VULKAN
         // force Vulkan RHI backend to test it on Android or other platforms where setting an env variable is not so easy
         qputenv("QSG_RHI_BACKEND", "vulkan");
@@ -385,12 +410,20 @@ static int runApplication(int argc, const char *const *argv)
     }
 #endif
 
-#ifdef GUI_QTWIDGETS
-    // quit unless Qt Widgets GUI should be shown
-    if (!widgetsGuiArg.isPresent()) {
+    // quit unless Qt Widgets GUI or Qt Quick GUI in desktop mode should be shown
+    if (!widgetsGuiPresent && !quickDesktopGuiPresent) {
+#ifdef GUI_QTQUICK
+        if (quickGuiArg.isPresent()) {
+            std::cerr << EscapeCodes::Phrases::Error << "The specified mode \"" << mode << "\" for the Qt Quick GUI is invalid."
+                      << EscapeCodes::Phrases::EndFlush;
+            std::cerr << "Valid modes are: " << QuickUI::modes() << '\n';
+            return EXIT_FAILURE;
+        }
+#endif
         return EXIT_SUCCESS;
     }
 
+#ifdef GUI_QTWIDGETS
     // handle override for config dir
     if (const char *const configPathDir = configPathArg.firstValue()) {
         QSettings::setPath(QSettings::IniFormat, QSettings::UserScope, QString::fromLocal8Bit(configPathDir));
@@ -507,6 +540,11 @@ static int runApplication(int argc, const char *const *argv)
         // trigger UI and enter event loop
         QObject::connect(&application, &QCoreApplication::aboutToQuit, &shutdownSyncthingTray);
         trigger(triggerArg.isPresent(), showWebUiArg.isPresent(), showWizardArg.isPresent());
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+        if (quickGuiArg.isPresent()) {
+            QMessageBox::information(nullptr, "Quick GUI", "The integration of the Quick GUI into the desktop UI is still work in progress.");
+        }
+#endif
         const auto res = application.exec();
 #ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
         SettingsDialog::respawnIfRestartRequested();

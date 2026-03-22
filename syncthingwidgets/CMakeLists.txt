@@ -16,6 +16,12 @@ endif ()
 # use testfiles directory from syncthingconnector
 set(META_SRCDIR_REFS "${CMAKE_CURRENT_SOURCE_DIR}\n${CMAKE_CURRENT_SOURCE_DIR}/../syncthingconnector")
 
+# configure modes of the Qt Quick GUI
+set(META_QUICK_GUI_MODES "desktop" "app")
+if (ANDROID)
+    set(DEFAULT_QUICK_GUI_MODES "app")
+endif ()
+
 # add project files
 set(HEADER_FILES
     misc/diffhighlighter.h
@@ -76,10 +82,10 @@ set(WIDGETS_UI_FILES
     settings/mainconfigwizardpage.ui
     settings/autostartwizardpage.ui
     settings/applywizardpage.ui)
-set(QML_HEADER_FILES quick/appbase.h quick/appservice.h quick/app.h quick/quickui.h quick/helpers.h
-                     quick/scenegraph/managedtexturenode.h)
-set(QML_SRC_FILES quick/appbase.cpp quick/appservice.cpp quick/app.cpp quick/quickui.cpp
-                  quick/scenegraph/managedtexturenode.cpp)
+set(QML_HEADER_FILES quick/helpers.h quick/quickui.h quick/scenegraph/managedtexturenode.h)
+set(QML_SRC_FILES quick/quickui.cpp quick/scenegraph/managedtexturenode.cpp)
+set(QML_HEADER_FILES_APP quick/appbase.h quick/appservice.h quick/app.h)
+set(QML_SRC_FILES_APP quick/appbase.cpp quick/appservice.cpp quick/app.cpp)
 set(QML_MAIN_FILES
     quick/qml/AboutDialog.qml
     quick/qml/AdvancedConfigPage.qml

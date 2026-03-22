@@ -95,6 +95,24 @@ QuickUI *QuickUI::create(QQmlEngine *qmlEngine, QJSEngine *engine)
     return quickUI;
 }
 
+/*!
+ * \brief Returns a space-separated list of available Qt Quick GUI modes.
+ * \remarks The underlying string is null-terminated.
+ */
+std::string_view QuickUI::modes()
+{
+    return GUI_QTQUICK_MODES;
+}
+
+/*!
+ * \brief Returns the primary/default mode of the Qt Quick GUI.
+ * \remarks The underlying string is null-terminated.
+ */
+std::string_view QuickUI::primaryMode()
+{
+    return GUI_QTQUICK_PRIMARY_MODE;
+}
+
 #if !(defined(Q_OS_ANDROID))
 bool QuickUI::windowPopups() const
 {

@@ -54,6 +54,8 @@ public:
     explicit QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQmlEngine *engine = nullptr, QObject *parent = nullptr);
     ~QuickUI() override;
     static QuickUI *create(QQmlEngine *, QJSEngine *engine);
+    static std::string_view modes();
+    static std::string_view primaryMode();
 
     void setEngine(QQmlEngine *engine)
     {
