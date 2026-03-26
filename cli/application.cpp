@@ -207,8 +207,11 @@ int Application::loadConfig()
 
     // update settings for connection
     m_settingsApplied = false;
-    if (const char *urlArgValue = m_args.url.firstValue()) {
+    if (const char *const urlArgValue = m_args.url.firstValue()) {
         m_settings.syncthingUrl = argToQString(urlArgValue);
+        if (const char *const pathArgValue = m_args.path.firstValue()) {
+            m_settings.localPath = argToQString(pathArgValue);
+        }
     } else if (!config.guiAddress.isEmpty()) {
         const auto connectInfo = config.syncthingConnectInfo();
         m_settings.syncthingUrl = connectInfo.url;
@@ -216,6 +219,10 @@ int Application::loadConfig()
     } else {
         m_settings.syncthingUrl = QStringLiteral("http://localhost:8080");
         m_settings.localPath.clear();
+    }
+    if (!m_args.url.isPresent() && m_args.path.isPresent()) {
+        std::cerr << Phrases::Warning << "The specified path was ignored because \"--path\" is only used together with \"--url\"."
+                  << Phrases::EndFlush;
     }
     if (m_args.credentials.isPresent()) {
         m_settings.authEnabled = true;

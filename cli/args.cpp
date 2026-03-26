@@ -41,6 +41,7 @@ Args::Args()
     , configFile("config-file", 'f', "specifies the Syncthing config file to read API key and URL from, when not explicitly specified", { "path" })
     , apiKey("api-key", 'k', "specifies the API key", { "key" })
     , url("url", 'u', "specifies the Syncthing URL, default is http://localhost:8080", { "URL" })
+    , path("local-path", '\0', "specifies the path to the Unix domain socket when setting --url to \"unix+http://…\"", { "path" })
     , credentials("credentials", 'c', "specifies user name and password", { "user name", "password" })
     , certificate("cert", '\0', "specifies the certificate used by the Syncthing instance", { "path" })
     , requestTimeout("request-timeout", '\0', "specifies the transfer timeout for network requests in milliseconds", { "timeout" })
@@ -81,7 +82,7 @@ Args::Args()
     credentials.setExample(PROJECT_NAME " status --dir dir1 --credentials name supersecret");
 
     parser.setMainArguments({ &status, &log, &stop, &restart, &rescan, &rescanAll, &pause, &resume, &waitForIdle, &pwd, &cat, &edit, &configFile,
-        &apiKey, &url, &credentials, &certificate, &requestTimeout, &generalTimeout, &parser.noColorArg(), &parser.helpArg() });
+        &apiKey, &url, &path, &credentials, &certificate, &requestTimeout, &generalTimeout, &parser.noColorArg(), &parser.helpArg() });
 
     // allow setting default values via environment
     configFile.setEnvironmentVariable("SYNCTHING_CTL_CONFIG_FILE");
@@ -89,6 +90,7 @@ Args::Args()
     apiKey.setValueCompletionBehavior(ValueCompletionBehavior::None);
     url.setEnvironmentVariable("SYNCTHING_CTL_URL");
     url.setValueCompletionBehavior(ValueCompletionBehavior::None);
+    path.setEnvironmentVariable("SYNCTHING_CTL_PATH");
     certificate.setEnvironmentVariable("SYNCTHING_CTL_CERTIFICATE");
 }
 

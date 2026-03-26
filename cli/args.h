@@ -16,7 +16,7 @@ struct Args {
     ConfigValueArgument stats, dir, dev, allDirs, allDevs;
     ConfigValueArgument atLeast, timeout, requireDevsConnected;
     ConfigValueArgument editor;
-    ConfigValueArgument configFile, apiKey, url, credentials, certificate, requestTimeout, generalTimeout;
+    ConfigValueArgument configFile, apiKey, url, path, credentials, certificate, requestTimeout, generalTimeout;
 };
 
 } // namespace Cli
