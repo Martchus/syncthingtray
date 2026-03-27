@@ -210,6 +210,14 @@ public:
      */
     ~SignalInfo()
     {
+        disconnect();
+    }
+
+    /*!
+     * \brief Disconnects any established connections.
+     */
+    void disconnect()
+    {
         QObject::disconnect(m_handlerConnection);
         QObject::disconnect(m_emittedConnection);
         QObject::disconnect(m_loopConnection);
@@ -304,6 +312,24 @@ inline void connectSignalInfoToLoop(QEventLoop *loop, SignalInfo &firstSignalInf
 }
 
 /*!
+ * \brief Disconnects the specified signal info.
+ */
+template <typename SignalInfo> inline void disconnectSignalInfo(SignalInfo &signalInfo)
+{
+    signalInfo.disconnect();
+}
+
+/*!
+ * \brief Disconnects the specified signal info.
+ */
+template <typename SignalInfo, typename... Signalinfo>
+inline void disconnectSignalInfo(SignalInfo &firstSignalInfo, Signalinfo &...remainingSignalinfo)
+{
+    disconnectSignalInfo(firstSignalInfo);
+    disconnectSignalInfo(remainingSignalinfo...);
+}
+
+/*!
  * \brief Checks whether all specified signals have been emitted.
  */
 template <typename SignalInfo> inline bool checkWhetherAllSignalsEmitted(const SignalInfo &signalInfo)
@@ -374,17 +400,18 @@ bool waitForSignalsOrFail(Action action, int timeout, SignalInfo &failure, Signa
     QEventLoop loop;
 
     // connect all signals to loop so loop is interrupted when one of the signals is emitted
-    connectSignalInfoToLoop(&loop, failure);
-    connectSignalInfoToLoop(&loop, signalinfo...);
+    connectSignalInfoToLoop(&loop, failure, signalinfo...);
 
     // perform specified action
     action();
 
     // no reason to enter event loop when all signals have been emitted directly
     if (checkWhetherAllSignalsEmitted(failure)) {
+        disconnectSignalInfo(failure, signalinfo...);
         return false;
     }
     if (checkWhetherAllSignalsEmitted(signalinfo...)) {
+        disconnectSignalInfo(failure, signalinfo...);
         return true;
     }
 
@@ -403,6 +430,7 @@ bool waitForSignalsOrFail(Action action, int timeout, SignalInfo &failure, Signa
         loop.exec();
     } while (!(failureEmitted = checkWhetherAllSignalsEmitted(failure)) && !(allSignalsEmitted = checkWhetherAllSignalsEmitted(signalinfo...))
         && (!timeout || timer.isActive()));
+    disconnectSignalInfo(failure, signalinfo...);
 
     // check whether a timeout occurred
     const bool timeoutFailed(!allSignalsEmitted && timeout && !timer.isActive());
