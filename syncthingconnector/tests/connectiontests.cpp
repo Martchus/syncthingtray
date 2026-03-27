@@ -790,7 +790,8 @@ void ConnectionTests::testSuspendResume()
     // check whether config is back to normal after resuming Syncthing
     const auto configBackToNormal = rawConfig == m_connection.rawConfig();
     if (!configBackToNormal) {
-        cerr << " - Config has NOT been restored: " << QJsonDocument(m_connection.rawConfig()).toJson().data() << '\n';
+        const auto json = QJsonDocument(m_connection.rawConfig()).toJson();
+        cerr << " - Config has NOT been restored: " << json.data() << '\n';
     }
     CPPUNIT_ASSERT(configBackToNormal);
 
