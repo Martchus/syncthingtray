@@ -31,16 +31,17 @@ void SyncthingKiller::waitForFinished()
         if (!process->isRunning()) {
             continue;
         }
-        if (!waitForSignalsOrFail(noop, 0, signalInfo(this, &SyncthingKiller::ignored),
-                signalInfo(process,
+        auto ignoredConn = signalInfo(this, &SyncthingKiller::ignored);
+        auto finishedConn = signalInfo(process,
 #if QT_VERSION < QT_VERSION_CHECK(5, 13, 0) || QT_DEPRECATED_SINCE(5, 13)
-                    static_cast<void (SyncthingProcess::*)(int, QProcess::ExitStatus)>(
+            static_cast<void (SyncthingProcess::*)(int, QProcess::ExitStatus)>(
 #endif
-                        &SyncthingProcess::finished
+                &SyncthingProcess::finished
 #if QT_VERSION < QT_VERSION_CHECK(5, 13, 0) || QT_DEPRECATED_SINCE(5, 13)
-                        )
+                )
 #endif
-                        ))) {
+        );
+        if (!waitForSignalsOrFail(noop, 0, ignoredConn, finishedConn)) {
             return;
         }
     }

@@ -257,12 +257,12 @@ void MiscTests::testConnectionSettingsAndLoadingSelfSignedCert()
     connection.clearSelfSignedCertificate();
     const auto expectedErrorMessage = QStringLiteral("Unable to load certificate used by Syncthing.");
     auto expectedErrorOccured = false;
-    const function<void(const QString &)> errorHandler = [&expectedErrorOccured, &expectedErrorMessage](const QString &message) {
+    auto errorHandler = [&expectedErrorOccured, &expectedErrorMessage](const QString &message) {
         std::cout << "\n - error: " << message.toLocal8Bit().data() << '\n';
         expectedErrorOccured |= message == expectedErrorMessage;
     };
-    waitForSignals(bind(&SyncthingConnection::loadSelfSignedCertificate, &connection, QUrl()), 1000,
-        signalInfo(&connection, &SyncthingConnection::error, errorHandler, &expectedErrorOccured));
+    auto errorConn = signalInfo(&connection, &SyncthingConnection::error, errorHandler, &expectedErrorOccured);
+    waitForSignals(bind(&SyncthingConnection::loadSelfSignedCertificate, &connection, QUrl()), 1000, errorConn);
     settings.expectedSslErrors.clear();
     settings.httpsCertPath.clear();
     CPPUNIT_ASSERT(!connection.applySettings(settings));

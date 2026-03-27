@@ -383,7 +383,7 @@ bool App::loadDirErrors(const QString &dirId, QObject *view)
               view->setProperty("model", array.toVariant());
               view->setProperty("enabled", true);
           });
-    connect(this, &QObject::destroyed, [connection] { disconnect(connection); });
+    connect(this, &QObject::destroyed, [connection] () mutable { disconnect(connection); });
     m_data.connection()->requestDirPullErrors(dirId);
     return true;
 }
@@ -465,7 +465,7 @@ bool App::loadStatistics(const QJSValue &callback)
             callback.call(QJSValueList({ m_engine->toScriptValue(report), QJSValue(std::move(error)) }));
         });
     connect(this, &QObject::destroyed, query.reply, &QNetworkReply::deleteLater);
-    connect(this, &QObject::destroyed, [c = query.connection] { disconnect(c); });
+    connect(this, &QObject::destroyed, [c = query.connection] () mutable { disconnect(c); });
     return true;
 }
 

@@ -336,7 +336,7 @@ bool SyncthingModels::postSyncthingConfig(const QJsonObject &rawConfig, const QJ
         }
     });
     connect(this, &QObject::destroyed, m_pendingConfigChange.reply, &QNetworkReply::deleteLater);
-    connect(this, &QObject::destroyed, [c = m_pendingConfigChange.connection] { disconnect(c); });
+    connect(this, &QObject::destroyed, [c = m_pendingConfigChange.connection]() mutable { disconnect(c); });
     emit savingConfigChanged(true);
     return true;
 }
@@ -365,7 +365,7 @@ bool SyncthingModels::requestFromSyncthing(const QString &verb, const QString &p
         }
     });
     connect(this, &QObject::destroyed, query.reply, &QNetworkReply::deleteLater);
-    connect(this, &QObject::destroyed, [c = query.connection] { disconnect(c); });
+    connect(this, &QObject::destroyed, [c = query.connection]() mutable { disconnect(c); });
     return true;
 }
 

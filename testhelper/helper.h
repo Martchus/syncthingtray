@@ -235,7 +235,7 @@ public:
      * \brief Connects the signal to the specified \a loop so the loop is being interrupted when the signal
      *        has been emitted.
      */
-    void connectToLoop(QEventLoop *loop) const
+    void connectToLoop(QEventLoop *loop)
     {
         if (!m_sender) {
             return;
@@ -254,7 +254,7 @@ private:
     Signal m_signal;
     QMetaObject::Connection m_handlerConnection;
     QMetaObject::Connection m_emittedConnection;
-    mutable QMetaObject::Connection m_loopConnection;
+    QMetaObject::Connection m_loopConnection;
     bool *m_correctSignalEmitted = nullptr;
     bool m_signalEmitted;
 };
@@ -288,7 +288,7 @@ inline auto dummySignalInfo()
 /*!
  * \brief Connects the specified signal info the \a loop via SignalInfo::connectToLoop().
  */
-template <typename SignalInfo> inline void connectSignalInfoToLoop(QEventLoop *loop, const SignalInfo &signalInfo)
+template <typename SignalInfo> inline void connectSignalInfoToLoop(QEventLoop *loop, SignalInfo &signalInfo)
 {
     signalInfo.connectToLoop(loop);
 }
@@ -297,7 +297,7 @@ template <typename SignalInfo> inline void connectSignalInfoToLoop(QEventLoop *l
  * \brief Connects the specified signal info the \a loop via SignalInfo::connectToLoop().
  */
 template <typename SignalInfo, typename... Signalinfo>
-inline void connectSignalInfoToLoop(QEventLoop *loop, const SignalInfo &firstSignalInfo, const Signalinfo &...remainingSignalinfo)
+inline void connectSignalInfoToLoop(QEventLoop *loop, SignalInfo &firstSignalInfo, Signalinfo &...remainingSignalinfo)
 {
     connectSignalInfoToLoop(loop, firstSignalInfo);
     connectSignalInfoToLoop(loop, remainingSignalinfo...);
@@ -351,9 +351,10 @@ inline QByteArray failedSignalNames(const SignalInfo &firstSignalInfo, const Sig
  *         required connections can not be established.
  * \returns Returns true if all \a signalinfo have been omitted before the \a timeout exceeded.
  */
-template <typename Action, typename... Signalinfo> bool waitForSignals(Action action, int timeout, const Signalinfo &...signalinfo)
+template <typename Action, typename... Signalinfo> bool waitForSignals(Action action, int timeout, Signalinfo &...signalinfo)
 {
-    return waitForSignalsOrFail(action, timeout, dummySignalInfo(), signalinfo...);
+    auto dummy = dummySignalInfo();
+    return waitForSignalsOrFail(action, timeout, dummy, signalinfo...);
 }
 
 /*!
@@ -367,7 +368,7 @@ template <typename Action, typename... Signalinfo> bool waitForSignals(Action ac
  * \returns Returns true if all \a signalinfo have been omitted before \a failure as been emitted or the \a timeout exceeded.
  */
 template <typename Action, typename SignalInfo, typename... Signalinfo>
-bool waitForSignalsOrFail(Action action, int timeout, const SignalInfo &failure, const Signalinfo &...signalinfo)
+bool waitForSignalsOrFail(Action action, int timeout, SignalInfo &failure, Signalinfo &...signalinfo)
 {
     // use loop for waiting
     QEventLoop loop;
@@ -452,8 +453,9 @@ inline WaitForConnected::operator bool() const
  */
 inline bool waitForConnected(Data::SyncthingConnection &connection, int timeout = 5000)
 {
-    return waitForSignals(std::bind(static_cast<void (Data::SyncthingConnection::*)(void)>(&Data::SyncthingConnection::connect), &connection),
-        timeout, WaitForConnected(connection));
+    auto signalInfo = WaitForConnected(connection);
+    return waitForSignals(
+        std::bind(static_cast<void (Data::SyncthingConnection::*)(void)>(&Data::SyncthingConnection::connect), &connection), timeout, signalInfo);
 }
 
 } // namespace CppUtilities

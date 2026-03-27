@@ -275,27 +275,31 @@ bool Application::applySettings()
 
 bool Application::waitForConnected()
 {
-    bool isConnected = m_connection.isConnected();
-    const function<void(SyncthingStatus)> checkStatus([this, &isConnected](SyncthingStatus) { isConnected = m_connection.isConnected(); });
-    return waitForSignalsOrFail(bind(static_cast<void (SyncthingConnection::*)(SyncthingConnectionSettings &)>(&SyncthingConnection::reconnect),
+    auto isConnected = m_connection.isConnected();
+    auto checkStatus = std::function<void(SyncthingStatus)>([this, &isConnected](SyncthingStatus) { isConnected = m_connection.isConnected(); });
+    auto errorConn = signalInfo(&m_connection, &SyncthingConnection::error);
+    auto statusChangedConn = signalInfo(&m_connection, &SyncthingConnection::statusChanged, checkStatus, &isConnected);
+    return waitForSignalsOrFail(std::bind(static_cast<void (SyncthingConnection::*)(SyncthingConnectionSettings &)>(&SyncthingConnection::reconnect),
                                     ref(m_connection), ref(m_settings)),
-        m_generalTimeout, signalInfo(&m_connection, &SyncthingConnection::error),
-        signalInfo(&m_connection, &SyncthingConnection::statusChanged, checkStatus, &isConnected));
+        m_generalTimeout, errorConn, statusChangedConn);
 }
 
 bool Application::waitForConfig()
 {
     applySettings();
-    return waitForSignalsOrFail(bind(&SyncthingConnection::requestConfig, ref(m_connection)), m_generalTimeout,
-        signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfig));
+    auto errorConn = signalInfo(&m_connection, &SyncthingConnection::error);
+    auto newConfigConn = signalInfo(&m_connection, &SyncthingConnection::newConfig);
+    return waitForSignalsOrFail(std::bind(&SyncthingConnection::requestConfig, ref(m_connection)), m_generalTimeout, errorConn, newConfigConn);
 }
 
 bool Application::waitForConfigAndStatus()
 {
     applySettings();
-    if (!waitForSignalsOrFail(bind(&SyncthingConnection::requestConfigAndStatus, ref(m_connection)), m_generalTimeout,
-            signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfig),
-            signalInfo(&m_connection, &SyncthingConnection::myIdChanged))) {
+    auto errorConn = signalInfo(&m_connection, &SyncthingConnection::error);
+    auto newConfigConn = signalInfo(&m_connection, &SyncthingConnection::newConfig);
+    auto idChangedConn = signalInfo(&m_connection, &SyncthingConnection::myIdChanged);
+    if (!waitForSignalsOrFail(
+            std::bind(&SyncthingConnection::requestConfigAndStatus, ref(m_connection)), m_generalTimeout, errorConn, newConfigConn, idChangedConn)) {
         return false;
     }
     m_connection.applyRawConfig();
@@ -803,8 +807,9 @@ void Application::editConfig(const ArgumentOccurrence &)
 
     // post new config
     cerr << Phrases::Info << "Posting new configuration ..." << TextAttribute::Reset << flush;
-    if (!waitForSignalsOrFail([this, &newConfig] { m_connection.postConfigFromByteArray(newConfig); }, 0,
-            signalInfo(&m_connection, &SyncthingConnection::error), signalInfo(&m_connection, &SyncthingConnection::newConfigTriggered))) {
+    auto errorConn = signalInfo(&m_connection, &SyncthingConnection::error);
+    auto newConfigConn = signalInfo(&m_connection, &SyncthingConnection::newConfigTriggered);
+    if (!waitForSignalsOrFail([this, &newConfig] { m_connection.postConfigFromByteArray(newConfig); }, 0, errorConn, newConfigConn)) {
         return;
     }
     cerr << Phrases::Override << Phrases::Info << "Configuration posted successfully" << Phrases::EndFlush;
@@ -1074,12 +1079,13 @@ void Application::waitForIdle(const ArgumentOccurrence &)
     // invoke handler manually because Syncthing could already be idling
     handleAllEventsProcessed();
 
-    waitForSignals(&noop, m_idleTimeout, signalInfo(&m_connection, &SyncthingConnection::dirStatusChanged, handleStatusChange, &isLongEnoughIdle),
-        signalInfo(&m_connection, &SyncthingConnection::devStatusChanged, handleStatusChange, &isLongEnoughIdle),
-        signalInfo(&m_connection, &SyncthingConnection::newDirs, handleNewDirsOrDevs, &isLongEnoughIdle),
-        signalInfo(&m_connection, &SyncthingConnection::newDevices, handleNewDirsOrDevs, &isLongEnoughIdle),
-        signalInfo(&m_connection, &SyncthingConnection::allEventsProcessed, handleAllEventsProcessed, &isLongEnoughIdle),
-        signalInfo(&idleTime, &QTimer::timeout, handleIdleTimer, &isLongEnoughIdle));
+    auto conn1 = signalInfo(&m_connection, &SyncthingConnection::dirStatusChanged, handleStatusChange, &isLongEnoughIdle);
+    auto conn2 = signalInfo(&m_connection, &SyncthingConnection::devStatusChanged, handleStatusChange, &isLongEnoughIdle);
+    auto conn3 = signalInfo(&m_connection, &SyncthingConnection::newDirs, handleNewDirsOrDevs, &isLongEnoughIdle);
+    auto conn4 = signalInfo(&m_connection, &SyncthingConnection::newDevices, handleNewDirsOrDevs, &isLongEnoughIdle);
+    auto conn5 = signalInfo(&m_connection, &SyncthingConnection::allEventsProcessed, handleAllEventsProcessed, &isLongEnoughIdle);
+    auto conn6 = signalInfo(&idleTime, &QTimer::timeout, handleIdleTimer, &isLongEnoughIdle);
+    waitForSignals(&noop, m_idleTimeout, conn1, conn2, conn3, conn4, conn5, conn6);
 
     if (!isLongEnoughIdle) {
         cerr << Phrases::Warning << "Exiting after timeout" << Phrases::End << flush;
