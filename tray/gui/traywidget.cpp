@@ -12,6 +12,10 @@
 #include <syncthingwidgets/settings/wizard.h>
 #include <syncthingwidgets/webview/webviewdialog.h>
 
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+#include <syncthingwidgets/quick/helpers.h>
+#endif
+
 #include <syncthingmodel/syncthingicons.h>
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -466,6 +470,28 @@ void TrayWidget::showInternalErrorsDialog()
         connect(errorViewDlg, &InternalErrorsDialog::errorsCleared, m_internalErrorsButton, &QWidget::hide);
     }
     showDialog(errorViewDlg, centerWidgetAvoidingOverflow(errorViewDlg));
+}
+
+void TrayWidget::showQtQuickGui()
+{
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    if (!m_quickUI.has_value()) {
+        auto &quickUI = m_quickUI.emplace(qGuiApp, Settings::values().qt);
+        auto *const engine = &quickUI.engine;
+        connect(
+            engine, &QQmlApplicationEngine::objectCreated, this,
+            [](QObject *obj, const QUrl &objUrl) {
+                if (!obj) {
+                    QMessageBox::critical(nullptr, QCoreApplication::applicationName(), QStringLiteral("Unable to load Qt Quick UI: ") + objUrl.toString());
+                }
+            },
+            Qt::QueuedConnection);
+        dataObjectToProperty(engine, &m_data);
+        dataObjectToProperty(engine, &m_models);
+        dataObjectToProperty(engine, &quickUI.ui);
+        quickUI.engine.loadFromModule("Main", "DesktopWindow");
+    }
+#endif
 }
 
 void TrayWidget::restartSyncthing()

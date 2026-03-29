@@ -13,6 +13,11 @@
 
 #include <memory>
 
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+#include <syncthingwidgets/quick/quickui.h>
+#include <optional>
+#endif
+
 QT_FORWARD_DECLARE_CLASS(QFrame)
 QT_FORWARD_DECLARE_CLASS(QMenu)
 QT_FORWARD_DECLARE_CLASS(QActionGroup)
@@ -70,6 +75,7 @@ public Q_SLOTS:
         const QByteArray &response);
     void showInternalErrorsButton();
     void showInternalErrorsDialog();
+    void showQtQuickGui();
     void restartSyncthing();
     void quitTray();
     void applySettings(const QString &connectionConfig = QString());
@@ -121,6 +127,9 @@ private Q_SLOTS:
 private:
     TrayMenu *m_menu;
     std::unique_ptr<Ui::TrayWidget> m_ui;
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    std::optional<QuickGuiEngine> m_quickUI;
+#endif
     static SettingsDialog *s_settingsDlg;
     static Wizard *s_wizard;
     static QtUtilities::AboutDialog *s_aboutDlg;

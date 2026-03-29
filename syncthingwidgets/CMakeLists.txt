@@ -413,6 +413,10 @@ if (QUICK_GUI)
         list(APPEND PUBLIC_LIBRARIES ${META_TARGET_NAME}_webviewitemplugin)
     endif ()
 
+    if ("desktop" IN_LIST QUICK_GUI_ENABLED_MODES)
+        list(APPEND QML_MAIN_FILES quick/qml/DesktopWindow.qml)
+    endif ()
+
     # add main QML module
     if (BUILD_SHARED_LIBS)
         set(META_LIBRARY_TYPE SHARED)

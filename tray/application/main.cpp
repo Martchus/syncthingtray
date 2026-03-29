@@ -197,9 +197,9 @@ static int initSyncthingTray(bool windowed, bool waitForTray, const Argument &co
 #endif
 }
 
-static void trigger(bool tray, bool webUi, bool wizard)
+static void trigger(bool tray, bool webUi, bool wizard, bool quickGui)
 {
-    if (TrayWidget::instances().empty() || !(tray || webUi || wizard)) {
+    if (TrayWidget::instances().empty() || !(tray || webUi || wizard || quickGui)) {
         return;
     }
     auto *const trayWidget = TrayWidget::instances().front();
@@ -212,6 +212,13 @@ static void trigger(bool tray, bool webUi, bool wizard)
     if (wizard) {
         trayWidget->showWizard();
     }
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    if (quickGui) {
+        trayWidget->showQtQuickGui();
+    }
+#else
+    Q_UNUSED(quickGui)
+#endif
 }
 
 static void shutdownSyncthingTray()
@@ -539,12 +546,7 @@ static int runApplication(int argc, const char *const *argv)
 
         // trigger UI and enter event loop
         QObject::connect(&application, &QCoreApplication::aboutToQuit, &shutdownSyncthingTray);
-        trigger(triggerArg.isPresent(), showWebUiArg.isPresent(), showWizardArg.isPresent());
-#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
-        if (quickGuiArg.isPresent()) {
-            QMessageBox::information(nullptr, "Quick GUI", "The integration of the Quick GUI into the desktop UI is still work in progress.");
-        }
-#endif
+        trigger(triggerArg.isPresent(), showWebUiArg.isPresent(), showWizardArg.isPresent(), quickDesktopGuiPresent);
         const auto res = application.exec();
 #ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
         SettingsDialog::respawnIfRestartRequested();
@@ -558,8 +560,8 @@ static int runApplication(int argc, const char *const *argv)
 
     // trigger actions if --webui or --trigger is present but don't create a new tray icon
     const auto firstInstance = TrayWidget::instances().empty();
-    if (!firstInstance && (showWebUiArg.isPresent() || triggerArg.isPresent() || showWizardArg.isPresent())) {
-        trigger(triggerArg.isPresent(), showWebUiArg.isPresent(), showWizardArg.isPresent());
+    if (!firstInstance && (showWebUiArg.isPresent() || triggerArg.isPresent() || showWizardArg.isPresent() || quickDesktopGuiPresent)) {
+        trigger(triggerArg.isPresent(), showWebUiArg.isPresent(), showWizardArg.isPresent(), quickDesktopGuiPresent);
         return 0;
     }
 
@@ -571,7 +573,7 @@ static int runApplication(int argc, const char *const *argv)
     // create new/additional tray icon
     const auto res = initSyncthingTray(windowedArg.isPresent(), waitForTrayArg.isPresent(), connectionArg);
     if (!res) {
-        trigger(triggerArg.isPresent(), showWebUiArg.isPresent(), showWizardArg.isPresent());
+        trigger(triggerArg.isPresent(), showWebUiArg.isPresent(), showWizardArg.isPresent(), quickDesktopGuiPresent);
     }
     return res;
 #else

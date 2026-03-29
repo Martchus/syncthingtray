@@ -8,6 +8,10 @@
 #include <QPalette>
 #include <QtVersion>
 
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
+#include <QQmlApplicationEngine>
+#endif
+
 #include <QtQmlIntegration/qqmlintegration.h>
 
 QT_FORWARD_DECLARE_CLASS(QGuiApplication)
@@ -149,6 +153,19 @@ private:
     bool m_darkColorScheme;
     bool m_darkPalette;
 };
+
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
+struct QuickGuiEngine {
+    explicit QuickGuiEngine(QGuiApplication *app, QtUtilities::QtSettings &qtSettings)
+        : engine()
+        , ui(app, qtSettings, &engine)
+    {
+    }
+    QQmlApplicationEngine engine;
+    QuickUI ui;
+};
+#endif
+
 #endif
 
 } // namespace QtGui
