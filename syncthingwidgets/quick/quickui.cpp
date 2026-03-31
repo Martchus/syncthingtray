@@ -6,6 +6,10 @@
 
 #include <QGuiApplication>
 
+#ifdef SYNCTHING_APP_DYNAMIC_STYLE
+#include <QQuickStyle>
+#endif
+
 #ifdef Q_OS_ANDROID
 #include <QDebug>
 #include <QFontDatabase>
@@ -72,6 +76,8 @@ QuickUI::QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQml
     , m_darkPalette(app ? SYNCTHING_APP_IS_PALETTE_DARK(app->palette()) : false)
 {
     if (app) {
+        app->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
+
 #ifdef SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
         QtUtilities::onDarkModeChanged([this](bool darkColorScheme) { applyDarkmodeChange(darkColorScheme, m_darkPalette); }, this);
 #else

@@ -256,6 +256,9 @@ void TrayIcon::updateStatusIconAndText()
     auto &statusInfo = *data.statusInfo();
     data.updateStatusInfo(TrayWidget::instances().size() > 1 && trayWidget.selectedConnection() ? trayWidget.selectedConnection()->label : QString());
     data.updateDeviceInfo();
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    emit statusInfo.statusInfoChanged();
+#endif
     if (statusInfo.additionalStatusText().isEmpty()) {
         setToolTip(statusInfo.statusText());
     } else {

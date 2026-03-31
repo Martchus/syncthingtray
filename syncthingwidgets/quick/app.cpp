@@ -41,10 +41,6 @@
 #include <QJniEnvironment>
 #endif
 
-#ifdef SYNCTHING_APP_DYNAMIC_STYLE
-#include <QQuickStyle>
-#endif
-
 #include <cstdlib>
 #include <filesystem>
 #include <functional>
@@ -98,7 +94,6 @@ App::App(bool insecure, QQmlEngine *engine, QObject *parent)
 #endif
 
     m_app->installEventFilter(this);
-    m_app->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
     connect(m_app, &QGuiApplication::applicationStateChanged, this, &App::handleStateChanged);
 
     QtUtilities::deletePipelineCacheIfNeeded();

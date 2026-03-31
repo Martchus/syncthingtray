@@ -461,7 +461,7 @@ if (QUICK_GUI)
     # configure whether a dynamic style is used
     if (QUICK_GUI_CONTROLS_STYLE STREQUAL dynamic)
         set_property(
-            SOURCE quick/app.cpp
+            SOURCE quick/quickui.cpp
             APPEND
             PROPERTY COMPILE_DEFINITIONS SYNCTHING_APP_DYNAMIC_STYLE)
     endif ()
