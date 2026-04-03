@@ -75,7 +75,9 @@ public Q_SLOTS:
         const QByteArray &response);
     void showInternalErrorsButton();
     void showInternalErrorsDialog();
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
     void showQtQuickGui();
+#endif
     void restartSyncthing();
     void quitTray();
     void applySettings(const QString &connectionConfig = QString());

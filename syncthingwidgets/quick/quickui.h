@@ -163,6 +163,9 @@ struct QuickGuiEngine {
     }
     QQmlApplicationEngine engine;
     QuickUI ui;
+
+    void setupErrorHandling();
+    void showMainWindow();
 };
 #endif
 

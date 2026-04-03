@@ -472,27 +472,20 @@ void TrayWidget::showInternalErrorsDialog()
     showDialog(errorViewDlg, centerWidgetAvoidingOverflow(errorViewDlg));
 }
 
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
 void TrayWidget::showQtQuickGui()
 {
-#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
     if (!m_quickUI.has_value()) {
         auto &quickUI = m_quickUI.emplace(qGuiApp, Settings::values().qt);
         auto *const engine = &quickUI.engine;
-        connect(
-            engine, &QQmlApplicationEngine::objectCreated, this,
-            [](QObject *obj, const QUrl &objUrl) {
-                if (!obj) {
-                    QMessageBox::critical(nullptr, QCoreApplication::applicationName(), QStringLiteral("Unable to load Qt Quick UI: ") + objUrl.toString());
-                }
-            },
-            Qt::QueuedConnection);
         dataObjectToProperty(engine, &m_data);
         dataObjectToProperty(engine, &m_models);
         dataObjectToProperty(engine, &quickUI.ui);
-        quickUI.engine.loadFromModule("Main", "DesktopWindow");
+        quickUI.setupErrorHandling();
+        quickUI.showMainWindow();
     }
-#endif
 }
+#endif
 
 void TrayWidget::restartSyncthing()
 {

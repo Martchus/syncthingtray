@@ -10,6 +10,10 @@
 #include <QQuickStyle>
 #endif
 
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
+#include <QMessageBox>
+#endif
+
 #ifdef Q_OS_ANDROID
 #include <QDebug>
 #include <QFontDatabase>
@@ -346,6 +350,26 @@ bool QuickUI::showToast(const QString &message)
     return false;
 #endif
 }
+
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
+void QuickGuiEngine::setupErrorHandling()
+{
+    QObject::connect(
+        &engine, &QQmlApplicationEngine::objectCreated, &ui,
+        [](QObject *obj, const QUrl &objUrl) {
+            if (!obj) {
+                QMessageBox::critical(nullptr, QCoreApplication::applicationName(), QStringLiteral("Unable to load Qt Quick UI: ") + objUrl.toString());
+            }
+        },
+        Qt::QueuedConnection);
+}
+
+void QuickGuiEngine::showMainWindow()
+{
+    engine.loadFromModule("Main", "DesktopWindow");
+}
+#endif
+
 #endif
 
 } // namespace QtGui
