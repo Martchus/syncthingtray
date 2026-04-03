@@ -481,8 +481,7 @@ void TrayWidget::showQtQuickGui()
         dataObjectToProperty(engine, &m_data);
         dataObjectToProperty(engine, &m_models);
         dataObjectToProperty(engine, &quickUI.ui);
-        quickUI.setupErrorHandling();
-        quickUI.showMainWindow();
+        quickUI.ui.showMainWindow();
     }
 }
 #endif

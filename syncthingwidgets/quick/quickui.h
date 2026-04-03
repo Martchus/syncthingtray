@@ -41,6 +41,8 @@ namespace QtGui {
 class SYNCTHINGWIDGETS_EXPORT QuickUI : public QObject {
     Q_OBJECT
     Q_PROPERTY(QString faUrlBase READ faUrlBase CONSTANT)
+    Q_PROPERTY(QString mode READ mode CONSTANT)
+    Q_PROPERTY(bool desktop READ isDesktop CONSTANT)
     Q_PROPERTY(bool darkmodeEnabled READ isDarkmodeEnabled NOTIFY darkmodeEnabledChanged)
     Q_PROPERTY(int iconSize READ iconSize CONSTANT)
     Q_PROPERTY(int iconWidthDelegate READ iconWidthDelegate CONSTANT)
@@ -55,7 +57,7 @@ class SYNCTHINGWIDGETS_EXPORT QuickUI : public QObject {
     QML_SINGLETON
 
 public:
-    explicit QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQmlEngine *engine = nullptr, QObject *parent = nullptr);
+    explicit QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQmlEngine *engine = nullptr, const QString &mode = QString(), QObject *parent = nullptr);
     ~QuickUI() override;
     static QuickUI *create(QQmlEngine *, QJSEngine *engine);
     static std::string_view modes();
@@ -66,9 +68,17 @@ public:
         m_engine = engine;
     }
 
-    const QString &faUrlBase()
+    const QString &faUrlBase() const
     {
         return m_faUrlBase;
+    }
+    const QString &mode() const
+    {
+        return m_mode;
+    }
+    bool isDesktop() const
+    {
+        return m_mode == QStringLiteral("desktop");
     }
     QtForkAwesome::QuickImageProvider *imageProvider()
     {
@@ -134,6 +144,10 @@ public:
     {
         emit openingUrlRequested(url);
     }
+    Q_INVOKABLE bool showMainWindow();
+    Q_INVOKABLE bool showPage(QAnyStringView uri, QAnyStringView typeName, const QVariantMap &initialProperties = QVariantMap());
+    Q_INVOKABLE bool showDir(const QString &dirId, const QString &dirName);
+    Q_INVOKABLE QObject *loadComponent(QAnyStringView uri, QAnyStringView typeName, const QVariantMap &initialProperties = QVariantMap());
 
 Q_SIGNALS:
     void darkmodeEnabledChanged(bool darkmodeEnabled);
@@ -145,6 +159,7 @@ private:
     QQmlEngine *m_engine;
     QtUtilities::QtSettings &m_qtSettings;
     QString m_faUrlBase;
+    QString m_mode;
     QtForkAwesome::QuickImageProvider *m_imageProvider;
     QObjectList m_dialogs;
     int m_iconSize;
@@ -158,14 +173,11 @@ private:
 struct QuickGuiEngine {
     explicit QuickGuiEngine(QGuiApplication *app, QtUtilities::QtSettings &qtSettings)
         : engine()
-        , ui(app, qtSettings, &engine)
+        , ui(app, qtSettings, &engine, QStringLiteral("desktop"))
     {
     }
     QQmlApplicationEngine engine;
     QuickUI ui;
-
-    void setupErrorHandling();
-    void showMainWindow();
 };
 #endif
 

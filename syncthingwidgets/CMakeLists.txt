@@ -414,7 +414,7 @@ if (QUICK_GUI)
     endif ()
 
     if ("desktop" IN_LIST QUICK_GUI_ENABLED_MODES)
-        list(APPEND QML_MAIN_FILES quick/qml/DesktopWindow.qml)
+        list(APPEND QML_MAIN_FILES quick/qml/DesktopWindow.qml quick/qml/PageWindow.qml)
     endif ()
 
     # add main QML module

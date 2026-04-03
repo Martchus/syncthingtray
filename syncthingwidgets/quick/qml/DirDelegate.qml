@@ -31,7 +31,7 @@ ExpandableDelegate {
             Action {
                 text: qsTr("Edit")
                 icon.source: QuickUI.faUrlBase + "pencil"
-                onTriggered: mainView.stackView.push("DirConfigPage.qml", {dirName: modelData.name, dirId: modelData.dirId, stackView: mainView.stackView}, StackView.PushTransition)
+                onTriggered: QuickUI.showDir(modelData.dirId, modelData.name) || mainView.stackView.push("DirConfigPage.qml", {dirName: modelData.name, dirId: modelData.dirId, stackView: mainView.stackView}, StackView.PushTransition)
             },
             Action {
                 text: qsTr("Out of Sync items")

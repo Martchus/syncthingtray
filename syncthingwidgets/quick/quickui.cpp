@@ -12,6 +12,7 @@
 
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
 #include <QMessageBox>
+#include <QQmlComponent>
 #endif
 
 #ifdef Q_OS_ANDROID
@@ -66,12 +67,13 @@ namespace QtGui {
  * \remarks This class is available as singleton in Qml code.
  */
 
-QuickUI::QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQmlEngine *engine, QObject *parent)
+QuickUI::QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQmlEngine *engine, const QString &mode, QObject *parent)
     : QObject(parent)
     , m_app(app)
     , m_engine(engine)
     , m_qtSettings(qtSettings)
     , m_faUrlBase(QStringLiteral("image://fa/"))
+    , m_mode(mode)
     , m_imageProvider(nullptr)
     , m_iconSize(SYNCTHING_APP_ICON_SIZE)
     , m_iconWidthDelegate(SYNCTHING_APP_ICON_WIDTH_DELEGATE)
@@ -351,25 +353,66 @@ bool QuickUI::showToast(const QString &message)
 #endif
 }
 
+bool QuickUI::showMainWindow()
+{
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
-void QuickGuiEngine::setupErrorHandling()
-{
-    QObject::connect(
-        &engine, &QQmlApplicationEngine::objectCreated, &ui,
-        [](QObject *obj, const QUrl &objUrl) {
-            if (!obj) {
-                QMessageBox::critical(nullptr, QCoreApplication::applicationName(), QStringLiteral("Unable to load Qt Quick UI: ") + objUrl.toString());
-            }
-        },
-        Qt::QueuedConnection);
-}
-
-void QuickGuiEngine::showMainWindow()
-{
-    engine.loadFromModule("Main", "DesktopWindow");
-}
+    return loadComponent("Main", "DesktopWindow") != nullptr;
+#else
+    return false;
 #endif
+}
 
+bool QuickUI::showPage(QAnyStringView uri, QAnyStringView typeName, const QVariantMap &initialProperties)
+{
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
+    auto *const page = loadComponent(uri, typeName, initialProperties);
+    if (!page) {
+        return false;
+    }
+    auto *const pageWindow = loadComponent("Main", "PageWindow", {{QStringLiteral("page"), QVariant::fromValue(page)}});
+    if (!pageWindow) {
+        return false;
+    }
+    return true;
+#else
+    Q_UNUSED(uri)
+    Q_UNUSED(typeName)
+    Q_UNUSED(initialProperties)
+    return false;
+#endif
+}
+
+bool QuickUI::showDir(const QString &dirId, const QString &dirName)
+{
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
+    return isDesktop() && showPage("Main", "DirConfigPage", {
+                                          {QStringLiteral("dirId"), dirId},
+                                          {QStringLiteral("dirName"), dirName},
+    });
+#else
+    Q_UNUSED(dirId)
+    return false;
+#endif
+}
+
+QObject *QuickUI::loadComponent(QAnyStringView uri, QAnyStringView typeName, const QVariantMap &initialProperties)
+{
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
+    auto component = QQmlComponent(m_engine, uri, typeName, m_engine);
+    auto *const object = component.createWithInitialProperties(initialProperties);
+    if (object) {
+        object->setParent(m_engine);
+    } else {
+        QMessageBox::critical(nullptr, QCoreApplication::applicationName(), QStringLiteral("Unable to load component \"%1\" of Qt Quick UI: %2").arg(typeName, component.errorString()));
+    }
+    return object;
+#else
+    Q_UNUSED(uri)
+    Q_UNUSED(typeName)
+    Q_UNUSED(initialProperties)
+    return nullptr;
+#endif
+}
 #endif
 
 } // namespace QtGui

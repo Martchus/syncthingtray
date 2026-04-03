@@ -150,7 +150,7 @@ Page {
     })
     property list<var> labelKeys: ["label", "name", "id", "deviceID"]
     readonly property int standardButtons: (configCategory.length > 0) ? (Dialog.Ok | Dialog.Cancel | Dialog.Help) : (Dialog.Ok | Dialog.Cancel)
-    required property StackView stackView
+    property StackView stackView: StackView {}
     property Page parentPage
     property Label objectNameLabel
     property list<Action> actions: [
