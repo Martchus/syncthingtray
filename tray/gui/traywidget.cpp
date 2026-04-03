@@ -483,6 +483,7 @@ void TrayWidget::showQtQuickGui()
         dataObjectToProperty(engine, &quickUI.ui);
         quickUI.setupErrorHandling();
         quickUI.showMainWindow();
+        quickUI.showDir(QStringLiteral("docs-misc"));
     }
 }
 #endif

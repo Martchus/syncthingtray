@@ -166,6 +166,7 @@ struct QuickGuiEngine {
 
     void setupErrorHandling();
     void showMainWindow();
+    void showDir(const QString &dirId);
 };
 #endif
 

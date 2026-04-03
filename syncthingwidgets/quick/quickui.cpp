@@ -368,6 +368,15 @@ void QuickGuiEngine::showMainWindow()
 {
     engine.loadFromModule("Main", "DesktopWindow");
 }
+
+void QuickGuiEngine::showDir(const QString &dirId)
+{
+    engine.setInitialProperties({
+        {QStringLiteral("dirId"), dirId},
+        {QStringLiteral("dirName"), dirId},
+    });
+    engine.loadFromModule("Main", "DirConfigPage");
+}
 #endif
 
 #endif
