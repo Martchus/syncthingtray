@@ -57,7 +57,8 @@ class SYNCTHINGWIDGETS_EXPORT QuickUI : public QObject {
     QML_SINGLETON
 
 public:
-    explicit QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQmlEngine *engine = nullptr, const QString &mode = QString(), QObject *parent = nullptr);
+    explicit QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQmlEngine *engine = nullptr, const QString &mode = QString(),
+        QObject *parent = nullptr);
     ~QuickUI() override;
     static QuickUI *create(QQmlEngine *, QJSEngine *engine);
     static std::string_view modes();

@@ -14,8 +14,8 @@
 #include <memory>
 
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
-#include <syncthingwidgets/quick/quickui.h>
 #include <optional>
+#include <syncthingwidgets/quick/quickui.h>
 #endif
 
 QT_FORWARD_DECLARE_CLASS(QFrame)

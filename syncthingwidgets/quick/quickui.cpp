@@ -369,7 +369,7 @@ bool QuickUI::showPage(QAnyStringView uri, QAnyStringView typeName, const QVaria
     if (!page) {
         return false;
     }
-    auto *const pageWindow = loadComponent("Main", "PageWindow", {{QStringLiteral("page"), QVariant::fromValue(page)}});
+    auto *const pageWindow = loadComponent("Main", "PageWindow", { { QStringLiteral("page"), QVariant::fromValue(page) } });
     if (!pageWindow) {
         return false;
     }
@@ -385,10 +385,12 @@ bool QuickUI::showPage(QAnyStringView uri, QAnyStringView typeName, const QVaria
 bool QuickUI::showDir(const QString &dirId, const QString &dirName)
 {
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
-    return isDesktop() && showPage("Main", "DirConfigPage", {
-                                          {QStringLiteral("dirId"), dirId},
-                                          {QStringLiteral("dirName"), dirName},
-    });
+    return isDesktop()
+        && showPage("Main", "DirConfigPage",
+            {
+                { QStringLiteral("dirId"), dirId },
+                { QStringLiteral("dirName"), dirName },
+            });
 #else
     Q_UNUSED(dirId)
     return false;
@@ -403,7 +405,8 @@ QObject *QuickUI::loadComponent(QAnyStringView uri, QAnyStringView typeName, con
     if (object) {
         object->setParent(m_engine);
     } else {
-        QMessageBox::critical(nullptr, QCoreApplication::applicationName(), QStringLiteral("Unable to load component \"%1\" of Qt Quick UI: %2").arg(typeName, component.errorString()));
+        QMessageBox::critical(nullptr, QCoreApplication::applicationName(),
+            QStringLiteral("Unable to load component \"%1\" of Qt Quick UI: %2").arg(typeName, component.errorString()));
     }
     return object;
 #else
