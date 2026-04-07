@@ -322,7 +322,7 @@ add_custom_target(
     COMMENT "Building Syncthing executables for testing")
 
 # find c++utilities to use CMake modules and headers from it privately
-find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.0.0 REQUIRED)
+find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.34.0 REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${CPP_UTILITIES_MODULE_DIRS})
 if (CPP_UTILITIES_SOURCE_DIR)
     list(APPEND PRIVATE_INCLUDE_DIRS $<BUILD_INTERFACE:${CPP_UTILITIES_SOURCE_DIR}/..>
@@ -376,7 +376,14 @@ else ()
          $<INSTALL_INTERFACE:${LIB_INSTALL_DESTINATION}/${SYNCTHINGINTERNAL_LIBRARY_NAME}>)
 endif ()
 if (SYNCTHING_USE_SYSTEM_SQLITE)
-    use_package(TARGET_NAME SQLite3::SQLite3 PACKAGE_NAME SQLite3 PACKAGE_ARGS REQUIRED)
+    use_package(
+        TARGET_NAME
+        SQLite3::SQLite3
+        SQLite::SQLite3
+        PACKAGE_NAME
+        SQLite3
+        PACKAGE_ARGS
+        REQUIRED)
 endif ()
 
 # include modules to apply configuration
