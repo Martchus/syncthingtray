@@ -6,7 +6,6 @@
 #include <QJSValue>
 #include <QObject>
 #include <QPalette>
-#include <QtVersion>
 
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
 #include <QQmlApplicationEngine>

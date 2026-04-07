@@ -9,7 +9,7 @@
 #include <syncthingconnector/syncthingnotifier.h>
 
 #include <QObject>
-#include <QtVersion>
+#include <QtGlobal> // for "#include <QtVersion>" which is not yet present in Qt 5
 
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
 #include <QJSValue>

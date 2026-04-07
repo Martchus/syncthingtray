@@ -8,7 +8,6 @@
 
 #include <QJsonObject>
 #include <QUrl>
-#include <QtVersion>
 
 #ifdef Q_OS_ANDROID
 #include <QHash>
