@@ -21,7 +21,6 @@
 #include <QTabWidget>
 
 #include <optional>
-#include <tuple>
 #include <vector>
 
 namespace QtUtilities {

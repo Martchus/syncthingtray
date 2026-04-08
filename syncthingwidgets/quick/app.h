@@ -2,17 +2,13 @@
 #define SYNCTHING_TRAY_APP_H
 
 #include "./appbase.h"
-#include "./quickicon.h"
 #include "./quickui.h"
 
 #ifdef Q_OS_ANDROID
 #include "./android.h"
 #endif
 
-#include "../misc/diffhighlighter.h"
 #include "../misc/internalerror.h"
-#include "../misc/otherdialogs.h"
-#include "../misc/statusinfo.h"
 #include "../misc/syncthinglauncher.h"
 #include "../misc/syncthingmodels.h"
 

@@ -3,8 +3,6 @@
 
 #include "./settings.h"
 
-#include "../webview/webviewdefs.h"
-
 #if !QT_CONFIG(process)
 #include <syncthingconnector/syncthingprocess.h>
 #endif

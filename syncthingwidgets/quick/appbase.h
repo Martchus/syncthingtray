@@ -1,8 +1,7 @@
 #ifndef SYNCTHING_TRAY_APP_BASE_H
 #define SYNCTHING_TRAY_APP_BASE_H
 
-#include "../misc/statusinfo.h"
-#include "../misc/syncthingmodels.h"
+#include "../misc/syncthingdata.h"
 
 #include <syncthingconnector/syncthingconfig.h>
 #include <syncthingconnector/syncthingconnectionsettings.h>

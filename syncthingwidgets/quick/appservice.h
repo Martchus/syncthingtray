@@ -16,8 +16,8 @@
 
 #ifdef Q_OS_ANDROID
 #include <atomic>
-#endif
 #include <optional>
+#endif
 
 namespace QtGui {
 

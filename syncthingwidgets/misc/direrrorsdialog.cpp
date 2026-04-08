@@ -14,9 +14,6 @@
 #include <QTextBrowser>
 #include <QVBoxLayout>
 
-#include <algorithm>
-#include <iostream>
-#include <limits>
 #include <utility>
 
 using namespace std;
