@@ -3,7 +3,7 @@
 
 #include "./global.h"
 
-#include <syncthingconnector/syncthingprocess.h>
+#include "./syncthingprocess.h"
 
 #include <c++utilities/misc/flagenumclass.h>
 
