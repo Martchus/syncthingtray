@@ -5,6 +5,9 @@
 #include <qtutilities/misc/desktoputils.h>
 
 #include <QGuiApplication>
+#include <QQmlComponent>
+#include <QQuickItem>
+#include <QtLogging>
 
 #ifdef SYNCTHING_APP_DYNAMIC_STYLE
 #include <QQuickStyle>
@@ -12,11 +15,9 @@
 
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
 #include <QMessageBox>
-#include <QQmlComponent>
 #endif
 
 #ifdef Q_OS_ANDROID
-#include <QDebug>
 #include <QFontDatabase>
 #include <QJniEnvironment>
 #include <QJniObject>
@@ -362,59 +363,48 @@ bool QuickUI::showMainWindow()
 #endif
 }
 
-bool QuickUI::showPage(QAnyStringView uri, QAnyStringView typeName, const QVariantMap &initialProperties)
+bool QuickUI::showPage(QAnyStringView uri, QAnyStringView typeName, const QVariantMap &initialProperties, QQuickItem *stackView)
 {
-#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
-    auto *const page = loadComponent(uri, typeName, initialProperties);
+    auto *const page = qobject_cast<QQuickItem *>(loadComponent(uri, typeName, initialProperties));
     if (!page) {
         return false;
     }
-    auto *const pageWindow = loadComponent("Main", "PageWindow", { { QStringLiteral("page"), QVariant::fromValue(page) } });
-    if (!pageWindow) {
-        return false;
+    if (stackView) {
+        return QMetaObject::invokeMethod(
+            stackView, "pushItem", Qt::QueuedConnection, page, QVariantMap{ { QStringLiteral("stackView"), QVariant::fromValue(stackView) } });
     }
-    return true;
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
+    return loadComponent("Main", "PageWindow", { { QStringLiteral("page"), QVariant::fromValue(page) } }) != nullptr;
 #else
-    Q_UNUSED(uri)
-    Q_UNUSED(typeName)
-    Q_UNUSED(initialProperties)
     return false;
 #endif
 }
 
-bool QuickUI::showDir(const QString &dirId, const QString &dirName)
+bool QuickUI::editDir(const QString &dirId, const QString &dirName, QQuickItem *stackView)
 {
-#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
-    return isDesktop()
-        && showPage("Main", "DirConfigPage",
-            {
-                { QStringLiteral("dirId"), dirId },
-                { QStringLiteral("dirName"), dirName },
-            });
-#else
-    Q_UNUSED(dirId)
-    return false;
-#endif
+    return showPage("Main", "DirConfigPage", { { QStringLiteral("dirId"), dirId }, { QStringLiteral("dirName"), dirName } }, stackView);
+}
+
+bool QuickUI::editDev(const QString &devId, const QString &devName, QQuickItem *stackView)
+{
+    return showPage("Main", "DevConfigPage", { { QStringLiteral("devId"), devId }, { QStringLiteral("devName"), devName } }, stackView);
 }
 
 QObject *QuickUI::loadComponent(QAnyStringView uri, QAnyStringView typeName, const QVariantMap &initialProperties)
 {
-#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
     auto component = QQmlComponent(m_engine, uri, typeName, m_engine);
     auto *const object = component.createWithInitialProperties(initialProperties);
     if (object) {
         object->setParent(m_engine);
     } else {
-        QMessageBox::critical(nullptr, QCoreApplication::applicationName(),
-            QStringLiteral("Unable to load component \"%1\" of Qt Quick UI: %2").arg(typeName, component.errorString()));
+        const auto message = QStringLiteral("Unable to load component \"%1\" of Qt Quick UI: %2").arg(typeName, component.errorString());
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
+        QMessageBox::critical(nullptr, QCoreApplication::applicationName(), message);
+#else
+        qWarning() << message;
+#endif
     }
     return object;
-#else
-    Q_UNUSED(uri)
-    Q_UNUSED(typeName)
-    Q_UNUSED(initialProperties)
-    return nullptr;
-#endif
 }
 #endif
 

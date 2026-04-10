@@ -16,6 +16,7 @@
 
 QT_FORWARD_DECLARE_CLASS(QGuiApplication)
 QT_FORWARD_DECLARE_CLASS(QQmlEngine)
+QT_FORWARD_DECLARE_CLASS(QQuickItem)
 QT_FORWARD_DECLARE_CLASS(QJSEngine)
 
 namespace QtForkAwesome {
@@ -146,8 +147,10 @@ public:
         emit openingUrlRequested(url);
     }
     Q_INVOKABLE bool showMainWindow();
-    Q_INVOKABLE bool showPage(QAnyStringView uri, QAnyStringView typeName, const QVariantMap &initialProperties = QVariantMap());
-    Q_INVOKABLE bool showDir(const QString &dirId, const QString &dirName);
+    Q_INVOKABLE bool showPage(
+        QAnyStringView uri, QAnyStringView typeName, const QVariantMap &initialProperties = QVariantMap(), QQuickItem *stackView = nullptr);
+    Q_INVOKABLE bool editDir(const QString &dirId, const QString &dirName, QQuickItem *stackView = nullptr);
+    Q_INVOKABLE bool editDev(const QString &devId, const QString &devName, QQuickItem *stackView = nullptr);
     Q_INVOKABLE QObject *loadComponent(QAnyStringView uri, QAnyStringView typeName, const QVariantMap &initialProperties = QVariantMap());
 
 Q_SIGNALS:

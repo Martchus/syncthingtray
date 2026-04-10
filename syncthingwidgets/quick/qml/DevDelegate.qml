@@ -21,7 +21,7 @@ ExpandableDelegate {
             Action {
                 text: qsTr("Edit")
                 icon.source: QuickUI.faUrlBase + "pencil"
-                onTriggered: mainView.stackView.push("DevConfigPage.qml", {devName: modelData.name, devId: modelData.devId, stackView: mainView.stackView}, StackView.PushTransition)
+                onTriggered: QuickUI.editDev(modelData.devId, modelData.name, mainView.stackView)
             },
             Action {
                 text: qsTr("Out of Sync items")
