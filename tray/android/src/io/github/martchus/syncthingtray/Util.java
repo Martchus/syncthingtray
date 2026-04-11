@@ -1,6 +1,7 @@
 /*
- * This code is based on com.nutomic.syncthingandroid.util from
+ * This code is based on com.nutomic.syncthingandroid.util from:
  * https://github.com/Catfriend1/syncthing-android/blob/main/app/src/main/java/com/nutomic/syncthingandroid/util/FileUtils.java
+ * https://github.com/researchxxl/syncthing-android/blob/main/app/src/main/java/com/nutomic/syncthingandroid/util/FileUtils.java
  */
 
 package io.github.martchus.syncthingtray;
@@ -135,6 +136,56 @@ public class Util {
                 return gateway.getHostAddress();
             }
         }
+        return null;
+    }
+
+    /*
+     * Converts a raw file path into a Storage Access Framework Document ID,
+     * including support for removable SD cards and USB OTG drives.
+     */
+    public static String getDocumentIdFromPath(String fullPath) {
+        if (fullPath == null || fullPath.isEmpty()) {
+            return null;
+        }
+
+        // remove trailing slashes for consistent parsing
+        if (fullPath.endsWith("/") && fullPath.length() > 1) {
+            fullPath = fullPath.substring(0, fullPath.length() - 1);
+        }
+
+        final String INTERNAL_STORAGE_PATH = "/storage/emulated/0";
+        final String SDCARD_PATH = "/sdcard";
+        final String STORAGE_PREFIX = "/storage/";
+        final String PRIMARY_AUTHORITY_PREFIX = "primary:";
+
+        // handle internal storage
+        if (fullPath.equals(INTERNAL_STORAGE_PATH) || fullPath.equals(SDCARD_PATH)) {
+            return PRIMARY_AUTHORITY_PREFIX; // root of internal storage
+        } else if (fullPath.startsWith(INTERNAL_STORAGE_PATH + "/")) {
+            String relativePath = fullPath.substring(INTERNAL_STORAGE_PATH.length() + 1);
+            return PRIMARY_AUTHORITY_PREFIX + relativePath;
+        } else if (fullPath.startsWith(SDCARD_PATH + "/")) {
+            String relativePath = fullPath.substring(SDCARD_PATH.length() + 1);
+            return PRIMARY_AUTHORITY_PREFIX + relativePath;
+        }
+
+        // handle removable SD cards and USB drives
+        else if (fullPath.startsWith(STORAGE_PREFIX)) {
+            // path looks something like: /storage/1A2B-3C4D/books/sync
+            String withoutStorage = fullPath.substring(STORAGE_PREFIX.length()); // "1A2B-3C4D/books/sync"
+            int firstSlashIndex = withoutStorage.indexOf('/');
+            if (firstSlashIndex != -1) {
+                // extract the UUID and the relative path
+                String uuid = withoutStorage.substring(0, firstSlashIndex); // "1A2B-3C4D"
+                String relativePath = withoutStorage.substring(firstSlashIndex + 1); // "books/sync"
+                return uuid + ":" + relativePath;
+            } else {
+                // it is the absolute root of the SD card, e.g. /storage/1A2B-3C4D
+                return withoutStorage + ":";
+            }
+        }
+
+        // path does not match known external storage patterns
         return null;
     }
 

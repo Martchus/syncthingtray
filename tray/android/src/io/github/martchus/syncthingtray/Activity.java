@@ -254,13 +254,24 @@ public class Activity extends QtActivity {
         return true;
     }
 
+    private boolean tryStartActivity(Intent intent) {
+        try {
+            startActivity(intent);
+            return true;
+        } catch (ActivityNotFoundException e1) {
+            return false;
+        }
+    }
+
     public boolean openPath(String path) {
-        // use FileProvider to compute an URI, using Uri.fromFile would lead to FileUriExposedException
+        // use FileProvider to compute a URI, using Uri.fromFile would lead to FileUriExposedException
         File file = new File(path);
         Intent intent = new Intent(Intent.ACTION_VIEW);
-        Uri fileUri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".qtprovider", file);
+        String authority = getApplicationContext().getPackageName() + ".qtprovider";
+        Uri fileUri = FileProvider.getUriForFile(this, authority, file);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (file.isDirectory()) {
+        boolean isDirectory = file.isDirectory();
+        if (isDirectory) {
             String absolutePath = "";
             try {
                 absolutePath = file.getCanonicalPath();
@@ -273,12 +284,14 @@ public class Activity extends QtActivity {
         } else {
             intent.setDataAndType(fileUri, "application/*");
         }
-        try {
-            startActivity(intent);
-        } catch (ActivityNotFoundException e1) {
-            return false;
+        boolean success = tryStartActivity(intent);
+        if (!success && isDirectory) {
+            String documentId = Util.getDocumentIdFromPath(path);
+            Uri documentUri = DocumentsContract.buildDocumentUri(authority, documentId);
+            intent.setDataAndType(documentUri, DocumentsContract.Document.MIME_TYPE_DIR);
+            success = tryStartActivity(intent);
         }
-        return true;
+        return success;
     }
 
     public boolean scanPath(String path) {
