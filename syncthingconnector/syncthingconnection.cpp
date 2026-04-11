@@ -1518,7 +1518,7 @@ bool SyncthingConnection::SuspendedItems::restore(const QString &thisDeviceId)
         return false;
     }
     const auto jsonData = file.readAll();
-    if (!file.error() == QFile::NoError) {
+    if (file.error() != QFile::NoError) {
         return false;
     }
     const auto jsonDoc = QJsonDocument::fromJson(jsonData, &jsonParseError);
