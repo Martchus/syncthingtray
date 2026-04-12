@@ -283,6 +283,18 @@ TrayWidget::~TrayWidget()
     }
 }
 
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+TrayWidget *TrayWidget::create(QQmlEngine *qmlEngine, QJSEngine *engine)
+{
+    Q_UNUSED(qmlEngine)
+    if (s_instances.empty()) {
+        return nullptr;
+    }
+    engine->setObjectOwnership(s_instances.front(), QJSEngine::CppOwnership);
+    return s_instances.front();
+}
+#endif
+
 SettingsDialog *TrayWidget::settingsDialog()
 {
     if (!s_settingsDlg) {

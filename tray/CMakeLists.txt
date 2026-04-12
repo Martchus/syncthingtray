@@ -264,6 +264,25 @@ include(Doxygen)
 include(Sphinx)
 include(ConfigHeader)
 
+# configure Qt Quick GUI
+if (QUICK_GUI)
+    # add Qml module to expose tray classes like TrayWidget
+    qt_policy(SET QTP0004 NEW)
+    qt_add_qml_module(
+        ${META_TARGET_NAME}
+        URI
+        "Tray"
+        VERSION
+        1.0
+        RESOURCE_PREFIX
+        "/qt/qml/"
+        NO_PLUGIN)
+    set_property(
+        SOURCE "${CMAKE_CURRENT_BINARY_DIR}/${META_TARGET_NAME}_qmltyperegistrations.cpp"
+        APPEND
+        PROPERTY INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/gui")
+endif ()
+
 # create desktop file using previously defined meta data
 add_desktop_file()
 

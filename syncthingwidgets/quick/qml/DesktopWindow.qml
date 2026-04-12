@@ -3,6 +3,7 @@ import QtQuick.Layouts
 import QtQuick.Controls.Material
 
 import Main
+import Tray
 
 ApplicationWindow {
     id: appWindow
@@ -89,7 +90,7 @@ ApplicationWindow {
                 }
             }
             Menu {
-                title: qsTr("&Actions")
+                title: qsTr("&Config")
                 icon.source: QuickUI.faUrlBase + "cog"
                 icon.width: QuickUI.iconSize
                 icon.height: QuickUI.iconSize
@@ -97,10 +98,18 @@ ApplicationWindow {
                     text: qsTr("&Settings")
                 }
                 Action {
-                    text: qsTr("&Advanced")
+                    text: qsTr("&Advanced ettings")
                 }
-                MenuSeparator {
+                Action {
+                    text: qsTr("&Overall setup")
+                    onTriggered: TrayWidget.showSettingsDialog()
                 }
+            }
+            Menu {
+                title: qsTr("&Actions")
+                icon.source: QuickUI.faUrlBase + "cog"
+                icon.width: QuickUI.iconSize
+                icon.height: QuickUI.iconSize
                 Action {
                     text: qsTr("&Show ID")
                 }

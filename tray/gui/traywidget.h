@@ -32,6 +32,14 @@ namespace QtUtilities {
 class AboutDialog;
 }
 
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+#include <QJSValue>
+#include <QtQmlIntegration/qqmlintegration.h>
+
+QT_FORWARD_DECLARE_CLASS(QQmlEngine)
+QT_FORWARD_DECLARE_CLASS(QJSEngine)
+#endif
+
 namespace QtGui {
 
 #ifdef SYNCTHINGWIDGETS_NO_WEBVIEW
@@ -49,10 +57,17 @@ class TrayWidget;
 
 class TrayWidget : public QWidget {
     Q_OBJECT
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+    QML_ELEMENT
+    QML_SINGLETON
+#endif
 
 public:
-    explicit TrayWidget(TrayMenu *parent = nullptr);
+    explicit TrayWidget(TrayMenu *parent);
     ~TrayWidget() override;
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+    static TrayWidget *create(QQmlEngine *, QJSEngine *engine);
+#endif
 
     SyncthingData &data();
     QMenu *connectionsMenu();

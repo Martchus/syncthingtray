@@ -151,7 +151,7 @@ static int initSyncthingTray(bool windowed, bool waitForTray, const Argument &co
 
         // show a window for each connection
         for (const auto *const connectionConfig : connectionConfigurations) {
-            auto *const trayWidget = new TrayWidget();
+            auto *const trayWidget = new TrayWidget(nullptr);
             trayWidget->setAttribute(Qt::WA_DeleteOnClose);
             trayWidget->show();
             trayWidget->applySettings(QString::fromLocal8Bit(connectionConfig));
