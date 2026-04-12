@@ -27,12 +27,12 @@ ExpandableDelegate {
                 text: qsTr("Out of Sync items")
                 icon.source: QuickUI.faUrlBase + "exchange"
                 enabled: !modelData.paused && (modelData.neededItemsCount > 0)
-                onTriggered: mainView.stackView.push("OutOfSyncDirs.qml", {devLabel: modelData.name, devId: modelData.devId, dirIndex: modelData.index, devFilterModel: mainDelegateModel.model, stackView: mainView.stackView}, StackView.PushTransition)
+                onTriggered: QuickUI.showOutOfSyncDirs(modelData.devId, modelData.name, modelData.index, mainDelegateModel.model, mainView.stackView)
             },
             Action {
                 text: qsTr("Advanced config")
                 icon.source: QuickUI.faUrlBase + "cogs"
-                onTriggered: mainView.stackView.push("AdvancedDevConfigPage.qml", {devName: modelData.name, devId: modelData.devId, stackView: mainView.stackView}, StackView.PushTransition)
+                onTriggered: QuickUI.editDev(modelData.devId, modelData.name, mainView.stackView, true)
             }
         ]
     }

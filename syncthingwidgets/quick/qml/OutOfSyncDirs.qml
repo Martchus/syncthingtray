@@ -29,7 +29,7 @@ Page {
     required property string devLabel
     required property int dirIndex
     required property var devFilterModel
-    required property var stackView
+    property StackView stackView: StackView {}
     required property list<Action> actions
     function loadDirs() {
         outOfSyncDirsListView.model = SyncthingModels.computeDirsNeedingItems(devFilterModel.index(dirIndex, 0));

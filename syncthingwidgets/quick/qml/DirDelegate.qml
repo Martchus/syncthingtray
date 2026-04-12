@@ -37,7 +37,7 @@ ExpandableDelegate {
                 text: qsTr("Out of Sync items")
                 icon.source: QuickUI.faUrlBase + "exchange"
                 enabled: !modelData.paused && (modelData.neededItemsCount > 0)
-                onTriggered: mainView.stackView.push("NeededPage.qml", {dirLabel: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
+                onTriggered: QuickUI.showNeededItems(modelData.dirId, modelData.name, mainView.stackView)
             },
             Action {
                 text: modelData.overrideRevertActionLabel
@@ -49,23 +49,23 @@ ExpandableDelegate {
                 text: qsTr("Show errors")
                 enabled: modelData.pullErrorCount > 0
                 icon.source: QuickUI.faUrlBase + "exclamation-triangle"
-                onTriggered: mainView.stackView.push("DirErrorsPage.qml", {dirName: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
+                onTriggered: QuickUI.showDirErrors(modelData.dirId, modelData.name, mainView.stackView)
             },
             Action {
                 text: qsTr("Ignore patterns")
                 icon.source: QuickUI.faUrlBase + "filter"
-                onTriggered: mainView.stackView.push("IgnorePatternPage.qml", {dirName: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
+                onTriggered: QuickUI.editIgnorePatterns(modelData.dirId, modelData.name, mainView.stackView)
             },
             Action {
                 text: qsTr("Remote files")
                 icon.source: QuickUI.faUrlBase + "folder-open-o"
                 enabled: !modelData.paused
-                onTriggered: mainView.stackView.push("FilesPage.qml", {dirName: modelData.name, dirId: modelData.dirId}, StackView.PushTransition)
+                onTriggered: QuickUI.browseFiles(modelData.dirId, modelData.name, mainView.stackView)
             },
             Action {
                 text: qsTr("Advanced config")
                 icon.source: QuickUI.faUrlBase + "cogs"
-                onTriggered: mainView.stackView.push("AdvancedDirConfigPage.qml", {dirName: modelData.name, dirId: modelData.dirId, stackView: mainView.stackView}, StackView.PushTransition)
+                onTriggered: QuickUI.editDir(modelData.dirId, modelData.name, mainView.stackView, true)
             },
             Action {
                 text: qsTr("Media rescan")

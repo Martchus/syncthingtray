@@ -380,14 +380,41 @@ bool QuickUI::showPage(QAnyStringView uri, QAnyStringView typeName, const QVaria
 #endif
 }
 
-bool QuickUI::editDir(const QString &dirId, const QString &dirName, QQuickItem *stackView)
+bool QuickUI::editDir(const QString &dirId, const QString &dirName, QQuickItem *stackView, bool advanced)
 {
-    return showPage("Main", "DirConfigPage", { { QStringLiteral("dirId"), dirId }, { QStringLiteral("dirName"), dirName } }, stackView);
+    const auto component = QAnyStringView(advanced ? "AdvancedDirConfigPage" : "DirConfigPage");
+    return showPage("Main", component, { { QStringLiteral("dirId"), dirId }, { QStringLiteral("dirName"), dirName } }, stackView);
 }
 
-bool QuickUI::editDev(const QString &devId, const QString &devName, QQuickItem *stackView)
+bool QuickUI::editDev(const QString &devId, const QString &devName, QQuickItem *stackView, bool advanced)
 {
-    return showPage("Main", "DevConfigPage", { { QStringLiteral("devId"), devId }, { QStringLiteral("devName"), devName } }, stackView);
+    const auto component = QAnyStringView(advanced ? "AdvancedDevConfigPage" : "DevConfigPage");
+    return showPage("Main", component, { { QStringLiteral("devId"), devId }, { QStringLiteral("devName"), devName } }, stackView);
+}
+
+bool QuickUI::showNeededItems(const QString &dirId, const QString &dirLabel, QQuickItem *stackView)
+{
+    return showPage("Main", "NeededPage", { { QStringLiteral("dirId"), dirId }, { QStringLiteral("dirLabel"), dirLabel } }, stackView);
+}
+
+bool QuickUI::showOutOfSyncDirs(const QString &devId, const QString &devLabel, int dirIndex, QObject *devFilterModel, QQuickItem *stackView)
+{
+    return showPage("Main", "OutOfSyncDirs", { { QStringLiteral("devId"), devId }, { QStringLiteral("devLabel"), devLabel }, { QStringLiteral("dirIndex"), dirIndex }, { QStringLiteral("devFilterModel"), QVariant::fromValue(devFilterModel) } }, stackView);
+}
+
+bool QuickUI::showDirErrors(const QString &dirId, const QString &dirName, QQuickItem *stackView)
+{
+    return showPage("Main", "DirErrorsPage", { { QStringLiteral("dirId"), dirId }, { QStringLiteral("dirName"), dirName } }, stackView);
+}
+
+bool QuickUI::editIgnorePatterns(const QString &dirId, const QString &dirName, QQuickItem *stackView)
+{
+    return showPage("Main", "IgnorePatternPage", { { QStringLiteral("dirId"), dirId }, { QStringLiteral("dirName"), dirName } }, stackView);
+}
+
+bool QuickUI::browseFiles(const QString &dirId, const QString &dirName, QQuickItem *stackView)
+{
+    return showPage("Main", "FilesPage", { { QStringLiteral("dirId"), dirId }, { QStringLiteral("dirName"), dirName } }, stackView);
 }
 
 QObject *QuickUI::loadComponent(QAnyStringView uri, QAnyStringView typeName, const QVariantMap &initialProperties)
