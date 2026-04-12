@@ -50,43 +50,40 @@ ApplicationWindow {
                 icon.width: QuickUI.iconSize
                 icon.height: QuickUI.iconSize
                 Action {
-                    text: qsTr("&Introduction")
-                    icon.source: QuickUI.faUrlBase + "info-circle"
-                    icon.width: QuickUI.iconSize
-                    icon.height: QuickUI.iconSize
-                }
-                MenuSeparator {
-                }
-                Action {
                     text: qsTr("&Home page")
-                    icon.source: QuickUI.faUrlBase + "home"
-                    icon.width: QuickUI.iconSize
-                    icon.height: QuickUI.iconSize
+                    onTriggered: SyncthingModels.openUrlExternally("https://syncthing.net")
                 }
                 Action {
                     text: qsTr("&Documentation")
+                    onTriggered: SyncthingModels.openUrlExternally("https://docs.syncthing.net")
                 }
                 Action {
                     text: qsTr("&Support")
+                    onTriggered: SyncthingModels.openUrlExternally("https://forum.syncthing.net")
                 }
                 MenuSeparator {
                 }
                 Action {
                     text: qsTr("&Changelog")
+                    onTriggered: SyncthingModels.openUrlExternally("https://github.com/syncthing/syncthing/releases")
                 }
                 Action {
                     text: qsTr("&Statistics")
+                    onTriggered: SyncthingModels.openUrlExternally("https://data.syncthing.net")
                 }
                 MenuSeparator {
                 }
                 Action {
                     text: qsTr("&Bugs")
+                    onTriggered: SyncthingModels.openUrlExternally("https://github.com/syncthing/syncthing/issues")
                 }
                 Action {
-                    text: qsTr("&Changelog")
+                    text: qsTr("&Source Code")
+                    onTriggered: SyncthingModels.openUrlExternally("https://github.com/syncthing/syncthing")
                 }
                 Action {
                     text: qsTr("&About")
+                    onTriggered: TrayWidget.showAboutDialog()
                 }
             }
             Menu {
@@ -96,12 +93,10 @@ ApplicationWindow {
                 icon.height: QuickUI.iconSize
                 Action {
                     text: qsTr("&Settings")
+                    onTriggered: QuickUI.showSettings()
                 }
                 Action {
-                    text: qsTr("&Advanced ettings")
-                }
-                Action {
-                    text: qsTr("&Overall setup")
+                    text: qsTr("&Setup")
                     onTriggered: TrayWidget.showSettingsDialog()
                 }
             }
@@ -112,20 +107,25 @@ ApplicationWindow {
                 icon.height: QuickUI.iconSize
                 Action {
                     text: qsTr("&Show ID")
+                    onTriggered: TrayWidget.showOwnDeviceId()
                 }
                 Action {
                     text: qsTr("&Logs")
+                    onTriggered: TrayWidget.showLog()
                 }
                 Action {
                     text: qsTr("&Support Bundle")
+                    enabled: false
                 }
                 MenuSeparator {
                 }
                 Action {
                     text: qsTr("&Restart")
+                    onTriggered: SyncthingData.connection.restart()
                 }
                 Action {
                     text: qsTr("&Shutdown")
+                    onTriggered: SyncthingData.connection.shutdown()
                 }
             }
         }

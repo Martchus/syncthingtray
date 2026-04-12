@@ -415,6 +415,11 @@ bool QuickUI::editIgnorePatterns(const QString &dirId, const QString &dirName, Q
     return showPage("Main", "IgnorePatternPage", { { QStringLiteral("dirId"), dirId }, { QStringLiteral("dirName"), dirName } }, stackView);
 }
 
+bool QuickUI::showSettings(QQuickItem *stackView)
+{
+    return showPage("Main", "AdvancedMainPage", { { QStringLiteral("mainTitle"), tr("Settings") } }, stackView);
+}
+
 bool QuickUI::browseFiles(const QString &dirId, const QString &dirName, QQuickItem *stackView)
 {
     return showPage("Main", "FilesPage", { { QStringLiteral("dirId"), dirId }, { QStringLiteral("dirName"), dirName } }, stackView);

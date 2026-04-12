@@ -92,6 +92,7 @@ set(QML_MAIN_FILES
     quick/qml/AdvancedDevConfigPage.qml
     quick/qml/AdvancedDirConfigPage.qml
     quick/qml/AdvancedPage.qml
+    quick/qml/AdvancedMainPage.qml
     quick/qml/ArrayElementButtons.qml
     quick/qml/AppWindow.qml
     quick/qml/ChangesPage.qml

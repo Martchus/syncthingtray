@@ -23,7 +23,7 @@ ApplicationWindow {
         }
         CustomToolButton {
             id: extraActionsMenuButton
-            visible: currentPage.extraActions.length > 0
+            visible: currentPage.extraActions?.length > 0
             icon.source: QuickUI.faUrlBase + "ellipsis-v"
             text: qsTr("More")
             onClicked: currentPage?.showExtraActions() ?? extraActionsMenu.showCenteredIn(extraActionsMenuButton)
