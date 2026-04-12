@@ -3,7 +3,7 @@ import QtQuick
 import Main
 
 QtObject {
-    readonly property Connections appConnections: Connections {
+    property Connections appConnections: Connections {
         target: App
         function onError(message) {
             showNotifiction(message);
@@ -28,7 +28,7 @@ QtObject {
             pageStack.addDir(dirId, dirLabel, [devId]);
         }
     }
-    readonly property Connections uiConnections: Connections {
+    property Connections uiConnections: Connections {
         target: QuickUI
         function onError(message) {
             showNotifiction(message);
@@ -37,13 +37,13 @@ QtObject {
             openingUrlRequested(url);
         }
     }
-    readonly property Connections connectionConnections: Connections {
+    property Connections connectionConnections: Connections {
         target: SyncthingData.connection
         function onNewConfigTriggered() {
             showNotifiction(qsTr("Configuration changed"));
         }
     }
-    readonly property Connections notifierConnections: Connections {
+    property Connections notifierConnections: Connections {
         target: SyncthingData.notifier
         function onDisconnected() {
             showNotifiction(qsTr("UI disconnected from Syncthing backend"));

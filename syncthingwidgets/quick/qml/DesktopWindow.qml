@@ -189,4 +189,12 @@ ApplicationWindow {
     }
     readonly property Meta meta: Meta {
     }
+    readonly property Notifications notifications: Notifications {
+        pageStack: null
+        appConnections: Connections {}
+        uiConnections: Connections {}
+        connectionConnections: Connections {}
+        notifierConnections: Connections {}
+        onOpeningUrlRequested: SyncthingModels.openUrlExternally(url)
+    }
 }
