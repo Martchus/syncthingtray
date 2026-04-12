@@ -399,7 +399,10 @@ bool QuickUI::showNeededItems(const QString &dirId, const QString &dirLabel, QQu
 
 bool QuickUI::showOutOfSyncDirs(const QString &devId, const QString &devLabel, int dirIndex, QObject *devFilterModel, QQuickItem *stackView)
 {
-    return showPage("Main", "OutOfSyncDirs", { { QStringLiteral("devId"), devId }, { QStringLiteral("devLabel"), devLabel }, { QStringLiteral("dirIndex"), dirIndex }, { QStringLiteral("devFilterModel"), QVariant::fromValue(devFilterModel) } }, stackView);
+    return showPage("Main", "OutOfSyncDirs",
+        { { QStringLiteral("devId"), devId }, { QStringLiteral("devLabel"), devLabel }, { QStringLiteral("dirIndex"), dirIndex },
+            { QStringLiteral("devFilterModel"), QVariant::fromValue(devFilterModel) } },
+        stackView);
 }
 
 bool QuickUI::showDirErrors(const QString &dirId, const QString &dirName, QQuickItem *stackView)
