@@ -493,8 +493,8 @@ void TrayWidget::showQtQuickGui()
         dataObjectToProperty(engine, &m_data);
         dataObjectToProperty(engine, &m_models);
         dataObjectToProperty(engine, &quickUI.ui);
-        quickUI.ui.showMainWindow();
     }
+    m_quickUI->ui.showMainWindow();
 }
 #endif
 

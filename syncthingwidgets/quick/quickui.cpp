@@ -15,6 +15,7 @@
 
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
 #include <QMessageBox>
+#include <QQuickWindow>
 #endif
 
 #ifdef Q_OS_ANDROID
@@ -72,6 +73,9 @@ QuickUI::QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQml
     : QObject(parent)
     , m_app(app)
     , m_engine(engine)
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
+    , m_mainWindow(nullptr)
+#endif
     , m_qtSettings(qtSettings)
     , m_faUrlBase(QStringLiteral("image://fa/"))
     , m_mode(mode)
@@ -357,7 +361,15 @@ bool QuickUI::showToast(const QString &message)
 bool QuickUI::showMainWindow()
 {
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
-    return loadComponent("Main", "DesktopWindow") != nullptr;
+    if (m_mainWindow) {
+        m_mainWindow->show();
+        return true;
+    } else if ((m_mainWindow = qobject_cast<QQuickWindow *>(loadComponent("Main", "DesktopWindow")))) {
+        static_cast<QObject *>(m_mainWindow)->setParent(m_engine);
+        return true;
+    } else {
+        return false;
+    }
 #else
     return false;
 #endif
@@ -365,16 +377,26 @@ bool QuickUI::showMainWindow()
 
 bool QuickUI::showPage(QAnyStringView uri, QAnyStringView typeName, const QVariantMap &initialProperties, QQuickItem *stackView)
 {
+    if (stackView) {
+        // create a component and pass that to "pushItem" so the StackView will create an item itself and take ownership
+        auto pageComponent = QQmlComponent(m_engine, uri, typeName, m_engine);
+        auto properties = initialProperties;
+        properties.insert(QStringLiteral("stackView"), QVariant::fromValue(stackView));
+        return QMetaObject::invokeMethod(stackView, "pushItem", Qt::DirectConnection, &pageComponent, properties);
+    }
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
     auto *const page = qobject_cast<QQuickItem *>(loadComponent(uri, typeName, initialProperties));
     if (!page) {
         return false;
     }
-    if (stackView) {
-        return QMetaObject::invokeMethod(
-            stackView, "pushItem", Qt::DirectConnection, page, QVariantMap{ { QStringLiteral("stackView"), QVariant::fromValue(stackView) } });
+    auto *const pageWindow = qobject_cast<QQuickWindow *>(loadComponent("Main", "PageWindow", { { QStringLiteral("page"), QVariant::fromValue(page) } }));
+    if (!pageWindow) {
+        return false;
     }
-#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
-    return loadComponent("Main", "PageWindow", { { QStringLiteral("page"), QVariant::fromValue(page) } }) != nullptr;
+    static_cast<QObject *>(pageWindow)->setParent(m_engine);
+    static_cast<QObject *>(page)->setParent(pageWindow);
+    connect(pageWindow, &QQuickWindow::closing, pageWindow, &QObject::deleteLater);
+    return true;
 #else
     return false;
 #endif
@@ -430,7 +452,8 @@ QObject *QuickUI::loadComponent(QAnyStringView uri, QAnyStringView typeName, con
     auto component = QQmlComponent(m_engine, uri, typeName, m_engine);
     auto *const object = component.createWithInitialProperties(initialProperties);
     if (object) {
-        object->setParent(m_engine);
+        // ensure the JavaScript engine deletes the object if we don't assign a parent in C++
+        m_engine->setObjectOwnership(object, QJSEngine::JavaScriptOwnership);
     } else {
         const auto message = QStringLiteral("Unable to load component \"%1\" of Qt Quick UI: %2").arg(typeName, component.errorString());
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP

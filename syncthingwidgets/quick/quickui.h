@@ -17,6 +17,7 @@
 QT_FORWARD_DECLARE_CLASS(QGuiApplication)
 QT_FORWARD_DECLARE_CLASS(QQmlEngine)
 QT_FORWARD_DECLARE_CLASS(QQuickItem)
+QT_FORWARD_DECLARE_CLASS(QQuickWindow)
 QT_FORWARD_DECLARE_CLASS(QJSEngine)
 
 namespace QtForkAwesome {
@@ -168,6 +169,9 @@ Q_SIGNALS:
 private:
     QGuiApplication *m_app;
     QQmlEngine *m_engine;
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
+    QQuickWindow *m_mainWindow;
+#endif
     QtUtilities::QtSettings &m_qtSettings;
     QString m_faUrlBase;
     QString m_mode;
