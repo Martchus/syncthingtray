@@ -370,6 +370,12 @@ bool QuickUI::showPage(QAnyStringView uri, QAnyStringView typeName, const QVaria
         return false;
     }
     if (stackView) {
+        //QTimer::singleShot(3000, this, [stackView, page] {
+        //    QMetaObject::invokeMethod(stackView, "pushItem", Qt::QueuedConnection, page, QVariantMap{ { QStringLiteral("stackView"), QVariant::fromValue(stackView) } });
+        //});
+        //return true;
+        //return QMetaObject::invokeMethod(
+        //    stackView, "pushItem", Qt::QueuedConnection, page, QVariantMap{ { QStringLiteral("stackView"), QVariant::fromValue(stackView) } });
         return QMetaObject::invokeMethod(
             stackView, "pushItem", Qt::DirectConnection, page, QVariantMap{ { QStringLiteral("stackView"), QVariant::fromValue(stackView) } });
     }
