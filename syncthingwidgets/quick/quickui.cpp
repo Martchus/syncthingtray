@@ -371,7 +371,7 @@ bool QuickUI::showPage(QAnyStringView uri, QAnyStringView typeName, const QVaria
     }
     if (stackView) {
         return QMetaObject::invokeMethod(
-            stackView, "pushItem", Qt::QueuedConnection, page, QVariantMap{ { QStringLiteral("stackView"), QVariant::fromValue(stackView) } });
+            stackView, "pushItem", Qt::DirectConnection, page, QVariantMap{ { QStringLiteral("stackView"), QVariant::fromValue(stackView) } });
     }
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
     return loadComponent("Main", "PageWindow", { { QStringLiteral("page"), QVariant::fromValue(page) } }) != nullptr;
