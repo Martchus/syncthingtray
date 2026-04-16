@@ -20,14 +20,20 @@ For me, it works well enough on a three-year-old average Samsung device. I also 
 tested it on an older Nokia device with Android 10. So, it probably works on most phones that
 came out around 2018 or more recently. I haven't tested the app on very low-end devices yet.
 
-The installation might not be possible on your device
-[due to restrictions](https://developer.android.com/developer-verification). Check out the
-explanation on [Keep Android Open](https://keepandroidopen.org) for details. It is most likely
-still possible to install the app via `adb install …`. This tool is available in the
-[Android SDK Platform Tools](https://developer.android.com/tools/releases/platform-tools).
-One might try [anyapk](https://github.com/sam1am/anyapk) to make this easier. I haven't tested
-anyapk myself yet, though. Their README also contains instructions for installation via
-`adb install …`.
+The installation might be prevented by default on your device
+[due to restrictions](https://developer.android.com/developer-verification). Installation is
+most likely still possible by following one of these approaches:
+
+* Follow the "advanced workflow" described in a
+  [Google blog post](https://android-developers.googleblog.com/2026/03/android-developer-verification.html).
+* Install the app via `adb install …`. This tool is available in the
+  [Android SDK Platform Tools](https://developer.android.com/tools/releases/platform-tools).
+  One might try [anyapk](https://github.com/sam1am/anyapk) to make this easier. I haven't tested
+  anyapk myself yet, though. Their README also contains generally useful instructions for
+  installation via `adb install …`.
+
+Check out [Keep Android Open](https://keepandroidopen.org) for a critical view on these
+restrictions and further explanations.
 
 ## Getting started
 The first things to do after installing and starting the app:
