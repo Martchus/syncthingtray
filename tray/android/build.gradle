@@ -14,6 +14,11 @@ repositories {
     mavenCentral()
 }
 
+def cmakeConfig = file('../cmake_config.gradle')
+if (cmakeConfig.exists()) {
+    apply from: cmakeConfig
+}
+
 apply plugin: qtGradlePluginType
 
 dependencies {
@@ -73,6 +78,13 @@ android {
     // Do not compress Qt binary resources file
     aaptOptions {
         noCompress 'rcc'
+    }
+
+    packagingOptions {
+        if (project.hasProperty('cmakeDoNotStrip') && project.cmakeDoNotStrip == true) {
+            println "not stipping symbols of libsyncthing*.so libraries as perl "
+            doNotStrip "**/libsyncthing*.so"
+        }
     }
 
     defaultConfig {
