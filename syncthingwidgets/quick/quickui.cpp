@@ -389,7 +389,8 @@ bool QuickUI::showPage(QAnyStringView uri, QAnyStringView typeName, const QVaria
     if (!page) {
         return false;
     }
-    auto *const pageWindow = qobject_cast<QQuickWindow *>(loadComponent("Main", "PageWindow", { { QStringLiteral("page"), QVariant::fromValue(page) } }));
+    auto *const pageWindow
+        = qobject_cast<QQuickWindow *>(loadComponent("Main", "PageWindow", { { QStringLiteral("page"), QVariant::fromValue(page) } }));
     if (!pageWindow) {
         return false;
     }
