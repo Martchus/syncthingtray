@@ -281,6 +281,14 @@ if (QUICK_GUI)
         SOURCE "${CMAKE_CURRENT_BINARY_DIR}/${META_TARGET_NAME}_qmltyperegistrations.cpp"
         APPEND
         PROPERTY INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}/gui")
+
+    # configure whether a dynamic style is used
+    if (QUICK_GUI_CONTROLS_STYLE STREQUAL dynamic)
+        set_property(
+            SOURCE application/main.cpp
+            APPEND
+            PROPERTY COMPILE_DEFINITIONS SYNCTHING_APP_DYNAMIC_STYLE)
+    endif ()
 endif ()
 
 # create desktop file using previously defined meta data

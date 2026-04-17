@@ -1,3 +1,7 @@
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP) && defined(SYNCTHING_APP_DYNAMIC_STYLE)
+#define QT_UTILITIES_GUI_QTQUICK
+#endif
+
 #ifdef GUI_QTWIDGETS
 #include "./singleinstance.h"
 
@@ -470,6 +474,9 @@ static int runApplication(int argc, const char *const *argv)
         settings.qt.disableNotices();
         settings.qt.apply();
         qtConfigArgs.applySettings(true);
+#ifdef QT_UTILITIES_GUI_QTQUICK
+        qtConfigArgs.applySettingsForQuickGui();
+#endif
         if (assumeFirstLaunchArg.isPresent()) {
             settings.fakeFirstLaunch = true;
         }
