@@ -69,169 +69,169 @@
         <translation>无法请求 Syncthing 配置： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1010"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1012"/>
         <source>Unable to parse Syncthing status: </source>
         <translation>无法解析 Syncthing 状态： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1029"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1031"/>
         <source>Unable to request Syncthing status: </source>
         <translation>无法请求 Syncthing 状态： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1077"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1079"/>
         <source>Unable to parse connections: </source>
         <translation>无法解析连接： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1164"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1166"/>
         <source>Unable to request connections: </source>
         <translation>无法请求连接： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1203"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1205"/>
         <source>Unable to parse errors: </source>
         <translation>无法解析错误： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1243"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1245"/>
         <source>Unable to request errors: </source>
         <translation>无法请求错误： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1275"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1277"/>
         <source>Unable to parse folder statistics: </source>
         <translation>无法解析目录统计信息： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1326"/>
-        <location filename="../syncthingconnection_requests.cpp" line="1388"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1328"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1390"/>
         <source>Unable to request folder statistics: </source>
         <translation>无法请求目录统计信息： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1369"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1371"/>
         <source>Unable to parse status for folder %1: </source>
         <translation>无法解析目录 %1 的状态： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1436"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1438"/>
         <source>Unable to parse pull errors for folder %1: </source>
         <translation>无法解析目录 %1 的拉取错误： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1450"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1452"/>
         <source>Unable to request pull errors for folder %1: </source>
         <translation>无法请求目录 %1 的拉取错误： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1516"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1518"/>
         <source>Unable to parse completion for device/folder %1/%2: </source>
         <translation>无法解析设备/目录 %1/%2 的完成情况： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1532"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1534"/>
         <source>Unable to request completion for device/folder %1/%2: </source>
         <translation>无法请求设备/目录 %1/%2 的完成情况： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1564"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1566"/>
         <source>Unable to parse device statistics: </source>
         <translation>无法解析设备统计数据： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1591"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1593"/>
         <source>Unable to request device statistics: </source>
         <translation>无法请求设备统计数据： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1619"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1621"/>
         <source>Unable to parse version: </source>
         <translation>无法解析版本： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1633"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1635"/>
         <source>Unable to request version: </source>
         <translation>无法请求版本： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1668"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1670"/>
         <source>Unable to request QR-Code: </source>
         <translation>无法请求二维码： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1701"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1703"/>
         <source>Unable to parse Syncthing log: </source>
         <translation>无法解析 Syncthing 日志： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1718"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1720"/>
         <source>Unable to request Syncthing log: </source>
         <translation>无法请求 Syncthing 日志： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1751"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1753"/>
         <source>Unable to request directory override: </source>
         <translation>无法从目录覆盖：</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1792"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1794"/>
         <source>Unable to request directory revert: </source>
         <translation>无法从目录恢复：</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1979"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1981"/>
         <source>Unable to parse JSON response: </source>
         <translation>无法解析 JSON 响应：</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1992"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1994"/>
         <source>Unable to request: </source>
         <translation>无法请求：</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2017"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2019"/>
         <source>Unable to parse response for browsing &quot;%1&quot;: </source>
         <translation>无法解析浏览“%1”的响应：</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2031"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2033"/>
         <source>Unable to browse &quot;%1&quot;: </source>
         <translation>无法浏览&quot;%1&quot;：</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2055"/>
-        <location filename="../syncthingconnection_requests.cpp" line="2079"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2057"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2081"/>
         <source>Unable to query ignore patterns of &quot;%1&quot;: </source>
         <translation>无法查询&quot;%1 &quot;的忽略模式：</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2105"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2107"/>
         <source>Unable to change ignore patterns of &quot;%1&quot;: </source>
         <translation>无法更改&quot;%1 &quot;的忽略模式：</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2166"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2168"/>
         <source>Unable to post config: </source>
         <translation>无法发布日志： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2384"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2386"/>
         <source>Unable to parse Syncthing events: </source>
         <translation>无法解析 Syncthing 事件： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2432"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2434"/>
         <source>Unable to request Syncthing events: </source>
         <translation>无法请求 Syncthing 事件： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="3032"/>
+        <location filename="../syncthingconnection_requests.cpp" line="3034"/>
         <source>Unable to parse disk events: </source>
         <translation>无法解析磁盘事件： </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="3057"/>
+        <location filename="../syncthingconnection_requests.cpp" line="3059"/>
         <source>Unable to request disk events: </source>
         <translation>无法请求磁盘事件： </translation>
     </message>
