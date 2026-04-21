@@ -78,17 +78,17 @@
         <translation>Fehler beim Anfordern Gerät zu Pausieren/Fortzusetzen</translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1670"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1671"/>
         <source>Unable to request QR-Code: </source>
         <translation>Fehler beim Abfragen des QR-Codes: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1703"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1704"/>
         <source>Unable to parse Syncthing log: </source>
         <translation>Fehler beim Auslesen des Syncthing-Logs: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1720"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1721"/>
         <source>Unable to request Syncthing log: </source>
         <translation>Fehler beim Abfragen des Syncthing-Logs: </translation>
     </message>
@@ -113,53 +113,53 @@
         <translation>Fehler beim Abfragen der Syncthing-Konfiguration: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1012"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1013"/>
         <source>Unable to parse Syncthing status: </source>
         <translation>Fehler beim Auslesen des Syncthing-Status: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1031"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1032"/>
         <source>Unable to request Syncthing status: </source>
         <translation>Fehler beim Abfragen des Syncthing-Status: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1079"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1080"/>
         <source>Unable to parse connections: </source>
         <translation>Fehler beim Auslesen der Verbindungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1166"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1167"/>
         <source>Unable to request connections: </source>
         <translation>Fehler beim Abfragen der Verbindungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1277"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1278"/>
         <source>Unable to parse folder statistics: </source>
         <translation>Fehler beim Auslesen der Ordnerstatistiken: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1328"/>
-        <location filename="../syncthingconnection_requests.cpp" line="1390"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1329"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1391"/>
         <source>Unable to request folder statistics: </source>
         <translation>Fehler beim Abfragen der Ordnerstatistiken: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1566"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1567"/>
         <source>Unable to parse device statistics: </source>
         <translation>Fehler beim Auslesen der Gerätestatistiken: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1593"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1594"/>
         <source>Unable to request device statistics: </source>
         <translation>Fehler beim Abfragen der Gerätestatistiken: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1205"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1206"/>
         <source>Unable to parse errors: </source>
         <translation>Fehler beim Auslesen der Syncthing-Fehlermeldungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1245"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1246"/>
         <source>Unable to request errors: </source>
         <translation>Fehler beim Abfragen der Syncthing-Fehlermeldungen: </translation>
     </message>
@@ -169,17 +169,17 @@
         <translation>Fehler beim Löschen der Fehlermeldungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2386"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2387"/>
         <source>Unable to parse Syncthing events: </source>
         <translation>Fehler beim Auslesen der Syncthing-Ereignisse: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2434"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2435"/>
         <source>Unable to request Syncthing events: </source>
         <translation>Fehler beim Abfragen der Syncthing-Ereignisse: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2168"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2169"/>
         <source>Unable to post config: </source>
         <translation>Fehler beim Senden der neuen Konfiguration: </translation>
     </message>
@@ -219,88 +219,88 @@
         <translation>Fehler beim Fortsetzen von Syncthing: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1371"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1372"/>
         <source>Unable to parse status for folder %1: </source>
         <translation>Fehler beim Auslesen des Status von Ordner %1: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1438"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1439"/>
         <source>Unable to parse pull errors for folder %1: </source>
         <translation>Fehler beim Auslesen der Fehler von Ordner %1: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1452"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1453"/>
         <source>Unable to request pull errors for folder %1: </source>
         <translation>Fehler beim Anfordern der Fehler von Ordner %1: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1518"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1519"/>
         <source>Unable to parse completion for device/folder %1/%2: </source>
         <translation>Fehler beim Auslesen des Fortschrittes von Ordner %1/%2: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1534"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1535"/>
         <source>Unable to request completion for device/folder %1/%2: </source>
         <translation>Fehler beim Anfordern des Fortschrittes von Ordner %1/%2: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1621"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1622"/>
         <source>Unable to parse version: </source>
         <translation>Fehler beim Auslesen der Syncthing-Version: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1635"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1636"/>
         <source>Unable to request version: </source>
         <translation>Fehler beim Anfordern der Syncthing-Version: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1753"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1754"/>
         <source>Unable to request directory override: </source>
         <translation>Fehler Überschreiben: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1794"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1795"/>
         <source>Unable to request directory revert: </source>
         <translation>Fehler beim Zurücksetzen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1981"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1982"/>
         <source>Unable to parse JSON response: </source>
         <translation>Fehler beim Lesen der JSON-Antwort: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="1994"/>
+        <location filename="../syncthingconnection_requests.cpp" line="1995"/>
         <source>Unable to request: </source>
         <translation>Fehler bei API-Abfrage: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2019"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2020"/>
         <source>Unable to parse response for browsing &quot;%1&quot;: </source>
         <translation>Fehler beim Auslesen der Inhalte des Ordners &quot;%1&quot;: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2033"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2034"/>
         <source>Unable to browse &quot;%1&quot;: </source>
         <translation>Fehler beim Durchsuchen des Ordners &quot;%1&quot;: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2057"/>
-        <location filename="../syncthingconnection_requests.cpp" line="2081"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2058"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2082"/>
         <source>Unable to query ignore patterns of &quot;%1&quot;: </source>
         <translation>Fehler beim Abrufen des Ignoriermusters von &quot;%1&quot;: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="2107"/>
+        <location filename="../syncthingconnection_requests.cpp" line="2108"/>
         <source>Unable to change ignore patterns of &quot;%1&quot;: </source>
         <translation>Fehler beim Ändern des Ignoriermusters von &quot;%1&quot;: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="3034"/>
+        <location filename="../syncthingconnection_requests.cpp" line="3035"/>
         <source>Unable to parse disk events: </source>
         <translation>Fehler beim Auslesen der letzten Änderungen: </translation>
     </message>
     <message>
-        <location filename="../syncthingconnection_requests.cpp" line="3059"/>
+        <location filename="../syncthingconnection_requests.cpp" line="3060"/>
         <source>Unable to request disk events: </source>
         <translation>Fehler beim Anfordern der letzten Änderungen: </translation>
     </message>
