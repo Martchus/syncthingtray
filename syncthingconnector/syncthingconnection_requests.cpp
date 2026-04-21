@@ -967,7 +967,10 @@ void SyncthingConnection::readDevs(const QJsonArray &devs)
         devItem->certName = devObj.value(QLatin1String("certName")).toString();
         devItem->introducer = devObj.value(QLatin1String("introducer")).toBool(false);
         if (!isThisDevice) {
-            devItem->status = SyncthingDevStatus::Unknown;
+            // reset the status only when reading the config initially; otherwise config updates don't invalidate the status
+            if (!m_hasEvents) {
+                devItem->status = SyncthingDevStatus::Unknown;
+            }
             devItem->paused = devObj.value(QLatin1String("paused")).toBool(devItem->paused);
         }
     }
