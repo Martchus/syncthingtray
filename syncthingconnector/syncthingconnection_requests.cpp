@@ -2715,6 +2715,7 @@ void SyncthingConnection::readDeviceEvent(SyncthingEventId eventId, DateTime eve
     auto disconnectReason = devInfo->disconnectReason;
     if (eventType == QLatin1String("DeviceConnected")) {
         status = devInfo->computeConnectedStateAccordingToCompletion();
+        m_statusRecomputationFlags += StatusRecomputation::RequestConnections;
         disconnectReason.clear();
     } else if (eventType == QLatin1String("DeviceDisconnected")) {
         status = SyncthingDevStatus::Disconnected;

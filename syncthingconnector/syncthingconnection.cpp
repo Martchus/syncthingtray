@@ -741,6 +741,10 @@ void SyncthingConnection::concludeConnection(StatusRecomputation flags)
     if (m_statusRecomputationFlags && StatusRecomputation::RemoteCompletion) {
         emit devCompletionChanged();
     }
+    if (m_statusRecomputationFlags && StatusRecomputation::RequestConnections) {
+        m_trafficPollTimer.stop();
+        requestConnections();
+    }
 
     m_statusRecomputationFlags = StatusRecomputation::None;
 }

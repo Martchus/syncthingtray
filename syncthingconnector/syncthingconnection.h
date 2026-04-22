@@ -526,6 +526,7 @@ private:
         OutOfSyncDirs = (1 << 1),
         DirStats = (1 << 2),
         RemoteCompletion = (1 << 3),
+        RequestConnections = (1 << 4),
         StatusAndOutOfSyncDirs = Status | OutOfSyncDirs
     };
     void concludeConnection(StatusRecomputation flags);
