@@ -104,7 +104,11 @@ QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQ
 #endif
     QObject::connect(reply, &QNetworkReply::redirected, this, &SyncthingConnection::handleRedirection);
     if (loggingFlags() && SyncthingConnectionLoggingFlags::ApiCalls) {
+#if SYNCTHINGCONNECTION_QDEBUG
+        qDebug() << "Querying API: GET" << reply->url();
+#else
         cerr << Phrases::Info << "Querying API: GET " << reply->url().toString().toStdString() << Phrases::EndFlush;
+#endif
     }
     return reply;
 #else
@@ -124,8 +128,12 @@ QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuer
     QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
 #endif
     if (loggingFlags() && SyncthingConnectionLoggingFlags::ApiCalls) {
+#if SYNCTHINGCONNECTION_QDEBUG
+        qDebug() << "Querying API: POST" << reply->url() << data;
+#else
         cerr << Phrases::Info << "Querying API: POST " << reply->url().toString().toStdString() << Phrases::EndFlush;
         cerr.write(data.data(), static_cast<std::streamsize>(data.size()));
+#endif
     }
     return reply;
 #else
@@ -147,8 +155,12 @@ QNetworkReply *SyncthingConnection::sendData(
     QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
 #endif
     if (loggingFlags() && SyncthingConnectionLoggingFlags::ApiCalls) {
+#if SYNCTHINGCONNECTION_QDEBUG
+        qDebug() << "Querying API:" << verb << reply->url() << data;
+#else
         cerr << Phrases::Info << "Querying API: " << verb.data() << ' ' << reply->url().toString().toStdString() << Phrases::EndFlush;
         cerr.write(data.data(), static_cast<std::streamsize>(data.size()));
+#endif
     }
     return reply;
 #else
@@ -279,9 +291,13 @@ void SyncthingConnection::handleSslErrors(const QList<QSslError> &errors)
 void SyncthingConnection::handleRedirection(const QUrl &url)
 {
     if (m_loggingFlags && SyncthingConnectionLoggingFlags::ApiReplies) {
+#if SYNCTHINGCONNECTION_QDEBUG
+        qDebug() << "Got redirected to:" << url;
+#else
         const auto urlStr = url.toString().toUtf8();
         cerr << Phrases::Info << "Got redirected to: " << std::string_view(urlStr.data(), static_cast<std::string_view::size_type>(urlStr.size()))
              << Phrases::EndFlush;
+#endif
     }
 #ifndef QT_NO_SSL
     if (m_expectedSslErrors.isEmpty() && url.scheme().endsWith(QChar('s'))) {
@@ -305,12 +321,20 @@ SyncthingConnection::Reply SyncthingConnection::handleReply(QNetworkReply *reply
     if (log) {
         const auto url = reply->url();
         const auto path = url.path().toUtf8();
+#if SYNCTHINGCONNECTION_QDEBUG
+        qDebug() << "Received reply for:" << url;
+#else
         const auto urlStr = url.toString().toUtf8();
         cerr << Phrases::Info << "Received reply for: " << std::string_view(urlStr.data(), static_cast<std::string_view::size_type>(urlStr.size()))
              << Phrases::EndFlush;
+#endif
         if (!data.response.isEmpty() && path != "/rest/events"
             && path != "/rest/events/disk") { // events are logged separately because they are not always useful but make the log very verbose
+#if SYNCTHINGCONNECTION_QDEBUG
+            qDebug() << "Response:" << data.response;
+#else
             cerr << std::string_view(data.response.data(), static_cast<std::string_view::size_type>(data.response.size()));
+#endif
         }
     }
     if (handleAborting && m_abortingToReconnect) {
@@ -1823,8 +1847,12 @@ SyncthingConnection::QueryResult SyncthingConnection::requestJsonData(const QByt
     QObject::connect(reply, &QNetworkReply::sslErrors, this, &SyncthingConnection::handleSslErrors);
 #endif
     if (loggingFlags() && SyncthingConnectionLoggingFlags::ApiCalls) {
+#if SYNCTHINGCONNECTION_QDEBUG
+        qDebug() << "Querying API:" << verb << reply->url() << data;
+#else
         cerr << Phrases::Info << "Querying API: " << verb.data() << ' ' << reply->url().toString().toStdString() << Phrases::EndFlush;
         cerr.write(data.data(), static_cast<std::streamsize>(data.size()));
+#endif
     }
 #else
     Q_UNUSED(data)
@@ -2419,7 +2447,11 @@ void SyncthingConnection::readEvents()
 
         if (!replyArray.isEmpty() && (loggingFlags() && SyncthingConnectionLoggingFlags::Events)) {
             const auto log = replyDoc.toJson(QJsonDocument::Indented);
+#if SYNCTHINGCONNECTION_QDEBUG
+            qDebug() << "Received Syncthing events:" << log;
+#else
             cerr << Phrases::Info << "Received " << replyArray.size() << " Syncthing events:" << Phrases::End << log.data() << endl;
+#endif
         }
         break;
     }
@@ -3045,7 +3077,11 @@ void SyncthingConnection::readDiskEvents()
 
         if (!replyArray.isEmpty() && (loggingFlags() && SyncthingConnectionLoggingFlags::Events)) {
             const auto log = replyDoc.toJson(QJsonDocument::Indented);
+#if SYNCTHINGCONNECTION_QDEBUG
+            qDebug() << "Received Syncthing disk events:" << log;
+#else
             cerr << Phrases::Info << "Received " << replyArray.size() << " Syncthing disk events:" << Phrases::End << log.data() << endl;
+#endif
         }
         break;
     }

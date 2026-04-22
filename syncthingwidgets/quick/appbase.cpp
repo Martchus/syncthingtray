@@ -176,6 +176,8 @@ bool AppBase::loadSettings(bool force)
 
 void AppBase::applyConnectionSettings(const QUrl &syncthingUrl)
 {
+    auto connectionLogging = m_settings.value(QLatin1String("tweaks")).toObject().value(QLatin1String("connectionLogging")).toBool();
+    m_data.connection()->setLoggingFlags((connectionLogging ? (SyncthingConnectionLoggingFlags::ApiCalls | SyncthingConnectionLoggingFlags::Events) : SyncthingConnectionLoggingFlags::None) | SyncthingConnectionLoggingFlags::FromEnvironment);
     auto connectionSettings = m_settings.value(QLatin1String("connection"));
     auto connectionSettingsObj = connectionSettings.toObject();
     auto couldLoadCertificate = false;

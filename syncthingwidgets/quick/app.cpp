@@ -756,6 +756,7 @@ bool App::applySettings()
     ensureDefault(mod, tweaksSettings, QLatin1String("closePreference"), QString());
     ensureDefault(mod, tweaksSettings, QLatin1String("exportDir"), QString());
     ensureDefault(mod, tweaksSettings, QLatin1String("useUnixDomainSocket"), false);
+    ensureDefault(mod, tweaksSettings, QLatin1String("connectionLogging"), false);
 #ifdef Q_OS_ANDROID
     ensureDefault(mod, tweaksSettings, QLatin1String("importExportAsArchive"), true);
     ensureDefault(mod, tweaksSettings, QLatin1String("importExportEncryptionPassword"), QString());

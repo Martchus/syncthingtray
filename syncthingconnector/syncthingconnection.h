@@ -32,6 +32,14 @@ QT_FORWARD_DECLARE_CLASS(QJsonObject)
 QT_FORWARD_DECLARE_CLASS(QJsonArray)
 QT_FORWARD_DECLARE_CLASS(QJsonParseError)
 
+#ifndef SYNCTHINGCONNECTION_QDEBUG
+#ifdef Q_OS_ANDROID
+#define SYNCTHINGCONNECTION_QDEBUG 1
+#else
+#define SYNCTHINGCONNECTION_QDEBUG 0
+#endif
+#endif
+
 class ConnectionTests;
 class MiscTests;
 

@@ -30,6 +30,12 @@
 #define SYNCTHINGCONNECTION_SUPPORT_METERED
 #endif
 
+#if SYNCTHINGCONNECTION_QDEBUG
+#define SYNCTHINGCONNECTION_LOG(message) qDebug() << message
+#else
+#define SYNCTHINGCONNECTION_LOG(message) std::cerr << Phrases::Info << message << Phrases::End
+#endif
+
 #include <iostream>
 #include <utility>
 
@@ -1052,7 +1058,7 @@ bool SyncthingConnection::loadSelfSignedCertificate(const QUrl &url)
     const auto syncthingUrl = url.isEmpty() ? m_syncthingUrl : url;
     if (!syncthingUrl.scheme().endsWith(QChar('s'))) {
         if (m_loggingFlags && SyncthingConnectionLoggingFlags::CertLoading) {
-            std::cerr << Phrases::Info << "Not loading self-signed certificate as URL scheme doesn't end with 's'." << Phrases::End;
+            SYNCTHINGCONNECTION_LOG("Not loading self-signed certificate as URL scheme doesn't end with 's'.");
         }
         return false;
     }
@@ -1060,7 +1066,7 @@ bool SyncthingConnection::loadSelfSignedCertificate(const QUrl &url)
     // auto-determining the path is only possible if the Syncthing instance is running locally
     if (m_certificatePath.isEmpty() && !::Data::isLocal(syncthingUrl)) {
         if (m_loggingFlags && SyncthingConnectionLoggingFlags::CertLoading) {
-            std::cerr << Phrases::Info << "Not auto-loading self-signed certificate as URL is not considered local." << Phrases::End;
+            SYNCTHINGCONNECTION_LOG("Not auto-loading self-signed certificate as URL is not considered local.");
         }
         return false;
     }
@@ -1071,20 +1077,24 @@ bool SyncthingConnection::loadSelfSignedCertificate(const QUrl &url)
         : (!m_configDir.isEmpty() ? (m_configDir + QStringLiteral("/https-cert.pem")) : SyncthingConfig::locateHttpsCertificate());
     if (certPath.isEmpty()) {
         if (m_loggingFlags && SyncthingConnectionLoggingFlags::CertLoading) {
-            std::cerr << Phrases::Error << "Unable to locate self-signed certificate." << Phrases::End;
+            SYNCTHINGCONNECTION_LOG("Unable to locate self-signed certificate.");
         }
         emit error(tr("Unable to locate certificate used by Syncthing."), SyncthingErrorCategory::OverallConnection, QNetworkReply::NoError);
         return false;
     }
     if (m_loggingFlags && SyncthingConnectionLoggingFlags::CertLoading) {
         const auto pathSpec = m_certificatePath.isEmpty() ? "auto-detected" : "manually specified";
+#if SYNCTHINGCONNECTION_QDEBUG
+        qDebug() << "Loading self-signed certificate from:" << pathSpec << certPath;
+#else
         std::cerr << Phrases::Info << "Loading self-signed certificate from " << pathSpec << " path: " << certPath.toStdString() << Phrases::End;
+#endif
     }
     // add exception
     const auto certs = QSslCertificate::fromPath(certPath);
     if (certs.isEmpty() || certs.at(0).isNull()) {
         if (m_loggingFlags && SyncthingConnectionLoggingFlags::CertLoading) {
-            std::cerr << Phrases::Error << "Unable to load self-signed certificate." << Phrases::End;
+            SYNCTHINGCONNECTION_LOG("Unable to load self-signed certificate.");
         }
         emit error(tr("Unable to load certificate used by Syncthing."), SyncthingErrorCategory::OverallConnection, QNetworkReply::NoError);
         return false;
@@ -1300,8 +1310,12 @@ bool SyncthingConnection::setStatus(SyncthingStatus status)
 void SyncthingConnection::emitError(const QString &message, const QJsonParseError &jsonError, QNetworkReply *reply, const QByteArray &response)
 {
     if (loggingFlags() && SyncthingConnectionLoggingFlags::ApiReplies) {
+#if SYNCTHINGCONNECTION_QDEBUG
+        qDebug() << "JSON parsing error:" << message << jsonError.errorString();
+#else
         std::cerr << Phrases::Error << "JSON parsing error: " << message.toLocal8Bit().data() << jsonError.errorString().toLocal8Bit().data()
                   << " (at offset " << jsonError.offset << ')' << Phrases::End;
+#endif
     }
     emit error(message % jsonError.errorString() % QChar(' ') % QChar('(') % tr("at offset %1").arg(jsonError.offset) % QChar(')'),
         SyncthingErrorCategory::Parsing, QNetworkReply::NoError, reply->request(), response);
@@ -1340,8 +1354,12 @@ void SyncthingConnection::emitError(const QString &message, SyncthingErrorCatego
     auto errorString = reply->errorString();
     auto resp = formatErrorAndResponse(reply, errorString, response);
     if (loggingFlags() && SyncthingConnectionLoggingFlags::ApiReplies) {
+#if SYNCTHINGCONNECTION_QDEBUG
+        qDebug() << "Syncthing connetion error:" << message << errorString;
+#else
         std::cerr << Phrases::Error << "Syncthing connection error: " << message.toLocal8Bit().data() << errorString.toLocal8Bit().data()
                   << Phrases::End;
+#endif
     }
     emit this->error(message + errorString, category, error, reply->request(), resp);
 
@@ -1362,7 +1380,11 @@ void SyncthingConnection::emitError(const QString &message, QNetworkReply *reply
     auto errorString = reply->errorString();
     auto resp = formatErrorAndResponse(reply, errorString, response);
     if (loggingFlags() && SyncthingConnectionLoggingFlags::ApiReplies) {
+#if SYNCTHINGCONNECTION_QDEBUG
+        qDebug() << "Syncthing API error:" << message << errorString;
+#else
         std::cerr << Phrases::Error << "Syncthing API error: " << message.toLocal8Bit().data() << errorString.toLocal8Bit().data() << Phrases::End;
+#endif
     }
     emit this->error(message, SyncthingErrorCategory::SpecificRequest, error, reply->request(), resp);
 }
