@@ -751,9 +751,6 @@ bool App::applyLauncherSettings()
 
 bool App::applySettings()
 {
-    applySyncthingSettings();
-    applyLauncherSettings();
-    applyConnectionSettings(m_syncthingGuiUrl);
     auto mod = false;
     auto tweaksSettings = m_settings.value(QLatin1String("tweaks")).toObject();
     ensureDefault(mod, tweaksSettings, QLatin1String("closePreference"), QString());
@@ -766,6 +763,9 @@ bool App::applySettings()
     if (mod) {
         m_settings.insert(QLatin1String("tweaks"), tweaksSettings);
     }
+    applySyncthingSettings();
+    applyLauncherSettings();
+    applyConnectionSettings(m_syncthingGuiUrl);
     invalidateStatus();
     emit info(tr("App settings saved"));
     return true;
