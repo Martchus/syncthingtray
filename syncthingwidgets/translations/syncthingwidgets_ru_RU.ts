@@ -1404,197 +1404,202 @@
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="14"/>
+        <source>Group to show the folder in the UI. Can be different on each device.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DirConfigPage.qml" line="15"/>
         <source>Paused</source>
         <translation>Приостановлено</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="14"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="15"/>
         <source>Whether this folder is (temporarily) suspended.</source>
         <translation>Приостановлена ​​ли эта папка (временно).</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="15"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="16"/>
         <source>Path</source>
         <translation>Путь</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="15"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="16"/>
         <source>Path to the folder on the local computer. Will be created if it does not exist. The tilde character (~) can be used as a shortcut for &quot;%1&quot;.</source>
         <translation>Путь к папке на локальном компьютере. Будет создан, если она не существует. Символ тильды (~) можно использовать в качестве сокращения для «%1».</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="16"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="17"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="16"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="17"/>
         <source>Controls how the folder is handled by Syncthing. Open the selection and go though the different options for details about them.</source>
         <translation>Управляет обработкой папки Syncthing. Откройте выбранный файл и изучите различные параметры, чтобы узнать о них больше.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="17"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="18"/>
         <source>Files are synchronized from the cluster and changes made on this device will be sent to the rest of the cluster.</source>
         <translation>Файлы синхронизируются из кластера, и изменения, внесенные на этом устройстве, будут отправлены на остальную часть кластера.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="18"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="19"/>
         <source>Files are protected from changes made on other devices, but changes made on this device will be sent to the rest of the cluster.</source>
         <translation>Файлы защищены от изменений, внесенных на других устройствах, но изменения, внесенные на этом устройстве, будут отправлены на весь кластер.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="19"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="20"/>
         <source>Files are synchronized from the cluster, but any changes made locally will not be sent to other devices.</source>
         <translation>Файлы синхронизируются из кластера, но любые изменения, внесенные локально, не будут отправлены на другие устройства.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="20"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="21"/>
         <source>Stores and syncs only encrypted data. Folders on all connected devices need to be set up with the same password or be of type &quot;Receive Encrypted&quot; too. Can only be assigned to new folders.</source>
         <translation>Хранит и синхронизирует только зашифрованные данные. Папки на всех подключенных устройствах должны быть настроены с одинаковым паролем или иметь тип «Получить зашифрованные». Можно назначать только новым папкам.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="22"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="23"/>
         <source>Share with</source>
         <translation>Поделиться с</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="22"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="23"/>
         <source>Select devices to share this folder with.</source>
         <translation>Выберите устройства, с которыми вы хотите поделиться этой папкой.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="23"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="24"/>
         <source>Versioning</source>
         <translation>Версионирование</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="23"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="24"/>
         <source>Syncthing supports archiving the old version of a file when it is deleted or replaced with a newer version from the cluster. Versioning applies to changes received from &lt;i&gt;other&lt;/i&gt; devices.</source>
         <translation>Syncthing поддерживает архивацию старой версии файла при его удалении или замене новой версией из кластера. Управление версиями применяется к изменениям, полученным с &lt;i&gt;других&lt;/i&gt; устройств.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="24"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="25"/>
         <source>Watch for Changes</source>
         <translation>Следите за изменениями</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="24"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="25"/>
         <source>Use notifications from the filesystem to detect changed items. Watching for changes discovers most changes without periodic scanning.</source>
         <translation>Используйте уведомления файловой системы для обнаружения изменившихся элементов. Отслеживание изменений позволяет обнаружить большинство изменений без периодического сканирования.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="25"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="26"/>
         <source>Rescan Interval</source>
         <translation>Интервал повторного сканирования</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="25"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="26"/>
         <source>The frequency in which Syncthing will rescan the folder for changes. Can be set to 0 to rely on triggering rescans manually.</source>
         <translation>Частота, с которой Syncthing будет повторно сканировать папку на наличие изменений. Можно установить значение 0, чтобы повторное сканирование запускалось вручную.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="26"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="27"/>
         <source>Watcher Delay</source>
         <translation>Задержка наблюдателя</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="26"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="27"/>
         <source>The duration during which changes detected are accumulated, before a scan is scheduled. Takes only effect if &quot;Watch for Changes&quot; is enabled.</source>
         <translation>Продолжительность накопления обнаруженных изменений до планирования сканирования. Действует только при включенном режиме «Слежение за изменениями».</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="27"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="28"/>
         <source>Watcher Timeout</source>
         <translation>Тайм-аут наблюдателя</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="27"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="28"/>
         <source>The maximum delay before a scan is triggered when a file is continuously changing. If unset or zero a default value is calculated based on &quot;Watcher Delay&quot;.</source>
         <translation>Максимальная задержка перед запуском сканирования при постоянном изменении файла. Если не задано или равно нулю, значение по умолчанию рассчитывается на основе параметра «Задержка наблюдателя».</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="28"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="29"/>
         <source>Minimum Free Disk Space</source>
         <translation>Минимальное свободное место на диске</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="28"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="29"/>
         <source>The minimum required free space that should be available on the disk this folder resides. The folder will be stopped when the value drops below the threshold. Set to zero to disable.</source>
         <translation>Минимально необходимое свободное пространство на диске, где находится эта папка. Папка будет остановлена, когда значение станет ниже порогового. Установите значение 0, чтобы отключить.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="37"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="38"/>
         <source>Block Pull Order</source>
         <translation>Блокировать заказ на извлечение</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="29"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="30"/>
         <source>The order in which needed files should be pulled from the cluster. It has no effect when the folder type is “send only”. Open the selection and go though the different options for details about them.</source>
         <translation>Порядок, в котором следует извлекать необходимые файлы из кластера. Он не имеет значения, если тип папки — «только для отправки». Откройте выбранные папки и изучите различные варианты, чтобы получить подробную информацию.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="30"/>
-        <location filename="../quick/qml/DirConfigPage.qml" line="39"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="31"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="40"/>
         <source>Random</source>
         <translation>Случайный</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="30"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="31"/>
         <source>Pull files in random order. This optimizes for balancing resources among the devices in a cluster.</source>
         <translation>Извлекайте файлы в случайном порядке. Это оптимизирует распределение ресурсов между устройствами в кластере.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="31"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="32"/>
         <source>Alphabetic</source>
         <translation>Алфавитный</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="31"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="32"/>
         <source>Pull files ordered by file name alphabetically.</source>
         <translation>Извлечь файлы, отсортированные по имени файла в алфавитном порядке.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="32"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="33"/>
         <source>Smallest First</source>
         <translation>Самый маленький первый</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="32"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="33"/>
         <source>Pull files ordered by file size; smallest first.</source>
         <translation>Извлечь файлы, отсортированные по размеру; сначала самые маленькие.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="33"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="34"/>
         <source>Largest First</source>
         <translation>Самый большой первый</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="33"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="34"/>
         <source>Pull files ordered by file size; largest first.</source>
         <translation>Извлечь файлы, отсортированные по размеру; сначала самые большие.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="34"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="35"/>
         <source>Oldest First</source>
         <translation>Сначала самые старые</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="34"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="35"/>
         <source>Pull files ordered by modification time; oldest first.</source>
         <translation>Извлечь файлы, отсортированные по времени изменения; сначала самые старые.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="35"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="36"/>
         <source>Newest First</source>
         <translation>Сначала самые новые</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="35"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="36"/>
         <source>Pull files ordered by modification time; newest first.</source>
         <translation>Извлечь файлы, отсортированные по времени изменения; сначала самые новые.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="29"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="30"/>
         <source>File Pull Order</source>
         <translation>Порядок извлечения файлов</translation>
     </message>
@@ -1604,262 +1609,267 @@
         <translation>Общее</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="26"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="14"/>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DirConfigPage.qml" line="27"/>
         <source>Advanced</source>
         <translation>Дополнительно</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="37"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="38"/>
         <source>Order in which the blocks of a file are downloaded. This option controls how quickly different parts of the file spread between the connected devices, at the cost of causing strain on the storage. Open the selection and go though the different options for details about them.</source>
         <translation>Порядок загрузки блоков файла. Этот параметр управляет скоростью распространения различных частей файла между подключенными устройствами, что повышает нагрузку на хранилище. Откройте выбранные устройства и изучите различные варианты, чтобы получить подробную информацию о них.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="38"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="39"/>
         <source>Standard</source>
         <translation>Стандартный</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="38"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="39"/>
         <source>The blocks of a file are split into N equal continuous sequences, where N is the number of connected devices. Each device starts downloading its own sequence, after which it picks other devices sequences at random. Provides acceptable data distribution and minimal spinning disk strain.</source>
         <translation>Блоки файла разбиваются на N равных непрерывных последовательностей, где N — количество подключенных устройств. Каждое устройство начинает загрузку своей последовательности, после чего случайным образом выбирает последовательности других устройств. Обеспечивает приемлемое распределение данных и минимальную нагрузку на вращающийся диск.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="39"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="40"/>
         <source>The blocks of a file are downloaded in a random order. Provides great data distribution, but very taxing on spinning disk drives.</source>
         <translation>Блоки файла загружаются в случайном порядке. Обеспечивает отличное распределение данных, но очень нагружает вращающиеся диски.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="40"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="41"/>
         <source>In-Order</source>
         <translation>Чтобы</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="40"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="41"/>
         <source>The blocks of a file are downloaded sequentially, from start to finish. Spinning disk drive friendly, but provides no improvements to data distribution.</source>
         <translation>Блоки файла загружаются последовательно, от начала до конца. Удобно для вращающегося диска, но не улучшает распределение данных.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="42"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="43"/>
         <source>Ignore Permissions</source>
         <translation>Игнорировать разрешения</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="42"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="43"/>
         <source>Disables comparing and syncing file permissions. Useful on systems with nonexistent or custom permissions (e.g. FAT, exFAT, Synology, Android).</source>
         <translation>Отключает сравнение и синхронизацию прав доступа к файлам. Полезно в системах с несуществующими или настраиваемыми правами доступа (например, FAT, exFAT, Synology, Android).</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="43"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="44"/>
         <source>Sync Ownership</source>
         <translation>Синхронизация права собственности</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="43"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="44"/>
         <source>Enables sending ownership information to other devices, and applying incoming ownership information. Typically requires running with elevated privileges.</source>
         <translation>Позволяет отправлять информацию о владельце на другие устройства и применять полученную информацию. Обычно требует запуска с повышенными привилегиями.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="44"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="45"/>
         <source>Send Ownership</source>
         <translation>Отправить право собственности</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="44"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="45"/>
         <source>Enables sending ownership information to other devices, but not applying incoming ownership information. This can have a significant performance impact. Always enabled when &quot;Sync Ownership&quot; is enabled.</source>
         <translation>Позволяет отправлять информацию о владельце на другие устройства, но не применять входящую информацию о владельце. Это может существенно повлиять на производительность. Всегда включено, если включена функция «Синхронизация владения».</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="45"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="46"/>
         <source>Sync Extended Attributes</source>
         <translation>Синхронизировать расширенные атрибуты</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="45"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="46"/>
         <source>Enables sending extended attributes to other devices, and applying incoming extended attributes. May require running with elevated privileges.</source>
         <translation>Позволяет отправлять расширенные атрибуты другим устройствам и применять входящие расширенные атрибуты. Может потребоваться запуск с повышенными привилегиями.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="46"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="47"/>
         <source>Send Extended Attributes</source>
         <translation>Отправить расширенные атрибуты</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="46"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="47"/>
         <source>Enables sending extended attributes to other devices, but not applying incoming extended attributes. This can have a significant performance impact. Always enabled when &quot;Sync Extended Attributes&quot; is enabled.</source>
         <translation>Позволяет отправлять расширенные атрибуты другим устройствам, но не применять входящие расширенные атрибуты. Это может существенно повлиять на производительность. Всегда включено, если включен параметр «Синхронизировать расширенные атрибуты».</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="50"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="51"/>
         <source>There are different &lt;i&gt;versioning strategies&lt;/i&gt; to choose from. Open the selection and go through the options for details on the individual versioning strategies.</source>
         <translation>Вы можете выбрать из различных &lt;i&gt;стратегий управления версиями&lt;/i&gt;. Откройте выбранные варианты и просмотрите их, чтобы узнать подробности об отдельных стратегиях управления версиями.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="50"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="51"/>
         <source>Versioning Strategy</source>
         <translation>Стратегия версионирования</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="51"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="52"/>
         <source>File versioning is not going to be used.</source>
         <translation>Управление версиями файлов использоваться не будет.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="52"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="53"/>
         <source>Files are moved to .stversions directory when replaced or deleted by Syncthing.</source>
         <translation>При замене или удалении с помощью Syncthing файлы перемещаются в каталог .stversions.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="53"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="54"/>
         <source>Files are moved to date stamped versions in a .stversions directory when replaced or deleted by Syncthing.</source>
         <translation>При замене или удалении с помощью Syncthing файлы перемещаются в версии с отметкой даты в каталоге .stversions.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="54"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="55"/>
         <source>&lt;p&gt;Files are moved to date stamped versions in a .stversions directory when replaced or deleted by Syncthing. Versions are automatically deleted if they are older than the maximum age or exceed the number of files allowed in an interval.&lt;/p&gt;&lt;p&gt;The following intervals are used: for the first hour a version is kept every 30 seconds, for the first day a version is kept every hour, for the first 30 days a version is kept every day, until the maximum age a version is kept every week.&lt;/p&gt;</source>
         <translation>&lt;p&gt;При замене или удалении с помощью Syncthing файлы перемещаются в каталог .stversions с отметкой даты. Версии автоматически удаляются, если они старше максимального возраста или превышают количество файлов, разрешённое для данного интервала.&lt;/p&gt;&lt;p&gt;Используются следующие интервалы: в течение первого часа версия сохраняется каждые 30 секунд, в течение первого дня версия сохраняется каждый час, в течение первых 30 дней версия сохраняется каждый день, до достижения максимального возраста версия сохраняется каждую неделю.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="55"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="56"/>
         <source>An external command handles the versioning. It has to remove the file from the shared folder. If the path to the application contains spaces, it should be quoted.</source>
         <translation>Внешняя команда управляет версиями. Она должна удалить файл из общей папки. Если путь к приложению содержит пробелы, его следует заключить в кавычки.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="57"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="58"/>
         <source>Versions Path</source>
         <translation>Путь к версиям</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="57"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="58"/>
         <source>Path where versions should be stored (leave empty for the default .stversions directory in the shared folder).</source>
         <translation>Путь, по которому следует хранить версии (оставьте пустым для каталога по умолчанию .stversions в общей папке).</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="58"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="59"/>
         <source>Filesystem Type</source>
         <translation>Тип файловой системы</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="58"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="59"/>
         <source>The internal file system implementation used to access this versions folder.</source>
         <translation>Реализация внутренней файловой системы, используемая для доступа к этой папке версий.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="59"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="60"/>
         <source>Cleanup Interval in seconds</source>
         <translation>Интервал очистки в секундах</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="59"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="60"/>
         <source>The interval, in seconds, for running cleanup in the versions directory. Zero to disable periodic cleaning.</source>
         <translation>Интервал (в секундах) для запуска очистки каталога версий. Ноль отключает периодическую очистку.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="60"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="61"/>
         <source>Additional parameters</source>
         <translation>Дополнительные параметры</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="63"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="64"/>
         <source>Clean Out After</source>
         <translation>Очистка после</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="63"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="64"/>
         <source>The number of days to keep files in the versions folder. Zero means to keep forever. Older elements encountered during cleanup are removed.</source>
         <translation>Количество дней хранения файлов в папке версий. Ноль означает вечное хранение. Старые элементы, обнаруженные при очистке, удаляются.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="64"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="65"/>
         <source>Keep Versions</source>
         <translation>Сохранять версии</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="64"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="65"/>
         <source>The number of old versions to keep, per file.</source>
         <translation>Количество старых версий, которые необходимо сохранить, для каждого файла.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="65"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="66"/>
         <source>Maximum Age</source>
         <translation>Максимальный возраст</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="65"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="66"/>
         <source>The maximum time to keep a version, in seconds. Zero means to keep forever.</source>
         <translation>Максимальное время хранения версии в секундах. Ноль означает, что версия будет храниться вечно.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="66"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="67"/>
         <source>Command</source>
         <translation>Команда</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="66"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="67"/>
         <source>External command to execute for storing a file version about to be replaced or deleted. If the path to the application contains spaces, it should be quoted.</source>
         <translation>Внешняя команда, выполняемая для сохранения версии файла, которая будет заменена или удалена. Если путь к приложению содержит пробелы, его следует заключить в кавычки.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="69"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="70"/>
         <source>Value</source>
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="69"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="70"/>
         <source>The minimum required free space that should be available on the disk this folder resides. The folder will be stopped when the value drops below the threshold. The value is interpreted according to the selected unit and can be set to zero to disable the check for minimum free space.</source>
         <translation>Минимально необходимое свободное пространство на диске, где находится эта папка. Папка будет остановлена, когда значение станет ниже порогового. Значение интерпретируется в соответствии с выбранными единицами измерения и может быть установлено равным нулю, чтобы отключить проверку минимального свободного места.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="70"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="71"/>
         <source>Unit</source>
         <translation>Единица</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="71"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="72"/>
         <source>Percent</source>
         <translation>Процент</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="71"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="72"/>
         <source>Percentage of the disk/volume size</source>
         <translation>Процент от размера диска/тома</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="72"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="73"/>
         <source>Kilobyte</source>
         <translation>Килобайт</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="72"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="73"/>
         <source>Absolute size in Kilobyte</source>
         <translation>Абсолютный размер в килобайтах</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="73"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="74"/>
         <source>Megabyte</source>
         <translation>Мегабайт</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="73"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="74"/>
         <source>Absolute size in Megabyte</source>
         <translation>Абсолютный размер в мегабайтах</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="74"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="75"/>
         <source>Gigabyte</source>
         <translation>Гигабайт</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="74"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="75"/>
         <source>Absolute size in Gigabyte</source>
         <translation>Абсолютный размер в гигабайтах</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="75"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="76"/>
         <source>Terrabyte</source>
         <translation>Терабайт</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="75"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="76"/>
         <source>Absolute size in Terrabyte</source>
         <translation>Абсолютный размер в терабайтах</translation>
     </message>
@@ -3035,282 +3045,282 @@
         <translation>Не удалось сохранить настройки: </translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="770"/>
+        <location filename="../quick/app.cpp" line="771"/>
         <source>App settings saved</source>
         <translation>Настройки приложения сохранены</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="796"/>
+        <location filename="../quick/app.cpp" line="797"/>
         <source>No logfile present anyway</source>
         <translation>Файл журнала все равно отсутствует</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="802"/>
+        <location filename="../quick/app.cpp" line="803"/>
         <source>Waiting for backend to terminate before clearing logs …</source>
         <translation>Ожидание завершения работы бэкэнда перед очисткой журналов…</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="811"/>
+        <location filename="../quick/app.cpp" line="812"/>
         <source>Persistent logging disabled and logfile removed</source>
         <translation>Постоянное ведение журнала отключено, а файл журнала удален</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="813"/>
+        <location filename="../quick/app.cpp" line="814"/>
         <source>Unable to remove logfile</source>
         <translation>Невозможно удалить файл журнала</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="845"/>
+        <location filename="../quick/app.cpp" line="846"/>
         <source>Another import/export still pending</source>
         <translation>Еще один импорт/экспорт все еще находится в процессе рассмотрения</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="885"/>
+        <location filename="../quick/app.cpp" line="886"/>
         <source>Settings directory was not located.</source>
         <translation>Каталог настроек не найден.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="905"/>
+        <location filename="../quick/app.cpp" line="906"/>
         <source>Unable to extract archive: %1</source>
         <translation>Не удалось извлечь архив: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="910"/>
+        <location filename="../quick/app.cpp" line="911"/>
         <source>Unable to create temp dir: %1</source>
         <translation>Не удалось создать временный каталог: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="914"/>
+        <location filename="../quick/app.cpp" line="915"/>
         <source>archiving is only supported on Android.</source>
         <translation>Архивирование поддерживается только на Android.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="938"/>
+        <location filename="../quick/app.cpp" line="939"/>
         <source>The Syncthing home directory under &quot;%1&quot; is empty.</source>
         <translation>Домашний каталог Syncthing в «%1» пуст.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="951"/>
+        <location filename="../quick/app.cpp" line="952"/>
         <source>No Syncthing configuration file found under &quot;%1&quot;.</source>
         <translation>Домашний каталог Syncthing в «%1» пуст.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1039"/>
+        <location filename="../quick/app.cpp" line="1040"/>
         <source>Triggered re-connect with Syncthing backend</source>
         <translation>Вызван повторный подключение с сервером Syncthing</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1058"/>
+        <location filename="../quick/app.cpp" line="1059"/>
         <source>Unable to import settings: settings directory was not located.</source>
         <translation>Не удалось импортировать настройки: каталог настроек не найден.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1065"/>
+        <location filename="../quick/app.cpp" line="1066"/>
         <source>Waiting for backend to terminate before importing settings …</source>
         <translation>Ожидание завершения работы бэкэнда перед импортом настроек…</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1109"/>
+        <location filename="../quick/app.cpp" line="1110"/>
         <source>Imported app config from &quot;%1&quot;.</source>
         <translation>Импортирована конфигурация приложения из &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1122"/>
+        <location filename="../quick/app.cpp" line="1123"/>
         <source>Imported Syncthing config and database from &quot;%1&quot;.</source>
         <translation>Импортированы конфигурация и база данных Syncthing из &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1140"/>
+        <location filename="../quick/app.cpp" line="1141"/>
         <source>Unable to find folders/devices in current Syncthing config.</source>
         <translation>Не удалось найти папки/устройства в текущей конфигурации Syncthing.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1156"/>
+        <location filename="../quick/app.cpp" line="1157"/>
         <source>Merging %1 folders and %2 devices</source>
         <translation>Объединение %1 папок и %2 устройств</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1158"/>
+        <location filename="../quick/app.cpp" line="1159"/>
         <source>Unable to import folders/devices.</source>
         <translation>Невозможно импортировать папки/устройства.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1167"/>
+        <location filename="../quick/app.cpp" line="1168"/>
         <source>Unable to remove temp dir: %1</source>
         <translation>Не удалось удалить временный каталог: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1173"/>
+        <location filename="../quick/app.cpp" line="1174"/>
         <source>Nothing has been imported.</source>
         <translation>Ничего не импортировалось.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1183"/>
+        <location filename="../quick/app.cpp" line="1184"/>
         <source>Unable to import settings: %1</source>
         <translation>Не удалось импортировать настройки: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1228"/>
+        <location filename="../quick/app.cpp" line="1229"/>
         <source>Waiting for backend to terminate before exporting settings …</source>
         <translation>Ожидание завершения работы бэкэнда перед экспортом настроек…</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1244"/>
+        <location filename="../quick/app.cpp" line="1245"/>
         <source>settings directory was not located.</source>
         <translation>каталог настроек не найден.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1250"/>
+        <location filename="../quick/app.cpp" line="1251"/>
         <source>no destination or file or directory specified/configured.</source>
         <translation>не указан/не настроен пункт назначения, файл или каталог.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1262"/>
+        <location filename="../quick/app.cpp" line="1263"/>
         <source>Settings have been archived to &quot;%1&quot;.</source>
         <translation>Настройки архивированы в «%1».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1264"/>
+        <location filename="../quick/app.cpp" line="1265"/>
         <source>Archiving is only supported on Android.</source>
         <translation>Архивирование поддерживается только на Android.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1270"/>
+        <location filename="../quick/app.cpp" line="1271"/>
         <source>unable to create export directory under &quot;%1&quot;</source>
         <translation>невозможно создать каталог экспорта в «%1»</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1283"/>
+        <location filename="../quick/app.cpp" line="1284"/>
         <source>Settings have been exported to &quot;%1&quot;.</source>
         <translation>Настройки экспортированы в «%1».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1290"/>
+        <location filename="../quick/app.cpp" line="1291"/>
         <source>Unable to export settings: %1</source>
         <translation>Невозможно экспортировать настройки: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1363"/>
+        <location filename="../quick/app.cpp" line="1364"/>
         <source>Default directory</source>
         <translation>Каталог по умолчанию</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1379"/>
+        <location filename="../quick/app.cpp" line="1380"/>
         <source>External storage %1</source>
         <translation>Внешнее хранилище %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1388"/>
+        <location filename="../quick/app.cpp" line="1389"/>
         <source>Current home directory</source>
         <translation>Текущий домашний каталог</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1418"/>
+        <location filename="../quick/app.cpp" line="1419"/>
         <source>Unable to move Syncthing home: settings directory was not located.</source>
         <translation>Не удалось переместить Syncthing домой: каталог настроек не найден.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1424"/>
+        <location filename="../quick/app.cpp" line="1425"/>
         <source>Waiting for backend to terminate before moving home …</source>
         <translation>Ожидание завершения работы бэкэнда перед возвращением домой…</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1447"/>
+        <location filename="../quick/app.cpp" line="1448"/>
         <source>Home directory stays the same.</source>
         <translation>Домашний каталог остается прежним.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1458"/>
+        <location filename="../quick/app.cpp" line="1459"/>
         <source>Cleaned up new home directory &quot;%1&quot;.</source>
         <translation>Очищен новый домашний каталог «%1».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1464"/>
+        <location filename="../quick/app.cpp" line="1465"/>
         <source>Copied data from previous home directory &quot;%1&quot; to new one.</source>
         <translation>Данные скопированы из предыдущего домашнего каталога «%1» в новый.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1467"/>
+        <location filename="../quick/app.cpp" line="1468"/>
         <source>Cleaned up previous home directory.</source>
         <translation>Очистил предыдущий домашний каталог.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1470"/>
+        <location filename="../quick/app.cpp" line="1471"/>
         <source>Configured &quot;%1&quot; as new/empty Syncthing home.</source>
         <translation>Настроил «%1» как новый/пустой домашний каталог Syncthing.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1472"/>
+        <location filename="../quick/app.cpp" line="1473"/>
         <source>Configured &quot;%1&quot; as Syncthing home.</source>
         <translation>Настроил «%1» как домашний сервер Syncthing.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1476"/>
+        <location filename="../quick/app.cpp" line="1477"/>
         <source>Unable to move home directory: %1</source>
         <translation>Невозможно переместить домашний каталог: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1514"/>
+        <location filename="../quick/app.cpp" line="1515"/>
         <source>Debugging needs to be enabled under advanced GUI settings first.</source>
         <translation>Сначала необходимо включить отладку в расширенных настройках графического интерфейса.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1521"/>
+        <location filename="../quick/app.cpp" line="1522"/>
         <source>No destination or file or directory specified/configured.</source>
         <translation>Не указано/не настроено место назначения, файл или каталог.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1530"/>
+        <location filename="../quick/app.cpp" line="1531"/>
         <source>Unable to open output file under &quot;%1&quot;: %2</source>
         <translation>Невозможно открыть выходной файл в разделе «%1»: %2</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1548"/>
+        <location filename="../quick/app.cpp" line="1549"/>
         <source>Unable to write bundle: %1</source>
         <translation>Невозможно записать пакет: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1551"/>
+        <location filename="../quick/app.cpp" line="1552"/>
         <source>Unable to download bundle: %1</source>
         <translation>Не удалось загрузить пакет: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1554"/>
+        <location filename="../quick/app.cpp" line="1555"/>
         <source>Support bundle saved</source>
         <translation>Пакет поддержки сохранен</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1583"/>
+        <location filename="../quick/app.cpp" line="1584"/>
         <source>Removed old database directory.</source>
         <translation>Удален старый каталог базы данных.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1585"/>
+        <location filename="../quick/app.cpp" line="1586"/>
         <source>Unable to remove old database directory.</source>
         <translation>Невозможно удалить старый каталог базы данных.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1600"/>
+        <location filename="../quick/app.cpp" line="1601"/>
         <source>Unable to remove all support bundles.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1604"/>
+        <location filename="../quick/app.cpp" line="1605"/>
         <source>Support bundles have been removed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1620"/>
+        <location filename="../quick/app.cpp" line="1621"/>
         <source>Unable to remove leftovers from import under &quot;%1&quot;.</source>
         <translation>Невозможно удалить остатки импорта под &quot;%1&quot;.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1625"/>
+        <location filename="../quick/app.cpp" line="1626"/>
         <source>Removed leftovers from import.</source>
         <translation>Удален остаток импорта.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1630"/>
+        <location filename="../quick/app.cpp" line="1631"/>
         <source>There was nothing to clean up.</source>
         <translation>Убирать было нечего.</translation>
     </message>
@@ -3375,7 +3385,7 @@
         <translation>Документ JSON не содержит объектов</translation>
     </message>
     <message>
-        <location filename="../quick/appbase.cpp" line="197"/>
+        <location filename="../quick/appbase.cpp" line="199"/>
         <source>Unable to load HTTPs certificate</source>
         <translation>Не удалось загрузить сертификат HTTPs</translation>
     </message>
@@ -6282,36 +6292,47 @@ This dialog closes automatically when the process finally terminates.</source>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="221"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="222"/>
         <source>Backend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="222"/>
-        <source>Close preference</source>
+        <source>Log API requests and events</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="222"/>
-        <source>Interface</source>
+        <source>Helps debugging the interaction between UI and backend with logcat.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="223"/>
-        <source>Ask</source>
+        <source>Close preference</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="223"/>
+        <source>Interface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="224"/>
-        <source>Keep Syncthing in background</source>
+        <source>Ask</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="225"/>
+        <source>Keep Syncthing in background</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="226"/>
         <source>Shut Syncthing down</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="232"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="233"/>
         <source>Apply</source>
         <translation>Применять</translation>
     </message>
