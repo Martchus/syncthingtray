@@ -7,6 +7,9 @@ ExpandableListView {
     model: DirDelegate {
         mainView: mainView
     }
+    section.property: "group"
+    section.delegate: SectionHeader {
+    }
     CustomDialog {
         id: confirmDirActionDlg
         title: isOverrideAction ? qsTr("Override changes on remote devices") : qsTr("Revert local changes")

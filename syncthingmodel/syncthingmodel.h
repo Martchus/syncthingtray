@@ -22,6 +22,7 @@ class LIB_SYNCTHING_MODEL_EXPORT SyncthingModel : public QAbstractItemModel {
 public:
     enum SyncthingModelRole {
         IsPinned = Qt::UserRole + 1,
+        Group,
         SyncthingModelUserRole = Qt::UserRole + 100,
     };
 

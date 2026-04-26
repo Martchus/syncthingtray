@@ -21,7 +21,18 @@ bool SyncthingSortFilterModel::lessThan(const QModelIndex &left, const QModelInd
     if (m_behavior == SyncthingSortBehavior::KeepRawOrder || left.parent().isValid() || right.parent().isValid()) {
         return left.row() < right.row();
     }
-    // show pinned items before all other items
+    // sort by group
+    const auto leftGroup = left.data(SyncthingModel::Group).toString();
+    const auto rightGroup = right.data(SyncthingModel::Group).toString();
+    if (leftGroup.isEmpty() != rightGroup.isEmpty()) {
+        return leftGroup.isEmpty();
+    }
+    if (!leftGroup.isEmpty() && !rightGroup.isEmpty()) {
+        if (const auto cmp = QString::compare(leftGroup, rightGroup, Qt::CaseInsensitive)) {
+            return cmp < 0;
+        }
+    }
+    // show pinned items before other items within group
     const auto leftPinned = left.data(SyncthingModel::IsPinned).toBool();
     const auto rightPinned = right.data(SyncthingModel::IsPinned).toBool();
     if (leftPinned != rightPinned) {

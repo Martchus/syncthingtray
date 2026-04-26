@@ -158,6 +158,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
 
     QString id;
     QString label;
+    QString group;
     QString path;
     QStringList deviceIds;
     QStringList deviceNames;

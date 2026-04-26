@@ -931,6 +931,7 @@ void SyncthingConnection::readDirs(const QJsonArray &dirs)
         }
 
         dirItem->label = dirObj.value(QLatin1String("label")).toString();
+        dirItem->group = dirObj.value(QLatin1String("group")).toString();
         dirItem->path = dirObj.value(QLatin1String("path")).toString();
         dirItem->deviceIds.clear();
         dirItem->deviceNames.clear();
