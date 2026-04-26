@@ -948,6 +948,7 @@ void SyncthingConnection::readDirs(const QJsonArray &dirs)
         }
         dirItem->assignDirType(dirObj.value(QLatin1String("type")).toString());
         dirItem->rescanInterval = dirObj.value(QLatin1String("rescanIntervalS")).toInt(-1);
+        dirItem->blockIndexing = dirObj.value(QLatin1String("blockIndexing")).toBool(false);
         dirItem->ignorePermissions = dirObj.value(QLatin1String("ignorePerms")).toBool(false);
         dirItem->ignoreDelete = dirObj.value(QLatin1String("ignoreDelete")).toBool(false);
         dirItem->autoNormalize = dirObj.value(QLatin1String("autoNormalize")).toBool(false);

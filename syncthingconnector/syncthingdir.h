@@ -192,6 +192,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     QString downloadLabel;
     QString rawStatus;
     unsigned int downloadPercentage = 0;
+    bool blockIndexing = false;
     bool ignorePermissions = false;
     bool ignoreDelete = false;
     bool ignorePatterns = false;
