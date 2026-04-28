@@ -1,7 +1,3 @@
-These instructions are for Gemini. At this point use of Gemini
-is experimental and focusing on basic tasks such as reviewing
-documentation and adding translations.
-
 # Git workflow
 Stay on the current Git branch. Do NOT change the branch.
 
@@ -22,9 +18,9 @@ additional files like translations. When adding/removing files,
 the CMake project files need to be updated.
 
 # Building
-Do NOT invoke CMake. Do NOT try to build/compile anything. The
-tasks I will give you for now will NOT require you to build
-anything for now.
+Do NOT invoke CMake and do NOT try to build/compile anything.
+The tasks I will give you will NOT require you to build
+anything uless stated otherwise.
 
 # Localization
 Translations are done using the internationalization features
@@ -51,8 +47,8 @@ Ensure punctuation and whitespaces are preserved, e.g. if the
 source text ends with a whitespace (like "Some field: "),
 preserve the trailing whitespace (like "Ein Feld: ").
 
-Avoid using "Sie" in German translations. So write e.g."Öffne …"
-and not "Öffnen Sie …".
+Avoid using "Sie" in German translations. So write e.g.
+"Öffne …" and not "Öffnen Sie …".
 
 # Misc
 Keep wording/phrasing in-line with what is already there.
