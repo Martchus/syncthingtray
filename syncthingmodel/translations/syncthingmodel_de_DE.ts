@@ -224,43 +224,43 @@
 <context>
     <name>Data::SyncthingDirectoryModel</name>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="105"/>
-        <location filename="../syncthingdirectorymodel.cpp" line="137"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="106"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="138"/>
         <source>ID</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="107"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="108"/>
         <source>Status</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="139"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="140"/>
         <source>Path</source>
         <translation>Pfad</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="149"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="150"/>
         <source>Rescan interval</source>
         <translation>Scanintervall</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="151"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="152"/>
         <source>Last scan</source>
         <translation>Letzter Scan</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="153"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="154"/>
         <source>Last file</source>
         <translation>Letzte Datei</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="155"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="156"/>
         <source>Out of Sync items</source>
         <translation>Nicht synchronisiert Elemente</translation>
     </message>
     <message numerus="yes">
-        <location filename="../syncthingdirectorymodel.cpp" line="195"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="196"/>
         <source>%1 item(s), ~ %2</source>
         <translation>
             <numerusform>%1 Element, ~ %2</numerusform>
@@ -268,7 +268,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../syncthingdirectorymodel.cpp" line="206"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="207"/>
         <source>%1 item(s)</source>
         <translation>
             <numerusform>%1 Element</numerusform>
@@ -276,7 +276,7 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../syncthingdirectorymodel.cpp" line="208"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="209"/>
         <source>%1 and %2 item(s)</source>
         <translation>
             <numerusform>%1 und %2 Element</numerusform>
@@ -284,17 +284,17 @@
         </translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="403"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="404"/>
         <source>Override remote changes</source>
         <translation>Änderungen auf anderen Geräten überschreiben</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="406"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="407"/>
         <source>Revert local changes</source>
         <translation>Lokale Änderungen zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="420"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="421"/>
         <source>On SD card</source>
         <translation>Auf SD-Karte</translation>
     </message>
@@ -303,13 +303,13 @@
         <translation type="vanished">Fehler</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="180"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="181"/>
         <source>not shared</source>
         <translation>nicht geteilt</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="187"/>
-        <location filename="../syncthingdirectorymodel.cpp" line="190"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="188"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="191"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
@@ -349,8 +349,8 @@
         <translation type="vanished">Nicht synchronisiert</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="193"/>
-        <location filename="../syncthingdirectorymodel.cpp" line="200"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="194"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="201"/>
         <source>none</source>
         <translation>keine</translation>
     </message>
@@ -362,23 +362,23 @@
         </translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="287"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="288"/>
         <source>Deleted at %1</source>
         <translation>Gelöscht am %1</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="290"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="291"/>
         <source>Updated at %1</source>
         <translation>Aktualisiert am %1</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="303"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="304"/>
         <source>Click for details</source>
         <translation>Für details klicken</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="157"/>
-        <location filename="../syncthingdirectorymodel.cpp" line="302"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="158"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="303"/>
         <source>Failed items</source>
         <translation>Fehlgeschlagene Elemente</translation>
     </message>
@@ -395,22 +395,22 @@
         <translation type="vanished">Nicht geteilt</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="141"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="142"/>
         <source>Global status</source>
         <translation>Globaler status</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="143"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="144"/>
         <source>Local status</source>
         <translation>Lokaler status</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="145"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="146"/>
         <source>Shared with</source>
         <translation>Geteilt mit</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="147"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="148"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>

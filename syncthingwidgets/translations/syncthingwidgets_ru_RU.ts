@@ -1650,226 +1650,236 @@
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="43"/>
+        <source>Block Indexing</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DirConfigPage.qml" line="43"/>
+        <source>Maintain an index of all blocks in the folder, enabling reuse of blocks from other files when syncing changes. Disable to reduce database size at the cost of not being able to reuse blocks across files.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DirConfigPage.qml" line="44"/>
         <source>Ignore Permissions</source>
         <translation>Игнорировать разрешения</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="43"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="44"/>
         <source>Disables comparing and syncing file permissions. Useful on systems with nonexistent or custom permissions (e.g. FAT, exFAT, Synology, Android).</source>
         <translation>Отключает сравнение и синхронизацию прав доступа к файлам. Полезно в системах с несуществующими или настраиваемыми правами доступа (например, FAT, exFAT, Synology, Android).</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="44"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="45"/>
         <source>Sync Ownership</source>
         <translation>Синхронизация права собственности</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="44"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="45"/>
         <source>Enables sending ownership information to other devices, and applying incoming ownership information. Typically requires running with elevated privileges.</source>
         <translation>Позволяет отправлять информацию о владельце на другие устройства и применять полученную информацию. Обычно требует запуска с повышенными привилегиями.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="45"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="46"/>
         <source>Send Ownership</source>
         <translation>Отправить право собственности</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="45"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="46"/>
         <source>Enables sending ownership information to other devices, but not applying incoming ownership information. This can have a significant performance impact. Always enabled when &quot;Sync Ownership&quot; is enabled.</source>
         <translation>Позволяет отправлять информацию о владельце на другие устройства, но не применять входящую информацию о владельце. Это может существенно повлиять на производительность. Всегда включено, если включена функция «Синхронизация владения».</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="46"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="47"/>
         <source>Sync Extended Attributes</source>
         <translation>Синхронизировать расширенные атрибуты</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="46"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="47"/>
         <source>Enables sending extended attributes to other devices, and applying incoming extended attributes. May require running with elevated privileges.</source>
         <translation>Позволяет отправлять расширенные атрибуты другим устройствам и применять входящие расширенные атрибуты. Может потребоваться запуск с повышенными привилегиями.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="47"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="48"/>
         <source>Send Extended Attributes</source>
         <translation>Отправить расширенные атрибуты</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="47"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="48"/>
         <source>Enables sending extended attributes to other devices, but not applying incoming extended attributes. This can have a significant performance impact. Always enabled when &quot;Sync Extended Attributes&quot; is enabled.</source>
         <translation>Позволяет отправлять расширенные атрибуты другим устройствам, но не применять входящие расширенные атрибуты. Это может существенно повлиять на производительность. Всегда включено, если включен параметр «Синхронизировать расширенные атрибуты».</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="51"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="52"/>
         <source>There are different &lt;i&gt;versioning strategies&lt;/i&gt; to choose from. Open the selection and go through the options for details on the individual versioning strategies.</source>
         <translation>Вы можете выбрать из различных &lt;i&gt;стратегий управления версиями&lt;/i&gt;. Откройте выбранные варианты и просмотрите их, чтобы узнать подробности об отдельных стратегиях управления версиями.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="51"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="52"/>
         <source>Versioning Strategy</source>
         <translation>Стратегия версионирования</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="52"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="53"/>
         <source>File versioning is not going to be used.</source>
         <translation>Управление версиями файлов использоваться не будет.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="53"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="54"/>
         <source>Files are moved to .stversions directory when replaced or deleted by Syncthing.</source>
         <translation>При замене или удалении с помощью Syncthing файлы перемещаются в каталог .stversions.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="54"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="55"/>
         <source>Files are moved to date stamped versions in a .stversions directory when replaced or deleted by Syncthing.</source>
         <translation>При замене или удалении с помощью Syncthing файлы перемещаются в версии с отметкой даты в каталоге .stversions.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="55"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="56"/>
         <source>&lt;p&gt;Files are moved to date stamped versions in a .stversions directory when replaced or deleted by Syncthing. Versions are automatically deleted if they are older than the maximum age or exceed the number of files allowed in an interval.&lt;/p&gt;&lt;p&gt;The following intervals are used: for the first hour a version is kept every 30 seconds, for the first day a version is kept every hour, for the first 30 days a version is kept every day, until the maximum age a version is kept every week.&lt;/p&gt;</source>
         <translation>&lt;p&gt;При замене или удалении с помощью Syncthing файлы перемещаются в каталог .stversions с отметкой даты. Версии автоматически удаляются, если они старше максимального возраста или превышают количество файлов, разрешённое для данного интервала.&lt;/p&gt;&lt;p&gt;Используются следующие интервалы: в течение первого часа версия сохраняется каждые 30 секунд, в течение первого дня версия сохраняется каждый час, в течение первых 30 дней версия сохраняется каждый день, до достижения максимального возраста версия сохраняется каждую неделю.&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="56"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="57"/>
         <source>An external command handles the versioning. It has to remove the file from the shared folder. If the path to the application contains spaces, it should be quoted.</source>
         <translation>Внешняя команда управляет версиями. Она должна удалить файл из общей папки. Если путь к приложению содержит пробелы, его следует заключить в кавычки.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="58"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="59"/>
         <source>Versions Path</source>
         <translation>Путь к версиям</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="58"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="59"/>
         <source>Path where versions should be stored (leave empty for the default .stversions directory in the shared folder).</source>
         <translation>Путь, по которому следует хранить версии (оставьте пустым для каталога по умолчанию .stversions в общей папке).</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="59"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="60"/>
         <source>Filesystem Type</source>
         <translation>Тип файловой системы</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="59"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="60"/>
         <source>The internal file system implementation used to access this versions folder.</source>
         <translation>Реализация внутренней файловой системы, используемая для доступа к этой папке версий.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="60"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="61"/>
         <source>Cleanup Interval in seconds</source>
         <translation>Интервал очистки в секундах</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="60"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="61"/>
         <source>The interval, in seconds, for running cleanup in the versions directory. Zero to disable periodic cleaning.</source>
         <translation>Интервал (в секундах) для запуска очистки каталога версий. Ноль отключает периодическую очистку.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="61"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="62"/>
         <source>Additional parameters</source>
         <translation>Дополнительные параметры</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="64"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="65"/>
         <source>Clean Out After</source>
         <translation>Очистка после</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="64"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="65"/>
         <source>The number of days to keep files in the versions folder. Zero means to keep forever. Older elements encountered during cleanup are removed.</source>
         <translation>Количество дней хранения файлов в папке версий. Ноль означает вечное хранение. Старые элементы, обнаруженные при очистке, удаляются.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="65"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="66"/>
         <source>Keep Versions</source>
         <translation>Сохранять версии</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="65"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="66"/>
         <source>The number of old versions to keep, per file.</source>
         <translation>Количество старых версий, которые необходимо сохранить, для каждого файла.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="66"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="67"/>
         <source>Maximum Age</source>
         <translation>Максимальный возраст</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="66"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="67"/>
         <source>The maximum time to keep a version, in seconds. Zero means to keep forever.</source>
         <translation>Максимальное время хранения версии в секундах. Ноль означает, что версия будет храниться вечно.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="67"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="68"/>
         <source>Command</source>
         <translation>Команда</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="67"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="68"/>
         <source>External command to execute for storing a file version about to be replaced or deleted. If the path to the application contains spaces, it should be quoted.</source>
         <translation>Внешняя команда, выполняемая для сохранения версии файла, которая будет заменена или удалена. Если путь к приложению содержит пробелы, его следует заключить в кавычки.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="70"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="71"/>
         <source>Value</source>
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="70"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="71"/>
         <source>The minimum required free space that should be available on the disk this folder resides. The folder will be stopped when the value drops below the threshold. The value is interpreted according to the selected unit and can be set to zero to disable the check for minimum free space.</source>
         <translation>Минимально необходимое свободное пространство на диске, где находится эта папка. Папка будет остановлена, когда значение станет ниже порогового. Значение интерпретируется в соответствии с выбранными единицами измерения и может быть установлено равным нулю, чтобы отключить проверку минимального свободного места.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="71"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="72"/>
         <source>Unit</source>
         <translation>Единица</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="72"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="73"/>
         <source>Percent</source>
         <translation>Процент</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="72"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="73"/>
         <source>Percentage of the disk/volume size</source>
         <translation>Процент от размера диска/тома</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="73"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="74"/>
         <source>Kilobyte</source>
         <translation>Килобайт</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="73"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="74"/>
         <source>Absolute size in Kilobyte</source>
         <translation>Абсолютный размер в килобайтах</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="74"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="75"/>
         <source>Megabyte</source>
         <translation>Мегабайт</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="74"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="75"/>
         <source>Absolute size in Megabyte</source>
         <translation>Абсолютный размер в мегабайтах</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="75"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="76"/>
         <source>Gigabyte</source>
         <translation>Гигабайт</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="75"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="76"/>
         <source>Absolute size in Gigabyte</source>
         <translation>Абсолютный размер в гигабайтах</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="76"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="77"/>
         <source>Terrabyte</source>
         <translation>Терабайт</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="76"/>
+        <location filename="../quick/qml/DirConfigPage.qml" line="77"/>
         <source>Absolute size in Terrabyte</source>
         <translation>Абсолютный размер в терабайтах</translation>
     </message>
@@ -1943,22 +1953,26 @@
 <context>
     <name>DirListView</name>
     <message>
-        <location filename="../quick/qml/DirListView.qml" line="12"/>
+        <source>Misc</source>
+        <translation type="obsolete">Разное</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DirListView.qml" line="15"/>
         <source>Override changes on remote devices</source>
         <translation>Переопределить изменения на удаленных устройствах</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirListView.qml" line="12"/>
+        <location filename="../quick/qml/DirListView.qml" line="15"/>
         <source>Revert local changes</source>
         <translation>Отменить локальные изменения</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirListView.qml" line="17"/>
+        <location filename="../quick/qml/DirListView.qml" line="20"/>
         <source>Do you really want to override changes on remote devices within folder &quot;%1&quot;? This will mark the local version as the latest version causing changes on all remote devices to be overridden with the version from this device.</source>
         <translation>Вы действительно хотите переопределить изменения на удалённых устройствах в папке «%1»? Это отметит локальную версию как последнюю, и изменения на всех удалённых устройствах будут переопределены версией с этого устройства.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirListView.qml" line="18"/>
+        <location filename="../quick/qml/DirListView.qml" line="21"/>
         <source>Do you really want to revert the local changes on this device within folder &quot;%1&quot;? This will undo all local changes on this device.</source>
         <translation>Вы действительно хотите отменить локальные изменения на этом устройстве в папке «%1»? Это отменит все локальные изменения на этом устройстве.</translation>
     </message>

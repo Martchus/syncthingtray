@@ -199,68 +199,68 @@
 <context>
     <name>Data::SyncthingDirectoryModel</name>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="105"/>
-        <location filename="../syncthingdirectorymodel.cpp" line="137"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="106"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="138"/>
         <source>ID</source>
         <translation>ID</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="107"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="108"/>
         <source>Status</source>
         <translation>状态</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="139"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="140"/>
         <source>Path</source>
         <translation>路径</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="141"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="142"/>
         <source>Global status</source>
         <translation>全局状态</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="143"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="144"/>
         <source>Local status</source>
         <translation>本地状态</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="145"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="146"/>
         <source>Shared with</source>
         <translation>分享到</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="147"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="148"/>
         <source>Type</source>
         <translation>类型</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="149"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="150"/>
         <source>Rescan interval</source>
         <translation>重新扫描间隔</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="151"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="152"/>
         <source>Last scan</source>
         <translation>最后扫描</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="153"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="154"/>
         <source>Last file</source>
         <translation>最后更改</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="403"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="404"/>
         <source>Override remote changes</source>
         <translation>覆盖远程更改</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="406"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="407"/>
         <source>Revert local changes</source>
         <translation>还原本地更改</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="420"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="421"/>
         <source>On SD card</source>
         <translation>在 SD 卡上</translation>
     </message>
@@ -269,19 +269,19 @@
         <translation type="vanished">错误</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="180"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="181"/>
         <source>not shared</source>
         <translation>未分享</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="187"/>
-        <location filename="../syncthingdirectorymodel.cpp" line="190"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="188"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="191"/>
         <source>unknown</source>
         <translation>未知</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="193"/>
-        <location filename="../syncthingdirectorymodel.cpp" line="200"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="194"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="201"/>
         <source>none</source>
         <translation>无</translation>
     </message>
@@ -298,49 +298,49 @@
         </translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="287"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="288"/>
         <source>Deleted at %1</source>
         <translation>于 %1 被删除</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="290"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="291"/>
         <source>Updated at %1</source>
         <translation>于 %1 更新</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="157"/>
-        <location filename="../syncthingdirectorymodel.cpp" line="302"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="158"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="303"/>
         <source>Failed items</source>
         <translation>已失败项目</translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="155"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="156"/>
         <source>Out of Sync items</source>
         <translation>未同步的项目</translation>
     </message>
     <message numerus="yes">
-        <location filename="../syncthingdirectorymodel.cpp" line="195"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="196"/>
         <source>%1 item(s), ~ %2</source>
         <translation>
             <numerusform>%1 个项目， ~ %2</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../syncthingdirectorymodel.cpp" line="206"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="207"/>
         <source>%1 item(s)</source>
         <translation>
             <numerusform>%1 个项目</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../syncthingdirectorymodel.cpp" line="208"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="209"/>
         <source>%1 and %2 item(s)</source>
         <translation>
             <numerusform>%1 和 %2 个项目</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../syncthingdirectorymodel.cpp" line="303"/>
+        <location filename="../syncthingdirectorymodel.cpp" line="304"/>
         <source>Click for details</source>
         <translation>点击以获取详情</translation>
     </message>
