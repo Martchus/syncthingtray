@@ -130,7 +130,7 @@ App::App(bool insecure, QQmlEngine *engine, QObject *parent)
     }
 
 #ifdef Q_OS_ANDROID
-    QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("onNativeReady", QLocale().bcp47Name());
+    QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<void>("onNativeReady");
 #endif
 
     initEngine();

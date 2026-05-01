@@ -70,7 +70,6 @@ public class Activity extends QtActivity {
     private android.content.pm.ActivityInfo m_info;
     private String m_showPage = null;
     private boolean m_showFromNotification = false;
-    private String m_locale = "";
 
     // fields for communicating with service
     private Messenger m_service = null;
@@ -308,13 +307,8 @@ public class Activity extends QtActivity {
         return Util.getAbsolutePathFromStorageAccessFrameworkUri(this, Uri.parse(uri));
     }
 
-    public void setLocale(String locale) {
-        m_locale = locale;
-    }
-
     public void startSyncthingService() {
         Intent intent = new Intent(this, SyncthingService.class);
-        intent.putExtra("locale", m_locale);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(intent);
         } else {
@@ -493,8 +487,7 @@ public class Activity extends QtActivity {
         super.onStart();
     }
 
-    public void onNativeReady(String locale) {
-        m_locale = locale;
+    public void onNativeReady() {
         startSyncthingService();
         connectToService();
     }

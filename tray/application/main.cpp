@@ -367,11 +367,7 @@ static int runApplication(int argc, const char *const *argv)
         auto guiApp = QGuiApplication(argc, const_cast<char **>(argv)); // need GUI app for using QIcon and such
 #endif
 
-        // initialize default locale as Qt does not seem to do this for the QAndroidService process
-        const auto localeName = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jstring>("getLocale").toString();
-        const auto locale = QLocale(localeName);
-        QLocale::setDefault(locale);
-        qDebug() << "Qt locale (service): " << locale;
+        qDebug() << "Qt locale (service): " << QLocale();
         LOAD_QT_TRANSLATIONS;
 
         auto serviceApp = AppService(insecureArg.isPresent());
