@@ -34,6 +34,15 @@ ColumnLayout {
         contentItem: TopLevelView {
             id: directoryView
             model: plasmoid.models.sortFilterDirModel
+            section.property: "group"
+            section.delegate: PlasmaComponents3.Label {
+                width: parent.width
+                text: section
+                elide: Text.ElideRight
+                font.weight: Font.Medium
+                wrapMode: Text.WordWrap
+                required property string section
+            }
 
             delegate: TopLevelItem {
                 id: item
