@@ -35,13 +35,19 @@ ColumnLayout {
             id: directoryView
             model: plasmoid.models.sortFilterDirModel
             section.property: "group"
-            section.delegate: PlasmaComponents3.Label {
+            section.delegate: RowLayout {
+                spacing: 10
                 width: parent.width
-                text: section
-                elide: Text.ElideRight
-                font.weight: Font.Medium
-                wrapMode: Text.WordWrap
                 required property string section
+                PlasmaComponents3.Label {
+                    Layout.fillWidth: true
+                    Layout.topMargin: 10
+                    Layout.bottomMargin: 3
+                    text: parent.section
+                    elide: Text.ElideRight
+                    font.weight: Font.Medium
+                    wrapMode: Text.WordWrap
+                }
             }
 
             delegate: TopLevelItem {
