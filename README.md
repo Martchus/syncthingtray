@@ -82,7 +82,11 @@ contains further information and workarounds for certain platform-specific issue
 Wayland.
 
 ## Features
-* Provides quick access to the most used features but does not intend to replace the official web-based UI
+This section lists the most important features. Most features are optional and configurable. Some features are
+platform-dependent.
+
+* Tray icon displaying the overall status of Syncthing
+* Quick access to the most used features but no full replacement of the official web-based UI
     * Check state of folders and devices
     * Check current traffic statistics
     * Display further details about folders and devices, such as last file, last
@@ -94,35 +98,32 @@ Wayland.
     * Pause/resume a specific device or all devices
     * Pause/resume a specific folder
     * View recent history of changes (done locally and remotely)
-* Shows "desktop" notifications
-    * The events for which to show notifications can be configured
-    * Uses Qt's notification support or a D-Bus notification daemon directly
-* Provides a wizard for a quick setup
-* Allows monitoring the status of the Syncthing systemd unit and starting and stopping it (see section
-  "[Configuring systemd integration](#configuring-systemd-integration)")
-* Provides an option to add the tray to the applications launched when the desktop environment starts
-* Can launch Syncthing automatically on startup and display stdout/stderr (useful under Windows)
-* Browsing the global file tree and selecting items to add to ignore patterns.
-* Provides quick access to the official web-based UI
+* Notifications for various events
+* Wizard for a quick setup
+* Autostart configuration
+* [Launcher](#does-this-launch-or-bundle-syncthing-itself-what-about-my-existing-syncthing-installation) for Syncthing
+* [Systemd integration](#configuring-systemd-integration)
+* Suspending synchronization while the network connection is metered
+* Browser for the global file tree and selecting items to add to ignore patterns
+* Quick access to the official web-based UI
     * Can be opened as regular browser tab
     * Can be opened in a dedicated window using either
         * Qt WebEngine/WebKit
         * the "app mode" of a Chromium-based browser (e.g. Chrome and Edge)
-* Allows switching quickly between multiple Syncthing instances
-* Also features a simple command line utility `syncthingctl`
+* Switching quickly between multiple Syncthing instances; monitoring multiple Syncthing instances
+* App for running Syncthing under Android
+* Simple command line utility `syncthingctl` complementing the official CLI of Syncthing
     * Check status
     * Trigger rescan/pause/resume/restart
     * Wait for idle
     * View and modify raw configuration
-    * Supports Bash completion, even for folder and device names
-* Also bundles a KIO plugin which shows the status of a Syncthing folder and allows to trigger Syncthing actions
-  in the Dolphin file manager
+    * Bash completion with support for folder and device names
+* KIO plugin for the Dolphin file manager
     * Rescan selected items
     * Rescan entire Syncthing folder
     * Pause/resume Syncthing folder
     * See also the [screenshots](docs/screenshots.md#syncthing-actions-for-dolphin)
-* Allows building Syncthing as a library to run it in the same process as the tray/GUI
-* English and German localization
+* Building Syncthing as a library to run it in the same process as the tray/GUI
 
 ## Does this launch or bundle Syncthing itself? What about my existing Syncthing installation?
 Syncthing Tray does *not* launch Syncthing itself by default. There should be no interference with your existing
