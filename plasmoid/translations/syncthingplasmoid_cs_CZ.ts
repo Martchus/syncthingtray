@@ -49,59 +49,59 @@
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="83"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="85"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="100"/>
         <source>Show errors</source>
         <translation>Zobrazit chyby</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="94"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="163"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="96"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="165"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="111"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="180"/>
         <source>Rescan</source>
         <translation>Znovu proskenovat</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="102"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="104"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="119"/>
         <source>Resume</source>
         <translation>Pokračovat</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="102"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="170"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="104"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="172"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="119"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="187"/>
         <source>Pause</source>
         <translation>Pozastavit</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="112"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="177"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="114"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="179"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="129"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="194"/>
         <source>Open in file browser</source>
         <translation>Otevřít ve správci souborů</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="149"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="151"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="166"/>
         <source>Copy label/ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="154"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="156"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="171"/>
         <source>Copy path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="186"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="201"/>
         <source>Browse remote files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="193"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="208"/>
         <source>Show/edit ignore patterns</source>
         <translation type="unfinished"></translation>
     </message>
