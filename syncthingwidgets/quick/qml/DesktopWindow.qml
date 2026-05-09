@@ -156,7 +156,6 @@ ApplicationWindow {
                 Layout.fillHeight: true
                 anchors.fill: null
                 clip: true
-                mainModel: SyncthingModels.sortFilterDirModel
                 stackView: null
             }
         }
@@ -176,7 +175,7 @@ ApplicationWindow {
                 Layout.fillHeight: true
                 anchors.fill: null
                 clip: true
-                mainModel: SyncthingModels.sortFilterDevModel
+                model: SyncthingModels.sortFilterDevModel
                 stackView: null
             }
         }

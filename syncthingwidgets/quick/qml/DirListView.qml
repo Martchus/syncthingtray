@@ -4,8 +4,9 @@ import QtQuick.Controls.Material
 
 ExpandableListView {
     id: mainView
-    model: DirDelegate {
-        mainView: mainView
+    model: SyncthingModels.sortFilterDirModel
+    delegate: DirDelegate {
+        mainView: parent
     }
     section.property: "group"
     section.delegate: SectionHeader {

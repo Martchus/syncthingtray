@@ -15,7 +15,7 @@ StackView {
         Layout.fillHeight: true
         DevListView {
             id: devsListView
-            mainModel: SyncthingModels.sortFilterDevModel
+            model: SyncthingModels.sortFilterDevModel
             stackView: stackView
         }
         property list<Action> actions: [
@@ -37,7 +37,7 @@ StackView {
                 onTriggered: SyncthingData.connection.resumeAllDevs()
             }
         ]
-        property alias model: devsListView.mainModel
+        property alias model: devsListView.model
     }
     function add(deviceId = "", deviceName = "") {
         stackView.push("DevConfigPage.qml", {devId: deviceId, devName: deviceName, existing: false, stackView: stackView}, StackView.PushTransition);

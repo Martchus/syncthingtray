@@ -21,8 +21,8 @@ ListView {
     }
 
     model: DelegateModel {
-        model: mainView.mainModel
-        rootIndex: mainView.mainModel?.index(modelData.index, 0)
+        model: mainView.model
+        rootIndex: mainView.model?.index(modelData.index, 0)
         delegate: Item {
             id: detailItem
             width: detailsView.width

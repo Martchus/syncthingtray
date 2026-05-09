@@ -15,7 +15,6 @@ StackView {
         Layout.fillHeight: true
         DirListView {
             id: dirsListView
-            mainModel: SyncthingModels.sortFilterDirModel
             stackView: stackView
         }
         property list<Action> actions: [
@@ -42,7 +41,7 @@ StackView {
                 onTriggered: SyncthingData.connection.rescanAllDirs()
             }
         ]
-        property alias model: dirsListView.mainModel
+        property alias model: dirsListView.model
     }
     function add(dirId = "", dirName = "", shareWithDeviceIds = [], existing = false) {
         stackView.push("DirConfigPage.qml", {dirId: dirId, dirName: dirName, shareWithDeviceIds: shareWithDeviceIds ?? [], existing: existing, stackView: stackView}, StackView.PushTransition);

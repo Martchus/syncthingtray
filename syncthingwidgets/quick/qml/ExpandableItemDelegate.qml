@@ -113,7 +113,7 @@ ItemDelegate {
     }
 
     required property var modelData
-    required property ListView mainView
+    required property var mainView
     readonly property bool breakpoint: mainView.width > 500
     property alias statusIconWidth: statusIcon.width
     property list<Action> actions

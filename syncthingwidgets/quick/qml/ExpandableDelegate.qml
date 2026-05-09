@@ -3,7 +3,7 @@ import QtQuick.Controls.Material
 
 DelegateModel {
     id: mainDelegateModel
-    model: mainView.mainModel
+    model: mainView.model
     delegate: ExpandableItemDelegate {
         mainView: mainDelegateModel.mainView
     }
