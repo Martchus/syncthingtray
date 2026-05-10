@@ -46,8 +46,7 @@ set(META_HAS_QUICK_GUI ON)
 set(TS_FILES
     translations/${META_PROJECT_NAME}_zh_CN.ts translations/${META_PROJECT_NAME}_cs_CZ.ts
     translations/${META_PROJECT_NAME}_de_DE.ts translations/${META_PROJECT_NAME}_ru_RU.ts
-    translations/${META_PROJECT_NAME}_fr_FR.ts
-    translations/${META_PROJECT_NAME}_en_US.ts)
+    translations/${META_PROJECT_NAME}_fr_FR.ts translations/${META_PROJECT_NAME}_en_US.ts)
 
 set(ICON_FILES resources/icons/hicolor/scalable/apps/${META_PROJECT_NAME}.svg)
 
