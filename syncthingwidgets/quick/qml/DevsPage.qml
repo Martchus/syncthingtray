@@ -15,7 +15,6 @@ StackView {
         Layout.fillHeight: true
         DevListView {
             id: devsListView
-            mainModel: SyncthingModels.sortFilterDevModel
             stackView: stackView
         }
         property list<Action> actions: [

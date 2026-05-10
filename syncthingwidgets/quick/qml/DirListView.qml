@@ -4,6 +4,7 @@ import QtQuick.Controls.Material
 
 ExpandableListView {
     id: mainView
+    mainModel: SyncthingModels.sortFilterDirModel
     model: DirDelegate {
         mainView: mainView
     }

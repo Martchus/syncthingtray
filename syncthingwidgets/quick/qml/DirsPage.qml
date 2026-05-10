@@ -15,7 +15,6 @@ StackView {
         Layout.fillHeight: true
         DirListView {
             id: dirsListView
-            mainModel: SyncthingModels.sortFilterDirModel
             stackView: stackView
         }
         property list<Action> actions: [
