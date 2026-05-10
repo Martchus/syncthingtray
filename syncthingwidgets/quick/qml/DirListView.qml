@@ -8,8 +8,9 @@ ExpandableListView {
         mainView: mainView
     }
     section.property: "group"
-    section.delegate: SectionHeader {
+    section.delegate: DynamicSectionHeader {
     }
+
     CustomDialog {
         id: confirmDirActionDlg
         title: isOverrideAction ? qsTr("Override changes on remote devices") : qsTr("Revert local changes")

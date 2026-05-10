@@ -115,6 +115,7 @@ set(QML_MAIN_FILES
     quick/qml/DirListView.qml
     quick/qml/DirErrorsPage.qml
     quick/qml/DirsPage.qml
+    quick/qml/DynamicSectionHeader.qml
     quick/qml/EditTextFieldDialog.qml
     quick/qml/ErrorsDelegate.qml
     quick/qml/ErrorsPage.qml
@@ -152,6 +153,7 @@ set(QML_MAIN_FILES
     quick/qml/Statistics.qml
     quick/qml/StatisticsPage.qml
     quick/qml/SectionHeader.qml
+    quick/qml/SectionLabel.qml
     quick/qml/Theming.qml)
 list(APPEND EXCLUDED_FILES ${QML_MAIN_FILES} quick/qml/WebViewPage.qml quick/qml/webview-webview/WebViewItem.qml
      quick/qml/webview-none/WebViewItem.qml)
