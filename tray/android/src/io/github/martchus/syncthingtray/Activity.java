@@ -139,7 +139,7 @@ public class Activity extends QtActivity {
         try {
             m_service.send(SyncthingService.obtainMessageWithBundle(what, arg1, arg2, SyncthingService.bundleString(str)));
         } catch (RemoteException e) {
-            showToast("Unable to send message to background service: " + e.getMessage());
+            showToast(getString(R.string.unable_to_send_message_to_background_service, e.getMessage()));
         }
     }
 
@@ -205,7 +205,7 @@ public class Activity extends QtActivity {
                 m_storagePermissionRequested = true;
                 return true;
             } catch (ActivityNotFoundException ignored) {
-                showToast("Unable to request storage permission.");
+                showToast(getString(R.string.unable_to_request_storage_permission));
             }
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_REQUEST);
@@ -229,7 +229,7 @@ public class Activity extends QtActivity {
             m_notificationPermissionRequested = true;
             return true;
         } catch (ActivityNotFoundException ignored) {
-            showToast("Unable to request notification permission.");
+            showToast(getString(R.string.unable_to_request_notification_permission));
             return false;
         }
     }
@@ -296,10 +296,10 @@ public class Activity extends QtActivity {
     public boolean scanPath(String path) {
         MediaScannerConnection.scanFile(this, new String[]{path}, null, new MediaScannerConnection.OnScanCompletedListener() {
             public void onScanCompleted(String path, Uri uri) {
-                showToast("Rescan of " + path + " completed");
+                showToast(getString(R.string.rescan_of_s_completed, path));
             }
         });
-        showToast("Triggered rescan of " + path);
+        showToast(getString(R.string.triggered_rescan_of_s, path));
         return true;
     }
 

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="unable_to_send_message_to_background_service">Unable to send message to background service: %s</string>
+    <string name="unable_to_request_storage_permission">Unable to request storage permission.</string>
+    <string name="unable_to_request_notification_permission">Unable to request notification permission.</string>
+    <string name="rescan_of_s_completed">Rescan of %s completed</string>
+    <string name="triggered_rescan_of_s">Triggered rescan of %s</string>
+</resources>

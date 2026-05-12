@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="shutdown">Shutdown</string>
+    <string name="unable_restart_foreground_service">Unable restart foreground service to run Syncthing while app is in background. Click to start Syncthing app again.</string>
+    <string name="initializing">Initializing …</string>
+    <string name="syncthing">Syncthing</string>
+</resources>

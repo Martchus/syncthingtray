@@ -1,0 +1,6 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="shutdown">Herunterfahren</string>
+    <string name="unable_restart_foreground_service">Der Vordergrunddienst konnte nicht neu gestartet werden, um Syncthing auszuführen, während sich die App im Hintergrund befindet. Tippe hier, um die Syncthing-App erneut zu starten.</string>
+    <string name="initializing">Initialisiere …</string>
+</resources>

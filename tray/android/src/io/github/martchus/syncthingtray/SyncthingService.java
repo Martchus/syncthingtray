@@ -46,8 +46,8 @@ public class SyncthingService extends QtService {
     private Notification.Builder m_notificationBuilder;
     private Notification.Builder m_extraNotificationBuilder;
     private Notification m_notification;
-    private static String s_notificationTitle = "Syncthing";
-    private static String s_notificationText = "Initializing …";
+    private static String s_notificationTitle = "";
+    private static String s_notificationText = "";
     private static String s_notificationSubText = "";
     private static Bitmap s_notificationIcon = null;
 
@@ -145,6 +145,9 @@ public class SyncthingService extends QtService {
     }
     
     private void initializeNotificationManagement()  {
+        s_notificationTitle = getString(R.string.syncthing);
+        s_notificationText = getString(R.string.initializing);
+
         if (m_notificationManager != null) {
             return;
         }
@@ -187,7 +190,7 @@ public class SyncthingService extends QtService {
             .setOngoing(true)
             .setOnlyAlertOnce(true)
             .setContentIntent(PendingIntent.getActivity(this, s_activityIntentRequestCode, m_notificationContentIntent, PendingIntent.FLAG_IMMUTABLE))
-            .addAction((new Notification.Action.Builder(null, "Shutdown", PendingIntent.getService(this, s_serviceIntentRequestCode, m_shutdownIntent, PendingIntent.FLAG_IMMUTABLE)).build()))
+            .addAction((new Notification.Action.Builder(null, getString(R.string.shutdown), PendingIntent.getService(this, s_serviceIntentRequestCode, m_shutdownIntent, PendingIntent.FLAG_IMMUTABLE)).build()))
             .setPriority(Notification.PRIORITY_DEFAULT)
             .setDefaults(Notification.DEFAULT_SOUND)
             .setCategory(Notification.CATEGORY_SERVICE)
@@ -342,7 +345,7 @@ public class SyncthingService extends QtService {
         } catch (ForegroundServiceStartNotAllowedException e) {
             updateExtraNotification(
                 s_notificationTitle,
-                "Unable restart foreground service to run Syncthing while app is in background. Click to start Syncthing app again.",
+                getString(R.string.unable_restart_foreground_service),
                 "",
                 "",
                 null,
