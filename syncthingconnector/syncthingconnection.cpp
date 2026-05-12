@@ -1181,7 +1181,7 @@ bool SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
     setDiskEventLimit(connectionSettings.diskEventLimit);
     setStatusComputionFlags(connectionSettings.statusComputionFlags);
     if (setForceSuspendEnabled(connectionSettings.forceSuspend, true)
-        | setPausingOnMeteredConnection(connectionSettings.pauseOnMeteredConnection, true)) {
+        || setPausingOnMeteredConnection(connectionSettings.pauseOnMeteredConnection, true)) {
         handleMeteredConnection();
     }
 
