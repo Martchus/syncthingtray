@@ -31,7 +31,7 @@ echo '==> Updating CMakeLists.txt'
 sed -i -e "s|^\(set(META_SYNCTHING_VERSION \"\(.*\)\")\).*$|set(META_SYNCTHING_VERSION \"$latest_tag\")|" "$libsyncthingdir/CMakeLists.txt"
 
 echo '==> Rebasing libsyncthing'
-if git -C "$syncthingrepodir" rev-parse --verify "libsyncthing-$latest_tag" > /dev/null; then
+if git -C "$syncthingrepodir" rev-parse --verify "libsyncthing-$latest_tag" 2> /dev/null; then
     echo "Nothing to do: A libsyncthing branch \"libsyncthing-$latest_tag\" for the latest release already exists."
     exit 0
 fi
