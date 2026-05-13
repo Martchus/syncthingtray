@@ -49,59 +49,59 @@
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="83"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="100"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="99"/>
         <source>Show errors</source>
         <translation>Показать ошибки</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="94"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="163"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="111"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="180"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="110"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="179"/>
         <source>Rescan</source>
         <translation>Повторное сканирование</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="102"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="119"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="118"/>
         <source>Resume</source>
         <translation>Продолжить</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="102"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="170"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="119"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="187"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="118"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="186"/>
         <source>Pause</source>
         <translation>Пауза</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="112"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="177"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="129"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="194"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="128"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="193"/>
         <source>Open in file browser</source>
         <translation>Открыть в файловом браузере</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="149"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="166"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="165"/>
         <source>Copy label/ID</source>
         <translation>Копировать этикетку/ID</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="154"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="171"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="170"/>
         <source>Copy path</source>
         <translation>Копировать путь</translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="201"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="200"/>
         <source>Browse remote files</source>
         <translation>Просмотр удаленных файлов</translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="208"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="207"/>
         <source>Show/edit ignore patterns</source>
         <translation>Показать/редактировать шаблоны игнорирования</translation>
     </message>

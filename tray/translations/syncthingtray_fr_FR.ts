@@ -5,16 +5,16 @@
     <name>QtGui::App</name>
     <message numerus="yes">
         <source>There are %n notification(s)/error(s).</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Il y a %n notification/erreur.</numerusform>
             <numerusform>Il y a %n notifications/erreurs.</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>There are %n Syncthing API error(s).</source>
-        <translation>
-            <numerusform>Il y a %n erreur d'API Syncthing.</numerusform>
-            <numerusform>Il y a %n erreurs d'API Syncthing.</numerusform>
+        <translation type="vanished">
+            <numerusform>Il y a %n erreur d&apos;API Syncthing.</numerusform>
+            <numerusform>Il y a %n erreurs d&apos;API Syncthing.</numerusform>
         </translation>
     </message>
 </context>
@@ -22,16 +22,16 @@
     <name>QtGui::AppBase</name>
     <message numerus="yes">
         <source>There are %n notification(s)/error(s).</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Il y a %n notification/erreur.</numerusform>
             <numerusform>Il y a %n notifications/erreurs.</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <source>There are %n Syncthing API error(s).</source>
-        <translation>
-            <numerusform>Il y a %n erreur d'API Syncthing.</numerusform>
-            <numerusform>Il y a %n erreurs d'API Syncthing.</numerusform>
+        <translation type="vanished">
+            <numerusform>Il y a %n erreur d&apos;API Syncthing.</numerusform>
+            <numerusform>Il y a %n erreurs d&apos;API Syncthing.</numerusform>
         </translation>
     </message>
 </context>
@@ -50,7 +50,7 @@
     <message>
         <location filename="../gui/devview.cpp" line="74"/>
         <source>Copy ID</source>
-        <translation>Copier l'ID</translation>
+        <translation>Copier l&apos;ID</translation>
     </message>
     <message>
         <location filename="../gui/devview.cpp" line="80"/>
@@ -73,7 +73,7 @@
     <message>
         <location filename="../gui/dirview.cpp" line="83"/>
         <source>Copy label/ID</source>
-        <translation>Copier l'étiquette/ID</translation>
+        <translation>Copier l&apos;étiquette/ID</translation>
     </message>
     <message>
         <location filename="../gui/dirview.cpp" line="86"/>
@@ -108,7 +108,7 @@
     <message>
         <location filename="../gui/dirview.cpp" line="111"/>
         <source>Show/edit ignore patterns</source>
-        <translation>Afficher/modifier les modèles d'exclusion</translation>
+        <translation>Afficher/modifier les modèles d&apos;exclusion</translation>
     </message>
 </context>
 <context>
@@ -121,7 +121,7 @@
     <message>
         <location filename="../gui/downloadview.cpp" line="72"/>
         <source>Copy label/ID</source>
-        <translation>Copier l'étiquette/ID</translation>
+        <translation>Copier l&apos;étiquette/ID</translation>
     </message>
     <message>
         <location filename="../gui/downloadview.cpp" line="76"/>
@@ -189,12 +189,12 @@
     <message>
         <location filename="../gui/trayicon.cpp" line="281"/>
         <source>Syncthing device wants to connect - click for web UI</source>
-        <translation>Un appareil Syncthing veut se connecter - cliquer pour l'interface Web</translation>
+        <translation>Un appareil Syncthing veut se connecter - cliquer pour l&apos;interface Web</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="298"/>
         <source>New Syncthing folder - click for web UI</source>
-        <translation>Nouveau dossier Syncthing - cliquer pour l'interface Web</translation>
+        <translation>Nouveau dossier Syncthing - cliquer pour l&apos;interface Web</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="313"/>
@@ -342,7 +342,7 @@ Pour &lt;i&gt;toutes&lt;/i&gt; les notifications, consultez le journal</translat
     <message>
         <location filename="../gui/traywidget.cpp" line="150"/>
         <source>View own device ID</source>
-        <translation>Voir l'ID de cet appareil</translation>
+        <translation>Voir l&apos;ID de cet appareil</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="155"/>
@@ -397,7 +397,7 @@ Pour &lt;i&gt;toutes&lt;/i&gt; les notifications, consultez le journal</translat
     <message>
         <location filename="../gui/traywidget.cpp" line="542"/>
         <source>Unable to establish connection to Syncthing.</source>
-        <translation>Impossible d'établir la connexion à Syncthing.</translation>
+        <translation>Impossible d&apos;établir la connexion à Syncthing.</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="551"/>
@@ -407,7 +407,7 @@ Pour &lt;i&gt;toutes&lt;/i&gt; les notifications, consultez le journal</translat
     <message>
         <location filename="../gui/traywidget.cpp" line="552"/>
         <source>Syncthing is running, click to pause all devices</source>
-        <translation>Syncthing est en cours d'exécution, cliquer pour mettre tous les appareils en pause</translation>
+        <translation>Syncthing est en cours d&apos;exécution, cliquer pour mettre tous les appareils en pause</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="557"/>
@@ -422,22 +422,22 @@ Pour &lt;i&gt;toutes&lt;/i&gt; les notifications, consultez le journal</translat
     <message>
         <location filename="../gui/traywidget.cpp" line="682"/>
         <source>The specified connection configuration &lt;em&gt;%1&lt;/em&gt; is not defined and hence ignored.</source>
-        <translation>La configuration de connexion spécifiée &lt;em&gt;%1&lt;/em&gt; n'est pas définie et sera donc ignorée.</translation>
+        <translation>La configuration de connexion spécifiée &lt;em&gt;%1&lt;/em&gt; n&apos;est pas définie et sera donc ignorée.</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="754"/>
         <source>The folder &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
-        <translation>Le dossier &lt;i&gt;%1&lt;/i&gt; n'existe pas sur la machine locale.</translation>
+        <translation>Le dossier &lt;i&gt;%1&lt;/i&gt; n&apos;existe pas sur la machine locale.</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="765"/>
         <source>The containing folder &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
-        <translation>Le dossier parent &lt;i&gt;%1&lt;/i&gt; n'existe pas sur la machine locale.</translation>
+        <translation>Le dossier parent &lt;i&gt;%1&lt;/i&gt; n&apos;existe pas sur la machine locale.</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="834"/>
         <source>Open item</source>
-        <translation>Ouvrir l'élément</translation>
+        <translation>Ouvrir l&apos;élément</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="839"/>
@@ -447,12 +447,12 @@ Pour &lt;i&gt;toutes&lt;/i&gt; les notifications, consultez le journal</translat
     <message>
         <location filename="../gui/traywidget.cpp" line="843"/>
         <source>Copy device ID</source>
-        <translation>Copier l'ID de l'appareil</translation>
+        <translation>Copier l&apos;ID de l&apos;appareil</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="846"/>
         <source>Copy folder ID</source>
-        <translation>Copier l'ID du dossier</translation>
+        <translation>Copier l&apos;ID du dossier</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="953"/>
@@ -463,7 +463,7 @@ Pour &lt;i&gt;toutes&lt;/i&gt; les notifications, consultez le journal</translat
     <message>
         <location filename="../gui/traywidget.cpp" line="954"/>
         <source>Stop Syncthing instance launched via tray icon</source>
-        <translation>Arrêter l'instance Syncthing lancée via l'icône de la barre d'état</translation>
+        <translation>Arrêter l&apos;instance Syncthing lancée via l&apos;icône de la barre d&apos;état</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="958"/>
@@ -481,17 +481,17 @@ Pour &lt;i&gt;toutes&lt;/i&gt; les notifications, consultez le journal</translat
     <message>
         <location filename="../application/main.cpp" line="170"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the --windowed flag, though.It is also possible to start Syncthing Tray with --wait to wait until the system tray becomes available instead of showing this message.</source>
-        <translation>La barre d'état système n'est pas disponible (actuellement). Vous pouvez néanmoins ouvrir le menu de la barre d'état comme une fenêtre normale en utilisant l'option --windowed. Il est également possible de démarrer Syncthing Tray avec --wait pour attendre que la barre d'état devienne disponible au lieu d'afficher ce message.</translation>
+        <translation>La barre d&apos;état système n&apos;est pas disponible (actuellement). Vous pouvez néanmoins ouvrir le menu de la barre d&apos;état comme une fenêtre normale en utilisant l&apos;option --windowed. Il est également possible de démarrer Syncthing Tray avec --wait pour attendre que la barre d&apos;état devienne disponible au lieu d&apos;afficher ce message.</translation>
     </message>
     <message>
         <location filename="../application/main.cpp" line="197"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
-        <translation>Les bibliothèques Qt n'ont pas été compilées avec le support des icônes de la barre d'état. Vous pouvez néanmoins ouvrir le menu comme une fenêtre normale en utilisant l'option -w.</translation>
+        <translation>Les bibliothèques Qt n&apos;ont pas été compilées avec le support des icônes de la barre d&apos;état. Vous pouvez néanmoins ouvrir le menu comme une fenêtre normale en utilisant l&apos;option -w.</translation>
     </message>
     <message>
         <location filename="../application/main.cpp" line="520"/>
         <source>&lt;p&gt;This can have different causes:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Data corruption occurred during the download/extraction. In this case cancelling and retrying the update will help.&lt;/li&gt;&lt;li&gt;The signing key or updating mechanism in general has changed. In this case an according release note will be present on &lt;a href=&quot;https://martchus.github.io/syncthingtray/#downloads-section&quot;&gt;the website&lt;/a&gt; and &lt;a href=&quot;https://github.com/Martchus/syncthingtray/releases&quot;&gt;GitHub&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;A bug in the newly introduced updater, see &lt;a href=&quot;https://github.com/Martchus/syncthingtray/issues&quot;&gt;issues on GitHub&lt;/a&gt; for potential bug reports.&lt;/li&gt;&lt;li&gt;Someone tries to distribute manipulated executables of Syncthing Tray.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;It is recommend to cancel the update and retry or cross-check the cause if the issue persists. If you ignore this error you &lt;i&gt;may&lt;/i&gt; install a corrupted/manipulated executable.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Ceci peut avoir plusieurs causes :&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Une corruption de données s'est produite lors du téléchargement ou de l'extraction. Dans ce cas, annuler et réessayer la mise à jour devrait aider.&lt;/li&gt;&lt;li&gt;La clé de signature ou le mécanisme de mise à jour a changé. Dans ce cas, une note de version correspondante sera présente sur &lt;a href=&quot;https://martchus.github.io/syncthingtray/#downloads-section&quot;&gt;le site web&lt;/a&gt; et &lt;a href=&quot;https://github.com/Martchus/syncthingtray/releases&quot;&gt;GitHub&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;Un bug dans le nouveau programme de mise à jour ; consultez les &lt;a href=&quot;https://github.com/Martchus/syncthingtray/issues&quot;&gt;tickets sur GitHub&lt;/a&gt; pour d'éventuels rapports de bug.&lt;/li&gt;&lt;li&gt;Quelqu'un tente de distribuer des exécutables falsifiés de Syncthing Tray.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Il est recommandé d'annuler la mise à jour et de réessayer, ou de vérifier la cause si le problème persiste. Si vous ignorez cette erreur, vous &lt;i&gt;pourriez&lt;/i&gt; installer un exécutable corrompu ou malveillant.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Ceci peut avoir plusieurs causes :&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Une corruption de données s&apos;est produite lors du téléchargement ou de l&apos;extraction. Dans ce cas, annuler et réessayer la mise à jour devrait aider.&lt;/li&gt;&lt;li&gt;La clé de signature ou le mécanisme de mise à jour a changé. Dans ce cas, une note de version correspondante sera présente sur &lt;a href=&quot;https://martchus.github.io/syncthingtray/#downloads-section&quot;&gt;le site web&lt;/a&gt; et &lt;a href=&quot;https://github.com/Martchus/syncthingtray/releases&quot;&gt;GitHub&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;Un bug dans le nouveau programme de mise à jour ; consultez les &lt;a href=&quot;https://github.com/Martchus/syncthingtray/issues&quot;&gt;tickets sur GitHub&lt;/a&gt; pour d&apos;éventuels rapports de bug.&lt;/li&gt;&lt;li&gt;Quelqu&apos;un tente de distribuer des exécutables falsifiés de Syncthing Tray.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Il est recommandé d&apos;annuler la mise à jour et de réessayer, ou de vérifier la cause si le problème persiste. Si vous ignorez cette erreur, vous &lt;i&gt;pourriez&lt;/i&gt; installer un exécutable corrompu ou malveillant.&lt;/p&gt;</translation>
     </message>
 </context>
 </TS>

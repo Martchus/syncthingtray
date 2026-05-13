@@ -178,7 +178,7 @@
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="150"/>
         <source>Rescan interval</source>
-        <translation>Intervalle d'analyse</translation>
+        <translation>Intervalle d&apos;analyse</translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="152"/>
@@ -339,7 +339,7 @@
     <message>
         <location filename="../syncthingfilemodel.cpp" line="329"/>
         <source>Ignore pattern</source>
-        <translation>Motif d'exclusion</translation>
+        <translation>Motif d&apos;exclusion</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="377"/>
@@ -374,7 +374,7 @@
     <message>
         <location filename="../syncthingfilemodel.cpp" line="242"/>
         <source>Does not exist</source>
-        <translation>N'existe pas</translation>
+        <translation>N&apos;existe pas</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="494"/>
@@ -394,12 +394,12 @@
     <message>
         <location filename="../syncthingfilemodel.cpp" line="499"/>
         <source>Deselect single item</source>
-        <translation>Désélectionner l'élément</translation>
+        <translation>Désélectionner l&apos;élément</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="499"/>
         <source>Select single item</source>
-        <translation>Sélectionner l'élément</translation>
+        <translation>Sélectionner l&apos;élément</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="501"/>
@@ -454,7 +454,7 @@
     <message>
         <location filename="../syncthingfilemodel.cpp" line="870"/>
         <source>Remove ignore patterns matching checked items (may affect other items as well)</source>
-        <translation>Supprimer les motifs d'exclusion correspondant aux éléments cochés</translation>
+        <translation>Supprimer les motifs d&apos;exclusion correspondant aux éléments cochés</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="839"/>
@@ -489,31 +489,31 @@
     <message>
         <location filename="../syncthingfilemodel.cpp" line="916"/>
         <source>Cannot apply ignore patterns while a previous request for ignore patterns is still pending.</source>
-        <translation>Impossible d'appliquer les motifs tant qu'une requête précédente est en cours.</translation>
+        <translation>Impossible d&apos;appliquer les motifs tant qu&apos;une requête précédente est en cours.</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="924"/>
         <source>Unable to change ignore patterns:
 %1</source>
-        <translation>Impossible de modifier les motifs d'exclusion :
+        <translation>Impossible de modifier les motifs d&apos;exclusion :
 %1</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="1005"/>
         <source>Ignore patterns have been changed.</source>
-        <translation>Les motifs d'exclusion ont été modifiés.</translation>
+        <translation>Les motifs d&apos;exclusion ont été modifiés.</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="1008"/>
         <source>Ignore patterns have been changed but the following local files could not be deleted:
 </source>
-        <translation>Les motifs ont été modifiés mais les fichiers locaux suivants n'ont pu être supprimés :
+        <translation>Les motifs ont été modifiés mais les fichiers locaux suivants n&apos;ont pu être supprimés :
 </translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="1178"/>
         <source>Cannot query ignore patterns while a previous request for ignore patterns is still pending.</source>
-        <translation>Impossible d'interroger les motifs tant qu'une requête précédente est en cours.</translation>
+        <translation>Impossible d&apos;interroger les motifs tant qu&apos;une requête précédente est en cours.</translation>
     </message>
 </context>
 <context>
@@ -579,7 +579,7 @@
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="48"/>
         <source>Local dir is out of sync</source>
-        <translation>Le dossier local n'est pas synchronisé</translation>
+        <translation>Le dossier local n&apos;est pas synchronisé</translation>
     </message>
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="50"/>

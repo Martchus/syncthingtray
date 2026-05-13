@@ -6,7 +6,7 @@
     <message>
         <location filename="../syncthingdiractions.cpp" line="34"/>
         <source>Status: not available anymore</source>
-        <translation>Statut : n'est plus disponible</translation>
+        <translation>Statut : n&apos;est plus disponible</translation>
     </message>
     <message>
         <location filename="../syncthingdiractions.cpp" line="43"/>
@@ -36,7 +36,7 @@
     <message>
         <location filename="../syncthingdiractions.cpp" line="76"/>
         <source>Rescan interval: %1 seconds</source>
-        <translation>Intervalle d'analyse : %1 secondes</translation>
+        <translation>Intervalle d&apos;analyse : %1 secondes</translation>
     </message>
     <message numerus="yes">
         <location filename="../syncthingdiractions.cpp" line="81"/>
@@ -111,7 +111,7 @@
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="247"/>
         <source>Not a shared directory</source>
-        <translation>N'est pas un répertoire partagé</translation>
+        <translation>N&apos;est pas un répertoire partagé</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="281"/>
@@ -149,7 +149,7 @@
     <message>
         <location filename="../syncthingfileitemactionstaticdata.cpp" line="149"/>
         <source>Syncthing config from &quot;%1&quot; does not contain GUI address.</source>
-        <translation>La config Syncthing de « %1 » ne contient pas d'adresse pour l'interface graphique (GUI).</translation>
+        <translation>La config Syncthing de « %1 » ne contient pas d&apos;adresse pour l&apos;interface graphique (GUI).</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemactionstaticdata.cpp" line="161"/>

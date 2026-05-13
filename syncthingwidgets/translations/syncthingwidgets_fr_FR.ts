@@ -16,7 +16,7 @@
     <message>
         <location filename="../quick/qml/AboutDialog.qml" line="39"/>
         <source>App version</source>
-        <translation>Version de l'application</translation>
+        <translation>Version de l&apos;application</translation>
     </message>
     <message>
         <location filename="../quick/qml/AboutDialog.qml" line="54"/>
@@ -69,12 +69,12 @@
     <message>
         <location filename="../quick/qml/AdvancedConfigPage.qml" line="71"/>
         <source>The ID must not be empty.</source>
-        <translation>L'ID ne doit pas être vide.</translation>
+        <translation>L&apos;ID ne doit pas être vide.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedConfigPage.qml" line="81"/>
         <source>Can&apos;t apply, ID is already used.</source>
-        <translation>Impossible d'appliquer, l'ID est déjà utilisé.</translation>
+        <translation>Impossible d&apos;appliquer, l&apos;ID est déjà utilisé.</translation>
     </message>
 </context>
 <context>
@@ -82,7 +82,7 @@
     <message>
         <location filename="../quick/qml/AdvancedDevConfigPage.qml" line="6"/>
         <source>Advanced config of device &quot;%1&quot;</source>
-        <translation>Configuration avancée de l'appareil « %1 »</translation>
+        <translation>Configuration avancée de l&apos;appareil « %1 »</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedDevConfigPage.qml" line="7"/>
@@ -113,7 +113,7 @@
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="22"/>
         <source>Web-based GUI authentication</source>
-        <translation>Authentification de l'interface web</translation>
+        <translation>Authentification de l&apos;interface web</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="23"/>
@@ -162,7 +162,7 @@
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="51"/>
         <source>Contains the IDs of the devices that should be ignored. Connection attempts from these devices are logged to the console but never displayed in the UI.</source>
-        <translation>Contient les ID des appareils à ignorer. Les tentatives de connexion de ces appareils sont journalisées mais jamais affichées dans l'interface.</translation>
+        <translation>Contient les ID des appareils à ignorer. Les tentatives de connexion de ces appareils sont journalisées mais jamais affichées dans l&apos;interface.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="59"/>
@@ -172,7 +172,7 @@
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="60"/>
         <source>Advanced Syncthing API and web-based GUI configuration</source>
-        <translation>Configuration avancée de l'API Syncthing et de l'interface web</translation>
+        <translation>Configuration avancée de l&apos;API Syncthing et de l&apos;interface web</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="61"/>
@@ -215,22 +215,22 @@
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="121"/>
         <source>Set to require authentication for accessing the web-based GUI.</source>
-        <translation>Activer pour exiger l'authentification pour accéder à l'interface web.</translation>
+        <translation>Activer pour exiger l&apos;authentification pour accéder à l&apos;interface web.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="122"/>
         <source>Contains the bcrypt hash of the password used to restrict accessing the web-based GUI. You can also enter a plain password which will then be hashed when applying the configuration.</source>
-        <translation>Contient le hash bcrypt du mot de passe utilisé pour restreindre l'accès à l'interface web. Vous pouvez saisir un mot de passe en clair qui sera hashé lors de l'application de la configuration.</translation>
+        <translation>Contient le hash bcrypt du mot de passe utilisé pour restreindre l&apos;accès à l&apos;interface web. Vous pouvez saisir un mot de passe en clair qui sera hashé lors de l&apos;application de la configuration.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="126"/>
         <source>Username</source>
-        <translation>Nom d'utilisateur</translation>
+        <translation>Nom d&apos;utilisateur</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="127"/>
         <source>Password (turned into bcrypt hash when saving)</source>
-        <translation>Mot de passe (transformé en hash bcrypt lors de l'enregistrement)</translation>
+        <translation>Mot de passe (transformé en hash bcrypt lors de l&apos;enregistrement)</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="132"/>
@@ -240,32 +240,32 @@
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="132"/>
         <source>If set, this is the API key that enables usage of the REST interface. The app uses the REST interface so this value must not be empty for the app to function.</source>
-        <translation>Si défini, c'est la clé API qui permet d'utiliser l'interface REST. L'application utilise l'interface REST, cette valeur ne doit donc pas être vide pour que l'application fonctionne.</translation>
+        <translation>Si défini, c&apos;est la clé API qui permet d&apos;utiliser l&apos;interface REST. L&apos;application utilise l&apos;interface REST, cette valeur ne doit donc pas être vide pour que l&apos;application fonctionne.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="133"/>
         <source>GUI Listen Address</source>
-        <translation>Adresse d'écoute de l'interface</translation>
+        <translation>Adresse d&apos;écoute de l&apos;interface</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="133"/>
         <source>Set the listen address.</source>
-        <translation>Définir l'adresse d'écoute.</translation>
+        <translation>Définir l&apos;adresse d&apos;écoute.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="134"/>
         <source>GUI Authentication User</source>
-        <translation>Utilisateur d'authentification de l'interface</translation>
+        <translation>Utilisateur d&apos;authentification de l&apos;interface</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="135"/>
         <source>GUI Authentication Password (bcrypt hash!)</source>
-        <translation>Mot de passe d'authentification de l'interface (hash bcrypt !)</translation>
+        <translation>Mot de passe d&apos;authentification de l&apos;interface (hash bcrypt !)</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="136"/>
         <source>Use HTTPS for GUI and API</source>
-        <translation>Utiliser HTTPS pour l'interface et l'API</translation>
+        <translation>Utiliser HTTPS pour l&apos;interface et l&apos;API</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="136"/>
@@ -275,22 +275,22 @@
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="137"/>
         <source>Prompt for basic authentication</source>
-        <translation>Demander l'authentification basique</translation>
+        <translation>Demander l&apos;authentification basique</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="137"/>
         <source>When this setting is enabled, the web-based GUI will respond to unauthenticated requests with a 401 response prompting for Basic Authorization, so that https://user:pass@localhost style URLs continue to work in standard browsers. Other clients that always send the Authorization request header do not need this setting.</source>
-        <translation>Quand cette option est activée, l'interface web répondra aux requêtes non authentifiées avec une réponse 401 demandant une authentification basique, afin que les URLs de style https://user:pass@localhost continuent de fonctionner dans les navigateurs standards. Les autres clients qui envoient toujours l'en-tête de requête Authorization n'ont pas besoin de cette option.</translation>
+        <translation>Quand cette option est activée, l&apos;interface web répondra aux requêtes non authentifiées avec une réponse 401 demandant une authentification basique, afin que les URLs de style https://user:pass@localhost continuent de fonctionner dans les navigateurs standards. Les autres clients qui envoient toujours l&apos;en-tête de requête Authorization n&apos;ont pas besoin de cette option.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="138"/>
         <source>Authentication mode</source>
-        <translation>Mode d'authentification</translation>
+        <translation>Mode d&apos;authentification</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="138"/>
         <source>Authentication mode to use. If not present, the authentication mode (static) is controlled by the presence of user/password fields for backward compatibility.</source>
-        <translation>Mode d'authentification à utiliser. Si absent, le mode d'authentification (statique) est contrôlé par la présence des champs utilisateur/mot de passe pour la compatibilité ascendante.</translation>
+        <translation>Mode d&apos;authentification à utiliser. Si absent, le mode d&apos;authentification (statique) est contrôlé par la présence des champs utilisateur/mot de passe pour la compatibilité ascendante.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="139"/>
@@ -305,7 +305,7 @@
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="142"/>
         <source>Theme of web-based GUI</source>
-        <translation>Thème de l'interface web</translation>
+        <translation>Thème de l&apos;interface web</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="142"/>
@@ -320,7 +320,7 @@
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="148"/>
         <source>This enables Profiling and additional endpoints in the REST API.</source>
-        <translation>Cela active le profilage et des points d'accès supplémentaires dans l'API REST.</translation>
+        <translation>Cela active le profilage et des points d&apos;accès supplémentaires dans l&apos;API REST.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="149"/>
@@ -330,32 +330,32 @@
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="149"/>
         <source>If disabled, the GUI and API will not be started. The app needs this to function.</source>
-        <translation>Si désactivé, l'interface et l'API ne seront pas démarrés. L'application a besoin de cela pour fonctionner.</translation>
+        <translation>Si désactivé, l&apos;interface et l&apos;API ne seront pas démarrés. L&apos;application a besoin de cela pour fonctionner.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="152"/>
         <source>Audit Log</source>
-        <translation>Journal d'audit</translation>
+        <translation>Journal d&apos;audit</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="152"/>
         <source>Write events to timestamped file `audit-YYYYMMDD-HHMMSS.log` within the Syncthing home directory. The path can be overridden via &quot;Audit File&quot;.</source>
-        <translation>Écrire les événements dans un fichier horodaté `audit-YYYYMMDD-HHMMSS.log` dans le répertoire personnel de Syncthing. Le chemin peut être écrasé via « Fichier d'audit ».</translation>
+        <translation>Écrire les événements dans un fichier horodaté `audit-YYYYMMDD-HHMMSS.log` dans le répertoire personnel de Syncthing. Le chemin peut être écrasé via « Fichier d&apos;audit ».</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="153"/>
         <source>Audit File</source>
-        <translation>Fichier d'audit</translation>
+        <translation>Fichier d&apos;audit</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="153"/>
         <source>Path to store audit events under if &quot;Audit Log&quot; is enabled.</source>
-        <translation>Chemin pour stocker les événements d'audit si « Journal d'audit » est activé.</translation>
+        <translation>Chemin pour stocker les événements d&apos;audit si « Journal d&apos;audit » est activé.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="154"/>
         <source>Sync Protocol Listen Addresses</source>
-        <translation>Adresses d'écoute du protocole de synchronisation</translation>
+        <translation>Adresses d&apos;écoute du protocole de synchronisation</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="154"/>
@@ -366,7 +366,7 @@
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="154"/>
         <source>Specifies one or more listen addresses for the sync protocol. Set to default to listen on port TCP and QUIC port 22000.</source>
-        <translation>Spécifie une ou plusieurs adresses d'écoute pour le protocole de synchronisation. Défaut : écoute sur le port TCP et QUIC 22000.</translation>
+        <translation>Spécifie une ou plusieurs adresses d&apos;écoute pour le protocole de synchronisation. Défaut : écoute sur le port TCP et QUIC 22000.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="155"/>
@@ -396,7 +396,7 @@
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="157"/>
         <source>Whether to apply bandwidth limits to devices in the same broadcast domain as the local device.</source>
-        <translation>Indique s'il faut appliquer les limites de bande passante aux appareils du même domaine de diffusion que l'appareil local.</translation>
+        <translation>Indique s&apos;il faut appliquer les limites de bande passante aux appareils du même domaine de diffusion que l&apos;appareil local.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="158"/>
@@ -406,7 +406,7 @@
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="158"/>
         <source>Whether to attempt to perform a UPnP and NAT-PMP port mapping for incoming sync connections.</source>
-        <translation>Indique s'il faut tenter d'effectuer un mappage de ports UPnP et NAT-PMP pour les connexions de synchronisation entrantes.</translation>
+        <translation>Indique s&apos;il faut tenter d&apos;effectuer un mappage de ports UPnP et NAT-PMP pour les connexions de synchronisation entrantes.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="159"/>
@@ -416,7 +416,7 @@
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="159"/>
         <source>Whether to send announcements to the local LAN, also use such announcements to find other devices.</source>
-        <translation>Indique s'il faut envoyer des annonces sur le LAN local et utiliser ces annonces pour trouver d'autres appareils.</translation>
+        <translation>Indique s&apos;il faut envoyer des annonces sur le LAN local et utiliser ces annonces pour trouver d&apos;autres appareils.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="160"/>
@@ -426,7 +426,7 @@
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="160"/>
         <source>Whether to announce this device to the global announce (discovery) server, and also use it to look up other devices.</source>
-        <translation>Indique s'il faut annoncer cet appareil au serveur de découverte global et l'utiliser pour rechercher d'autres appareils.</translation>
+        <translation>Indique s&apos;il faut annoncer cet appareil au serveur de découverte global et l&apos;utiliser pour rechercher d&apos;autres appareils.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="161"/>
@@ -441,7 +441,7 @@
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="161"/>
         <source>A URI to a global announce (discovery) server, or the word &quot;default&quot; to include the default servers. Multiple servers can be added. The syntax for non-default entries is that of an HTTP or HTTPS URL. A number of options may be added as query options to the URL: insecure to prevent certificate validation (required for HTTP URLs) and &quot;id=&lt;device ID&gt;&quot; to perform certificate pinning. The device ID to use is printed by the discovery server on startup.</source>
-        <translation>Un URI vers un serveur de découverte global, ou le mot « default » pour inclure les serveurs par défaut. Plusieurs serveurs peuvent être ajoutés. La syntaxe pour les entrées non défaut est celle d'une URL HTTP ou HTTPS. several options peuvent être ajoutées comme options de requête à l'URL : insecure pour éviter la validation du certificat (requis pour les URLs HTTP) et « id=&lt;device ID&gt; » pour effectuer du certificate pinning. L'ID de l'appareil à utiliser est affiché par le serveur de découverte au démarrage.</translation>
+        <translation>Un URI vers un serveur de découverte global, ou le mot « default » pour inclure les serveurs par défaut. Plusieurs serveurs peuvent être ajoutés. La syntaxe pour les entrées non défaut est celle d&apos;une URL HTTP ou HTTPS. several options peuvent être ajoutées comme options de requête à l&apos;URL : insecure pour éviter la validation du certificat (requis pour les URLs HTTP) et « id=&lt;device ID&gt; » pour effectuer du certificate pinning. L&apos;ID de l&apos;appareil à utiliser est affiché par le serveur de découverte au démarrage.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="162"/>
@@ -462,7 +462,7 @@
         <location filename="../quick/qml/AdvancedMainPage.qml" line="163"/>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="168"/>
         <source>The minimum required free space that should be available on the partition holding the configuration and index. The element content is interpreted according to the given unit attribute. Accepted unit values are &quot;%&quot; (percent of the disk / volume size), kB, MB, GB and TB. Set to zero to disable.</source>
-        <translation>L'espace libre minimum requis qui doit être disponible sur la partition contenant la configuration et l'index. Le contenu de l'élément est interprété selon l'attribut unité fourni. Les valeurs d'unité acceptées sont « % » (pourcentage de la taille du disque/volume), kB, MB, GB et TB. Mettre à zéro pour désactiver.</translation>
+        <translation>L&apos;espace libre minimum requis qui doit être disponible sur la partition contenant la configuration et l&apos;index. Le contenu de l&apos;élément est interprété selon l&apos;attribut unité fourni. Les valeurs d&apos;unité acceptées sont « % » (pourcentage de la taille du disque/volume), kB, MB, GB et TB. Mettre à zéro pour désactiver.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="164"/>
@@ -472,7 +472,7 @@
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="164"/>
         <source>Enable (the default) or disable announcing private (RFC1918) LAN IP addresses to global discovery.</source>
-        <translation>Activer (défaut) ou désactiver l'annonce des adresses IP LAN privées (RFC1918) à la découverte globale.</translation>
+        <translation>Activer (défaut) ou désactiver l&apos;annonce des adresses IP LAN privées (RFC1918) à la découverte globale.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="165"/>
@@ -552,7 +552,7 @@
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="178"/>
         <source>Set to the address of the LDAP server, with hostname and port. For example, &lt;code&gt;dc1.example.com:389&lt;/code&gt; for standard LDAP, or &lt;code&gt;dc1.example.com:636 for LDAPS. (See also &lt;em&gt;Transport&lt;/em&gt;)</source>
-        <translation>Définir l'adresse du serveur LDAP, avec le nom d'hôte et le port. Par exemple, &lt;code&gt;dc1.example.com:389&lt;/code&gt; pour LDAP standard, ou &lt;code&gt;dc1.example.com:636&lt;/code&gt; pour LDAPS. (Voir aussi &lt;em&gt;Transport&lt;/em&gt;)</translation>
+        <translation>Définir l&apos;adresse du serveur LDAP, avec le nom d&apos;hôte et le port. Par exemple, &lt;code&gt;dc1.example.com:389&lt;/code&gt; pour LDAP standard, ou &lt;code&gt;dc1.example.com:636&lt;/code&gt; pour LDAPS. (Voir aussi &lt;em&gt;Transport&lt;/em&gt;)</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="179"/>
@@ -562,7 +562,7 @@
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="179"/>
         <source>This is the pattern for the bind user. The special token &lt;code&gt;%s&lt;/code&gt; must be inserted to represent the username entered by the user at the login prompt. Typical examples are &lt;code&gt;%s@ad.example.com&lt;/code&gt; for Active Directory or something like &lt;code&gt;CN=%s,CN=Users,DC=example,DC=com&lt;/code&gt; for standard LDAP servers.</source>
-        <translation>Ceci est le motif pour l'utilisateur de liaison. Le token spécial &lt;code&gt;%s&lt;/code&gt; doit être inséré pour représenter le nom d'utilisateur saisi par l'utilisateur à l'invite de connexion. Des exemples typiques sont &lt;code&gt;%s@ad.example.com&lt;/code&gt; pour Active Directory ou quelque chose comme &lt;code&gt;CN=%s,CN=Users,DC=example,DC=com&lt;/code&gt; pour les serveurs LDAP standards.</translation>
+        <translation>Ceci est le motif pour l&apos;utilisateur de liaison. Le token spécial &lt;code&gt;%s&lt;/code&gt; doit être inséré pour représenter le nom d&apos;utilisateur saisi par l&apos;utilisateur à l&apos;invite de connexion. Des exemples typiques sont &lt;code&gt;%s@ad.example.com&lt;/code&gt; pour Active Directory ou quelque chose comme &lt;code&gt;CN=%s,CN=Users,DC=example,DC=com&lt;/code&gt; pour les serveurs LDAP standards.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="180"/>
@@ -617,7 +617,7 @@
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="186"/>
         <source>Optional, base DN to use for user searches.</source>
-        <translation>Optionnel, DN de base à utiliser pour les recherches d'utilisateurs.</translation>
+        <translation>Optionnel, DN de base à utiliser pour les recherches d&apos;utilisateurs.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="187"/>
@@ -627,7 +627,7 @@
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="187"/>
         <source>Optional, search filter to use for user searches.</source>
-        <translation>Optionnel, filtre de recherche à utiliser pour les recherches d'utilisateurs.</translation>
+        <translation>Optionnel, filtre de recherche à utiliser pour les recherches d&apos;utilisateurs.</translation>
     </message>
     <message>
         <location filename="../quick/qml/AdvancedMainPage.qml" line="193"/>
@@ -655,7 +655,7 @@
     <message>
         <location filename="../quick/qml/ArrayElementButtons.qml" line="21"/>
         <source>More options</source>
-        <translation>Plus d'options</translation>
+        <translation>Plus d&apos;options</translation>
     </message>
     <message>
         <location filename="../quick/qml/ArrayElementButtons.qml" line="27"/>
@@ -681,7 +681,7 @@
     <message>
         <location filename="../quick/qml/CloseDialog.qml" line="15"/>
         <source>Do you want to shutdown Syncthing and quit the app? You can also just quit the app and keep Syncthing running in the background.</source>
-        <translation>Voulez-vous arrêter Syncthing et quitter l'application ? Vous pouvez également quitter seulement l'application et laisser Syncthing fonctionner en arrière-plan.</translation>
+        <translation>Voulez-vous arrêter Syncthing et quitter l&apos;application ? Vous pouvez également quitter seulement l&apos;application et laisser Syncthing fonctionner en arrière-plan.</translation>
     </message>
     <message>
         <location filename="../quick/qml/CloseDialog.qml" line="21"/>
@@ -722,22 +722,22 @@
     <message>
         <location filename="../misc/syncthinglauncher.cpp" line="151"/>
         <source>Syncthing is running</source>
-        <translation>Syncthing est en cours d'exécution</translation>
+        <translation>Syncthing est en cours d&apos;exécution</translation>
     </message>
     <message>
         <location filename="../misc/syncthinglauncher.cpp" line="153"/>
         <source>Syncthing is temporarily stopped due to metered connection</source>
-        <translation>Syncthing est temporairement arrêté en raison d'une connexion mesurée</translation>
+        <translation>Syncthing est temporairement arrêté en raison d&apos;une connexion mesurée</translation>
     </message>
     <message>
         <location filename="../misc/syncthinglauncher.cpp" line="155"/>
         <source>Syncthing exited with status %1</source>
-        <translation>Syncthing s'est arrêté avec le statut %1</translation>
+        <translation>Syncthing s&apos;est arrêté avec le statut %1</translation>
     </message>
     <message>
         <location filename="../misc/syncthinglauncher.cpp" line="157"/>
         <source>Syncthing is not running</source>
-        <translation>Syncthing n'est pas en cours d'exécution</translation>
+        <translation>Syncthing n&apos;est pas en cours d&apos;exécution</translation>
     </message>
     <message>
         <location filename="../misc/syncthinglauncher.cpp" line="180"/>
@@ -747,12 +747,12 @@
     <message>
         <location filename="../misc/syncthinglauncher.cpp" line="180"/>
         <source>Network connection is not metered</source>
-        <translation>La connexion réseau n'est pas mesurée</translation>
+        <translation>La connexion réseau n&apos;est pas mesurée</translation>
     </message>
     <message>
         <location filename="../misc/syncthinglauncher.cpp" line="182"/>
         <source>State of network connection cannot be determined</source>
-        <translation>L'état de la connexion réseau ne peut pas être déterminé</translation>
+        <translation>L&apos;état de la connexion réseau ne peut pas être déterminé</translation>
     </message>
     <message>
         <location filename="../misc/syncthinglauncher.cpp" line="251"/>
@@ -765,7 +765,7 @@
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="6"/>
         <source>Config of device &quot;%1&quot;</source>
-        <translation>Configuration de l'appareil « %1 »</translation>
+        <translation>Configuration de l&apos;appareil « %1 »</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="6"/>
@@ -775,7 +775,7 @@
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="10"/>
         <source>Device ID</source>
-        <translation>ID de l'appareil</translation>
+        <translation>ID de l&apos;appareil</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="10"/>
@@ -785,12 +785,12 @@
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="11"/>
         <source>Device Name</source>
-        <translation>Nom de l'appareil</translation>
+        <translation>Nom de l&apos;appareil</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="11"/>
         <source>Shown instead of Device ID. Will be updated to the name the device advertises if left empty.</source>
-        <translation>Affiché à la place de l'ID de l'appareil. Sera mis à jour avec le nom que l'appareil annonce si laissé vide.</translation>
+        <translation>Affiché à la place de l&apos;ID de l&apos;appareil. Sera mis à jour avec le nom que l&apos;appareil annonce si laissé vide.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="12"/>
@@ -810,7 +810,7 @@
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="13"/>
         <source>Add devices from the introducer to our device list, for mutually shared folders.</source>
-        <translation>Ajouter les appareils de l'introducer à notre liste d'appareils, pour les dossiers partagés mutuellement.</translation>
+        <translation>Ajouter les appareils de l&apos;introducer à notre liste d&apos;appareils, pour les dossiers partagés mutuellement.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="13"/>
@@ -840,7 +840,7 @@
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="15"/>
         <source>Add addresses (e.g. &quot;tcp://ip:port&quot;, &quot;tcp://host:port&quot;) or &quot;dynamic&quot; to perform automatic discovery of the address.</source>
-        <translation>Ajouter des adresses (ex. « tcp://ip:port », « tcp://hôte:port ») ou « dynamic » pour effectuer une découverte automatique de l'adresse.</translation>
+        <translation>Ajouter des adresses (ex. « tcp://ip:port », « tcp://hôte:port ») ou « dynamic » pour effectuer une découverte automatique de l&apos;adresse.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="16"/>
@@ -850,7 +850,7 @@
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="16"/>
         <source>When set to more than one on both devices, Syncthing will attempt to establish multiple concurrent connections. If the values differ, the highest will be used. Set to zero to let Syncthing decide.</source>
-        <translation>Quand défini à plus de un sur les deux appareils, Syncthing tentera d'établir plusieurs connexions simultanées. Si les valeurs diffèrent, la plus haute sera utilisée. Mettre à zéro pour laisser Syncthing décider.</translation>
+        <translation>Quand défini à plus de un sur les deux appareils, Syncthing tentera d&apos;établir plusieurs connexions simultanées. Si les valeurs diffèrent, la plus haute sera utilisée. Mettre à zéro pour laisser Syncthing décider.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="17"/>
@@ -870,7 +870,7 @@
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="18"/>
         <source>Whether to use protocol compression when sending messages to this device.</source>
-        <translation>Indique s'il faut utiliser la compression du protocole lors de l'envoi de messages à cet appareil.</translation>
+        <translation>Indique s&apos;il faut utiliser la compression du protocole lors de l&apos;envoi de messages à cet appareil.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="19"/>
@@ -880,7 +880,7 @@
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="19"/>
         <source>Compress metadata packets, such as index information. Metadata is usually very compression friendly so this is a good default.</source>
-        <translation>Compresser les paquets de métadonnées, comme les informations d'index. Les métadonnées sont généralement très compressibles, c'est donc un bon choix par défaut.</translation>
+        <translation>Compresser les paquets de métadonnées, comme les informations d&apos;index. Les métadonnées sont généralement très compressibles, c&apos;est donc un bon choix par défaut.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="20"/>
@@ -920,7 +920,7 @@
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="24"/>
         <source>Maximum send rate to use for this device.</source>
-        <translation>Débit d'envoi maximum à utiliser pour cet appareil.</translation>
+        <translation>Débit d&apos;envoi maximum à utiliser pour cet appareil.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="25"/>
@@ -935,7 +935,7 @@
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="25"/>
         <source>The list of the folders that should be ignored. These folders will always be skipped when advertised from this remote device, i.e. they will be logged, but there will be no dialog shown.</source>
-        <translation>La liste des dossiers à ignorer. Ces dossiers seront toujours ignorés quand ils sont annoncés par cet appareil distant, c'est-à-dire qu'ils seront journalisés, mais aucune boîte de dialogue ne sera affichée.</translation>
+        <translation>La liste des dossiers à ignorer. Ces dossiers seront toujours ignorés quand ils sont annoncés par cet appareil distant, c&apos;est-à-dire qu&apos;ils seront journalisés, mais aucune boîte de dialogue ne sera affichée.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="29"/>
@@ -945,7 +945,7 @@
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="29"/>
         <source>The ID of the folder to be ignored.</source>
-        <translation>L'ID du dossier à ignorer.</translation>
+        <translation>L&apos;ID du dossier à ignorer.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="30"/>
@@ -965,7 +965,7 @@
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="31"/>
         <source>The time when this entry was added (for informative purposes).</source>
-        <translation>L'heure auquel cette entrée a été ajoutée (à titre informatif).</translation>
+        <translation>L&apos;heure auquel cette entrée a été ajoutée (à titre informatif).</translation>
     </message>
 </context>
 <context>
@@ -1004,17 +1004,17 @@
         <translation>Appareils</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevsPage.qml" line="23"/>
+        <location filename="../quick/qml/DevsPage.qml" line="22"/>
         <source>Add device</source>
         <translation>Ajouter un appareil</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevsPage.qml" line="30"/>
+        <location filename="../quick/qml/DevsPage.qml" line="29"/>
         <source>Pause all</source>
         <translation>Tout mettre en pause</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevsPage.qml" line="35"/>
+        <location filename="../quick/qml/DevsPage.qml" line="34"/>
         <source>Resume all</source>
         <translation>Tout reprendre</translation>
     </message>
@@ -1054,7 +1054,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="14"/>
         <source>Group to show the folder in the UI. Can be different on each device.</source>
-        <translation>Groupe pour afficher le dossier dans l'interface. Peut être différent sur chaque appareil.</translation>
+        <translation>Groupe pour afficher le dossier dans l&apos;interface. Peut être différent sur chaque appareil.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="15"/>
@@ -1074,7 +1074,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="16"/>
         <source>Path to the folder on the local computer. Will be created if it does not exist. The tilde character (~) can be used as a shortcut for &quot;%1&quot;.</source>
-        <translation>Chemin vers le dossier sur l'ordinateur local. Sera créé s'il n'existe pas. Le caractère tilde (~) peut être utilisé comme raccourci pour « %1 ».</translation>
+        <translation>Chemin vers le dossier sur l&apos;ordinateur local. Sera créé s&apos;il n&apos;existe pas. Le caractère tilde (~) peut être utilisé comme raccourci pour « %1 ».</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="17"/>
@@ -1094,7 +1094,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="19"/>
         <source>Files are protected from changes made on other devices, but changes made on this device will be sent to the rest of the cluster.</source>
-        <translation>Les fichiers sont protégés des modifications effectuées sur d'autres appareils, mais les modifications effectuées sur cet appareil seront envoyées au reste du cluster.</translation>
+        <translation>Les fichiers sont protégés des modifications effectuées sur d&apos;autres appareils, mais les modifications effectuées sur cet appareil seront envoyées au reste du cluster.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="20"/>
@@ -1104,7 +1104,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="21"/>
         <source>Stores and syncs only encrypted data. Folders on all connected devices need to be set up with the same password or be of type &quot;Receive Encrypted&quot; too. Can only be assigned to new folders.</source>
-        <translation>Stocke et synchronise uniquement des données chiffrées. Les dossiers sur tous les appareils connectés doivent être configurés avec le même mot de passe ou être aussi de type « Recevoir chiffré ». Ne peut être assigné qu'aux nouveaux dossiers.</translation>
+        <translation>Stocke et synchronise uniquement des données chiffrées. Les dossiers sur tous les appareils connectés doivent être configurés avec le même mot de passe ou être aussi de type « Recevoir chiffré ». Ne peut être assigné qu&apos;aux nouveaux dossiers.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="23"/>
@@ -1124,7 +1124,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="24"/>
         <source>Syncthing supports archiving the old version of a file when it is deleted or replaced with a newer version from the cluster. Versioning applies to changes received from &lt;i&gt;other&lt;/i&gt; devices.</source>
-        <translation>Syncthing prend en charge l'archivage de l'ancienne version d'un fichier lorsqu'il est supprimé ou remplacé par une nouvelle version du cluster. Le versioning s'applique aux modifications reçues des &lt;i&gt;autres&lt;/i&gt; appareils.</translation>
+        <translation>Syncthing prend en charge l&apos;archivage de l&apos;ancienne version d&apos;un fichier lorsqu&apos;il est supprimé ou remplacé par une nouvelle version du cluster. Le versioning s&apos;applique aux modifications reçues des &lt;i&gt;autres&lt;/i&gt; appareils.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="25"/>
@@ -1154,17 +1154,17 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="27"/>
         <source>The duration during which changes detected are accumulated, before a scan is scheduled. Takes only effect if &quot;Watch for Changes&quot; is enabled.</source>
-        <translation>La durée pendant laquelle les modifications détectées sont accumulées, avant qu'une analyse soit planifiée. N'a d'effet que si « Surveiller les modifications » est activé.</translation>
+        <translation>La durée pendant laquelle les modifications détectées sont accumulées, avant qu&apos;une analyse soit planifiée. N&apos;a d&apos;effet que si « Surveiller les modifications » est activé.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="28"/>
         <source>Watcher Timeout</source>
-        <translation>Délai d'expiration du surveillant</translation>
+        <translation>Délai d&apos;expiration du surveillant</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="28"/>
         <source>The maximum delay before a scan is triggered when a file is continuously changing. If unset or zero a default value is calculated based on &quot;Watcher Delay&quot;.</source>
-        <translation>Le délai maximum avant qu'une analyse soit déclenchée lorsqu'un fichier change continuellement. Si non défini ou zéro, une valeur par défaut est calculée basée sur « Délai du surveillant ».</translation>
+        <translation>Le délai maximum avant qu&apos;une analyse soit déclenchée lorsqu&apos;un fichier change continuellement. Si non défini ou zéro, une valeur par défaut est calculée basée sur « Délai du surveillant ».</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="29"/>
@@ -1174,7 +1174,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="29"/>
         <source>The minimum required free space that should be available on the disk this folder resides. The folder will be stopped when the value drops below the threshold. Set to zero to disable.</source>
-        <translation>L'espace libre minimum requis qui doit être disponible sur le disque où réside ce dossier. Le dossier sera arrêté lorsque la valeur descendra en dessous du seuil. Mettre à zéro pour désactiver.</translation>
+        <translation>L&apos;espace libre minimum requis qui doit être disponible sur le disque où réside ce dossier. Le dossier sera arrêté lorsque la valeur descendra en dessous du seuil. Mettre à zéro pour désactiver.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="38"/>
@@ -1195,7 +1195,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="31"/>
         <source>Pull files in random order. This optimizes for balancing resources among the devices in a cluster.</source>
-        <translation>Télécharger les fichiers dans un ordre aléatoire. Cela optimise l'équilibrage des ressources entre les appareils d'un cluster.</translation>
+        <translation>Télécharger les fichiers dans un ordre aléatoire. Cela optimise l&apos;équilibrage des ressources entre les appareils d&apos;un cluster.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="32"/>
@@ -1210,42 +1210,42 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="33"/>
         <source>Smallest First</source>
-        <translation>Les plus petits d'abord</translation>
+        <translation>Les plus petits d&apos;abord</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="33"/>
         <source>Pull files ordered by file size; smallest first.</source>
-        <translation>Télécharger les fichiers ordonnés par taille ; les plus petits d'abord.</translation>
+        <translation>Télécharger les fichiers ordonnés par taille ; les plus petits d&apos;abord.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="34"/>
         <source>Largest First</source>
-        <translation>Les plus grands d'abord</translation>
+        <translation>Les plus grands d&apos;abord</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="34"/>
         <source>Pull files ordered by file size; largest first.</source>
-        <translation>Télécharger les fichiers ordonnés par taille ; les plus grands d'abord.</translation>
+        <translation>Télécharger les fichiers ordonnés par taille ; les plus grands d&apos;abord.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="35"/>
         <source>Oldest First</source>
-        <translation>Les plus anciens d'abord</translation>
+        <translation>Les plus anciens d&apos;abord</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="35"/>
         <source>Pull files ordered by modification time; oldest first.</source>
-        <translation>Télécharger les fichiers ordonnés par date de modification ; les plus anciens d'abord.</translation>
+        <translation>Télécharger les fichiers ordonnés par date de modification ; les plus anciens d&apos;abord.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="36"/>
         <source>Newest First</source>
-        <translation>Les plus récents d'abord</translation>
+        <translation>Les plus récents d&apos;abord</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="36"/>
         <source>Pull files ordered by modification time; newest first.</source>
-        <translation>Télécharger les fichiers ordonnés par date de modification ; les plus récents d'abord.</translation>
+        <translation>Télécharger les fichiers ordonnés par date de modification ; les plus récents d&apos;abord.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="30"/>
@@ -1270,7 +1270,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="38"/>
         <source>Order in which the blocks of a file are downloaded. This option controls how quickly different parts of the file spread between the connected devices, at the cost of causing strain on the storage. Open the selection and go though the different options for details about them.</source>
-        <translation>Ordre dans lequel les blocs d'un fichier sont téléchargés. Cette option contrôle la rapidité avec laquelle différentes parties du fichier se propagent entre les appareils connectés, au prix de fatiguer le stockage. Ouvrez la sélection et parcourez les différentes options pour leurs détails.</translation>
+        <translation>Ordre dans lequel les blocs d&apos;un fichier sont téléchargés. Cette option contrôle la rapidité avec laquelle différentes parties du fichier se propagent entre les appareils connectés, au prix de fatiguer le stockage. Ouvrez la sélection et parcourez les différentes options pour leurs détails.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="39"/>
@@ -1280,12 +1280,12 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="39"/>
         <source>The blocks of a file are split into N equal continuous sequences, where N is the number of connected devices. Each device starts downloading its own sequence, after which it picks other devices sequences at random. Provides acceptable data distribution and minimal spinning disk strain.</source>
-        <translation>Les blocs d'un fichier sont divisés en N séquences continues égales, où N est le nombre d'appareils connectés. Chaque appareil commence à télécharger sa propre séquence, puis choisit aléatoirement les séquences des autres appareils. Fournit une distribution de données acceptable et une fatigue minimale des disques durs.</translation>
+        <translation>Les blocs d&apos;un fichier sont divisés en N séquences continues égales, où N est le nombre d&apos;appareils connectés. Chaque appareil commence à télécharger sa propre séquence, puis choisit aléatoirement les séquences des autres appareils. Fournit une distribution de données acceptable et une fatigue minimale des disques durs.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="40"/>
         <source>The blocks of a file are downloaded in a random order. Provides great data distribution, but very taxing on spinning disk drives.</source>
-        <translation>Les blocs d'un fichier sont téléchargés dans un ordre aléatoire. Fournit une excellente distribution des données, mais fatigue énormément les disques durs.</translation>
+        <translation>Les blocs d&apos;un fichier sont téléchargés dans un ordre aléatoire. Fournit une excellente distribution des données, mais fatigue énormément les disques durs.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="41"/>
@@ -1295,7 +1295,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="41"/>
         <source>The blocks of a file are downloaded sequentially, from start to finish. Spinning disk drive friendly, but provides no improvements to data distribution.</source>
-        <translation>Les blocs d'un fichier sont téléchargés séquentiellement, du début à la fin. Doux pour les disques durs, mais n'apporte pas d'amélioration à la distribution des données.</translation>
+        <translation>Les blocs d&apos;un fichier sont téléchargés séquentiellement, du début à la fin. Doux pour les disques durs, mais n&apos;apporte pas d&apos;amélioration à la distribution des données.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="43"/>
@@ -1305,7 +1305,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="43"/>
         <source>Maintain an index of all blocks in the folder, enabling reuse of blocks from other files when syncing changes. Disable to reduce database size at the cost of not being able to reuse blocks across files.</source>
-        <translation>Maintenir un index de tous les blocs dans le dossier, permettant la réutilisation des blocs d'autres fichiers lors de la synchronisation des modifications. Désactiver pour réduire la taille de la base de données au prix de ne pas pouvoir réutiliser les blocs entre les fichiers.</translation>
+        <translation>Maintenir un index de tous les blocs dans le dossier, permettant la réutilisation des blocs d&apos;autres fichiers lors de la synchronisation des modifications. Désactiver pour réduire la taille de la base de données au prix de ne pas pouvoir réutiliser les blocs entre les fichiers.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="44"/>
@@ -1325,7 +1325,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="45"/>
         <source>Enables sending ownership information to other devices, and applying incoming ownership information. Typically requires running with elevated privileges.</source>
-        <translation>Permet d'envoyer les informations de propriété aux autres appareils et d'appliquer les informations de propriété reçues. Nécessite généralement d'exécuter avec des privilèges élevés.</translation>
+        <translation>Permet d&apos;envoyer les informations de propriété aux autres appareils et d&apos;appliquer les informations de propriété reçues. Nécessite généralement d&apos;exécuter avec des privilèges élevés.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="46"/>
@@ -1335,7 +1335,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="46"/>
         <source>Enables sending ownership information to other devices, but not applying incoming ownership information. This can have a significant performance impact. Always enabled when &quot;Sync Ownership&quot; is enabled.</source>
-        <translation>Permet d'envoyer les informations de propriété aux autres appareils, mais pas d'appliquer les informations de propriété reçues. Cela peut avoir un impact significatif sur les performances. Toujours activé quand « Synchroniser la propriété » est activé.</translation>
+        <translation>Permet d&apos;envoyer les informations de propriété aux autres appareils, mais pas d&apos;appliquer les informations de propriété reçues. Cela peut avoir un impact significatif sur les performances. Toujours activé quand « Synchroniser la propriété » est activé.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="47"/>
@@ -1345,7 +1345,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="47"/>
         <source>Enables sending extended attributes to other devices, and applying incoming extended attributes. May require running with elevated privileges.</source>
-        <translation>Permet d'envoyer les attributs étendus aux autres appareils et d'appliquer les attributs étendus reçus. Peut nécessiter d'exécuter avec des privilèges élevés.</translation>
+        <translation>Permet d&apos;envoyer les attributs étendus aux autres appareils et d&apos;appliquer les attributs étendus reçus. Peut nécessiter d&apos;exécuter avec des privilèges élevés.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="48"/>
@@ -1355,7 +1355,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="48"/>
         <source>Enables sending extended attributes to other devices, but not applying incoming extended attributes. This can have a significant performance impact. Always enabled when &quot;Sync Extended Attributes&quot; is enabled.</source>
-        <translation>Permet d'envoyer les attributs étendus aux autres appareils, mais pas d'appliquer les attributs étendus reçus. Cela peut avoir un impact significatif sur les performances. Toujours activé quand « Synchroniser les attributs étendus » est activé.</translation>
+        <translation>Permet d&apos;envoyer les attributs étendus aux autres appareils, mais pas d&apos;appliquer les attributs étendus reçus. Cela peut avoir un impact significatif sur les performances. Toujours activé quand « Synchroniser les attributs étendus » est activé.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="52"/>
@@ -1375,22 +1375,22 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="54"/>
         <source>Files are moved to .stversions directory when replaced or deleted by Syncthing.</source>
-        <translation>Les fichiers sont déplacés vers le répertoire .stversions lorsqu'ils sont remplacés ou supprimés par Syncthing.</translation>
+        <translation>Les fichiers sont déplacés vers le répertoire .stversions lorsqu&apos;ils sont remplacés ou supprimés par Syncthing.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="55"/>
         <source>Files are moved to date stamped versions in a .stversions directory when replaced or deleted by Syncthing.</source>
-        <translation>Les fichiers sont déplacés vers des versions horodatées dans un répertoire .stversions lorsqu'ils sont remplacés ou supprimés par Syncthing.</translation>
+        <translation>Les fichiers sont déplacés vers des versions horodatées dans un répertoire .stversions lorsqu&apos;ils sont remplacés ou supprimés par Syncthing.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="56"/>
         <source>&lt;p&gt;Files are moved to date stamped versions in a .stversions directory when replaced or deleted by Syncthing. Versions are automatically deleted if they are older than the maximum age or exceed the number of files allowed in an interval.&lt;/p&gt;&lt;p&gt;The following intervals are used: for the first hour a version is kept every 30 seconds, for the first day a version is kept every hour, for the first 30 days a version is kept every day, until the maximum age a version is kept every week.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Les fichiers sont déplacés vers des versions horodatées dans un répertoire .stversions lorsqu'ils sont remplacés ou supprimés par Syncthing. Les versions sont automatiquement supprimées si elles sont plus anciennes que l'âge maximum ou dépassent le nombre de fichiers autorisés dans un intervalle.&lt;/p&gt;&lt;p&gt;Les intervalles suivants sont utilisés : pendant la première heure, une version est conservée toutes les 30 secondes, pendant le premier jour, une version est conservée toutes les heures, pendant les 30 premiers jours, une version est conservée chaque jour, jusqu'à l'âge maximum, une version est conservée chaque semaine.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Les fichiers sont déplacés vers des versions horodatées dans un répertoire .stversions lorsqu&apos;ils sont remplacés ou supprimés par Syncthing. Les versions sont automatiquement supprimées si elles sont plus anciennes que l&apos;âge maximum ou dépassent le nombre de fichiers autorisés dans un intervalle.&lt;/p&gt;&lt;p&gt;Les intervalles suivants sont utilisés : pendant la première heure, une version est conservée toutes les 30 secondes, pendant le premier jour, une version est conservée toutes les heures, pendant les 30 premiers jours, une version est conservée chaque jour, jusqu&apos;à l&apos;âge maximum, une version est conservée chaque semaine.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="57"/>
         <source>An external command handles the versioning. It has to remove the file from the shared folder. If the path to the application contains spaces, it should be quoted.</source>
-        <translation>Une commande externe gère le versioning. Elle doit supprimer le fichier du dossier partagé. Si le chemin vers l'application contient des espaces, il doit être mis entre guillemets.</translation>
+        <translation>Une commande externe gère le versioning. Elle doit supprimer le fichier du dossier partagé. Si le chemin vers l&apos;application contient des espaces, il doit être mis entre guillemets.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="59"/>
@@ -1410,7 +1410,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="60"/>
         <source>The internal file system implementation used to access this versions folder.</source>
-        <translation>L'implémentation interne du système de fichiers utilisée pour accéder à ce dossier de versions.</translation>
+        <translation>L&apos;implémentation interne du système de fichiers utilisée pour accéder à ce dossier de versions.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="61"/>
@@ -1420,7 +1420,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="61"/>
         <source>The interval, in seconds, for running cleanup in the versions directory. Zero to disable periodic cleaning.</source>
-        <translation>L'intervalle, en secondes, pour exécuter le nettoyage dans le répertoire des versions. Zéro pour désactiver le nettoyage périodique.</translation>
+        <translation>L&apos;intervalle, en secondes, pour exécuter le nettoyage dans le répertoire des versions. Zéro pour désactiver le nettoyage périodique.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="62"/>
@@ -1445,7 +1445,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="66"/>
         <source>The number of old versions to keep, per file.</source>
-        <translation>Le nombre d'anciennes versions à conserver, par fichier.</translation>
+        <translation>Le nombre d&apos;anciennes versions à conserver, par fichier.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="67"/>
@@ -1465,7 +1465,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="68"/>
         <source>External command to execute for storing a file version about to be replaced or deleted. If the path to the application contains spaces, it should be quoted.</source>
-        <translation>Commande externe à exécuter pour stocker une version de fichier sur le point d'être remplacée ou supprimée. Si le chemin vers l'application contient des espaces, il doit être mis entre guillemets.</translation>
+        <translation>Commande externe à exécuter pour stocker une version de fichier sur le point d&apos;être remplacée ou supprimée. Si le chemin vers l&apos;application contient des espaces, il doit être mis entre guillemets.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="71"/>
@@ -1475,7 +1475,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="71"/>
         <source>The minimum required free space that should be available on the disk this folder resides. The folder will be stopped when the value drops below the threshold. The value is interpreted according to the selected unit and can be set to zero to disable the check for minimum free space.</source>
-        <translation>L'espace libre minimum requis qui doit être disponible sur le disque où réside ce dossier. Le dossier sera arrêté lorsque la valeur descendra en dessous du seuil. La valeur est interprétée selon l'unité sélectionnée et peut être mise à zéro pour désactiver la vérification de l'espace libre minimum.</translation>
+        <translation>L&apos;espace libre minimum requis qui doit être disponible sur le disque où réside ce dossier. Le dossier sera arrêté lorsque la valeur descendra en dessous du seuil. La valeur est interprétée selon l&apos;unité sélectionnée et peut être mise à zéro pour désactiver la vérification de l&apos;espace libre minimum.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="72"/>
@@ -1573,7 +1573,7 @@
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="55"/>
         <source>Ignore patterns</source>
-        <translation>Motifs d'ignorance</translation>
+        <translation>Motifs d&apos;ignorance</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="60"/>
@@ -1602,22 +1602,22 @@
 <context>
     <name>DirListView</name>
     <message>
-        <location filename="../quick/qml/DirListView.qml" line="15"/>
+        <location filename="../quick/qml/DirListView.qml" line="17"/>
         <source>Override changes on remote devices</source>
         <translation>Écraser les modifications sur les appareils distants</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirListView.qml" line="15"/>
+        <location filename="../quick/qml/DirListView.qml" line="17"/>
         <source>Revert local changes</source>
         <translation>Annuler les modifications locales</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirListView.qml" line="20"/>
+        <location filename="../quick/qml/DirListView.qml" line="22"/>
         <source>Do you really want to override changes on remote devices within folder &quot;%1&quot;? This will mark the local version as the latest version causing changes on all remote devices to be overridden with the version from this device.</source>
         <translation>Voulez-vous vraiment écraser les modifications sur les appareils distants dans le dossier « %1 » ? Cela marquera la version locale comme la dernière version, causant le remplacement des modifications sur tous les appareils distants par la version de cet appareil.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirListView.qml" line="21"/>
+        <location filename="../quick/qml/DirListView.qml" line="23"/>
         <source>Do you really want to revert the local changes on this device within folder &quot;%1&quot;? This will undo all local changes on this device.</source>
         <translation>Voulez-vous vraiment annuler les modifications locales sur cet appareil dans le dossier « %1 » ? Cela annulera toutes les modifications locales sur cet appareil.</translation>
     </message>
@@ -1630,22 +1630,22 @@
         <translation>Dossiers</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirsPage.qml" line="23"/>
+        <location filename="../quick/qml/DirsPage.qml" line="22"/>
         <source>Add folder</source>
         <translation>Ajouter un dossier</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirsPage.qml" line="30"/>
+        <location filename="../quick/qml/DirsPage.qml" line="29"/>
         <source>Pause all</source>
         <translation>Tout mettre en pause</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirsPage.qml" line="35"/>
+        <location filename="../quick/qml/DirsPage.qml" line="34"/>
         <source>Resume all</source>
         <translation>Tout reprendre</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirsPage.qml" line="40"/>
+        <location filename="../quick/qml/DirsPage.qml" line="39"/>
         <source>Rescan all</source>
         <translation>Tout réanalyser</translation>
     </message>
@@ -1684,7 +1684,7 @@
     <message>
         <location filename="../quick/qml/ExpandableItemDelegate.qml" line="76"/>
         <source>More actions</source>
-        <translation>Plus d'actions</translation>
+        <translation>Plus d&apos;actions</translation>
     </message>
 </context>
 <context>
@@ -1702,7 +1702,7 @@
     <message>
         <location filename="../quick/qml/FilesPage.qml" line="170"/>
         <source>Changes to ignore patterns:</source>
-        <translation>Modifications des motifs d'ignorance :</translation>
+        <translation>Modifications des motifs d&apos;ignorance :</translation>
     </message>
     <message>
         <location filename="../quick/qml/FilesPage.qml" line="185"/>
@@ -1715,7 +1715,7 @@
     <message>
         <location filename="../quick/qml/HelpButton.qml" line="10"/>
         <source>Open help</source>
-        <translation>Ouvrir l'aide</translation>
+        <translation>Ouvrir l&apos;aide</translation>
     </message>
     <message>
         <location filename="../quick/qml/HelpButton.qml" line="24"/>
@@ -1768,12 +1768,12 @@
     <message>
         <location filename="../quick/qml/HomeDirPage.qml" line="165"/>
         <source>Warning: This directory is not empty and its contents will be replaced with the current home directory!</source>
-        <translation>Attention : ce répertoire n'est pas vide et son contenu sera remplacé par le répertoire personnel actuel !</translation>
+        <translation>Attention : ce répertoire n&apos;est pas vide et son contenu sera remplacé par le répertoire personnel actuel !</translation>
     </message>
     <message>
         <location filename="../quick/qml/HomeDirPage.qml" line="167"/>
         <source>Warning: This directory is not empty. Its contents will be used as new home directory.</source>
-        <translation>Attention : ce répertoire n'est pas vide. Son contenu sera utilisé comme nouveau répertoire personnel.</translation>
+        <translation>Attention : ce répertoire n&apos;est pas vide. Son contenu sera utilisé comme nouveau répertoire personnel.</translation>
     </message>
     <message>
         <location filename="../quick/qml/HomeDirPage.qml" line="170"/>
@@ -1786,7 +1786,7 @@
     <message>
         <location filename="../quick/qml/IgnorePatternPage.qml" line="9"/>
         <source>Ignore patterns of &quot;%1&quot;</source>
-        <translation>Motifs d'ignorance de « %1 »</translation>
+        <translation>Motifs d&apos;ignorance de « %1 »</translation>
     </message>
     <message>
         <location filename="../quick/qml/IgnorePatternPage.qml" line="13"/>
@@ -1841,7 +1841,7 @@
     <message>
         <location filename="../quick/qml/IgnorePatternPage.qml" line="82"/>
         <source>Inversion of the given condition (i.e. do not exclude)</source>
-        <translation>Inversion de la condition donnée (c'est-à-dire ne pas exclure)</translation>
+        <translation>Inversion de la condition donnée (c&apos;est-à-dire ne pas exclure)</translation>
     </message>
     <message>
         <location filename="../quick/qml/IgnorePatternPage.qml" line="83"/>
@@ -1856,7 +1856,7 @@
     <message>
         <location filename="../quick/qml/IgnorePatternPage.qml" line="85"/>
         <source>Comment, when used at the start of a line</source>
-        <translation>Commentaire, quand utilisé au début d'une ligne</translation>
+        <translation>Commentaire, quand utilisé au début d&apos;une ligne</translation>
     </message>
     <message>
         <location filename="../quick/qml/IgnorePatternPage.qml" line="92"/>
@@ -1874,17 +1874,17 @@
     <message>
         <location filename="../quick/qml/ImportPage.qml" line="33"/>
         <source>An error occurred when checking selected directory</source>
-        <translation>Une erreur s'est produite lors de la vérification du répertoire sélectionné</translation>
+        <translation>Une erreur s&apos;est produite lors de la vérification du répertoire sélectionné</translation>
     </message>
     <message>
         <location filename="../quick/qml/ImportPage.qml" line="61"/>
         <source>App configuration</source>
-        <translation>Configuration de l'application</translation>
+        <translation>Configuration de l&apos;application</translation>
     </message>
     <message>
         <location filename="../quick/qml/ImportPage.qml" line="68"/>
         <source>Replace the app configuration with the one from the selected directory.</source>
-        <translation>Remplacer la configuration de l'application par celle du répertoire sélectionné.</translation>
+        <translation>Remplacer la configuration de l&apos;application par celle du répertoire sélectionné.</translation>
     </message>
     <message>
         <location filename="../quick/qml/ImportPage.qml" line="96"/>
@@ -1937,7 +1937,7 @@
     <message>
         <location filename="../quick/qml/InternalErrorsPage.qml" line="8"/>
         <source>Log of Syncthing API errors</source>
-        <translation>Journal des erreurs de l'API Syncthing</translation>
+        <translation>Journal des erreurs de l&apos;API Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/InternalErrorsPage.qml" line="13"/>
@@ -1980,7 +1980,7 @@
     <message>
         <location filename="../quick/qml/LeftDrawer.qml" line="62"/>
         <source>App settings</source>
-        <translation>Paramètres de l'application</translation>
+        <translation>Paramètres de l&apos;application</translation>
     </message>
 </context>
 <context>
@@ -2133,7 +2133,7 @@
     <message>
         <location filename="../quick/qml/NeededPage.qml" line="86"/>
         <source>Queued</source>
-        <translation>En file d'attente</translation>
+        <translation>En file d&apos;attente</translation>
     </message>
     <message>
         <location filename="../quick/qml/NeededPage.qml" line="87"/>
@@ -2147,7 +2147,7 @@
     <message>
         <location filename="../quick/qml/Notifications.qml" line="21"/>
         <source>Not a valid device ID.</source>
-        <translation>ID d'appareil non valide.</translation>
+        <translation>ID d&apos;appareil non valide.</translation>
     </message>
     <message>
         <location filename="../quick/qml/Notifications.qml" line="43"/>
@@ -2187,12 +2187,12 @@
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="164"/>
         <source>The device ID looks valid.</source>
-        <translation>L'ID de l'appareil semble valide.</translation>
+        <translation>L&apos;ID de l&apos;appareil semble valide.</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="164"/>
         <source>The entered device ID looks invalid!</source>
-        <translation>L'ID de l'appareil saisi semble invalide !</translation>
+        <translation>L&apos;ID de l&apos;appareil saisi semble invalide !</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="266"/>
@@ -2256,22 +2256,22 @@
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="119"/>
         <source>Device ID</source>
-        <translation>ID de l'appareil</translation>
+        <translation>ID de l&apos;appareil</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="119"/>
         <source>The ID of the device to be ignored.</source>
-        <translation>L'ID de l'appareil à ignorer.</translation>
+        <translation>L&apos;ID de l&apos;appareil à ignorer.</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="120"/>
         <source>Device Name</source>
-        <translation>Nom de l'appareil</translation>
+        <translation>Nom de l&apos;appareil</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="120"/>
         <source>The name of the device being ignored (for informative purposes).</source>
-        <translation>Le nom de l'appareil ignoré (à titre informatif).</translation>
+        <translation>Le nom de l&apos;appareil ignoré (à titre informatif).</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="121"/>
@@ -2281,7 +2281,7 @@
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="121"/>
         <source>The address of the device being ignored (for informative purposes).</source>
-        <translation>L'adresse de l'appareil ignoré (à titre informatif).</translation>
+        <translation>L&apos;adresse de l&apos;appareil ignoré (à titre informatif).</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="122"/>
@@ -2291,7 +2291,7 @@
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="122"/>
         <source>The time when this entry was added (for informative purposes).</source>
-        <translation>L'heure auquel cette entrée a été ajoutée (à titre informatif).</translation>
+        <translation>L&apos;heure auquel cette entrée a été ajoutée (à titre informatif).</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="158"/>
@@ -2306,12 +2306,12 @@
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="326"/>
         <source>Unable to add %1 because specified index is invalid.</source>
-        <translation>Impossible d'ajouter %1 car l'index spécifié est invalide.</translation>
+        <translation>Impossible d&apos;ajouter %1 car l&apos;index spécifié est invalide.</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="334"/>
         <source>Unable to add %1 because specified key is invalid.</source>
-        <translation>Impossible d'ajouter %1 car la clé spécifiée est invalide.</translation>
+        <translation>Impossible d&apos;ajouter %1 car la clé spécifiée est invalide.</translation>
     </message>
 </context>
 <context>
@@ -2319,7 +2319,7 @@
     <message>
         <location filename="../quick/qml/OpenLinkDialog.qml" line="10"/>
         <source>Open URL</source>
-        <translation>Ouvrir l'URL</translation>
+        <translation>Ouvrir l&apos;URL</translation>
     </message>
     <message>
         <location filename="../quick/qml/OpenLinkDialog.qml" line="16"/>
@@ -2329,7 +2329,7 @@
     <message>
         <location filename="../quick/qml/OpenLinkDialog.qml" line="28"/>
         <source>Android may decide to stop the current activity to free memory. So when going back to the Syncthing App, the app UI might be reset and unsaved changes be lost.</source>
-        <translation>Android peut décider d'arrêter l'activité actuelle pour libérer de la mémoire. Donc quand vous revenez à l'application Syncthing, l'interface de l'application peut être réinitialisée et les modifications non enregistrées perdues.</translation>
+        <translation>Android peut décider d&apos;arrêter l&apos;activité actuelle pour libérer de la mémoire. Donc quand vous revenez à l&apos;application Syncthing, l&apos;interface de l&apos;application peut être réinitialisée et les modifications non enregistrées perdues.</translation>
     </message>
 </context>
 <context>
@@ -2426,7 +2426,7 @@
     <message>
         <location filename="../webview/webviewdialog.cpp" line="313"/>
         <source>Unable to open Syncthing UI via &quot;%1&quot;: %2</source>
-        <translation>Impossible d'ouvrir l'interface Syncthing via « %1 » : %2</translation>
+        <translation>Impossible d&apos;ouvrir l&apos;interface Syncthing via « %1 » : %2</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="94"/>
@@ -2436,7 +2436,7 @@
     <message>
         <location filename="../settings/settingsdialog.cpp" line="95"/>
         <source>The network connection is currently not considered metered.</source>
-        <translation>La connexion réseau n'est actuellement pas considérée comme mesurée.</translation>
+        <translation>La connexion réseau n&apos;est actuellement pas considérée comme mesurée.</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="96"/>
@@ -2499,7 +2499,7 @@
     <message>
         <location filename="../quick/app.cpp" line="681"/>
         <source>Unable to minimize app.</source>
-        <translation>Impossible de minimiser l'application.</translation>
+        <translation>Impossible de minimiser l&apos;application.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="712"/>
@@ -2509,7 +2509,7 @@
     <message>
         <location filename="../quick/app.cpp" line="771"/>
         <source>App settings saved</source>
-        <translation>Paramètres de l'application sauvegardés</translation>
+        <translation>Paramètres de l&apos;application sauvegardés</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="797"/>
@@ -2519,7 +2519,7 @@
     <message>
         <location filename="../quick/app.cpp" line="803"/>
         <source>Waiting for backend to terminate before clearing logs …</source>
-        <translation>En attente de la terminaison du backend avant d'effacer les journaux …</translation>
+        <translation>En attente de la terminaison du backend avant d&apos;effacer les journaux …</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="812"/>
@@ -2539,12 +2539,12 @@
     <message>
         <location filename="../quick/app.cpp" line="886"/>
         <source>Settings directory was not located.</source>
-        <translation>Le répertoire des paramètres n'a pas été trouvé.</translation>
+        <translation>Le répertoire des paramètres n&apos;a pas été trouvé.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="906"/>
         <source>Unable to extract archive: %1</source>
-        <translation>Impossible d'extraire l'archive : %1</translation>
+        <translation>Impossible d&apos;extraire l&apos;archive : %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="911"/>
@@ -2554,7 +2554,7 @@
     <message>
         <location filename="../quick/app.cpp" line="915"/>
         <source>archiving is only supported on Android.</source>
-        <translation>L'archivage n'est supporté que sur Android.</translation>
+        <translation>L&apos;archivage n&apos;est supporté que sur Android.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="939"/>
@@ -2574,17 +2574,17 @@
     <message>
         <location filename="../quick/app.cpp" line="1059"/>
         <source>Unable to import settings: settings directory was not located.</source>
-        <translation>Impossible d'importer les paramètres : le répertoire des paramètres n'a pas été trouvé.</translation>
+        <translation>Impossible d&apos;importer les paramètres : le répertoire des paramètres n&apos;a pas été trouvé.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1066"/>
         <source>Waiting for backend to terminate before importing settings …</source>
-        <translation>En attente de la terminaison du backend avant d'importer les paramètres …</translation>
+        <translation>En attente de la terminaison du backend avant d&apos;importer les paramètres …</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1110"/>
         <source>Imported app config from &quot;%1&quot;.</source>
-        <translation>Configuration de l'application importée depuis « %1 ».</translation>
+        <translation>Configuration de l&apos;application importée depuis « %1 ».</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1123"/>
@@ -2604,7 +2604,7 @@
     <message>
         <location filename="../quick/app.cpp" line="1159"/>
         <source>Unable to import folders/devices.</source>
-        <translation>Impossible d'importer les dossiers/appareils.</translation>
+        <translation>Impossible d&apos;importer les dossiers/appareils.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1168"/>
@@ -2614,22 +2614,22 @@
     <message>
         <location filename="../quick/app.cpp" line="1174"/>
         <source>Nothing has been imported.</source>
-        <translation>Rien n'a été importé.</translation>
+        <translation>Rien n&apos;a été importé.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1184"/>
         <source>Unable to import settings: %1</source>
-        <translation>Impossible d'importer les paramètres : %1</translation>
+        <translation>Impossible d&apos;importer les paramètres : %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1229"/>
         <source>Waiting for backend to terminate before exporting settings …</source>
-        <translation>En attente de la terminaison du backend avant d'exporter les paramètres …</translation>
+        <translation>En attente de la terminaison du backend avant d&apos;exporter les paramètres …</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1245"/>
         <source>settings directory was not located.</source>
-        <translation>Le répertoire des paramètres n'a pas été trouvé.</translation>
+        <translation>Le répertoire des paramètres n&apos;a pas été trouvé.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1251"/>
@@ -2644,12 +2644,12 @@
     <message>
         <location filename="../quick/app.cpp" line="1265"/>
         <source>Archiving is only supported on Android.</source>
-        <translation>L'archivage n'est supporté que sur Android.</translation>
+        <translation>L&apos;archivage n&apos;est supporté que sur Android.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1271"/>
         <source>unable to create export directory under &quot;%1&quot;</source>
-        <translation>impossible de créer le répertoire d'export sous « %1 »</translation>
+        <translation>impossible de créer le répertoire d&apos;export sous « %1 »</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1284"/>
@@ -2659,7 +2659,7 @@
     <message>
         <location filename="../quick/app.cpp" line="1291"/>
         <source>Unable to export settings: %1</source>
-        <translation>Impossible d'exporter les paramètres : %1</translation>
+        <translation>Impossible d&apos;exporter les paramètres : %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1364"/>
@@ -2679,7 +2679,7 @@
     <message>
         <location filename="../quick/app.cpp" line="1419"/>
         <source>Unable to move Syncthing home: settings directory was not located.</source>
-        <translation>Impossible de déplacer le répertoire personnel Syncthing : le répertoire des paramètres n'a pas été trouvé.</translation>
+        <translation>Impossible de déplacer le répertoire personnel Syncthing : le répertoire des paramètres n&apos;a pas été trouvé.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1425"/>
@@ -2699,12 +2699,12 @@
     <message>
         <location filename="../quick/app.cpp" line="1465"/>
         <source>Copied data from previous home directory &quot;%1&quot; to new one.</source>
-        <translation>Données copiées de l'ancien répertoire personnel « %1 » vers le nouveau.</translation>
+        <translation>Données copiées de l&apos;ancien répertoire personnel « %1 » vers le nouveau.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1468"/>
         <source>Cleaned up previous home directory.</source>
-        <translation>Nettoyé l'ancien répertoire personnel.</translation>
+        <translation>Nettoyé l&apos;ancien répertoire personnel.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1471"/>
@@ -2724,7 +2724,7 @@
     <message>
         <location filename="../quick/app.cpp" line="1515"/>
         <source>Debugging needs to be enabled under advanced GUI settings first.</source>
-        <translation>Le débogage doit d'abord être activé dans les paramètres avancés de l'interface.</translation>
+        <translation>Le débogage doit d&apos;abord être activé dans les paramètres avancés de l&apos;interface.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1522"/>
@@ -2734,12 +2734,12 @@
     <message>
         <location filename="../quick/app.cpp" line="1531"/>
         <source>Unable to open output file under &quot;%1&quot;: %2</source>
-        <translation>Impossible d'ouvrir le fichier de sortie sous « %1 » : %2</translation>
+        <translation>Impossible d&apos;ouvrir le fichier de sortie sous « %1 » : %2</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1549"/>
         <source>Unable to write bundle: %1</source>
-        <translation>Impossible d'écrire le bundle : %1</translation>
+        <translation>Impossible d&apos;écrire le bundle : %1</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1552"/>
@@ -2759,7 +2759,7 @@
     <message>
         <location filename="../quick/app.cpp" line="1586"/>
         <source>Unable to remove old database directory.</source>
-        <translation>Impossible de supprimer l'ancien répertoire de base de données.</translation>
+        <translation>Impossible de supprimer l&apos;ancien répertoire de base de données.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1601"/>
@@ -2774,17 +2774,17 @@
     <message>
         <location filename="../quick/app.cpp" line="1621"/>
         <source>Unable to remove leftovers from import under &quot;%1&quot;.</source>
-        <translation>Impossible de supprimer les restes de l'import sous « %1 ».</translation>
+        <translation>Impossible de supprimer les restes de l&apos;import sous « %1 ».</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1626"/>
         <source>Removed leftovers from import.</source>
-        <translation>Restes de l'import supprimés.</translation>
+        <translation>Restes de l&apos;import supprimés.</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="1631"/>
         <source>There was nothing to clean up.</source>
-        <translation>Il n'y avait rien à nettoyer.</translation>
+        <translation>Il n&apos;y avait rien à nettoyer.</translation>
     </message>
 </context>
 <context>
@@ -2818,7 +2818,7 @@
     <message>
         <location filename="../quick/appbase.cpp" line="91"/>
         <source>Unable to open settings under &quot;%1&quot;: </source>
-        <translation>Impossible d'ouvrir les paramètres sous « %1 » : </translation>
+        <translation>Impossible d&apos;ouvrir les paramètres sous « %1 » : </translation>
     </message>
     <message>
         <location filename="../quick/appbase.cpp" line="114"/>
@@ -2838,7 +2838,7 @@
     <message>
         <location filename="../quick/appbase.cpp" line="156"/>
         <source>JSON document contains no object</source>
-        <translation>Le document JSON ne contient pas d'objet</translation>
+        <translation>Le document JSON ne contient pas d&apos;objet</translation>
     </message>
     <message>
         <location filename="../quick/appbase.cpp" line="199"/>
@@ -2856,23 +2856,23 @@
     <message>
         <location filename="../quick/appservice.cpp" line="213"/>
         <source>Unable to open persistent log file for Syncthing under &quot;%1&quot;: %2</source>
-        <translation>Impossible d'ouvrir le fichier journal persistant pour Syncthing sous « %1 » : %2</translation>
+        <translation>Impossible d&apos;ouvrir le fichier journal persistant pour Syncthing sous « %1 » : %2</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="224"/>
         <source>This build of the app cannot launch Syncthing.</source>
-        <translation>Cette version de l'application ne peut pas lancer Syncthing.</translation>
+        <translation>Cette version de l&apos;application ne peut pas lancer Syncthing.</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="301"/>
         <source>Syncthing App ran into error</source>
-        <translation>L'application Syncthing a rencontré une erreur</translation>
+        <translation>L&apos;application Syncthing a rencontré une erreur</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="418"/>
         <source>An error occurred when running Syncthing: %2
 </source>
-        <translation>Une erreur s'est produite lors de l'exécution de Syncthing : %2
+        <translation>Une erreur s&apos;est produite lors de l&apos;exécution de Syncthing : %2
 </translation>
     </message>
     <message>
@@ -2905,12 +2905,12 @@
     <message>
         <location filename="../quick/appservice.cpp" line="552"/>
         <source>Syncthing device wants to connect</source>
-        <translation>L'appareil Syncthing veut se connecter</translation>
+        <translation>L&apos;appareil Syncthing veut se connecter</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="566"/>
         <source>Syncthing device wants to share folder</source>
-        <translation>L'appareil Syncthing veut partager un dossier</translation>
+        <translation>L&apos;appareil Syncthing veut partager un dossier</translation>
     </message>
 </context>
 <context>
@@ -2928,7 +2928,7 @@
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="220"/>
         <source>Optional GUI elements</source>
-        <translation>Éléments d'interface optionnels</translation>
+        <translation>Éléments d&apos;interface optionnels</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="333"/>
@@ -3041,7 +3041,7 @@
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="249"/>
         <source>Otherwise assume tray icon coordinates to be:</source>
-        <translation>Sinon, supposer que les coordonnées de l'icône de la barre sont :</translation>
+        <translation>Sinon, supposer que les coordonnées de l&apos;icône de la barre sont :</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="340"/>
@@ -3180,7 +3180,7 @@
     <message>
         <location filename="../settings/wizard.cpp" line="1019"/>
         <source>Configure Syncthing Tray to use the currently running Syncthing instance</source>
-        <translation>Configurer Syncthing Tray pour utiliser l'instance Syncthing en cours d'exécution</translation>
+        <translation>Configurer Syncthing Tray pour utiliser l&apos;instance Syncthing en cours d&apos;exécution</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1020"/>
@@ -3225,7 +3225,7 @@
     <message>
         <location filename="../settings/wizard.cpp" line="1050"/>
         <source>Preserve existing autostart entry for &quot;%1&quot;</source>
-        <translation>Conserver l'entrée d'autodémarrage existante pour « %1 »</translation>
+        <translation>Conserver l&apos;entrée d&apos;autodémarrage existante pour « %1 »</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1056"/>
@@ -3240,7 +3240,7 @@
     <message>
         <location filename="../settings/wizard.cpp" line="1057"/>
         <source>%1 existing autostart entry for &quot;%2&quot;</source>
-        <translation>%1 l'entrée d'autodémarrage existante pour « %2 »</translation>
+        <translation>%1 l&apos;entrée d&apos;autodémarrage existante pour « %2 »</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1059"/>
@@ -3260,7 +3260,7 @@
     <message>
         <location filename="../settings/wizard.cpp" line="1065"/>
         <source>If you want to do amendments, you can head back one or more steps.</source>
-        <translation>Si vous souhaitez apporter des modifications, vous pouvez revenir d'un ou plusieurs étapes.</translation>
+        <translation>Si vous souhaitez apporter des modifications, vous pouvez revenir d&apos;un ou plusieurs étapes.</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1065"/>
@@ -3278,42 +3278,42 @@
     <message>
         <location filename="../settings/autostartoptionpage.ui" line="27"/>
         <source>Start the tray icon when the desktop environment launches</source>
-        <translation>Démarrer l'icône de barre lors du lancement de l'environnement de bureau</translation>
+        <translation>Démarrer l&apos;icône de barre lors du lancement de l&apos;environnement de bureau</translation>
     </message>
     <message>
         <location filename="../settings/autostartoptionpage.ui" line="75"/>
         <source>Delete existing entry</source>
-        <translation>Supprimer l'entrée existante</translation>
+        <translation>Supprimer l&apos;entrée existante</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="874"/>
         <source>This is achieved by adding a *.desktop file under &lt;i&gt;~/.config/autostart&lt;/i&gt; so the setting only affects the current user.</source>
-        <translation>Pour cela, un fichier *.desktop est ajouté sous &lt;i&gt;~/.config/autostart&lt;/i&gt;, donc ce paramètre n'affecte que l'utilisateur actuel.</translation>
+        <translation>Pour cela, un fichier *.desktop est ajouté sous &lt;i&gt;~/.config/autostart&lt;/i&gt;, donc ce paramètre n&apos;affecte que l&apos;utilisateur actuel.</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="877"/>
         <source>This is achieved by adding a registry key under &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; so the setting only affects the current user. Note that the startup entry is invalidated when moving &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</source>
-        <translation>Pour cela, une clé de registre est ajoutée sous &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt;, donc ce paramètre n'affecte que l'utilisateur actuel. Notez que l'entrée de démarrage est invalidée lors du déplacement de &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</translation>
+        <translation>Pour cela, une clé de registre est ajoutée sous &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt;, donc ce paramètre n&apos;affecte que l&apos;utilisateur actuel. Notez que l&apos;entrée de démarrage est invalidée lors du déplacement de &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="881"/>
         <source>This is achieved by adding a *.plist file under &lt;i&gt;~/Library/LaunchAgents&lt;/i&gt; so the setting only affects the current user.</source>
-        <translation>Pour cela, un fichier *.plist est ajouté sous &lt;i&gt;~/Library/LaunchAgents&lt;/i&gt;, donc ce paramètre n'affecte que l'utilisateur actuel.</translation>
+        <translation>Pour cela, un fichier *.plist est ajouté sous &lt;i&gt;~/Library/LaunchAgents&lt;/i&gt;, donc ce paramètre n&apos;affecte que l&apos;utilisateur actuel.</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="885"/>
         <source>This feature has not been implemented for your platform (yet).</source>
-        <translation>Cette fonctionnalité n'a pas encore été implémentée pour votre plateforme.</translation>
+        <translation>Cette fonctionnalité n&apos;a pas encore été implémentée pour votre plateforme.</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1103"/>
         <source>unable to modify startup entry</source>
-        <translation>impossible de modifier l'entrée de démarrage</translation>
+        <translation>impossible de modifier l&apos;entrée de démarrage</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1133"/>
         <source>There is already an autostart entry for &quot;%1&quot;. It will not be overridden when applying changes unless you delete it first.</source>
-        <translation>Il existe déjà une entrée d'autodémarrage pour « %1 ». Elle ne sera pas remplacée lors de l'application des modifications sauf si vous la supprimez d'abord.</translation>
+        <translation>Il existe déjà une entrée d&apos;autodémarrage pour « %1 ». Elle ne sera pas remplacée lors de l&apos;application des modifications sauf si vous la supprimez d&apos;abord.</translation>
     </message>
 </context>
 <context>
@@ -3326,7 +3326,7 @@
     <message>
         <location filename="../settings/autostartwizardpage.ui" line="19"/>
         <source>Start Syncthing Tray on login (only affects sessions of the current user)</source>
-        <translation>Démarrer Syncthing Tray à la connexion (n'affecte que les sessions de l'utilisateur actuel)</translation>
+        <translation>Démarrer Syncthing Tray à la connexion (n&apos;affecte que les sessions de l&apos;utilisateur actuel)</translation>
     </message>
     <message>
         <location filename="../settings/autostartwizardpage.ui" line="46"/>
@@ -3336,17 +3336,17 @@
     <message>
         <location filename="../settings/autostartwizardpage.ui" line="56"/>
         <source>You previously selected to start Syncthing via systemd so its systemd-unit will be enabled. This means Syncthing itself will start automatically independently of this setting which only affects the tray icon.</source>
-        <translation>Vous avez précédemment sélectionné le démarrage de Syncthing via systemd, donc son service systemd sera activé. Cela signifie que Syncthing lui-même démarrera automatiquement indépendamment de ce paramètre qui n'affecte que l'icône de barre.</translation>
+        <translation>Vous avez précédemment sélectionné le démarrage de Syncthing via systemd, donc son service systemd sera activé. Cela signifie que Syncthing lui-même démarrera automatiquement indépendamment de ce paramètre qui n&apos;affecte que l&apos;icône de barre.</translation>
     </message>
     <message>
         <location filename="../settings/autostartwizardpage.ui" line="66"/>
         <source>Since Syncthing is running independently of Syncthing Tray on your system, this does not affect when Syncthing itself is launched.</source>
-        <translation>Comme Syncthing s'exécute indépendamment de Syncthing Tray sur votre système, cela n'affecte pas le moment où Syncthing lui-même est lancé.</translation>
+        <translation>Comme Syncthing s&apos;exécute indépendamment de Syncthing Tray sur votre système, cela n&apos;affecte pas le moment où Syncthing lui-même est lancé.</translation>
     </message>
     <message>
         <location filename="../settings/autostartwizardpage.ui" line="76"/>
         <source>The currently running Syncthing instance is started via Syncthing Tray so Syncthing itself will be started automatically on login as well.</source>
-        <translation>L'instance Syncthing actuellement en cours d'exécution est démarrée via Syncthing Tray, donc Syncthing lui-même sera également démarré automatiquement à la connexion.</translation>
+        <translation>L&apos;instance Syncthing actuellement en cours d&apos;exécution est démarrée via Syncthing Tray, donc Syncthing lui-même sera également démarré automatiquement à la connexion.</translation>
     </message>
     <message>
         <location filename="../settings/autostartwizardpage.ui" line="86"/>
@@ -3356,7 +3356,7 @@
     <message>
         <location filename="../settings/wizard.cpp" line="889"/>
         <source>Configure autostart</source>
-        <translation>Configurer l'autodémarrage</translation>
+        <translation>Configurer l&apos;autodémarrage</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="890"/>
@@ -3367,7 +3367,7 @@
         <location filename="../settings/wizard.cpp" line="944"/>
         <source>Do not modify the existing autostart entry for
 &quot;%1&quot;</source>
-        <translation>Ne pas modifier l'entrée d'autodémarrage existante pour
+        <translation>Ne pas modifier l&apos;entrée d&apos;autodémarrage existante pour
 « %1 »</translation>
     </message>
 </context>
@@ -3392,12 +3392,12 @@
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="52"/>
         <source>Keep web view running when currently not shown</source>
-        <translation>Garder la vue web en cours d'exécution lorsqu'elle n'est pas actuellement affichée</translation>
+        <translation>Garder la vue web en cours d&apos;exécution lorsqu&apos;elle n&apos;est pas actuellement affichée</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1766"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
-        <translation>Syncthing Tray n'a pas été compilé avec le support de la vue web utilisant Qt WebKit ou Qt WebEngine.</translation>
+        <translation>Syncthing Tray n&apos;a pas été compilé avec le support de la vue web utilisant Qt WebKit ou Qt WebEngine.</translation>
     </message>
 </context>
 <context>
@@ -3430,12 +3430,12 @@
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="131"/>
         <source>Remove currently selected secondary instance</source>
-        <translation>Supprimer l'instance secondaire actuellement sélectionnée</translation>
+        <translation>Supprimer l&apos;instance secondaire actuellement sélectionnée</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="161"/>
         <source>It is possible to save multiple configurations. This allows switching quickly between multiple Syncthing instances using the connection button in the right corner of the tray menu. The config label is an arbitrary name to identify a configuration and does not have to match the name of the corresponding Syncthing device. The first configuration is the primary/default configuration.</source>
-        <translation>Il est possible d'enregistrer plusieurs configurations. Cela permet de basculer rapidement entre plusieurs instances Syncthing en utilisant le bouton de connexion dans le coin droit du menu de la barre. L'étiquette de configuration est un nom arbitraire pour identifier une configuration et n'a pas besoin de correspondre au nom de l'appareil Syncthing correspondant. La première configuration est la configuration principale/par défaut.</translation>
+        <translation>Il est possible d&apos;enregistrer plusieurs configurations. Cela permet de basculer rapidement entre plusieurs instances Syncthing en utilisant le bouton de connexion dans le coin droit du menu de la barre. L&apos;étiquette de configuration est un nom arbitraire pour identifier une configuration et n&apos;a pas besoin de correspondre au nom de l&apos;appareil Syncthing correspondant. La première configuration est la configuration principale/par défaut.</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="171"/>
@@ -3475,7 +3475,7 @@
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="192"/>
         <source>Supply credentials for HTTP authentication (normally the API key is sufficient)</source>
-        <translation>Fournir les identifiants pour l'authentification HTTP (normalement la clé API suffit)</translation>
+        <translation>Fournir les identifiants pour l&apos;authentification HTTP (normalement la clé API suffit)</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="267"/>
@@ -3485,7 +3485,7 @@
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="311"/>
         <source>Poll interval</source>
-        <translation>Intervalle d'interrogation</translation>
+        <translation>Intervalle d&apos;interrogation</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="335"/>
@@ -3510,12 +3510,12 @@
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="358"/>
         <source>Device statistics</source>
-        <translation>Statistiques de l'appareil</translation>
+        <translation>Statistiques de l&apos;appareil</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="378"/>
         <source>Frequency for updating device statistics</source>
-        <translation>Fréquence de mise à jour des statistiques de l'appareil</translation>
+        <translation>Fréquence de mise à jour des statistiques de l&apos;appareil</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="394"/>
@@ -3525,7 +3525,7 @@
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="407"/>
         <source>Frequency to poll for new errors</source>
-        <translation>Fréquence d'interrogation des nouvelles erreurs</translation>
+        <translation>Fréquence d&apos;interrogation des nouvelles erreurs</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="423"/>
@@ -3535,7 +3535,7 @@
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="436"/>
         <source>Time to wait for reconnecting again when the connection to Syncthing has been lost. This setting might be overruled by systemd and launcher settings.</source>
-        <translation>Délai d'attente avant de tenter une reconnexion lorsque la connexion à Syncthing a été perdue. Ce paramètre peut être écrasé par les paramètres systemd et du lanceur.</translation>
+        <translation>Délai d&apos;attente avant de tenter une reconnexion lorsque la connexion à Syncthing a été perdue. Ce paramètre peut être écrasé par les paramètres systemd et du lanceur.</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="439"/>
@@ -3555,12 +3555,12 @@
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="623"/>
         <source>Select what information should be considered to compute the overall status:</source>
-        <translation>Sélectionnez quelles informations doivent être prises en compte pour calculer l'état général :</translation>
+        <translation>Sélectionnez quelles informations doivent être prises en compte pour calculer l&apos;état général :</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="663"/>
         <source>The limit for querying change events.</source>
-        <translation>La limite pour l'interrogation des événements de modification.</translation>
+        <translation>La limite pour l&apos;interrogation des événements de modification.</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="666"/>
@@ -3580,7 +3580,7 @@
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="693"/>
         <source>Path to Unix domain socket when setting Syncthing URL to &quot;unix+http://…&quot;</source>
-        <translation>Chemin vers le socket de domaine Unix lorsque l'URL Syncthing est définie sur « unix+http://… »</translation>
+        <translation>Chemin vers le socket de domaine Unix lorsque l&apos;URL Syncthing est définie sur « unix+http://… »</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="481"/>
@@ -3605,7 +3605,7 @@
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="526"/>
         <source>The timeout for normal requests to Syncthing&apos;s API. Set to zero to enforce no timeout.</source>
-        <translation>Le délai d'attente pour les requêtes normales vers l'API Syncthing. Réglez à zéro pour n'imposer aucun délai.</translation>
+        <translation>Le délai d&apos;attente pour les requêtes normales vers l&apos;API Syncthing. Réglez à zéro pour n&apos;imposer aucun délai.</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="529"/>
@@ -3625,7 +3625,7 @@
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="578"/>
         <source>The timeout for long-polling requests to Syncthing&apos;s event API. Set to zero to use Syncthing&apos;s default timeout and no timeout being enforced from Syncthing Tray&apos;s side.</source>
-        <translation>Le délai pour les requêtes de long polling vers l'API d'événements de Syncthing. Réglez à zéro pour utiliser le délai par défaut de Syncthing et aucun délai n'est imposé côté Syncthing Tray.</translation>
+        <translation>Le délai pour les requêtes de long polling vers l&apos;API d&apos;événements de Syncthing. Réglez à zéro pour utiliser le délai par défaut de Syncthing et aucun délai n&apos;est imposé côté Syncthing Tray.</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="581"/>
@@ -3645,7 +3645,7 @@
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="461"/>
         <source>Whether to connect automatically on startup. This setting might be overruled by systemd and launcher settings.</source>
-        <translation>Indique s'il faut se connecter automatiquement au démarrage. Ce paramètre peut être écrasé par les paramètres systemd et du lanceur.</translation>
+        <translation>Indique s&apos;il faut se connecter automatiquement au démarrage. Ce paramètre peut être écrasé par les paramètres systemd et du lanceur.</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="464"/>
@@ -3655,7 +3655,7 @@
     <message>
         <location filename="../settings/settingsdialog.cpp" line="134"/>
         <source>Auto-detected for local instance</source>
-        <translation>Auto-détecté pour l'instance locale</translation>
+        <translation>Auto-détecté pour l&apos;instance locale</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="284"/>
@@ -3670,7 +3670,7 @@
     <message>
         <location filename="../settings/settingsdialog.cpp" line="189"/>
         <source>Unable to parse the Syncthing config file.</source>
-        <translation>Impossible d'analyser le fichier de configuration Syncthing.</translation>
+        <translation>Impossible d&apos;analyser le fichier de configuration Syncthing.</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="283"/>
@@ -3744,7 +3744,7 @@
     <message>
         <location filename="../misc/dbusstatusnotifier.cpp" line="53"/>
         <source>Open web UI</source>
-        <translation>Ouvrir l'interface web</translation>
+        <translation>Ouvrir l&apos;interface web</translation>
     </message>
     <message>
         <location filename="../misc/dbusstatusnotifier.cpp" line="61"/>
@@ -3767,7 +3767,7 @@
     <message>
         <location filename="../settings/wizard.cpp" line="540"/>
         <source>Checking Syncthing configuration and whether Syncthing is already running or can be started …</source>
-        <translation>Vérification de la configuration Syncthing et si Syncthing est déjà en cours d'exécution ou peut être démarré…</translation>
+        <translation>Vérification de la configuration Syncthing et si Syncthing est déjà en cours d&apos;exécution ou peut être démarré…</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="546"/>
@@ -3787,7 +3787,7 @@
     <message>
         <location filename="../settings/wizard.cpp" line="625"/>
         <source>It looks like Syncthing has not been running on this system before as its configuration cannot be found. Is that correct?</source>
-        <translation>Il semble que Syncthing n'ait pas été exécuté sur ce système auparavant car sa configuration est introuvable. Est-ce correct ?</translation>
+        <translation>Il semble que Syncthing n&apos;ait pas été exécuté sur ce système auparavant car sa configuration est introuvable. Est-ce correct ?</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="621"/>
@@ -3846,12 +3846,12 @@
     <message>
         <location filename="../settings/wizard.cpp" line="1124"/>
         <source>Waiting for configuration wizard completed</source>
-        <translation>En attente de la fin de l'assistant de configuration</translation>
+        <translation>En attente de la fin de l&apos;assistant de configuration</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1125"/>
         <source>Changes are being applied</source>
-        <translation>Les modifications sont en cours d'application</translation>
+        <translation>Les modifications sont en cours d&apos;application</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1131"/>
@@ -3866,22 +3866,22 @@
     <message>
         <location filename="../settings/wizard.cpp" line="1137"/>
         <source>&lt;p&gt;The configuration has been changed successfully. The way Syncthing Tray connects to and starts Syncthing has not changed, though. You may configure this manually in the settings.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;La configuration a été modifiée avec succès. La manière dont Syncthing Tray se connecte à Syncthing et le démarre n'a pas changé, toutefois. Vous pouvez configurer cela manuellement dans les paramètres.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;La configuration a été modifiée avec succès. La manière dont Syncthing Tray se connecte à Syncthing et le démarre n&apos;a pas changé, toutefois. Vous pouvez configurer cela manuellement dans les paramètres.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1140"/>
         <source>&lt;p&gt;The configuration has been changed successfully. You can close the wizard and &lt;a href=&quot;openSyncthing&quot;&gt;open Syncthing&lt;/a&gt; to pair remote devices and add folders for sharing. If you need further help, read the &lt;a href=&quot;openDocs&quot;&gt;documentation to get started&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;To initiate the pairing from another device, the device ID of this Syncthing device is displayed below.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;La configuration a été modifiée avec succès. Vous pouvez fermer l'assistant et &lt;a href=&quot;openSyncthing&quot;&gt;ouvrir Syncthing&lt;/a&gt; pour appairer des appareils distants et ajouter des dossiers à partager. Si vous avez besoin d'aide supplémentaire, lisez la &lt;a href=&quot;openDocs&quot;&gt;documentation pour commencer&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Pour initier l'appairage depuis un autre appareil, l'ID de l'appareil de cet appareil Syncthing est affiché ci-dessous.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;La configuration a été modifiée avec succès. Vous pouvez fermer l&apos;assistant et &lt;a href=&quot;openSyncthing&quot;&gt;ouvrir Syncthing&lt;/a&gt; pour appairer des appareils distants et ajouter des dossiers à partager. Si vous avez besoin d&apos;aide supplémentaire, lisez la &lt;a href=&quot;openDocs&quot;&gt;documentation pour commencer&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;Pour initier l&apos;appairage depuis un autre appareil, l&apos;ID de l&apos;appareil de cet appareil Syncthing est affiché ci-dessous.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1149"/>
         <source>Not all changes could be applied</source>
-        <translation>Toutes les modifications n'ont pas pu être appliquées</translation>
+        <translation>Toutes les modifications n&apos;ont pas pu être appliquées</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="1152"/>
         <source>You may try to head back one or more steps and try again or finish the wizard and configure Syncthing Tray manually.</source>
-        <translation>Vous pouvez essayer de revenir d'un ou plusieurs étapes et réessayer, ou terminer l'assistant et configurer Syncthing Tray manuellement.</translation>
+        <translation>Vous pouvez essayer de revenir d&apos;un ou plusieurs étapes et réessayer, ou terminer l&apos;assistant et configurer Syncthing Tray manuellement.</translation>
     </message>
 </context>
 <context>
@@ -3894,7 +3894,7 @@
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="22"/>
         <source>Open Syncthing&apos;s UI via</source>
-        <translation>Ouvrir l'interface Syncthing via</translation>
+        <translation>Ouvrir l&apos;interface Syncthing via</translation>
     </message>
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="28"/>
@@ -3919,12 +3919,12 @@
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1740"/>
         <source>Custom command to launch Syncthing&apos;s UI - </source>
-        <translation>Commande personnalisée pour lancer l'interface Syncthing - </translation>
+        <translation>Commande personnalisée pour lancer l&apos;interface Syncthing - </translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1741"/>
         <source>&lt;p&gt;Enter a custom command to launch Syncthing&apos;s UI. The expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; will be replaced with the Syncthing-URL.&lt;/p&gt;&lt;p&gt;Leave the command empty to use the auto-detection.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;Entrez une commande personnalisée pour lancer l'interface Syncthing. L'expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; sera remplacée par l'URL Syncthing.&lt;/p&gt;&lt;p&gt;Laissez la commande vide pour utiliser la auto-détection.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;Entrez une commande personnalisée pour lancer l&apos;interface Syncthing. L&apos;expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; sera remplacée par l&apos;URL Syncthing.&lt;/p&gt;&lt;p&gt;Laissez la commande vide pour utiliser la auto-détection.&lt;/p&gt;</translation>
     </message>
 </context>
 <context>
@@ -3937,7 +3937,7 @@
     <message>
         <location filename="../settings/iconsoptionpage.ui" line="46"/>
         <source>Status icons</source>
-        <translation>Icônes d'état</translation>
+        <translation>Icônes d&apos;état</translation>
     </message>
     <message>
         <location filename="../settings/iconsoptionpage.ui" line="54"/>
@@ -3967,12 +3967,12 @@
     <message>
         <location filename="../settings/iconsoptionpage.ui" line="132"/>
         <source>Background color 1</source>
-        <translation>Couleur d'arrière-plan 1</translation>
+        <translation>Couleur d&apos;arrière-plan 1</translation>
     </message>
     <message>
         <location filename="../settings/iconsoptionpage.ui" line="142"/>
         <source>Background color 2</source>
-        <translation>Couleur d'arrière-plan 2</translation>
+        <translation>Couleur d&apos;arrière-plan 2</translation>
     </message>
     <message>
         <location filename="../settings/iconsoptionpage.ui" line="162"/>
@@ -4005,7 +4005,7 @@
     <message>
         <location filename="../settings/settingsdialog.cpp" line="676"/>
         <source>UI icons</source>
-        <translation>Icônes de l'interface</translation>
+        <translation>Icônes de l&apos;interface</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="682"/>
@@ -4015,17 +4015,17 @@
     <message>
         <location filename="../settings/settingsdialog.cpp" line="678"/>
         <source>These icon settings are used within Syncthing Tray&apos;s UI.</source>
-        <translation>Ces paramètres d'icône sont utilisés dans l'interface Syncthing Tray.</translation>
+        <translation>Ces paramètres d&apos;icône sont utilisés dans l&apos;interface Syncthing Tray.</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="683"/>
         <source>These icon settings are used for the system tray icon and the notifications.</source>
-        <translation>Ces paramètres d'icône sont utilisés pour l'icône de la barre système et les notifications.</translation>
+        <translation>Ces paramètres d&apos;icône sont utilisés pour l&apos;icône de la barre système et les notifications.</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="685"/>
         <source>Use same settings as for UI icons</source>
-        <translation>Utiliser les mêmes paramètres que pour les icônes de l'interface</translation>
+        <translation>Utiliser les mêmes paramètres que pour les icônes de l&apos;interface</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="746"/>
@@ -4055,7 +4055,7 @@
     <message>
         <location filename="../settings/settingsdialog.cpp" line="779"/>
         <source>%1 px (scaled to %2 px)</source>
-        <translation>%1 px (mis à l'échelle à %2 px)</translation>
+        <translation>%1 px (mis à l&apos;échelle à %2 px)</translation>
     </message>
 </context>
 <context>
@@ -4084,7 +4084,7 @@
         <location filename="../misc/internalerrorsdialog.cpp" line="117"/>
         <source>%1 error(s) occurred</source>
         <translation>
-            <numerusform>%1 erreur s'est produite</numerusform>
+            <numerusform>%1 erreur s&apos;est produite</numerusform>
             <numerusform>%1 erreurs se sont produites</numerusform>
         </translation>
     </message>
@@ -4099,7 +4099,7 @@
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="64"/>
         <source>Launch Syncthing when starting the tray icon</source>
-        <translation>Lancer Syncthing lors du démarrage de l'icône de barre</translation>
+        <translation>Lancer Syncthing lors du démarrage de l&apos;icône de barre</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="86"/>
@@ -4169,12 +4169,12 @@
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="177"/>
         <source>Replace ${var} or $var in directories with values from environment</source>
-        <translation>Remplacer ${var} ou $var dans les répertoires par les valeurs de l'environnement</translation>
+        <translation>Remplacer ${var} ou $var dans les répertoires par les valeurs de l&apos;environnement</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="187"/>
         <source>Show start/stop button on tray for local instance</source>
-        <translation>Afficher le bouton démarrer/arrêter sur la barre pour l'instance locale</translation>
+        <translation>Afficher le bouton démarrer/arrêter sur la barre pour l&apos;instance locale</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="194"/>
@@ -4182,8 +4182,8 @@
  • Don&apos;t reconnect when the process is not running
  • Try to reconnect when starting the process
  • Suppress notification about disconnect when Syncthing has been stopped manually</source>
-        <translation>Prendre en compte l'état du processus pour les notifications et les tentatives de reconnexion concernant l'instance locale
- • Ne pas se reconnecter lorsque le processus n'est pas en cours d'exécution
+        <translation>Prendre en compte l&apos;état du processus pour les notifications et les tentatives de reconnexion concernant l&apos;instance locale
+ • Ne pas se reconnecter lorsque le processus n&apos;est pas en cours d&apos;exécution
  • Essayer de se reconnecter lors du démarrage du processus
  • Supprimer la notification de déconnexion lorsque Syncthing a été arrêté manuellement</translation>
     </message>
@@ -4206,7 +4206,7 @@
         <location filename="../settings/launcheroptionpage.ui" line="271"/>
         <location filename="../settings/settingsdialog.cpp" line="1355"/>
         <source>Stop launched instance</source>
-        <translation>Arrêter l'instance lancée</translation>
+        <translation>Arrêter l&apos;instance lancée</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="290"/>
@@ -4216,7 +4216,7 @@
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="297"/>
         <source>Ensure latest log is visible</source>
-        <translation>S'assurer que le dernier journal est visible</translation>
+        <translation>S&apos;assurer que le dernier journal est visible</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1208"/>
@@ -4226,7 +4226,7 @@
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1209"/>
         <source>Launch %1 when starting the tray icon</source>
-        <translation>Lancer %1 lors du démarrage de l'icône de barre</translation>
+        <translation>Lancer %1 lors du démarrage de l&apos;icône de barre</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1212"/>
@@ -4256,7 +4256,7 @@
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1390"/>
         <source>%1 exited with exit code %2</source>
-        <translation>%1 s'est terminé avec le code de sortie %2</translation>
+        <translation>%1 s&apos;est terminé avec le code de sortie %2</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1393"/>
@@ -4266,12 +4266,12 @@
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1426"/>
         <source>An error occurred when running %1: %2</source>
-        <translation>Une erreur s'est produite lors de l'exécution de %1 : %2</translation>
+        <translation>Une erreur s&apos;est produite lors de l&apos;exécution de %1 : %2</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1479"/>
         <source>Kill launched instance</source>
-        <translation>Terminer l'instance lancée</translation>
+        <translation>Terminer l&apos;instance lancée</translation>
     </message>
 </context>
 <context>
@@ -4284,7 +4284,7 @@
     <message>
         <location filename="../settings/wizard.cpp" line="653"/>
         <source>Something when wrong when checking the Syncthing setup.</source>
-        <translation>Une erreur s'est produite lors de la vérification de la configuration Syncthing.</translation>
+        <translation>Une erreur s&apos;est produite lors de la vérification de la configuration Syncthing.</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="654"/>
@@ -4304,12 +4304,12 @@
     <message>
         <location filename="../settings/wizard.cpp" line="787"/>
         <source>&lt;b&gt;The Syncthing config could be located under &quot;%1&quot; but it seems invalid/incomplete.&lt;/b&gt; Hence Syncthing is assumed to be not running.</source>
-        <translation>&lt;b&gt;La configuration Syncthing pourrait se trouver sous « %1 » mais elle semble invalide/incomplète.&lt;/b&gt; Par conséquent, Syncthing est considéré comme n'étant pas en cours d'exécution.</translation>
+        <translation>&lt;b&gt;La configuration Syncthing pourrait se trouver sous « %1 » mais elle semble invalide/incomplète.&lt;/b&gt; Par conséquent, Syncthing est considéré comme n&apos;étant pas en cours d&apos;exécution.</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="779"/>
         <source>Looks like Syncthing is not running yet. You can launch it via %1.</source>
-        <translation>Il semble que Syncthing ne soit pas encore en cours d'exécution. Vous pouvez le lancer via %1.</translation>
+        <translation>Il semble que Syncthing ne soit pas encore en cours d&apos;exécution. Vous pouvez le lancer via %1.</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="750"/>
@@ -4325,17 +4325,17 @@
     <message>
         <location filename="../settings/mainconfigwizardpage.ui" line="23"/>
         <source>Configure Syncthing Tray for currently running Syncthing instance</source>
-        <translation>Configurer Syncthing Tray pour l'instance Syncthing actuellement en cours d'exécution</translation>
+        <translation>Configurer Syncthing Tray pour l&apos;instance Syncthing actuellement en cours d&apos;exécution</translation>
     </message>
     <message>
         <location filename="../settings/mainconfigwizardpage.ui" line="30"/>
         <source>Start installed Syncthing application via Syncthing Tray</source>
-        <translation>Démarrer l'application Syncthing installée via Syncthing Tray</translation>
+        <translation>Démarrer l&apos;application Syncthing installée via Syncthing Tray</translation>
     </message>
     <message>
         <location filename="../settings/mainconfigwizardpage.ui" line="37"/>
         <source>Start Syncthing application that is built into Syncthing Tray</source>
-        <translation>Démarrer l'application Syncthing intégrée à Syncthing Tray</translation>
+        <translation>Démarrer l&apos;application Syncthing intégrée à Syncthing Tray</translation>
     </message>
     <message>
         <location filename="../settings/mainconfigwizardpage.ui" line="44"/>
@@ -4355,27 +4355,27 @@
     <message>
         <location filename="../settings/mainconfigwizardpage.ui" line="65"/>
         <source>Enable systemd-integration</source>
-        <translation>Activer l'intégration systemd</translation>
+        <translation>Activer l&apos;intégration systemd</translation>
     </message>
     <message>
         <location filename="../settings/mainconfigwizardpage.ui" line="102"/>
         <source>Click next to configure Syncthing Tray according to the selected options. You can also reconduct the checks the available options are based on by heading back. If you cancel the wizard, no configuration changes will be made.</source>
-        <translation>Cliquez sur Suivant pour configurer Syncthing Tray selon les options sélectionnées. Vous pouvez également refaire les vérifications dont les options disponibles sont basées en revenant en arrière. Si vous annulez l'assistant, aucune modification de configuration ne sera effectuée.</translation>
+        <translation>Cliquez sur Suivant pour configurer Syncthing Tray selon les options sélectionnées. Vous pouvez également refaire les vérifications dont les options disponibles sont basées en revenant en arrière. Si vous annulez l&apos;assistant, aucune modification de configuration ne sera effectuée.</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="708"/>
         <source>Looks like Syncthing is already running and Syncthing Tray can be configured accordingly automatically.</source>
-        <translation>Il semble que Syncthing soit déjà en cours d'exécution et Syncthing Tray peut être configuré automatiquement en conséquence.</translation>
+        <translation>Il semble que Syncthing soit déjà en cours d&apos;exécution et Syncthing Tray peut être configuré automatiquement en conséquence.</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="747"/>
         <source>Syncthing has been started via the systemd %1 but the automatic setup detection was not able to connect via the REST-API. If you want Syncthing Tray to connect to this instance of Syncthing you will have to configure this manually. Otherwise you should probably stop this unit before proceeding with launching Syncthing in a different way.</source>
-        <translation>Syncthing a été démarré via le systemd %1 mais la détection automatique de configuration n'a pas pu se connecter via l'API REST. Si vous voulez que Syncthing Tray se connecte à cette instance de Syncthing, vous devrez la configurer manuellement. Sinon, vous devriez probablement arrêter ce service avant de procéder au lancement de Syncthing d'une autre manière.</translation>
+        <translation>Syncthing a été démarré via le systemd %1 mais la détection automatique de configuration n&apos;a pas pu se connecter via l&apos;API REST. Si vous voulez que Syncthing Tray se connecte à cette instance de Syncthing, vous devrez la configurer manuellement. Sinon, vous devriez probablement arrêter ce service avant de procéder au lancement de Syncthing d&apos;une autre manière.</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="797"/>
         <source>The systemd %1 and %2 have both be detected as enabled/running. This is probably a misconfiguration.</source>
-        <translation>Les systemd %1 et %2 ont tous deux été détectés comme activés/en cours d'exécution. C'est probablement une mauvaise configuration.</translation>
+        <translation>Les systemd %1 et %2 ont tous deux été détectés comme activés/en cours d&apos;exécution. C&apos;est probablement une mauvaise configuration.</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="762"/>
@@ -4385,7 +4385,7 @@
     <message>
         <location filename="../settings/wizard.cpp" line="781"/>
         <source>Looks like Syncthing is not running yet and needs to be installed before Syncthing Tray can be configured.</source>
-        <translation>Il semble que Syncthing ne soit pas encore en cours d'exécution et doive être installé avant que Syncthing Tray puisse être configuré.</translation>
+        <translation>Il semble que Syncthing ne soit pas encore en cours d&apos;exécution et doive être installé avant que Syncthing Tray puisse être configuré.</translation>
     </message>
 </context>
 <context>
@@ -4448,7 +4448,7 @@
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="110"/>
         <source>Ignore inavailability of Syncthing the specified number of seconds after Syncthing has been started; has only effect if the Syncthing start can be determined which is currently only supported for the local instance started via Systemd or the internal launcher.</source>
-        <translation>Ignorer l'indisponibilité de Syncthing pendant le nombre de secondes spécifié après le démarrage de Syncthing ; n'a d'effet que si le démarrage de Syncthing peut être déterminé, ce qui n'est actuellement pris en charge que pour l'instance locale démarrée via Systemd ou le lanceur interne.</translation>
+        <translation>Ignorer l&apos;indisponibilité de Syncthing pendant le nombre de secondes spécifié après le démarrage de Syncthing ; n&apos;a d&apos;effet que si le démarrage de Syncthing peut être déterminé, ce qui n&apos;est actuellement pris en charge que pour l&apos;instance locale démarrée via Systemd ou le lanceur interne.</translation>
     </message>
     <message>
         <location filename="../settings/notificationsoptionpage.ui" line="94"/>
@@ -4486,12 +4486,12 @@
     <message>
         <location filename="../misc/otherdialogs.cpp" line="49"/>
         <source>Own device ID</source>
-        <translation>ID de l'appareil own</translation>
+        <translation>ID de l&apos;appareil own</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="59"/>
         <source>device ID is unknown</source>
-        <translation>l'ID de l'appareil est inconnu</translation>
+        <translation>l&apos;ID de l&apos;appareil est inconnu</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="67"/>
@@ -4521,7 +4521,7 @@
     <message>
         <location filename="../misc/otherdialogs.cpp" line="220"/>
         <source>Manage ignore patterns (experimental)</source>
-        <translation>Gérer les motifs d'ignorance (expérimental)</translation>
+        <translation>Gérer les motifs d&apos;ignorance (expérimental)</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="247"/>
@@ -4541,12 +4541,12 @@
     <message>
         <location filename="../misc/otherdialogs.cpp" line="304"/>
         <source>Changes to ignore patterns:</source>
-        <translation>Modifications des motifs d'ignorance :</translation>
+        <translation>Modifications des motifs d&apos;ignorance :</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="352"/>
         <source>Ignore patterns of folder &quot;%1&quot;</source>
-        <translation>Motifs d'ignorance du dossier « %1 »</translation>
+        <translation>Motifs d&apos;ignorance du dossier « %1 »</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="405"/>
@@ -4576,7 +4576,7 @@
     <message>
         <location filename="../misc/otherdialogs.cpp" line="382"/>
         <source>Ignore patterns have been changed.</source>
-        <translation>Les motifs d'ignorance ont été modifiés.</translation>
+        <translation>Les motifs d&apos;ignorance ont été modifiés.</translation>
     </message>
     <message>
         <location filename="../misc/otherdialogs.cpp" line="265"/>
@@ -4591,7 +4591,7 @@
     <message>
         <location filename="../misc/otherdialogs.cpp" line="389"/>
         <source>Unable to save ignore patterns: %1</source>
-        <translation>Impossible d'enregistrer les motifs d'ignorance : %1</translation>
+        <translation>Impossible d&apos;enregistrer les motifs d&apos;ignorance : %1</translation>
     </message>
 </context>
 <context>
@@ -4637,7 +4637,7 @@
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1918"/>
         <source>Start wizard</source>
-        <translation>Démarrer l'assistant</translation>
+        <translation>Démarrer l&apos;assistant</translation>
     </message>
 </context>
 <context>
@@ -4676,7 +4676,7 @@
     <message>
         <location filename="../misc/statusinfo.cpp" line="96"/>
         <source>At least one remote folder is not in sync</source>
-        <translation>Au moins un dossier distant n'est pas synchronisé</translation>
+        <translation>Au moins un dossier distant n&apos;est pas synchronisé</translation>
     </message>
     <message>
         <location filename="../misc/statusinfo.cpp" line="100"/>
@@ -4749,7 +4749,7 @@
     <message>
         <location filename="../misc/statusinfo.cpp" line="104"/>
         <source>Status is unknown</source>
-        <translation>L'état est inconnu</translation>
+        <translation>L&apos;état est inconnu</translation>
     </message>
     <message>
         <location filename="../misc/statusinfo.cpp" line="127"/>
@@ -4772,14 +4772,14 @@
         <source>The process %1 (PID: %2) has been requested to terminate but hasn&apos;t reacted yet. Kill the process?
 
 This dialog closes automatically when the process finally terminates.</source>
-        <translation>Le processus %1 (PID : %2) a été demandé de se terminer mais n'a pas encore réagI. Terminer le processus ?
+        <translation>Le processus %1 (PID : %2) a été demandé de se terminer mais n&apos;a pas encore réagI. Terminer le processus ?
 
 Cette boîte de dialogue se ferme automatiquement lorsque le processus se termine enfin.</translation>
     </message>
     <message>
         <location filename="../misc/syncthingkiller.cpp" line="65"/>
         <source>Keep running</source>
-        <translation>Continuer à s'exécuter</translation>
+        <translation>Continuer à s&apos;exécuter</translation>
     </message>
     <message>
         <location filename="../misc/syncthingkiller.cpp" line="66"/>
@@ -4803,12 +4803,12 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
         <location filename="../misc/syncthingmodels.cpp" line="143"/>
         <location filename="../misc/syncthingmodels.cpp" line="151"/>
         <source>Unable to open &quot;%1&quot;</source>
-        <translation>Impossible d'ouvrir « %1 »</translation>
+        <translation>Impossible d&apos;ouvrir « %1 »</translation>
     </message>
     <message>
         <location filename="../misc/syncthingmodels.cpp" line="172"/>
         <source>Scanning is not supported.</source>
-        <translation>L'analyse n'est pas prise en charge.</translation>
+        <translation>L&apos;analyse n&apos;est pas prise en charge.</translation>
     </message>
     <message>
         <location filename="../misc/syncthingmodels.cpp" line="184"/>
@@ -4828,17 +4828,17 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../misc/syncthingmodels.cpp" line="215"/>
         <source>Unable to load ignore patterns: </source>
-        <translation>Impossible de charger les motifs d'ignorance : </translation>
+        <translation>Impossible de charger les motifs d&apos;ignorance : </translation>
     </message>
     <message>
         <location filename="../misc/syncthingmodels.cpp" line="236"/>
         <source>Unable to save ignore patterns: </source>
-        <translation>Impossible d'enregistrer les motifs d'ignorance : </translation>
+        <translation>Impossible d&apos;enregistrer les motifs d&apos;ignorance : </translation>
     </message>
     <message>
         <location filename="../misc/syncthingmodels.cpp" line="298"/>
         <source>Unable to resolve URL &quot;%1&quot;.</source>
-        <translation>Impossible de résoudre l'URL « %1 ».</translation>
+        <translation>Impossible de résoudre l&apos;URL « %1 ».</translation>
     </message>
     <message>
         <location filename="../misc/syncthingmodels.cpp" line="328"/>
@@ -4856,7 +4856,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../settings/systemdoptionpage.ui" line="21"/>
         <source>Show start/stop button on tray for local instance when systemd is available</source>
-        <translation>Afficher le bouton démarrer/arrêter sur la barre pour l'instance locale lorsque systemd est disponible</translation>
+        <translation>Afficher le bouton démarrer/arrêter sur la barre pour l&apos;instance locale lorsque systemd est disponible</translation>
     </message>
     <message>
         <location filename="../settings/systemdoptionpage.ui" line="28"/>
@@ -4864,9 +4864,9 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
  • Don&apos;t reconnect when unit not active/running
  • Try to reconnect when unit becomes active/running
  • Suppress notification about disconnect when Syncthing has been stopped manually</source>
-        <translation>Prendre en compte l'état du service systemd pour les notifications et les tentatives de reconnexion concernant l'instance locale
- • Ne pas se reconnecter lorsque le service n'est pas actif/en cours d'exécution
- • Essayer de se reconnecter lorsque le service devient actif/en cours d'exécution
+        <translation>Prendre en compte l&apos;état du service systemd pour les notifications et les tentatives de reconnexion concernant l&apos;instance locale
+ • Ne pas se reconnecter lorsque le service n&apos;est pas actif/en cours d&apos;exécution
+ • Essayer de se reconnecter lorsque le service devient actif/en cours d&apos;exécution
  • Supprimer la notification de déconnexion lorsque Syncthing a été arrêté manuellement</translation>
     </message>
     <message>
@@ -4936,17 +4936,17 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1574"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
-        <translation>Il n'est pas possible d'afficher le bouton démarrer/arrêter pour le service systemd et le lanceur interne en même temps. Le service systemd est prioritaire.</translation>
+        <translation>Il n&apos;est pas possible d&apos;afficher le bouton démarrer/arrêter pour le service systemd et le lanceur interne en même temps. Le service systemd est prioritaire.</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1580"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
-        <translation>Il n'est pas possible de prendre en compte le service systemd et le lanceur interne pour les reconnexions en même temps. Le service systemd est prioritaire.</translation>
+        <translation>Il n&apos;est pas possible de prendre en compte le service systemd et le lanceur interne pour les reconnexions en même temps. Le service systemd est prioritaire.</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1612"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
-        <translation>le service spécifié est soit inactif soit n'existe pas</translation>
+        <translation>le service spécifié est soit inactif soit n&apos;existe pas</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1634"/>
@@ -4970,7 +4970,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../misc/textviewdialog.cpp" line="69"/>
         <source> Check out &lt;a href=&quot;openLauncherSettings&quot;&gt;launcher settings&lt;/a&gt; for continuous log of local Syncthing instance.</source>
-        <translation> Consultez les &lt;a href=&quot;openLauncherSettings&quot;&gt;paramètres du lanceur&lt;/a&gt; pour le journal continu de l'instance Syncthing locale.</translation>
+        <translation> Consultez les &lt;a href=&quot;openLauncherSettings&quot;&gt;paramètres du lanceur&lt;/a&gt; pour le journal continu de l&apos;instance Syncthing locale.</translation>
     </message>
 </context>
 <context>
@@ -5004,7 +5004,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../settings/wizard.cpp" line="452"/>
         <source>&lt;p&gt;&lt;strong&gt;You have started the standalone version of Syncthing Tray. It looks like you are on KDE Plasma, though. On KDE the preferred version of Syncthing Tray is the Plasmoid which is supposed to be used &lt;em&gt;instead&lt;/em&gt; of the standalone version.&lt;/strong&gt; Check out the documentation about &lt;a href=&quot;%1&quot;&gt;configuring the Plasmoid&lt;/a&gt; for the best way to use Syncthing Tray on KDE. After adding Syncthing Tray as Plasmoid, you can reopen this wizard from the Plasmoid via its settings dialog.&lt;/p&gt;</source>
-        <translation>&lt;p&gt;&lt;strong&gt;Vous avez lancé la version autonome de Syncthing Tray. Cependant, il semble que vous soyez sur KDE Plasma. Sur KDE, la version préférée de Syncthing Tray est le Plasmoid qui est censé être utilisé &lt;em&gt;à la place&lt;/em&gt; de la version autonome.&lt;/strong&gt; Consultez la documentation sur &lt;a href=&quot;%1&quot;&gt;la configuration du Plasmoid&lt;/a&gt; pour la meilleure façon d'utiliser Syncthing Tray sur KDE. Après avoir ajouté Syncthing Tray comme Plasmoid, vous pouvez rouvrir cet assistant depuis le Plasmoid via sa boîte de dialogue des paramètres.&lt;/p&gt;</translation>
+        <translation>&lt;p&gt;&lt;strong&gt;Vous avez lancé la version autonome de Syncthing Tray. Cependant, il semble que vous soyez sur KDE Plasma. Sur KDE, la version préférée de Syncthing Tray est le Plasmoid qui est censé être utilisé &lt;em&gt;à la place&lt;/em&gt; de la version autonome.&lt;/strong&gt; Consultez la documentation sur &lt;a href=&quot;%1&quot;&gt;la configuration du Plasmoid&lt;/a&gt; pour la meilleure façon d&apos;utiliser Syncthing Tray sur KDE. Après avoir ajouté Syncthing Tray comme Plasmoid, vous pouvez rouvrir cet assistant depuis le Plasmoid via sa boîte de dialogue des paramètres.&lt;/p&gt;</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="463"/>
@@ -5014,7 +5014,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../settings/wizard.cpp" line="467"/>
         <source>Wizard&apos;s start page</source>
-        <translation>Page de départ de l'assistant</translation>
+        <translation>Page de départ de l&apos;assistant</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="468"/>
@@ -5029,7 +5029,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../settings/wizard.cpp" line="479"/>
         <source>Allows to configure Syncthing Tray automatically for the local Syncthing instance and helps you starting Syncthing if wanted.</source>
-        <translation>Permet de configurer Syncthing Tray automatiquement pour l'instance Syncthing locale et vous aide à démarrer Syncthing si souhaité.</translation>
+        <translation>Permet de configurer Syncthing Tray automatiquement pour l&apos;instance Syncthing locale et vous aide à démarrer Syncthing si souhaité.</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="487"/>
@@ -5044,7 +5044,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../settings/wizard.cpp" line="492"/>
         <source>Note that the connection settings allow importing URL, credentials and API-key from the local Syncthing configuration.</source>
-        <translation>Notez que les paramètres de connexion permettent d'importer l'URL, les identifiants et la clé API depuis la configuration Syncthing locale.</translation>
+        <translation>Notez que les paramètres de connexion permettent d&apos;importer l&apos;URL, les identifiants et la clé API depuis la configuration Syncthing locale.</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="508"/>
@@ -5064,7 +5064,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../settings/wizard.cpp" line="516"/>
         <source>It contains documentation about this GUI integration specifically.</source>
-        <translation>Elle contient de la documentation sur cette intégration d'interface graphique spécifiquement.</translation>
+        <translation>Elle contient de la documentation sur cette intégration d&apos;interface graphique spécifiquement.</translation>
     </message>
 </context>
 <context>
@@ -5077,12 +5077,12 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../settings/wizard.cpp" line="219"/>
         <source>The internal launcher has not been initialized.</source>
-        <translation>Le lanceur interne n'a pas été initialisé.</translation>
+        <translation>Le lanceur interne n&apos;a pas été initialisé.</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="231"/>
         <source>The service handler has not been initialized.</source>
-        <translation>Le gestionnaire de service n'a pas été initialisé.</translation>
+        <translation>Le gestionnaire de service n&apos;a pas été initialisé.</translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="264"/>
@@ -5122,7 +5122,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../settings/wizard.cpp" line="283"/>
         <source>Syncthing device ID: </source>
-        <translation>ID de l'appareil Syncthing : </translation>
+        <translation>ID de l&apos;appareil Syncthing : </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="284"/>
@@ -5132,7 +5132,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../settings/wizard.cpp" line="286"/>
         <source>Additional Syncthing status info: </source>
-        <translation>Info d'état Syncthing supplémentaire : </translation>
+        <translation>Info d&apos;état Syncthing supplémentaire : </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="321"/>
@@ -5162,17 +5162,17 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../settings/wizard.cpp" line="366"/>
         <source>The Syncthing process exited prematurely. </source>
-        <translation>Le processus Syncthing s'est terminé prématurément. </translation>
+        <translation>Le processus Syncthing s&apos;est terminé prématurément. </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="379"/>
         <source>The Syncthing service stopped prematurely. </source>
-        <translation>Le service Syncthing s'est arrêté prématurément. </translation>
+        <translation>Le service Syncthing s&apos;est arrêté prématurément. </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="403"/>
         <source>Ran into timeout while waiting for Syncthing to create config file. Maybe Syncthing created its config file under an unexpected location. </source>
-        <translation>Délai dépassé lors de l'attente de la création du fichier de configuration par Syncthing. Peut-être que Syncthing a créé son fichier de configuration à un emplacement inattendu. </translation>
+        <translation>Délai dépassé lors de l&apos;attente de la création du fichier de configuration par Syncthing. Peut-être que Syncthing a créé son fichier de configuration à un emplacement inattendu. </translation>
     </message>
     <message>
         <location filename="../settings/wizard.cpp" line="414"/>
@@ -5278,7 +5278,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../settings/settings.cpp" line="684"/>
         <source>Backup of %1 (created by wizard)</source>
-        <translation>Sauvegarde de %1 (créée par l'assistant)</translation>
+        <translation>Sauvegarde de %1 (créée par l&apos;assistant)</translation>
     </message>
 </context>
 <context>
@@ -5294,7 +5294,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="14"/>
         <source>App settings</source>
-        <translation>Paramètres de l'application</translation>
+        <translation>Paramètres de l&apos;application</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="25"/>
@@ -5334,7 +5334,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="40"/>
         <source>Configure details of the app&apos;s behavior</source>
-        <translation>Configurer les détails du comportement de l'application</translation>
+        <translation>Configurer les détails du comportement de l&apos;application</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="46"/>
@@ -5354,12 +5354,12 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="71"/>
         <source>Import selected settings/secrets/data of app and backend</source>
-        <translation>Importer les paramètres/secrets/données sélectionnés de l'application et du backend</translation>
+        <translation>Importer les paramètres/secrets/données sélectionnés de l&apos;application et du backend</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="77"/>
         <source>Export all settings/secrets/data of app and backend</source>
-        <translation>Exporter tous les paramètres/secrets/données de l'application et du backend</translation>
+        <translation>Exporter tous les paramètres/secrets/données de l&apos;application et du backend</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="83"/>
@@ -5440,17 +5440,17 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="189"/>
         <source>Poll interval for traffic</source>
-        <translation>Intervalle d'interrogation pour le trafic</translation>
+        <translation>Intervalle d&apos;interrogation pour le trafic</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="190"/>
         <source>Poll interval for device statistics</source>
-        <translation>Intervalle d'interrogation pour les statistiques de l'appareil</translation>
+        <translation>Intervalle d&apos;interrogation pour les statistiques de l&apos;appareil</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="191"/>
         <source>Poll interval for errors</source>
-        <translation>Intervalle d'interrogation pour les erreurs</translation>
+        <translation>Intervalle d&apos;interrogation pour les erreurs</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="192"/>
@@ -5470,7 +5470,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="199"/>
         <source>Username</source>
-        <translation>Nom d'utilisateur</translation>
+        <translation>Nom d&apos;utilisateur</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="200"/>
@@ -5490,7 +5490,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="205"/>
         <source>URL for GUI and API access</source>
-        <translation>URL pour l'accès à l'interface et à l'API</translation>
+        <translation>URL pour l&apos;accès à l&apos;interface et à l&apos;API</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="215"/>
@@ -5574,7 +5574,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="187"/>
         <source>The timeout for normal requests via the REST-API in milliseconds. Set to 0 for no limit.</source>
-        <translation>Le délai pour les requêtes normales via l'API REST en millisecondes. Réglez à 0 pour aucune limite.</translation>
+        <translation>Le délai pour les requêtes normales via l&apos;API REST en millisecondes. Réglez à 0 pour aucune limite.</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="187"/>
@@ -5584,7 +5584,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="188"/>
         <source>The timeout for event API requests using long polling in milliseconds. Set to 0 to use the default limit of Syncthing.</source>
-        <translation>Le délai pour les requêtes API d'événements utilisant le long polling en millisecondes. Réglez à 0 pour utiliser la limite par défaut de Syncthing.</translation>
+        <translation>Le délai pour les requêtes API d&apos;événements utilisant le long polling en millisecondes. Réglez à 0 pour utiliser la limite par défaut de Syncthing.</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="188"/>
@@ -5594,7 +5594,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="189"/>
         <source>The poll interval for traffic statistics in milliseconds.</source>
-        <translation>L'intervalle d'interrogation pour les statistiques de trafic en millisecondes.</translation>
+        <translation>L&apos;intervalle d&apos;interrogation pour les statistiques de trafic en millisecondes.</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="189"/>
@@ -5604,17 +5604,17 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="190"/>
         <source>The poll interval for device statistics in milliseconds.</source>
-        <translation>L'intervalle d'interrogation pour les statistiques de l'appareil en millisecondes.</translation>
+        <translation>L&apos;intervalle d&apos;interrogation pour les statistiques de l&apos;appareil en millisecondes.</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="191"/>
         <source>The poll interval for errors in milliseconds.</source>
-        <translation>L'intervalle d'interrogation pour les erreurs en millisecondes.</translation>
+        <translation>L&apos;intervalle d&apos;interrogation pour les erreurs en millisecondes.</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="192"/>
         <source>The interval for re-connect attempts in milliseconds.</source>
-        <translation>L'intervalle pour les tentatives de reconnexion en millisecondes.</translation>
+        <translation>L&apos;intervalle pour les tentatives de reconnexion en millisecondes.</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="193"/>
@@ -5624,7 +5624,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="194"/>
         <source>The path to the Unix domain socket when setting the Syncthing URL to &quot;unix+http://…&quot;.</source>
-        <translation>Le chemin vers le socket de domaine Unix lorsque l'URL Syncthing est définie sur « unix+http://… ».</translation>
+        <translation>Le chemin vers le socket de domaine Unix lorsque l&apos;URL Syncthing est définie sur « unix+http://… ».</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="206"/>
@@ -5634,7 +5634,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="206"/>
         <source>Write a persistent log file into the app directory</source>
-        <translation>Écrire un fichier journal persistant dans le répertoire de l'application</translation>
+        <translation>Écrire un fichier journal persistant dans le répertoire de l&apos;application</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="206"/>
@@ -5649,7 +5649,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="213"/>
         <source>Show Syncthing logs since app startup</source>
-        <translation>Afficher les journaux Syncthing depuis le démarrage de l'application</translation>
+        <translation>Afficher les journaux Syncthing depuis le démarrage de l&apos;application</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="214"/>
@@ -5664,12 +5664,12 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="215"/>
         <source>Start an external executable instead of using the built-in version of Syncthing. When empty, the built-in version of Syncthing is used.</source>
-        <translation>Démarrer un exécutable externe au lieu d'utiliser la version intégrée de Syncthing. Lorsqu'il est vide, la version intégrée de Syncthing est utilisée.</translation>
+        <translation>Démarrer un exécutable externe au lieu d&apos;utiliser la version intégrée de Syncthing. Lorsqu&apos;il est vide, la version intégrée de Syncthing est utilisée.</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="218"/>
         <source>Import/export archive</source>
-        <translation>Archive d'import/export</translation>
+        <translation>Archive d&apos;import/export</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="218"/>
@@ -5684,17 +5684,17 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="219"/>
         <source>Import/export password</source>
-        <translation>Mot de passe d'import/export</translation>
+        <translation>Mot de passe d&apos;import/export</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="219"/>
         <source>Encrypt/decrypt data via AES-256 when exporting/importing to archive</source>
-        <translation>Chiffrer/déchiffrer les données via AES-256 lors de l'exportation/importation vers l'archive</translation>
+        <translation>Chiffrer/déchiffrer les données via AES-256 lors de l&apos;exportation/importation vers l&apos;archive</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="220"/>
         <source>Export path</source>
-        <translation>Chemin d'exportation</translation>
+        <translation>Chemin d&apos;exportation</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="220"/>
@@ -5709,7 +5709,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="221"/>
         <source>Reduces communication overhead and makes Syncthing API and web GUI inaccessible to other apps, applied after restart</source>
-        <translation>Réduit la surcharge de communication et rend l'API Syncthing et l'interface web inaccessibles aux autres applications, appliqué après le redémarrage</translation>
+        <translation>Réduit la surcharge de communication et rend l&apos;API Syncthing et l&apos;interface web inaccessibles aux autres applications, appliqué après le redémarrage</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="221"/>
@@ -5725,7 +5725,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="222"/>
         <source>Helps debugging the interaction between UI and backend with logcat.</source>
-        <translation>Aide au débogage de l'interaction entre l'interface et le backend avec logcat.</translation>
+        <translation>Aide au débogage de l&apos;interaction entre l&apos;interface et le backend avec logcat.</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="223"/>
@@ -5783,12 +5783,12 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/StartPage.qml" line="56"/>
         <source>Set password for web-based GUI</source>
-        <translation>Définir le mot de passe pour l'interface web</translation>
+        <translation>Définir le mot de passe pour l&apos;interface web</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="62"/>
         <source>Otherwise other apps can access the web-based GUI without authentication.</source>
-        <translation>Sinon, d'autres applications peuvent accéder à l'interface web sans authentification.</translation>
+        <translation>Sinon, d&apos;autres applications peuvent accéder à l&apos;interface web sans authentification.</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="70"/>
@@ -5835,7 +5835,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
         <location filename="../quick/qml/StartPage.qml" line="208"/>
         <location filename="../quick/qml/StartPage.qml" line="223"/>
         <source>Own device ID</source>
-        <translation>ID de l'appareil own</translation>
+        <translation>ID de l&apos;appareil own</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="233"/>
@@ -5895,7 +5895,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/StartPage.qml" line="334"/>
         <source>Quit app</source>
-        <translation>Quitter l'application</translation>
+        <translation>Quitter l&apos;application</translation>
     </message>
 </context>
 <context>
@@ -5941,7 +5941,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="24"/>
         <source>Resident set size (only Go runtime)</source>
-        <translation>Taille de l'ensemble résident (uniquement le runtime Go)</translation>
+        <translation>Taille de l&apos;ensemble résident (uniquement le runtime Go)</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="25"/>
@@ -5996,7 +5996,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="35"/>
         <source>Number of Syncthing devices</source>
-        <translation>Nombre d'appareils Syncthing</translation>
+        <translation>Nombre d&apos;appareils Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/StatisticsPage.qml" line="36"/>
@@ -6019,7 +6019,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/webview-none/WebViewItem.qml" line="9"/>
         <source>The app has not been built with web view support so this page is not available.</source>
-        <translation>L'application n'a pas été compilée avec le support de la vue web donc cette page n'est pas disponible.</translation>
+        <translation>L&apos;application n&apos;a pas été compilée avec le support de la vue web donc cette page n&apos;est pas disponible.</translation>
     </message>
     <message>
         <location filename="../quick/qml/webview-none/WebViewItem.qml" line="16"/>

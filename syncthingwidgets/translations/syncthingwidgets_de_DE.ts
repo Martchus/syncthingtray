@@ -1427,17 +1427,17 @@
         <translation>Geräte</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevsPage.qml" line="23"/>
+        <location filename="../quick/qml/DevsPage.qml" line="22"/>
         <source>Add device</source>
         <translation>Gerät hinzufügen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevsPage.qml" line="30"/>
+        <location filename="../quick/qml/DevsPage.qml" line="29"/>
         <source>Pause all</source>
         <translation>Alle pausieren</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevsPage.qml" line="35"/>
+        <location filename="../quick/qml/DevsPage.qml" line="34"/>
         <source>Resume all</source>
         <translation>Alle fortsetzen</translation>
     </message>
@@ -2029,22 +2029,22 @@
         <translation type="obsolete">Verschiedenes</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirListView.qml" line="15"/>
+        <location filename="../quick/qml/DirListView.qml" line="17"/>
         <source>Override changes on remote devices</source>
         <translation>Änderungen auf dem entfernten Gerät überschreiben</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirListView.qml" line="15"/>
+        <location filename="../quick/qml/DirListView.qml" line="17"/>
         <source>Revert local changes</source>
         <translation>Lokale Änderungen zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirListView.qml" line="20"/>
+        <location filename="../quick/qml/DirListView.qml" line="22"/>
         <source>Do you really want to override changes on remote devices within folder &quot;%1&quot;? This will mark the local version as the latest version causing changes on all remote devices to be overridden with the version from this device.</source>
         <translation>Sollen wirklich alle Änderungen auf anderen Geräten im Ordner &quot;%1&quot; überschrieben werden? Diese Aktion markiert die lokale Version als die Aktuelleste, wodurch die Version auf allen anderen Geräten mit der lokalen Version überschrieben wird.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirListView.qml" line="21"/>
+        <location filename="../quick/qml/DirListView.qml" line="23"/>
         <source>Do you really want to revert the local changes on this device within folder &quot;%1&quot;? This will undo all local changes on this device.</source>
         <translation>Sollen wirklich alle lokalen Änderungen in Ordner &quot;%1&quot; zurückgesetzt werden? Dadurch werden alle Änderungen die auf diesem Gerät gemacht wurden rückgängig gemacht.</translation>
     </message>
@@ -2057,22 +2057,22 @@
         <translation>Ordner</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirsPage.qml" line="23"/>
+        <location filename="../quick/qml/DirsPage.qml" line="22"/>
         <source>Add folder</source>
         <translation>Ordner hinzufügen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirsPage.qml" line="30"/>
+        <location filename="../quick/qml/DirsPage.qml" line="29"/>
         <source>Pause all</source>
         <translation>Alle pausieren</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirsPage.qml" line="35"/>
+        <location filename="../quick/qml/DirsPage.qml" line="34"/>
         <source>Resume all</source>
         <translation>Alle fortsetzen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirsPage.qml" line="40"/>
+        <location filename="../quick/qml/DirsPage.qml" line="39"/>
         <source>Rescan all</source>
         <translation>All scannen</translation>
     </message>
