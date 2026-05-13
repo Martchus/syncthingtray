@@ -66,6 +66,7 @@ Item {
     property int foldersAdded: 0
     property list<string> messages
 
+    readonly property int pathIndex: 4
     readonly property int optionsIndex: 6
     readonly property int importIndex: 7
     readonly property int exportIndex: importIndex + 1
@@ -181,10 +182,11 @@ Item {
                 verify(folderModel.count > 2, "model populated");
                 compare(folderModel.get(0).label, "ID", "ID label present");
                 compare(folderModel.get(1).label, "Label", "label label present");
-                compare(folderModel.get(2).label, "Paused", "paused label present");
-                compare(folderModel.get(2).value, true, "paused enabled by default");
-                compare(folderModel.get(3).label, "Path", "path label present");
-                compare(folderModel.get(3).value, "", "default path present");
+                compare(folderModel.get(2).label, "Group", "group label present");
+                compare(folderModel.get(3).label, "Paused", "paused label present");
+                compare(folderModel.get(3).value, true, "paused enabled by default");
+                compare(folderModel.get(4).label, "Path", "path label present");
+                compare(folderModel.get(4).value, "", "default path present");
 
                 // open dialog to edit ID
                 const listView = pageStack.currentPage.listView;
@@ -219,7 +221,7 @@ Item {
                 discardChangesDialog.reject();
 
                 // open dialog to edit path
-                listView.currentIndex = 3;
+                listView.currentIndex = pathIndex;
                 const pathItem = pageStack.currentPage.listView.currentItem; // select ID
                 pathItem.manualButton.click();
                 verify(pathItem.dialog.visible, "dialog to edit path is open");
@@ -229,7 +231,7 @@ Item {
                 pathItem.dialog.text = newPath;
                 pathItem.dialog.accept();
                 verify(pathItem.dialog.visible, "dialog to edit path is closed");
-                compare(folderModel.get(3).value, newPath, "entered path has been set");
+                compare(folderModel.get(pathIndex).value, newPath, "entered path has been set");
 
                 // add folder
                 const applyAction = pageStack.currentActions[2];
