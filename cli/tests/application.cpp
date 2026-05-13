@@ -144,6 +144,10 @@ void ApplicationTests::test()
         cout.flush();
     }
 
+    // wait until Syncthing is idling
+    const char *const waitArgs[] = { "syncthingctl", "wait-for-idle", "--all-dirs", "--all-devs", "--api-key", apiKey.data(), "--url", url.data(), "--no-color", nullptr };
+    TESTUTILS_ASSERT_EXEC(waitArgs);
+
     // test status for all dirs and devs
     const char *const statusArgs[] = { "syncthingctl", "status", "--api-key", apiKey.data(), "--url", url.data(), "--no-color", nullptr };
     TESTUTILS_ASSERT_EXEC(statusArgs);
