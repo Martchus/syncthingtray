@@ -70,7 +70,9 @@ TrayMenu::TrayMenu(TrayIcon *trayIcon, QWidget *parent)
             // note: This is not perfect as the menu will stay open if another window is active.
             switch (state) {
             case Qt::ApplicationInactive:
-                close();
+                if (m_windowType == WindowType::Popup) {
+                    close();
+                }
                 break;
             default:;
             }
