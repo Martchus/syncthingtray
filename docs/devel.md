@@ -229,6 +229,14 @@ Translations for further locales can be added quite easily:
    `fileitemactionplugin/CMakeLists.txt`, `plasmoid/CMakeLists.txt` and
    `tray/CMakeLists.txt`.
 2. Configure a new build, e.g. follow steps under *[Building this straight](#building-this-straight)*.
+    * To cut corners, one can also skip step 2, 3 and 4 by using all the English translation files
+      (all the `*_en_US.ts` files) as base. Take care to update the `language` attribute in the `TS`
+      element after copying those files.
+    * If you configure a build, be sure to create a fully-featured build. Otherwise not all text is
+      considered. For a fully-featured build, the following CMake options need to be passed:
+      ```
+      -DNO_FILE_ITEM_ACTION_PLUGIN=OFF -DNO_PLASMOID=OFF -DNO_LIBSYNCTHING=OFF -DUSE_LIBSYNCTHING=ON -DQUICK_GUI=ON
+      ```
 3. Conduct a full build or generate only translation files via the `translations` target.
 4. New translation files should have been created by the build system under
    `connector/translations`, `model/translations`, `widgets/translations`,
