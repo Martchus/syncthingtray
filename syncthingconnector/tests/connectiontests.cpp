@@ -42,7 +42,7 @@ public:
     void testSendingError();
     void checkDevices();
     void checkDirectories() const;
-    void testReconnecting();
+    void testReconnecting(bool afterSuspended = false);
     void testResumingAllDevices();
     void testResumingDirectory();
     void testPausingDirectory();
@@ -72,7 +72,7 @@ private:
     template <typename Handler> TemporaryConnection handleNewDirs(const Handler &handler);
     WaitForConnected connectedSignal() const;
     void waitForConnected(int timeout = 5000);
-    void waitForAllDirsAndDevsReady(bool initialConfig = false);
+    void waitForAllDirsAndDevsReady(bool initialConfig = false, bool afterSuspended = false);
 
     SyncthingConnection m_connection;
     QString m_ownDevId;
@@ -206,35 +206,40 @@ void ConnectionTests::waitForConnected(int timeout)
 
 /*!
  * \brief Ensures the connection is established and waits till all dirs and devs are ready.
- * \param initialConfig Whether to check for initial config (at least one dir and one dev is paused).
+ * \param initialConfig Whether to check for initial config (expected dir and dev are paused).
+ * \param afterSuspended Whether to check after Syncthing has been suspended.
  */
-void ConnectionTests::waitForAllDirsAndDevsReady(const bool initialConfig)
+void ConnectionTests::waitForAllDirsAndDevsReady(bool initialConfig, bool afterSuspended)
 {
-    bool allDirsReady, allDevsReady;
-    bool isConnected = m_connection.isConnected();
-    const auto checkAllDirsReady([this, &allDirsReady, &initialConfig] {
-        bool oneDirPaused = false;
-        for (const SyncthingDir &dir : m_connection.dirInfo()) {
-            if (dir.status == SyncthingDirStatus::Unknown && !dir.paused) {
+    auto allDirsReady = false, allDevsReady = false, isStatusExpected = false;
+    const auto checkAllDirsReady([&] {
+        auto expectedDirPaused = false;
+        for (const auto &dir : m_connection.dirInfo()) {
+            if (dir.id == QStringLiteral("test2")) {
+                expectedDirPaused = dir.paused;
+            } else if (!afterSuspended && (dir.status != SyncthingDirStatus::Idle || dir.paused)) {
                 allDirsReady = false;
                 return;
             }
-            oneDirPaused = oneDirPaused || dir.paused;
         }
-        allDirsReady = !initialConfig || oneDirPaused;
+        allDirsReady = !initialConfig || afterSuspended || expectedDirPaused;
     });
-    const auto checkAllDevsReady([this, &allDevsReady, &initialConfig] {
-        bool oneDevPaused = false;
-        for (const SyncthingDev &dev : m_connection.devInfo()) {
-            if (dev.status == SyncthingDevStatus::Unknown && !dev.paused) {
+    const auto checkAllDevsReady([&] {
+        auto expectedDevPaused = false;
+        for (const auto &dev : m_connection.devInfo()) {
+            if (dev.id == QStringLiteral("MMGUI6U-WUEZQCP-XZZ6VYB-LCT4TVC-ER2HAVX-QYT6X7D-S6ZSG2B-323KLQ7")) {
+                expectedDevPaused = dev.paused;
+            } else if (!afterSuspended && (dev.status == SyncthingDevStatus::Unknown || dev.paused)) {
                 allDevsReady = false;
                 return;
             }
-            oneDevPaused = oneDevPaused || dev.paused;
         }
-        allDevsReady = !initialConfig || oneDevPaused;
+        allDevsReady = !initialConfig || expectedDevPaused;
     });
-    auto checkStatus([this, &isConnected](SyncthingStatus) { isConnected = m_connection.isConnected(); });
+    const auto checkStatus([&](SyncthingStatus) {
+        isStatusExpected = initialConfig ? m_connection.status() == SyncthingStatus::Paused : m_connection.isConnected();
+    });
+    checkStatus(SyncthingStatus::Disconnected);
     checkAllDirsReady();
     checkAllDevsReady();
     if (allDirsReady && allDevsReady) {
@@ -242,7 +247,7 @@ void ConnectionTests::waitForAllDirsAndDevsReady(const bool initialConfig)
     }
 
     auto conn1 = connectionSignal(&SyncthingConnection::error);
-    auto conn2 = connectionSignal(&SyncthingConnection::statusChanged, checkStatus, &isConnected);
+    auto conn2 = connectionSignal(&SyncthingConnection::statusChanged, checkStatus, &isStatusExpected);
     auto conn3 = connectionSignal(&SyncthingConnection::dirStatusChanged, checkAllDirsReady, &allDirsReady);
     auto conn4 = connectionSignal(&SyncthingConnection::newDirs, checkAllDirsReady, &allDirsReady);
     auto conn5 = connectionSignal(&SyncthingConnection::devStatusChanged, checkAllDevsReady, &allDevsReady);
@@ -505,13 +510,17 @@ void ConnectionTests::checkDirectories() const
     CPPUNIT_ASSERT_EQUAL(QSet<QString>({ QStringLiteral("Test dev 2") }), devNames2);
 }
 
-void ConnectionTests::testReconnecting()
+void ConnectionTests::testReconnecting(bool afterSuspended)
 {
     cerr << "\n - Reconnecting ...\n";
     auto conn = connectionSignal(&SyncthingConnection::statusChanged);
     waitForConnection(defaultReconnect(), 1000, conn);
-    cerr << "\n - Waiting for dirs/devs after reconnect ...\n";
-    waitForAllDirsAndDevsReady(true);
+    cerr << "\n - Waiting for dirs/devs after reconnect";
+    if (afterSuspended) {
+        cerr << " after suspending";
+    }
+    cerr << "...\n";
+    waitForAllDirsAndDevsReady(true, afterSuspended);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("connected again", QStringLiteral("connected, paused"), m_connection.statusText());
 }
 
@@ -774,7 +783,7 @@ void ConnectionTests::testSuspendResume()
     }
 
     // re-connect - that should not prevent resuming Syncthing again
-    testReconnecting();
+    testReconnecting(true);
 
     // resume Syncthing
     cerr << "\n - Resuming Syncthing ...\n";
