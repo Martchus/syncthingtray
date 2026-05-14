@@ -3058,7 +3058,6 @@
     <message>
         <location filename="../quick/appservice.cpp" line="519"/>
         <location filename="../quick/appservice.cpp" line="539"/>
-        <location filename="../quick/appservice.cpp" line="539"/>
         <source>Most recent: </source>
         <translation type="unfinished"></translation>
     </message>
