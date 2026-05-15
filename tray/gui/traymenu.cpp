@@ -30,13 +30,23 @@
 #define QT_PLATFORM_POPUP_FLAGS_SPECIFIER constexpr
 #endif
 
+// define additional flags for showing the tray menu as popup
+// - Avoid Qt::FramelessWindowHint on Windows because as of Qt 6.11.1 (commit 60a0586828f4939ef418cc89daadc17da8290663) it
+//   will otherwise no longer use DWM and rounded corners.
+// - Keep Qt::FramelessWindowHint on other platforms to avoid potential regressions.
+#if defined(Q_OS_WINDOWS)
+#define QT_PLATFORM_POPUP_EXTRA_FLAGS Qt::Widget
+#else
+#define QT_PLATFORM_POPUP_EXTRA_FLAGS Qt::FramelessWindowHint
+#endif
+
 using namespace QtUtilities;
 
 namespace QtGui {
 
 static constexpr auto border = 10;
 
-static QT_PLATFORM_POPUP_FLAGS_SPECIFIER auto popupFlags = Qt::FramelessWindowHint | Qt::Popup;
+static QT_PLATFORM_POPUP_FLAGS_SPECIFIER auto popupFlags = Qt::Popup | QT_PLATFORM_POPUP_EXTRA_FLAGS;
 
 #ifdef TRAY_MENU_HANDLE_WINDOWS11_STYLE
 static bool isWindows11Style(const QWidget *widget)
@@ -64,7 +74,7 @@ TrayMenu::TrayMenu(TrayIcon *trayIcon, QWidget *parent)
     //       not always/everywhere reproducible but it is nevertheless best to avoid using a popup completely.
 #ifdef QT_PLATFORM_MAY_NOT_SUPPORT_POPUP
     if (QGuiApplication::platformName() == QStringLiteral("wayland")) {
-        popupFlags = Qt::Dialog | Qt::FramelessWindowHint | Qt::CustomizeWindowHint;
+        popupFlags = Qt::Dialog | Qt::CustomizeWindowHint | QT_PLATFORM_POPUP_EXTRA_FLAGS;
         QObject::connect(qGuiApp, &QGuiApplication::applicationStateChanged, this, [this](Qt::ApplicationState state) {
             // close the menu if the application becomes inactive
             // note: This is not perfect as the menu will stay open if another window is active.
