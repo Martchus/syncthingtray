@@ -42,4 +42,44 @@ bool SyncthingSortFilterModel::lessThan(const QModelIndex &left, const QModelInd
     return QSortFilterProxyModel::lessThan(left, right);
 }
 
+QModelIndex Data::SyncthingSectionModel::index(int row, int column, const QModelIndex &parent) const
+{
+
+}
+
+QModelIndex Data::SyncthingSectionModel::mapToSource(const QModelIndex &proxyIndex) const
+{
+
+}
+
+QModelIndex Data::SyncthingSectionModel::mapFromSource(const QModelIndex &sourceIndex) const
+{
+
+}
+
+int Data::SyncthingSectionModel::rowCount(const QModelIndex &parent) const
+{
+
+}
+
+int Data::SyncthingSectionModel::columnCount(const QModelIndex &parent) const
+{
+
+}
+
+QVariant Data::SyncthingSectionModel::data(const QModelIndex &proxyIndex, int role) const
+{
+
+}
+
+bool Data::SyncthingSectionModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+
+}
+
+Qt::ItemFlags Data::SyncthingSectionModel::flags(const QModelIndex &index) const
+{
+
+}
+
 } // namespace Data

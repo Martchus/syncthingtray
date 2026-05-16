@@ -40,6 +40,7 @@ private:
 inline SyncthingSortFilterModel::SyncthingSortFilterModel(QAbstractItemModel *sourceModel, QObject *parent)
     : QSortFilterProxyModel(parent)
     , m_behavior(SyncthingSortBehavior::Alphabetically)
+    , m_sectionRole(sectionRole)
 {
     setSortCaseSensitivity(Qt::CaseInsensitive);
     setFilterCaseSensitivity(Qt::CaseInsensitive);
@@ -57,6 +58,37 @@ inline void SyncthingSortFilterModel::setBehavior(SyncthingSortBehavior behavior
         m_behavior = behavior;
         invalidate();
     }
+}
+
+class LIB_SYNCTHING_MODEL_EXPORT SyncthingSectionModel : public SyncthingSortFilterModel {
+    Q_OBJECT
+public:
+    explicit SyncthingSectionModel(QAbstractItemModel *sourceModel = nullptr, int sectionRole = -1, QObject *parent = nullptr);
+
+    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
+    QModelIndex mapToSource(const QModelIndex &proxyIndex) const override;
+    QModelIndex mapFromSource(const QModelIndex &sourceIndex) const override;
+    int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+    int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+    QVariant data(const QModelIndex &proxyIndex, int role) const override;
+    bool setData(const QModelIndex &index, const QVariant &value, int role) override;
+    Qt::ItemFlags flags(const QModelIndex &index) const override;
+
+private:
+    int m_sectionRole;
+    struct Section {
+        QVariant value;
+        int firstRow = 0;
+        int lastRow = 0;
+    };
+    std::vector<Section> m_sections;
+};
+
+inline SyncthingSectionModel::SyncthingSectionModel(QAbstractItemModel *sourceModel, int sectionRole, QObject *parent)
+    : SyncthingSortFilterModel(sourceModel, parent)
+    , m_sectionRole(sectionRole)
+{
+
 }
 
 } // namespace Data
