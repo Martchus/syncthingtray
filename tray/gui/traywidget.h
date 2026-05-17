@@ -92,6 +92,7 @@ public Q_SLOTS:
     void showInternalErrorsDialog();
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
     void showQtQuickGui();
+    bool showFileBrowser(const QString &dirId);
 #endif
     void restartSyncthing();
     void quitTray();

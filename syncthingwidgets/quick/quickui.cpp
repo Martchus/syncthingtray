@@ -445,6 +445,11 @@ bool QuickUI::showSettings(QQuickItem *stackView)
 
 bool QuickUI::browseFiles(const QString &dirId, const QString &dirName, QQuickItem *stackView)
 {
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
+    if (auto retVal = false; !stackView && invokeWidgetFunction("showFileBrowser", Q_RETURN_ARG(bool, retVal), Q_ARG(QString, dirId))) {
+        return retVal;
+    }
+#endif
     return showPage("Main", "FilesPage", { { QStringLiteral("dirId"), dirId }, { QStringLiteral("dirName"), dirName } }, stackView);
 }
 
@@ -465,6 +470,17 @@ QObject *QuickUI::loadComponent(QAnyStringView uri, QAnyStringView typeName, con
     }
     return object;
 }
+
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
+template<typename ReturnArg, typename... Args>
+bool QuickUI::invokeWidgetFunction(const char *member, QTemplatedMetaMethodReturnArgument<ReturnArg> r, Args &&... args)
+{
+    if (auto *const widget = m_engine->singletonInstance<QObject *>("Tray", "TrayWidget")) {
+        return QMetaObject::invokeMethod(widget, member, Qt::DirectConnection, r, std::forward<Args>(args)...);
+    }
+    return false;
+}
+#endif
 #endif
 
 } // namespace QtGui

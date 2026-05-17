@@ -496,6 +496,17 @@ void TrayWidget::showQtQuickGui()
     }
     m_quickUI->ui.showMainWindow();
 }
+
+bool TrayWidget::showFileBrowser(const QString &dirId)
+{
+    auto row = 0;
+    const auto *const dirInfo = m_data.connection()->findDirInfo(dirId, row);
+    if (!dirInfo) {
+        return false;
+    }
+    browseRemoteFiles(*dirInfo);
+    return true;
+}
 #endif
 
 void TrayWidget::restartSyncthing()
