@@ -14,21 +14,41 @@ To avoid building c++utilities/qtutilities/qtforkawesome separately, follow the 
 [various build variables](https://github.com/Martchus/cpp-utilities/blob/master/doc/buildvariables.md) which
 can be passed to CMake to influence the build.
 
+### Configuration of UI types
+Syncthing Tray supports a Qt Widgets based UI (enabled via the CMake argument `-DWIDGETS_GUI=ON`) and a
+Qt Quick based UI (enabled via the CMake argument `-DQUICK_GUI=ON`):
+
+* The former is intended for desktop platforms and the latter is intended for mobile platforms.
+* Both UI types can in theory be used under all platforms, though.
+* Both UI types can be enabled at the same time.
+* When building `qtutilities` separately, be sure to enable support for the UI types in consistency with
+  the build of Syncthing Tray.
+* To modernize and extend the UI for desktop-based platforms, parts of the Qt Widgets based UI are
+  integrated into the Qt Quick based UI. This integration is still work-in-progress and can be enabled by
+  building Syncthing Tray with both UI types and used by starting `syncthingtray` with the environment
+  variable `SYNCTHINGTRAY_USE_QT_QUICK=1` set.
+* The Plasmoid is always using its distinct Qt Quick UI and parts of the Qt Widgets UI.
+
 ### Further dependencies
 The following Qt modules are required (only the latest Qt 5 and Qt 6 version tested): Qt Core, Qt Concurrent,
-Qt Network, Qt D-Bus, Qt Gui, Qt Widgets, Qt Svg, Qt WebEngineWidgets/WebKitWidgets
+Qt Network, Qt D-Bus, Qt Gui, Qt Svg
 
-It is recommended to use at least Qt 6.7 to avoid limitations in previous versions (see
-[the documentation on known bugs](known_bugs_and_workarounds.md) for details).
+When building the Qt Widgets UI, the modules Qt Widgets and Qt WebEngineWidgets/WebKitWidgets are required as
+well.
 
 The built-in web view and therefore the modules WebEngineWidgets/WebKitWidgets are optional (see
 section "[Select Qt module for web view and JavaScript](#select-qt-module-for-web-view-and-javascript)").
 
 The Qt Quick UI needs at least Qt 6.9 and also additional Qt modules found in the Qt Declarative repository.
 It also contains experimental code for a built-in web view which uses the Qt WebView module. This is optional
-and not used at this point.
+and not used at this point. If only building the Qt Quick UI, Qt Widgets is not required.
 
 When building for Android at least Qt 6.9 is required.
+
+It is recommended to use at least Qt 6.7 to avoid limitations in previous versions (see
+[the documentation on known bugs](known_bugs_and_workarounds.md) for details). When building the Quick UI and
+when building for Android, it is recommended to use the latest version of Qt as no testing under older versions
+is done and bug fixes found in the latest version of Qt might needed.
 
 To build the plugin for Dolphin integration KIO is also required. To skip building the plugin,
 add `-DNO_FILE_ITEM_ACTION_PLUGIN:BOOL=ON` to the CMake arguments.
