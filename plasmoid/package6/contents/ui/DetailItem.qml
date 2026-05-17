@@ -1,4 +1,5 @@
 import QtQuick 2.7
+import QtQuick.Controls
 import QtQuick.Layouts 1.1
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.components 3.0 as PlasmaComponents3
@@ -33,6 +34,7 @@ Item {
             id: detailLabel
             Layout.leftMargin: Kirigami.Theme.defaultFont.pointSize * 0.9
             Layout.fillWidth: true
+            ToolTip.delay: 1000
             text: detailValue
             elide: Text.ElideRight
             horizontalAlignment: Qt.AlignRight
@@ -50,13 +52,9 @@ Item {
             view.showContextMenu(detailItem, coordinates.x, coordinates.y)
         }
         onContainsMouseChanged: {
+            const toolTip = detailLabel.ToolTip
             const text = detailTooltip
-            text?.length > 0 && mouseArea.containsMouse ? tooltip.show(text, 5000) : tooltip.close()
-        }
-        PlasmaComponents3.ToolTip {
-            id: tooltip
-            delay: 1000
-            parent: detailLabel
+            text?.length > 0 && mouseArea.containsMouse ? toolTip.show(text, 5000) : toolTip.hide()
         }
     }
 }

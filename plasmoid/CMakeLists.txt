@@ -33,7 +33,6 @@ set(PLASMOID_FILE_NAMES
     DetailView.qml
     DetailItem.qml
     TabButton.qml
-    ToolTipTrigger.qml
     ToolTipView.qml
     ToolBar.qml
     ToolButton.qml
