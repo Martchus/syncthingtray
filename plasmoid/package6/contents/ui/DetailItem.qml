@@ -30,6 +30,7 @@ Item {
             font.weight: Font.DemiBold
         }
         PlasmaComponents3.Label {
+            id: detailLabel
             Layout.leftMargin: Kirigami.Theme.defaultFont.pointSize * 0.9
             Layout.fillWidth: true
             text: detailValue
@@ -39,12 +40,35 @@ Item {
     }
 
     MouseArea {
-        acceptedButtons: Qt.RightButton
+        id: mouseArea
         anchors.fill: parent
+        hoverEnabled: true
+        acceptedButtons: Qt.RightButton
         onClicked: {
             var view = detailItem.ListView.view
             var coordinates = mapToItem(view, mouseX, mouseY)
             view.showContextMenu(detailItem, coordinates.x, coordinates.y)
+        }
+        onContainsMouseChanged: {
+            if (!mouseArea.containsMouse) {
+                tooltip.close()
+            }
+        }
+
+        Timer {
+            id: timer
+            interval: 1000
+            running: mouseArea.containsMouse
+            onTriggered: {
+                const text = tooltip.text = detailTooltip
+                if (text.length !== 0) {
+                    tooltip.open()
+                }
+            }
+        }
+        PlasmaComponents3.ToolTip {
+            id: tooltip
+            parent: detailLabel
         }
     }
 }
