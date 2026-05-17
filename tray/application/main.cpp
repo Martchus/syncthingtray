@@ -276,6 +276,12 @@ static int runApplication(int argc, const char *const *argv)
     modeArg.markAsDeprecated(); // still experimental, so hide for now
     quickGuiArg.addSubArgument(&modeArg);
     quickGuiArg.addSubArgument(&insecureArg);
+#ifdef GUI_QTWIDGETS
+    // add argument for QML debugger to widgetsGuiArg as well if both GUI types are enabled for using QQuickWidget
+    if (quickGuiArg.subArguments().size() > 1) {
+        widgetsGuiArg.addSubArgument(quickGuiArg.subArguments()[1]);
+    }
+#endif
 #endif
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
     auto cliArg = OperationArgument("cli", 'c', "runs Syncthing's CLI");

@@ -4,7 +4,8 @@ import QtQuick.Controls.Material
 import Main
 
 TabButton {
-    display: parent.width > 400 ? AbstractButton.TextUnderIcon : AbstractButton.IconOnly
+    id: tabButton
+    display: parent.width > 400 ? tabButton.displayWithIcon : AbstractButton.IconOnly
     font.pointSize: 7
     icon.source: QuickUI.faUrlBase + iconName
     icon.width: QuickUI.iconSize
@@ -16,4 +17,5 @@ TabButton {
     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
     required property string iconName
     required property int tabIndex
+    property int displayWithIcon: AbstractButton.TextUnderIcon
 }

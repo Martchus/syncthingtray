@@ -255,6 +255,11 @@ list(
     "${ANDROID_JAVA_SRC_DIR}/SyncthingService.java"
     "${ANDROID_JAVA_SRC_DIR}/Util.java")
 
+# use QQuickWidget to show parts of Qt Quick GUI in TrayWidget if both GUI types are enabled
+if (QUICK_GUI AND WIDGETS_GUI)
+    list(APPEND ADDITIONAL_QT_MODULES QuickWidgets)
+endif ()
+
 # include further modules to apply configuration
 include(QtConfig)
 include(WindowsResources)

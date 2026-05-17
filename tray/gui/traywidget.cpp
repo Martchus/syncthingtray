@@ -57,6 +57,10 @@
 #include <QStringBuilder>
 #include <QTextBrowser>
 
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+#include <QQuickWidget>
+#endif
+
 #include <algorithm>
 #include <functional>
 
@@ -93,6 +97,13 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     , m_tabTextsShown(true)
     , m_applyingSettingsForWizard(false)
 {
+    // configure whether to show Qt Quick GUI
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    const auto useQtQuick = qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_USE_QT_QUICK") != 0;
+#else
+    constexpr auto useQtQuick = false;
+#endif
+
     // don't show connection status within connection settings if there are multiple tray widgets/icons (would be ambiguous)
     if (!s_instances.empty() && s_settingsDlg) {
         s_settingsDlg->hideConnectionStatus();
@@ -132,13 +143,15 @@ TrayWidget::TrayWidget(TrayMenu *parent)
 
     // setup models and views
     m_ui->dirsTreeView->header()->setSortIndicator(0, Qt::AscendingOrder);
-    m_ui->dirsTreeView->setModel(m_models.sortFilterDirModel());
     m_ui->devsTreeView->header()->setSortIndicator(0, Qt::AscendingOrder);
-    m_ui->devsTreeView->setModel(m_models.sortFilterDevModel());
-    m_ui->downloadsTreeView->setModel(&m_dlModel);
     m_ui->recentChangesTreeView->setModel(m_models.changesModel());
     m_ui->recentChangesTreeView->setContextMenuPolicy(Qt::CustomContextMenu);
     setBrightColorsOfModelsAccordingToPalette();
+    if (!useQtQuick) {
+        m_ui->dirsTreeView->setModel(m_models.sortFilterDirModel());
+        m_ui->devsTreeView->setModel(m_models.sortFilterDevModel());
+        m_ui->downloadsTreeView->setModel(&m_dlModel);
+    }
 
     // setup sync-all button
     m_cornerFrame = new QFrame(this);
@@ -251,6 +264,17 @@ TrayWidget::TrayWidget(TrayMenu *parent)
         connect(service, &SyncthingService::stateChanged, this, &TrayWidget::handleSystemdStatusChanged);
     }
 #endif
+
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    if (useQtQuick) {
+        auto &quickGui = this->quickGui();
+        auto *const quickWidget = new QQuickWidget(&quickGui.engine, this);
+        quickWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        quickWidget->loadFromModule("Main", "TrayView");
+        m_ui->tabWidget->hide();
+        m_ui->verticalLayout->addWidget(quickWidget);
+    }
+#endif
 }
 
 TrayWidget::~TrayWidget()
@@ -313,6 +337,25 @@ SettingsDialog *TrayWidget::settingsDialog()
     }
     return s_settingsDlg;
 }
+
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+QuickGuiEngine &TrayWidget::quickGui()
+{
+    if (!m_quickUI.has_value()) {
+        // force use of Vulkan under GNU/Linux to avoid "eglSwapBuffers failed with 0x…, surface: 0x…"
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+        qputenv("QSG_RHI_BACKEND", "vulkan");
+#endif
+
+        auto &quickUI = m_quickUI.emplace(qGuiApp, Settings::values().qt);
+        auto *const engine = &quickUI.engine;
+        dataObjectToProperty(engine, &m_data);
+        dataObjectToProperty(engine, &m_models);
+        dataObjectToProperty(engine, &quickUI.ui);
+    }
+    return *m_quickUI;
+}
+#endif
 
 void TrayWidget::showSettingsDialog()
 {
@@ -487,14 +530,7 @@ void TrayWidget::showInternalErrorsDialog()
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
 void TrayWidget::showQtQuickGui()
 {
-    if (!m_quickUI.has_value()) {
-        auto &quickUI = m_quickUI.emplace(qGuiApp, Settings::values().qt);
-        auto *const engine = &quickUI.engine;
-        dataObjectToProperty(engine, &m_data);
-        dataObjectToProperty(engine, &m_models);
-        dataObjectToProperty(engine, &quickUI.ui);
-    }
-    m_quickUI->ui.showMainWindow();
+    quickGui().ui.showMainWindow();
 }
 
 bool TrayWidget::showFileBrowser(const QString &dirId)

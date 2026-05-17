@@ -74,6 +74,9 @@ public:
     static const std::vector<TrayWidget *> &instances();
     Data::SyncthingConnectionSettings *selectedConnection();
     SettingsDialog *settingsDialog();
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    QuickGuiEngine &quickGui();
+#endif
 
 public Q_SLOTS:
     void showSettingsDialog();
