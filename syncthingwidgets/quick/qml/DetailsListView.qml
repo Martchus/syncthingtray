@@ -50,14 +50,23 @@ ListView {
                     font.weight: Font.Light
                 }
                 Label {
+                    id: detailLabel
                     Layout.fillWidth: true
                     text: detailValue
                     elide: Text.ElideRight
                     font.weight: Font.Light
                     horizontalAlignment: Qt.AlignRight
+                    ToolTip.delay: 1000
                     MouseArea {
+                        id: mouseArea
                         anchors.fill: parent
+                        hoverEnabled: true
                         onPressAndHold: SyncthingModels.copyText(detailValue)
+                        onContainsMouseChanged: {
+                            const toolTip = detailLabel.ToolTip;
+                            const text = detailTooltip ?? "";
+                            text.length > 0 && mouseArea.containsMouse ? toolTip.show(text, 5000) : toolTip.hide()
+                        }
                     }
                 }
             }
