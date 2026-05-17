@@ -59,8 +59,8 @@ Item {
                 expanded = !expanded
                 break
             case Qt.RightButton:
-                var view = listItem.ListView.view
-                var coordinates = mapToItem(view, mouseX, mouseY)
+                const view = listItem.ListView.view
+                const coordinates = mapToItem(view, mouseX, mouseY)
                 view.showContextMenu(listItem, coordinates.x, coordinates.y)
                 break
             }

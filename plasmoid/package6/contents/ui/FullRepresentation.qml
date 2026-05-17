@@ -111,7 +111,7 @@ PlasmaExtras.Representation {
             opacity: enabled ? 1.0 : 0.25
             tooltip: qsTr("Toggle filter")
             onClicked: {
-                var filter = findCurrentFilter()
+                const filter = findCurrentFilter()
                 if (!filter) {
                     return
                 }
@@ -135,7 +135,7 @@ PlasmaExtras.Representation {
 
             // define custom key handling for switching tabs, selecting items and filtering
             function sendKeyEventToFilter(event) {
-                var filter = findCurrentFilter()
+                const filter = findCurrentFilter()
                 if (!filter || event.text === "" || filter.activeFocus) {
                     return
                 }
@@ -192,13 +192,13 @@ PlasmaExtras.Representation {
                     // fallthrough
                 case Qt.Key_Return:
                     // toggle expanded state of current item
-                    var currentItem = findCurrentPage().view.currentItem
+                    const currentItem = findCurrentPage().view.currentItem
                     if (currentItem) {
                         currentItem.expanded = !currentItem.expanded
                     }
                     break
                 case Qt.Key_Escape:
-                    var filter = findCurrentFilter()
+                    const filter = findCurrentFilter()
                     if (filter && filter.text !== "") {
                         // reset filter
                         filter.explicitelyShown = false

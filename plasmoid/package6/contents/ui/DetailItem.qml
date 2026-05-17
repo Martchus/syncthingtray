@@ -45,8 +45,8 @@ Item {
         hoverEnabled: true
         acceptedButtons: Qt.RightButton
         onClicked: {
-            var view = detailItem.ListView.view
-            var coordinates = mapToItem(view, mouseX, mouseY)
+            const view = detailItem.ListView.view
+            const coordinates = mapToItem(view, mouseX, mouseY)
             view.showContextMenu(detailItem, coordinates.x, coordinates.y)
         }
         onContainsMouseChanged: {

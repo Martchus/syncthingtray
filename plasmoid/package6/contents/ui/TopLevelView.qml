@@ -36,7 +36,7 @@ ListView {
         if (!currentItem) {
             return
         }
-        var button = currentItem[buttonName]
+        const button = currentItem[buttonName]
         if (button && button.enabled) {
             button.clicked()
         }

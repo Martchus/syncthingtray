@@ -8,7 +8,7 @@ ListView {
     interactive: false
 
     onCountChanged: {
-        var d = delegate.createObject(detailView, {detailName: "", detailValue: ""});
+        const d = delegate.createObject(detailView, {detailName: "", detailValue: ""});
         height = count * d.height
         d.destroy()
     }
@@ -19,7 +19,7 @@ ListView {
             text: qsTr('Copy value')
             icon: "edit-copy"
             onClicked: {
-                var item = detailView.contextMenuItem
+                const item = detailView.contextMenuItem
                 if (item) {
                     plasmoid.copyToClipboard(item.detailValue)
                 }
