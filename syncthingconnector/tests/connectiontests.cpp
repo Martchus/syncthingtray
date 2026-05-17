@@ -236,9 +236,8 @@ void ConnectionTests::waitForAllDirsAndDevsReady(bool initialConfig, bool afterS
         }
         allDevsReady = !initialConfig || expectedDevPaused;
     });
-    const auto checkStatus([&](SyncthingStatus) {
-        isStatusExpected = initialConfig ? m_connection.status() == SyncthingStatus::Paused : m_connection.isConnected();
-    });
+    const auto checkStatus(
+        [&](SyncthingStatus) { isStatusExpected = initialConfig ? m_connection.status() == SyncthingStatus::Paused : m_connection.isConnected(); });
     checkStatus(SyncthingStatus::Disconnected);
     checkAllDirsReady();
     checkAllDevsReady();

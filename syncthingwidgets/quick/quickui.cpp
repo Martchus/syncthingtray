@@ -472,8 +472,8 @@ QObject *QuickUI::loadComponent(QAnyStringView uri, QAnyStringView typeName, con
 }
 
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
-template<typename ReturnArg, typename... Args>
-bool QuickUI::invokeWidgetFunction(const char *member, QTemplatedMetaMethodReturnArgument<ReturnArg> r, Args &&... args)
+template <typename ReturnArg, typename... Args>
+bool QuickUI::invokeWidgetFunction(const char *member, QTemplatedMetaMethodReturnArgument<ReturnArg> r, Args &&...args)
 {
     if (auto *const widget = m_engine->singletonInstance<QObject *>("Tray", "TrayWidget")) {
         return QMetaObject::invokeMethod(widget, member, Qt::DirectConnection, r, std::forward<Args>(args)...);

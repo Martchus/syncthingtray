@@ -169,7 +169,7 @@ Q_SIGNALS:
 private:
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
     template <typename ReturnArg, typename... Args>
-    bool invokeWidgetFunction(const char *member, QTemplatedMetaMethodReturnArgument<ReturnArg> r, Args&&... args);
+    bool invokeWidgetFunction(const char *member, QTemplatedMetaMethodReturnArgument<ReturnArg> r, Args &&...args);
 #endif
 
     QGuiApplication *m_app;
