@@ -50,24 +50,12 @@ Item {
             view.showContextMenu(detailItem, coordinates.x, coordinates.y)
         }
         onContainsMouseChanged: {
-            if (!mouseArea.containsMouse) {
-                tooltip.close()
-            }
-        }
-
-        Timer {
-            id: timer
-            interval: 1000
-            running: mouseArea.containsMouse
-            onTriggered: {
-                const text = tooltip.text = detailTooltip
-                if (text.length !== 0) {
-                    tooltip.open()
-                }
-            }
+            const text = detailTooltip
+            text?.length > 0 && mouseArea.containsMouse ? tooltip.show(text, 5000) : tooltip.close()
         }
         PlasmaComponents3.ToolTip {
             id: tooltip
+            delay: 1000
             parent: detailLabel
         }
     }

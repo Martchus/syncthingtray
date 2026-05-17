@@ -3,21 +3,13 @@ import org.kde.plasma.components 3.0 as PlasmaComponents3
 
 MouseArea {
     id: mouseArea
-    property alias interval: timer.interval
+    property alias interval: tooltip.delay
     property alias tooltip: tooltip.text
     hoverEnabled: true
-    onContainsMouseChanged: {
-        if (!mouseArea.containsMouse) {
-            tooltip.close()
-        }
-    }
-    Timer {
-        id: timer
-        interval: 1000
-        running: mouseArea.containsMouse && tooltip.text.length !== 0
-        onTriggered: tooltip.open()
-    }
+    onContainsMouseChanged: tooltip.text.length > 0 && mouseArea.containsMouse ? tooltip.open() : tooltip.close()
     PlasmaComponents3.ToolTip {
         id: tooltip
+        delay: 1000
+        parent: detailLabel
     }
 }
