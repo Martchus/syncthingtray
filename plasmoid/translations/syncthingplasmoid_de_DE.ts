@@ -14,27 +14,27 @@
     <name>DevicesPage</name>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="64"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="65"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="68"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="64"/>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="116"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="65"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="117"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="68"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="120"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="102"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="103"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="106"/>
         <source>Copy name</source>
         <translation>Namen kopieren</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="107"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="108"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="111"/>
         <source>Copy ID</source>
         <translation>ID kopieren</translation>
     </message>
@@ -49,59 +49,59 @@
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="83"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="99"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="88"/>
         <source>Show errors</source>
         <translation>Zeige Fehler</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="94"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="163"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="110"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="179"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="99"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="168"/>
         <source>Rescan</source>
         <translation>Scannen</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="102"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="118"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="107"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="102"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="170"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="118"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="186"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="107"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="175"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="112"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="177"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="128"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="193"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="117"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="182"/>
         <source>Open in file browser</source>
         <translation>Im Dateibrowser öffnen</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="149"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="165"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="154"/>
         <source>Copy label/ID</source>
         <translation>Namen/ID kopieren</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="154"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="170"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="159"/>
         <source>Copy path</source>
         <translation>Pfad kopieren</translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="200"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="189"/>
         <source>Browse remote files</source>
         <translation>Globale Dateistruktur durchsuchen</translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="207"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="196"/>
         <source>Show/edit ignore patterns</source>
         <translation>Ignoriermuster anzeigen/editieren</translation>
     </message>

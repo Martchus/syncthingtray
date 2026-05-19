@@ -52,90 +52,90 @@
 <context>
     <name>Data::SyncthingDeviceModel</name>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="97"/>
-        <location filename="../syncthingdevicemodel.cpp" line="133"/>
+        <location filename="../syncthingdevicemodel.cpp" line="98"/>
+        <location filename="../syncthingdevicemodel.cpp" line="134"/>
         <source>ID</source>
         <translation>ID</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="99"/>
+        <location filename="../syncthingdevicemodel.cpp" line="100"/>
         <source>Status</source>
         <translation>状态</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="135"/>
+        <location filename="../syncthingdevicemodel.cpp" line="136"/>
         <source>Out of Sync items</source>
         <translation>未同步的项目</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="141"/>
+        <location filename="../syncthingdevicemodel.cpp" line="142"/>
         <source>Address</source>
         <translation>地址</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="143"/>
+        <location filename="../syncthingdevicemodel.cpp" line="144"/>
         <source>Connection type</source>
         <translation>连接类型</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="145"/>
+        <location filename="../syncthingdevicemodel.cpp" line="146"/>
         <source>Last seen</source>
         <translation>最后在线</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="147"/>
+        <location filename="../syncthingdevicemodel.cpp" line="148"/>
         <source>Compression</source>
         <translation>压缩</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="149"/>
+        <location filename="../syncthingdevicemodel.cpp" line="150"/>
         <source>Certificate</source>
         <translation>证书</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="151"/>
+        <location filename="../syncthingdevicemodel.cpp" line="152"/>
         <source>Introducer</source>
         <translation>介绍人</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="190"/>
+        <location filename="../syncthingdevicemodel.cpp" line="191"/>
         <source>never</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="215"/>
+        <location filename="../syncthingdevicemodel.cpp" line="216"/>
         <source>unknown</source>
         <translation type="unfinished">未知</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="137"/>
+        <location filename="../syncthingdevicemodel.cpp" line="138"/>
         <source>Incoming traffic</source>
         <translation>下载流量</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="139"/>
+        <location filename="../syncthingdevicemodel.cpp" line="140"/>
         <source>Outgoing traffic</source>
         <translation>上传流量</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="153"/>
+        <location filename="../syncthingdevicemodel.cpp" line="154"/>
         <source>Version</source>
         <translation>版本</translation>
     </message>
     <message numerus="yes">
-        <location filename="../syncthingdevicemodel.cpp" line="168"/>
+        <location filename="../syncthingdevicemodel.cpp" line="169"/>
         <source>%1 item(s), ~ %2</source>
         <translation>
             <numerusform>%1 个项目， ~ %2</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="185"/>
+        <location filename="../syncthingdevicemodel.cpp" line="186"/>
         <source>local</source>
         <translation>本地</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="185"/>
+        <location filename="../syncthingdevicemodel.cpp" line="186"/>
         <source>remote</source>
         <translation>远程</translation>
     </message>
@@ -144,18 +144,18 @@
         <translation type="vanished">未知或本设备</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="166"/>
-        <location filename="../syncthingdevicemodel.cpp" line="195"/>
+        <location filename="../syncthingdevicemodel.cpp" line="167"/>
+        <location filename="../syncthingdevicemodel.cpp" line="196"/>
         <source>none</source>
         <translation>无</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="197"/>
+        <location filename="../syncthingdevicemodel.cpp" line="198"/>
         <source>yes</source>
         <translation>是</translation>
     </message>
     <message>
-        <location filename="../syncthingdevicemodel.cpp" line="197"/>
+        <location filename="../syncthingdevicemodel.cpp" line="198"/>
         <source>no</source>
         <translation>否</translation>
     </message>

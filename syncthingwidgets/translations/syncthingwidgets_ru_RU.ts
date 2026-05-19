@@ -1145,176 +1145,186 @@
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="12"/>
+        <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DevConfigPage.qml" line="12"/>
+        <source>Group to show the device in the UI. Can be different on each device.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DevConfigPage.qml" line="13"/>
         <source>Paused</source>
         <translation>Приостановлено</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="12"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="13"/>
         <source>Whether synchronization with this devices is (temporarily) suspended.</source>
         <translation>Приостановлена ​​ли (временно) синхронизация с этим устройством.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="13"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="14"/>
         <source>Introducer</source>
         <translation>Интродуктор</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="13"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="14"/>
         <source>Add devices from the introducer to our device list, for mutually shared folders.</source>
         <translation>Добавьте устройства из презентатора в наш список устройств для совместного использования папок.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="13"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="14"/>
         <source>Advanced</source>
         <translation>Дополнительно</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="14"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="15"/>
         <source>Auto Accept</source>
         <translation>Автоматическое принятие</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="14"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="15"/>
         <source>Automatically create or share folders that this device advertises at the default path.</source>
         <translation>Автоматически создавать или предоставлять общий доступ к папкам, которые это устройство объявляет по пути по умолчанию.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="15"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="16"/>
         <source>Addresses</source>
         <translation>Адреса</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="15"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="16"/>
         <source>Address</source>
         <translation>Адрес</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="15"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="16"/>
         <source>Add addresses (e.g. &quot;tcp://ip:port&quot;, &quot;tcp://host:port&quot;) or &quot;dynamic&quot; to perform automatic discovery of the address.</source>
         <translation>Добавьте адреса (например, «tcp://ip:port», «tcp://host:port») или «dynamic» для автоматического обнаружения адреса.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="16"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="17"/>
         <source>Number of Connections</source>
         <translation>Количество соединений</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="16"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="17"/>
         <source>When set to more than one on both devices, Syncthing will attempt to establish multiple concurrent connections. If the values differ, the highest will be used. Set to zero to let Syncthing decide.</source>
         <translation>Если на обоих устройствах задано значение более одного, Syncthing попытается установить несколько одновременных подключений. Если значения различаются, будет использоваться наибольшее. Установите значение 0, чтобы Syncthing принял решение.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="17"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="18"/>
         <source>Untrusted</source>
         <translation>Ненадежный</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="17"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="18"/>
         <source>All folders shared with this device must be protected by a password, such that all sent data is unreadable without the given password.</source>
         <translation>Все папки, к которым предоставлен общий доступ с этого устройства, должны быть защищены паролем, чтобы все отправленные данные были нечитаемы без указанного пароля.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="18"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="19"/>
         <source>Compression</source>
         <translation>Сжатие</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="18"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="19"/>
         <source>Whether to use protocol compression when sending messages to this device.</source>
         <translation>Использовать ли сжатие протокола при отправке сообщений на это устройство.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="19"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="20"/>
         <source>Metadata Only</source>
         <translation>Только метаданные</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="19"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="20"/>
         <source>Compress metadata packets, such as index information. Metadata is usually very compression friendly so this is a good default.</source>
         <translation>Сжимайте пакеты метаданных, например, информацию индекса. Метаданные обычно хорошо поддаются сжатию, поэтому этот вариант по умолчанию подходит.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="20"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="21"/>
         <source>All data</source>
         <translation>Все данные</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="20"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="21"/>
         <source>Compress all packets, including file data. This is recommended if the folders contents are mainly compressible data such as documents or text files.</source>
         <translation>Сжимайте все пакеты, включая данные файлов. Это рекомендуется, если содержимое папок в основном состоит из сжимаемых данных, таких как документы или текстовые файлы.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="21"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="22"/>
         <source>Off</source>
         <translation>Выключено</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="21"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="22"/>
         <source>Disable all compression.</source>
         <translation>Отключить все виды сжатия.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="23"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="24"/>
         <source>Incoming Rate Limit (KiB/s)</source>
         <translation>Предел входящей скорости (КиБ/с)</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="23"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="24"/>
         <source>Maximum receive rate to use for this device.</source>
         <translation>Максимальная скорость приема для этого устройства.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="24"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="25"/>
         <source>Outgoing Rate Limit (KiB/s)</source>
         <translation>Лимит исходящей скорости (КиБ/с)</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="24"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="25"/>
         <source>Maximum send rate to use for this device.</source>
         <translation>Максимальная скорость отправки для этого устройства.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="25"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="26"/>
         <source>Ignored folders</source>
         <translation>Игнорируемые папки</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="25"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="26"/>
         <source>Ignored folder without ID/label</source>
         <translation>Игнорируемая папка без идентификатора/метки</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="25"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="26"/>
         <source>The list of the folders that should be ignored. These folders will always be skipped when advertised from this remote device, i.e. they will be logged, but there will be no dialog shown.</source>
         <translation>Список папок, которые следует игнорировать. Эти папки всегда будут пропущены при объявлении с этого удалённого устройства, то есть они будут зарегистрированы, но диалоговое окно не будет показано.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="29"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="30"/>
         <source>Folder ID</source>
         <translation>Идентификатор папки</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="29"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="30"/>
         <source>The ID of the folder to be ignored.</source>
         <translation>ID папки, которую следует игнорировать.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="30"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="31"/>
         <source>Folder Label</source>
         <translation>Метка папки</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="30"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="31"/>
         <source>The label of the folder being ignored (for informative purposes).</source>
         <translation>Метка игнорируемой папки (в информационных целях).</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="31"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="32"/>
         <source>Time</source>
         <translation>Время</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevConfigPage.qml" line="31"/>
+        <location filename="../quick/qml/DevConfigPage.qml" line="32"/>
         <source>The time when this entry was added (for informative purposes).</source>
         <translation>Время добавления этой записи (для информационных целей).</translation>
     </message>
