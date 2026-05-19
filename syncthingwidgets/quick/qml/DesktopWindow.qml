@@ -154,6 +154,8 @@ ApplicationWindow {
                 id: dirsListView
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                ScrollBar.vertical: ScrollBar { }
+                ScrollIndicator.vertical: null
                 anchors.fill: null
                 clip: true
                 stackView: null
@@ -173,6 +175,8 @@ ApplicationWindow {
                 id: devsListView
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                ScrollBar.vertical: ScrollBar { }
+                ScrollIndicator.vertical: null
                 anchors.fill: null
                 clip: true
                 stackView: null

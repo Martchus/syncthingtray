@@ -15,18 +15,24 @@ ColumnLayout {
         DirListView {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            ScrollBar.vertical: ScrollBar { }
+            ScrollIndicator.vertical: null
             anchors.fill: null
             stackView: null
         }
         DevListView {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            ScrollBar.vertical: ScrollBar { }
+            ScrollIndicator.vertical: null
             anchors.fill: null
             stackView: null
         }
         ChangesListView {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            ScrollBar.vertical: ScrollBar { }
+            ScrollIndicator.vertical: null
             anchors.fill: null
         }
         function setCurrentIndex(index) {
