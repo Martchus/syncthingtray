@@ -102,6 +102,7 @@ public Q_SLOTS:
     void applySettings(const QString &connectionConfig = QString());
     void applySettingsChangesFromWizard();
     void saveSettings();
+    void handleCurrentTabChanged(int index);
 
 protected:
     bool event(QEvent *event) override;
@@ -119,7 +120,6 @@ private Q_SLOTS:
     void browseRemoteFiles(const Data::SyncthingDir &dir);
     void showIgnorePatterns(const Data::SyncthingDir &dir);
     void showRecentChangesContextMenu(const QPoint &position);
-    void handleCurrentTabChanged(int index);
     void updateTraffic();
     bool updateTrafficText();
     void updateOverallStatistics();

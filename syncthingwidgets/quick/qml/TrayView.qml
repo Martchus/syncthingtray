@@ -3,6 +3,7 @@ import QtQuick.Layouts
 import QtQuick.Controls.Material
 
 import Main
+import Tray
 
 ColumnLayout {
     anchors.fill: parent
@@ -10,23 +11,23 @@ ColumnLayout {
         id: pageStack
         Layout.fillWidth: true
         Layout.fillHeight: true
+        onCurrentIndexChanged: TrayWidget.handleCurrentTabChanged(pageStack.currentIndex)
         DirListView {
-            id: dirsListView
             Layout.fillWidth: true
             Layout.fillHeight: true
             anchors.fill: null
             stackView: null
         }
         DevListView {
-            id: devsListView
             Layout.fillWidth: true
             Layout.fillHeight: true
             anchors.fill: null
             stackView: null
         }
-        Label {
-            id: changesPage
-            text: "WIP: changes"
+        ChangesListView {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            anchors.fill: null
         }
         function setCurrentIndex(index) {
             pageStack.currentIndex = index;
