@@ -17,6 +17,8 @@ ItemDelegate {
             Icon {
                 id: statusIcon
                 source: modelData.statusIcon
+                Layout.preferredWidth: Layout.preferredHeight
+                Layout.preferredHeight: Math.min(32, mainDelegate.breakpoint ? nameLabel.height : nameLabel.height + statusLabel.height, )
             }
             GridLayout {
                 Layout.fillWidth: true
@@ -25,11 +27,13 @@ ItemDelegate {
                 rowSpacing: 0
                 Label {
                     Layout.fillWidth: true
+                    id: nameLabel
                     text: modelData.name
                     elide: Text.ElideRight
                     font.weight: Font.Medium
                 }
                 Label {
+                    id: statusLabel
                     text: modelData.statusString ?? '?'
                     color: modelData.statusColor ?? palette.text
                     elide: Text.ElideRight
