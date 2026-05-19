@@ -135,54 +135,72 @@ ApplicationWindow {
     Material.primary: theming.Material.primary
     Material.accent: theming.Material.accent
 
-    GridLayout {
+    CustomFlickable {
+        id: parentFlickable
         anchors.fill: parent
         anchors.leftMargin: parent.SafeArea.margins.left
         anchors.rightMargin: parent.SafeArea.margins.right
-        columns: width > 400 ? 2 : 1
-        ColumnLayout {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            Label {
-                Layout.fillWidth: true
-                topPadding: 10
-                leftPadding: 10
-                text: qsTr("Folders")
-                font.weight: Font.Medium
-            }
-            DirListView {
-                id: dirsListView
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                ScrollBar.vertical: ScrollBar { }
-                ScrollIndicator.vertical: null
-                anchors.fill: null
-                clip: true
-                stackView: null
-            }
-        }
-        ColumnLayout {
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            Label {
-                Layout.fillWidth: true
-                topPadding: 10
-                leftPadding: 10
-                text: qsTr("Devices")
-                font.weight: Font.Medium
-            }
-            DevListView {
-                id: devsListView
+        ScrollBar.vertical: ScrollBar { }
+        ScrollIndicator.vertical: null
+
+        RowLayout {
+            id: gridLayout
+            width: parentFlickable.width
+            readonly property bool collapsed: false
+            //readonly property bool collapsed: width < 400
+            //rows: collapsed ? 4 : 2
+            //columns: collapsed ? 1 : 2
+            //flow: GridLayout.TopToBottom
+
+            ColumnLayout {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                ScrollBar.vertical: ScrollBar { }
-                ScrollIndicator.vertical: null
-                anchors.fill: null
-                clip: true
-                stackView: null
+                Label {
+                    Layout.fillWidth: true
+                    topPadding: 10
+                    leftPadding: 10
+                    text: qsTr("Folders")
+                    font.weight: Font.Medium
+                }
+                DirListView {
+                    id: dirsListView
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Layout.minimumHeight: contentHeight
+                    ScrollBar.vertical: ScrollBar { }
+                    ScrollIndicator.vertical: null
+                    anchors.fill: null
+                    interactive: false
+                    clip: true
+                    stackView: null
+                }
+            }
+            ColumnLayout {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                Label {
+                    Layout.fillWidth: true
+                    topPadding: 10
+                    leftPadding: 10
+                    text: qsTr("Devices")
+                    font.weight: Font.Medium
+                }
+                DevListView {
+                    id: devsListView
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Layout.minimumHeight: contentHeight
+                    ScrollBar.vertical: ScrollBar { }
+                    ScrollIndicator.vertical: null
+                    anchors.fill: null
+                    interactive: false
+                    clip: true
+                    stackView: null
+                }
             }
         }
     }
+
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.ForwardButton | Qt.BackButton
