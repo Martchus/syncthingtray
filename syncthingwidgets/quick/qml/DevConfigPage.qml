@@ -9,6 +9,7 @@ AdvancedDevConfigPage {
     specialEntries: [
         {key: "deviceID", label: qsTr("Device ID"), enabled: !devConfigPage.configObjectExists, type: "deviceid", helpUrl: "https://docs.syncthing.net/dev/device-ids.html#device-ids", category: qsTr("General")},
         {key: "name", label: qsTr("Device Name"), desc: qsTr("Shown instead of Device ID. Will be updated to the name the device advertises if left empty.")},
+        {key: "group", label: qsTr("Group"), desc: qsTr("Group to show the device in the UI. Can be different on each device.")},
         {key: "paused", label: qsTr("Paused"), desc: qsTr("Whether synchronization with this devices is (temporarily) suspended.")},
         {key: "introducer", label: qsTr("Introducer"), desc: qsTr("Add devices from the introducer to our device list, for mutually shared folders."), category: qsTr("Advanced")},
         {key: "autoAcceptFolders", label: qsTr("Auto Accept"), desc: qsTr("Automatically create or share folders that this device advertises at the default path.")},
