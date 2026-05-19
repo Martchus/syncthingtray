@@ -95,6 +95,7 @@ set(QML_MAIN_FILES
     quick/qml/AdvancedMainPage.qml
     quick/qml/ArrayElementButtons.qml
     quick/qml/AppWindow.qml
+    quick/qml/ChangesListView.qml
     quick/qml/ChangesPage.qml
     quick/qml/CopyPasteButtons.qml
     quick/qml/CloseDialog.qml
