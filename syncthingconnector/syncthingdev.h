@@ -41,6 +41,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDev {
 
     QString id;
     QString name;
+    QString group;
     QStringList addresses;
     QString compression;
     QString certName;

@@ -988,6 +988,7 @@ void SyncthingConnection::readDevs(const QJsonArray &devs)
         }
 
         devItem->name = devObj.value(QLatin1String("name")).toString();
+        devItem->group = devObj.value(QLatin1String("group")).toString();
         devItem->addresses = things(devObj.value(QLatin1String("addresses")).toArray(), [](const QJsonValue &value) { return value.toString(); });
         devItem->compression = devObj.value(QLatin1String("compression")).toString();
         devItem->certName = devObj.value(QLatin1String("certName")).toString();
