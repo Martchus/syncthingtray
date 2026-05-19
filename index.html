@@ -276,18 +276,20 @@
               <div class="downloads-platform">
                 <input type="checkbox" id="downloads-community-checkbox-debian"/><label for="downloads-community-checkbox-debian">Debian</label>
                 <p>
-                  <em>Some</em> versions of Debian provide packages for Syncthing Tray which can be installed using the commands listed below. Those packages <em>may</em> be
-                  available on <em>some</em> versions of <em>some</em> Debian derivats as well (e.g. Ubuntu, Pop!_OS, …). KDE neon is known to <strong>not</strong> support
-                  the packages. If your concrete distribution/version does not provide packages you will have to look into other options.
+                  Every Debian release since 12 (bookworm) has packages for Syncthing
+                  Tray that are supported by Debian. These packages <em>may</em> also be
+                  available on <em>some</em> Debian derivatives as well (e.g. Ubuntu,
+                  Pop!_OS, etc). KDE neon is known to <strong>not</strong> support these
+                  packages. If your distribution/version does not have the packages then
+                  you will have to look into other options.
                 </p>
                 <ul>
                   <li>Generic tray application: <code>sudo apt install syncthingtray</code></li>
-                  <li>KDE integrations: <code>sudo apt install syncthingtray-kde-plasma</code></li>
+                  <li>KDE Plasma users should: <code>sudo apt install syncthingtray-kde-plasma</code></li>
+                  <li>Installation from a software center such as
+                    <a href="https://apps.gnome.org/en-GB/app/org.gnome.Software">GNOME Software</a> or
+                    <a href="https://apps.kde.org/en-gb/discover/">Discover</a> is also supported by Debian.</li>
                 </ul>
-                <p>
-                  For KDE integrations, the major Qt version Syncthing Tray packages are built against must match the major KDE version. As maintainers might need some
-                  time to update the Syncthing Tray packaging this might not always be the case.
-                </p>
               </div>
               <div class="downloads-platform">
                 <input type="checkbox" id="downloads-community-checkbox-windows10"/><label for="downloads-community-checkbox-windows10">Windows 10 and 11</label>
