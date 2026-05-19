@@ -40,6 +40,7 @@ set(PLASMOID_FILE_NAMES
     IconLabel.qml
     StatisticsView.qml
     main.qml)
+set(PLASMOID_FILE_NAMES_5 ToolTipTrigger.qml)
 set(PLASMOID_FILE_NAMES_6 SectionHeader.qml)
 set(PLASMOID_FILES_BASE "package${KF_MAJOR_VERSION}")
 set(PLASMOID_FILES_UI "${PLASMOID_FILES_BASE}/contents/ui")
