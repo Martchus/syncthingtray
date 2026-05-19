@@ -8,4 +8,7 @@ ExpandableListView {
     model: DevDelegate {
         mainView: mainView
     }
+    section.property: "group"
+    section.delegate: DynamicSectionHeader {
+    }
 }

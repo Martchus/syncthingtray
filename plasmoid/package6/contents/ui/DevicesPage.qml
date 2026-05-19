@@ -19,6 +19,9 @@ Item {
         contentItem: TopLevelView {
             id: deviceView
             model: plasmoid.models.sortFilterDevModel
+            section.property: "group"
+            section.delegate: SectionHeader {
+            }
 
             delegate: TopLevelItem {
                 id: item

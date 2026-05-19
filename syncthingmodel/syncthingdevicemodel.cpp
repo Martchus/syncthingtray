@@ -46,6 +46,7 @@ QHash<int, QByteArray> SyncthingDeviceModel::roleNames() const
         { DeviceDetailIcon, "detailIcon" },
         { DeviceDetailTooltip, "detailTooltip" },
         { DeviceNeededItemsCount, "neededItemsCount" },
+        { Group, "group" },
     };
     return roles;
 }
@@ -363,6 +364,8 @@ QVariant SyncthingDeviceModel::data(const QModelIndex &index, int role) const
         return dev.id;
     case DeviceNeededItemsCount:
         return dev.overallCompletion.needed.items;
+    case Group:
+        return dev.group;
     default:;
     }
     return QVariant();
@@ -396,7 +399,7 @@ void SyncthingDeviceModel::devStatusChanged(const SyncthingDev &dev, int index)
     // update top-level indices
     const QModelIndex modelIndex1(this->index(index, 0, QModelIndex()));
     static const QVector<int> modelRoles1({ Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole, Qt::ForegroundRole, DevicePaused, DeviceStatus,
-        DeviceStatusString, DeviceStatusColor, DeviceId, IsThisDevice, IsPinned, DeviceNeededItemsCount });
+        DeviceStatusString, DeviceStatusColor, DeviceId, IsThisDevice, IsPinned, DeviceNeededItemsCount, Group });
     emit dataChanged(modelIndex1, modelIndex1, modelRoles1);
     const QModelIndex modelIndex2(this->index(index, 1, QModelIndex()));
     static const QVector<int> modelRoles2({ Qt::DisplayRole, Qt::EditRole, Qt::ForegroundRole });
