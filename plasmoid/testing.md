@@ -8,8 +8,9 @@ rather than the regular home to separate testing from production.
    by default (configurable via cache variable `PLASMOID_TESTDIR`, the sub directory
    `plasmoid-testing` is not part of the variable).
 3. Add new config for "run" in Qt Creator and set `bash` as executable.
-4. Set `%{sourceDir}/../../syncthingtray/plasmoid/scripts/starttesting.sh plasmoidviewer --applet martchus.syncthingplasmoid`
+4. Set `%{sourceDir}/../../syncthingtray/plasmoid/scripts/starttesting.sh plasmoidviewer --applet martchus.syncthingplasmoid-devel`
    as CLI argument.
+    * Remove the `-devel` suffix if not building with a CMake development preset.
     * It is also possible to use `plasmawindowed` or `plasmashell`, see sections below.
     * It is also possible to specify `org.kde.plasma.systemtray` as applet to test how the Plasmoid
       looks like within the system tray plasmoid.
