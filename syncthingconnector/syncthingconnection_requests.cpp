@@ -727,7 +727,7 @@ bool SyncthingConnection::suspendOrResume(bool suspend)
     if (suspend) {
         auto hasDevicesToPause = false;
         m_suspendedItems.populatedForDeviceId = m_myId;
-        m_suspendedItems.devIds.reserve(static_cast<qsizetype>(m_devs.size()));
+        m_suspendedItems.devIds.reserve(static_cast<QStringList::size_type>(m_devs.size()));
         for (const auto &device : m_devs) {
             if (!device.paused && device.status != SyncthingDevStatus::ThisDevice) {
                 if (!m_suspendedItems.devIds.contains(device.id)) {
