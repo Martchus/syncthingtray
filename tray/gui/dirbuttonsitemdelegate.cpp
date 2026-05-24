@@ -41,12 +41,12 @@ void DirButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
         auto &forkAwesomeRenderer = QtForkAwesome::Renderer::global();
         if (!dirPaused) {
             forkAwesomeRenderer.render(QtForkAwesome::Icon::Refresh, painter,
-                QRect(option.rect.right() - listItemIconsSize(2), buttonY, listItemIconSize, listItemIconSize), iconColor);
+                QRect(option.rect.right() - listItemIconsSize(2), buttonY, listItemIconSize, listItemIconSize) -= listItemIconMargins, iconColor);
         }
         forkAwesomeRenderer.render(dirPaused ? QtForkAwesome::Icon::Play : QtForkAwesome::Icon::Pause, painter,
-            QRect(option.rect.right() - listItemIconsSize(1), buttonY, listItemIconSize, listItemIconSize), iconColor);
+            QRect(option.rect.right() - listItemIconsSize(1), buttonY, listItemIconSize, listItemIconSize) -= listItemIconMargins, iconColor);
         forkAwesomeRenderer.render(QtForkAwesome::Icon::Folder, painter,
-            QRect(option.rect.right() - listItemIconsSize(0), buttonY, listItemIconSize, listItemIconSize), iconColor);
+            QRect(option.rect.right() - listItemIconsSize(0), buttonY, listItemIconSize, listItemIconSize) -= listItemIconMargins, iconColor);
     }
 }
 } // namespace QtGui

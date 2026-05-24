@@ -42,7 +42,7 @@ void DevButtonsItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem
         const int buttonY = option.rect.y() + centerObj(option.rect.height(), listItemIconSize);
         QtForkAwesome::Renderer::global().render(
             index.data(SyncthingDeviceModel::DevicePaused).toBool() ? QtForkAwesome::Icon::Play : QtForkAwesome::Icon::Pause, painter,
-            QRect(option.rect.right() - listItemIconsSize(0), buttonY, listItemIconSize, listItemIconSize),
+            QRect(option.rect.right() - listItemIconsSize(0), buttonY, listItemIconSize, listItemIconSize) -= listItemIconMargins,
             QGuiApplication::palette().color(QPalette::Text));
     }
 }

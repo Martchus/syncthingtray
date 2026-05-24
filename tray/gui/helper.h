@@ -5,6 +5,7 @@
 
 #include <QClipboard>
 #include <QGuiApplication>
+#include <QMargins>
 #include <QModelIndex>
 #include <QStyledItemDelegate>
 #include <QTreeView>
@@ -42,6 +43,7 @@ constexpr auto listItemPadding = 4;
 constexpr auto listItemSpacing = listItemPadding;
 constexpr auto listItemIconSize = 16;
 constexpr auto listItemIconSpacing = listItemSpacing / 2;
+constexpr auto listItemIconMargins = QMargins(1, 1, 1, 1);
 constexpr auto listItemIconsSize(int iconIndex)
 {
     return (iconIndex + 1) * listItemIconSize + iconIndex * listItemIconSpacing + listItemPadding;
