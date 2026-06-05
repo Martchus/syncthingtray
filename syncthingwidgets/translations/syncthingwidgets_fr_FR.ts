@@ -5572,8 +5572,8 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="178"/>
-        <source>Connect to the Syncthing backend launched via this app and disregard the manual settings below.</source>
-        <translation>Se connecter au backend Syncthing lancé via cette application et ignorer les paramètres manuels ci-dessous.</translation>
+        <source>Connect to the Syncthing backend launched via this app and disregard the manual settings below</source>
+        <translation>Se connecter au backend Syncthing lancé via cette application et ignorer les paramètres manuels ci-dessous</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="181"/>
@@ -5733,8 +5733,8 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="222"/>
-        <source>Helps debugging the interaction between UI and backend with logcat.</source>
-        <translation>Aide au débogage de l&apos;interaction entre l&apos;interface et le backend avec logcat.</translation>
+        <source>Helps debugging the interaction between UI and backend with logcat</source>
+        <translation>Aide au débogage de l&apos;interaction entre l&apos;interface et le backend avec logcat</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="223"/>

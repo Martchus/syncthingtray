@@ -175,7 +175,7 @@ StackView {
         property var config: App.settings
         readonly property var specialEntries: ({
             connection: [
-                {key: "useLauncher", type: "boolean", label: qsTr("Automatic"), statusText: qsTr("Connect to the Syncthing backend launched via this app and disregard the manual settings below."), category: qsTr("General")},
+                {key: "useLauncher", type: "boolean", label: qsTr("Automatic"), statusText: qsTr("Connect to the Syncthing backend launched via this app and disregard the manual settings below"), category: qsTr("General")},
                 {key: "pauseOnMeteredConnection", type: "boolean", defaultValue: false, label: qsTr("Pause devices, discovery and relaying on metered network connection"), statusText: Qt.binding(() => App.meteredStatus)},
                 {key: "advanced", label: qsTr("Advanced")},
                 {key: "syncthingUrl", label: qsTr("Syncthing URL"), category: qsTr("Manual connection settings")},
@@ -219,7 +219,7 @@ StackView {
                 {key: "importExportEncryptionPassword", type: "string", inputMethodHints: Qt.ImhHiddenText | Qt.ImhSensitiveData | Qt.ImhNoAutoUppercase, defaultValue: "", label: qsTr("Import/export password"), statusText: qsTr("Encrypt/decrypt data via AES-256 when exporting/importing to archive")},
                 {key: "exportDir", type: "folderpath", defaultValue: "", label: qsTr("Export path"), statusText: qsTr("Save exports and support bundles under fix location")},
                 {key: "useUnixDomainSocket", type: "boolean", defaultValue: false, label: qsTr("Use Unix domain socket"), statusText: qsTr("Reduces communication overhead and makes Syncthing API and web GUI inaccessible to other apps, applied after restart"), category: qsTr("Backend")},
-                {key: "connectionLogging", type: "boolean", defaultValue: false, label: qsTr("Log API requests and events"), statusText: qsTr("Helps debugging the interaction between UI and backend with logcat."), category: qsTr("Backend")},
+                {key: "connectionLogging", type: "boolean", defaultValue: false, label: qsTr("Log API requests and events"), statusText: qsTr("Helps debugging the interaction between UI and backend with logcat"), category: qsTr("Backend")},
                 {key: "closePreference", label: qsTr("Close preference"), type: "options", category: qsTr("Interface"), options: [
                     {value: "", label: qsTr("Ask")},
                     {value: "background", label: qsTr("Keep Syncthing in background")},

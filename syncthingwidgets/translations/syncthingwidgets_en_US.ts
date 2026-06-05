@@ -5562,7 +5562,7 @@ This dialog closes automatically when the process finally terminates.</source>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="178"/>
-        <source>Connect to the Syncthing backend launched via this app and disregard the manual settings below.</source>
+        <source>Connect to the Syncthing backend launched via this app and disregard the manual settings below</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5723,7 +5723,7 @@ This dialog closes automatically when the process finally terminates.</source>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="222"/>
-        <source>Helps debugging the interaction between UI and backend with logcat.</source>
+        <source>Helps debugging the interaction between UI and backend with logcat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

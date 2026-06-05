@@ -6339,8 +6339,8 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation>Automatisch</translation>
     </message>
     <message>
-        <source>Connect to the Syncthing backend launched via this app and disregard the settings below.</source>
-        <translation type="vanished">Mit dem Syncthing-Backend das über die App gestartet wurde verbinden ohne weitere Einstellungen zu verwenden.</translation>
+        <source>Connect to the Syncthing backend launched via this app and disregard the settings below</source>
+        <translation type="vanished">Mit dem Syncthing-Backend das über die App gestartet wurde verbinden ohne weitere Einstellungen zu verwenden</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="179"/>
@@ -6518,8 +6518,8 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="178"/>
-        <source>Connect to the Syncthing backend launched via this app and disregard the manual settings below.</source>
-        <translation>Mit dem Syncthing-Backend das über die App gestartet wurde verbinden und die manuellen Einstellungen weiter unten ignorieren.</translation>
+        <source>Connect to the Syncthing backend launched via this app and disregard the manual settings below</source>
+        <translation>Mit dem Syncthing-Backend das über die App gestartet wurde verbinden und die manuellen Einstellungen weiter unten ignorieren</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="181"/>
@@ -6679,8 +6679,8 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="222"/>
-        <source>Helps debugging the interaction between UI and backend with logcat.</source>
-        <translation>Hilft beim Debuggen der Kommunikation zwischen UI und Backend mit logcat.</translation>
+        <source>Helps debugging the interaction between UI and backend with logcat</source>
+        <translation>Hilft beim Debuggen der Kommunikation zwischen UI und Backend mit logcat</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="223"/>
