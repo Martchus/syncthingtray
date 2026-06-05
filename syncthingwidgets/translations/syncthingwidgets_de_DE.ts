@@ -6276,7 +6276,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="39"/>
         <source>Tweaks</source>
-        <translation>Optimierungen</translation>
+        <translation>Detaileinstellungen</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="40"/>
