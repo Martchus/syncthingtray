@@ -38,6 +38,7 @@ class AboutDialog;
 
 QT_FORWARD_DECLARE_CLASS(QQmlEngine)
 QT_FORWARD_DECLARE_CLASS(QJSEngine)
+QT_FORWARD_DECLARE_CLASS(QQuickWidget)
 #endif
 
 namespace QtGui {
@@ -76,6 +77,7 @@ public:
     SettingsDialog *settingsDialog();
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
     QuickGuiEngine &quickGui();
+    QQuickWidget *quickWidget();
 #endif
 
 public Q_SLOTS:
@@ -150,6 +152,7 @@ private:
     std::unique_ptr<Ui::TrayWidget> m_ui;
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
     std::optional<QuickGuiEngine> m_quickUI;
+    QQuickWidget *m_quickWidget;
 #endif
     static SettingsDialog *s_settingsDlg;
     static Wizard *s_wizard;
@@ -197,6 +200,13 @@ inline Data::SyncthingConnectionSettings *TrayWidget::selectedConnection()
 {
     return m_selectedConnection;
 }
+
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+inline QQuickWidget *TrayWidget::quickWidget()
+{
+    return m_quickWidget;
+}
+#endif
 
 } // namespace QtGui
 

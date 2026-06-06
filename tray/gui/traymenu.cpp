@@ -12,6 +12,10 @@
 #include <QPainter>
 #include <QWindow>
 
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+#include <QQuickWidget>
+#endif
+
 #ifdef TRAY_MENU_HANDLE_WINDOWS11_STYLE
 #include <QStyle>
 #if (QT_VERSION < QT_VERSION_CHECK(6, 9, 0))
@@ -213,6 +217,12 @@ void TrayMenu::mousePressEvent(QMouseEvent *event)
 {
     // skip any special behavior if the tray menu is shown as a regular window
     if (m_windowType == TrayMenu::WindowType::NormalWindow) {
+        return;
+    }
+
+    // skip handling the mouse event if the QQuickWidget was clicked
+    if (const auto *const quickWidget = m_trayWidget->quickWidget();
+        quickWidget && QRectF(quickWidget->mapToGlobal(QPointF()), quickWidget->size()).contains(event->globalPosition())) {
         return;
     }
 

@@ -86,6 +86,9 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     : QWidget(parent)
     , m_menu(parent)
     , m_ui(new Ui::TrayWidget)
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    , m_quickWidget(nullptr)
+#endif
     , m_webViewDlg(nullptr)
     , m_notificationsDlg(nullptr)
     , m_internalErrorsButton(nullptr)
@@ -268,11 +271,13 @@ TrayWidget::TrayWidget(TrayMenu *parent)
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
     if (useQtQuick) {
         auto &quickGui = this->quickGui();
-        auto *const quickWidget = new QQuickWidget(&quickGui.engine, this);
-        quickWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-        quickWidget->loadFromModule("Main", "TrayView");
+        m_quickWidget = new QQuickWidget(&quickGui.engine, this);
+        m_quickWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        m_quickWidget->setContextMenuPolicy(Qt::NoContextMenu);
+        m_quickWidget->setFocusPolicy(Qt::StrongFocus);
+        m_quickWidget->loadFromModule("Main", "TrayView");
         m_ui->tabWidget->hide();
-        m_ui->verticalLayout->addWidget(quickWidget);
+        m_ui->verticalLayout->addWidget(m_quickWidget);
     }
 #endif
 }
