@@ -14,7 +14,10 @@
 #endif
 
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
+#include <QCursor>
+#include <QMenu>
 #include <QMessageBox>
+#include <QQmlProperty>
 #include <QQuickWindow>
 #endif
 
@@ -482,6 +485,40 @@ bool QuickUI::invokeWidgetFunction(const char *member, QTemplatedMetaMethodRetur
     return false;
 }
 #endif
+
+void QuickUI::showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y)
+{
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
+    if (m_mode == QLatin1String("desktop")) {
+        auto widgetsMenu = QMenu();
+        auto hasItems = false;
+        for (auto i = 0, count = menu->property("count").toInt(); i != count; ++i) {
+            QQuickItem *item = nullptr;
+            if (!QMetaObject::invokeMethod(menu, "itemAt", Q_RETURN_ARG(QQuickItem *, item), Q_ARG(int, i))) {
+                break;
+            }
+            if (!item) {
+                continue;
+            }
+            hasItems = true;
+            if (!item->property("enabled").toBool()) {
+                continue;
+            }
+            static constexpr auto faStart = QLatin1StringView("image://fa/");
+            const auto iconSource = QQmlProperty(item, "icon.source").read().toString();
+            const auto icon
+                = !iconSource.startsWith(faStart) ? QIcon() : QIcon(QStringView(iconSource).slice(faStart.size()) + QStringLiteral(".fa"));
+            auto *const action = widgetsMenu.addAction(QIcon(icon), item->property("text").toString());
+            connect(action, SIGNAL(triggered()), item, SIGNAL(triggered()));
+        }
+        if (hasItems) {
+            widgetsMenu.exec(QCursor::pos());
+            return;
+        }
+    }
+#endif
+    QMetaObject::invokeMethod(menu, "popup", Q_ARG(QQuickItem *, parent), Q_ARG(qreal, x), Q_ARG(qreal, y));
+}
 #endif
 
 } // namespace QtGui
