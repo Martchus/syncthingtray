@@ -260,6 +260,11 @@ if (QUICK_GUI AND WIDGETS_GUI)
     list(APPEND ADDITIONAL_QT_MODULES QuickWidgets)
 endif ()
 
+# use QQuickStyle if dynamic styling of Qt Quick Controls is enabled
+if (QUICK_GUI_CONTROLS_STYLE STREQUAL dynamic)
+    list(APPEND ADDITIONAL_QT_MODULES QuickControls2)
+endif ()
+
 # include further modules to apply configuration
 include(QtConfig)
 include(WindowsResources)
