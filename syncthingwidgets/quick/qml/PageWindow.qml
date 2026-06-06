@@ -19,6 +19,7 @@ ApplicationWindow {
             visible: stackView.depth > 1
             icon.source: QuickUI.faUrlBase + "arrow-left"
             text: qsTr("Back")
+            flat: true
             onClicked: stackView.pop()
         }
         CustomToolButton {
@@ -26,6 +27,7 @@ ApplicationWindow {
             visible: currentPage.extraActions?.length > 0
             icon.source: QuickUI.faUrlBase + "ellipsis-v"
             text: qsTr("More")
+            flat: true
             onClicked: currentPage?.showExtraActions() ?? extraActionsMenu.showCenteredIn(extraActionsMenuButton)
             CustomMenu {
                 id: extraActionsMenu
@@ -44,6 +46,7 @@ ApplicationWindow {
             icon.height: QuickUI.iconSize
             icon.source: QuickUI.faUrlBase + "times"
             text: qsTr("Abort")
+            flat: true
             onClicked: pageWindow.close()
         }
         Repeater {
@@ -59,6 +62,7 @@ ApplicationWindow {
                         icon.height: QuickUI.iconSize
                         enabled: modelData.enabled
                         text: modelData.text
+                        flat: true
                         icon.source: modelData.icon.source
                         onClicked: modelData.trigger()
                     }
@@ -82,7 +86,7 @@ ApplicationWindow {
     required property Page page
     property alias currentPage: stackView.currentItem
     readonly property Theming theming: Theming {
-        pageStack: null
+        currentPage: stackView.currentItem
     }
     readonly property Meta meta: Meta {
     }

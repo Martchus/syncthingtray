@@ -7,6 +7,9 @@ import Tray
 
 ColumnLayout {
     anchors.fill: parent
+    Material.theme: theming.Material.theme
+    Material.primary: theming.Material.primary
+    Material.accent: theming.Material.accent
     StackLayout {
         id: pageStack
         Layout.fillWidth: true
@@ -60,5 +63,8 @@ ColumnLayout {
             tabIndex: 2
             displayWithIcon: AbstractButton.TextBesideIcon
         }
+    }
+    readonly property Theming theming: Theming {
+        currentPage: null
     }
 }

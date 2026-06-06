@@ -130,7 +130,7 @@ ApplicationWindow {
         }
     }
     readonly property Theming theming: Theming {
-        pageStack: pageStack
+        currentPage: pageStack.currentPage
     }
     readonly property Meta meta: Meta {
     }

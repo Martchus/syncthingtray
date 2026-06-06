@@ -196,7 +196,7 @@ ApplicationWindow {
     }
 
     readonly property Theming theming: Theming {
-        pageStack: null
+        currentPage: null
     }
     readonly property Meta meta: Meta {
     }
