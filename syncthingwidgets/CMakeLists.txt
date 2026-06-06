@@ -155,7 +155,9 @@ set(QML_MAIN_FILES
     quick/qml/StatisticsPage.qml
     quick/qml/SectionHeader.qml
     quick/qml/SectionLabel.qml
-    quick/qml/Theming.qml)
+    quick/qml/Theming.qml
+    quick/qml/Utils.qml)
+set(QML_SINGLETON_FILES quick/qml/Utils.qml)
 list(APPEND EXCLUDED_FILES ${QML_MAIN_FILES} quick/qml/WebViewPage.qml quick/qml/webview-webview/WebViewItem.qml
      quick/qml/webview-none/WebViewItem.qml)
 if (ANDROID)
@@ -326,6 +328,9 @@ function (change_qt_quick_controls_style QML_FILES_VARIABLE)
             COMMENT "Changing Qt Quick Controls style to ${QUICK_GUI_CONTROLS_STYLE}"
             VERBATIM)
         set_source_files_properties("${CHANGED_QML_FILE}" PROPERTIES QT_RESOURCE_ALIAS "${QML_FILE}")
+        if (${QML_FILE} IN_LIST QML_SINGLETON_FILES)
+            set_source_files_properties(${QML_SINGLETON_FILES} PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
+        endif ()
         list(APPEND CHANGED_QML_FILES "${CHANGED_QML_FILE}")
     endforeach ()
     set("${QML_FILES_VARIABLE}"
@@ -436,6 +441,7 @@ if (QUICK_GUI)
     endif ()
     qt_policy(SET QTP0004 NEW)
     change_qt_quick_controls_style(QML_MAIN_FILES)
+    set_source_files_properties(${QML_SINGLETON_FILES} PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
     qt_add_qml_module(
         ${META_TARGET_NAME}
         URI

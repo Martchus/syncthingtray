@@ -131,13 +131,14 @@ std::string_view QuickUI::primaryMode()
 }
 
 #if !(defined(Q_OS_ANDROID))
-bool QuickUI::windowPopups() const
+int QuickUI::popupType() const
 {
-    static const auto enablewindowPopups = [] {
+    static const auto popupTypeInt = [] {
         auto ok = false;
-        return qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_WINDOW_POPUPS", &ok) > 0 || !ok;
+        auto intValue = qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_POPUP_TYPE", &ok);
+        return ok ? intValue : 1;
     }();
-    return enablewindowPopups;
+    return popupTypeInt;
 }
 #endif
 

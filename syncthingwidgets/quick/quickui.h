@@ -48,7 +48,7 @@ class SYNCTHINGWIDGETS_EXPORT QuickUI : public QObject {
     Q_PROPERTY(bool darkmodeEnabled READ isDarkmodeEnabled NOTIFY darkmodeEnabledChanged)
     Q_PROPERTY(int iconSize READ iconSize CONSTANT)
     Q_PROPERTY(int iconWidthDelegate READ iconWidthDelegate CONSTANT)
-    Q_PROPERTY(bool windowPopups READ windowPopups CONSTANT)
+    Q_PROPERTY(int popupType READ popupType CONSTANT)
     Q_PROPERTY(bool extendedClientArea READ extendedClientArea CONSTANT)
     Q_PROPERTY(QString fontFamily READ fontFamily CONSTANT)
     Q_PROPERTY(qreal fontScale READ fontScale CONSTANT)
@@ -89,12 +89,12 @@ public:
     }
 
 #if defined(Q_OS_ANDROID)
-    static constexpr bool windowPopups()
+    static constexpr int popupType()
     {
-        return false;
+        return 0;
     }
 #else
-    bool windowPopups() const;
+    int popupType() const;
 #endif
     static constexpr bool extendedClientArea()
     {

@@ -7,7 +7,7 @@ Dialog {
     id: dialog
     parent: Overlay.overlay
     anchors.centerIn: Overlay.overlay
-    popupType: QuickUI.windowPopups ? Popup.Window : Popup.Item
+    popupType: Utils.popupType
     width: Math.min(popupType === Popup.Item ? Math.max(0, parent.width - additionalSpacing - leftMargin - rightMargin) : implicitWidth, 800)
     height: Math.min(implicitHeight, Math.max(0, parent.height - additionalSpacing - topMargin - bottomMargin))
     topMargin: parent.SafeArea.margins.top

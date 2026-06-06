@@ -242,7 +242,7 @@ DelegateChooser {
                             enabled: modelData?.enabled ?? true
                             onAccepted: optionsDlg.accept()
                             Component.onCompleted: {
-                                //popup.popupType = Popup.Native;
+                                //popup.popupType = Utils.popupType;
                                 editText = textOfValue(modelData.value);
                                 currentIndex = indexOfValue(modelData.value);
                             }
