@@ -678,7 +678,7 @@
 <context>
     <name>ChangesPage</name>
     <message>
-        <location filename="../quick/qml/ChangesPage.qml" line="8"/>
+        <location filename="../quick/qml/ChangesPage.qml" line="6"/>
         <source>Recent changes</source>
         <translation>最近的更改</translation>
     </message>
@@ -1703,7 +1703,7 @@
 <context>
     <name>ExpandableItemDelegate</name>
     <message>
-        <location filename="../quick/qml/ExpandableItemDelegate.qml" line="76"/>
+        <location filename="../quick/qml/ExpandableItemDelegate.qml" line="80"/>
         <source>More actions</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4845,7 +4845,7 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>QtGui::QuickUI</name>
     <message>
-        <location filename="../quick/quickui.cpp" line="443"/>
+        <location filename="../quick/quickui.cpp" line="447"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
@@ -4981,32 +4981,28 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation>未连接到其他设备</translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="151"/>
+        <location filename="../misc/statusinfo.cpp" line="152"/>
         <source>Connected to %1 devices</source>
         <translation>
             <numerusform>已连接 %1 个设备</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="153"/>
+        <location filename="../misc/statusinfo.cpp" line="156"/>
         <source>Connected to %1 and %2 other devices</source>
         <translation>
             <numerusform>已连接到 %1 和 %2 个其他设备</numerusform>
         </translation>
     </message>
-    <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="158"/>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="154"/>
         <source>Connected to %1 and %2</source>
-        <translation>
-            <numerusform>已连接到 %1 和 %2</numerusform>
-        </translation>
+        <translation>已连接到 %1 和 %2</translation>
     </message>
-    <message numerus="yes">
+    <message>
         <location filename="../misc/statusinfo.cpp" line="161"/>
         <source>Connected to %1</source>
-        <translation>
-            <numerusform>已连接到 %1</numerusform>
-        </translation>
+        <translation>已连接到 %1</translation>
     </message>
 </context>
 <context>

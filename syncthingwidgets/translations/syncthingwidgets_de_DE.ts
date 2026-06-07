@@ -1094,7 +1094,7 @@
 <context>
     <name>ChangesPage</name>
     <message>
-        <location filename="../quick/qml/ChangesPage.qml" line="8"/>
+        <location filename="../quick/qml/ChangesPage.qml" line="6"/>
         <source>Recent changes</source>
         <translation>Letzte Änderungen</translation>
     </message>
@@ -2119,7 +2119,7 @@
 <context>
     <name>ExpandableItemDelegate</name>
     <message>
-        <location filename="../quick/qml/ExpandableItemDelegate.qml" line="76"/>
+        <location filename="../quick/qml/ExpandableItemDelegate.qml" line="80"/>
         <source>More actions</source>
         <translation>Weitere Aktionen</translation>
     </message>
@@ -5469,7 +5469,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
 <context>
     <name>QtGui::QuickUI</name>
     <message>
-        <location filename="../quick/quickui.cpp" line="443"/>
+        <location filename="../quick/quickui.cpp" line="447"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
@@ -5573,7 +5573,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation>Keine entfernten Geräte verbunden</translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="151"/>
+        <location filename="../misc/statusinfo.cpp" line="152"/>
         <source>Connected to %1 devices</source>
         <translation>
             <numerusform>Mit %1 Gerät verbunden</numerusform>
@@ -5581,28 +5581,22 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="153"/>
+        <location filename="../misc/statusinfo.cpp" line="156"/>
         <source>Connected to %1 and %2 other devices</source>
         <translation>
             <numerusform>Mit %1 und %2 weiteren Gerät verbunden</numerusform>
             <numerusform>Mit %1 und %2 weiteren Geräten verbunden</numerusform>
         </translation>
     </message>
-    <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="158"/>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="154"/>
         <source>Connected to %1 and %2</source>
-        <translation>
-            <numerusform>Mit %1 und %2 verbunden</numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>Mit %1 und %2 verbunden</translation>
     </message>
-    <message numerus="yes">
+    <message>
         <location filename="../misc/statusinfo.cpp" line="161"/>
         <source>Connected to %1</source>
-        <translation>
-            <numerusform>Mit %1 verbunden</numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation>Mit %1 verbunden</translation>
     </message>
     <message>
         <location filename="../misc/statusinfo.cpp" line="66"/>

@@ -671,7 +671,7 @@
 <context>
     <name>ChangesPage</name>
     <message>
-        <location filename="../quick/qml/ChangesPage.qml" line="8"/>
+        <location filename="../quick/qml/ChangesPage.qml" line="6"/>
         <source>Recent changes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1692,7 +1692,7 @@
 <context>
     <name>ExpandableItemDelegate</name>
     <message>
-        <location filename="../quick/qml/ExpandableItemDelegate.qml" line="76"/>
+        <location filename="../quick/qml/ExpandableItemDelegate.qml" line="80"/>
         <source>More actions</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4601,7 +4601,7 @@
 <context>
     <name>QtGui::QuickUI</name>
     <message>
-        <location filename="../quick/quickui.cpp" line="443"/>
+        <location filename="../quick/quickui.cpp" line="447"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4688,7 +4688,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="151"/>
+        <location filename="../misc/statusinfo.cpp" line="152"/>
         <source>Connected to %1 devices</source>
         <translation>
             <numerusform>Connected to %1 device</numerusform>
@@ -4696,28 +4696,22 @@
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="153"/>
+        <location filename="../misc/statusinfo.cpp" line="156"/>
         <source>Connected to %1 and %2 other devices</source>
         <translation>
             <numerusform>Connected to %1 and %2 other device</numerusform>
             <numerusform>Connected to %1 and %2 other devices</numerusform>
         </translation>
     </message>
-    <message numerus="yes">
-        <location filename="../misc/statusinfo.cpp" line="158"/>
+    <message>
+        <location filename="../misc/statusinfo.cpp" line="154"/>
         <source>Connected to %1 and %2</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation type="unfinished"></translation>
     </message>
-    <message numerus="yes">
+    <message>
         <location filename="../misc/statusinfo.cpp" line="161"/>
         <source>Connected to %1</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-        </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../misc/statusinfo.cpp" line="66"/>
