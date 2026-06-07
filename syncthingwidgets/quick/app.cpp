@@ -394,12 +394,6 @@ bool App::eventFilter(QObject *object, QEvent *event)
         if (m_app) {
             const auto palette = m_app->palette();
             IconManager::instance(&palette).setPalette(palette);
-            if (m_ui.imageProvider()) {
-                m_ui.imageProvider()->setDefaultColor(palette.color(QPalette::Normal, QPalette::Text));
-            }
-#ifndef SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
-            m_ui.applyDarkmodeChange(palette);
-#endif
         }
         break;
     default:;

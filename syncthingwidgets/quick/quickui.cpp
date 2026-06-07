@@ -91,6 +91,7 @@ QuickUI::QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQml
 {
     if (app) {
         app->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
+        app->installEventFilter(this);
 
 #ifdef SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
         QtUtilities::onDarkModeChanged([this](bool darkColorScheme) { applyDarkmodeChange(darkColorScheme, m_darkPalette); }, this);
@@ -518,6 +519,28 @@ void QuickUI::showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y)
     }
 #endif
     QMetaObject::invokeMethod(menu, "popup", Q_ARG(QQuickItem *, parent), Q_ARG(qreal, x), Q_ARG(qreal, y));
+}
+
+bool QuickUI::eventFilter(QObject *object, QEvent *event)
+{
+    if (object != m_app) {
+        return false;
+    }
+    switch (event->type()) {
+    case QEvent::ApplicationPaletteChange:
+        if (m_app) {
+            const auto palette = m_app->palette();
+            if (m_imageProvider) {
+                m_imageProvider->setDefaultColor(palette.color(QPalette::Normal, QPalette::Text));
+            }
+#ifndef SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
+            applyDarkmodeChange(palette);
+#endif
+        }
+        break;
+    default:;
+    }
+    return false;
 }
 #endif
 

@@ -167,6 +167,9 @@ Q_SIGNALS:
     void error(const QString &errorMessage, const QString &details = QString());
     void openingUrlRequested(const QUrl &url);
 
+protected:
+    bool eventFilter(QObject *object, QEvent *event) override;
+
 private:
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
     template <typename ReturnArg, typename... Args>
