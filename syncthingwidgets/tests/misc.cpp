@@ -72,7 +72,7 @@ void MiscTests::testStatusInfoAndLocalization()
     // test with a named, connected device
     addDev(QStringLiteral("fake-dev"));
     statusInfo.updateConnectedDevices(connection);
-    QCOMPARE(statusInfo.additionalStatusText(), QStringLiteral("Connected to fake-dev"));
+    QCOMPARE(statusInfo.additionalStatusText(), QStringLiteral("Mit fake-dev verbunden"));
 
     // test combination of both
     devWithNoName.status = Data::SyncthingDevStatus::Idle;
@@ -83,10 +83,10 @@ void MiscTests::testStatusInfoAndLocalization()
     // test with further named and unnamed devices
     addDev(QStringLiteral("another-fake-dev"));
     statusInfo.updateConnectedDevices(connection);
-    QCOMPARE(statusInfo.additionalStatusText(), QStringLiteral("Connected to fake-dev and another-fake-dev"));
+    QCOMPARE(statusInfo.additionalStatusText(), QStringLiteral("Mit fake-dev und another-fake-dev verbunden"));
     addDev(QStringLiteral("yet-another-fake-dev"));
     statusInfo.updateConnectedDevices(connection);
-    QCOMPARE(statusInfo.additionalStatusText(), QStringLiteral("Connected to fake-dev, another-fake-dev, yet-another-fake-dev"));
+    QCOMPARE(statusInfo.additionalStatusText(), QStringLiteral("Mit fake-dev, another-fake-dev, yet-another-fake-dev verbunden"));
     addDev(QString());
     statusInfo.updateConnectedDevices(connection);
     QCOMPARE(
