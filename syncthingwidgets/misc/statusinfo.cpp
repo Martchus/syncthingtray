@@ -125,13 +125,14 @@ void StatusInfo::updateConnectedDevices(const SyncthingConnection &connection)
         // handle case when not connected to other devices
         if (connectedDevices.empty()) {
             m_additionalDeviceInfo = QCoreApplication::translate("QtGui::StatusInfo", "Not connected to other devices");
+            recomputeAdditionalStatusText();
             return;
         }
 
         // get up to 2 device names
         const auto deviceCount = trQuandity(connectedDevices.size());
         const auto deviceNames = [&] {
-            QStringList names;
+            auto names = QStringList();
             names.reserve(2);
             for (const auto *dev : connectedDevices) {
                 if (dev->name.isEmpty()) {
@@ -149,16 +150,16 @@ void StatusInfo::updateConnectedDevices(const SyncthingConnection &connection)
         if (deviceNames.empty()) {
             m_additionalDeviceInfo
                 = QCoreApplication::translate("QtGui::StatusInfo", "Connected to %1 devices", nullptr, deviceCount).arg(deviceCount);
-        } else if (deviceNames.size() < deviceCount) {
+        } else if (deviceNames.size() == 2 && deviceCount == 2) {
+            m_additionalDeviceInfo = QCoreApplication::translate("QtGui::StatusInfo", "Connected to %1 and %2", nullptr, deviceCount)
+                                         .arg(deviceNames[0], deviceNames[1]);
+        } else if (deviceCount > deviceNames.size()) {
             m_additionalDeviceInfo = QCoreApplication::translate(
                 "QtGui::StatusInfo", "Connected to %1 and %2 other devices", nullptr, deviceCount - static_cast<int>(deviceNames.size()))
                                          .arg(deviceNames.join(QStringLiteral(", ")))
                                          .arg(deviceCount - deviceNames.size());
-        } else if (deviceNames.size() == 2) {
-            m_additionalDeviceInfo = QCoreApplication::translate("QtGui::StatusInfo", "Connected to %1 and %2", nullptr, deviceCount)
-                                         .arg(deviceNames[0], deviceNames[1]);
-        } else if (deviceNames.size() == 1) {
-            m_additionalDeviceInfo = QCoreApplication::translate("QtGui::StatusInfo", "Connected to %1", nullptr, deviceCount).arg(deviceNames[0]);
+        } else {
+            m_additionalDeviceInfo = QCoreApplication::translate("QtGui::StatusInfo", "Connected to %1", nullptr, deviceCount).arg(deviceNames.join(QStringLiteral(", ")));
         }
     }
 

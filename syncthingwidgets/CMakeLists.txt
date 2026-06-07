@@ -211,7 +211,7 @@ set(REQUIRED_ICONS
     question)
 
 # configure test files
-set(QT_TESTS)
+set(QT_TESTS misc)
 set(QT_WIDGETS_TESTS wizard)
 foreach (TEST "${QT_WIDGETS_TESTS}")
     list(APPEND EXCLUDED_FILES "tests/${TEST}.cpp")
