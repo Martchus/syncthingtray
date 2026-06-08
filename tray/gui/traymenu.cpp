@@ -221,10 +221,12 @@ void TrayMenu::mousePressEvent(QMouseEvent *event)
     }
 
     // skip handling the mouse event if the QQuickWidget was clicked
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
     if (const auto *const quickWidget = m_trayWidget->quickWidget();
         quickWidget && QRectF(quickWidget->mapToGlobal(QPointF()), quickWidget->size()).contains(event->globalPosition())) {
         return;
     }
+#endif
 
     // try starting a system window resize/move to allow resizing/moving the borderless window
 #ifdef QT_SUPPORTS_SYSTEM_WINDOW_COMMANDS
