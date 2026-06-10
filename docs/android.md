@@ -40,7 +40,9 @@ The first things to do after installing and starting the app:
 
 * You need to give the app *notification permission* and *storage permission* via the Android app
   settings. The start page of the app shows "Request … permission" actions at the top for opening
-  the app settings if the permissions haven't been granted yet.
+  the app settings if the permissions haven't been granted yet. (Check out the
+  "[Permissions](#permissions)" section for a full list of permissions used by the app and why
+  those permissions are needed.)
 * The app will start Syncthing automatically by default. You can also disable this and configure
   it to connect with an externally launched instance of Syncthing.
 * It is a good idea to enable authentication for accessing the web-based UI, as otherwise, any
@@ -259,3 +261,36 @@ Unfortunately, not all file managers support browsing directories exposed via a 
   only opens the app itself instead of letting you manage the files.
 * The "My Files" app present on Samsung devices does not seem to support custom document providers
   at all.
+
+## Permissions
+The following permissions are required:
+
+* `FOREGROUND_SERVICE`, `FOREGROUND_SERVICE_SPECIAL_USE` (Android >=14)
+    * Needed to run Syncthing in the background indefinitely.
+* `POST_NOTIFICATIONS`
+    * Needed to run Syncthing in the background and to show notifications in case of errors.
+* `INTERNET`
+    * Only used to allow Syncthing to connect to the network.
+    * Syncthing Tray does not and will never have ads or telemetry of its own.
+    * Syncthing has opt-in telemetry and asks for approval before any data it sent.
+    * Syncthing's crash reporting is disabled because Syncthing Tray integrates it in a way
+      that is not supported upstream.
+* `ACCESS_NETWORK_STATE`
+    * Used for detecting when the device is connected to the network and if the network is
+      unmetered.
+* `MANAGE_EXTERNAL_STORAGE` (Android >=11), `READ_EXTERNAL_STORAGE`/`WRITE_EXTERNAL_STORAGE`
+  (Android <11)
+    * Needed for Syncthing to access files on the internal and external storage.
+* `RECEIVE_BOOT_COMPLETED`
+    * Needed for automatically starting Syncthing after a reboot.
+* `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`
+    * Needed to allow asking for permission to disable battery optimizations.
+
+### Permissions that might be required in the future
+These permissions are currently not required but might be required when further features are
+implemented:
+
+* `READ_SYNC_SETTINGS`
+    * Used for detecting if Android's auto-sync data setting is enabled.
+* `CAMERA`
+    * Optionally used for scanning a device's QR code when adding a new device.
