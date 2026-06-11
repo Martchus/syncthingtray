@@ -5576,27 +5576,27 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <location filename="../misc/statusinfo.cpp" line="152"/>
         <source>Connected to %1 devices</source>
         <translation>
-            <numerusform>Mit %1 Gerät verbunden</numerusform>
-            <numerusform>Mit %1 Geräten verbunden</numerusform>
+            <numerusform>Verbunden mit %1 Gerät</numerusform>
+            <numerusform>Verbunden mit %1 Geräten</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../misc/statusinfo.cpp" line="156"/>
         <source>Connected to %1 and %2 other devices</source>
         <translation>
-            <numerusform>Mit %1 und %2 weiteren Gerät verbunden</numerusform>
-            <numerusform>Mit %1 und %2 weiteren Geräten verbunden</numerusform>
+            <numerusform>Verbunden mit %1 und %2 weiteren Gerät</numerusform>
+            <numerusform>Verbunden mit %1 und %2 weiteren Geräten</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../misc/statusinfo.cpp" line="154"/>
         <source>Connected to %1 and %2</source>
-        <translation>Mit %1 und %2 verbunden</translation>
+        <translation>Verbunden mit %1 und %2</translation>
     </message>
     <message>
         <location filename="../misc/statusinfo.cpp" line="161"/>
         <source>Connected to %1</source>
-        <translation>Mit %1 verbunden</translation>
+        <translation>Verbunden mit %1</translation>
     </message>
     <message>
         <location filename="../misc/statusinfo.cpp" line="66"/>
