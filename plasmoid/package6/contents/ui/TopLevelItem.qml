@@ -7,7 +7,6 @@ Item {
     id: listItem
     default property alias content: paddingItem.data
     property bool expanded: false
-    property bool separatorVisible: true
 
     width: parent ? parent.width : childrenRect.width
     height: paddingItem.childrenRect.height + background.margins.top + background.margins.bottom
@@ -29,21 +28,6 @@ Item {
                 duration: Kirigami.Units.longDuration
             }
         }
-    }
-    KSvg.SvgItem {
-        svg: KSvg.Svg {
-            imagePath: "widgets/listitem"
-        }
-        elementId: "separator"
-        anchors {
-            left: parent.left
-            right: parent.right
-            top: parent.top
-        }
-        height: naturalSize.height
-        visible: separatorVisible && (index !== undefined
-                                  && index > 0 && !listItem.checked
-                                  && !itemMouse.pressed)
     }
 
     MouseArea {
