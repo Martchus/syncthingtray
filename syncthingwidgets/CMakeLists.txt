@@ -322,6 +322,7 @@ function (change_qt_quick_controls_style QML_FILES_VARIABLE)
             set(CHANGED_QML_FILE "${CMAKE_CURRENT_BINARY_DIR}/${QML_FILE}")
         endif ()
         add_custom_command(
+            DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/${QML_FILE}"
             OUTPUT "${CHANGED_QML_FILE}"
             COMMAND "${PERL_BIN}" ARGS -p -e "s|QtQuick.Controls.Material|${OVERRIDE}|g;" -e "s|\\s*Material\\..*:.*||g;"
                     "${CMAKE_CURRENT_SOURCE_DIR}/${QML_FILE}" > "${CHANGED_QML_FILE}"
