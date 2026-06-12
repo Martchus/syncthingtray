@@ -46,6 +46,7 @@ class SYNCTHINGWIDGETS_EXPORT QuickUI : public QObject {
     Q_PROPERTY(QString mode READ mode CONSTANT)
     Q_PROPERTY(bool desktop READ isDesktop CONSTANT)
     Q_PROPERTY(bool darkmodeEnabled READ isDarkmodeEnabled NOTIFY darkmodeEnabledChanged)
+    Q_PROPERTY(qreal densityScale READ densityScale CONSTANT)
     Q_PROPERTY(int iconSize READ iconSize CONSTANT)
     Q_PROPERTY(int iconWidthDelegate READ iconWidthDelegate CONSTANT)
     Q_PROPERTY(int popupType READ popupType CONSTANT)
@@ -117,6 +118,14 @@ public:
         return m_darkmodeEnabled;
     }
 
+    /*!
+     * \brief Returns a factor to scale *certain* UI elements to achieve a different UI density.
+     * \remarks A factor <1 is used in desktop mode to achieve a lower UI density.
+     */
+    qreal densityScale() const
+    {
+        return m_densityScale;
+    }
     int iconSize() const
     {
         return m_iconSize;
@@ -186,6 +195,7 @@ private:
     QString m_mode;
     QtForkAwesome::QuickImageProvider *m_imageProvider;
     QObjectList m_dialogs;
+    qreal m_densityScale;
     int m_iconSize;
     int m_iconWidthDelegate;
     bool m_darkmodeEnabled;

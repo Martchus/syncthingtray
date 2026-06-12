@@ -83,6 +83,7 @@ QuickUI::QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQml
     , m_faUrlBase(QStringLiteral("image://fa/"))
     , m_mode(mode)
     , m_imageProvider(nullptr)
+    , m_densityScale(isDesktop() ? 0.6 : 1.0)
     , m_iconSize(SYNCTHING_APP_ICON_SIZE)
     , m_iconWidthDelegate(SYNCTHING_APP_ICON_WIDTH_DELEGATE)
     , m_darkmodeEnabled(false)
