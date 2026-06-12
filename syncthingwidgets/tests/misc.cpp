@@ -66,35 +66,35 @@ void MiscTests::testStatusInfoAndLocalization()
     // test with an unnamed, connected device
     auto &devWithNoName = addDev(QString());
     statusInfo.updateConnectedDevices(connection);
-    QCOMPARE(statusInfo.additionalStatusText(), QStringLiteral("Mit 1 Gerät verbunden"));
+    QCOMPARE(statusInfo.additionalStatusText(), QStringLiteral("Verbunden mit 1 Gerät"));
     devWithNoName.status = Data::SyncthingDevStatus::Disconnected;
 
     // test with a named, connected device
     addDev(QStringLiteral("fake-dev"));
     statusInfo.updateConnectedDevices(connection);
-    QCOMPARE(statusInfo.additionalStatusText(), QStringLiteral("Mit fake-dev verbunden"));
+    QCOMPARE(statusInfo.additionalStatusText(), QStringLiteral("Verbunden mit fake-dev"));
 
     // test combination of both
     devWithNoName.status = Data::SyncthingDevStatus::Idle;
     statusInfo.updateConnectedDevices(connection);
-    QCOMPARE(statusInfo.additionalStatusText(), QStringLiteral("Mit fake-dev und 1 weiteren Gerät verbunden"));
+    QCOMPARE(statusInfo.additionalStatusText(), QStringLiteral("Verbunden mit fake-dev und 1 weiteren Gerät"));
     devWithNoName.status = Data::SyncthingDevStatus::Disconnected;
 
     // test with further named and unnamed devices
     addDev(QStringLiteral("another-fake-dev"));
     statusInfo.updateConnectedDevices(connection);
-    QCOMPARE(statusInfo.additionalStatusText(), QStringLiteral("Mit fake-dev und another-fake-dev verbunden"));
+    QCOMPARE(statusInfo.additionalStatusText(), QStringLiteral("Verbunden mit fake-dev und another-fake-dev"));
     addDev(QStringLiteral("yet-another-fake-dev"));
     statusInfo.updateConnectedDevices(connection);
-    QCOMPARE(statusInfo.additionalStatusText(), QStringLiteral("Mit fake-dev, another-fake-dev, yet-another-fake-dev verbunden"));
+    QCOMPARE(statusInfo.additionalStatusText(), QStringLiteral("Verbunden mit fake-dev, another-fake-dev, yet-another-fake-dev"));
     addDev(QString());
     statusInfo.updateConnectedDevices(connection);
     QCOMPARE(
-        statusInfo.additionalStatusText(), QStringLiteral("Mit fake-dev, another-fake-dev, yet-another-fake-dev und 1 weiteren Gerät verbunden"));
+        statusInfo.additionalStatusText(), QStringLiteral("Verbunden mit fake-dev, another-fake-dev, yet-another-fake-dev und 1 weiteren Gerät"));
     addDev(QStringLiteral("forth-dev-which-will-not-be-explicitly-mentioned"));
     statusInfo.updateConnectedDevices(connection);
     QCOMPARE(
-        statusInfo.additionalStatusText(), QStringLiteral("Mit fake-dev, another-fake-dev, yet-another-fake-dev und 2 weiteren Geräten verbunden"));
+        statusInfo.additionalStatusText(), QStringLiteral("Verbunden mit fake-dev, another-fake-dev, yet-another-fake-dev und 2 weiteren Geräten"));
 }
 
 QT_UTILITIES_DISABLE_WARNINGS_FOR_MOC_INCLUDE
