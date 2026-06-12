@@ -10,7 +10,7 @@ RoundButton {
     display: AbstractButton.IconOnly
     hoverEnabled: true
     ToolTip.text: text
-    ToolTip.visible: pressed
+    ToolTip.visible: hovered || pressed
     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
     icon.width: 20 * QuickUI.densityScale
     icon.height: 20 * QuickUI.densityScale
