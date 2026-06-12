@@ -7,7 +7,7 @@ import Main
 
 ItemDelegate {
     id: mainDelegate
-    width: mainView.width
+    width: mainView.width - (mainView.ScrollBar?.vertical ? mainView.ScrollBar.vertical.width : 0)
     activeFocusOnTab: true
     Keys.onReturnPressed: (event) => detailsView.visible = !detailsView.visible
     Keys.onMenuPressed: (event) => menu.showCenteredIn(menuButton)

@@ -14,57 +14,59 @@ ApplicationWindow {
     flags: QuickUI.extendedClientArea ? (Qt.Window | Qt.ExpandedClientAreaHint | Qt.NoTitleBarBackgroundHint) : (Qt.Window)
     leftPadding: 0
     rightPadding: 0
-    footer: DialogButtonBox {
-        CustomToolButton {
-            visible: stackView.depth > 1
-            icon.source: QuickUI.faUrlBase + "arrow-left"
-            text: qsTr("Back")
-            flat: true
-            onClicked: stackView.pop()
-        }
-        CustomToolButton {
-            id: extraActionsMenuButton
-            visible: currentPage.extraActions?.length > 0
-            icon.source: QuickUI.faUrlBase + "ellipsis-v"
-            text: qsTr("More")
-            flat: true
-            onClicked: currentPage?.showExtraActions() ?? extraActionsMenu.showCenteredIn(extraActionsMenuButton)
-            CustomMenu {
-                id: extraActionsMenu
-                MenuItemInstantiator {
-                    menu: extraActionsMenu
-                    model: {
-                        const extraActions = currentPage.showExtraActions === undefined ? currentPage.extraActions : undefined;
-                        return extraActions ?? [];
+    footer: Pane {
+        padding: 0
+        DialogButtonBox {
+            width: parent.width
+            IconOnlyButton {  // using IconOnlyButton because normal Button does not show icon with Breeze style
+                visible: stackView.depth > 1
+                icon.source: QuickUI.faUrlBase + "arrow-left"
+                text: qsTr("Back")
+                onClicked: stackView.pop()
+                radius: 4
+            }
+            CustomToolButton {
+                id: extraActionsMenuButton
+                visible: currentPage.extraActions?.length > 0
+                icon.source: QuickUI.faUrlBase + "ellipsis-v"
+                text: qsTr("More")
+                onClicked: currentPage?.showExtraActions() ?? extraActionsMenu.showCenteredIn(extraActionsMenuButton)
+                CustomMenu {
+                    id: extraActionsMenu
+                    MenuItemInstantiator {
+                        menu: extraActionsMenu
+                        model: {
+                            const extraActions = currentPage.showExtraActions === undefined ? currentPage.extraActions : undefined;
+                            return extraActions ?? [];
+                        }
                     }
                 }
             }
-        }
-        Button {
-            display: AbstractButton.TextBesideIcon
-            icon.width: QuickUI.iconSize
-            icon.height: QuickUI.iconSize
-            icon.source: QuickUI.faUrlBase + "times"
-            text: qsTr("Abort")
-            flat: true
-            onClicked: pageWindow.close()
-        }
-        Repeater {
-            model: currentPage.actions
-            DelegateChooser {
-                role: "enabled"
-                DelegateChoice {
-                    roleValue: true
-                    Button {
-                        required property Action modelData
-                        display: AbstractButton.TextBesideIcon
-                        icon.width: QuickUI.iconSize
-                        icon.height: QuickUI.iconSize
-                        enabled: modelData.enabled
-                        text: modelData.text
-                        flat: true
-                        icon.source: modelData.icon.source
-                        onClicked: modelData.trigger()
+            CustomToolButton {
+                display: AbstractButton.TextBesideIcon
+                icon.width: QuickUI.iconSize
+                icon.height: QuickUI.iconSize
+                icon.source: QuickUI.faUrlBase + "times"
+                text: qsTr("Abort")
+                onClicked: pageWindow.close()
+            }
+            Repeater {
+                model: currentPage.actions
+                DelegateChooser {
+                    role: "enabled"
+                    DelegateChoice {
+                        roleValue: true
+                        Button {
+                            required property Action modelData
+                            display: AbstractButton.TextBesideIcon
+                            icon.width: QuickUI.iconSize
+                            icon.height: QuickUI.iconSize
+                            enabled: modelData.enabled
+                            text: modelData.text
+                            flat: true
+                            icon.source: modelData.icon.source
+                            onClicked: modelData.trigger()
+                        }
                     }
                 }
             }

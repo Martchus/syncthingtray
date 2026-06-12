@@ -7,11 +7,12 @@ import Qt.labs.qmlmodels
 import Main
 
 DelegateChooser {
+    id: chooser
     role: "type"
     DelegateChoice {
         roleValue: "readonly"
         ItemDelegate {
-            width: objectListView.width
+            width: chooser.width
             contentItem: RowLayout {
                 ColumnLayout {
                     Layout.fillWidth: true
@@ -52,7 +53,7 @@ DelegateChooser {
     DelegateChoice {
         roleValue: "string"
         ItemDelegate {
-            width: objectListView.width
+            width: chooser.width
             contentItem: RowLayout {
                 ColumnLayout {
                     Layout.fillWidth: true
@@ -92,7 +93,7 @@ DelegateChooser {
     DelegateChoice {
         roleValue: "deviceid"
         ItemDelegate {
-            width: objectListView.width
+            width: chooser.width
             contentItem: RowLayout {
                 ColumnLayout {
                     Layout.fillWidth: true
@@ -194,7 +195,7 @@ DelegateChooser {
     DelegateChoice {
         roleValue: "options"
         ItemDelegate {
-            width: objectListView.width
+            width: chooser.width
             contentItem: RowLayout {
                 ColumnLayout {
                     Layout.fillWidth: true
@@ -286,9 +287,9 @@ DelegateChooser {
         roleValue: "devices"
         ItemDelegate {
             id: devicesDelegate
-            width: parent?.width
+            width: chooser.width
             contentItem: ColumnLayout {
-                width: objectListView.width
+                width: parent.width
                 RowLayout {
                     Layout.fillWidth: true
                     Label {
@@ -420,7 +421,7 @@ DelegateChooser {
     DelegateChoice {
         roleValue: "number"
         ItemDelegate {
-            width: objectListView.width
+            width: chooser.width
             contentItem: RowLayout {
                 ColumnLayout {
                     Layout.fillWidth: true
@@ -473,7 +474,7 @@ DelegateChooser {
     DelegateChoice {
         roleValue: "object"
         ItemDelegate {
-            width: objectListView.width
+            width: chooser.width
             contentItem: RowLayout {
                 Label {
                     id: objNameLabel
@@ -520,7 +521,7 @@ DelegateChooser {
     DelegateChoice {
         roleValue: "boolean"
         ItemDelegate {
-            width: objectListView.width
+            width: chooser.width
             onClicked: booleanSwitch.toggle()
             contentItem: RowLayout {
                 ColumnLayout {
@@ -560,7 +561,7 @@ DelegateChooser {
     DelegateChoice {
         roleValue: "function"
         ItemDelegate {
-            width: objectListView.width
+            width: chooser.width
             onClicked: modelData.value()
             contentItem: ColumnLayout {
                 Label {
@@ -585,7 +586,7 @@ DelegateChooser {
     DelegateChoice {
         roleValue: "filepath"
         ItemDelegate {
-            width: objectListView.width
+            width: chooser.width
             contentItem: RowLayout {
                 ColumnLayout {
                     Layout.fillWidth: true
@@ -646,7 +647,7 @@ DelegateChooser {
     DelegateChoice {
         roleValue: "folderpath"
         ItemDelegate {
-            width: objectListView.width
+            width: chooser.width
             contentItem: RowLayout {
                 ColumnLayout {
                     Layout.fillWidth: true
@@ -706,6 +707,7 @@ DelegateChooser {
         }
     }
     required property var objectConfigPage
+    property real width: objectListView.width - (objectListView.ScrollBar?.vertical ? objectListView.ScrollBar.vertical.width : 0)
     function displayText(data, inputMethodHints = Qt.ImhNone) {
         return (inputMethodHints & Qt.ImhHiddenText) ? (data?.toString() ? "•••" : "") : (data?.toString() ?? "");
     }
