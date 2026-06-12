@@ -351,6 +351,8 @@ QuickGuiEngine &TrayWidget::quickGui()
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
         qputenv("QSG_RHI_BACKEND", "vulkan");
 #endif
+        // use dense variant of Material style
+        qputenv("QT_QUICK_CONTROLS_MATERIAL_VARIANT", "Dense");
 
         auto &quickUI = m_quickUI.emplace(qGuiApp, Settings::values().qt);
         auto *const engine = &quickUI.engine;
