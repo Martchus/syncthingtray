@@ -560,7 +560,7 @@ QWidget *AppearanceOptionPage::setupWidget()
     }
     setFormRowVisible(formLayout, requiresRestartLabel, nullptr, false);
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
-    QObject::connect(ui()->styleComboBox, &QComboBox::currentIndexChanged, formLayout, [this, formLayout, requiresRestartLabel] (int index) {
+    QObject::connect(ui()->styleComboBox, &QComboBox::currentIndexChanged, formLayout, [this, formLayout, requiresRestartLabel](int index) {
         const auto traditionalStyleSelected = index == 0;
         setFormRowVisible(formLayout, requiresRestartLabel, nullptr, Settings::values().appearance.initialStyle != index);
         ui()->frameShapeComboBox->setEnabled(traditionalStyleSelected);

@@ -452,7 +452,7 @@ bool QuickUI::showSettings(QQuickItem *stackView)
 
 bool QuickUI::showRecentChanges(QQuickItem *stackView)
 {
-    return showPage("Main", "ChangesPage", { }, stackView);
+    return showPage("Main", "ChangesPage", {}, stackView);
 }
 
 bool QuickUI::browseFiles(const QString &dirId, const QString &dirName, QQuickItem *stackView)
@@ -525,7 +525,7 @@ void QuickUI::showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y)
         }
     }
 #endif
-    QMetaObject::invokeMethod(menu, "popup", Q_ARG(QQuickItem*, parent), Q_ARG(qreal, x), Q_ARG(qreal, y));
+    QMetaObject::invokeMethod(menu, "popup", Q_ARG(QQuickItem *, parent), Q_ARG(qreal, x), Q_ARG(qreal, y));
 }
 
 bool QuickUI::eventFilter(QObject *object, QEvent *event)

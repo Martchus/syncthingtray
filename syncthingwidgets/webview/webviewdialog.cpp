@@ -360,8 +360,7 @@ WebViewDialog *showWebUI(
     case Settings::WebView::Mode::Command:
         openBrowserInAppMode(url);
         return nullptr;
-    default:
-        ;
+    default:;
     }
     QDesktopServices::openUrl(url);
     return nullptr;
