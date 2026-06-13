@@ -148,7 +148,7 @@ struct SYNCTHINGWIDGETS_EXPORT Systemd {
 #endif
 
 struct SYNCTHINGWIDGETS_EXPORT WebView {
-    enum class Mode { Builtin, Browser, Command };
+    enum class Mode { Builtin, Browser, Command, QuickUI };
     Mode mode;
     QString customCommand;
 #if defined(SYNCTHINGWIDGETS_USE_WEBENGINE) || defined(SYNCTHINGWIDGETS_USE_WEBKIT)

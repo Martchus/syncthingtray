@@ -30,6 +30,13 @@
        </widget>
       </item>
       <item>
+       <widget class="QRadioButton" name="ownRadioButton">
+        <property name="text">
+         <string>Syncthing Tray's own UI (experimental, WIP)</string>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QRadioButton" name="browserRadioButton">
         <property name="text">
          <string>Tab in the default web browser</string>

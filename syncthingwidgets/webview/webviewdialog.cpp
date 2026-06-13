@@ -334,6 +334,13 @@ WebViewDialog *showWebUI(
     const QString &url, const Data::SyncthingConnectionSettings *settings, WebViewDialog *dlg, QWidget *parent, Data::SyncthingConnection *connection)
 {
     switch (Settings::values().webView.mode) {
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    case Settings::WebView::Mode::QuickUI:
+        if (QMetaObject::invokeMethod(parent, "showQtQuickGui")) {
+            return nullptr;
+        }
+        break;
+#endif
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     case Settings::WebView::Mode::Builtin:
         if (!dlg) {
@@ -348,13 +355,15 @@ WebViewDialog *showWebUI(
         Q_UNUSED(dlg)
         Q_UNUSED(parent)
         Q_UNUSED(connection)
+        break;
 #endif
     case Settings::WebView::Mode::Command:
         openBrowserInAppMode(url);
-        break;
+        return nullptr;
     default:
-        QDesktopServices::openUrl(url);
+        ;
     }
+    QDesktopServices::openUrl(url);
     return nullptr;
 }
 

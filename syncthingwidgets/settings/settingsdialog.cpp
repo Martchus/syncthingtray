@@ -1688,6 +1688,13 @@ QWidget *GeneralWebViewOptionPage::setupWidget()
 {
     auto *const widget = GeneralWebViewOptionPageBase::setupWidget();
     auto *const cfgToolButton = ui()->appModeCfgToolButton;
+
+    if (!Settings::values().enableWipFeatures) {
+        ui()->ownRadioButton->hide();
+    }
+#if !defined(GUI_QTQUICK) || !defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    ui()->ownRadioButton->setEnabled(false);
+#endif
 #ifdef SYNCTHINGWIDGETS_NO_WEBVIEW
     ui()->builtinRadioButton->setEnabled(false);
 #endif
@@ -1708,6 +1715,8 @@ bool GeneralWebViewOptionPage::apply()
         webView.mode = Settings::WebView::Mode::Browser;
     } else if (ui()->appModeRadioButton->isChecked()) {
         webView.mode = Settings::WebView::Mode::Command;
+    } else if (ui()->ownRadioButton->isChecked()) {
+        webView.mode = Settings::WebView::Mode::QuickUI;
     }
     webView.customCommand = m_customCommand;
     return true;
@@ -1717,6 +1726,13 @@ void GeneralWebViewOptionPage::reset()
 {
     const auto &webView = Settings::values().webView;
     switch (webView.mode) {
+    case Settings::WebView::Mode::QuickUI:
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+        if (ui()->ownRadioButton->isVisible() && ui()->ownRadioButton->isEnabled()) {
+            ui()->ownRadioButton->setChecked(true);
+        }
+#endif
+        break;
     case Settings::WebView::Mode::Builtin:
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
         ui()->builtinRadioButton->setChecked(true);

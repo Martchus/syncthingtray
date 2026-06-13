@@ -538,6 +538,7 @@ void TrayWidget::showInternalErrorsDialog()
 void TrayWidget::showQtQuickGui()
 {
     quickGui().ui.showMainWindow();
+    closeMenu();
 }
 
 bool TrayWidget::showFileBrowser(const QString &dirId)
@@ -1106,11 +1107,16 @@ void TrayWidget::concludeWizard(const QString &errorMessage)
     }
 }
 
-void TrayWidget::showDialog(QWidget *dlg, bool maximized)
+void TrayWidget::closeMenu()
 {
     if (m_menu && m_menu->windowType() != TrayMenu::WindowType::NormalWindow) {
         m_menu->close();
     }
+}
+
+void TrayWidget::showDialog(QWidget *dlg, bool maximized)
+{
+    closeMenu();
     if (maximized) {
         dlg->showMaximized();
     } else {

@@ -140,6 +140,7 @@ private Q_SLOTS:
     void handleConnectionSelected(QAction *connectionAction);
     void handleNewErrors();
     void concludeWizard(const QString &errorMessage = QString());
+    void closeMenu();
     void showDialog(QWidget *dlg, bool maximized = false);
     void showCenteredDialog(QWidget *dlg, const QSize &size);
     void setBrightColorsOfModelsAccordingToPalette();
