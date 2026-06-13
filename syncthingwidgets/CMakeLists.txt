@@ -319,7 +319,7 @@ function (change_qt_quick_controls_style QML_FILES_VARIABLE)
         if (CMAKE_SYSTEM_NAME MATCHES "Windows.*")
             set(CHANGED_QML_FILE "${CMAKE_CURRENT_SOURCE_DIR}/qmltmp/${QML_FILE}")
         else ()
-            set(CHANGED_QML_FILE "${CMAKE_CURRENT_BINARY_DIR}/${QML_FILE}")
+            set(CHANGED_QML_FILE "${CMAKE_CURRENT_BINARY_DIR}/qmltmp/${QML_FILE}")
         endif ()
         add_custom_command(
             DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/${QML_FILE}"
