@@ -135,7 +135,7 @@
         <item>
          <widget class="QCheckBox" name="showTabTextsCheckBox">
           <property name="text">
-           <string>Show tab texts</string>
+           <string>Tab names</string>
           </property>
          </widget>
         </item>

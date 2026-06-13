@@ -3061,7 +3061,7 @@
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="347"/>
-        <source>Show tab texts</source>
+        <source>Tab names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

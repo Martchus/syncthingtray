@@ -3177,7 +3177,7 @@
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="347"/>
-        <source>Show tab texts</source>
+        <source>Tab names</source>
         <translation>显示选项卡文本</translation>
     </message>
     <message>

@@ -306,7 +306,7 @@
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="138"/>
-        <source>Show tab texts</source>
+        <source>Tab names</source>
         <translation>Text-Beschriftung der Tab-Buttons</translation>
     </message>
     <message>

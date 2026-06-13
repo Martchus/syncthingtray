@@ -3060,7 +3060,7 @@
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="347"/>
-        <source>Show tab texts</source>
+        <source>Tab names</source>
         <translation>Afficher les textes des onglets</translation>
     </message>
     <message>

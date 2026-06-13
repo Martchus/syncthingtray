@@ -252,7 +252,7 @@
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="138"/>
-        <source>Show tab texts</source>
+        <source>Tab names</source>
         <translation>Показать тексты вкладок</translation>
     </message>
     <message>
