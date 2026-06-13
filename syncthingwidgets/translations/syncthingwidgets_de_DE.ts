@@ -1696,6 +1696,11 @@
         <translation>Gruppe</translation>
     </message>
     <message>
+        <location filename="../quick/qml/DirConfigPage.qml" line="15"/>
+        <source>Keep initially disabled to add ignore patterns before any syncing takes place.</source>
+        <translation>Lasse das Verzeichnis beim Hinzufügen pausiert, um Ignoriermuster hinzuzufügen bevor die Synchronisation startet.</translation>
+    </message>
+    <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="27"/>
         <source>Advanced</source>
         <translation>Erweitert</translation>
@@ -2119,7 +2124,7 @@
 <context>
     <name>ExpandableItemDelegate</name>
     <message>
-        <location filename="../quick/qml/ExpandableItemDelegate.qml" line="80"/>
+        <location filename="../quick/qml/ExpandableItemDelegate.qml" line="81"/>
         <source>More actions</source>
         <translation>Weitere Aktionen</translation>
     </message>
@@ -2429,6 +2434,24 @@
     </message>
 </context>
 <context>
+    <name>LocalSyncProgress</name>
+    <message>
+        <location filename="../quick/qml/LocalSyncProgress.qml" line="17"/>
+        <source>Local sync progress</source>
+        <translation>Lokaler Sync-Fortschritt</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/LocalSyncProgress.qml" line="31"/>
+        <source>Up to Date</source>
+        <translation>Aktuell</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/LocalSyncProgress.qml" line="31"/>
+        <source>%1 %, %2 remaining</source>
+        <translation>%1 %, noch %2</translation>
+    </message>
+</context>
+<context>
     <name>LogPage</name>
     <message>
         <location filename="../quick/qml/LogPage.qml" line="7"/>
@@ -2600,7 +2623,7 @@
 <context>
     <name>ObjectConfigDelegate</name>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="39"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="40"/>
         <source>Copy</source>
         <translation>Kopieren</translation>
     </message>
@@ -2609,60 +2632,60 @@
         <translation type="vanished">Zufällige ID generieren</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="139"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="613"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="675"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="140"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="614"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="676"/>
         <source>Clear</source>
         <translation>Löschen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="148"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="149"/>
         <source>Refresh list of devices</source>
         <translation>Geräteliste aktualisieren</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="164"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="165"/>
         <source>This device has already been added!</source>
         <translation>Dieses Gerät wurde bereits hinzugefügt!</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="164"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="165"/>
         <source>The device ID looks valid.</source>
         <translation>Die Geräte-ID sieht gültig aus.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="164"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="165"/>
         <source>The entered device ID looks invalid!</source>
         <translation>Die eingegebene Geräte-ID sieht ungültig aus!</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="266"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="267"/>
         <source>A custom value has been entered.</source>
         <translation>Es wurde ein benutzerdefinierter Wert eingegeben.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="332"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="333"/>
         <source>Change encryption password</source>
         <translation>Passwort für Verschlüsselung ändern</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="332"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="333"/>
         <source>Set encryption password</source>
         <translation>Passwort für Verschlüsselung festlegen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="339"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="340"/>
         <source>Set encryption password for sharing with &quot;%1&quot;</source>
         <translation>Passwort für Verschlüsselung festlegen um mit &quot;%1&quot; zu teilen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="346"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="347"/>
         <source>If untrusted, enter encryption password</source>
         <translation>Gib ein Verschlüsselungspasswort ein, wenn dem Gerät nicht vertraut wird</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="620"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="682"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="621"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="683"/>
         <source>Edit manually</source>
         <translation>Manuell editieren</translation>
     </message>
@@ -2969,7 +2992,7 @@
         <translation>Es kann nicht ermittelt werden, ob die Netzwerkverbindung getaktet ist. Eine ungetaktete Verbindung wird angenommen.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1822"/>
+        <location filename="../settings/settingsdialog.cpp" line="1887"/>
         <source>Unable to restart via &quot;%1&quot;: %2</source>
         <translation>Kann nicht mittels &quot;%1&quot; neustarten: %2</translation>
     </message>
@@ -3220,292 +3243,292 @@
         <translation type="vanished">Eine andere Änderung ist noch im Gange.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="681"/>
+        <location filename="../quick/app.cpp" line="675"/>
         <source>Unable to minimize app.</source>
         <translation>Die App kann nicht minimiert werden.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="712"/>
+        <location filename="../quick/app.cpp" line="706"/>
         <source>Unable to save settings: </source>
         <translation>Einstellungen konnten nicht gespeichert werden: </translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="771"/>
+        <location filename="../quick/app.cpp" line="765"/>
         <source>App settings saved</source>
         <translation>App-Einstellungen gespeichert</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="797"/>
+        <location filename="../quick/app.cpp" line="791"/>
         <source>No logfile present anyway</source>
         <translation>Keine Log-Datei vorhanden</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="803"/>
+        <location filename="../quick/app.cpp" line="797"/>
         <source>Waiting for backend to terminate before clearing logs …</source>
         <translation>Warte bis sich Backend beendet hat, bevor Logs gelöscht werden …</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="812"/>
+        <location filename="../quick/app.cpp" line="806"/>
         <source>Persistent logging disabled and logfile removed</source>
         <translation>Persistentes Logging ist deaktiviert und die Log-Datei gelöscht</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="814"/>
+        <location filename="../quick/app.cpp" line="808"/>
         <source>Unable to remove logfile</source>
         <translation>Log-Datei kann nicht gelöscht werden</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="846"/>
+        <location filename="../quick/app.cpp" line="840"/>
         <source>Another import/export still pending</source>
         <translation>Anderer Vorgang ist noch im Gange</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="886"/>
+        <location filename="../quick/app.cpp" line="880"/>
         <source>Settings directory was not located.</source>
         <translation>Einstellungsverzeichnis wurde nicht gefunden.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="906"/>
+        <location filename="../quick/app.cpp" line="900"/>
         <source>Unable to extract archive: %1</source>
         <translation>Konnte Archiv nicht extrahieren: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="911"/>
+        <location filename="../quick/app.cpp" line="905"/>
         <source>Unable to create temp dir: %1</source>
         <translation>Konnte temp. Verz. nicht erstellen: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="915"/>
+        <location filename="../quick/app.cpp" line="909"/>
         <source>archiving is only supported on Android.</source>
         <translation>Archivieren wird nur unter Android unterstützt.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="939"/>
+        <location filename="../quick/app.cpp" line="933"/>
         <source>The Syncthing home directory under &quot;%1&quot; is empty.</source>
         <translation>Das Syncthing-Home-Verzeichnis unter &quot;%1&quot; ist leer.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="952"/>
+        <location filename="../quick/app.cpp" line="946"/>
         <source>No Syncthing configuration file found under &quot;%1&quot;.</source>
         <translation>Die Syncthing-Konfiguration konnte nicht unter &quot;%1&quot; gefunden werden.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1040"/>
+        <location filename="../quick/app.cpp" line="1034"/>
         <source>Triggered re-connect with Syncthing backend</source>
         <translation>Neuer Verbindungsaufbau mit dem Syncthing-Backend gestartet</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1059"/>
+        <location filename="../quick/app.cpp" line="1053"/>
         <source>Unable to import settings: settings directory was not located.</source>
         <translation>Einstellungen konnten nicht importiert werden: das Einstellungsverzeichnis wurde nicht gefunden.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1066"/>
+        <location filename="../quick/app.cpp" line="1060"/>
         <source>Waiting for backend to terminate before importing settings …</source>
         <translation>Warte vor dem Import bis sich Backend beendet hat …</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1110"/>
+        <location filename="../quick/app.cpp" line="1104"/>
         <source>Imported app config from &quot;%1&quot;.</source>
         <translation>App-Einstellungen aus &quot;%1&quot; importiert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1123"/>
+        <location filename="../quick/app.cpp" line="1117"/>
         <source>Imported Syncthing config and database from &quot;%1&quot;.</source>
         <translation>Syncthing-Konfiguration und -Datenbank aus &quot;%1&quot; importiert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1141"/>
+        <location filename="../quick/app.cpp" line="1135"/>
         <source>Unable to find folders/devices in current Syncthing config.</source>
         <translation>Kann Ordner/Geräte in der aktuellen Syncthing-Konfiguration nicht finden.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1157"/>
+        <location filename="../quick/app.cpp" line="1151"/>
         <source>Merging %1 folders and %2 devices</source>
         <translation>Importiere %1 Ordner und %2 Gerät(e)</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1159"/>
+        <location filename="../quick/app.cpp" line="1153"/>
         <source>Unable to import folders/devices.</source>
         <translation>Kann Ordner/Geräte nicht importieren</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1168"/>
+        <location filename="../quick/app.cpp" line="1162"/>
         <source>Unable to remove temp dir: %1</source>
         <translation>Kann temp. Verz. nicht löschen: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1174"/>
+        <location filename="../quick/app.cpp" line="1168"/>
         <source>Nothing has been imported.</source>
         <translation>Es wurde nichts importiert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1184"/>
+        <location filename="../quick/app.cpp" line="1178"/>
         <source>Unable to import settings: %1</source>
         <translation>Konnte Einstellungen nicht importieren: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1229"/>
+        <location filename="../quick/app.cpp" line="1223"/>
         <source>Waiting for backend to terminate before exporting settings …</source>
         <translation>Warte vor dem Export bis sich Backend beendet hat …</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1245"/>
+        <location filename="../quick/app.cpp" line="1239"/>
         <source>settings directory was not located.</source>
         <translation>Einstellungsverzeichnis wurde nicht gefunden.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1251"/>
+        <location filename="../quick/app.cpp" line="1245"/>
         <source>no destination or file or directory specified/configured.</source>
         <translation>kein Ziel angegeben/konfiguriert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1263"/>
+        <location filename="../quick/app.cpp" line="1257"/>
         <source>Settings have been archived to &quot;%1&quot;.</source>
         <translation>Einstellungen wurden unter &quot;%1&quot; archiviert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1265"/>
+        <location filename="../quick/app.cpp" line="1259"/>
         <source>Archiving is only supported on Android.</source>
         <translation>Archivieren wird nur unter Android unterstützt.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1271"/>
+        <location filename="../quick/app.cpp" line="1265"/>
         <source>unable to create export directory under &quot;%1&quot;</source>
         <translation>kann Export-Verzeichnis unter &quot;%1&quot; nicht erstellen</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1284"/>
+        <location filename="../quick/app.cpp" line="1278"/>
         <source>Settings have been exported to &quot;%1&quot;.</source>
         <translation>Einstellungen wurden nach &quot;%1&quot; exportiert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1291"/>
+        <location filename="../quick/app.cpp" line="1285"/>
         <source>Unable to export settings: %1</source>
         <translation>Konnte Einstellungen nicht exportieren: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1364"/>
+        <location filename="../quick/app.cpp" line="1358"/>
         <source>Default directory</source>
         <translation>Standardverzeichnis</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1380"/>
+        <location filename="../quick/app.cpp" line="1374"/>
         <source>External storage %1</source>
         <translation>Externer Speicher %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1389"/>
+        <location filename="../quick/app.cpp" line="1383"/>
         <source>Current home directory</source>
         <translation>Aktuelles Home-Verzeichnis</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1419"/>
+        <location filename="../quick/app.cpp" line="1413"/>
         <source>Unable to move Syncthing home: settings directory was not located.</source>
         <translation>Das Home-Verzeichnis konnten nicht verschoben werden: das Einstellungsverzeichnis wurde nicht gefunden.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1425"/>
+        <location filename="../quick/app.cpp" line="1419"/>
         <source>Waiting for backend to terminate before moving home …</source>
         <translation>Warte vor dem Verschieben bis sich Backend beendet hat …</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1448"/>
+        <location filename="../quick/app.cpp" line="1442"/>
         <source>Home directory stays the same.</source>
         <translation>Das Home-Verzeichnis hat sich nicht geändert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1459"/>
+        <location filename="../quick/app.cpp" line="1453"/>
         <source>Cleaned up new home directory &quot;%1&quot;.</source>
         <translation>Neues Home-Verzeichnis &quot;%1&quot; wurde bereinigt.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1465"/>
+        <location filename="../quick/app.cpp" line="1459"/>
         <source>Copied data from previous home directory &quot;%1&quot; to new one.</source>
         <translation>Daten vom vorherigen Home-Verz. &quot;%1&quot; wurden in neues Home-Verz. kopiert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1468"/>
+        <location filename="../quick/app.cpp" line="1462"/>
         <source>Cleaned up previous home directory.</source>
         <translation>Vorheriges Home-Verz. wurde bereinigt.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1471"/>
+        <location filename="../quick/app.cpp" line="1465"/>
         <source>Configured &quot;%1&quot; as new/empty Syncthing home.</source>
         <translation>&quot;%1&quot; wurde als neues/leeres Home-Verz. konfiguriert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1473"/>
+        <location filename="../quick/app.cpp" line="1467"/>
         <source>Configured &quot;%1&quot; as Syncthing home.</source>
         <translation>&quot;%1&quot; wurde als Home-Verz. konfiguriert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1477"/>
+        <location filename="../quick/app.cpp" line="1471"/>
         <source>Unable to move home directory: %1</source>
         <translation>Konnte das Home-Verz. nicht verschieben: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1515"/>
+        <location filename="../quick/app.cpp" line="1509"/>
         <source>Debugging needs to be enabled under advanced GUI settings first.</source>
         <translation>&quot;Debugging&quot; muss erst in den erweiterten GUI-Einstellungen aktiviert werden.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1522"/>
+        <location filename="../quick/app.cpp" line="1516"/>
         <source>No destination or file or directory specified/configured.</source>
         <translation>Kein Ziel ausgewählt/konfiguriert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1531"/>
+        <location filename="../quick/app.cpp" line="1525"/>
         <source>Unable to open output file under &quot;%1&quot;: %2</source>
         <translation>Konnte Ausgabedatei nicht unter &quot;%1&quot; öffnen: %2</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1549"/>
+        <location filename="../quick/app.cpp" line="1543"/>
         <source>Unable to write bundle: %1</source>
         <translation>Konnte Support-Bundle nicht speichern: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1552"/>
+        <location filename="../quick/app.cpp" line="1546"/>
         <source>Unable to download bundle: %1</source>
         <translation>Konnte Support-Bundle nicht laden: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1555"/>
+        <location filename="../quick/app.cpp" line="1549"/>
         <source>Support bundle saved</source>
         <translation>Support-Bundle wurde erstellt</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1584"/>
+        <location filename="../quick/app.cpp" line="1578"/>
         <source>Removed old database directory.</source>
         <translation>Altes Datenbankverzeichnis wurde gelöscht.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1586"/>
+        <location filename="../quick/app.cpp" line="1580"/>
         <source>Unable to remove old database directory.</source>
         <translation>Konnte altes Datenbankverzeichnis nicht löschen.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1601"/>
+        <location filename="../quick/app.cpp" line="1595"/>
         <source>Unable to remove all support bundles.</source>
         <translation>Nicht alle Support-Bundles konnten gelöscht werden.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1605"/>
+        <location filename="../quick/app.cpp" line="1599"/>
         <source>Support bundles have been removed.</source>
         <translation>Support-Bundles wurden gelöscht.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1621"/>
+        <location filename="../quick/app.cpp" line="1615"/>
         <source>Unable to remove leftovers from import under &quot;%1&quot;.</source>
         <translation>Konnte temporäre Dateien vom Import unter &quot;%1&quot; nicht löschen.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1626"/>
+        <location filename="../quick/app.cpp" line="1620"/>
         <source>Removed leftovers from import.</source>
         <translation>Temporäre Dateien vom Import wurden gelöscht.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1631"/>
+        <location filename="../quick/app.cpp" line="1625"/>
         <source>There was nothing to clean up.</source>
         <translation>Es wurde nichts zum Bereinigen gefunden.</translation>
     </message>
@@ -3756,7 +3779,7 @@
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="340"/>
-        <location filename="../settings/appearanceoptionpage.ui" line="431"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="438"/>
         <source>Downloads</source>
         <translation>Downloads</translation>
     </message>
@@ -3766,64 +3789,89 @@
         <translation>Text-Beschriftung der Tab-Buttons</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="361"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="354"/>
+        <source>Syncthing icons</source>
+        <translation>Syncthing-Symbole</translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="368"/>
         <source>Prefer icons from theme over ForkAwesome icons (needs restart to apply)</source>
         <translation>Bevorzuge Symbole vom System-Theme anstelle von ForkAwesome-Symbolen (wird erst nach Neustart angewendet)</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="370"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="377"/>
         <source>Icons</source>
         <translation>Symbole</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="384"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="391"/>
         <source>Popup</source>
         <translation>Pop-up</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="389"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="396"/>
         <source>Normal window</source>
         <translation>Normales Fenster</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="394"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="401"/>
         <source>Window without titlebar</source>
         <translation>Fenster ohne Titelleiste</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="399"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="406"/>
         <source>None - open Syncthing directly</source>
         <translation>Kein Fenster - öffne Syncthing direkt</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="407"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="414"/>
         <source>Window type</source>
         <translation>Fensterart</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="421"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="428"/>
         <source>Folders</source>
         <translation>Ordner</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="426"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="433"/>
         <source>Devices</source>
         <translation>Geräte</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="436"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="443"/>
         <source>Recent changes</source>
         <translation>Letzte Änderungen</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="441"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="448"/>
         <source>Last</source>
         <translation>Zuletzt verwendeter Tab</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="449"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="456"/>
         <source>Default tab</source>
         <translation>Standard-Tab</translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="463"/>
+        <source>Style</source>
+        <translation>Stil</translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="477"/>
+        <source>Traditional</source>
+        <translation>Traditionell</translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="482"/>
+        <source>Modern</source>
+        <translation>Modern</translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="490"/>
+        <source>Requires restart to apply.</source>
+        <translation>Wird nach einem Neustart angewendet.</translation>
     </message>
     <message>
         <source>Colors</source>
@@ -4024,32 +4072,32 @@
         <translation>Lösche existierenden Eintrag</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="874"/>
+        <location filename="../settings/settingsdialog.cpp" line="923"/>
         <source>This is achieved by adding a *.desktop file under &lt;i&gt;~/.config/autostart&lt;/i&gt; so the setting only affects the current user.</source>
         <translation>Durch das Hinzufügen einer *.desktop-Datei unter &lt;i&gt;~/.config/autostart&lt;/i&gt; realisiert - betrifft also nur den aktuellen Benutzer.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="877"/>
+        <location filename="../settings/settingsdialog.cpp" line="926"/>
         <source>This is achieved by adding a registry key under &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; so the setting only affects the current user. Note that the startup entry is invalidated when moving &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</source>
         <translation>Durch das Hinzufügen eines Registry-Schlüssels unter &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; realisiert - betrifft also nur den aktuellen Benutzer.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="881"/>
+        <location filename="../settings/settingsdialog.cpp" line="930"/>
         <source>This is achieved by adding a *.plist file under &lt;i&gt;~/Library/LaunchAgents&lt;/i&gt; so the setting only affects the current user.</source>
         <translation>Durch das Hinzufügen einer *.plist-Datei unter &lt;i&gt;~/Library/LaunchAgents&lt;/i&gt; realisiert - betrifft also nur den aktuellen Benutzer.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="885"/>
+        <location filename="../settings/settingsdialog.cpp" line="934"/>
         <source>This feature has not been implemented for your platform (yet).</source>
         <translation>Diese Funktion wurde für die aktuelle Plattform nicht nicht implementiert.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1103"/>
+        <location filename="../settings/settingsdialog.cpp" line="1152"/>
         <source>unable to modify startup entry</source>
         <translation>Fehler beim aktualisieren des Auto-Start-Eintrags</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1133"/>
+        <location filename="../settings/settingsdialog.cpp" line="1182"/>
         <source>There is already an autostart entry for &quot;%1&quot;. It will not be overridden when applying changes unless you delete it first.</source>
         <translation>Es gibt bereits einen Autostart-Eintrag für &quot;%1&quot;. Dieser Eintrag wird beim Anwenden der Einstellungen nicht verändert außer er wird zuvor gelöscht.</translation>
     </message>
@@ -4160,7 +4208,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     </message>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="1764"/>
+        <location filename="../settings/settingsdialog.cpp" line="1829"/>
         <source>Built-in web view</source>
         <translation>Eingebaute Webanzeige</translation>
     </message>
@@ -4180,7 +4228,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation>Lasse Weboberfläche im Hintgergrund weiter offen, wenn Fenster nicht offen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1766"/>
+        <location filename="../settings/settingsdialog.cpp" line="1831"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
         <translation>Syncthing Tray wurde nicht mit Unterstützung für die eingebaute Anzeige der Weboberfläche unter Verwendung von Qt WebKit oder Qt WebEngine gebaut.</translation>
     </message>
@@ -4700,26 +4748,31 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     </message>
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="35"/>
+        <source>Syncthing Tray&apos;s own UI (experimental, WIP)</source>
+        <translation>Von Syncthing Tray bereitgestellte Oberfläche (experimentellt, noch nicht fertig)</translation>
+    </message>
+    <message>
+        <location filename="../settings/generalwebviewoptionpage.ui" line="42"/>
         <source>Tab in the default web browser</source>
         <translation>einem Tab im Standardwebbrowser</translation>
     </message>
     <message>
-        <location filename="../settings/generalwebviewoptionpage.ui" line="50"/>
+        <location filename="../settings/generalwebviewoptionpage.ui" line="57"/>
         <source>Chromium-based browser in &quot;app mode&quot;</source>
         <translation>einem auf Chromium basierenden Browser als &quot;App&quot;</translation>
     </message>
     <message>
-        <location filename="../settings/generalwebviewoptionpage.ui" line="57"/>
+        <location filename="../settings/generalwebviewoptionpage.ui" line="64"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1740"/>
+        <location filename="../settings/settingsdialog.cpp" line="1805"/>
         <source>Custom command to launch Syncthing&apos;s UI - </source>
         <translation>Befehl zum Starten der Syncthing-Oberfläche - </translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1741"/>
+        <location filename="../settings/settingsdialog.cpp" line="1806"/>
         <source>&lt;p&gt;Enter a custom command to launch Syncthing&apos;s UI. The expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; will be replaced with the Syncthing-URL.&lt;/p&gt;&lt;p&gt;Leave the command empty to use the auto-detection.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Gib den Befehl ein, mit dem die Syncthing-Oberfläche gestartet werden soll. Der Ausdruck &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; wird durch die Syncthing-URL ersetzt.&lt;/p&gt;&lt;p&gt;Lasse den Befehl leer, um die automatische Erkennung zu verwenden.&lt;/p&gt;</translation>
     </message>
@@ -4804,7 +4857,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
 <context>
     <name>QtGui::IconsOptionPageBase</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="676"/>
+        <location filename="../settings/settingsdialog.cpp" line="725"/>
         <source>UI icons</source>
         <translation>UI-Icons</translation>
     </message>
@@ -4813,7 +4866,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation type="vanished">Diese Icon-Farben werden innerhalb der Oberfläche von Syncthing Tray verwendet.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="682"/>
+        <location filename="../settings/settingsdialog.cpp" line="731"/>
         <source>System icons</source>
         <translation>System-Icons</translation>
     </message>
@@ -4826,47 +4879,47 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation type="vanished">Die selben Farben wie für UI-Icons verwenden</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="678"/>
+        <location filename="../settings/settingsdialog.cpp" line="727"/>
         <source>These icon settings are used within Syncthing Tray&apos;s UI.</source>
         <translation>Diese Icon-Einstellungen werden innerhalb der Oberfläche von Syncthing Tray verwendet.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="683"/>
+        <location filename="../settings/settingsdialog.cpp" line="732"/>
         <source>These icon settings are used for the system tray icon and the notifications.</source>
         <translation>Diese Icon-Einstellungen werden für das System-Tray-Icon und Benachrichtigungen verwendet.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="685"/>
+        <location filename="../settings/settingsdialog.cpp" line="734"/>
         <source>Use same settings as for UI icons</source>
         <translation>Die selben Einstellungen wie für UI-Icons verwenden</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="746"/>
+        <location filename="../settings/settingsdialog.cpp" line="795"/>
         <source>Colorful background with gradient (default)</source>
         <translation>Hintergrund mit Farbverlauf (Standard)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="752"/>
+        <location filename="../settings/settingsdialog.cpp" line="801"/>
         <source>Transparent background and dark foreground (for bright themes)</source>
         <translation>Transparenter Hintergrund und dunkler Vordergrund (für helle Themes)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="758"/>
+        <location filename="../settings/settingsdialog.cpp" line="807"/>
         <source>Transparent background and bright foreground (for dark themes)</source>
         <translation>Transparenter Hintergrund und heller Vordergrund (für dunkle Themes)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="821"/>
+        <location filename="../settings/settingsdialog.cpp" line="870"/>
         <source>Select colors manually (no longer follow system palette)</source>
         <translation>Wähle Farben manuell (anstelle der System-Farbpalette zu folgen)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="822"/>
+        <location filename="../settings/settingsdialog.cpp" line="871"/>
         <source>Transparent background and foreground depending on system palette</source>
         <translation>Transparenter Hintergrund und Vordergrund je nach System-Farbpalette</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="779"/>
+        <location filename="../settings/settingsdialog.cpp" line="828"/>
         <source>%1 px (scaled to %2 px)</source>
         <translation>%1 px (skaliert zu %2 px)</translation>
     </message>
@@ -5032,7 +5085,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="271"/>
-        <location filename="../settings/settingsdialog.cpp" line="1355"/>
+        <location filename="../settings/settingsdialog.cpp" line="1404"/>
         <source>Stop launched instance</source>
         <translation>Stoppen</translation>
     </message>
@@ -5047,12 +5100,12 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation>Log folgen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1208"/>
+        <location filename="../settings/settingsdialog.cpp" line="1257"/>
         <source>%1-launcher</source>
         <translation>%1-Starter</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1209"/>
+        <location filename="../settings/settingsdialog.cpp" line="1258"/>
         <source>Launch %1 when starting the tray icon</source>
         <translation>Starte %1 beim Starten des Tray-Icons</translation>
     </message>
@@ -5061,37 +5114,37 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation type="obsolete">%1-Starter {1 ?}</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1212"/>
+        <location filename="../settings/settingsdialog.cpp" line="1261"/>
         <source>%1 executable</source>
         <translation>Ausführbare Datei von %1</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1213"/>
+        <location filename="../settings/settingsdialog.cpp" line="1262"/>
         <source>%1 log (interleaved stdout/stderr)</source>
         <translation>Log von %1 (stdout/stderr)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1224"/>
+        <location filename="../settings/settingsdialog.cpp" line="1273"/>
         <source>Leave empty for default path</source>
         <translation>Lasse den Pfad leer, um das Standardverzeichnis zu verwenden</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1236"/>
+        <location filename="../settings/settingsdialog.cpp" line="1285"/>
         <source>Restore default</source>
         <translation>Auf Vorgabe zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1242"/>
+        <location filename="../settings/settingsdialog.cpp" line="1291"/>
         <source>Show Syncthing releases/downloads</source>
         <translation>Syncthing Releases/Downloads zeigen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1390"/>
+        <location filename="../settings/settingsdialog.cpp" line="1439"/>
         <source>%1 exited with exit code %2</source>
         <translation>%1 wurde mit dem Statuscode %2 beendet</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1393"/>
+        <location filename="../settings/settingsdialog.cpp" line="1442"/>
         <source>%1 crashed with exit code %2</source>
         <translation>%1 ist mit dem Statuscode %2 abgestürzt</translation>
     </message>
@@ -5120,12 +5173,12 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation type="vanished">unbekannter Fehler</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1426"/>
+        <location filename="../settings/settingsdialog.cpp" line="1475"/>
         <source>An error occurred when running %1: %2</source>
         <translation>Beim Ausführen von %1 ist ein Fehler aufgetreten: %2</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1479"/>
+        <location filename="../settings/settingsdialog.cpp" line="1528"/>
         <source>Kill launched instance</source>
         <translation>Töten</translation>
     </message>
@@ -5469,7 +5522,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
 <context>
     <name>QtGui::QuickUI</name>
     <message>
-        <location filename="../quick/quickui.cpp" line="447"/>
+        <location filename="../quick/quickui.cpp" line="450"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
@@ -5477,12 +5530,12 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1862"/>
+        <location filename="../settings/settingsdialog.cpp" line="1927"/>
         <source>Web view</source>
         <translation>Webanzeige</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1869"/>
+        <location filename="../settings/settingsdialog.cpp" line="1934"/>
         <source>Startup</source>
         <translation>Starten</translation>
     </message>
@@ -5491,27 +5544,27 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
         <translation type="vanished">Zusatztool</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1854"/>
+        <location filename="../settings/settingsdialog.cpp" line="1919"/>
         <source>Tray</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1871"/>
+        <location filename="../settings/settingsdialog.cpp" line="1936"/>
         <source>Extra launcher</source>
         <translation>Extra-Starter</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1871"/>
+        <location filename="../settings/settingsdialog.cpp" line="1936"/>
         <source>additional tool</source>
         <translation>Zusatztool</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1912"/>
+        <location filename="../settings/settingsdialog.cpp" line="1977"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1918"/>
+        <location filename="../settings/settingsdialog.cpp" line="1983"/>
         <source>Start wizard</source>
         <translation>Einrichtungsassistenten öffnen</translation>
     </message>
@@ -5781,8 +5834,8 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <location filename="../settings/systemdoptionpage.ui" line="117"/>
         <location filename="../settings/systemdoptionpage.ui" line="172"/>
         <location filename="../settings/systemdoptionpage.ui" line="261"/>
-        <location filename="../settings/settingsdialog.cpp" line="1639"/>
-        <location filename="../settings/settingsdialog.cpp" line="1648"/>
+        <location filename="../settings/settingsdialog.cpp" line="1688"/>
+        <location filename="../settings/settingsdialog.cpp" line="1697"/>
         <source>unknown</source>
         <translation>unbekannt</translation>
     </message>
@@ -5815,27 +5868,27 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1515"/>
+        <location filename="../settings/settingsdialog.cpp" line="1564"/>
         <source>Reload all unit files</source>
         <translation>Alle Unit-Dateien neu laden</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1574"/>
+        <location filename="../settings/settingsdialog.cpp" line="1623"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation>Es ist nicht möglich, den Start-/Stop-Button für den Systemd-Dienst und den internen Starter gleichzeitig anzugeigen. Wenn verfügbar, wird der Button den Systemd-Dienst kontrollieren.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1580"/>
+        <location filename="../settings/settingsdialog.cpp" line="1629"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation>Es ist nicht möglich, den Status des Systemd-Dienstes und den des internen Starters gleichzeitig für Verbindungsveruche einzubeziehen. Wenn verfügbar, wird der Status des Systemd-Dienstes verwendet.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1612"/>
+        <location filename="../settings/settingsdialog.cpp" line="1661"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation>angegebene Unit entweder nicht geladen oder existiert nicht</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1634"/>
+        <location filename="../settings/settingsdialog.cpp" line="1683"/>
         <source>since </source>
         <translation>seit </translation>
     </message>
@@ -6207,6 +6260,29 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
     </message>
 </context>
 <context>
+    <name>RemoteSyncProgress</name>
+    <message>
+        <location filename="../quick/qml/RemoteSyncProgress.qml" line="17"/>
+        <source>Remote sync progress (of connected devices)</source>
+        <translation>Sync-Fortschritt auf anderen Geräten</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/RemoteSyncProgress.qml" line="31"/>
+        <source>Up to Date</source>
+        <translation>Aktuell</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/RemoteSyncProgress.qml" line="31"/>
+        <source>Not available</source>
+        <translation>Nicht verfügbar</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/RemoteSyncProgress.qml" line="31"/>
+        <source>%1 %</source>
+        <translation>%1 %</translation>
+    </message>
+</context>
+<context>
     <name>SelectiveImportDelegate</name>
     <message>
         <location filename="../quick/qml/SelectiveImportDelegate.qml" line="84"/>
@@ -6217,7 +6293,7 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
 <context>
     <name>Settings::Connection</name>
     <message>
-        <location filename="../settings/settings.cpp" line="684"/>
+        <location filename="../settings/settings.cpp" line="688"/>
         <source>Backup of %1 (created by wizard)</source>
         <translation>Sicherung von %1 (vom Einrichtungsassistenten erstellt)</translation>
     </message>
@@ -6715,134 +6791,127 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation>Syncthing</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="25"/>
+        <location filename="../quick/qml/StartPage.qml" line="23"/>
         <source>Pending setup tasks</source>
         <translation>Ausstehende Einrichtungsaufgaben</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="32"/>
+        <location filename="../quick/qml/StartPage.qml" line="30"/>
         <source>Request storage permission</source>
         <translation>Speicher-Berechtigung erteilen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="39"/>
+        <location filename="../quick/qml/StartPage.qml" line="37"/>
         <source>Request notification permission</source>
         <translation>Benachrichtigungs-Berechtigung erteilen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="56"/>
+        <location filename="../quick/qml/StartPage.qml" line="54"/>
         <source>Set password for web-based GUI</source>
         <translation>Passwort für web-basierte GUI setzen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="62"/>
+        <location filename="../quick/qml/StartPage.qml" line="60"/>
         <source>Otherwise other apps can access the web-based GUI without authentication.</source>
         <translation>Ohne Passwort haben andere Apps Zugriff auf die Weboberfläche ohne Authentifizierung.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="70"/>
+        <location filename="../quick/qml/StartPage.qml" line="68"/>
         <source>Status and statistics</source>
         <translation>Status und Statistiken</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="85"/>
         <source>Local sync progress</source>
-        <translation>Lokaler Sync-Fortschritt</translation>
+        <translation type="vanished">Lokaler Sync-Fortschritt</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="99"/>
-        <location filename="../quick/qml/StartPage.qml" line="133"/>
         <source>Up to Date</source>
-        <translation>Aktuell</translation>
+        <translation type="vanished">Aktuell</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="99"/>
         <source>%1 %, %2 remaining</source>
-        <translation>%1 %, noch %2</translation>
+        <translation type="vanished">%1 %, noch %2</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="119"/>
         <source>Remote sync progress (of connected devices)</source>
-        <translation>Sync-Fortschritt auf anderen Geräten</translation>
+        <translation type="vanished">Sync-Fortschritt auf anderen Geräten</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="133"/>
         <source>Not available</source>
-        <translation>Nicht verfügbar</translation>
+        <translation type="vanished">Nicht verfügbar</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="133"/>
         <source>%1 %</source>
-        <translation>%1 %</translation>
+        <translation type="vanished">%1 %</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="168"/>
+        <location filename="../quick/qml/StartPage.qml" line="110"/>
         <source>Status</source>
         <translation>Status</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="208"/>
-        <location filename="../quick/qml/StartPage.qml" line="223"/>
+        <location filename="../quick/qml/StartPage.qml" line="150"/>
+        <location filename="../quick/qml/StartPage.qml" line="165"/>
         <source>Own device ID</source>
         <translation>Eigene Geräte-ID</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="233"/>
+        <location filename="../quick/qml/StartPage.qml" line="175"/>
         <source>Copy as text</source>
         <translation>Als Text kopieren</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="238"/>
+        <location filename="../quick/qml/StartPage.qml" line="180"/>
         <source>Close</source>
         <translation>Schließen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="257"/>
+        <location filename="../quick/qml/StartPage.qml" line="199"/>
         <source>Traffic</source>
         <translation>Datenverkehr</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="290"/>
+        <location filename="../quick/qml/StartPage.qml" line="232"/>
         <source>Global state</source>
         <translation>Globaler Status</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="295"/>
+        <location filename="../quick/qml/StartPage.qml" line="237"/>
         <source>Local state</source>
         <translation>Lokaler Status</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="299"/>
+        <location filename="../quick/qml/StartPage.qml" line="241"/>
         <source>Getting started</source>
         <translation>Erste Schritte</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="304"/>
+        <location filename="../quick/qml/StartPage.qml" line="246"/>
         <source>Connect other device</source>
         <translation>Mit anderem Gerät verbinden</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="310"/>
+        <location filename="../quick/qml/StartPage.qml" line="252"/>
         <source>Share folder</source>
         <translation>Ordner teilen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="316"/>
+        <location filename="../quick/qml/StartPage.qml" line="258"/>
         <source>Open Syncthing in web browser</source>
         <translation>Syncthing im Webbrowser öffnen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="321"/>
+        <location filename="../quick/qml/StartPage.qml" line="263"/>
         <source>Open documentation</source>
         <translation>Dokumentation öffnen</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="329"/>
+        <location filename="../quick/qml/StartPage.qml" line="271"/>
         <source>Restart Syncthing</source>
         <translation>Syncthing neustarten</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="334"/>
+        <location filename="../quick/qml/StartPage.qml" line="276"/>
         <source>Quit app</source>
         <translation>App beenden</translation>
     </message>

@@ -14,27 +14,27 @@
     <name>DevicesPage</name>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="64"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="68"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="69"/>
         <source>Resume</source>
         <translation>恢复</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="64"/>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="116"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="68"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="120"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="69"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="121"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="102"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="106"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="107"/>
         <source>Copy name</source>
         <translation>复制名字</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="107"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="111"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="112"/>
         <source>Copy ID</source>
         <translation>复制 ID</translation>
     </message>
@@ -49,59 +49,59 @@
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="83"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="88"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="89"/>
         <source>Show errors</source>
         <translation>显示错误</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="94"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="163"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="99"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="168"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="100"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="169"/>
         <source>Rescan</source>
         <translation>重新扫描</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="102"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="107"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="108"/>
         <source>Resume</source>
         <translation>恢复</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="102"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="170"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="107"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="175"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="108"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="176"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="112"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="177"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="117"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="182"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="118"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="183"/>
         <source>Open in file browser</source>
         <translation>在文件浏览器中打开</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="149"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="154"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="155"/>
         <source>Copy label/ID</source>
         <translation>复制标签/ID</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="154"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="159"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="160"/>
         <source>Copy path</source>
         <translation>复制路径</translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="189"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="190"/>
         <source>Browse remote files</source>
         <translation>浏览远程文件</translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="196"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="197"/>
         <source>Show/edit ignore patterns</source>
         <translation>显示/编辑忽略模式</translation>
     </message>
@@ -264,7 +264,7 @@
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="131"/>
-        <location filename="../lib/appearanceoptionpage.ui" line="205"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="212"/>
         <source>Downloads</source>
         <translation>下载</translation>
     </message>
@@ -274,37 +274,42 @@
         <translation>显示选项卡文本</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="147"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="145"/>
+        <source>Syncthing icons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="154"/>
         <source>Icons</source>
         <translation>图标</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="159"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="166"/>
         <source>Prefer icons from theme over ForkAwesome icons (needs restart to apply)</source>
         <translation>更喜欢主题中的图标，而不是 forkawesome 图标（需要重新启动以应用）</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="195"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="202"/>
         <source>Folders</source>
         <translation type="unfinished">文件夹</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="200"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="207"/>
         <source>Devices</source>
         <translation type="unfinished">设备</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="210"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="217"/>
         <source>Recent changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="215"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="222"/>
         <source>Last</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="223"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="230"/>
         <source>Default tab</source>
         <translation type="unfinished"></translation>
     </message>
@@ -313,7 +318,7 @@
         <translation type="vanished">请注意，当 Plasmoid 显示在桌面上或以全屏模式显示时，将忽略大小。当显示为系统托盘条目时，大小无法更改（设置过高值只会导致内容被剪裁）。</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="168"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="175"/>
         <source>States to enable passive mode</source>
         <translation>启用被动模式的状态</translation>
     </message>
@@ -337,17 +342,17 @@
 <context>
     <name>Plasmoid::SettingsDialog</name>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="140"/>
+        <location filename="../lib/settingsdialog.cpp" line="145"/>
         <source>Plasmoid</source>
         <translation>Plasmoid</translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="150"/>
+        <location filename="../lib/settingsdialog.cpp" line="155"/>
         <source>General web view settings</source>
         <translation>常规 Web 视图设置</translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="151"/>
+        <location filename="../lib/settingsdialog.cpp" line="156"/>
         <source>Built-in web view</source>
         <translation>内置 Web 视图</translation>
     </message>
@@ -356,7 +361,7 @@
         <translation type="vanished">网页视图</translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="160"/>
+        <location filename="../lib/settingsdialog.cpp" line="165"/>
         <source>Extras</source>
         <translation>额外</translation>
     </message>
@@ -377,17 +382,17 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="488"/>
+        <location filename="../lib/syncthingapplet.cpp" line="490"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="571"/>
+        <location filename="../lib/syncthingapplet.cpp" line="573"/>
         <source>Associated directory does not exist.</source>
         <translation>关联目录不存在。</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="597"/>
+        <location filename="../lib/syncthingapplet.cpp" line="599"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation>无法与 Syncthing 建立连接。</translation>
     </message>
@@ -396,7 +401,7 @@
         <translation type="vanished">新通知</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="665"/>
+        <location filename="../lib/syncthingapplet.cpp" line="667"/>
         <source>D-Bus error - unable to </source>
         <translation>D-Bus 错误 - 无法 </translation>
     </message>

@@ -14,27 +14,27 @@
     <name>DevicesPage</name>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="64"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="68"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="69"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="64"/>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="116"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="68"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="120"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="69"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="121"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="102"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="106"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="107"/>
         <source>Copy name</source>
         <translation>Namen kopieren</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="107"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="111"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="112"/>
         <source>Copy ID</source>
         <translation>ID kopieren</translation>
     </message>
@@ -49,59 +49,59 @@
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="83"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="88"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="89"/>
         <source>Show errors</source>
         <translation>Zeige Fehler</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="94"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="163"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="99"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="168"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="100"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="169"/>
         <source>Rescan</source>
         <translation>Scannen</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="102"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="107"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="108"/>
         <source>Resume</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="102"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="170"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="107"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="175"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="108"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="176"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="112"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="177"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="117"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="182"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="118"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="183"/>
         <source>Open in file browser</source>
         <translation>Im Dateibrowser öffnen</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="149"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="154"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="155"/>
         <source>Copy label/ID</source>
         <translation>Namen/ID kopieren</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="154"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="159"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="160"/>
         <source>Copy path</source>
         <translation>Pfad kopieren</translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="189"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="190"/>
         <source>Browse remote files</source>
         <translation>Globale Dateistruktur durchsuchen</translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="196"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="197"/>
         <source>Show/edit ignore patterns</source>
         <translation>Ignoriermuster anzeigen/editieren</translation>
     </message>
@@ -254,33 +254,38 @@
         <translation> Rastereinheiten</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="195"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="145"/>
+        <source>Syncthing icons</source>
+        <translation>Syncthing-Symbole</translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="202"/>
         <source>Folders</source>
         <translation>Ordner</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="200"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="207"/>
         <source>Devices</source>
         <translation>Geräte</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="131"/>
-        <location filename="../lib/appearanceoptionpage.ui" line="205"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="212"/>
         <source>Downloads</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="210"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="217"/>
         <source>Recent changes</source>
         <translation>Letzte Änderungen</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="215"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="222"/>
         <source>Last</source>
         <translation>Zuletzt verwendeter Tab</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="223"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="230"/>
         <source>Default tab</source>
         <translation>Standard-Tab</translation>
     </message>
@@ -294,7 +299,7 @@
         <translation>Die Größe wird ignoriert wenn das Plasmoid auf dem Desktop, im Vollbildmodus oder als Eintrag des System-Tray-Plasmoids dargestellt wird. Dann kann die Größe direkt über Plasma&apos;s UI angepasst werden. Unter Plasma-Versionen älter als 5.26 kann die Größe nicht geändert werden, wenn das Plasmoid innerhalb des Systemtray-Plasmoids dargestellt wird (einen größeren Wert einzustellen führt nur dazu, dass der Inhalt abgeschnitten wird).</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="168"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="175"/>
         <source>States to enable passive mode</source>
         <translatorcomment>Plural: https://www.duden.de/rechtschreibung/Status</translatorcomment>
         <translation>Status für passiven Modus</translation>
@@ -310,12 +315,12 @@
         <translation>Text-Beschriftung der Tab-Buttons</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="159"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="166"/>
         <source>Prefer icons from theme over ForkAwesome icons (needs restart to apply)</source>
         <translation>Bevorzuge Symbole vom System-Theme anstelle von ForkAwesome-Symbolen (wird erst nach Neustart angewendet)</translation>
     </message>
     <message>
-        <location filename="../lib/appearanceoptionpage.ui" line="147"/>
+        <location filename="../lib/appearanceoptionpage.ui" line="154"/>
         <source>Icons</source>
         <translation>Symbole</translation>
     </message>
@@ -339,17 +344,17 @@
 <context>
     <name>Plasmoid::SettingsDialog</name>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="140"/>
+        <location filename="../lib/settingsdialog.cpp" line="145"/>
         <source>Plasmoid</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="150"/>
+        <location filename="../lib/settingsdialog.cpp" line="155"/>
         <source>General web view settings</source>
         <translation>Allgemeine Webanzeigeneinstellungen</translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="151"/>
+        <location filename="../lib/settingsdialog.cpp" line="156"/>
         <source>Built-in web view</source>
         <translation>Eingebaute Webanzeige</translation>
     </message>
@@ -358,7 +363,7 @@
         <translation type="vanished">Weboberfläche</translation>
     </message>
     <message>
-        <location filename="../lib/settingsdialog.cpp" line="160"/>
+        <location filename="../lib/settingsdialog.cpp" line="165"/>
         <source>Extras</source>
         <translation></translation>
     </message>
@@ -379,7 +384,7 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="488"/>
+        <location filename="../lib/syncthingapplet.cpp" line="490"/>
         <source>About</source>
         <translation>Über Syncthing Plasmoid</translation>
     </message>
@@ -388,17 +393,17 @@
         <translation type="vanished">Neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="571"/>
+        <location filename="../lib/syncthingapplet.cpp" line="573"/>
         <source>Associated directory does not exist.</source>
         <translation>Zugehöriges Verzeichnis existiert nicht.</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="597"/>
+        <location filename="../lib/syncthingapplet.cpp" line="599"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation>Verbindung zu Syncthing kann nicht hergestellt werden.</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="665"/>
+        <location filename="../lib/syncthingapplet.cpp" line="667"/>
         <source>D-Bus error - unable to </source>
         <translation>D-Bus-Fehler bei Aktion </translation>
     </message>

@@ -1280,6 +1280,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../quick/qml/DirConfigPage.qml" line="15"/>
+        <source>Keep initially disabled to add ignore patterns before any syncing takes place.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="27"/>
         <source>Advanced</source>
         <translation type="unfinished"></translation>
@@ -1703,7 +1708,7 @@
 <context>
     <name>ExpandableItemDelegate</name>
     <message>
-        <location filename="../quick/qml/ExpandableItemDelegate.qml" line="80"/>
+        <location filename="../quick/qml/ExpandableItemDelegate.qml" line="81"/>
         <source>More actions</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2013,6 +2018,24 @@
     </message>
 </context>
 <context>
+    <name>LocalSyncProgress</name>
+    <message>
+        <location filename="../quick/qml/LocalSyncProgress.qml" line="17"/>
+        <source>Local sync progress</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/LocalSyncProgress.qml" line="31"/>
+        <source>Up to Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/LocalSyncProgress.qml" line="31"/>
+        <source>%1 %, %2 remaining</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>LogPage</name>
     <message>
         <location filename="../quick/qml/LogPage.qml" line="7"/>
@@ -2184,65 +2207,65 @@
 <context>
     <name>ObjectConfigDelegate</name>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="39"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="40"/>
         <source>Copy</source>
         <translation>复制</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="139"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="613"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="675"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="140"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="614"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="676"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="148"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="149"/>
         <source>Refresh list of devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="164"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="165"/>
         <source>This device has already been added!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="164"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="165"/>
         <source>The device ID looks valid.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="164"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="165"/>
         <source>The entered device ID looks invalid!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="266"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="267"/>
         <source>A custom value has been entered.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="332"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="333"/>
         <source>Change encryption password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="332"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="333"/>
         <source>Set encryption password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="339"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="340"/>
         <source>Set encryption password for sharing with &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="346"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="347"/>
         <source>If untrusted, enter encryption password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="620"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="682"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="621"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="683"/>
         <source>Edit manually</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2465,7 +2488,7 @@
         <translation>无法确定网络连接是否按流量计费，假设连接不按流量计费。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1822"/>
+        <location filename="../settings/settingsdialog.cpp" line="1887"/>
         <source>Unable to restart via &quot;%1&quot;: %2</source>
         <translation>无法通过 “%1” 重新启动： %2</translation>
     </message>
@@ -2680,292 +2703,292 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="681"/>
+        <location filename="../quick/app.cpp" line="675"/>
         <source>Unable to minimize app.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="712"/>
+        <location filename="../quick/app.cpp" line="706"/>
         <source>Unable to save settings: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="771"/>
+        <location filename="../quick/app.cpp" line="765"/>
         <source>App settings saved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="797"/>
+        <location filename="../quick/app.cpp" line="791"/>
         <source>No logfile present anyway</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="803"/>
+        <location filename="../quick/app.cpp" line="797"/>
         <source>Waiting for backend to terminate before clearing logs …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="812"/>
+        <location filename="../quick/app.cpp" line="806"/>
         <source>Persistent logging disabled and logfile removed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="814"/>
+        <location filename="../quick/app.cpp" line="808"/>
         <source>Unable to remove logfile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="846"/>
+        <location filename="../quick/app.cpp" line="840"/>
         <source>Another import/export still pending</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="886"/>
+        <location filename="../quick/app.cpp" line="880"/>
         <source>Settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="906"/>
+        <location filename="../quick/app.cpp" line="900"/>
         <source>Unable to extract archive: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="911"/>
+        <location filename="../quick/app.cpp" line="905"/>
         <source>Unable to create temp dir: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="915"/>
+        <location filename="../quick/app.cpp" line="909"/>
         <source>archiving is only supported on Android.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="939"/>
+        <location filename="../quick/app.cpp" line="933"/>
         <source>The Syncthing home directory under &quot;%1&quot; is empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="952"/>
+        <location filename="../quick/app.cpp" line="946"/>
         <source>No Syncthing configuration file found under &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1040"/>
+        <location filename="../quick/app.cpp" line="1034"/>
         <source>Triggered re-connect with Syncthing backend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1059"/>
+        <location filename="../quick/app.cpp" line="1053"/>
         <source>Unable to import settings: settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1066"/>
+        <location filename="../quick/app.cpp" line="1060"/>
         <source>Waiting for backend to terminate before importing settings …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1110"/>
+        <location filename="../quick/app.cpp" line="1104"/>
         <source>Imported app config from &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1123"/>
+        <location filename="../quick/app.cpp" line="1117"/>
         <source>Imported Syncthing config and database from &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1141"/>
+        <location filename="../quick/app.cpp" line="1135"/>
         <source>Unable to find folders/devices in current Syncthing config.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1157"/>
+        <location filename="../quick/app.cpp" line="1151"/>
         <source>Merging %1 folders and %2 devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1159"/>
+        <location filename="../quick/app.cpp" line="1153"/>
         <source>Unable to import folders/devices.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1168"/>
+        <location filename="../quick/app.cpp" line="1162"/>
         <source>Unable to remove temp dir: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1174"/>
+        <location filename="../quick/app.cpp" line="1168"/>
         <source>Nothing has been imported.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1184"/>
+        <location filename="../quick/app.cpp" line="1178"/>
         <source>Unable to import settings: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1229"/>
+        <location filename="../quick/app.cpp" line="1223"/>
         <source>Waiting for backend to terminate before exporting settings …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1245"/>
+        <location filename="../quick/app.cpp" line="1239"/>
         <source>settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1251"/>
+        <location filename="../quick/app.cpp" line="1245"/>
         <source>no destination or file or directory specified/configured.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1263"/>
+        <location filename="../quick/app.cpp" line="1257"/>
         <source>Settings have been archived to &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1265"/>
+        <location filename="../quick/app.cpp" line="1259"/>
         <source>Archiving is only supported on Android.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1271"/>
+        <location filename="../quick/app.cpp" line="1265"/>
         <source>unable to create export directory under &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1284"/>
+        <location filename="../quick/app.cpp" line="1278"/>
         <source>Settings have been exported to &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1291"/>
+        <location filename="../quick/app.cpp" line="1285"/>
         <source>Unable to export settings: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1364"/>
+        <location filename="../quick/app.cpp" line="1358"/>
         <source>Default directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1380"/>
+        <location filename="../quick/app.cpp" line="1374"/>
         <source>External storage %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1389"/>
+        <location filename="../quick/app.cpp" line="1383"/>
         <source>Current home directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1419"/>
+        <location filename="../quick/app.cpp" line="1413"/>
         <source>Unable to move Syncthing home: settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1425"/>
+        <location filename="../quick/app.cpp" line="1419"/>
         <source>Waiting for backend to terminate before moving home …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1448"/>
+        <location filename="../quick/app.cpp" line="1442"/>
         <source>Home directory stays the same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1459"/>
+        <location filename="../quick/app.cpp" line="1453"/>
         <source>Cleaned up new home directory &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1465"/>
+        <location filename="../quick/app.cpp" line="1459"/>
         <source>Copied data from previous home directory &quot;%1&quot; to new one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1468"/>
+        <location filename="../quick/app.cpp" line="1462"/>
         <source>Cleaned up previous home directory.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1471"/>
+        <location filename="../quick/app.cpp" line="1465"/>
         <source>Configured &quot;%1&quot; as new/empty Syncthing home.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1473"/>
+        <location filename="../quick/app.cpp" line="1467"/>
         <source>Configured &quot;%1&quot; as Syncthing home.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1477"/>
+        <location filename="../quick/app.cpp" line="1471"/>
         <source>Unable to move home directory: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1515"/>
+        <location filename="../quick/app.cpp" line="1509"/>
         <source>Debugging needs to be enabled under advanced GUI settings first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1522"/>
+        <location filename="../quick/app.cpp" line="1516"/>
         <source>No destination or file or directory specified/configured.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1531"/>
+        <location filename="../quick/app.cpp" line="1525"/>
         <source>Unable to open output file under &quot;%1&quot;: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1549"/>
+        <location filename="../quick/app.cpp" line="1543"/>
         <source>Unable to write bundle: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1552"/>
+        <location filename="../quick/app.cpp" line="1546"/>
         <source>Unable to download bundle: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1555"/>
+        <location filename="../quick/app.cpp" line="1549"/>
         <source>Support bundle saved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1584"/>
+        <location filename="../quick/app.cpp" line="1578"/>
         <source>Removed old database directory.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1586"/>
+        <location filename="../quick/app.cpp" line="1580"/>
         <source>Unable to remove old database directory.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1601"/>
+        <location filename="../quick/app.cpp" line="1595"/>
         <source>Unable to remove all support bundles.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1605"/>
+        <location filename="../quick/app.cpp" line="1599"/>
         <source>Support bundles have been removed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1621"/>
+        <location filename="../quick/app.cpp" line="1615"/>
         <source>Unable to remove leftovers from import under &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1626"/>
+        <location filename="../quick/app.cpp" line="1620"/>
         <source>Removed leftovers from import.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1631"/>
+        <location filename="../quick/app.cpp" line="1625"/>
         <source>There was nothing to clean up.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3171,7 +3194,7 @@
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="340"/>
-        <location filename="../settings/appearanceoptionpage.ui" line="431"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="438"/>
         <source>Downloads</source>
         <translation>下载</translation>
     </message>
@@ -3181,63 +3204,88 @@
         <translation>显示选项卡文本</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="361"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="354"/>
+        <source>Syncthing icons</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="368"/>
         <source>Prefer icons from theme over ForkAwesome icons (needs restart to apply)</source>
         <translation>更喜欢主题中的图标，而不是 forkawesome 图标（需要重新启动以应用）</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="370"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="377"/>
         <source>Icons</source>
         <translation>图标</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="384"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="391"/>
         <source>Popup</source>
         <translation>弹出窗口</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="389"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="396"/>
         <source>Normal window</source>
         <translation>常规窗口</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="394"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="401"/>
         <source>Window without titlebar</source>
         <translation>无标题栏窗口</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="399"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="406"/>
         <source>None - open Syncthing directly</source>
         <translation>无 - 直接打开 Syncthing</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="407"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="414"/>
         <source>Window type</source>
         <translation>窗口类型</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="421"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="428"/>
         <source>Folders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="426"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="433"/>
         <source>Devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="436"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="443"/>
         <source>Recent changes</source>
         <translation type="unfinished">最近的更改</translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="441"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="448"/>
         <source>Last</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/appearanceoptionpage.ui" line="449"/>
+        <location filename="../settings/appearanceoptionpage.ui" line="456"/>
         <source>Default tab</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="463"/>
+        <source>Style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="477"/>
+        <source>Traditional</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="482"/>
+        <source>Modern</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/appearanceoptionpage.ui" line="490"/>
+        <source>Requires restart to apply.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3473,32 +3521,32 @@
         <translation>删除现有条目</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="874"/>
+        <location filename="../settings/settingsdialog.cpp" line="923"/>
         <source>This is achieved by adding a *.desktop file under &lt;i&gt;~/.config/autostart&lt;/i&gt; so the setting only affects the current user.</source>
         <translation>这是通过在 &lt;i&gt;~/.config/autostart&lt;/i&gt; 下添加 *.desktop 文件来实现的，因此该设置仅影响当前用户。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="877"/>
+        <location filename="../settings/settingsdialog.cpp" line="926"/>
         <source>This is achieved by adding a registry key under &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; so the setting only affects the current user. Note that the startup entry is invalidated when moving &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</source>
         <translation>这是通过在 &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; 下添加注册表项来实现的，因此该设置仅影响当前用户。 请注意，移动 &lt;i&gt;syncthingtray.exe&lt;/i&gt; 时启动项无效。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="881"/>
+        <location filename="../settings/settingsdialog.cpp" line="930"/>
         <source>This is achieved by adding a *.plist file under &lt;i&gt;~/Library/LaunchAgents&lt;/i&gt; so the setting only affects the current user.</source>
         <translation>这是通过在 &lt;i&gt;~/Library/LaunchAgents&lt;/i&gt; 下添加 *.plist 文件来实现的，因此该设置仅影响当前用户。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="885"/>
+        <location filename="../settings/settingsdialog.cpp" line="934"/>
         <source>This feature has not been implemented for your platform (yet).</source>
         <translation>此功能尚未为您的平台实现。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1103"/>
+        <location filename="../settings/settingsdialog.cpp" line="1152"/>
         <source>unable to modify startup entry</source>
         <translation>无法修改启动项</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1133"/>
+        <location filename="../settings/settingsdialog.cpp" line="1182"/>
         <source>There is already an autostart entry for &quot;%1&quot;. It will not be overridden when applying changes unless you delete it first.</source>
         <translation>已经有 &quot;%1 &quot;的自动启动条目。除非您先删除它，否则在应用更改时它不会被覆盖。</translation>
     </message>
@@ -3572,7 +3620,7 @@ The Web UI will be opened in the default web browser instead.</source>
     </message>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="1764"/>
+        <location filename="../settings/settingsdialog.cpp" line="1829"/>
         <source>Built-in web view</source>
         <translation>内置 Web 视图</translation>
     </message>
@@ -3592,7 +3640,7 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation>当前未显示时保持网页视图运行</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1766"/>
+        <location filename="../settings/settingsdialog.cpp" line="1831"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
         <translation>Syncthing Tray 尚未使用 Qt WebKit 或 Qt WebEngine 构建以支持 Web 视图。</translation>
     </message>
@@ -4103,26 +4151,31 @@ The Web UI will be opened in the default web browser instead.</source>
     </message>
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="35"/>
+        <source>Syncthing Tray&apos;s own UI (experimental, WIP)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/generalwebviewoptionpage.ui" line="42"/>
         <source>Tab in the default web browser</source>
         <translation>默认网络浏览器中的选项卡</translation>
     </message>
     <message>
-        <location filename="../settings/generalwebviewoptionpage.ui" line="50"/>
+        <location filename="../settings/generalwebviewoptionpage.ui" line="57"/>
         <source>Chromium-based browser in &quot;app mode&quot;</source>
         <translation>基于 Chromium 浏览器的 &quot;应用程序模式&quot;</translation>
     </message>
     <message>
-        <location filename="../settings/generalwebviewoptionpage.ui" line="57"/>
+        <location filename="../settings/generalwebviewoptionpage.ui" line="64"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1740"/>
+        <location filename="../settings/settingsdialog.cpp" line="1805"/>
         <source>Custom command to launch Syncthing&apos;s UI - </source>
         <translation>启动 Syncthing 用户界面的自定义命令 - </translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1741"/>
+        <location filename="../settings/settingsdialog.cpp" line="1806"/>
         <source>&lt;p&gt;Enter a custom command to launch Syncthing&apos;s UI. The expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; will be replaced with the Syncthing-URL.&lt;/p&gt;&lt;p&gt;Leave the command empty to use the auto-detection.&lt;/p&gt;</source>
         <translation>&lt;p&gt;输入自定义命令以启动 Syncthing 的用户界面。表达式 &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; 将被替换为 Syncthing 网址.&lt;/p&gt;&lt;p&gt; 留空命令以使用自动检测。&lt;/p&gt;</translation>
     </message>
@@ -4207,57 +4260,57 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>QtGui::IconsOptionPageBase</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="676"/>
+        <location filename="../settings/settingsdialog.cpp" line="725"/>
         <source>UI icons</source>
         <translation>用户界面图标</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="678"/>
+        <location filename="../settings/settingsdialog.cpp" line="727"/>
         <source>These icon settings are used within Syncthing Tray&apos;s UI.</source>
         <translation>这些图标设置在 Syncthing Tray 的用户界面中使用。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="682"/>
+        <location filename="../settings/settingsdialog.cpp" line="731"/>
         <source>System icons</source>
         <translation>系统图标</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="683"/>
+        <location filename="../settings/settingsdialog.cpp" line="732"/>
         <source>These icon settings are used for the system tray icon and the notifications.</source>
         <translation>这些图标设置用于系统托盘图标和通知。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="685"/>
+        <location filename="../settings/settingsdialog.cpp" line="734"/>
         <source>Use same settings as for UI icons</source>
         <translation>使用与用户界面图标相同的设置</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="746"/>
+        <location filename="../settings/settingsdialog.cpp" line="795"/>
         <source>Colorful background with gradient (default)</source>
         <translation>带渐变的彩色背景（默认）</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="752"/>
+        <location filename="../settings/settingsdialog.cpp" line="801"/>
         <source>Transparent background and dark foreground (for bright themes)</source>
         <translation>透明背景和深色前景（适用于明亮的主题）</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="758"/>
+        <location filename="../settings/settingsdialog.cpp" line="807"/>
         <source>Transparent background and bright foreground (for dark themes)</source>
         <translation>透明背景和明亮前景（用于深色主题）</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="821"/>
+        <location filename="../settings/settingsdialog.cpp" line="870"/>
         <source>Select colors manually (no longer follow system palette)</source>
         <translation>手动选择颜色（不再遵循系统调色板）</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="822"/>
+        <location filename="../settings/settingsdialog.cpp" line="871"/>
         <source>Transparent background and foreground depending on system palette</source>
         <translation>透明背景和前景，具体取决于系统调色板</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="779"/>
+        <location filename="../settings/settingsdialog.cpp" line="828"/>
         <source>%1 px (scaled to %2 px)</source>
         <translation>%1 像素（缩放到 %2 像素）</translation>
     </message>
@@ -4420,7 +4473,7 @@ The Web UI will be opened in the default web browser instead.</source>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="271"/>
-        <location filename="../settings/settingsdialog.cpp" line="1355"/>
+        <location filename="../settings/settingsdialog.cpp" line="1404"/>
         <source>Stop launched instance</source>
         <translation>停止启动的实例</translation>
     </message>
@@ -4435,47 +4488,47 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation>确保最新日志可见</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1208"/>
+        <location filename="../settings/settingsdialog.cpp" line="1257"/>
         <source>%1-launcher</source>
         <translation>%1-启动器</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1209"/>
+        <location filename="../settings/settingsdialog.cpp" line="1258"/>
         <source>Launch %1 when starting the tray icon</source>
         <translation>启动 Syncthing Tray 图标时启动 %1</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1212"/>
+        <location filename="../settings/settingsdialog.cpp" line="1261"/>
         <source>%1 executable</source>
         <translation>%1 可执行文件</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1213"/>
+        <location filename="../settings/settingsdialog.cpp" line="1262"/>
         <source>%1 log (interleaved stdout/stderr)</source>
         <translation>%1 日志（交错的标准输出/标准错误）</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1224"/>
+        <location filename="../settings/settingsdialog.cpp" line="1273"/>
         <source>Leave empty for default path</source>
         <translation>默认路径留空</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1236"/>
+        <location filename="../settings/settingsdialog.cpp" line="1285"/>
         <source>Restore default</source>
         <translation>还原至默认</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1242"/>
+        <location filename="../settings/settingsdialog.cpp" line="1291"/>
         <source>Show Syncthing releases/downloads</source>
         <translation>显示 Syncthing 发布/下载</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1390"/>
+        <location filename="../settings/settingsdialog.cpp" line="1439"/>
         <source>%1 exited with exit code %2</source>
         <translation>%1 退出，退出代码为 %2</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1393"/>
+        <location filename="../settings/settingsdialog.cpp" line="1442"/>
         <source>%1 crashed with exit code %2</source>
         <translation>%1 崩溃，退出代码为 %2</translation>
     </message>
@@ -4504,12 +4557,12 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation type="vanished">未知进程错误</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1426"/>
+        <location filename="../settings/settingsdialog.cpp" line="1475"/>
         <source>An error occurred when running %1: %2</source>
         <translation>运行 %1 时出错: %2</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1479"/>
+        <location filename="../settings/settingsdialog.cpp" line="1528"/>
         <source>Kill launched instance</source>
         <translation>强制终止启动的实例</translation>
     </message>
@@ -4845,7 +4898,7 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>QtGui::QuickUI</name>
     <message>
-        <location filename="../quick/quickui.cpp" line="447"/>
+        <location filename="../quick/quickui.cpp" line="450"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
@@ -4853,37 +4906,37 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1854"/>
+        <location filename="../settings/settingsdialog.cpp" line="1919"/>
         <source>Tray</source>
         <translation>托盘</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1862"/>
+        <location filename="../settings/settingsdialog.cpp" line="1927"/>
         <source>Web view</source>
         <translation>网页视图</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1869"/>
+        <location filename="../settings/settingsdialog.cpp" line="1934"/>
         <source>Startup</source>
         <translation>启动</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1871"/>
+        <location filename="../settings/settingsdialog.cpp" line="1936"/>
         <source>additional tool</source>
         <translation>附加工具</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1871"/>
+        <location filename="../settings/settingsdialog.cpp" line="1936"/>
         <source>Extra launcher</source>
         <translation>额外启动器</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1912"/>
+        <location filename="../settings/settingsdialog.cpp" line="1977"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1918"/>
+        <location filename="../settings/settingsdialog.cpp" line="1983"/>
         <source>Start wizard</source>
         <translation>开始向导</translation>
     </message>
@@ -5149,8 +5202,8 @@ This dialog closes automatically when the process finally terminates.</source>
         <location filename="../settings/systemdoptionpage.ui" line="117"/>
         <location filename="../settings/systemdoptionpage.ui" line="172"/>
         <location filename="../settings/systemdoptionpage.ui" line="261"/>
-        <location filename="../settings/settingsdialog.cpp" line="1639"/>
-        <location filename="../settings/settingsdialog.cpp" line="1648"/>
+        <location filename="../settings/settingsdialog.cpp" line="1688"/>
+        <location filename="../settings/settingsdialog.cpp" line="1697"/>
         <source>unknown</source>
         <translation>未知</translation>
     </message>
@@ -5185,27 +5238,27 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation>禁用</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1515"/>
+        <location filename="../settings/settingsdialog.cpp" line="1564"/>
         <source>Reload all unit files</source>
         <translation>重新加载所有单元文件</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1574"/>
+        <location filename="../settings/settingsdialog.cpp" line="1623"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation>无法同时显示 systemd 服务和内部启动器的启动/停止按钮。 systemd 服务优先。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1580"/>
+        <location filename="../settings/settingsdialog.cpp" line="1629"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation>无法同时考虑 systemd 服务和内部启动器进行重新连接。 systemd 服务优先。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1612"/>
+        <location filename="../settings/settingsdialog.cpp" line="1661"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation>指定的单位不活动或不存在</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1634"/>
+        <location filename="../settings/settingsdialog.cpp" line="1683"/>
         <source>since </source>
         <translation>自从 </translation>
     </message>
@@ -5559,6 +5612,29 @@ The Web UI will be opened in the default web browser instead.</source>
     </message>
 </context>
 <context>
+    <name>RemoteSyncProgress</name>
+    <message>
+        <location filename="../quick/qml/RemoteSyncProgress.qml" line="17"/>
+        <source>Remote sync progress (of connected devices)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/RemoteSyncProgress.qml" line="31"/>
+        <source>Up to Date</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/RemoteSyncProgress.qml" line="31"/>
+        <source>Not available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/RemoteSyncProgress.qml" line="31"/>
+        <source>%1 %</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>SelectiveImportDelegate</name>
     <message>
         <location filename="../quick/qml/SelectiveImportDelegate.qml" line="84"/>
@@ -5569,7 +5645,7 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>Settings::Connection</name>
     <message>
-        <location filename="../settings/settings.cpp" line="684"/>
+        <location filename="../settings/settings.cpp" line="688"/>
         <source>Backup of %1 (created by wizard)</source>
         <translation>%1 的备份（通过向导创建）</translation>
     </message>
@@ -6059,134 +6135,103 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation type="unfinished">Syncthing</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="25"/>
+        <location filename="../quick/qml/StartPage.qml" line="23"/>
         <source>Pending setup tasks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="32"/>
+        <location filename="../quick/qml/StartPage.qml" line="30"/>
         <source>Request storage permission</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="39"/>
+        <location filename="../quick/qml/StartPage.qml" line="37"/>
         <source>Request notification permission</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="56"/>
+        <location filename="../quick/qml/StartPage.qml" line="54"/>
         <source>Set password for web-based GUI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="62"/>
+        <location filename="../quick/qml/StartPage.qml" line="60"/>
         <source>Otherwise other apps can access the web-based GUI without authentication.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="70"/>
+        <location filename="../quick/qml/StartPage.qml" line="68"/>
         <source>Status and statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="85"/>
-        <source>Local sync progress</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/StartPage.qml" line="99"/>
-        <location filename="../quick/qml/StartPage.qml" line="133"/>
-        <source>Up to Date</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/StartPage.qml" line="99"/>
-        <source>%1 %, %2 remaining</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/StartPage.qml" line="119"/>
-        <source>Remote sync progress (of connected devices)</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/StartPage.qml" line="133"/>
-        <source>Not available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/StartPage.qml" line="133"/>
-        <source>%1 %</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/StartPage.qml" line="168"/>
+        <location filename="../quick/qml/StartPage.qml" line="110"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="208"/>
-        <location filename="../quick/qml/StartPage.qml" line="223"/>
+        <location filename="../quick/qml/StartPage.qml" line="150"/>
+        <location filename="../quick/qml/StartPage.qml" line="165"/>
         <source>Own device ID</source>
         <translation type="unfinished">当前设备 ID</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="233"/>
+        <location filename="../quick/qml/StartPage.qml" line="175"/>
         <source>Copy as text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="238"/>
+        <location filename="../quick/qml/StartPage.qml" line="180"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="257"/>
+        <location filename="../quick/qml/StartPage.qml" line="199"/>
         <source>Traffic</source>
         <translation>流量</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="290"/>
+        <location filename="../quick/qml/StartPage.qml" line="232"/>
         <source>Global state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="295"/>
+        <location filename="../quick/qml/StartPage.qml" line="237"/>
         <source>Local state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="299"/>
+        <location filename="../quick/qml/StartPage.qml" line="241"/>
         <source>Getting started</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="304"/>
+        <location filename="../quick/qml/StartPage.qml" line="246"/>
         <source>Connect other device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="310"/>
+        <location filename="../quick/qml/StartPage.qml" line="252"/>
         <source>Share folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="316"/>
+        <location filename="../quick/qml/StartPage.qml" line="258"/>
         <source>Open Syncthing in web browser</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="321"/>
+        <location filename="../quick/qml/StartPage.qml" line="263"/>
         <source>Open documentation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="329"/>
+        <location filename="../quick/qml/StartPage.qml" line="271"/>
         <source>Restart Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="334"/>
+        <location filename="../quick/qml/StartPage.qml" line="276"/>
         <source>Quit app</source>
         <translation type="unfinished"></translation>
     </message>
