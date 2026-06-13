@@ -139,6 +139,13 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QCheckBox" name="syncthingIconsCheckBox">
+          <property name="text">
+           <string>Syncthing icons</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item row="4" column="0">

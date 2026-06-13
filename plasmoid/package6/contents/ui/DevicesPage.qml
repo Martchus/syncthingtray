@@ -42,6 +42,7 @@ Item {
                             Layout.preferredHeight: Kirigami.Units.iconSizes.small
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             source: statusIcon
+                            visible: plasmoid.showSyncthingIcons
                         }
                         PlasmaComponents3.Label {
                             Layout.fillWidth: true

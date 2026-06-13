@@ -71,6 +71,7 @@ class SyncthingApplet : public Plasma::Applet {
     Q_PROPERTY(QSize size READ size WRITE setSize NOTIFY sizeChanged)
     Q_PROPERTY(bool showTabTexts READ isShowingTabTexts WRITE setShowingTabTexts NOTIFY showTabTextsChanged)
     Q_PROPERTY(bool showDownloads READ isShowingDownloads WRITE setShowingDownloads NOTIFY showDownloadsChanged)
+    Q_PROPERTY(bool showSyncthingIcons READ isShowingSyncthingIcons WRITE setShowingSyncthingIcons NOTIFY showSyncthingIconsChanged)
     Q_PROPERTY(bool passive READ isPassive NOTIFY passiveChanged)
     Q_PROPERTY(QList<QtUtilities::ChecklistItem> passiveStates READ passiveStates WRITE setPassiveStates)
     Q_PROPERTY(QString faUrl READ faUrl NOTIFY faUrlChanged)
@@ -113,6 +114,8 @@ public:
     void setShowingTabTexts(bool showTabTexts);
     bool isShowingDownloads() const;
     void setShowingDownloads(bool showDownloads);
+    bool isShowingSyncthingIcons();
+    void setShowingSyncthingIcons(bool showSyncthingIcons);
     bool isPassive() const;
     const QList<QtUtilities::ChecklistItem> &passiveStates() const;
     void setPassiveStates(const QList<QtUtilities::ChecklistItem> &passiveStates);
@@ -153,6 +156,7 @@ Q_SIGNALS:
     void sizeChanged(const QSize &size);
     void showTabTextsChanged(bool isShowingTabTexts);
     void showDownloadsChanged(bool isShowingDownloads);
+    void showSyncthingIconsChanged(bool isShowingSyncthingIcons);
     void passiveChanged(bool passive);
     void faUrlChanged(const QString &faUrl);
 
@@ -209,6 +213,7 @@ private:
     bool m_initialized;
     bool m_showTabTexts;
     bool m_showDownloads;
+    bool m_showSyncthingIcons;
     bool m_applyingSettingsForWizard;
     QSize m_size;
 };
@@ -290,6 +295,18 @@ inline void SyncthingApplet::setShowingDownloads(bool showDownloads)
 {
     if (showDownloads != m_showDownloads) {
         emit showDownloadsChanged(m_showDownloads = showDownloads);
+    }
+}
+
+inline bool SyncthingApplet::isShowingSyncthingIcons()
+{
+    return m_showSyncthingIcons;
+}
+
+inline void SyncthingApplet::setShowingSyncthingIcons(bool showSyncthingIcons)
+{
+    if (showSyncthingIcons != m_showSyncthingIcons) {
+        emit showSyncthingIconsChanged(m_showSyncthingIcons = showSyncthingIcons);
     }
 }
 

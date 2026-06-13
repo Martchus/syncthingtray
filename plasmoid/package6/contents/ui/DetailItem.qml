@@ -20,7 +20,7 @@ Item {
 
         Kirigami.Icon {
             source: detailIcon
-            Layout.leftMargin: Kirigami.Units.iconSizes.small * 1.1
+            Layout.leftMargin: plasmoid.showSyncthingIcons ? Kirigami.Units.iconSizes.small * 1.1 : 0
             Layout.preferredWidth: Kirigami.Units.iconSizes.small
             Layout.preferredHeight: Kirigami.Units.iconSizes.small
             opacity: 0.8

@@ -97,6 +97,7 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     , m_initialized(false)
     , m_showTabTexts(false)
     , m_showDownloads(false)
+    , m_showSyncthingIcons(true)
     , m_applyingSettingsForWizard(false)
 {
     // load config
@@ -107,6 +108,7 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     m_currentConnectionConfig = c.readEntry<int>("selectedConfig", 0);
     m_defaultTab = c.readEntry<>("defaultTab", 0);
     m_lastTab = c.readEntry<>("lastTab", 0);
+    m_showSyncthingIcons = c.readEntry<>("showStIcons", m_showSyncthingIcons);
     m_defaultTab = m_defaultTab < 0 ? m_lastTab : m_defaultTab;
 
     // configure connection
@@ -706,6 +708,7 @@ void SyncthingApplet::applySettings(int changeConnectionIndex)
     setSize(config.readEntry<QSize>("size", QSize(25, 25)));
     setShowingTabTexts(config.readEntry<bool>("showTabTexts", false));
     setShowingDownloads(config.readEntry<bool>("showDownloads", false));
+    setShowingSyncthingIcons(config.readEntry<bool>("showStIcons", true));
     m_iconManager.applySettings(&settings.icons.status, nullptr, settings.icons.usePaletteForStatus, false);
     m_defaultTab = config.readEntry<>("defaultTab", 0);
 

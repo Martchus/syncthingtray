@@ -96,6 +96,7 @@ bool AppearanceOptionPage::apply()
     config.writeEntry("size", QSize(ui()->widthSpinBox->value(), ui()->heightSpinBox->value()));
     config.writeEntry("showTabTexts", ui()->showTabTextsCheckBox->isChecked());
     config.writeEntry("showDownloads", ui()->showDownloadsCheckBox->isChecked());
+    config.writeEntry("showStIcons", ui()->syncthingIconsCheckBox->isChecked());
     config.writeEntry("preferIconsFromTheme", ui()->preferIconsFromThemeCheckBox->isChecked());
     config.writeEntry("defaultTab", QtGui::AppearanceOptionPage::comboBoxIndexToTabIndex(ui()->defaultTabComboBox->currentIndex()));
     config.writeEntry("passiveStates", m_passiveStatusSelection.toVariantList());
@@ -116,6 +117,7 @@ void AppearanceOptionPage::reset()
     ui()->heightSpinBox->setValue(size.height());
     ui()->showTabTextsCheckBox->setChecked(config.readEntry<>("showTabTexts", false));
     ui()->showDownloadsCheckBox->setChecked(config.readEntry<>("showDownloads", false));
+    ui()->syncthingIconsCheckBox->setChecked(config.readEntry<>("showStIcons", true));
     ui()->preferIconsFromThemeCheckBox->setChecked(config.readEntry<>("preferIconsFromTheme", false));
     ui()->defaultTabComboBox->setCurrentIndex(QtGui::AppearanceOptionPage::tabIndexToComboBoxIndex(config.readEntry<>("defaultTab", 0)));
     m_passiveStatusSelection.applyVariantList(config.readEntry("passiveStates", QVariantList()));
@@ -126,6 +128,9 @@ QWidget *AppearanceOptionPage::setupWidget()
     auto *const widget = AppearanceOptionPageBase::setupWidget();
     addPlasmoidSpecificNote(ui()->verticalLayout, widget);
     ui()->passiveListView->setModel(&m_passiveStatusSelection);
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    ui()->syncthingIconsCheckBox->setEnabled(false);
+#endif
     return widget;
 }
 
