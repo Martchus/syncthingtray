@@ -519,7 +519,7 @@ void QuickUI::showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y)
         }
     }
 #endif
-    QMetaObject::invokeMethod(menu, "popup", Q_ARG(QQuickItem *, parent), Q_ARG(qreal, x), Q_ARG(qreal, y));
+    QMetaObject::invokeMethod(menu, "popup", Q_ARG(QQuickItem*, parent), Q_ARG(qreal, x), Q_ARG(qreal, y));
 }
 
 bool QuickUI::eventFilter(QObject *object, QEvent *event)
