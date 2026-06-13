@@ -133,6 +133,7 @@ set(QML_MAIN_FILES
     quick/qml/InternalErrorsPage.qml
     quick/qml/LeftDrawer.qml
     quick/qml/LoadingPane.qml
+    quick/qml/LocalSyncProgress.qml
     quick/qml/LogPage.qml
     quick/qml/MainTabBar.qml
     quick/qml/MainTabButton.qml
@@ -148,6 +149,7 @@ set(QML_MAIN_FILES
     quick/qml/PageStack.qml
     quick/qml/PendingDevices.qml
     quick/qml/PendingDirs.qml
+    quick/qml/RemoteSyncProgress.qml
     quick/qml/SelectiveImportDelegate.qml
     quick/qml/SettingsPage.qml
     quick/qml/StartPage.qml

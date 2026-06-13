@@ -14,4 +14,5 @@ RoundButton {
     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
     icon.width: 20 * QuickUI.densityScale
     icon.height: 20 * QuickUI.densityScale
+    flat: QuickUI.densityScale < 0.9
 }

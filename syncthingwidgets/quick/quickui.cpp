@@ -449,6 +449,11 @@ bool QuickUI::showSettings(QQuickItem *stackView)
     return showPage("Main", "AdvancedMainPage", { { QStringLiteral("mainTitle"), tr("Settings") } }, stackView);
 }
 
+bool QuickUI::showRecentChanges(QQuickItem *stackView)
+{
+    return showPage("Main", "ChangesPage", { }, stackView);
+}
+
 bool QuickUI::browseFiles(const QString &dirId, const QString &dirName, QQuickItem *stackView)
 {
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP

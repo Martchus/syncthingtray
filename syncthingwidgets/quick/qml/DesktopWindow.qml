@@ -106,6 +106,10 @@ ApplicationWindow {
                 icon.width: QuickUI.iconSize
                 icon.height: QuickUI.iconSize
                 Action {
+                    text: qsTr("&Recent changes")
+                    onTriggered: QuickUI.showRecentChanges()
+                }
+                Action {
                     text: qsTr("&Show ID")
                     onTriggered: TrayWidget.showOwnDeviceId()
                 }
@@ -140,22 +144,59 @@ ApplicationWindow {
         anchors.leftMargin: parent.SafeArea.margins.left
         anchors.rightMargin: parent.SafeArea.margins.right
         columns: width > 400 ? 2 : 1
+        uniformCellWidths: true
         ColumnLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Label {
+            RowLayout {
                 Layout.fillWidth: true
-                topPadding: 10
-                leftPadding: 10
-                text: qsTr("Folders")
-                font.weight: Font.Medium
+                Label {
+                    Layout.fillWidth: true
+                    Layout.alignment: Qt.AlignHCenter
+                    topPadding: 10
+                    leftPadding: 10
+                    text: qsTr("Folders")
+                    font.weight: Font.Medium
+                }
+                Item {
+                    Layout.fillWidth: true
+                }
+                IconOnlyButton {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("Add folder")
+                    icon.source: QuickUI.faUrlBase + "plus"
+                    onClicked: QuickUI.editDir("", "", null)
+                    flat: true
+                }
+                IconOnlyButton {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("Pause all")
+                    icon.source: QuickUI.faUrlBase + "pause"
+                    onClicked: SyncthingData.connection.pauseAllDirs()
+                    flat: true
+                }
+                IconOnlyButton {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("Resume all")
+                    icon.source: QuickUI.faUrlBase + "play"
+                    onClicked: SyncthingData.connection.resumeAllDirs()
+                    flat: true
+                }
+                IconOnlyButton {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("Rescan all")
+                    icon.source: QuickUI.faUrlBase + "refresh"
+                    onClicked: SyncthingData.connection.rescanAllDirs()
+                    flat: true
+                }
+                Item {
+                    Layout.preferredWidth: dirsListView.ScrollBar?.vertical.width
+                }
             }
             DirListView {
                 id: dirsListView
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                ScrollBar.vertical: ScrollBar { }
-                ScrollIndicator.vertical: null
                 anchors.fill: null
                 clip: true
                 stackView: null
@@ -164,19 +205,113 @@ ApplicationWindow {
         ColumnLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
-            Label {
+            RowLayout {
                 Layout.fillWidth: true
-                topPadding: 10
-                leftPadding: 10
-                text: qsTr("Devices")
-                font.weight: Font.Medium
+                Label {
+                    Layout.fillWidth: true
+                    topPadding: 10
+                    leftPadding: 10
+                    text: qsTr("Statistics")
+                    font.weight: Font.Medium
+                }
+                Item {
+                    Layout.fillWidth: true
+                }
+                IconOnlyButton {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("Recent changes")
+                    icon.source: QuickUI.faUrlBase + "history"
+                    onClicked: QuickUI.showRecentChanges()
+                    flat: true
+                }
+                IconOnlyButton {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("Show ID")
+                    icon.source: QuickUI.faUrlBase + "qrcode"
+                    onClicked: TrayWidget.showOwnDeviceId()
+                    flat: true
+                }
+                IconOnlyButton {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("Show logs")
+                    icon.source: QuickUI.faUrlBase + "terminal"
+                    onClicked: TrayWidget.showLog()
+                    flat: true
+                }
+                Item {
+                    Layout.preferredWidth: devsListView.ScrollBar?.vertical.width
+                }
+            }
+            Statistics {
+                stats: localSyncProgress.stats.global
+                labelText: qsTr("Global state")
+                iconName: "globe"
+                dense: true
+                highlighted: false
+                hoverEnabled: false
+            }
+            Statistics {
+                stats: localSyncProgress.stats.local
+                labelText: qsTr("Local state")
+                iconName: "home"
+                dense: true
+                highlighted: false
+                hoverEnabled: false
+            }
+            LocalSyncProgress {
+                id: localSyncProgress
+                Layout.fillWidth: true
+                Layout.leftMargin: 15
+                Layout.rightMargin: 15
+                spacing: 10
+            }
+            RemoteSyncProgress {
+                Layout.fillWidth: true
+                Layout.leftMargin: 15
+                Layout.rightMargin: 15
+                spacing: 10
+            }
+            RowLayout {
+                Layout.fillWidth: true
+                Label {
+                    Layout.fillWidth: true
+                    topPadding: 10
+                    leftPadding: 10
+                    text: qsTr("Devices")
+                    font.weight: Font.Medium
+                }
+                Item {
+                    Layout.fillWidth: true
+                }
+                IconOnlyButton {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("Add device")
+                    icon.source: QuickUI.faUrlBase + "plus"
+                    onClicked: QuickUI.editDev("", "", null)
+                    flat: true
+                }
+                IconOnlyButton {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("Pause all")
+                    icon.source: QuickUI.faUrlBase + "pause"
+                    onClicked: SyncthingData.connection.pauseAllDevs()
+                    flat: true
+                }
+                IconOnlyButton {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("Resume all")
+                    icon.source: QuickUI.faUrlBase + "play"
+                    onClicked: SyncthingData.connection.resumeAllDevs()
+                    flat: true
+                }
+                Item {
+                    Layout.preferredWidth: devsListView.ScrollBar?.vertical.width
+                }
             }
             DevListView {
                 id: devsListView
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                ScrollBar.vertical: ScrollBar { }
-                ScrollIndicator.vertical: null
                 anchors.fill: null
                 clip: true
                 stackView: null

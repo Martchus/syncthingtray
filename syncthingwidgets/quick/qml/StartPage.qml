@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Controls.Material
+import QtQuick.Controls
 import QtQuick.Dialogs
 
 import Main
@@ -10,8 +10,6 @@ Page {
     title: qsTr("Syncthing")
     Layout.fillWidth: true
     Layout.fillHeight: true
-    property var stats: SyncthingData.connection.overallDirStatistics
-    property var remoteCompletion: SyncthingData.connection.overallRemoteCompletion
     signal quitRequested
     CustomFlickable {
         id: mainView
@@ -72,70 +70,14 @@ Page {
             ItemDelegate {
                 Layout.fillWidth: true
                 visible: SyncthingData.connection.hasState
-                contentItem: RowLayout {
-                    spacing: 15
-                    ForkAwesomeIcon {
-                        Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
-                        iconName: "download"
-                    }
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        Label {
-                            Layout.fillWidth: true
-                            text: qsTr("Local sync progress")
-                            wrapMode: Text.Wrap
-                            font.weight: Font.Medium
-                        }
-                        RowLayout {
-                            Layout.fillWidth: true
-                            ProgressBar {
-                                Layout.fillWidth: true
-                                id: progressBar
-                                from: 0
-                                to: 100
-                                value: stats.completionPercentage
-                            }
-                            Label {
-                                text: progressBar.position >= 1 ? qsTr("Up to Date") : qsTr("%1 %, %2 remaining").arg(Math.floor(progressBar.position * 100)).arg(stats.needed.bytesAsString)
-                                font.weight: Font.Light
-                            }
-                        }
-                    }
+                contentItem: LocalSyncProgress {
+                    id: localSyncProgress
                 }
             }
             ItemDelegate {
                 Layout.fillWidth: true
                 visible: SyncthingData.connection.hasState
-                contentItem: RowLayout {
-                    spacing: 15
-                    ForkAwesomeIcon {
-                        Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
-                        iconName: "upload"
-                    }
-                    ColumnLayout {
-                        Layout.fillWidth: true
-                        Label {
-                            Layout.fillWidth: true
-                            text: qsTr("Remote sync progress (of connected devices)")
-                            wrapMode: Text.Wrap
-                            font.weight: Font.Medium
-                        }
-                        RowLayout {
-                            Layout.fillWidth: true
-                            ProgressBar {
-                                Layout.fillWidth: true
-                                id: remoteProgressBar
-                                from: 0
-                                to: 100
-                                value: remoteCompletion.percentage
-                            }
-                            Label {
-                                text: remoteProgressBar.position >= 1 ? qsTr("Up to Date") : (Number.isNaN(remoteCompletion.percentage) ? qsTr("Not available") : qsTr("%1 %").arg(Math.round(remoteCompletion.percentage)))
-                                font.weight: Font.Light
-                            }
-                        }
-                    }
-                }
+                contentItem: RemoteSyncProgress {}
             }
             ItemDelegate {
                 Layout.fillWidth: true
@@ -286,12 +228,12 @@ Page {
                 }
             }
             Statistics {
-                stats: startPage.stats.global
+                stats: localSyncProgress.stats.global
                 labelText: qsTr("Global state")
                 iconName: "globe"
             }
             Statistics {
-                stats: startPage.stats.local
+                stats: localSyncProgress.stats.local
                 labelText: qsTr("Local state")
                 iconName: "home"
             }

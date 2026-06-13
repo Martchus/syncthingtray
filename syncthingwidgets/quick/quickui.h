@@ -168,6 +168,7 @@ public:
     Q_INVOKABLE bool editIgnorePatterns(const QString &dirId, const QString &dirName, QQuickItem *stackView = nullptr);
     Q_INVOKABLE bool browseFiles(const QString &dirId, const QString &dirName, QQuickItem *stackView = nullptr);
     Q_INVOKABLE bool showSettings(QQuickItem *stackView = nullptr);
+    Q_INVOKABLE bool showRecentChanges(QQuickItem *stackView = nullptr);
     Q_INVOKABLE QObject *loadComponent(QAnyStringView uri, QAnyStringView typeName, const QVariantMap &initialProperties = QVariantMap());
     Q_INVOKABLE void showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y);
 
