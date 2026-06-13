@@ -51,6 +51,7 @@ class SYNCTHINGWIDGETS_EXPORT QuickUI : public QObject {
     Q_PROPERTY(int iconWidthDelegate READ iconWidthDelegate CONSTANT)
     Q_PROPERTY(int popupType READ popupType CONSTANT)
     Q_PROPERTY(bool extendedClientArea READ extendedClientArea CONSTANT)
+    Q_PROPERTY(bool syncthingIconsVisible READ syncthingIconsVisible WRITE setSyncthingIconsVisible NOTIFY syncthingIconsVisibleChanged)
     Q_PROPERTY(QString fontFamily READ fontFamily CONSTANT)
     Q_PROPERTY(qreal fontScale READ fontScale CONSTANT)
     Q_PROPERTY(int fontWeightAdjustment READ fontWeightAdjustment CONSTANT)
@@ -106,6 +107,16 @@ public:
 #else
         return false;
 #endif
+    }
+    bool syncthingIconsVisible() const
+    {
+        return m_syncthingIconsVisible;
+    }
+    void setSyncthingIconsVisible(bool syncthingIconsVisible)
+    {
+        if (syncthingIconsVisible != m_syncthingIconsVisible) {
+            emit syncthingIconsVisibleChanged(m_syncthingIconsVisible = syncthingIconsVisible);
+        }
     }
     /*!
      * \brief Returns whether darkmode is enabled.
@@ -176,6 +187,7 @@ Q_SIGNALS:
     void darkmodeEnabledChanged(bool darkmodeEnabled);
     void error(const QString &errorMessage, const QString &details = QString());
     void openingUrlRequested(const QUrl &url);
+    void syncthingIconsVisibleChanged(bool syncthingIconsVisible);
 
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
@@ -202,6 +214,7 @@ private:
     bool m_darkmodeEnabled;
     bool m_darkColorScheme;
     bool m_darkPalette;
+    bool m_syncthingIconsVisible;
 };
 
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP

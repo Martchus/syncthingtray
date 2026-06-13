@@ -34,9 +34,9 @@ ListView {
             RowLayout {
                 id: detailRow
                 width: parent.width
-                spacing: 10
+                spacing: 10 * QuickUI.densityScale
                 Item {
-                    Layout.preferredWidth: mainDelegate.statusIconWidth
+                    Layout.preferredWidth: Math.max(16, mainDelegate.statusIconWidth)
                     Layout.preferredHeight: 18
                     Icon {
                         anchors.centerIn: parent

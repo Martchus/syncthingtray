@@ -354,8 +354,10 @@ QuickGuiEngine &TrayWidget::quickGui()
         // use dense variant of Material style
         qputenv("QT_QUICK_CONTROLS_MATERIAL_VARIANT", "Dense");
 
-        auto &quickUI = m_quickUI.emplace(qGuiApp, Settings::values().qt);
+        auto &settings = Settings::values();
+        auto &quickUI = m_quickUI.emplace(qGuiApp, settings.qt);
         auto *const engine = &quickUI.engine;
+        quickUI.ui.setSyncthingIconsVisible(settings.appearance.showStIcons);
         dataObjectToProperty(engine, &m_data);
         dataObjectToProperty(engine, &m_models);
         dataObjectToProperty(engine, &quickUI.ui);
@@ -727,6 +729,11 @@ void TrayWidget::applySettings(const QString &connectionConfig)
     if (m_menu) {
         m_menu->setWindowType(settings.appearance.windowType);
     }
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    if (m_quickUI.has_value()) {
+        m_quickUI->ui.setSyncthingIconsVisible(settings.appearance.showStIcons);
+    }
+#endif
 
     // update status icon and text of tray icon because reconnect interval might have changed
     updateIconAndTooltip();

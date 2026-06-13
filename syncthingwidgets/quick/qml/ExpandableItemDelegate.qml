@@ -13,12 +13,13 @@ ItemDelegate {
     Keys.onMenuPressed: (event) => menu.showCenteredIn(menuButton)
     contentItem: ColumnLayout {
         RowLayout {
-            spacing: 10
+            spacing: 10 * QuickUI.densityScale
             Icon {
                 id: statusIcon
                 source: modelData.statusIcon
                 Layout.preferredWidth: Layout.preferredHeight
                 Layout.preferredHeight: Math.min(32, mainDelegate.breakpoint ? nameLabel.height : nameLabel.height + statusLabel.height, )
+                visible: QuickUI.syncthingIconsVisible
             }
             GridLayout {
                 Layout.fillWidth: true
@@ -118,8 +119,8 @@ ItemDelegate {
 
     required property var modelData
     required property ListView mainView
-    readonly property bool breakpoint: mainView.width > 500
-    property alias statusIconWidth: statusIcon.width
+    readonly property bool breakpoint: mainView.width > (500 * Math.max(0.8, QuickUI.densityScale))
+    readonly property real statusIconWidth: statusIcon.visible ? statusIcon.width : 0
     property list<Action> actions
     property list<Action> extraActions
 }

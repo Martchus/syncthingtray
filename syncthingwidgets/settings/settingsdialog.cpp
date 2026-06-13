@@ -556,6 +556,7 @@ QWidget *AppearanceOptionPage::setupWidget()
 #endif
     if (!showStyleSelection) {
         setFormRowVisible(formLayout, ui()->styleLabel, ui()->styleComboBox, false);
+        ui()->syncthingIconsCheckBox->hide();
     }
     setFormRowVisible(formLayout, requiresRestartLabel, nullptr, false);
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
@@ -568,6 +569,7 @@ QWidget *AppearanceOptionPage::setupWidget()
         ui()->defaultTabComboBox->setEnabled(traditionalStyleSelected);
         ui()->showDownloadsCheckBox->setEnabled(traditionalStyleSelected);
         ui()->showTabTextsCheckBox->setEnabled(traditionalStyleSelected);
+        ui()->syncthingIconsCheckBox->setEnabled(!traditionalStyleSelected);
         ui()->preferIconsFromThemeCheckBox->setEnabled(traditionalStyleSelected);
     });
 #endif
@@ -607,6 +609,7 @@ bool AppearanceOptionPage::apply()
     settings.showTraffic = ui()->showTrafficCheckBox->isChecked();
     settings.showDownloads = ui()->showDownloadsCheckBox->isChecked();
     settings.showTabTexts = ui()->showTabTextsCheckBox->isChecked();
+    settings.showStIcons = ui()->syncthingIconsCheckBox->isChecked();
     v.icons.preferIconsFromTheme = ui()->preferIconsFromThemeCheckBox->isChecked();
     int style;
     switch (ui()->frameShapeComboBox->currentIndex()) {
@@ -662,6 +665,7 @@ void AppearanceOptionPage::reset()
     ui()->showTrafficCheckBox->setChecked(settings.showTraffic);
     ui()->showDownloadsCheckBox->setChecked(settings.showDownloads);
     ui()->showTabTextsCheckBox->setChecked(settings.showTabTexts);
+    ui()->syncthingIconsCheckBox->setChecked(settings.showStIcons);
     ui()->preferIconsFromThemeCheckBox->setChecked(v.icons.preferIconsFromTheme);
     auto index = int();
     switch (settings.frameStyle & QFrame::Shape_Mask) {

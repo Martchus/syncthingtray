@@ -65,6 +65,7 @@ struct SYNCTHINGWIDGETS_EXPORT Appearance {
     bool showTraffic = true;
     bool showDownloads = false;
     bool showTabTexts = true;
+    bool showStIcons = true;
     int windowType = 0; // corresponds to TrayMenu::WindowType
     QSize trayMenuSize = QSize(575, 475);
     int frameStyle = static_cast<int>(QFrame::NoFrame) | static_cast<int>(QFrame::Plain);

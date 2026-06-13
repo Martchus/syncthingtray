@@ -89,6 +89,7 @@ QuickUI::QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQml
     , m_darkmodeEnabled(false)
     , m_darkColorScheme(false)
     , m_darkPalette(app ? SYNCTHING_APP_IS_PALETTE_DARK(app->palette()) : false)
+    , m_syncthingIconsVisible(true)
 {
     if (app) {
         app->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
