@@ -64,6 +64,8 @@ class TrayWidget : public QWidget {
 #endif
 
 public:
+    enum class Style : int { Traditional, Modern };
+
     explicit TrayWidget(TrayMenu *parent);
     ~TrayWidget() override;
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK

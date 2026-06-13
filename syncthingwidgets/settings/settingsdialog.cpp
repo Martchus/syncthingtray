@@ -531,6 +531,49 @@ AppearanceOptionPage::~AppearanceOptionPage()
 {
 }
 
+static inline void setFormRowVisible(QFormLayout *layout, QWidget *widget1, QWidget *widget2, bool visible)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+    layout->setRowVisible(widget1, visible);
+    Q_UNUSED(widget2);
+#else
+    widget1->setVisible(visible);
+    if (widget2) {
+        widget2->setVisible(visible);
+    }
+#endif
+}
+
+QWidget *AppearanceOptionPage::setupWidget()
+{
+    auto *const widget = AppearanceOptionPageBase::setupWidget();
+    auto *const formLayout = ui()->formLayout;
+    auto *const requiresRestartLabel = ui()->requiresRestartLabel;
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    const auto showStyleSelection = Settings::values().enableWipFeatures;
+#else
+    static constexpr auto showStyleSelection = false;
+#endif
+    if (!showStyleSelection) {
+        setFormRowVisible(formLayout, ui()->styleLabel, ui()->styleComboBox, false);
+    }
+    setFormRowVisible(formLayout, requiresRestartLabel, nullptr, false);
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    QObject::connect(ui()->styleComboBox, &QComboBox::currentIndexChanged, formLayout, [this, formLayout, requiresRestartLabel] (int index) {
+        const auto traditionalStyleSelected = index == 0;
+        setFormRowVisible(formLayout, requiresRestartLabel, nullptr, Settings::values().appearance.initialStyle != index);
+        ui()->frameShapeComboBox->setEnabled(traditionalStyleSelected);
+        ui()->frameShadowComboBox->setEnabled(traditionalStyleSelected);
+        ui()->tabPosComboBox->setEnabled(traditionalStyleSelected);
+        ui()->defaultTabComboBox->setEnabled(traditionalStyleSelected);
+        ui()->showDownloadsCheckBox->setEnabled(traditionalStyleSelected);
+        ui()->showTabTextsCheckBox->setEnabled(traditionalStyleSelected);
+        ui()->preferIconsFromThemeCheckBox->setEnabled(traditionalStyleSelected);
+    });
+#endif
+    return widget;
+}
+
 static constexpr auto tabCount = 4;
 
 int AppearanceOptionPage::tabIndexToComboBoxIndex(int tabIndex)
@@ -558,6 +601,7 @@ bool AppearanceOptionPage::apply()
     auto &v = Settings::values();
     auto &settings = v.appearance;
     settings.windowType = ui()->windowTypeComboBox->currentIndex();
+    settings.style = ui()->styleComboBox->currentIndex();
     settings.trayMenuSize.setWidth(ui()->widthSpinBox->value());
     settings.trayMenuSize.setHeight(ui()->heightSpinBox->value());
     settings.showTraffic = ui()->showTrafficCheckBox->isChecked();
@@ -614,6 +658,7 @@ void AppearanceOptionPage::reset()
     const auto &settings = v.appearance;
     resetPositioningSettings();
     ui()->windowTypeComboBox->setCurrentIndex(settings.windowType);
+    ui()->styleComboBox->setCurrentIndex(settings.style);
     ui()->showTrafficCheckBox->setChecked(settings.showTraffic);
     ui()->showDownloadsCheckBox->setChecked(settings.showDownloads);
     ui()->showTabTextsCheckBox->setChecked(settings.showTabTexts);

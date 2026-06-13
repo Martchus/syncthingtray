@@ -71,6 +71,7 @@ struct SYNCTHINGWIDGETS_EXPORT Appearance {
     int tabPosition = QTabWidget::South;
     int defaultTab = 0;
     int lastTab = 0;
+    int initialStyle = 0, style = 0; // corresponds to TrayWidget::Style
     struct SYNCTHINGWIDGETS_EXPORT Positioning {
         QPoint assumedIconPosition;
         bool useCursorPosition = true;

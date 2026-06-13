@@ -96,6 +96,7 @@ public:
 void resetPositioningSettings();
 static int tabIndexToComboBoxIndex(int tabIndex);
 static int comboBoxIndexToTabIndex(int comboBoxIndex);
+DECLARE_SETUP_WIDGETS
 END_DECLARE_OPTION_PAGE
 
 BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_CTOR(IconsOptionPage)

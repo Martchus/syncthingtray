@@ -356,6 +356,7 @@ bool restore()
     } else if (auto windowed = settings.value(QStringLiteral("windowed")); windowed.isValid()) {
         appearance.windowType = !windowed.toBool() ? 0 : 1;
     }
+    appearance.initialStyle = appearance.style = settings.value(QStringLiteral("style"), appearance.style).toInt();
     appearance.trayMenuSize = settings.value(QStringLiteral("trayMenuSize"), appearance.trayMenuSize).toSize();
     appearance.frameStyle = settings.value(QStringLiteral("frameStyle"), appearance.frameStyle).toInt();
     appearance.tabPosition = settings.value(QStringLiteral("tabPos"), appearance.tabPosition).toInt();
@@ -501,6 +502,7 @@ bool save()
     settings.setValue(QStringLiteral("showDownloads"), appearance.showDownloads);
     settings.setValue(QStringLiteral("showTabTexts"), appearance.showTabTexts);
     settings.setValue(QStringLiteral("windowType"), appearance.windowType);
+    settings.setValue(QStringLiteral("style"), appearance.style);
     settings.setValue(QStringLiteral("trayMenuSize"), appearance.trayMenuSize);
     settings.setValue(QStringLiteral("frameStyle"), appearance.frameStyle);
     settings.setValue(QStringLiteral("tabPos"), appearance.tabPosition);

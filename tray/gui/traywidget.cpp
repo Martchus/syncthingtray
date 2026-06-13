@@ -101,8 +101,9 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     , m_applyingSettingsForWizard(false)
 {
     // configure whether to show Qt Quick GUI
+    const auto &settings = Settings::values();
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
-    const auto useQtQuick = qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_USE_QT_QUICK") != 0;
+    const auto useQtQuick = settings.appearance.style == static_cast<int>(Style::Modern);
 #else
     constexpr auto useQtQuick = false;
 #endif
@@ -128,7 +129,6 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     }
 
     m_ui->setupUi(this);
-    const auto &settings = Settings::values();
     const auto tabCount = m_ui->tabWidget->count();
     const auto appearance = settings.appearance;
     if (appearance.defaultTab > 0 && appearance.defaultTab < tabCount) {
