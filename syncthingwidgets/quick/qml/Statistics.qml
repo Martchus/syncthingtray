@@ -25,6 +25,7 @@ ItemDelegate {
                 Layout.fillWidth: true
                 font.weight: Font.Medium
                 elide: Text.ElideRight
+                visible: !dense
             }
             GridLayout {
                 Layout.fillWidth: true
@@ -54,6 +55,7 @@ ItemDelegate {
         }
     }
     required property var stats
+    property bool dense: false
     property alias iconName: icon.iconName
     property alias labelText: label.text
 }
