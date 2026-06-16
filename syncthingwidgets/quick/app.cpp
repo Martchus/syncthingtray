@@ -607,7 +607,7 @@ void App::handleMessageFromService(ActivityAction action, int arg1, int arg2, co
     Q_UNUSED(arg2)
     switch (action) {
     case ActivityAction::ShowError:
-        QMetaObject::invokeMethod(this, "showError", Qt::QueuedConnection, Q_ARG(QString, str));
+        QMetaObject::invokeMethod(&m_ui, "showError", Qt::QueuedConnection, Q_ARG(QString, str));
         break;
     case ActivityAction::AppendLog:
         emit logsAvailable(str);
