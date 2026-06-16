@@ -246,7 +246,7 @@ public class SyncthingService extends QtService {
         s_instance.showForegroundNotification();
     }
 
-    public static void updateExtraNotification(String title, String text, String subText, String page, Bitmap bitmapIcon, int id) {
+    public static void updateExtraNotification(String title, String text, String subText, String page, Bitmap bitmapIcon, int id, byte[] data) {
         if (s_instance == null) {
             return;
         }
@@ -257,6 +257,9 @@ public class SyncthingService extends QtService {
             Intent intent = new Intent(s_instance, Activity.class);
             intent.putExtra("notification", true);
             intent.putExtra("page", page);
+            if (data != null) {
+                intent.putExtra("data", data);
+            }
             s_instance.m_extraNotificationBuilder.setContentIntent(PendingIntent.getActivity(s_instance, s_activityIntentRequestCode + id, intent, PendingIntent.FLAG_IMMUTABLE));
         }
         s_instance.m_notificationManager.notify(id, s_instance.m_extraNotificationBuilder.build());
@@ -351,7 +354,9 @@ public class SyncthingService extends QtService {
                 "",
                 "",
                 null,
-                s_notificationID);
+                s_notificationID,
+                null
+            );
         }
     }
 

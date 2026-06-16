@@ -4,9 +4,68 @@
 #include "./appservice.h"
 
 #include <QJniEnvironment>
+#include <QStringView>
 #include <QtCore/private/qandroidextras_p.h>
 
 namespace QtGui {
+
+QJniObject byteArrayToJniObject(const QByteArray &byteArray)
+{
+    auto env = QJniEnvironment();
+    auto javaArray = env->NewByteArray(byteArray.size());
+    if (!javaArray) {
+        return QJniObject();
+    }
+    env->SetByteArrayRegion(javaArray, 0, byteArray.size(), reinterpret_cast<const jbyte *>(byteArray.data()));
+    return QJniObject::fromLocalRef(javaArray);
+}
+
+QByteArray jniObjectToByteArray(jbyteArray jniArray)
+{
+    auto env = QJniEnvironment();
+    auto size = jniArray ? env->GetArrayLength(jniArray) : 0;
+    auto bytes = QByteArray(size, Qt::Initialization::Uninitialized);
+    if (jniArray) {
+        env->GetByteArrayRegion(jniArray, 0, size, reinterpret_cast<jbyte *>(bytes.data()));
+    }
+    return bytes;
+}
+
+QByteArray jniObjectToByteArray(const QJniObject &jniArray)
+{
+    return jniObjectToByteArray(jniArray.isValid() ? jniArray.object<jbyteArray>() : nullptr);
+}
+
+template <typename T> QByteArray serializeWithDataStream(const T &obj)
+{
+    auto res = QByteArray();
+    auto stream = QDataStream(&res, QIODevice::WriteOnly);
+    stream << obj;
+    return res;
+}
+
+template <typename T> T deserializeWithDataStream(const QByteArray &byteArray)
+{
+    auto res = T();
+    auto stream = QDataStream(byteArray);
+    stream >> res;
+    return res;
+}
+
+QByteArray serializeVariant(const QVariant &variant)
+{
+    return serializeWithDataStream(variant);
+}
+
+QByteArray serializeVariantList(const QVariantList &variantList)
+{
+    return serializeWithDataStream(variantList);
+}
+
+QVariantList deserializeVariantList(const QByteArray &byteArray)
+{
+    return deserializeWithDataStream<QVariantList>(byteArray);
+}
 
 /// \brief The JniFn namespace defines functions called from Java.
 namespace JniFn {
@@ -36,13 +95,8 @@ static void stopLibSyncthing(JNIEnv *, jobject)
 
 static void handleMessageFromService(JNIEnv *, jobject, jint what, jint arg1, jint arg2, jstring str, jbyteArray variantArray)
 {
-    auto env = QJniEnvironment();
-    auto variantSize = variantArray ? env->GetArrayLength(variantArray) : 0;
-    auto variant = QByteArray(variantSize, Qt::Initialization::Uninitialized);
-    if (variantArray) {
-        env->GetByteArrayRegion(variantArray, 0, variantSize, reinterpret_cast<jbyte *>(variant.data()));
-    }
-    appObjectForJava->handleMessageFromService(static_cast<ActivityAction>(what), arg1, arg2, QJniObject(str).toString(), variant);
+    appObjectForJava->handleMessageFromService(
+        static_cast<ActivityAction>(what), arg1, arg2, QJniObject(str).toString(), jniObjectToByteArray(variantArray));
 }
 
 static void broadcastLauncherStatus(JNIEnv *, jobject)
@@ -61,10 +115,10 @@ static void handleMessageFromActivity(JNIEnv *, jobject, jint what, jint arg1, j
     appServiceObjectForJava->handleMessageFromActivity(static_cast<ServiceAction>(what), arg1, arg2, QJniObject(str).toString());
 }
 
-static void handleAndroidIntent(JNIEnv *, jobject, jstring page, jboolean fromNotification)
+static void handleAndroidIntent(JNIEnv *, jobject, jstring page, jbyteArray array, jboolean fromNotification)
 {
-    QMetaObject::invokeMethod(
-        appObjectForJava, "handleAndroidIntent", Qt::QueuedConnection, Q_ARG(QString, QJniObject(page).toString()), Q_ARG(bool, fromNotification));
+    QMetaObject::invokeMethod(appObjectForJava, "handleAndroidIntent", Qt::QueuedConnection, Q_ARG(QString, QJniObject(page).toString()),
+        Q_ARG(QByteArray, jniObjectToByteArray(array)), Q_ARG(bool, fromNotification));
 }
 
 static void handleStoragePermissionChanged(JNIEnv *, jobject, jboolean storagePermissionGranted)
@@ -122,7 +176,7 @@ void registerActivityJniMethods(App *app)
     static const JNINativeMethod activityMethods[] = {
         { "handleLauncherStatusBroadcast", "(Landroid/content/Intent;)V", reinterpret_cast<void *>(JniFn::handleLauncherStatusBroadcast) },
         { "handleMessageFromService", "(IIILjava/lang/String;[B)V", reinterpret_cast<void *>(JniFn::handleMessageFromService) },
-        { "handleAndroidIntent", "(Ljava/lang/String;Z)V", reinterpret_cast<void *>(JniFn::handleAndroidIntent) },
+        { "handleAndroidIntent", "(Ljava/lang/String;[BZ)V", reinterpret_cast<void *>(JniFn::handleAndroidIntent) },
         { "handleStoragePermissionChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handleStoragePermissionChanged) },
         { "handleNotificationPermissionChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handleNotificationPermissionChanged) },
         { "loadQtQuickGui", "()V", reinterpret_cast<void *>(JniFn::loadQtQuickGui) },

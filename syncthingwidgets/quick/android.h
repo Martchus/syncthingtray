@@ -3,6 +3,13 @@
 
 #include "../global.h"
 
+#include <QVariant>
+
+#include <jni.h>
+
+QT_FORWARD_DECLARE_CLASS(QByteArray)
+QT_FORWARD_DECLARE_CLASS(QJniObject)
+
 namespace QtGui {
 
 class AppService;
@@ -30,6 +37,13 @@ enum class ActivityAction : int {
     UpdateLauncherStatus,
     FlagManualStop,
 };
+
+SYNCTHINGWIDGETS_EXPORT QJniObject byteArrayToJniObject(const QByteArray &byteArray);
+SYNCTHINGWIDGETS_EXPORT QByteArray jniObjectToByteArray(jbyteArray jniArray);
+SYNCTHINGWIDGETS_EXPORT QByteArray jniObjectToByteArray(const QJniObject &jniArray);
+SYNCTHINGWIDGETS_EXPORT QByteArray serializeVariant(const QVariant &variant);
+SYNCTHINGWIDGETS_EXPORT QByteArray serializeVariantList(const QVariantList &variantList);
+SYNCTHINGWIDGETS_EXPORT QVariantList deserializeVariantList(const QByteArray &byteArray);
 
 namespace JniFn {
 SYNCTHINGWIDGETS_EXPORT void registerServiceJniMethods(AppService *appService);

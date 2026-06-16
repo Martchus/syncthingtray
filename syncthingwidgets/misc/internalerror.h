@@ -56,6 +56,19 @@ inline QString InternalError::whenToString() const
     return QString::fromStdString(when.toString());
 }
 
+inline QDataStream &operator<<(QDataStream &stream, const InternalError &error)
+{
+    return stream << error.message << error.url << error.response << static_cast<quint64>(error.when.totalTicks());
+}
+
+inline QDataStream &operator>>(QDataStream &stream, InternalError &error)
+{
+    auto ticks = quint64();
+    stream >> error.message >> error.url >> error.response >> ticks;
+    error.when = CppUtilities::DateTime(ticks);
+    return stream;
+}
+
 } // namespace QtGui
 
 #endif // SYNCTHINGWIDGETS_INTERNAL_ERROR_H

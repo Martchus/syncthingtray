@@ -622,20 +622,28 @@ void App::handleMessageFromService(ActivityAction action, int arg1, int arg2, co
     }
 }
 
-void App::handleAndroidIntent(const QString &data, bool fromNotification)
+void App::handleAndroidIntent(const QString &page, const QByteArray &data, bool fromNotification)
 {
-    qDebug() << "Handling Android intent: " << data;
+    qDebug() << "Handling Android intent: " << page;
     Q_UNUSED(fromNotification)
-    if (data == QLatin1String("internalErrors")) {
+    if (page == QLatin1String("internalErrors")) {
+        if (const auto previousErrorCount = m_internalErrors.size(); (m_internalErrors << deserializeVariantList(data)).size() != previousErrorCount) {
+            for (auto i = m_internalErrors.begin() + previousErrorCount, end = m_internalErrors.end(); i != end; ++i) {
+                emit internalError(i->value<InternalError>());
+            }
+            invalidateStatus();
+            emit hasInternalErrorsChanged();
+            sendMessageToService(ServiceAction::ClearInternalErrorNotifications);
+        }
         emit internalErrorsRequested();
-    } else if (data == QLatin1String("connectionErrors")) {
+    } else if (page == QLatin1String("connectionErrors")) {
         emit connectionErrorsRequested();
-    } else if (data.startsWith(QLatin1String("sharedtext:"))) {
-        emit textShared(data.mid(11));
-    } else if (data.startsWith(QLatin1String("newdev:"))) {
-        emit newDeviceTriggered(data.mid(7));
-    } else if (data.startsWith(QLatin1String("newfolder:"))) {
-        const auto folderRef = splitFolderRef(QStringView(data).mid(10));
+    } else if (page.startsWith(QLatin1String("sharedtext:"))) {
+        emit textShared(page.mid(11));
+    } else if (page.startsWith(QLatin1String("newdev:"))) {
+        emit newDeviceTriggered(page.mid(7));
+    } else if (page.startsWith(QLatin1String("newfolder:"))) {
+        const auto folderRef = splitFolderRef(QStringView(page).mid(10));
         emit newDirTriggered(folderRef.deviceId.toString(), folderRef.folderId.toString(), folderRef.folderLabel.toString());
     }
 }

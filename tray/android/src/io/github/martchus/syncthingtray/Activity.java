@@ -325,7 +325,7 @@ public class Activity extends QtActivity {
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (sharedText != null) {
             Log.i(TAG, "Sending shared text to Qt Quick app");
-            sendAndroidIntentToQtQuickApp("sharedtext:" + sharedText, false);
+            sendAndroidIntentToQtQuickApp("sharedtext:" + sharedText, null, false);
         }
     }
 
@@ -494,7 +494,7 @@ public class Activity extends QtActivity {
 
     public void onGuiLoaded() {
         if (m_showPage != null) {
-            handleAndroidIntent(m_showPage, m_showFromNotification);
+            handleAndroidIntent(m_showPage, null, m_showFromNotification);
             m_showPage = null;
             m_showFromNotification = false;
         }
@@ -583,7 +583,7 @@ public class Activity extends QtActivity {
     @Override
     protected void onNewIntent(@NonNull Intent intent) {
         if (intent.getBooleanExtra("notification", false)) {
-            sendAndroidIntentToQtQuickApp(intent.getStringExtra("page"), true);
+            sendAndroidIntentToQtQuickApp(intent.getStringExtra("page"), intent.getByteArrayExtra("data"), true);
         }
     }
 
@@ -595,9 +595,9 @@ public class Activity extends QtActivity {
         }
     }
 
-    private void sendAndroidIntentToQtQuickApp(String page, boolean fromNotification) {
+    private void sendAndroidIntentToQtQuickApp(String page, byte[] data, boolean fromNotification) {
         try {
-            handleAndroidIntent(page, fromNotification);
+            handleAndroidIntent(page, data, fromNotification);
         } catch (java.lang.UnsatisfiedLinkError e) {
             m_showPage = page;
             m_showFromNotification = fromNotification;
@@ -609,7 +609,7 @@ public class Activity extends QtActivity {
     private static native void openUrlExternally(String url);
     private static native void handleLauncherStatusBroadcast(Intent intent);
     private static native void handleMessageFromService(int what, int arg1, int arg2, String str, byte[] variant);
-    private static native void handleAndroidIntent(String page, boolean fromNotification);
+    private static native void handleAndroidIntent(String page, byte[] data, boolean fromNotification);
     private static native void handleStoragePermissionChanged(boolean storagePermissionGranted);
     private static native void handleNotificationPermissionChanged(boolean notificationPermissionGranted);
 }

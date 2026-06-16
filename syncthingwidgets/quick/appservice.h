@@ -8,6 +8,7 @@
 
 #include <QJsonObject>
 #include <QUrl>
+#include <qjniobject.h>
 
 #ifdef Q_OS_ANDROID
 #include <QHash>
@@ -87,16 +88,19 @@ private Q_SLOTS:
 #endif
     void updateAndroidNotification();
     void updateExtraAndroidNotification(
-        const QJniObject &title, const QJniObject &text, const QJniObject &subText, const QJniObject &page, const QJniObject &icon, int id = 0);
+        const QJniObject &title, const QJniObject &text, const QJniObject &subText, const QJniObject &page, const QJniObject &icon, int id = 0, const QJniObject &data = QJniObject());
     void clearAndroidExtraNotifications(int firstId, int lastId = -1);
     void updateSyncthingErrorsNotification(const std::vector<Data::SyncthingError> &newErrors);
     void clearSyncthingErrorsNotification();
-    void showInternalError(const InternalError &error);
     void showNewDevice(const QString &devId, const QString &message);
     void showNewDir(const QString &devId, const QString &dirId, const QString &dirLabel, const QString &message);
 #endif
 
 private:
+#ifdef Q_OS_ANDROID
+    void showInternalError(InternalError &&error);
+#endif
+
     Data::SyncthingLauncher m_launcher;
     QString m_log;
 #ifdef Q_OS_ANDROID

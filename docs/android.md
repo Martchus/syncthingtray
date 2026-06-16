@@ -200,9 +200,6 @@ While Syncthing Tray basically works on Android, there are still some unresolved
   from within the app. So if you are on a device with low memory (which makes this more likely to
   happen), you should avoid switching to another app or opening the Syncthing documentation.
 * The app is not always able to suppress connection errors when the Syncthing backend is restarted.
-* The app can display an Android notification when the service process encounters an error while
-  communicating with the Syncthing backend. These error notifications do not necessarily correspond to
-  the errors shown in the app UI, as those originate from the UI process.
 * The connection to Syncthing can sometimes not be restored after restarting Syncthing (e.g. to make
   an export/backup). This happens particularly often when using a UNIX domain socket. One can restart
   the app to work around it.

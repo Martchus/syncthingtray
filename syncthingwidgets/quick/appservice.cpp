@@ -117,6 +117,12 @@ AppService::AppService(bool insecure, QObject *parent)
     }
 
     reloadSettings();
+
+#ifdef SYNCTHINGWIDGETS_SHOW_TEST_ERROR
+    QTimer::singleShot(3000, this, [this] {
+        this->showInternalError(InternalError(QStringLiteral("Test error"), QUrl("http://foo/bar")));
+    });
+#endif
 }
 
 AppService::~AppService()
@@ -148,18 +154,6 @@ const QString &AppService::status()
     }
     return AppBase::status();
 }
-
-#ifdef Q_OS_ANDROID
-/// \cond
-static QByteArray serializeVariant(const QVariant &variant)
-{
-    auto res = QByteArray();
-    auto stream = QDataStream(&res, QIODevice::WriteOnly);
-    stream << variant;
-    return res;
-}
-/// \endcond
-#endif
 
 void AppService::broadcastLauncherStatus()
 {
@@ -313,7 +307,8 @@ void AppService::showError(const QString &error)
 
 void AppService::clearInternalErrors()
 {
-    clearAndroidExtraNotifications(3, 3 + m_internalErrors.size());
+    clearAndroidExtraNotifications(3);
+    m_internalErrors.clear();
 }
 
 void AppService::handleMessageFromActivity(ServiceAction action, int arg1, int arg2, const QString &str)
@@ -374,8 +369,7 @@ void AppService::handleConnectionError(
         return;
     }
 #ifdef Q_OS_ANDROID
-    auto error = InternalError(errorMessage, request.url(), response);
-    showInternalError(error);
+    showInternalError(InternalError(errorMessage, request.url(), response));
 #else
     Q_UNUSED(errorMessage)
     Q_UNUSED(request)
@@ -495,11 +489,11 @@ void AppService::updateAndroidNotification()
 }
 
 void AppService::updateExtraAndroidNotification(
-    const QJniObject &title, const QJniObject &text, const QJniObject &subText, const QJniObject &page, const QJniObject &icon, int id)
+    const QJniObject &title, const QJniObject &text, const QJniObject &subText, const QJniObject &page, const QJniObject &icon, int id, const QJniObject &data)
 {
     QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateExtraNotification",
-        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;I)V", title.object(), text.object(),
-        subText.object(), page.object(), icon.object(), id ? id : ++m_androidNotificationId);
+        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;I[B)V", title.object(), text.object(),
+        subText.object(), page.object(), icon.object(), id ? id : ++m_androidNotificationId, data.object<jbyteArray>());
 }
 
 void AppService::clearAndroidExtraNotifications(int firstId, int lastId)
@@ -541,19 +535,24 @@ void AppService::clearSyncthingErrorsNotification()
  * \brief Shows the latest Syncthing API error in form of an Android notification.
  * \sa See showError() for service-internal errors and updateSyncthingErrorsNotification() for errors of Syncthing itself.
  */
-void AppService::showInternalError(const InternalError &error)
+void AppService::showInternalError(InternalError &&error)
 {
+    const auto message = error.message;
+    const auto url = error.url;
+    m_internalErrors.emplace_back(QVariant::fromValue(std::move(error)));
+
     const auto title = QJniObject::fromString(
-        m_internalErrors.empty() ? tr("Syncthing API error") : tr("%1 Syncthing API errors").arg(m_internalErrors.size() + 1));
-    const auto text = QJniObject::fromString(m_internalErrors.empty() ? error.message : tr("Most recent: ") + error.message);
-    const auto subText = QJniObject::fromString(error.url.isEmpty() ? QString() : QStringLiteral("URL: ") + error.url.toString());
-    static const auto page = QJniObject::fromString(QStringLiteral("internalErrors"));
+        m_internalErrors.size() == 1 ? tr("Syncthing API error") : tr("%1 Syncthing API errors").arg(m_internalErrors.size() + 1));
+    const auto text = QJniObject::fromString(m_internalErrors.size() < 2 ? message : tr("Most recent: ") + message);
+    const auto subText = QJniObject::fromString(url.isEmpty() ? QString() : QStringLiteral("URL: ") + url.toString());
+    const auto page = QJniObject::fromString(QStringLiteral("internalErrors"));
+    const auto data = byteArrayToJniObject(serializeVariantList(m_internalErrors));
 #ifdef SYNCTHINGTRAY_SERVICE_WITH_ICON_RENDERING
     const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
 #else
     static const auto icon = QJniObject();
 #endif
-    updateExtraAndroidNotification(title, text, subText, page, icon, 3);
+    updateExtraAndroidNotification(title, text, subText, page, icon, 3, data);
 }
 
 void AppService::showNewDevice(const QString &devId, const QString &message)

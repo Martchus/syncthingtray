@@ -221,7 +221,7 @@ private Q_SLOTS:
     void handleStateChanged(Qt::ApplicationState state);
     void handleConnectionStatusChanged(Data::SyncthingStatus newStatus);
 #ifdef Q_OS_ANDROID
-    void handleAndroidIntent(const QString &page, bool fromNotification);
+    void handleAndroidIntent(const QString &page, const QByteArray &data, bool fromNotification);
     void handleStoragePermissionChanged(bool storagePermissionGranted);
     void handleNotificationPermissionChanged(bool notificationPermissionGranted);
 #endif
