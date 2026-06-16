@@ -294,10 +294,6 @@ void AppService::replayLog()
 #ifdef Q_OS_ANDROID
 void AppService::showError(const QString &error)
 {
-    const auto ctx = QJniObject(QNativeInterface::QAndroidApplication::context());
-    if (ctx.callMethod<jint>("sendMessageToClients", static_cast<jint>(ActivityAction::ShowError), 0, 0, error) > 0) {
-        return;
-    }
     const auto title = QJniObject::fromString(tr("Syncthing App ran into error"));
     const auto text = QJniObject::fromString(error);
     const auto subText = QJniObject::fromString(QString());
