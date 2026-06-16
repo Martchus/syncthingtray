@@ -292,6 +292,12 @@ void AppService::replayLog()
 }
 
 #ifdef Q_OS_ANDROID
+/*!
+ * \brief Shows service errors in form of an Android notifications.
+ * \remarks This is about errors like not being able to read the config file or not being able to start Syncthing
+ *          at all. So these errors will happen only very rarely. This is *not* about Syncthing API errors.
+ * \sa See showInternalError() for Syncthing API errors.
+ */
 void AppService::showError(const QString &error)
 {
     const auto title = QJniObject::fromString(tr("Syncthing App ran into error"));
@@ -501,6 +507,10 @@ void AppService::clearAndroidExtraNotifications(int firstId, int lastId)
     QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "cancelExtraNotification", "(II)V", firstId, lastId);
 }
 
+/*!
+ * \brief Shows the latest error/notification from Syncthing itself in form of an Android notification.
+ * \sa See showError() for service-internal errors and showInternalError() for Syncthing API errors.
+ */
 void AppService::updateSyncthingErrorsNotification(const std::vector<Data::SyncthingError> &newErrors)
 {
     if (newErrors.empty()) {
@@ -527,6 +537,10 @@ void AppService::clearSyncthingErrorsNotification()
     clearAndroidExtraNotifications(2, -1);
 }
 
+/*!
+ * \brief Shows the latest Syncthing API error in form of an Android notification.
+ * \sa See showError() for service-internal errors and updateSyncthingErrorsNotification() for errors of Syncthing itself.
+ */
 void AppService::showInternalError(const InternalError &error)
 {
     const auto title = QJniObject::fromString(
