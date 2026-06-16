@@ -297,13 +297,12 @@ void AppService::showError(const QString &error)
     const auto title = QJniObject::fromString(tr("Syncthing App ran into error"));
     const auto text = QJniObject::fromString(error);
     const auto subText = QJniObject::fromString(QString());
-    static const auto page = QJniObject::fromString(QStringLiteral("internalErrors"));
 #ifdef SYNCTHINGTRAY_SERVICE_WITH_ICON_RENDERING
     const auto &icon = makeAndroidIcon(commonForkAwesomeIcons().exclamation);
 #else
     static const auto icon = QJniObject();
 #endif
-    updateExtraAndroidNotification(title, text, subText, page, icon);
+    updateExtraAndroidNotification(title, text, subText, QJniObject(), icon);
 }
 
 void AppService::clearInternalErrors()

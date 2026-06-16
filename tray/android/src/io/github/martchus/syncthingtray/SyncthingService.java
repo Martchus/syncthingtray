@@ -251,12 +251,14 @@ public class SyncthingService extends QtService {
             return;
         }
         Log.i(TAG, "Showing extra notification: " + text);
-        Intent intent = new Intent(s_instance, Activity.class);
-        intent.putExtra("notification", true);
-        intent.putExtra("page", page);
         s_instance.m_extraNotificationBuilder.setContentTitle(title).setContentText(text).setSubText(subText);
         s_instance.m_extraNotificationBuilder.setSmallIcon(bitmapIcon != null ? Icon.createWithBitmap(bitmapIcon) : null);
-        s_instance.m_extraNotificationBuilder.setContentIntent(PendingIntent.getActivity(s_instance, s_activityIntentRequestCode + id, intent, PendingIntent.FLAG_IMMUTABLE));
+        if (page != null) {
+            Intent intent = new Intent(s_instance, Activity.class);
+            intent.putExtra("notification", true);
+            intent.putExtra("page", page);
+            s_instance.m_extraNotificationBuilder.setContentIntent(PendingIntent.getActivity(s_instance, s_activityIntentRequestCode + id, intent, PendingIntent.FLAG_IMMUTABLE));
+        }
         s_instance.m_notificationManager.notify(id, s_instance.m_extraNotificationBuilder.build());
     }
 
