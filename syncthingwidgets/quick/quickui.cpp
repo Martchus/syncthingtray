@@ -15,6 +15,7 @@
 
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
 #include <QCursor>
+#include <QHash>
 #include <QMenu>
 #include <QMessageBox>
 #include <QQmlProperty>
@@ -514,9 +515,35 @@ void QuickUI::showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y)
             }
             static constexpr auto faStart = QLatin1StringView("image://fa/");
             const auto iconSource = QQmlProperty(item, "icon.source").read().toString();
-            const auto icon
-                = !iconSource.startsWith(faStart) ? QIcon() : QIcon(QStringView(iconSource).slice(faStart.size()) + QStringLiteral(".fa"));
-            auto *const action = widgetsMenu.addAction(QIcon(icon), item->property("text").toString());
+            const auto iconName
+                = !iconSource.startsWith(faStart) ? QString() : (QStringView(iconSource).slice(faStart.size()) + QStringLiteral(".fa"));
+            const auto icon = [&] {
+                if (iconName.isEmpty()) {
+                    return QIcon();
+                }
+                static const auto iconThemeMapping = QHash<QString, QString>({
+                    { QStringLiteral("refresh.fa"), QStringLiteral("view-refresh") },
+                    { QStringLiteral("play.fa"), QStringLiteral("media-playback-start") },
+                    { QStringLiteral("pause.fa"), QStringLiteral("media-playback-pause") },
+                    { QStringLiteral("folder.fa"), QStringLiteral("folder") },
+                    { QStringLiteral("pencil.fa"), QStringLiteral("document-edit") },
+                    { QStringLiteral("filter.fa"), QStringLiteral("view-filter") },
+                    { QStringLiteral("exchange.fa"), QStringLiteral("transfering") },
+                    { QStringLiteral("undo.fa"), QStringLiteral("edit-undo") },
+                    { QStringLiteral("redo.fa"), QStringLiteral("edit-redo") },
+                    { QStringLiteral("exclamation-triangle.fa"), QStringLiteral("dialog-warning") },
+                    { QStringLiteral("folder-open-o.fa"), QStringLiteral("document-open-remote") },
+                    { QStringLiteral("cogs.fa"), QStringLiteral("settings-configure") },
+                    { QStringLiteral("music.fa"), QStringLiteral("music-playlist") },
+                    { QStringLiteral("fa-files-o.fa"), QStringLiteral("edit-copy") },
+                    { QStringLiteral("fa-clipboard.fa"), QStringLiteral("edit-paste") },
+                });
+                if (const auto iconThemeName = iconThemeMapping.find(iconName); iconThemeName != iconThemeMapping.end()) {
+                    return QIcon::fromTheme(*iconThemeName);
+                }
+                return QIcon(iconName);
+            }();
+            auto *const action = widgetsMenu.addAction(icon, item->property("text").toString());
             connect(action, SIGNAL(triggered()), item, SIGNAL(triggered()));
         }
         if (hasItems) {

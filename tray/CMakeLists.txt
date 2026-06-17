@@ -59,6 +59,7 @@ set(REQUIRED_ICONS
     dialog-cancel
     dialog-ok
     dialog-ok-apply
+    dialog-warning
     document-edit
     document-open
     document-open-remote
@@ -88,6 +89,7 @@ set(REQUIRED_ICONS
     list-remove
     media-playback-pause
     media-playback-start
+    music-playlist
     network-connect
     network-disconnect
     network-server
@@ -102,12 +104,15 @@ set(REQUIRED_ICONS
     process-stop
     question
     qtcreator
+    settings-configure
     system-run
     system-search
     system-file-manager
     system-software-update-symbolic
     text-x-generic
+    transfering
     quickwizard
+    view-filter
     view-refresh
     window-close
     window-pin)
