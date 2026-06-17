@@ -29,6 +29,16 @@ ExpandableDelegate {
         ]
         extraActions: [
             Action {
+                text: qsTr("Copy label/ID")
+                icon.source: QuickUI.faUrlBase + "fa-files-o"
+                onTriggered: SyncthingModels.copyText(modelData.name)
+            },
+            Action {
+                text: qsTr("Copy path")
+                icon.source: QuickUI.faUrlBase + "fa-files-o"
+                onTriggered: SyncthingModels.copyText(modelData.path)
+            },
+            Action {
                 text: qsTr("Edit")
                 icon.source: QuickUI.faUrlBase + "pencil"
                 onTriggered: QuickUI.editDir(modelData.dirId, modelData.name, mainView.stackView)
@@ -72,16 +82,6 @@ ExpandableDelegate {
                 icon.source: QuickUI.faUrlBase + "music"
                 enabled: SyncthingModels.scanSupported
                 onTriggered: SyncthingModels.scanPath(modelData.path)
-            },
-            Action {
-                text: qsTr("Copy label/ID")
-                icon.source: QuickUI.faUrlBase + "fa-files-o"
-                onTriggered: SyncthingModels.copyText(modelData.name)
-            },
-            Action {
-                text: qsTr("Copy path")
-                icon.source: QuickUI.faUrlBase + "fa-files-o"
-                onTriggered: SyncthingModels.copyText(modelData.path)
             }
         ]
     }

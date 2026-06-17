@@ -90,7 +90,7 @@ Page {
         footer: DialogButtonBox {
             Button {
                 text: qsTr("Full documentation")
-                flat: true
+                flat: Utils.flatDialogButtons
                 onClicked: QuickUI.requestOpeningUrl("https://docs.syncthing.net/users/ignoring")
                 DialogButtonBox.buttonRole: DialogButtonBox.HelpRole
             }

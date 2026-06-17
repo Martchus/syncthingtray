@@ -22,12 +22,12 @@ IconOnlyButton {
         footer: DialogButtonBox {
             Button {
                 text: qsTr("Close")
-                flat: true
+                flat: Utils.flatDialogButtons
                 DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
             }
             Button {
                 text: qsTr("Details")
-                flat: true
+                flat: Utils.flatDialogButtons
                 enabled: helpButton.url.toString().length > 0
                 DialogButtonBox.buttonRole: DialogButtonBox.HelpRole
             }

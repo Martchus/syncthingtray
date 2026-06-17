@@ -44,6 +44,7 @@ class SYNCTHINGWIDGETS_EXPORT QuickUI : public QObject {
     Q_OBJECT
     Q_PROPERTY(QString faUrlBase READ faUrlBase CONSTANT)
     Q_PROPERTY(QString mode READ mode CONSTANT)
+    Q_PROPERTY(QString style READ style CONSTANT)
     Q_PROPERTY(bool desktop READ isDesktop CONSTANT)
     Q_PROPERTY(bool darkmodeEnabled READ isDarkmodeEnabled NOTIFY darkmodeEnabledChanged)
     Q_PROPERTY(qreal densityScale READ densityScale CONSTANT)
@@ -81,6 +82,10 @@ public:
     const QString &mode() const
     {
         return m_mode;
+    }
+    const QString &style() const
+    {
+        return m_style;
     }
     bool isDesktop() const
     {
@@ -211,6 +216,7 @@ private:
     QtUtilities::QtSettings &m_qtSettings;
     QString m_faUrlBase;
     QString m_mode;
+    QString m_style;
     QtForkAwesome::QuickImageProvider *m_imageProvider;
     QObjectList m_dialogs;
     qreal m_densityScale;

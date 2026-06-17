@@ -6,6 +6,8 @@ import QtQuick.Controls.Material
 import Main
 
 QtObject {
+    readonly property bool flatDialogButtons: QuickUI.style === "Material"
+    readonly property bool winUI: QuickUI.style === "FluentWinUI3"
     readonly property var popupType: {
         switch (QuickUI.popupType) {
         case 1:

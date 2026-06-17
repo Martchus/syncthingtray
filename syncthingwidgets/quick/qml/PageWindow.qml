@@ -51,7 +51,7 @@ ApplicationWindow {
                 icon.height: QuickUI.iconSize
                 icon.source: QuickUI.faUrlBase + "times"
                 text: qsTr("Close")
-                flat: true
+                flat: Utils.flatDialogButtons
                 onClicked: pageWindow.close()
             }
             Repeater {
@@ -67,7 +67,7 @@ ApplicationWindow {
                             icon.height: QuickUI.iconSize
                             enabled: modelData.enabled
                             text: modelData.text
-                            flat: true
+                            flat: Utils.flatDialogButtons
                             icon.source: modelData.icon.source
                             onClicked: modelData.trigger()
                         }
