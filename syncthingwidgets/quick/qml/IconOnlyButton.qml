@@ -5,8 +5,8 @@ import QtQuick.Controls.Material
 import Main
 
 RoundButton {
-    Layout.preferredWidth: 36 * QuickUI.densityScale
-    Layout.preferredHeight: 36 * QuickUI.densityScale
+    Layout.preferredWidth: 36 * QuickUI.densityScaleIconButtons
+    Layout.preferredHeight: 36 * QuickUI.densityScaleIconButtons
     display: AbstractButton.IconOnly
     hoverEnabled: true
     ToolTip.text: text

@@ -47,6 +47,7 @@ class SYNCTHINGWIDGETS_EXPORT QuickUI : public QObject {
     Q_PROPERTY(bool desktop READ isDesktop CONSTANT)
     Q_PROPERTY(bool darkmodeEnabled READ isDarkmodeEnabled NOTIFY darkmodeEnabledChanged)
     Q_PROPERTY(qreal densityScale READ densityScale CONSTANT)
+    Q_PROPERTY(qreal densityScaleIconButtons READ densityScaleIconButtons CONSTANT)
     Q_PROPERTY(int iconSize READ iconSize CONSTANT)
     Q_PROPERTY(int iconWidthDelegate READ iconWidthDelegate CONSTANT)
     Q_PROPERTY(int popupType READ popupType CONSTANT)
@@ -137,6 +138,10 @@ public:
     {
         return m_densityScale;
     }
+    qreal densityScaleIconButtons() const
+    {
+        return m_densityScaleIconButtons;
+    }
     int iconSize() const
     {
         return m_iconSize;
@@ -209,6 +214,7 @@ private:
     QtForkAwesome::QuickImageProvider *m_imageProvider;
     QObjectList m_dialogs;
     qreal m_densityScale;
+    qreal m_densityScaleIconButtons;
     int m_iconSize;
     int m_iconWidthDelegate;
     bool m_darkmodeEnabled;

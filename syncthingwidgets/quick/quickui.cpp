@@ -73,6 +73,12 @@ namespace QtGui {
  * \remarks This class is available as singleton in Qml code.
  */
 
+#ifdef SYNCTHINGWIDGETS_QUICK_GUI_CONTROLS_STYLE
+#define DETERMINE_STYLE QStringLiteral(SYNCTHINGWIDGETS_QUICK_GUI_CONTROLS_STYLE)
+#else
+#define DETERMINE_STYLE QQuickStyle::name()
+#endif
+
 QuickUI::QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQmlEngine *engine, const QString &mode, QObject *parent)
     : QObject(parent)
     , m_app(app)
@@ -85,6 +91,7 @@ QuickUI::QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQml
     , m_mode(mode)
     , m_imageProvider(nullptr)
     , m_densityScale(isDesktop() ? 0.6 : 1.0)
+    , m_densityScaleIconButtons(DETERMINE_STYLE == QStringLiteral("FluentWinUI3") || DETERMINE_STYLE == QStringLiteral("Material") ? std::max(0.95, m_densityScale) : m_densityScale)
     , m_iconSize(SYNCTHING_APP_ICON_SIZE)
     , m_iconWidthDelegate(SYNCTHING_APP_ICON_WIDTH_DELEGATE)
     , m_darkmodeEnabled(false)

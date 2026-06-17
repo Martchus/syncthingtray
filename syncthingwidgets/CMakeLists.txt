@@ -360,12 +360,22 @@ if (QUICK_GUI)
     list(APPEND ADDITIONAL_QT_REPOS svg)
     list(APPEND PRIVATE_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/quick")
     if (QUICK_GUI_CONTROLS_STYLE)
+        if (NOT QUICK_GUI_CONTROLS_STYLE STREQUAL "dynamic")
+            set_property(
+                SOURCE quick/quickui.cpp
+                APPEND
+                PROPERTY COMPILE_DEFINITIONS SYNCTHINGWIDGETS_QUICK_GUI_CONTROLS_STYLE="${QUICK_GUI_CONTROLS_STYLE}")
+        endif ()
         if (QUICK_GUI_CONTROLS_STYLE STREQUAL "dynamic" OR QUICK_GUI_CONTROLS_STYLE STREQUAL "FluentWinUI3")
             list(APPEND ADDITIONAL_QT_MODULES "QuickControls2")
         else ()
             list(APPEND ADDITIONAL_QT_MODULES "QuickControls2${QUICK_GUI_CONTROLS_STYLE}")
         endif ()
     else ()
+        set_property(
+            SOURCE quick/quickui.cpp
+            APPEND
+            PROPERTY COMPILE_DEFINITIONS SYNCTHINGWIDGETS_QUICK_GUI_CONTROLS_STYLE="Material")
         list(APPEND ADDITIONAL_QT_MODULES "QuickControls2Material")
     endif ()
 
