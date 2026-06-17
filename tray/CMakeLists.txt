@@ -110,9 +110,9 @@ set(REQUIRED_ICONS
     system-file-manager
     system-software-update-symbolic
     text-x-generic
-    transfering
     quickwizard
     view-filter
+    view-list
     view-refresh
     window-close
     window-pin)

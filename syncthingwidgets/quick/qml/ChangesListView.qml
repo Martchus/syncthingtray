@@ -12,6 +12,7 @@ CustomListView {
         model: SyncthingModels.changesModel
         delegate: ItemDelegate {
             width: mainView.width
+            id: delegate
             onClicked: SyncthingModels.openPath(modelData.directoryId, modelData.path)
             onPressAndHold: SyncthingModels.copyPath(modelData.directoryId, modelData.path)
             contentItem: GridLayout {
@@ -19,6 +20,7 @@ CustomListView {
                 columns: width < 500 ? 2 : 8
                 columnSpacing: 10
                 ForkAwesomeIcon {
+                    id: firstIcon
                     iconName: (modelData.action === "deleted") ? ("trash-o") : (modelData.itemType === "file" ? "file-o" : "folder-o")
                 }
                 Label {
@@ -50,7 +52,49 @@ CustomListView {
                     font.weight: Font.Light
                 }
             }
+            CustomMenu {
+                id: menu
+                MenuItemInstantiator {
+                    menu: menu
+                    model: delegate.actions
+                }
+            }
+            TapHandler {
+                acceptedButtons: Qt.LeftButton
+                onLongPressed: {
+                    QuickUI.performHapticFeedback();
+                    menu.showCenteredInRight(firstIcon);
+                }
+            }
+            TapHandler {
+                acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad | PointerDevice.Stylus
+                acceptedButtons: Qt.RightButton
+                onTapped: menu.showCenteredInRight(firstIcon)
+            }
             required property var modelData
+            readonly property list<Action> actions: [
+                Action {
+                    text: qsTr("Open item")
+                    icon.source: QuickUI.faUrlBase + "folder-open"
+                    enabled: modelData.action !== "deleted"
+                    onTriggered: SyncthingModels.openPath(SyncthingData.connection.fullPath(modelData.directoryId, modelData.path))
+                },
+                Action {
+                    text: qsTr("Copy path")
+                    icon.source: QuickUI.faUrlBase + "fa-files-o"
+                    onTriggered: SyncthingModels.copyText(SyncthingData.connection.fullPath(modelData.directoryId, modelData.path))
+                },
+                Action {
+                    text: qsTr("Copy device")
+                    icon.source: QuickUI.faUrlBase + "sitemap"
+                    onTriggered: SyncthingModels.copyText(modelData.modifiedBy)
+                },
+                Action {
+                    text: qsTr("Copy folder")
+                    icon.source: QuickUI.faUrlBase + "folder"
+                    onTriggered: SyncthingModels.copyText(modelData.directoryId)
+                }
+            ]
         }
     }
     property alias delegateModel: delegateModel

@@ -33,6 +33,16 @@ ExpandableDelegate {
                 text: qsTr("Advanced config")
                 icon.source: QuickUI.faUrlBase + "cogs"
                 onTriggered: QuickUI.editDev(modelData.devId, modelData.name, mainView.stackView, true)
+            },
+            Action {
+                text: qsTr("Copy name")
+                icon.source: QuickUI.faUrlBase + "fa-files-o"
+                onTriggered: SyncthingModels.copyText(modelData.name)
+            },
+            Action {
+                text: qsTr("Copy ID")
+                icon.source: QuickUI.faUrlBase + "fa-files-o"
+                onTriggered: SyncthingModels.copyText(modelData.devId)
             }
         ]
     }
