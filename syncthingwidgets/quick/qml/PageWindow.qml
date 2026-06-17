@@ -21,14 +21,17 @@ ApplicationWindow {
             IconOnlyButton {  // using IconOnlyButton because normal Button does not show icon with Breeze style
                 visible: stackView.depth > 1
                 icon.source: QuickUI.faUrlBase + "arrow-left"
+                icon.width: QuickUI.iconSize
+                icon.height: QuickUI.iconSize
                 text: qsTr("Back")
                 onClicked: stackView.pop()
-                radius: 4
             }
-            CustomToolButton {
+            IconOnlyButton {
                 id: extraActionsMenuButton
                 visible: currentPage.extraActions?.length > 0
                 icon.source: QuickUI.faUrlBase + "ellipsis-v"
+                icon.width: QuickUI.iconSize
+                icon.height: QuickUI.iconSize
                 text: qsTr("More")
                 onClicked: currentPage?.showExtraActions() ?? extraActionsMenu.showCenteredIn(extraActionsMenuButton)
                 CustomMenu {
@@ -42,12 +45,13 @@ ApplicationWindow {
                     }
                 }
             }
-            CustomToolButton {
+            Button {
                 display: AbstractButton.TextBesideIcon
                 icon.width: QuickUI.iconSize
                 icon.height: QuickUI.iconSize
                 icon.source: QuickUI.faUrlBase + "times"
-                text: qsTr("Abort")
+                text: qsTr("Close")
+                flat: true
                 onClicked: pageWindow.close()
             }
             Repeater {
