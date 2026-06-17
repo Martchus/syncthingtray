@@ -225,6 +225,7 @@ StackView {
                     {value: "background", label: qsTr("Keep Syncthing in background")},
                     {value: "shutdown", label: qsTr("Shut Syncthing down")},
                 ]},
+                {key: "syncthingIconsVisible", type: "boolean", defaultValue: true, label: qsTr("Show Syncthing icons"), statusText: qsTr("Disable for a cleaner UI")},
             ]
         })
         property bool hasUnsavedChanges: false

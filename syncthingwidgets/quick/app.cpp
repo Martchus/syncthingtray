@@ -756,6 +756,7 @@ bool App::applySettings()
     auto mod = false;
     auto tweaksSettings = m_settings.value(QLatin1String("tweaks")).toObject();
     ensureDefault(mod, tweaksSettings, QLatin1String("closePreference"), QString());
+    ensureDefault(mod, tweaksSettings, QLatin1String("syncthingIconsVisible"), true);
     ensureDefault(mod, tweaksSettings, QLatin1String("exportDir"), QString());
     ensureDefault(mod, tweaksSettings, QLatin1String("useUnixDomainSocket"), false);
     ensureDefault(mod, tweaksSettings, QLatin1String("connectionLogging"), false);
@@ -770,6 +771,7 @@ bool App::applySettings()
     applyLauncherSettings();
     applyConnectionSettings(m_syncthingGuiUrl);
     invalidateStatus();
+    m_ui.setSyncthingIconsVisible(tweaksSettings.value(QLatin1String("syncthingIconsVisible")).toBool());
     emit info(tr("App settings saved"));
     return true;
 }
