@@ -11,8 +11,8 @@ CustomListView {
         id: delegateModel
         model: SyncthingModels.changesModel
         delegate: ItemDelegate {
-            width: mainView.width
             id: delegate
+            width: mainView.width - (mainView.ScrollBar?.vertical ? mainView.ScrollBar.vertical.width : 0)
             onClicked: SyncthingModels.openPath(modelData.directoryId, modelData.path)
             onPressAndHold: SyncthingModels.copyPath(modelData.directoryId, modelData.path)
             contentItem: GridLayout {
