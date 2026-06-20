@@ -30,12 +30,12 @@ ExpandableDelegate {
         extraActions: [
             Action {
                 text: qsTr("Copy label/ID")
-                icon.source: QuickUI.faUrlBase + "fa-files-o"
+                icon.source: QuickUI.faUrlBase + "files-o"
                 onTriggered: SyncthingModels.copyText(modelData.name)
             },
             Action {
                 text: qsTr("Copy path")
-                icon.source: QuickUI.faUrlBase + "fa-files-o"
+                icon.source: QuickUI.faUrlBase + "files-o"
                 onTriggered: SyncthingModels.copyText(modelData.path)
             },
             Action {

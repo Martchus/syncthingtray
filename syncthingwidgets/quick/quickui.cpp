@@ -545,8 +545,8 @@ void QuickUI::showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y)
                     { QStringLiteral("cogs.fa"), QStringLiteral("settings-configure") },
                     { QStringLiteral("music.fa"), QStringLiteral("music-playlist") },
                     { QStringLiteral("sitemap.fa"), QStringLiteral("network-server-symbolic") },
-                    { QStringLiteral("fa-files-o.fa"), QStringLiteral("edit-copy") },
-                    { QStringLiteral("fa-clipboard.fa"), QStringLiteral("edit-paste") },
+                    { QStringLiteral("files-o.fa"), QStringLiteral("edit-copy") },
+                    { QStringLiteral("clipboard.fa"), QStringLiteral("edit-paste") },
                 });
                 if (const auto iconThemeName = iconThemeMapping.find(iconName); iconThemeName != iconThemeMapping.end()) {
                     return QIcon::fromTheme(*iconThemeName);

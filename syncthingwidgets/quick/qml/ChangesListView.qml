@@ -81,7 +81,7 @@ CustomListView {
                 },
                 Action {
                     text: qsTr("Copy path")
-                    icon.source: QuickUI.faUrlBase + "fa-files-o"
+                    icon.source: QuickUI.faUrlBase + "files-o"
                     onTriggered: SyncthingModels.copyText(SyncthingData.connection.fullPath(modelData.directoryId, modelData.path))
                 },
                 Action {
