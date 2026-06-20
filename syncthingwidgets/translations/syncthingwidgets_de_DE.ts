@@ -1092,6 +1092,29 @@
     </message>
 </context>
 <context>
+    <name>ChangesListView</name>
+    <message>
+        <location filename="../quick/qml/ChangesListView.qml" line="77"/>
+        <source>Open item</source>
+        <translation>Öffne Datei/Ordner</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/ChangesListView.qml" line="83"/>
+        <source>Copy path</source>
+        <translation>Pfad kopieren</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/ChangesListView.qml" line="88"/>
+        <source>Copy device</source>
+        <translation>Gerät kopieren</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/ChangesListView.qml" line="93"/>
+        <source>Copy folder</source>
+        <translation>Ordner kopieren</translation>
+    </message>
+</context>
+<context>
     <name>ChangesPage</name>
     <message>
         <location filename="../quick/qml/ChangesPage.qml" line="6"/>
@@ -1415,16 +1438,26 @@
     </message>
     <message>
         <location filename="../quick/qml/DevDelegate.qml" line="22"/>
+        <source>Copy name</source>
+        <translation>Namen kopieren</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DevDelegate.qml" line="27"/>
+        <source>Copy ID</source>
+        <translation>ID kopieren</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DevDelegate.qml" line="32"/>
         <source>Edit</source>
         <translation>Bearbeiten</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevDelegate.qml" line="27"/>
+        <location filename="../quick/qml/DevDelegate.qml" line="37"/>
         <source>Out of Sync items</source>
         <translation>Nicht synchronisiert</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevDelegate.qml" line="33"/>
+        <location filename="../quick/qml/DevDelegate.qml" line="43"/>
         <source>Advanced config</source>
         <translation>Erweitert</translation>
     </message>
@@ -1995,36 +2028,46 @@
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="32"/>
+        <source>Copy label/ID</source>
+        <translation>ID/Label kopieren</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DirDelegate.qml" line="37"/>
+        <source>Copy path</source>
+        <translation>Pfad kopieren</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DirDelegate.qml" line="42"/>
         <source>Edit</source>
         <translation>Bearbeiten</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="37"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="47"/>
         <source>Out of Sync items</source>
         <translation>Nicht synchronisiert</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="49"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="59"/>
         <source>Show errors</source>
         <translation>Fehler</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="55"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="65"/>
         <source>Ignore patterns</source>
         <translation>Ignoriermuster</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="60"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="70"/>
         <source>Remote files</source>
         <translation>Globale Dateien</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="66"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="76"/>
         <source>Advanced config</source>
         <translation>Erweitert</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="71"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="81"/>
         <source>Media rescan</source>
         <translation>Medien-Scan</translation>
     </message>
@@ -3243,292 +3286,292 @@
         <translation type="vanished">Eine andere Änderung ist noch im Gange.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="675"/>
+        <location filename="../quick/app.cpp" line="683"/>
         <source>Unable to minimize app.</source>
         <translation>Die App kann nicht minimiert werden.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="706"/>
+        <location filename="../quick/app.cpp" line="714"/>
         <source>Unable to save settings: </source>
         <translation>Einstellungen konnten nicht gespeichert werden: </translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="765"/>
+        <location filename="../quick/app.cpp" line="775"/>
         <source>App settings saved</source>
         <translation>App-Einstellungen gespeichert</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="791"/>
+        <location filename="../quick/app.cpp" line="801"/>
         <source>No logfile present anyway</source>
         <translation>Keine Log-Datei vorhanden</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="797"/>
+        <location filename="../quick/app.cpp" line="807"/>
         <source>Waiting for backend to terminate before clearing logs …</source>
         <translation>Warte bis sich Backend beendet hat, bevor Logs gelöscht werden …</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="806"/>
+        <location filename="../quick/app.cpp" line="816"/>
         <source>Persistent logging disabled and logfile removed</source>
         <translation>Persistentes Logging ist deaktiviert und die Log-Datei gelöscht</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="808"/>
+        <location filename="../quick/app.cpp" line="818"/>
         <source>Unable to remove logfile</source>
         <translation>Log-Datei kann nicht gelöscht werden</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="840"/>
+        <location filename="../quick/app.cpp" line="850"/>
         <source>Another import/export still pending</source>
         <translation>Anderer Vorgang ist noch im Gange</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="880"/>
+        <location filename="../quick/app.cpp" line="890"/>
         <source>Settings directory was not located.</source>
         <translation>Einstellungsverzeichnis wurde nicht gefunden.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="900"/>
+        <location filename="../quick/app.cpp" line="910"/>
         <source>Unable to extract archive: %1</source>
         <translation>Konnte Archiv nicht extrahieren: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="905"/>
+        <location filename="../quick/app.cpp" line="915"/>
         <source>Unable to create temp dir: %1</source>
         <translation>Konnte temp. Verz. nicht erstellen: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="909"/>
+        <location filename="../quick/app.cpp" line="919"/>
         <source>archiving is only supported on Android.</source>
         <translation>Archivieren wird nur unter Android unterstützt.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="933"/>
+        <location filename="../quick/app.cpp" line="943"/>
         <source>The Syncthing home directory under &quot;%1&quot; is empty.</source>
         <translation>Das Syncthing-Home-Verzeichnis unter &quot;%1&quot; ist leer.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="946"/>
+        <location filename="../quick/app.cpp" line="956"/>
         <source>No Syncthing configuration file found under &quot;%1&quot;.</source>
         <translation>Die Syncthing-Konfiguration konnte nicht unter &quot;%1&quot; gefunden werden.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1034"/>
+        <location filename="../quick/app.cpp" line="1044"/>
         <source>Triggered re-connect with Syncthing backend</source>
         <translation>Neuer Verbindungsaufbau mit dem Syncthing-Backend gestartet</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1053"/>
+        <location filename="../quick/app.cpp" line="1063"/>
         <source>Unable to import settings: settings directory was not located.</source>
         <translation>Einstellungen konnten nicht importiert werden: das Einstellungsverzeichnis wurde nicht gefunden.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1060"/>
+        <location filename="../quick/app.cpp" line="1070"/>
         <source>Waiting for backend to terminate before importing settings …</source>
         <translation>Warte vor dem Import bis sich Backend beendet hat …</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1104"/>
+        <location filename="../quick/app.cpp" line="1114"/>
         <source>Imported app config from &quot;%1&quot;.</source>
         <translation>App-Einstellungen aus &quot;%1&quot; importiert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1117"/>
+        <location filename="../quick/app.cpp" line="1127"/>
         <source>Imported Syncthing config and database from &quot;%1&quot;.</source>
         <translation>Syncthing-Konfiguration und -Datenbank aus &quot;%1&quot; importiert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1135"/>
+        <location filename="../quick/app.cpp" line="1145"/>
         <source>Unable to find folders/devices in current Syncthing config.</source>
         <translation>Kann Ordner/Geräte in der aktuellen Syncthing-Konfiguration nicht finden.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1151"/>
+        <location filename="../quick/app.cpp" line="1161"/>
         <source>Merging %1 folders and %2 devices</source>
         <translation>Importiere %1 Ordner und %2 Gerät(e)</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1153"/>
+        <location filename="../quick/app.cpp" line="1163"/>
         <source>Unable to import folders/devices.</source>
         <translation>Kann Ordner/Geräte nicht importieren</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1162"/>
+        <location filename="../quick/app.cpp" line="1172"/>
         <source>Unable to remove temp dir: %1</source>
         <translation>Kann temp. Verz. nicht löschen: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1168"/>
+        <location filename="../quick/app.cpp" line="1178"/>
         <source>Nothing has been imported.</source>
         <translation>Es wurde nichts importiert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1178"/>
+        <location filename="../quick/app.cpp" line="1188"/>
         <source>Unable to import settings: %1</source>
         <translation>Konnte Einstellungen nicht importieren: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1223"/>
+        <location filename="../quick/app.cpp" line="1233"/>
         <source>Waiting for backend to terminate before exporting settings …</source>
         <translation>Warte vor dem Export bis sich Backend beendet hat …</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1239"/>
+        <location filename="../quick/app.cpp" line="1249"/>
         <source>settings directory was not located.</source>
         <translation>Einstellungsverzeichnis wurde nicht gefunden.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1245"/>
+        <location filename="../quick/app.cpp" line="1255"/>
         <source>no destination or file or directory specified/configured.</source>
         <translation>kein Ziel angegeben/konfiguriert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1257"/>
+        <location filename="../quick/app.cpp" line="1267"/>
         <source>Settings have been archived to &quot;%1&quot;.</source>
         <translation>Einstellungen wurden unter &quot;%1&quot; archiviert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1259"/>
+        <location filename="../quick/app.cpp" line="1269"/>
         <source>Archiving is only supported on Android.</source>
         <translation>Archivieren wird nur unter Android unterstützt.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1265"/>
+        <location filename="../quick/app.cpp" line="1275"/>
         <source>unable to create export directory under &quot;%1&quot;</source>
         <translation>kann Export-Verzeichnis unter &quot;%1&quot; nicht erstellen</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1278"/>
+        <location filename="../quick/app.cpp" line="1288"/>
         <source>Settings have been exported to &quot;%1&quot;.</source>
         <translation>Einstellungen wurden nach &quot;%1&quot; exportiert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1285"/>
+        <location filename="../quick/app.cpp" line="1295"/>
         <source>Unable to export settings: %1</source>
         <translation>Konnte Einstellungen nicht exportieren: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1358"/>
+        <location filename="../quick/app.cpp" line="1368"/>
         <source>Default directory</source>
         <translation>Standardverzeichnis</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1374"/>
+        <location filename="../quick/app.cpp" line="1384"/>
         <source>External storage %1</source>
         <translation>Externer Speicher %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1383"/>
+        <location filename="../quick/app.cpp" line="1393"/>
         <source>Current home directory</source>
         <translation>Aktuelles Home-Verzeichnis</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1413"/>
+        <location filename="../quick/app.cpp" line="1423"/>
         <source>Unable to move Syncthing home: settings directory was not located.</source>
         <translation>Das Home-Verzeichnis konnten nicht verschoben werden: das Einstellungsverzeichnis wurde nicht gefunden.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1419"/>
+        <location filename="../quick/app.cpp" line="1429"/>
         <source>Waiting for backend to terminate before moving home …</source>
         <translation>Warte vor dem Verschieben bis sich Backend beendet hat …</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1442"/>
+        <location filename="../quick/app.cpp" line="1452"/>
         <source>Home directory stays the same.</source>
         <translation>Das Home-Verzeichnis hat sich nicht geändert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1453"/>
+        <location filename="../quick/app.cpp" line="1463"/>
         <source>Cleaned up new home directory &quot;%1&quot;.</source>
         <translation>Neues Home-Verzeichnis &quot;%1&quot; wurde bereinigt.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1459"/>
+        <location filename="../quick/app.cpp" line="1469"/>
         <source>Copied data from previous home directory &quot;%1&quot; to new one.</source>
         <translation>Daten vom vorherigen Home-Verz. &quot;%1&quot; wurden in neues Home-Verz. kopiert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1462"/>
+        <location filename="../quick/app.cpp" line="1472"/>
         <source>Cleaned up previous home directory.</source>
         <translation>Vorheriges Home-Verz. wurde bereinigt.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1465"/>
+        <location filename="../quick/app.cpp" line="1475"/>
         <source>Configured &quot;%1&quot; as new/empty Syncthing home.</source>
         <translation>&quot;%1&quot; wurde als neues/leeres Home-Verz. konfiguriert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1467"/>
+        <location filename="../quick/app.cpp" line="1477"/>
         <source>Configured &quot;%1&quot; as Syncthing home.</source>
         <translation>&quot;%1&quot; wurde als Home-Verz. konfiguriert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1471"/>
+        <location filename="../quick/app.cpp" line="1481"/>
         <source>Unable to move home directory: %1</source>
         <translation>Konnte das Home-Verz. nicht verschieben: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1509"/>
+        <location filename="../quick/app.cpp" line="1519"/>
         <source>Debugging needs to be enabled under advanced GUI settings first.</source>
         <translation>&quot;Debugging&quot; muss erst in den erweiterten GUI-Einstellungen aktiviert werden.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1516"/>
+        <location filename="../quick/app.cpp" line="1526"/>
         <source>No destination or file or directory specified/configured.</source>
         <translation>Kein Ziel ausgewählt/konfiguriert.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1525"/>
+        <location filename="../quick/app.cpp" line="1535"/>
         <source>Unable to open output file under &quot;%1&quot;: %2</source>
         <translation>Konnte Ausgabedatei nicht unter &quot;%1&quot; öffnen: %2</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1543"/>
+        <location filename="../quick/app.cpp" line="1553"/>
         <source>Unable to write bundle: %1</source>
         <translation>Konnte Support-Bundle nicht speichern: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1546"/>
+        <location filename="../quick/app.cpp" line="1556"/>
         <source>Unable to download bundle: %1</source>
         <translation>Konnte Support-Bundle nicht laden: %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1549"/>
+        <location filename="../quick/app.cpp" line="1559"/>
         <source>Support bundle saved</source>
         <translation>Support-Bundle wurde erstellt</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1578"/>
+        <location filename="../quick/app.cpp" line="1588"/>
         <source>Removed old database directory.</source>
         <translation>Altes Datenbankverzeichnis wurde gelöscht.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1580"/>
+        <location filename="../quick/app.cpp" line="1590"/>
         <source>Unable to remove old database directory.</source>
         <translation>Konnte altes Datenbankverzeichnis nicht löschen.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1595"/>
+        <location filename="../quick/app.cpp" line="1605"/>
         <source>Unable to remove all support bundles.</source>
         <translation>Nicht alle Support-Bundles konnten gelöscht werden.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1599"/>
+        <location filename="../quick/app.cpp" line="1609"/>
         <source>Support bundles have been removed.</source>
         <translation>Support-Bundles wurden gelöscht.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1615"/>
+        <location filename="../quick/app.cpp" line="1625"/>
         <source>Unable to remove leftovers from import under &quot;%1&quot;.</source>
         <translation>Konnte temporäre Dateien vom Import unter &quot;%1&quot; nicht löschen.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1620"/>
+        <location filename="../quick/app.cpp" line="1630"/>
         <source>Removed leftovers from import.</source>
         <translation>Temporäre Dateien vom Import wurden gelöscht.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1625"/>
+        <location filename="../quick/app.cpp" line="1635"/>
         <source>There was nothing to clean up.</source>
         <translation>Es wurde nichts zum Bereinigen gefunden.</translation>
     </message>
@@ -3599,65 +3642,65 @@
 <context>
     <name>QtGui::AppService</name>
     <message>
-        <location filename="../quick/appservice.cpp" line="146"/>
+        <location filename="../quick/appservice.cpp" line="152"/>
         <source>Backend is starting …</source>
         <translation>Backend startet …</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="213"/>
+        <location filename="../quick/appservice.cpp" line="207"/>
         <source>Unable to open persistent log file for Syncthing under &quot;%1&quot;: %2</source>
         <translation>Persistente Log-Datei für Syncthing kann unter &quot;%1&quot; nicht angelegt werden: %2</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="224"/>
+        <location filename="../quick/appservice.cpp" line="218"/>
         <source>This build of the app cannot launch Syncthing.</source>
         <translation>Diese Version der App kann Syncthing nicht ausführen.</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="301"/>
+        <location filename="../quick/appservice.cpp" line="297"/>
         <source>Syncthing App ran into error</source>
         <translation>In der Syncthing-App ist ein Fehler aufgetreten</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="418"/>
+        <location filename="../quick/appservice.cpp" line="413"/>
         <source>An error occurred when running Syncthing: %2
 </source>
         <translation>Beim Ausführen von Syncthing ist ein Fehler aufgetreten: %2
 </translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="518"/>
+        <location filename="../quick/appservice.cpp" line="517"/>
         <source>Syncthing error/notification</source>
         <translation>Syncthing Fehler/Benachrichtigung</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="518"/>
+        <location filename="../quick/appservice.cpp" line="517"/>
         <source>%1 Syncthing errors/notifications</source>
         <translation>%1 Syncthing Fehler/Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="519"/>
-        <location filename="../quick/appservice.cpp" line="539"/>
+        <location filename="../quick/appservice.cpp" line="518"/>
+        <location filename="../quick/appservice.cpp" line="546"/>
         <source>Most recent: </source>
         <translation>Letzte: </translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="538"/>
+        <location filename="../quick/appservice.cpp" line="545"/>
         <source>Syncthing API error</source>
         <translation>Syncthing-API-Fehler</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="538"/>
+        <location filename="../quick/appservice.cpp" line="545"/>
         <source>%1 Syncthing API errors</source>
         <translation>%1 Syncthing-API-Fehler</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="552"/>
+        <location filename="../quick/appservice.cpp" line="560"/>
         <source>Syncthing device wants to connect</source>
         <translation>Syncthing-Gerät will sich verbinden</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="566"/>
+        <location filename="../quick/appservice.cpp" line="574"/>
         <source>Syncthing device wants to share folder</source>
         <translation>Syncthing-Gerät will einen Ordner teilen</translation>
     </message>
@@ -4749,7 +4792,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="35"/>
         <source>Syncthing Tray&apos;s own UI (experimental, WIP)</source>
-        <translation>Von Syncthing Tray bereitgestellte Oberfläche (experimentellt, noch nicht fertig)</translation>
+        <translation>der von Syncthing Tray bereitgestellten Oberfläche (experimentell, noch nicht fertig)</translation>
     </message>
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="42"/>
@@ -5522,7 +5565,7 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
 <context>
     <name>QtGui::QuickUI</name>
     <message>
-        <location filename="../quick/quickui.cpp" line="450"/>
+        <location filename="../quick/quickui.cpp" line="459"/>
         <source>Settings</source>
         <translation>Einstellungen</translation>
     </message>
@@ -6778,7 +6821,17 @@ Dieser Dialog schließt sich automatisch, wenn der Prozess beendet wird.</transl
         <translation>Syncthing beenden</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="233"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="228"/>
+        <source>Show Syncthing icons</source>
+        <translation>Verwende Syncthing-Symbole</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="228"/>
+        <source>Disable for a cleaner UI</source>
+        <translation>Deaktiviert Syncthing-Symbole für ein klareres UI</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="234"/>
         <source>Apply</source>
         <translation>Anwenden</translation>
     </message>
