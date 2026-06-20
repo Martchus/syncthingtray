@@ -41,6 +41,10 @@ QT_FORWARD_DECLARE_CLASS(QJSEngine)
 QT_FORWARD_DECLARE_CLASS(QQuickWidget)
 #endif
 
+#if defined(Q_OS_WINDOWS)
+#define TRAY_WIDGET_HANDLE_WINDOWS11_STYLE
+#endif
+
 namespace QtGui {
 
 #ifdef SYNCTHINGWIDGETS_NO_WEBVIEW
@@ -55,6 +59,10 @@ class TrayMenu;
 namespace Ui {
 class TrayWidget;
 }
+
+#ifdef TRAY_WIDGET_HANDLE_WINDOWS11_STYLE
+bool isWindows11Style(const QWidget *widget);
+#endif
 
 class TrayWidget : public QWidget {
     Q_OBJECT
@@ -149,6 +157,7 @@ private Q_SLOTS:
     void setLabelPixmaps();
     void setTrafficPixmaps(bool recompute = false);
     void connectWithUpdateNotifier();
+    void updateContentMargins();
 
 private:
     TrayMenu *m_menu;
@@ -181,6 +190,9 @@ private:
     } m_trafficIcons;
     bool m_tabTextsShown;
     bool m_applyingSettingsForWizard;
+#ifdef TRAY_WIDGET_HANDLE_WINDOWS11_STYLE
+    bool m_isWindows11Style;
+#endif
     static std::vector<TrayWidget *> s_instances;
 };
 

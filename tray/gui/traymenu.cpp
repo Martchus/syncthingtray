@@ -52,14 +52,6 @@ static constexpr auto border = 10;
 
 static QT_PLATFORM_POPUP_FLAGS_SPECIFIER auto popupFlags = Qt::Popup | QT_PLATFORM_POPUP_EXTRA_FLAGS;
 
-#ifdef TRAY_MENU_HANDLE_WINDOWS11_STYLE
-static bool isWindows11Style(const QWidget *widget)
-{
-    const auto *const s = widget->style();
-    return s && s->name().compare(QLatin1String("windows11"), Qt::CaseInsensitive) == 0;
-}
-#endif
-
 TrayMenu::TrayMenu(TrayIcon *trayIcon, QWidget *parent)
     : QMenu(parent)
     , m_layout(new QHBoxLayout)

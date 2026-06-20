@@ -61,6 +61,10 @@
 #include <QQuickWidget>
 #endif
 
+#ifdef TRAY_WIDGET_HANDLE_WINDOWS11_STYLE
+#include <QStyle>
+#endif
+
 #include <algorithm>
 #include <functional>
 
@@ -75,6 +79,14 @@ SettingsDialog *TrayWidget::s_settingsDlg = nullptr;
 Wizard *TrayWidget::s_wizard = nullptr;
 QtUtilities::AboutDialog *TrayWidget::s_aboutDlg = nullptr;
 vector<TrayWidget *> TrayWidget::s_instances;
+
+#ifdef TRAY_WIDGET_HANDLE_WINDOWS11_STYLE
+bool isWindows11Style(const QWidget *widget)
+{
+    const auto *const s = widget->style();
+    return s && s->name().compare(QLatin1String("windows11"), Qt::CaseInsensitive) == 0;
+}
+#endif
 
 /*!
  * \brief Instantiates a new tray widget.
@@ -99,6 +111,9 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     , m_startStopButtonTarget(StartStopButtonTarget::None)
     , m_tabTextsShown(true)
     , m_applyingSettingsForWizard(false)
+#ifdef TRAY_WIDGET_HANDLE_WINDOWS11_STYLE
+    , m_isWindows11Style(false)
+#endif
 {
     // configure whether to show Qt Quick GUI
     const auto &settings = Settings::values();
@@ -199,6 +214,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     // setup other widgets
     m_ui->notificationsPushButton->setHidden(true);
     updateTrafficText();
+    updateContentMargins();
     setTrafficPixmaps(true);
     setLabelPixmaps();
 
@@ -756,6 +772,12 @@ bool TrayWidget::event(QEvent *event)
 {
     const auto res = QWidget::event(event);
     switch (event->type()) {
+    case QEvent::StyleChange:
+#ifdef TRAY_WIDGET_HANDLE_WINDOWS11_STYLE
+        m_isWindows11Style = isWindows11Style(this);
+        updateContentMargins();
+#endif
+        break;
     case QEvent::PaletteChange: {
         const auto palette = QPalette();
         IconManager::instance(&palette).setPalette(palette);
@@ -1190,6 +1212,17 @@ void TrayWidget::connectWithUpdateNotifier()
         connect(updateHandler->notifier(), &QtUtilities::UpdateNotifier::updateAvailable, m_menu->icon(), &TrayIcon::showNewVersionAvailable);
     }
 #endif
+}
+
+void TrayWidget::updateContentMargins()
+{
+#ifdef TRAY_WIDGET_HANDLE_WINDOWS11_STYLE
+    if (m_isWindows11Style) {
+        m_ui->statisticsHorizontalLayout->setContentsMargins(QMargins(12, 0, 0, 0));
+        return;
+    }
+#endif
+    m_ui->statisticsHorizontalLayout->setContentsMargins(QMargins(4, 0, 0, 0));
 }
 
 } // namespace QtGui
