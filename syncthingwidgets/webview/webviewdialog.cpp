@@ -331,12 +331,12 @@ static void openBrowserInAppMode(const QString &url)
  * \returns Returns the used WebViewDialog or nullptr if another method was used.
  */
 WebViewDialog *showWebUI(
-    const QString &url, const Data::SyncthingConnectionSettings *settings, WebViewDialog *dlg, QWidget *parent, Data::SyncthingConnection *connection)
+    const QString &url, const Data::SyncthingConnectionSettings *settings, WebViewDialog *dlg, QWidget *parent, Data::SyncthingConnection *connection, bool noQuickUI)
 {
     switch (Settings::values().webView.mode) {
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
     case Settings::WebView::Mode::QuickUI:
-        if (QMetaObject::invokeMethod(parent, "showQtQuickGui")) {
+        if (!noQuickUI && QMetaObject::invokeMethod(parent, "showQtQuickGui")) {
             return nullptr;
         }
         break;

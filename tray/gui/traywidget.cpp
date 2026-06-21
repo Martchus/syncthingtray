@@ -473,9 +473,9 @@ void TrayWidget::showAboutDialog()
     showDialog(s_aboutDlg);
 }
 
-void TrayWidget::showWebUI()
+void TrayWidget::showSyncthingUI(bool noQuickUI)
 {
-    auto *const dlg = QtGui::showWebUI(m_data.connection()->syncthingUrl(), m_selectedConnection, m_webViewDlg, this, m_data.connection());
+    auto *const dlg = QtGui::showWebUI(m_data.connection()->syncthingUrl(), m_selectedConnection, m_webViewDlg, this, m_data.connection(), noQuickUI);
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     if (!dlg) {
         return;
@@ -488,6 +488,11 @@ void TrayWidget::showWebUI()
 #else
     Q_UNUSED(dlg)
 #endif
+}
+
+void TrayWidget::showWebUI()
+{
+    showSyncthingUI();
 }
 
 void TrayWidget::showOwnDeviceId()

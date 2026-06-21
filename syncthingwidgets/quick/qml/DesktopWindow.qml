@@ -108,6 +108,10 @@ ApplicationWindow {
                     icon.width: QuickUI.iconSize
                     icon.height: QuickUI.iconSize
                     Action {
+                        text: qsTr("&Open web-based UI")
+                        onTriggered: TrayWidget.showSyncthingUI(true)
+                    }
+                    Action {
                         text: qsTr("&Recent changes")
                         onTriggered: QuickUI.showRecentChanges()
                     }

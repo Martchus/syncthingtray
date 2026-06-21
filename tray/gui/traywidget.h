@@ -96,6 +96,7 @@ public Q_SLOTS:
     void showUpdateSettings();
     void showWizard();
     void showAboutDialog();
+    void showSyncthingUI(bool noQuickUI = false);
     void showWebUI();
     void showOwnDeviceId();
     void showLog();

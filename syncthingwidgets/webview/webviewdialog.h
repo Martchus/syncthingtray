@@ -92,7 +92,7 @@ using WebViewDialog = void;
 
 namespace QtGui {
 SYNCTHINGWIDGETS_EXPORT WebViewDialog *showWebUI(const QString &url, const Data::SyncthingConnectionSettings *settings, WebViewDialog *dlg = nullptr,
-    QWidget *parent = nullptr, Data::SyncthingConnection *connection = nullptr);
+    QWidget *parent = nullptr, Data::SyncthingConnection *connection = nullptr, bool noQuickUI = false);
 }
 
 #endif // WEBVIEW_DIALOG_H
