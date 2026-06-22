@@ -18,6 +18,9 @@
 #if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
 #include <syncthingwidgets/misc/syncthinglauncher.h>
 #endif
+#if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+#include <syncthingwidgets/quick/helpers.h>
+#endif
 
 #include "resources/config.h"
 #include "resources/qtconfig.h"
@@ -100,6 +103,11 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     , m_showSyncthingIcons(true)
     , m_applyingSettingsForWizard(false)
 {
+    // restore settings
+    auto &settings = Settings::values();
+    settings.isPlasmoid = true;
+    Settings::restore();
+
     // load config
     const auto &c = config();
     if (c.readEntry<>("preferIconsFromTheme", false)) {
@@ -129,6 +137,11 @@ SyncthingApplet::~SyncthingApplet()
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     SyncthingService::setMainInstance(nullptr);
 #endif
+}
+
+QtGui::QuickUI *SyncthingApplet::quickUI() const
+{
+    return m_quickUI.has_value() ? const_cast<QtGui::QuickUI *>(&m_quickUI.value()) : nullptr;
 }
 
 void showErrorIfSet(const QString &errorMessage)
@@ -179,12 +192,8 @@ void SyncthingApplet::init()
     connect(&m_iconManager, &IconManager::statusIconsChanged, this, &SyncthingApplet::connectionStatusChanged);
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &SyncthingApplet::handleThemeChanged);
 
-    // restore settings
-    auto &settings = Settings::values();
-    settings.isPlasmoid = true;
-    Settings::restore();
-
     // initialize systemd service support
+    auto &settings = Settings::values();
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     SyncthingService::setMainInstance(&m_service);
     settings.systemd.setupService(m_service);
@@ -223,6 +232,16 @@ void SyncthingApplet::initEngine(QObject *object)
         = new QtForkAwesome::QuickImageProvider(QtForkAwesome::Renderer::global(), color); // using global renderer for system icons override
     connect(engine, &QObject::destroyed, this, &SyncthingApplet::handleImageProviderDestroyed); // engine has ownership over image provider
     engine->addImageProvider(QStringLiteral("fa"), m_imageProvider);
+
+#if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    if (auto &settings = Settings::values(); settings.enableWipFeatures && !m_quickUI.has_value()) {
+        auto &quickUI = m_quickUI.emplace(qGuiApp, settings.qt, engine, QStringLiteral("desktop"));
+        dataObjectToProperty(engine, &m_data);
+        dataObjectToProperty(engine, &m_models);
+        dataObjectToProperty(engine, &quickUI);
+        emit quickUIChanged();
+    }
+#endif
 }
 
 QString SyncthingApplet::connectButtonState() const

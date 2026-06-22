@@ -44,6 +44,8 @@ ColumnLayout {
                 readonly property string dirId_: dirId
                 readonly property string dirName: name
                 readonly property string dirPath: path
+                readonly property bool hasPullErrors: pullErrorCount > 0
+                readonly property bool hasOutOfSyncItems: !paused && (neededItemsCount > 0)
                 property alias errorsButton: errorsButton
                 property alias rescanButton: rescanButton
                 property alias resumePauseButton: resumePauseButton
@@ -87,7 +89,7 @@ ColumnLayout {
                                 id: errorsButton
                                 icon.source: plasmoid.faUrl + "exclamation-triangle"
                                 tooltip: qsTr("Show errors")
-                                visible: pullErrorCount > 0
+                                visible: hasPullErrors
                                 onClicked: {
                                     plasmoid.showDirectoryErrors(
                                                 dirId)
@@ -143,12 +145,18 @@ ColumnLayout {
 
             PlasmaExtras.Menu {
                 id: contextMenu
+                property string dirId
+                property string dirName
 
                 function init(item) {
                     // use value for properties depending on paused state from buttons
+                    contextMenu.dirId = item.dirId_
+                    contextMenu.dirName = item.dirName
                     rescanItem.enabled = browseRemoteFilesItem.enabled = item.rescanButton.enabled
                     resumePauseItem.text = item.resumePauseButton.tooltip
                     resumePauseItem.icon = item.resumePauseButton.icon
+                    showErrors.visible = item.hasPullErrors
+                    showOutOfSyncItems.visible = item.hasOutOfSyncItems
                 }
 
                 PlasmaExtras.MenuItem {
@@ -186,6 +194,26 @@ ColumnLayout {
                                    "openButton")
                 }
                 PlasmaExtras.MenuItem {
+                    text: qsTr("Edit")
+                    icon: "document-edit"
+                    visible: plasmoid.quickUI !== null
+                    onClicked: plasmoid.quickUI.editDir(contextMenu.dirId, contextMenu.dirName, null)
+                }
+                PlasmaExtras.MenuItem {
+                    id: showOutOfSyncItems
+                    text: qsTr("Out of Sync items")
+                    icon: "item"
+                    visible: plasmoid.quickUI !== null
+                    onClicked: plasmoid.quickUI.showNeededItems(contextMenu.dirId, contextMenu.dirName, null)
+                }
+                PlasmaExtras.MenuItem {
+                    id: showErrors
+                    text: qsTr("Show errors")
+                    icon: "dialog-warning"
+                    visible: plasmoid.quickUI !== null
+                    onClicked: plasmoid.quickUI.showDirErrors(contextMenu.dirId, contextMenu.name, null)
+                }
+                PlasmaExtras.MenuItem {
                     id: browseRemoteFilesItem
                     text: qsTr("Browse remote files")
                     icon: "document-open-remote"
@@ -198,6 +226,12 @@ ColumnLayout {
                     icon: "document-edit"
                     onClicked: directoryView.triggerNativeActionWithCurrentItemData(
                                    "showIgnorePatterns", "dirId_")
+                }
+                PlasmaExtras.MenuItem {
+                    text: qsTr("Advanced config")
+                    icon: "settings-configure"
+                    visible: plasmoid.quickUI !== null
+                    onClicked: plasmoid.quickUI.editDir(contextMenu.dirId, contextMenu.dirName, null, true)
                 }
             }
         }

@@ -112,7 +112,7 @@ set(REQUIRED_ICONS
     text-x-generic
     quickwizard
     view-filter
-    view-list
+    item
     view-refresh
     window-close
     window-pin)

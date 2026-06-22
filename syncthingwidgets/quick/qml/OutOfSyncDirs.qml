@@ -16,9 +16,9 @@ Page {
         }
     ]
     contentItem: CustomListView {
-        id: outOfSyncDirsListView
+        id: listView
         delegate: ItemDelegate {
-            width: outOfSyncDirsListView.width
+            width: listView.width - (listView.ScrollBar?.vertical ? listView.ScrollBar.vertical.width : 0)
             text: qsTr("%1: %2 items needed, ~ %3").arg(modelData.dirName).arg(modelData.items).arg(SyncthingModels.formatDataSize(modelData.bytes))
             icon.source: QuickUI.faUrlBase + "folder-o"
             onClicked: page.stackView.push("NeededPage.qml", {devLabel: page.devLabel, devId: page.devId, dirLabel: modelData.dirName, dirId: modelData.dirId}, StackView.PushTransition)
@@ -27,11 +27,11 @@ Page {
     }
     required property string devId
     required property string devLabel
-    required property int dirIndex
+    required property int devIndex
     required property var devFilterModel
     property StackView stackView: StackView {}
     required property list<Action> actions
     function loadDirs() {
-        outOfSyncDirsListView.model = SyncthingModels.computeDirsNeedingItems(devFilterModel.index(dirIndex, 0));
+        listView.model = SyncthingModels.computeDirsNeedingItems(devFilterModel.index(page.devIndex, 0));
     }
 }

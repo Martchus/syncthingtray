@@ -19,7 +19,7 @@ Page {
         id: listView
         delegate: ItemDelegate {
             id: itemDelegate
-            width: listView.width
+            width: listView.width - (listView.ScrollBar?.vertical ? listView.ScrollBar.vertical.width : 0)
             contentItem: ColumnLayout {
                 width: listView.width
                 Label {

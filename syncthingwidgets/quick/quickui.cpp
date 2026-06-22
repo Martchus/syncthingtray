@@ -436,10 +436,10 @@ bool QuickUI::showNeededItems(const QString &dirId, const QString &dirLabel, QQu
     return showPage("Main", "NeededPage", { { QStringLiteral("dirId"), dirId }, { QStringLiteral("dirLabel"), dirLabel } }, stackView);
 }
 
-bool QuickUI::showOutOfSyncDirs(const QString &devId, const QString &devLabel, int dirIndex, QObject *devFilterModel, QQuickItem *stackView)
+bool QuickUI::showOutOfSyncDirs(const QString &devId, const QString &devLabel, int devIndex, QObject *devFilterModel, QQuickItem *stackView)
 {
     return showPage("Main", "OutOfSyncDirs",
-        { { QStringLiteral("devId"), devId }, { QStringLiteral("devLabel"), devLabel }, { QStringLiteral("dirIndex"), dirIndex },
+        { { QStringLiteral("devId"), devId }, { QStringLiteral("devLabel"), devLabel }, { QStringLiteral("devIndex"), devIndex },
             { QStringLiteral("devFilterModel"), QVariant::fromValue(devFilterModel) } },
         stackView);
 }
@@ -536,7 +536,7 @@ void QuickUI::showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y)
                     { QStringLiteral("folder.fa"), QStringLiteral("folder") },
                     { QStringLiteral("pencil.fa"), QStringLiteral("document-edit") },
                     { QStringLiteral("filter.fa"), QStringLiteral("view-filter") },
-                    { QStringLiteral("exchange.fa"), QStringLiteral("view-list") },
+                    { QStringLiteral("exchange.fa"), QStringLiteral("item") },
                     { QStringLiteral("undo.fa"), QStringLiteral("edit-undo") },
                     { QStringLiteral("redo.fa"), QStringLiteral("edit-redo") },
                     { QStringLiteral("exclamation-triangle.fa"), QStringLiteral("dialog-warning") },

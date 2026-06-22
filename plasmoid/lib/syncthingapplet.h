@@ -23,6 +23,11 @@
 #include <QPalette>
 #include <QSize>
 
+#if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+#include <optional>
+#include <syncthingwidgets/quick/quickui.h>
+#endif
+
 namespace Data {
 struct SyncthingConnectionSettings;
 class IconManager;
@@ -51,6 +56,9 @@ class SyncthingApplet : public Plasma::Applet {
     Q_PROPERTY(QtGui::SyncthingModels *models READ models CONSTANT)
     Q_PROPERTY(Data::SyncthingDownloadModel *downloadModel READ downloadModel CONSTANT)
     Q_PROPERTY(Data::SyncthingStatusSelectionModel *passiveSelectionModel READ passiveSelectionModel CONSTANT)
+#if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    Q_PROPERTY(QtGui::QuickUI *quickUI READ quickUI NOTIFY quickUIChanged)
+#endif
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     Q_PROPERTY(Data::SyncthingService *service READ service CONSTANT)
 #endif
@@ -90,6 +98,9 @@ public:
     QtGui::SyncthingModels *models() const;
     Data::SyncthingDownloadModel *downloadModel() const;
     Data::SyncthingStatusSelectionModel *passiveSelectionModel() const;
+#if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    QtGui::QuickUI *quickUI() const;
+#endif
     Data::SyncthingService *service() const;
     QIcon syncthingIcon() const;
     QString connectButtonState() const;
@@ -159,6 +170,9 @@ Q_SIGNALS:
     void showSyncthingIconsChanged(bool isShowingSyncthingIcons);
     void passiveChanged(bool passive);
     void faUrlChanged(const QString &faUrl);
+#if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    void quickUIChanged();
+#endif
 
 private Q_SLOTS:
     void handleSettingsChanged();
@@ -195,6 +209,9 @@ private:
     QtGui::SyncthingData m_data;
     QtGui::SyncthingModels m_models;
     Data::SyncthingOverallDirStatistics m_overallStats;
+#if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    std::optional<QtGui::QuickUI> m_quickUI;
+#endif
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     Data::SyncthingService m_service;
 #endif

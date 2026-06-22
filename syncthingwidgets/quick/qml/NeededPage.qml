@@ -25,7 +25,7 @@ Page {
             dynamicRoles: true
         }
         delegate: ItemDelegate {
-            width: listView.width
+            width: listView.width - (listView.ScrollBar?.vertical ? listView.ScrollBar.vertical.width : 0)
             contentItem: RowLayout {
                 GridLayout {
                     Layout.fillWidth: true

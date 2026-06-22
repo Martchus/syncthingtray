@@ -184,7 +184,7 @@ public:
     Q_INVOKABLE bool editDev(const QString &devId, const QString &devName, QQuickItem *stackView = nullptr, bool advanced = false);
     Q_INVOKABLE bool showNeededItems(const QString &dirId, const QString &dirLabel, QQuickItem *stackView = nullptr);
     Q_INVOKABLE bool showOutOfSyncDirs(
-        const QString &devId, const QString &devLabel, int dirIndex, QObject *devFilterModel, QQuickItem *stackView = nullptr);
+        const QString &devId, const QString &devLabel, int devIndex, QObject *devFilterModel, QQuickItem *stackView = nullptr);
     Q_INVOKABLE bool showDirErrors(const QString &dirId, const QString &dirName, QQuickItem *stackView = nullptr);
     Q_INVOKABLE bool editIgnorePatterns(const QString &dirId, const QString &dirName, QQuickItem *stackView = nullptr);
     Q_INVOKABLE bool browseFiles(const QString &dirId, const QString &dirName, QQuickItem *stackView = nullptr);

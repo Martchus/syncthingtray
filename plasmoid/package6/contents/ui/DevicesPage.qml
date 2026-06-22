@@ -28,6 +28,8 @@ Item {
                 width: deviceView.effectiveWidth()
                 readonly property string devName: name
                 readonly property string devID: devId
+                readonly property int devIndex: index
+                readonly property bool hasOutOfSyncItems: !paused && (neededItemsCount > 0)
                 property alias resumePauseButton: resumePauseButton
 
                 ColumnLayout {
@@ -96,11 +98,18 @@ Item {
 
             PlasmaExtras.Menu {
                 id: contextMenu
+                property int devIndex
+                property string devId
+                property string devName
 
                 function init(item) {
                     // use value for properties depending on paused state from buttons
+                    contextMenu.devId = item.devID
+                    contextMenu.devName = item.devName
+                    contextMenu.devIndex = item.devIndex
                     resumePauseItem.text = item.resumePauseButton.tooltip
                     resumePauseItem.icon = item.resumePauseButton.icon
+                    showOutOfSyncItems.visible = item.hasOutOfSyncItems
                 }
 
                 PlasmaExtras.MenuItem {
@@ -122,6 +131,22 @@ Item {
                     icon: "media-playback-pause"
                     onClicked: deviceView.clickCurrentItemButton(
                                    "resumePauseButton")
+                }
+                PlasmaExtras.MenuItem {
+                    text: qsTr("Edit")
+                    icon: "document-edit"
+                    onClicked: plasmoid.quickUI.editDev(contextMenu.devId, contextMenu.devName, null)
+                }
+                PlasmaExtras.MenuItem {
+                    id: showOutOfSyncItems
+                    text: qsTr("Out of Sync items")
+                    icon: "item"
+                    onClicked: plasmoid.quickUI.showOutOfSyncDirs(contextMenu.devId, contextMenu.devName, contextMenu.devIndex, deviceView.model, null)
+                }
+                PlasmaExtras.MenuItem {
+                    text: qsTr("Advanced config")
+                    icon: "settings-configure"
+                    onClicked: plasmoid.quickUI.editDev(contextMenu.devId, contextMenu.devName, null, true)
                 }
             }
         }
