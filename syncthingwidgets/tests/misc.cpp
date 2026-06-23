@@ -40,6 +40,7 @@ void MiscTests::cleanup()
 
 void MiscTests::testStatusInfoAndLocalization()
 {
+    qputenv("QT_DEBUG_TRANSLATIONS", "1");
     QLocale::setDefault(QLocale::German);
     LOAD_QT_TRANSLATIONS;
 
