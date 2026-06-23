@@ -56,6 +56,8 @@ inline QString InternalError::whenToString() const
     return QString::fromStdString(when.toString());
 }
 
+// define (de)serialization operations used by the Qt Quick GUI on Android (only works as of Qt 6)
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
 inline QDataStream &operator<<(QDataStream &stream, const InternalError &error)
 {
     return stream << error.message << error.url << error.response << static_cast<quint64>(error.when.totalTicks());
@@ -68,6 +70,7 @@ inline QDataStream &operator>>(QDataStream &stream, InternalError &error)
     error.when = CppUtilities::DateTime(ticks);
     return stream;
 }
+#endif
 
 } // namespace QtGui
 
