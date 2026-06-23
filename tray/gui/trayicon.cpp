@@ -133,7 +133,11 @@ void TrayIcon::handleActivated(QSystemTrayIcon::ActivationReason reason)
         trayMenu().widget().showWebUI();
         break;
     case QSystemTrayIcon::Trigger:
-        trayMenu().showUsingPositioningSettings();
+        if (trayMenu().isVisible()) {
+            trayMenu().hide();
+        } else {
+            trayMenu().showUsingPositioningSettings();
+        }
         break;
     default:;
     }
