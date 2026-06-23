@@ -340,6 +340,8 @@ WebViewDialog *showWebUI(
             return nullptr;
         }
         break;
+#else
+    Q_UNUSED(noQuickUI)
 #endif
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     case Settings::WebView::Mode::Builtin:

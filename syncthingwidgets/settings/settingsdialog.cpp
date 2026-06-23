@@ -537,6 +537,7 @@ static inline void setFormRowVisible(QFormLayout *layout, QWidget *widget1, QWid
     layout->setRowVisible(widget1, visible);
     Q_UNUSED(widget2);
 #else
+    Q_UNUSED(layout)
     widget1->setVisible(visible);
     if (widget2) {
         widget2->setVisible(visible);
