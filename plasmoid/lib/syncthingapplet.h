@@ -255,6 +255,13 @@ inline Data::SyncthingStatusSelectionModel *SyncthingApplet::passiveSelectionMod
     return const_cast<Data::SyncthingStatusSelectionModel *>(&m_passiveSelectionModel);
 }
 
+#if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+inline QtGui::QuickUI *SyncthingApplet::quickUI() const
+{
+    return m_quickUI.has_value() ? const_cast<QtGui::QuickUI *>(&m_quickUI.value()) : nullptr;
+}
+#endif
+
 inline Data::SyncthingService *SyncthingApplet::service() const
 {
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD

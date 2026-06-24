@@ -139,13 +139,6 @@ SyncthingApplet::~SyncthingApplet()
 #endif
 }
 
-#if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
-QtGui::QuickUI *SyncthingApplet::quickUI() const
-{
-    return m_quickUI.has_value() ? const_cast<QtGui::QuickUI *>(&m_quickUI.value()) : nullptr;
-}
-#endif
-
 void showErrorIfSet(const QString &errorMessage)
 {
     if (errorMessage.isEmpty()) {
