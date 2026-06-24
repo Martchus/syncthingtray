@@ -14,29 +14,44 @@
     <name>DevicesPage</name>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="64"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="69"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="71"/>
         <source>Resume</source>
         <translation>恢复</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="64"/>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="116"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="69"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="121"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="71"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="130"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="102"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="107"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="116"/>
         <source>Copy name</source>
         <translation>复制名字</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="107"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="112"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="121"/>
         <source>Copy ID</source>
         <translation>复制 ID</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="136"/>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="142"/>
+        <source>Out of Sync items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="147"/>
+        <source>Advanced config</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -49,61 +64,77 @@
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="83"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="89"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="91"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="211"/>
         <source>Show errors</source>
         <translation>显示错误</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="94"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="163"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="100"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="169"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="102"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="177"/>
         <source>Rescan</source>
         <translation>重新扫描</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="102"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="108"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="110"/>
         <source>Resume</source>
         <translation>恢复</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="102"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="170"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="108"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="176"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="110"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="184"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="112"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="177"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="118"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="183"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="120"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="191"/>
         <source>Open in file browser</source>
         <translation>在文件浏览器中打开</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="149"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="155"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="163"/>
         <source>Copy label/ID</source>
         <translation>复制标签/ID</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="154"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="160"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="168"/>
         <source>Copy path</source>
         <translation>复制路径</translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="190"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="197"/>
+        <source>Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="204"/>
+        <source>Out of Sync items</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="218"/>
         <source>Browse remote files</source>
         <translation>浏览远程文件</translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="197"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="225"/>
         <source>Show/edit ignore patterns</source>
         <translation>显示/编辑忽略模式</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="231"/>
+        <source>Advanced config</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -382,17 +413,17 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="490"/>
+        <location filename="../lib/syncthingapplet.cpp" line="504"/>
         <source>About</source>
         <translation>关于</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="573"/>
+        <location filename="../lib/syncthingapplet.cpp" line="587"/>
         <source>Associated directory does not exist.</source>
         <translation>关联目录不存在。</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="599"/>
+        <location filename="../lib/syncthingapplet.cpp" line="613"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation>无法与 Syncthing 建立连接。</translation>
     </message>
@@ -401,7 +432,7 @@
         <translation type="vanished">新通知</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="667"/>
+        <location filename="../lib/syncthingapplet.cpp" line="681"/>
         <source>D-Bus error - unable to </source>
         <translation>D-Bus 错误 - 无法 </translation>
     </message>
