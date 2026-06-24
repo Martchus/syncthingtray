@@ -92,7 +92,10 @@ QuickUI::QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQml
     , m_style(DETERMINE_STYLE)
     , m_imageProvider(nullptr)
     , m_densityScale(isDesktop() ? 0.6 : 1.0)
-    , m_densityScaleIconButtons(m_style == QStringLiteral("FluentWinUI3") || m_style == QStringLiteral("Material") || m_style == QStringLiteral("Universal") ? 1.0 : m_densityScale)
+    , m_densityScaleIconButtons(
+          m_style == QStringLiteral("FluentWinUI3") || m_style == QStringLiteral("Material") || m_style == QStringLiteral("Universal")
+              ? 1.0
+              : m_densityScale)
     , m_iconSize(SYNCTHING_APP_ICON_SIZE)
     , m_iconWidthDelegate(SYNCTHING_APP_ICON_WIDTH_DELEGATE)
     , m_darkmodeEnabled(false)

@@ -330,8 +330,8 @@ static void openBrowserInAppMode(const QString &url)
  * \param parent The parent to use when creating a new WebViewDialog. Allowed to be nullptr (as usual with parents).
  * \returns Returns the used WebViewDialog or nullptr if another method was used.
  */
-WebViewDialog *showWebUI(
-    const QString &url, const Data::SyncthingConnectionSettings *settings, WebViewDialog *dlg, QWidget *parent, Data::SyncthingConnection *connection, bool noQuickUI)
+WebViewDialog *showWebUI(const QString &url, const Data::SyncthingConnectionSettings *settings, WebViewDialog *dlg, QWidget *parent,
+    Data::SyncthingConnection *connection, bool noQuickUI)
 {
     switch (Settings::values().webView.mode) {
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
@@ -341,7 +341,7 @@ WebViewDialog *showWebUI(
         }
         break;
 #else
-    Q_UNUSED(noQuickUI)
+        Q_UNUSED(noQuickUI)
 #endif
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     case Settings::WebView::Mode::Builtin:
