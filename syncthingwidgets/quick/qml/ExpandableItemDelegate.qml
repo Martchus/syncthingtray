@@ -87,6 +87,9 @@ ItemDelegate {
                         menu: menu
                         model: mainDelegate.actions
                     }
+                    MenuSeparatorInstantiator {
+                        menu: menu
+                    }
                     MenuItemInstantiator {
                         menu: menu
                         model: mainDelegate.extraActions

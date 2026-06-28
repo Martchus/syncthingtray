@@ -139,6 +139,7 @@ set(QML_MAIN_FILES
     quick/qml/MainTabButton.qml
     quick/qml/MainToolBar.qml
     quick/qml/MenuItemInstantiator.qml
+    quick/qml/MenuSeparatorInstantiator.qml
     quick/qml/Meta.qml
     quick/qml/NeededPage.qml
     quick/qml/Notifications.qml

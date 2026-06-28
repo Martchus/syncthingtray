@@ -521,6 +521,11 @@ void QuickUI::showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y)
                 continue;
             }
             hasItems = true;
+            const auto *className = item->metaObject()->className();
+            if (std::string_view(className).starts_with("MenuSeparator")) {
+                widgetsMenu.addSeparator();
+                continue;
+            }
             if (!item->property("enabled").toBool()) {
                 continue;
             }
