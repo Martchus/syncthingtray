@@ -30,6 +30,7 @@ PlasmaExtras.Representation {
         contentItem: PlasmaComponents3.TabBar {
             id: tabBar
             readonly property int buttonCount: plasmoid.showDownloads ? 4 : 3
+            readonly property int maxTabIndex: buttonCount - 1
             readonly property double buttonWidth: parent.width / buttonCount
             position: PlasmaComponents3.TabBar.Footer
             Layout.fillWidth: true
@@ -181,11 +182,11 @@ PlasmaExtras.Representation {
                     break
                 case Qt.Key_Left:
                     // select previous tab
-                    tabBar.currentIndex = tabBar.currentIndex > 0 ? tabBar.currentIndex - 1 : 3
+                    tabBar.currentIndex = tabBar.currentIndex > 0 ? tabBar.currentIndex - 1 : tabBar.maxTabIndex
                     break
                 case Qt.Key_Right:
                     // select next tab
-                    tabBar.currentIndex = tabBar.currentIndex < 3 ? tabBar.currentIndex + 1 : 0
+                    tabBar.currentIndex = tabBar.currentIndex < tabBar.maxTabIndex ? tabBar.currentIndex + 1 : 0
                     break
                 case Qt.Key_Enter:
 
