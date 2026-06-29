@@ -12,6 +12,13 @@
 #include "resources/config.h"
 #include "resources/qtconfig.h"
 
+// check some translations only conditionally as they are broken with older Qt versions
+// note: Judging by builds on OBS this affects Qt 5 but also Qt 6 up to at least 6.9.1. Version 6.10.3 is the first
+//       version tested on OBS that works.
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 10, 3))
+#define SYNCTHINGWIDGETS_CHECK_ALL_TRANSLATIONS
+#endif
+
 using namespace QtGui;
 
 class MiscTests : public QObject {
@@ -78,7 +85,7 @@ void MiscTests::testStatusInfoAndLocalization()
     // test combination of both
     devWithNoName.status = Data::SyncthingDevStatus::Idle;
     statusInfo.updateConnectedDevices(connection);
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)) // this is broken with Qt 5 but not worth fixing anymore
+#ifdef SYNCTHINGWIDGETS_CHECK_ALL_TRANSLATIONS
     QCOMPARE(statusInfo.additionalStatusText(), QStringLiteral("Verbunden mit fake-dev und 1 weiteren Gerät"));
 #endif
     devWithNoName.status = Data::SyncthingDevStatus::Disconnected;
@@ -92,13 +99,13 @@ void MiscTests::testStatusInfoAndLocalization()
     QCOMPARE(statusInfo.additionalStatusText(), QStringLiteral("Verbunden mit fake-dev, another-fake-dev, yet-another-fake-dev"));
     addDev(QString());
     statusInfo.updateConnectedDevices(connection);
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)) // this is broken with Qt 5 but not worth fixing anymore
+#ifdef SYNCTHINGWIDGETS_CHECK_ALL_TRANSLATIONS
     QCOMPARE(
         statusInfo.additionalStatusText(), QStringLiteral("Verbunden mit fake-dev, another-fake-dev, yet-another-fake-dev und 1 weiteren Gerät"));
 #endif
     addDev(QStringLiteral("forth-dev-which-will-not-be-explicitly-mentioned"));
     statusInfo.updateConnectedDevices(connection);
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)) // this is broken with Qt 5 but not worth fixing anymore
+#ifdef SYNCTHINGWIDGETS_CHECK_ALL_TRANSLATIONS
     QCOMPARE(
         statusInfo.additionalStatusText(), QStringLiteral("Verbunden mit fake-dev, another-fake-dev, yet-another-fake-dev und 2 weiteren Geräten"));
 #endif
