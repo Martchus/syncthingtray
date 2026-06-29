@@ -17,6 +17,14 @@ Pane {
     }
     ColumnLayout {
         anchors.fill: parent
+        Keys.onLeftPressed: (event) => {
+            tabBar.setCurrentIndex(tabBar.currentIndex > 0 ? tabBar.currentIndex - 1 : tabBar.count - 1);
+            pageStack.setCurrentIndex(tabBar.currentItem.tabIndex);
+        }
+        Keys.onRightPressed: (event) => {
+            tabBar.setCurrentIndex(tabBar.currentIndex < tabBar.count - 1 ? tabBar.currentIndex + 1 : 0);
+            pageStack.setCurrentIndex(tabBar.currentItem.tabIndex);
+        }
         StackLayout {
             id: pageStack
             Layout.fillWidth: true
@@ -26,27 +34,31 @@ Pane {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 anchors.fill: null
+                focus: StackLayout.isCurrentItem
                 stackView: null
             }
             DevListView {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 anchors.fill: null
+                focus: StackLayout.isCurrentItem
                 stackView: null
             }
             ChangesListView {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
+                focus: StackLayout.isCurrentItem
                 anchors.fill: null
             }
             function setCurrentIndex(index) {
-                pageStack.currentIndex = index;
+                pageStack.currentIndex = Math.min(Math.max(0, index), pageStack.count - 1);
             }
         }
         Pane {
             padding: 0
             Layout.fillWidth: true
             TabBar {
+                id: tabBar
                 anchors.fill: parent
                 position: TabBar.Footer
                 MainTabButton {

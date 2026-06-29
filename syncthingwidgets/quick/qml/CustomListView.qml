@@ -7,6 +7,8 @@ ListView {
     id: listView
     activeFocusOnTab: true
     keyNavigationEnabled: true
+    keyNavigationWraps: true
+    highlightFollowsCurrentItem: true
     boundsMovement: Flickable.StopAtBounds
     boundsBehavior: Flickable.DragAndOvershootBounds
     transformOrigin: listView.verticalOvershoot >= 0 ? Item.Top : Item.Bottom

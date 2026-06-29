@@ -506,7 +506,7 @@ bool QuickUI::invokeWidgetFunction(const char *member, QTemplatedMetaMethodRetur
 }
 #endif
 
-void QuickUI::showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y)
+void QuickUI::showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y, const QObject *event)
 {
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
     if (m_mode == QLatin1String("desktop")) {
@@ -565,7 +565,16 @@ void QuickUI::showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y)
             connect(action, SIGNAL(triggered()), item, SIGNAL(triggered()));
         }
         if (hasItems) {
-            widgetsMenu.exec(QCursor::pos());
+            if (parent && event && event->property("key").isValid()) {
+                // show centered over parent item (menu button) when triggered via key event
+                widgetsMenu.exec(parent->mapToGlobal(parent->width() / 2, parent->height() / 2).toPoint());
+            } else {
+                // show at current cursor position when triggered via mouse events or any other event
+                widgetsMenu.exec(QCursor::pos());
+            }
+            if (parent) {
+                parent->forceActiveFocus();
+            }
             return;
         }
     }

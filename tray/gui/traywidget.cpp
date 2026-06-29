@@ -811,13 +811,21 @@ bool TrayWidget::event(QEvent *event)
 
 void TrayWidget::showEvent(QShowEvent *event)
 {
-    Q_UNUSED(event)
+    QWidget::showEvent(event);
     QtGui::handleRelevantControlsChanged(true, m_ui->tabWidget->currentIndex(), *m_data.connection());
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    if (m_quickWidget) {
+        m_quickWidget->setFocus();
+        if (auto *const rootObject = m_quickWidget->rootObject()) {
+            rootObject->forceActiveFocus();
+        }
+    }
+#endif
 }
 
 void TrayWidget::hideEvent(QHideEvent *event)
 {
-    Q_UNUSED(event)
+    QWidget::hideEvent(event);
     QtGui::handleRelevantControlsChanged(false, m_ui->tabWidget->currentIndex(), *m_data.connection());
 }
 

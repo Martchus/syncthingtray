@@ -10,7 +10,7 @@ ItemDelegate {
     width: mainView.width - (mainView.ScrollBar?.vertical ? mainView.ScrollBar.vertical.width : 0)
     activeFocusOnTab: true
     Keys.onReturnPressed: (event) => detailsView.visible = !detailsView.visible
-    Keys.onMenuPressed: (event) => menu.showCenteredIn(menuButton)
+    Keys.onMenuPressed: (event) => mainDelegate.showMenu(event)
     contentItem: ColumnLayout {
         RowLayout {
             spacing: 10 * QuickUI.densityScale
@@ -80,7 +80,7 @@ ItemDelegate {
                 visible: !buttonRepeater.visible || mainDelegate.extraActions.length > 0
                 text: qsTr("More actions")
                 icon.source: QuickUI.faUrlBase + "ellipsis-v"
-                onClicked: menu.showCenteredIn(menuButton)
+                onClicked: mainDelegate.showMenu()
                 CustomMenu {
                     id: menu
                     MenuItemInstantiator {
@@ -111,13 +111,17 @@ ItemDelegate {
         }
         onLongPressed: {
             QuickUI.performHapticFeedback();
-            menu.showCenteredIn(menuButton);
+            mainDelegate.showMenu();
         }
     }
     TapHandler {
         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad | PointerDevice.Stylus
         acceptedButtons: Qt.RightButton
-        onTapped: menu.showCenteredIn(menuButton)
+        onTapped: mainDelegate.showMenu()
+    }
+
+    function showMenu(event = null) {
+        menu.showCenteredIn(menuButton, event);
     }
 
     required property var modelData

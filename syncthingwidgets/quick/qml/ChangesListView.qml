@@ -15,6 +15,21 @@ CustomListView {
             width: mainView.width - (mainView.ScrollBar?.vertical ? mainView.ScrollBar.vertical.width : 0)
             onClicked: SyncthingModels.openPath(modelData.directoryId, modelData.path)
             onPressAndHold: SyncthingModels.copyPath(modelData.directoryId, modelData.path)
+            Keys.onReturnPressed: (event) => SyncthingModels.openPath(modelData.directoryId, modelData.path)
+            Keys.onMenuPressed: (event) => menu.showCenteredIn(firstIcon, event)
+            Keys.onPressed: (event) => {
+                switch(event.key) {
+                case Qt.Key_Menu:
+                    return menu.showCenteredIn(firstIcon, event);
+                }
+                if (!(event.modifiers & Qt.ControlModifier)) {
+                    return;
+                }
+                switch(event.key) {
+                case Qt.Key_M:
+                    return menu.showCenteredIn(firstIcon, event);
+                }
+            }
             contentItem: GridLayout {
                 id: gridLayout
                 columns: width < 500 ? 2 : 8

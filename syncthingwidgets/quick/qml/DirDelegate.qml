@@ -8,20 +8,49 @@ import Main
 ExpandableDelegate {
     id: mainDelegateModel
     delegate: ExpandableItemDelegate {
+        id: expandableItemDelegate
         mainView: mainDelegateModel.mainView
+        Keys.onPressed: (event) => {
+            switch(event.key) {
+            case Qt.Key_MediaTogglePlayPause:
+                return pauseAction.trigger();
+            case Qt.Key_Menu:
+                return expandableItemDelegate.showMenu(event);
+            }
+            if (!(event.modifiers & Qt.ControlModifier)) {
+                return;
+            }
+            switch(event.key) {
+            case Qt.Key_C:
+                return (event.modifiers & Qt.ShiftModifier) ? copyPathAction.trigger() : copyIdAction.trigger();
+            case Qt.Key_E:
+                return (event.modifiers & Qt.ShiftModifier) ? advancedConfigAction.trigger() : editAction.trigger();
+            case Qt.Key_R:
+                return rescanAction.trigger();
+            case Qt.Key_P:
+                return pauseAction.trigger();
+            case Qt.Key_O:
+                return openAction.trigger();
+            case Qt.Key_M:
+                return expandableItemDelegate.showMenu(event);
+            }
+        }
         actions: [
             Action {
+                id: rescanAction
                 text: qsTr("Rescan")
                 enabled: !modelData.paused
                 icon.source: QuickUI.faUrlBase + "refresh"
                 onTriggered: SyncthingData.connection.rescan(modelData.dirId)
             },
             Action {
+                id: pauseAction
                 text: modelData.paused ? qsTr("Resume") : qsTr("Pause")
                 icon.source: QuickUI.faUrlBase + (modelData.paused ? "play" : "pause")
                 onTriggered: SyncthingData.connection[modelData.paused ? "resumeDirectories" : "pauseDirectories"]([modelData.dirId])
             },
             Action {
+                id: openAction
                 text: qsTr("Open")
                 icon.source: QuickUI.faUrlBase + "folder"
                 onTriggered: SyncthingModels.openPath(modelData.path)
@@ -29,16 +58,19 @@ ExpandableDelegate {
         ]
         extraActions: [
             Action {
+                id: copyIdAction
                 text: qsTr("Copy label/ID")
                 icon.source: QuickUI.faUrlBase + "files-o"
                 onTriggered: SyncthingModels.copyText(modelData.name)
             },
             Action {
+                id: copyPathAction
                 text: qsTr("Copy path")
                 icon.source: QuickUI.faUrlBase + "files-o"
                 onTriggered: SyncthingModels.copyText(modelData.path)
             },
             Action {
+                id: editAction
                 text: qsTr("Edit")
                 icon.source: QuickUI.faUrlBase + "pencil"
                 onTriggered: QuickUI.editDir(modelData.dirId, modelData.name, mainView.stackView)
@@ -73,6 +105,7 @@ ExpandableDelegate {
                 onTriggered: QuickUI.browseFiles(modelData.dirId, modelData.name, mainView.stackView)
             },
             Action {
+                id: advancedConfigAction
                 text: qsTr("Advanced config")
                 icon.source: QuickUI.faUrlBase + "cogs"
                 onTriggered: QuickUI.editDir(modelData.dirId, modelData.name, mainView.stackView, true)

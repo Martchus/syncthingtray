@@ -24,10 +24,10 @@ Menu {
     property Scale transform: Scale {
         id: scale
     }
-    function showCenteredIn(item) {
-        QuickUI.showMenu(menu, item, item.width / 2 - menu.width, item.height / 2);
+    function showCenteredIn(item, event = null) {
+        QuickUI.showMenu(menu, item, item.width / 2 - menu.width, item.height / 2, event);
     }
-    function showCenteredInRight(item) {
-        QuickUI.showMenu(menu, item, item.width / 2, item.height / 2);
+    function showCenteredInRight(item, event = null) {
+        QuickUI.showMenu(menu, item, item.width / 2, item.height / 2, event);
     }
 }
