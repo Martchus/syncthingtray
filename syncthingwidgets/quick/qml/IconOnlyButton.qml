@@ -12,8 +12,8 @@ RoundButton {
     ToolTip.text: text
     ToolTip.visible: hovered || pressed
     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
-    icon.width: 20 * QuickUI.densityScale
-    icon.height: 20 * QuickUI.densityScale
+    icon.width: 20 * QuickUI.densityScaleIconButtons
+    icon.height: 20 * QuickUI.densityScaleIconButtons
     flat: QuickUI.densityScale < 1.0
     scale: QuickUI.densityScale < QuickUI.densityScaleIconButtons ? QuickUI.densityScale : 1.0
 }
