@@ -12,7 +12,10 @@ AdvancedConfigPage {
     required property string devName
     required property string devId
     function makeNewConfig() {
-        const config = SyncthingData.connection.rawConfig?.defaults?.device ?? {};
+        const config = SyncthingData.connection.rawConfig?.defaults?.device;
+        if (typeof config !== "object" || config.deviceID === undefined) {
+            return undefined;
+        }
 
         // add device ID and name as default values for deviceID/name
         if (devId.length > 0) {

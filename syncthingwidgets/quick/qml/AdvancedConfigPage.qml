@@ -9,7 +9,8 @@ ObjectConfigPage {
     id: advancedConfigPage
     isDangerous: true
     componentName: "AdvancedConfigPage.qml"
-    Component.onCompleted: configObject = findConfigObject()
+    isLoading: !advancedConfigPage.configObjectInitialized
+    Component.onCompleted: initConfigObject()
     actions: [
         Action {
             text: qsTr("Apply")
@@ -45,14 +46,31 @@ ObjectConfigPage {
     required property string entryName
     required property string entriesKey
     required property var isEntry
+    property bool configObjectInitialized: false
     property bool configObjectExists: false
     property bool isNew: false
+    property Connections connectionConnections: Connections {
+        target: SyncthingData.connection
+        function onNewConfig() {
+            advancedConfigPage.initConfigObject() && advancedConfigPage.reloadEntries();
+        }
+    }
 
-    function findConfigObject() {
+    function initConfigObject() {
+        if (advancedConfigPage.configObjectInitialized) {
+            return false;
+        }
         const cfg = SyncthingData.connection.rawConfig;
-        const entries = cfg !== undefined ? cfg[entriesKey] : undefined;
-        const entry = Array.isArray(entries) ? entries.find(advancedConfigPage.isEntry) : undefined;
-        return (advancedConfigPage.configObjectExists = (entry !== undefined)) ? entry : advancedConfigPage.makeNewConfig();
+        const entries = cfg?.[entriesKey];
+        if (!Array.isArray(entries)) {
+            return false;
+        }
+        const existingEntry = entries.find(advancedConfigPage.isEntry);
+        const entry = existingEntry ?? advancedConfigPage.makeNewConfig();
+        advancedConfigPage.configObjectExists = existingEntry !== undefined;
+        advancedConfigPage.configObject = entry;
+        advancedConfigPage.configObjectInitialized = entry !== undefined;
+        return true;
     }
 
     function isPresentEmptyString(value) {

@@ -169,6 +169,10 @@ Page {
     ]
     property list<Action> extraActions: []
 
+    function reloadEntries() {
+        return listModel.loadEntries();
+    }
+
     function topLevelObject() {
         return objectConfigPage?.parentPage.topLevelObject?.() ?? objectConfigPage.parentObject ?? objectConfigPage.configObject;
     }

@@ -12,7 +12,10 @@ AdvancedConfigPage {
     required property string dirName
     required property string dirId
     function makeNewConfig() {
-        const config = SyncthingData.connection.rawConfig?.defaults?.folder ?? {};
+        const config = SyncthingData.connection.rawConfig?.defaults?.folder;
+        if (typeof config !== "object" || config.id === undefined) {
+            return undefined;
+        }
 
         // for now, give user simply always the chance to edit ignore patterns before syncing
         config.paused = true;
