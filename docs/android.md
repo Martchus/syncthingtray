@@ -26,11 +26,10 @@ most likely still possible by following one of these approaches:
 
 * Follow the "advanced workflow" described in a
   [Google blog post](https://android-developers.googleblog.com/2026/03/android-developer-verification.html).
-* Install the app via `adb install …`. This tool is available in the
-  [Android SDK Platform Tools](https://developer.android.com/tools/releases/platform-tools).
-  One might try [anyapk](https://github.com/sam1am/anyapk) to make this easier. I haven't tested
-  anyapk myself yet, though. Their README also contains generally useful instructions for
-  installation via `adb install …`.
+* Install the app via `adb install …`. Check out the section [Using `adb`](#using-adb) for details
+  about how to use `adb`.
+  One might also try [anyapk](https://github.com/sam1am/anyapk) to make this easier. I haven't
+  tested anyapk myself yet, though.
 
 Check out [Keep Android Open](https://keepandroidopen.org) for a critical view on these
 restrictions and further explanations.
@@ -191,6 +190,7 @@ While Syncthing Tray basically works on Android, there are still some unresolved
       Check out the section
       "[Using the document provider on Android](#using-the-document-provider-on-android)" for details.
 * Media rescans need to be triggered manually, but this can be easily done per folder from the UI.
+*
 * There are probably still many small UI bugs in the Qt Quick based UI used on Android.
 * Not all features the official web UI offers have been implemented in the Qt Quick based UI yet.
     * Most notably, there is no UI for restoring old versions. (You can configure versioning, though.)
@@ -258,6 +258,62 @@ Unfortunately, not all file managers support browsing directories exposed via a 
   only opens the app itself instead of letting you manage the files.
 * The "My Files" app present on Samsung devices does not seem to support custom document providers
   at all.
+
+## Persistent notification
+Android 14 and newer [no longer allow](https://developer.android.com/about/versions/14/behavior-changes-all#non-dismissable-notifications) regular apps to prevent persistent notifications from being dismissed. To prevent
+the notification from being dismissible, use `adb` to grant the
+`SYSTEM_EXEMPT_FROM_DISMISSIBLE_NOTIFICATIONS` permission:
+
+```bash
+adb -t 1 shell appops set io.github.martchus.syncthingtray SYSTEM_EXEMPT_FROM_DISMISSIBLE_NOTIFICATIONS allow
+```
+
+To undo the change, use `allow` instead of `default`. Check out the section [Using `adb`](#using-adb) for
+details about how to use `adb`.
+
+Also, if the persistent notification is not desired, it can be disabled from Android's settings by
+turning off the "Background services" notification category for the Syncthing App. Syncthing will
+continue to run as normal even if the notification is not visible.
+
+## Using `adb`
+`adb` is a command-line utility. It can be download as part of the
+[Android SDK Platform Tools](https://developer.android.com/tools/releases/platform-tools) (which is
+packaged for Arch Linux via the
+[`android-sdk-platform-tools` AUR package](https://aur.archlinux.org/packages/android-sdk-platform-tools)).
+
+One can also use [the `android-tools` build script](https://github.com/nmeum/android-tools) that eases
+building various [command-line tools for Android](https://developer.android.com/tools) from scratch (as
+done by the [`android-tools` Arch Linux package](https://archlinux.org/packages/extra/x86_64/android-tools)).
+
+Before running any other commands, start Wifi debugging on the phone, select pairing and run this command
+using the displayed phone IP, pairing port and pairing code:
+
+```bash
+adb pair "$phone_ip:$pairing_port" "$pairing_code"
+```
+
+Then a connection can be established using the displayed phone IP and connection port:
+
+```bash
+adb connect "$phone_ip:$connection_port"
+```
+
+Alternatively, one can also use a USB connection.
+
+If you have more than one device connected (or an emulator running), use this command to list all devices
+and their transport IDs:
+
+```bash
+adb devices -l
+```
+
+The transport ID can be specified with the `-t` parameter in other commands as shown below. It can be
+omitted if there is only one device.
+
+Useful commands:
+
+* Install app: `adb -t 1 install path`
+* Show logs: `adb -t 1 logcat -s default SyncthingActivity SyncthingService Util`
 
 ## Permissions
 The following permissions are required:
