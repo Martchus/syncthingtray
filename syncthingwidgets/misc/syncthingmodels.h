@@ -114,6 +114,7 @@ public:
     Q_INVOKABLE bool openUrlExternally(const QUrl &url, bool viaQt = false);
     Q_INVOKABLE bool openPath(const QString &path);
     Q_INVOKABLE bool openPath(const QString &dirId, const QString &relativePath);
+    Q_INVOKABLE bool openSyncthingConfigFile();
     Q_INVOKABLE bool scanPath(const QString &path);
     Q_INVOKABLE bool copyText(const QString &text);
     Q_INVOKABLE bool copyPath(const QString &dirId, const QString &relativePath);

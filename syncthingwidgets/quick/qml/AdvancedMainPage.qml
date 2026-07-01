@@ -93,7 +93,7 @@ Page {
                 if (modelData.specialPage.length > 0) {
                     stackView.push(modelData.specialPage, {pages: stackView.pages}, StackView.PushTransition);
                 } else if (modelData.func.length > 0) {
-                    App[modelData.func]();
+                    (App?.[modelData.func] ?? SyncthingModels?.[modelData.func])?.();
                 } else {
                     const specialEntriesOnly = modelData.specialEntriesKey.length > 0;
                     const se = (specialEntriesOnly ? advancedPage.specialEntries[modelData.specialEntriesKey] : advancedPage.specialEntriesByKey[modelData.key]) ?? [];

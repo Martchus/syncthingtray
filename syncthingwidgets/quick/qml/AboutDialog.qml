@@ -10,6 +10,7 @@ CustomDialog {
     Material.accent: Material.LightBlue
     implicitWidth: 400
     focus: true
+    popupType: Utils.winUI ? Popup.Item : Utils.popupType  // only Popup.Item works with FluentWinUI3
     standardButtons: Dialog.Ok
     title: qsTr("About %1").arg(Qt.application.name)
     contentItem: ScrollView {

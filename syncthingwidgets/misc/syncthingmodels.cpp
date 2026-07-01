@@ -24,6 +24,7 @@
 #include <syncthingmodel/syncthingfilemodel.h>
 #include <syncthingmodel/syncthingicons.h>
 
+#include <syncthingconnector/syncthingconfig.h>
 #include <syncthingconnector/utils.h>
 
 #include <qtutilities/misc/desktoputils.h>
@@ -152,6 +153,15 @@ bool SyncthingModels::openPath(const QString &dirId, const QString &relativePath
     } else if (openPath(fullPath)) {
         return true;
     }
+    return false;
+}
+
+bool SyncthingModels::openSyncthingConfigFile()
+{
+    if (const auto configPath = Data::SyncthingConfig::locateConfigFile(); !configPath.isEmpty()) {
+        return openPath(configPath);
+    }
+    emit error(tr("Unable to find configuration file of local Syncthing instance under its default location."));
     return false;
 }
 

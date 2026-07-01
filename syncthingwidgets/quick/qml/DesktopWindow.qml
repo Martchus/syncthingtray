@@ -51,6 +51,11 @@ ApplicationWindow {
                     icon.source: QuickUI.faUrlBase + "question-circle"
                     icon.width: QuickUI.iconSize
                     icon.height: QuickUI.iconSize
+                    Label {
+                        padding: 5
+                        text: qsTr("Syncthing")
+                        font.weight: Font.Medium
+                    }
                     Action {
                         text: qsTr("&Home page")
                         onTriggered: SyncthingModels.openUrlExternally("https://syncthing.net")
@@ -63,8 +68,6 @@ ApplicationWindow {
                         text: qsTr("&Support")
                         onTriggered: SyncthingModels.openUrlExternally("https://forum.syncthing.net")
                     }
-                    MenuSeparator {
-                    }
                     Action {
                         text: qsTr("&Changelog")
                         onTriggered: SyncthingModels.openUrlExternally("https://github.com/syncthing/syncthing/releases")
@@ -73,15 +76,28 @@ ApplicationWindow {
                         text: qsTr("&Statistics")
                         onTriggered: SyncthingModels.openUrlExternally("https://data.syncthing.net")
                     }
-                    MenuSeparator {
-                    }
                     Action {
                         text: qsTr("&Bugs")
                         onTriggered: SyncthingModels.openUrlExternally("https://github.com/syncthing/syncthing/issues")
                     }
                     Action {
-                        text: qsTr("&Source Code")
+                        text: qsTr("&Source code")
                         onTriggered: SyncthingModels.openUrlExternally("https://github.com/syncthing/syncthing")
+                    }
+                    MenuSeparator {
+                    }
+                    Label {
+                        padding: 5
+                        text: qsTr("Syncthing Tray")
+                        font.weight: Font.Medium
+                    }
+                    Action {
+                        text: qsTr("&Documentation")
+                        onTriggered: SyncthingModels.openUrlExternally(SyncthingData.documentationUrl)
+                    }
+                    Action {
+                        text: qsTr("&Source code")
+                        onTriggered: SyncthingModels.openUrlExternally(SyncthingData.readmeUrl.replace(/\/blob\/.*/, ""))
                     }
                     Action {
                         text: qsTr("&About")
@@ -89,26 +105,21 @@ ApplicationWindow {
                     }
                 }
                 Menu {
-                    title: qsTr("&Config")
+                    title: qsTr("&Actions")
                     icon.source: QuickUI.faUrlBase + "cog"
                     icon.width: QuickUI.iconSize
                     icon.height: QuickUI.iconSize
+                    Label {
+                        padding: 5
+                        text: qsTr("Syncthing")
+                        font.weight: Font.Medium
+                    }
                     Action {
                         text: qsTr("&Settings")
                         onTriggered: QuickUI.showSettings()
                     }
                     Action {
-                        text: qsTr("&Setup")
-                        onTriggered: TrayWidget.showSettingsDialog()
-                    }
-                }
-                Menu {
-                    title: qsTr("&Actions")
-                    icon.source: QuickUI.faUrlBase + "cog"
-                    icon.width: QuickUI.iconSize
-                    icon.height: QuickUI.iconSize
-                    Action {
-                        text: qsTr("&Open web-based UI")
+                        text: qsTr("&Web-based UI")
                         onTriggered: TrayWidget.showSyncthingUI(true)
                     }
                     Action {
@@ -127,8 +138,6 @@ ApplicationWindow {
                         text: qsTr("&Support Bundle")
                         enabled: false
                     }
-                    MenuSeparator {
-                    }
                     Action {
                         text: qsTr("&Restart")
                         onTriggered: SyncthingData.connection.restart()
@@ -136,6 +145,21 @@ ApplicationWindow {
                     Action {
                         text: qsTr("&Shutdown")
                         onTriggered: SyncthingData.connection.shutdown()
+                    }
+                    MenuSeparator {
+                    }
+                    Label {
+                        padding: 5
+                        text: qsTr("Syncthing Tray")
+                        font.weight: Font.Medium
+                    }
+                    Action {
+                        text: qsTr("&Settings")
+                        onTriggered: TrayWidget.showSettingsDialog()
+                    }
+                    Action {
+                        text: qsTr("&Wizard")
+                        onTriggered: TrayWidget.showWizard()
                     }
                 }
             }

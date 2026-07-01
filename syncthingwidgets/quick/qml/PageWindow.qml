@@ -49,7 +49,7 @@ ApplicationWindow {
                 display: AbstractButton.TextBesideIcon
                 icon.width: QuickUI.iconSize
                 icon.height: QuickUI.iconSize
-                icon.source: QuickUI.faUrlBase + "times"
+                icon.source: Utils.winUI ? "" : QuickUI.faUrlBase + "times"
                 text: qsTr("Close")
                 flat: Utils.flatDialogButtons
                 onClicked: pageWindow.close()
@@ -68,7 +68,7 @@ ApplicationWindow {
                             enabled: modelData.enabled
                             text: modelData.text
                             flat: Utils.flatDialogButtons
-                            icon.source: modelData.icon.source
+                            icon.source: Utils.winUI ? "" : modelData.icon.source
                             onClicked: modelData.trigger()
                         }
                     }
