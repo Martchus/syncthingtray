@@ -191,10 +191,21 @@ public class DocumentsProvider extends android.provider.DocumentsProvider {
         return newFile.getPath();
     }
 
+    static boolean deleteRecursive(File fileOrDirectory) {
+        if (fileOrDirectory.isDirectory()) {
+            File[] children = fileOrDirectory.listFiles();
+            if (children != null) {
+                for (File child : fileOrDirectory.listFiles()) {
+                    deleteRecursive(child);
+                }
+            }
+        }
+        return fileOrDirectory.delete();
+    }
+
     @Override
     public void deleteDocument(String documentId) throws FileNotFoundException {
-        File file = getFileForDocId(documentId);
-        if (!file.delete()) {
+        if (!deleteRecursive(getFileForDocId(documentId))) {
             throw new FileNotFoundException("Failed to delete document with id " + documentId);
         }
     }
