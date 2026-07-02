@@ -95,6 +95,20 @@ PlasmaExtras.Representation {
         sequence: "Ctrl+O"
         onActivated: clickCurrentItemButton("openButton")
     }
+    Shortcut {
+        sequences: ["Ctrl+M", "Menu"]
+        onActivated: {
+            const view = findCurrentPage().view
+            const item = view.currentItem
+            if (item) {
+                view.showContextMenu(item, item.x + item.width / 2, item.y + item.height / 2)
+            }
+        }
+    }
+    Shortcut {
+        sequence: "Esc"
+        onActivated: plasmoid.expanded = false
+    }
 
     // main contents
     FocusScope {
