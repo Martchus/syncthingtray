@@ -190,19 +190,22 @@ While Syncthing Tray basically works on Android, there are still some unresolved
       Check out the section
       "[Using the document provider on Android](#using-the-document-provider-on-android)" for details.
 * Media rescans need to be triggered manually, but this can be easily done per folder from the UI.
-*
-* There are probably still many small UI bugs in the Qt Quick based UI used on Android.
+* A notification is needed to run Syncthing as background service. Check out the section
+  [Persistent notification](#persistent-notification) for details.
 * Not all features the official web UI offers have been implemented in the Qt Quick based UI yet.
     * Most notably, there is no UI for restoring old versions. (You can configure versioning, though.)
     * As a workaround, you can open the official web UI in a web browser.
 * When switching back from another app, the state of the UI might be lost. This is especially annoying
   when adding a new folder or device. This can also happen when opening the Syncthing documentation
   from within the app. So if you are on a device with low memory (which makes this more likely to
-  happen), you should avoid switching to another app or opening the Syncthing documentation.
+  happen), you should avoid switching to another app or opening the Syncthing documentation while
+  adding or editing a folder or device.
 * The app is not always able to suppress connection errors when the Syncthing backend is restarted.
 * The connection to Syncthing can sometimes not be restored after restarting Syncthing (e.g. to make
   an export/backup). This happens particularly often when using a UNIX domain socket. One can restart
   the app to work around it.
+* The app and Syncthing itself can become very unresponsive under certain conditions. I have not yet
+  figured out under what conditions that happens exactly.
 * Battery-life can be a problem. If you are affected I recommend disabling local discovery. Note that
   this is a problem of Syncthing itself and there is already
   [a discussion in the forums](https://forum.syncthing.net/t/syncthing-fork-v2-uses-far-too-much-battery-over-v1)
@@ -211,14 +214,14 @@ While Syncthing Tray basically works on Android, there are still some unresolved
   this. The option in the launcher settings completely stops/starts Syncthing depending on the network
   connection. With
   [rescans on startup not being optional](https://github.com/syncthing/syncthing/issues/5353) this will
-  drain the battery if you have big folders. The option in the connection settings will keep Syncthing
-  running but pause devices, discovery and relaying. This will hopefully not drain the battery as much
+  drain the battery if you have big folders. The option in the connection settings keeps Syncthing
+  running but pauses devices, discovery and relaying. This will hopefully not drain the battery as much
   but it can lead to inconsistencies, e.g. if you add a new device while the connection is metered.
 * Some of the problems/solutions found on the
-  [Wiki pages of Syncthing-Fork](https://github.com/Catfriend1/syncthing-android/wiki) might help with
-  Syncthing Tray on Android as well.
-* Some Qt bugs mentioned under "[List of bugs](known_bugs_and_workarounds.md#list-of-bugs)" affect
-  the Android app.
+  [Wiki pages of Syncthing-Fork](https://github.com/researchxxl/syncthing-android/tree/main/wiki) might
+  help with Syncthing Tray on Android as well.
+* Some Qt bugs mentioned under "[List of bugs](known_bugs_and_workarounds.md#list-of-bugs)" affect the
+  Android app.
 
 ## Using the document provider on Android
 Syncthing Tray provides a
