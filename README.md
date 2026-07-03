@@ -204,6 +204,23 @@ located under `~/.config/Martchus/Syncthing Tray` on GNU/Linux and
 `%appdata%\Martchus\Syncthing Tray` on Windows. The configuration and database of Syncthing
 itself are also located within this directory when Syncthing is launched via the mobile UI.
 
+### Modern UI
+It is possible to enable a more modern UI for the tray menu in the appearance settings. This UI is
+a result of porting Syncthing Tray to Android and brings back the modern design and many features
+of the mobile UI to Syncthing Tray on the desktop. For instance, it allows editing folders and
+devices. It also comes with a dashboard that looks similar to the official web-based UI.
+
+The modern UI is still work-in-progress and is therefore only available if
+`SYNCTHINGTRAY_ENABLE_WIP_FEATURES=1` is set in the environment. Additionally, Syncthing Tray
+needs to be built with `-DQUICK_GUI=ON`.
+
+In case you prefer the classic UI you can continue using it. It will not be deleted anytime soon.
+However, new UI features will mainly focus on the new UI now.
+
+The Plasmoid still has its distinct UI. However, `SYNCTHINGTRAY_ENABLE_WIP_FEATURES=1` also enables
+some of the features of the modern UI in the Plasmoid, such as the ability to edit folders and
+devices.
+
 ### Connect to Syncthing via Unix domain socket
 When using a Unix domain socket as the Syncthing GUI address (e.g., by starting Syncthing with
 parameters such as `--gui-address=unix://%t/syncthing.socket --no-port-probing`), you need to
