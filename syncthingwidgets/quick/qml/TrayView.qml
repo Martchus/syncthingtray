@@ -25,11 +25,21 @@ Pane {
             tabBar.setCurrentIndex(tabBar.currentIndex < tabBar.count - 1 ? tabBar.currentIndex + 1 : 0);
             pageStack.setCurrentIndex(tabBar.currentItem.tabIndex);
         }
+        Keys.onPressed: (event) => {
+            if ((event.modifiers === Qt.NoModifier) && ((event.key >= Qt.Key_0 && event.key <= Qt.Key_9) || (event.key >= Qt.Key_A && event.key <= Qt.Key_Z)) && searchField.enabled) {
+                searchField.visible = true;
+                searchField.text += event.text;
+                searchField.forceActiveFocus();
+            }
+        }
         StackLayout {
             id: pageStack
             Layout.fillWidth: true
             Layout.fillHeight: true
-            onCurrentIndexChanged: TrayWidget.handleCurrentTabChanged(pageStack.currentIndex)
+            onCurrentIndexChanged: {
+                TrayWidget.handleCurrentTabChanged(pageStack.currentIndex);
+                searchField.init(pageStack.currentIndex);
+            }
             DirListView {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
@@ -50,6 +60,7 @@ Pane {
                 focus: StackLayout.isCurrentItem
                 anchors.fill: null
             }
+            readonly property Item currentItem: pageStack.itemAt(pageStack.currentIndex)
             function setCurrentIndex(index) {
                 pageStack.currentIndex = Math.min(Math.max(0, index), pageStack.count - 1);
             }
@@ -57,9 +68,12 @@ Pane {
         Pane {
             padding: 0
             Layout.fillWidth: true
+            contentWidth: tabBar.implicitWidth
+            contentHeight: tabBar.implicitHeight
             TabBar {
                 id: tabBar
                 anchors.fill: parent
+                rightPadding: toolBar.width
                 position: TabBar.Footer
                 MainTabButton {
                     text: qsTr("Folders")
@@ -78,6 +92,57 @@ Pane {
                     iconName: "history"
                     tabIndex: 2
                     displayWithIcon: AbstractButton.TextBesideIcon
+                }
+            }
+            RowLayout{
+                id: toolBar
+                anchors.right: tabBar.right
+                anchors.verticalCenter: tabBar.verticalCenter
+                IconOnlyButton {
+                    text: qsTr("Rescan all")
+                    icon.source: QuickUI.faUrlBase + "refresh"
+                    onClicked: SyncthingData.connection.rescanAllDirs()
+                }
+                IconOnlyButton {
+                    text: qsTr("Show ID")
+                    icon.source: QuickUI.faUrlBase + "qrcode"
+                    onClicked: TrayWidget.showOwnDeviceId()
+                }
+                IconOnlyButton {
+                    text: qsTr("Show logs")
+                    icon.source: QuickUI.faUrlBase + "terminal"
+                    onClicked: TrayWidget.showLog()
+                }
+                IconOnlyButton {
+                    text: qsTr("Filter")
+                    icon.source: QuickUI.faUrlBase + "search"
+                    onClicked: searchField.toggle()
+                }
+            }
+            SearchField {
+                id: searchField
+                visible: false
+                focus: visible
+                anchors.bottom: toolBar.top
+                anchors.right: toolBar.right
+                width: 250
+                live: true
+                enabled: pageStack.currentItem.mainModel !== undefined
+                onSearchTriggered: searchField.apply(searchField.text)
+                onClearButtonPressed: searchField.apply("", true)
+                Keys.onEscapePressed: searchField.apply(searchField.text = "", true)
+                Component.onCompleted: searchField.init();
+                function toggle() {
+                    return ((searchField.visible = !searchField.visible)) && searchField.forceActiveFocus();
+                }
+                function init(index) {
+                    searchField.text = pageStack.itemAt(index ?? pageStack.currentIndex).mainModel?.filterRegularExpressionPattern() ?? "";
+                }
+                function apply(text, hide) {
+                    pageStack.currentItem.mainModel?.setFilterRegularExpressionPattern(text);
+                    if (hide) {
+                        searchField.visible = false;
+                    }
                 }
             }
         }
