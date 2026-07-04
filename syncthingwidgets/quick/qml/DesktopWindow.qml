@@ -191,7 +191,7 @@ ApplicationWindow {
                     Label {
                         Layout.fillWidth: true
                         Layout.alignment: Qt.AlignVCenter
-                        leftPadding: 10
+                        leftPadding: 5
                         text: qsTr("Folders")
                         font.weight: Font.Medium
                     }
@@ -226,9 +226,19 @@ ApplicationWindow {
                         onClicked: SyncthingData.connection.rescanAllDirs()
                         flat: true
                     }
+                    IconOnlyButton {
+                        text: qsTr("Filter")
+                        icon.source: QuickUI.faUrlBase + "search"
+                        onClicked: foldersFilterField.toggle()
+                        flat: true
+                    }
                     Item {
                         Layout.preferredWidth: dirsListView.ScrollBar?.vertical.width
                     }
+                }
+                FilterField {
+                    id: foldersFilterField
+                    view: dirsListView
                 }
                 DirListView {
                     id: dirsListView
@@ -246,7 +256,7 @@ ApplicationWindow {
                     Layout.fillWidth: true
                     Label {
                         Layout.fillWidth: true
-                        leftPadding: 10
+                        leftPadding: 5
                         text: qsTr("Statistics")
                         font.weight: Font.Medium
                     }
@@ -339,9 +349,21 @@ ApplicationWindow {
                         onClicked: SyncthingData.connection.resumeAllDevs()
                         flat: true
                     }
+                    IconOnlyButton {
+                        id: devsFilterButton
+                        text: qsTr("Filter")
+                        icon.source: QuickUI.faUrlBase + "search"
+                        onClicked: devsFilterField.toggle()
+                        flat: true
+                    }
+
                     Item {
                         Layout.preferredWidth: devsListView.ScrollBar?.vertical.width
                     }
+                }
+                FilterField {
+                    id: devsFilterField
+                    view: devsListView
                 }
                 DevListView {
                     id: devsListView
