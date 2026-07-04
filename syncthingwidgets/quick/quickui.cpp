@@ -85,6 +85,7 @@ QuickUI::QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQml
     , m_engine(engine)
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
     , m_mainWindow(nullptr)
+    , m_recentChangesWindow(nullptr)
 #endif
     , m_qtSettings(qtSettings)
     , m_faUrlBase(QStringLiteral("image://fa/"))
@@ -394,7 +395,8 @@ bool QuickUI::showMainWindow()
 #endif
 }
 
-bool QuickUI::showPage(QAnyStringView uri, QAnyStringView typeName, const QVariantMap &initialProperties, QQuickItem *stackView)
+bool QuickUI::showPage(
+    QAnyStringView uri, QAnyStringView typeName, const QVariantMap &initialProperties, QQuickItem *stackView, QQuickWindow **window)
 {
     if (stackView) {
         // create a component and pass that to "pushItem" so the StackView will create an item itself and take ownership
@@ -416,6 +418,9 @@ bool QuickUI::showPage(QAnyStringView uri, QAnyStringView typeName, const QVaria
     static_cast<QObject *>(pageWindow)->setParent(m_engine);
     static_cast<QObject *>(page)->setParent(pageWindow);
     connect(pageWindow, &QQuickWindow::closing, pageWindow, &QObject::deleteLater);
+    if (window) {
+        *window = pageWindow;
+    }
     return true;
 #else
     return false;
@@ -464,7 +469,29 @@ bool QuickUI::showSettings(QQuickItem *stackView)
 
 bool QuickUI::showRecentChanges(QQuickItem *stackView)
 {
-    return showPage("Main", "ChangesPage", {}, stackView);
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
+    if (m_recentChangesWindow) {
+        m_recentChangesWindow->show();
+        emit changesWindowVisibleChanged(true);
+        return true;
+    }
+#endif
+    const auto res = showPage("Main", "ChangesPage", {}, stackView
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
+        ,
+        &m_recentChangesWindow
+#endif
+    );
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
+    if (m_recentChangesWindow) {
+        emit changesWindowVisibleChanged(true);
+        connect(m_recentChangesWindow, &QObject::destroyed, this, [this] {
+            m_recentChangesWindow = nullptr;
+            emit changesWindowVisibleChanged(false);
+        });
+    }
+#endif
+    return res;
 }
 
 bool QuickUI::browseFiles(const QString &dirId, const QString &dirName, QQuickItem *stackView)

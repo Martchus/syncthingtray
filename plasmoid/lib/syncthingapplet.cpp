@@ -51,6 +51,7 @@
 #include <QMessageBox>
 #include <QNetworkReply>
 #include <QPalette>
+#include <QQmlContext>
 #include <QQmlEngine>
 #include <QStringBuilder>
 
@@ -138,6 +139,13 @@ SyncthingApplet::~SyncthingApplet()
     SyncthingService::setMainInstance(nullptr);
 #endif
 }
+
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+SyncthingApplet *Plasmoid::SyncthingApplet::create(QQmlEngine *qmlEngine, QJSEngine *engine)
+{
+    return dataObjectFromProperty<SyncthingApplet>(qmlEngine, engine);
+}
+#endif
 
 void showErrorIfSet(const QString &errorMessage)
 {
@@ -234,6 +242,9 @@ void SyncthingApplet::initEngine(QObject *object)
         dataObjectToProperty(engine, &m_data);
         dataObjectToProperty(engine, &m_models);
         dataObjectToProperty(engine, &quickUI);
+        dataObjectToProperty(engine, this);
+        //engine->rootContext()->setContextProperty(QStringLiteral("TrayWidget"), this);
+        connect(&quickUI, &QuickUI::changesWindowVisibleChanged, this, &SyncthingApplet::handleChangesWindowVisibleChanged);
         emit quickUIChanged();
     }
 #endif
@@ -378,8 +389,23 @@ void SyncthingApplet::updateStatusIconAndTooltip()
 void SyncthingApplet::handleRelevantControlsChanged(bool visible, int tabIndex)
 {
     m_lastTab = tabIndex;
-    QtGui::handleRelevantControlsChanged(visible, tabIndex, *m_data.connection());
+    CppUtilities::modFlagEnum(m_visibleControls, VisibleControls::TrayWidget, visible);
+    QtGui::handleRelevantControlsChanged(m_visibleControls, tabIndex, *m_data.connection());
 }
+
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+void SyncthingApplet::handleMainWindowVisibleChanged(bool visible)
+{
+    CppUtilities::modFlagEnum(m_visibleControls, VisibleControls::MainWindow, visible);
+    QtGui::handleRelevantControlsChanged(m_visibleControls, m_lastTab, *m_data.connection());
+}
+
+void SyncthingApplet::handleChangesWindowVisibleChanged(bool visible)
+{
+    CppUtilities::modFlagEnum(m_visibleControls, VisibleControls::RecentChangesWindow, visible);
+    QtGui::handleRelevantControlsChanged(m_visibleControls, m_lastTab, *m_data.connection());
+}
+#endif
 #endif
 
 void SyncthingApplet::saveSettings()
@@ -401,7 +427,7 @@ bool SyncthingApplet::areWipFeaturesEnabled() const
     return Settings::values().enableWipFeatures;
 }
 
-void SyncthingApplet::showSettingsDlg()
+void SyncthingApplet::showSettingsDialog()
 {
     if (!m_settingsDlg) {
         m_settingsDlg = new SettingsDialog(*this);
@@ -430,7 +456,7 @@ void SyncthingApplet::showWizard()
     if (!m_wizard) {
         m_wizard = Wizard::instance();
         connect(m_wizard, &Wizard::destroyed, this, [this] { m_wizard = nullptr; });
-        connect(m_wizard, &Wizard::settingsDialogRequested, this, &SyncthingApplet::showSettingsDlg);
+        connect(m_wizard, &Wizard::settingsDialogRequested, this, &SyncthingApplet::showSettingsDialog);
         connect(m_wizard, &Wizard::openSyncthingRequested, this, &SyncthingApplet::showWebUI);
         connect(m_wizard, &Wizard::settingsChanged, this, &SyncthingApplet::applySettingsChangesFromWizard);
     }
@@ -462,9 +488,10 @@ void SyncthingApplet::concludeWizard(const QString &errorMessage)
     }
 }
 
-void SyncthingApplet::showWebUI()
+void SyncthingApplet::showSyncthingUI(bool noQuickUI)
 {
-    auto *const dlg = QtGui::showWebUI(m_data.connection()->syncthingUrl(), currentConnectionConfig(), m_webViewDlg, nullptr, m_data.connection());
+    auto *const dlg
+        = QtGui::showWebUI(m_data.connection()->syncthingUrl(), currentConnectionConfig(), m_webViewDlg, this, m_data.connection(), noQuickUI);
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     if (!dlg) {
         return;
@@ -479,6 +506,20 @@ void SyncthingApplet::showWebUI()
     Q_UNUSED(dlg)
 #endif
 }
+
+void SyncthingApplet::showWebUI()
+{
+    showSyncthingUI();
+}
+
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+void SyncthingApplet::showQtQuickGui()
+{
+    if (m_quickUI.has_value()) {
+        m_quickUI->showMainWindow();
+    }
+}
+#endif
 
 void SyncthingApplet::showLog()
 {

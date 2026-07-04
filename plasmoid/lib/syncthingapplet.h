@@ -3,6 +3,7 @@
 
 #include <syncthingwidgets/misc/dbusstatusnotifier.h>
 #include <syncthingwidgets/misc/syncthingmodels.h>
+#include <syncthingwidgets/misc/utils.h>
 #include <syncthingwidgets/webview/webviewdefs.h>
 
 #include <syncthingmodel/syncthingdownloadmodel.h>
@@ -22,6 +23,11 @@
 
 #include <QPalette>
 #include <QSize>
+
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+#include <QJSValue>
+#include <QtQmlIntegration/qqmlintegration.h>
+#endif
 
 #if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
 #include <optional>
@@ -52,6 +58,10 @@ class SettingsDialog;
 
 class SyncthingApplet : public Plasma::Applet {
     Q_OBJECT
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+    QML_NAMED_ELEMENT(TrayWidget)
+    QML_SINGLETON
+#endif
     Q_PROPERTY(QtGui::SyncthingData *data READ data CONSTANT)
     Q_PROPERTY(QtGui::SyncthingModels *models READ models CONSTANT)
     Q_PROPERTY(Data::SyncthingDownloadModel *downloadModel READ downloadModel CONSTANT)
@@ -92,6 +102,9 @@ public:
     SyncthingApplet(QObject *parent, const QVariantList &data);
 #endif
     ~SyncthingApplet() override;
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+    static SyncthingApplet *create(QQmlEngine *, QJSEngine *engine);
+#endif
 
 public:
     QtGui::SyncthingData *data() const;
@@ -137,9 +150,13 @@ public:
 public Q_SLOTS:
     void init() override;
     void initEngine(QObject *object);
-    void showSettingsDlg();
+    void showSettingsDialog();
     void showWizard();
     void showWebUI();
+    void showSyncthingUI(bool noQuickUI = false);
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    void showQtQuickGui();
+#endif
     void showLog();
     void showOwnDeviceId();
     void showAboutDialog();
@@ -154,6 +171,10 @@ public Q_SLOTS:
     void updateStatusIconAndTooltip();
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     void handleRelevantControlsChanged(bool visible, int index);
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    void handleMainWindowVisibleChanged(bool visible);
+    void handleChangesWindowVisibleChanged(bool visible);
+#endif
 #endif
     void saveSettings();
 
@@ -222,6 +243,7 @@ private:
     QtGui::DBusStatusNotifier m_dbusNotifier;
     QtForkAwesome::QuickImageProvider *m_imageProvider;
     QtGui::WebViewDialog *m_webViewDlg;
+    QtGui::VisibleControls m_visibleControls = QtGui::VisibleControls::None;
     QDialog *m_notificationsDlg;
     int m_currentConnectionConfig;
     int m_defaultTab;

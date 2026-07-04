@@ -2,6 +2,7 @@
 #define TRAY_WIDGET_H
 
 #include <syncthingwidgets/misc/syncthingmodels.h>
+#include <syncthingwidgets/misc/utils.h>
 #include <syncthingwidgets/settings/settings.h>
 #include <syncthingwidgets/webview/webviewdefs.h>
 
@@ -116,6 +117,10 @@ public Q_SLOTS:
     void applySettingsChangesFromWizard();
     void saveSettings();
     void handleCurrentTabChanged(int index);
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    void handleMainWindowVisibleChanged(bool visible);
+    void handleChangesWindowVisibleChanged(bool visible);
+#endif
 
 protected:
     bool event(QEvent *event) override;
@@ -182,6 +187,7 @@ private:
     Data::SyncthingConnectionSettings *m_selectedConnection;
     QMenu *m_notificationsMenu;
     enum class StartStopButtonTarget { None, Service, Launcher } m_startStopButtonTarget;
+    VisibleControls m_visibleControls = VisibleControls::None;
     QStringList m_tabTexts;
     struct {
         QPixmap uploadIconActive;

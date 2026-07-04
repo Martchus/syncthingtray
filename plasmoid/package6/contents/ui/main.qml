@@ -77,7 +77,7 @@ PlasmoidItem {
         id: configureAction
         text: qsTr("Settings")
         icon.name: "configure"
-        onTriggered: Plasmoid.showSettingsDlg()
+        onTriggered: Plasmoid.showSettingsDialog()
     }
 
     Component.onCompleted: {

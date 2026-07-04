@@ -9,13 +9,17 @@
 
 namespace QtGui {
 
-void handleRelevantControlsChanged(bool visible, int tabIndex, Data::SyncthingConnection &connection)
+void handleRelevantControlsChanged(VisibleControls visibleControls, int tabIndex, Data::SyncthingConnection &connection)
 {
     auto flags = connection.pollingFlags();
-    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DownloadProgress, visible && tabIndex == 3);
-    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DiskEvents, visible && tabIndex == 2);
-    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::TrafficStatistics, visible);
-    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DeviceStatistics, visible && tabIndex == 1);
+    auto trayWidgetVisible = visibleControls && VisibleControls::TrayWidget;
+    auto mainWindowVisible = visibleControls && VisibleControls::MainWindow;
+    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DownloadProgress, trayWidgetVisible && tabIndex == 3);
+    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DiskEvents,
+        (visibleControls && VisibleControls::RecentChangesWindow) || (trayWidgetVisible && tabIndex == 2));
+    CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::TrafficStatistics, mainWindowVisible || trayWidgetVisible);
+    CppUtilities::modFlagEnum(
+        flags, Data::SyncthingConnection::PollingFlags::DeviceStatistics, mainWindowVisible || (trayWidgetVisible && tabIndex == 1));
     connection.setPollingFlags(flags);
 }
 

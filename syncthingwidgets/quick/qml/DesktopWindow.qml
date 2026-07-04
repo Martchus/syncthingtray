@@ -15,6 +15,7 @@ ApplicationWindow {
     flags: QuickUI.extendedClientArea ? (Qt.Window | Qt.ExpandedClientAreaHint | Qt.NoTitleBarBackgroundHint) : (Qt.Window)
     leftPadding: 0
     rightPadding: 0
+    onVisibleChanged: TrayWidget.handleMainWindowVisibleChanged(appWindow.visible)
     header: Pane {
         RowLayout {
             anchors.fill: parent

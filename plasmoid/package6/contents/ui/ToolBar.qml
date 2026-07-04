@@ -212,7 +212,7 @@ RowLayout {
         icon.source: plasmoid.faUrl + "cog"
         visible: showExtraButtons
         onClicked: {
-            plasmoid.showSettingsDlg()
+            plasmoid.showSettingsDialog()
             plasmoid.expanded = false
         }
         PlasmaComponents3.ToolTip {

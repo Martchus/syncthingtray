@@ -178,8 +178,8 @@ public:
         emit openingUrlRequested(url);
     }
     Q_INVOKABLE bool showMainWindow();
-    Q_INVOKABLE bool showPage(
-        QAnyStringView uri, QAnyStringView typeName, const QVariantMap &initialProperties = QVariantMap(), QQuickItem *stackView = nullptr);
+    Q_INVOKABLE bool showPage(QAnyStringView uri, QAnyStringView typeName, const QVariantMap &initialProperties = QVariantMap(),
+        QQuickItem *stackView = nullptr, QQuickWindow **window = nullptr);
     Q_INVOKABLE bool editDir(const QString &dirId, const QString &dirName, QQuickItem *stackView = nullptr, bool advanced = false);
     Q_INVOKABLE bool editDev(const QString &devId, const QString &devName, QQuickItem *stackView = nullptr, bool advanced = false);
     Q_INVOKABLE bool showNeededItems(const QString &dirId, const QString &dirLabel, QQuickItem *stackView = nullptr);
@@ -198,6 +198,7 @@ Q_SIGNALS:
     void error(const QString &errorMessage, const QString &details = QString());
     void openingUrlRequested(const QUrl &url);
     void syncthingIconsVisibleChanged(bool syncthingIconsVisible);
+    void changesWindowVisibleChanged(bool visible);
 
 protected:
     bool eventFilter(QObject *object, QEvent *event) override;
@@ -212,6 +213,7 @@ private:
     QQmlEngine *m_engine;
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
     QQuickWindow *m_mainWindow;
+    QQuickWindow *m_recentChangesWindow;
 #endif
     QtUtilities::QtSettings &m_qtSettings;
     QString m_faUrlBase;

@@ -26,7 +26,7 @@ Item {
     }
 
     function action_configure() {
-        plasmoid.nativeInterface.showSettingsDlg()
+        plasmoid.nativeInterface.showSettingsDialog()
     }
 
     function action_showOwnId() {

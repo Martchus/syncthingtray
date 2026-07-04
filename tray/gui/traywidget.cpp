@@ -377,6 +377,7 @@ QuickGuiEngine &TrayWidget::quickGui()
         dataObjectToProperty(engine, &m_data);
         dataObjectToProperty(engine, &m_models);
         dataObjectToProperty(engine, &quickUI.ui);
+        connect(&quickUI.ui, &QuickUI::changesWindowVisibleChanged, this, &TrayWidget::handleChangesWindowVisibleChanged);
     }
     return *m_quickUI;
 }
@@ -812,7 +813,7 @@ bool TrayWidget::event(QEvent *event)
 void TrayWidget::showEvent(QShowEvent *event)
 {
     QWidget::showEvent(event);
-    QtGui::handleRelevantControlsChanged(true, m_ui->tabWidget->currentIndex(), *m_data.connection());
+    QtGui::handleRelevantControlsChanged(m_visibleControls += VisibleControls::TrayWidget, m_ui->tabWidget->currentIndex(), *m_data.connection());
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
     if (m_quickWidget) {
         m_quickWidget->setFocus();
@@ -826,7 +827,7 @@ void TrayWidget::showEvent(QShowEvent *event)
 void TrayWidget::hideEvent(QHideEvent *event)
 {
     QWidget::hideEvent(event);
-    QtGui::handleRelevantControlsChanged(false, m_ui->tabWidget->currentIndex(), *m_data.connection());
+    QtGui::handleRelevantControlsChanged(m_visibleControls -= VisibleControls::TrayWidget, m_ui->tabWidget->currentIndex(), *m_data.connection());
 }
 
 void TrayWidget::applySettingsOnAllInstances()
@@ -947,8 +948,22 @@ void TrayWidget::showRecentChangesContextMenu(const QPoint &position)
 
 void TrayWidget::handleCurrentTabChanged(int index)
 {
-    QtGui::handleRelevantControlsChanged(!isHidden(), index, *m_data.connection());
+    QtGui::handleRelevantControlsChanged(m_visibleControls, index, *m_data.connection());
 }
+
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+void TrayWidget::handleMainWindowVisibleChanged(bool visible)
+{
+    CppUtilities::modFlagEnum(m_visibleControls, VisibleControls::MainWindow, visible);
+    QtGui::handleRelevantControlsChanged(m_visibleControls, m_ui->tabWidget->currentIndex(), *m_data.connection());
+}
+
+void TrayWidget::handleChangesWindowVisibleChanged(bool visible)
+{
+    CppUtilities::modFlagEnum(m_visibleControls, VisibleControls::RecentChangesWindow, visible);
+    QtGui::handleRelevantControlsChanged(m_visibleControls, m_ui->tabWidget->currentIndex(), *m_data.connection());
+}
+#endif
 
 void TrayWidget::updateTraffic()
 {
