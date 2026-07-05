@@ -10,7 +10,7 @@ TabButton {
     icon.source: QuickUI.faUrlBase + iconName
     icon.width: QuickUI.iconSize
     icon.height: QuickUI.iconSize
-    onClicked: pageStack.setCurrentIndex(tabIndex)
+    onClicked: pageStack?.setCurrentIndex(tabIndex)
     onPressAndHold: QuickUI.performHapticFeedback()
     ToolTip.visible: hovered || pressed
     ToolTip.text: text
