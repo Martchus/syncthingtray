@@ -172,6 +172,7 @@ ApplicationWindow {
     Material.accent: theming.Material.accent
 
     Pane {
+        id: mainPane
         anchors.fill: parent
         anchors.leftMargin: parent.SafeArea.margins.left
         anchors.rightMargin: parent.SafeArea.margins.right
@@ -180,202 +181,255 @@ ApplicationWindow {
         background: Rectangle {
             color: appWindow.palette.base
         }
-        GridLayout {
+        ColumnLayout {
             anchors.fill: parent
-            columns: width > 400 ? 2 : 1
-            uniformCellWidths: true
-            ColumnLayout {
+            RowLayout {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                RowLayout {
-                    Layout.fillWidth: true
-                    Label {
-                        Layout.fillWidth: true
-                        Layout.alignment: Qt.AlignVCenter
-                        leftPadding: 5
-                        text: qsTr("Folders")
-                        font.weight: Font.Medium
-                    }
-                    Item {
-                        Layout.fillWidth: true
-                    }
-                    IconOnlyButton {
-                        Layout.alignment: Qt.AlignVCenter
-                        text: qsTr("Add folder")
-                        icon.source: QuickUI.faUrlBase + "plus"
-                        onClicked: QuickUI.editDir("", "", null)
-                        flat: true
-                    }
-                    IconOnlyButton {
-                        Layout.alignment: Qt.AlignVCenter
-                        text: qsTr("Pause all")
-                        icon.source: QuickUI.faUrlBase + "pause"
-                        onClicked: SyncthingData.connection.pauseAllDirs()
-                        flat: true
-                    }
-                    IconOnlyButton {
-                        Layout.alignment: Qt.AlignVCenter
-                        text: qsTr("Resume all")
-                        icon.source: QuickUI.faUrlBase + "play"
-                        onClicked: SyncthingData.connection.resumeAllDirs()
-                        flat: true
-                    }
-                    IconOnlyButton {
-                        Layout.alignment: Qt.AlignVCenter
-                        text: qsTr("Rescan all")
-                        icon.source: QuickUI.faUrlBase + "refresh"
-                        onClicked: SyncthingData.connection.rescanAllDirs()
-                        flat: true
-                    }
-                    IconOnlyButton {
-                        text: qsTr("Filter")
-                        icon.source: QuickUI.faUrlBase + "search"
-                        onClicked: foldersFilterField.toggle()
-                        flat: true
-                    }
-                    Item {
-                        Layout.preferredWidth: dirsListView.ScrollBar?.vertical.width
-                    }
-                }
-                FilterField {
-                    id: foldersFilterField
-                    view: dirsListView
-                }
-                DirListView {
-                    id: dirsListView
+                uniformCellSizes: true
+                ColumnLayout {
+                    id: leftColumn
+                    visible: !mainPane.compact || tabBar.currentIndex === folderButton.tabIndex
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    anchors.fill: null
-                    clip: true
-                    stackView: null
+                    RowLayout {
+                        Layout.fillWidth: true
+                        Label {
+                            Layout.fillWidth: true
+                            Layout.alignment: Qt.AlignVCenter
+                            leftPadding: 5
+                            text: qsTr("Folders")
+                            font.weight: Font.Medium
+                        }
+                        Item {
+                            Layout.fillWidth: true
+                        }
+                        IconOnlyButton {
+                            Layout.alignment: Qt.AlignVCenter
+                            text: qsTr("Add folder")
+                            icon.source: QuickUI.faUrlBase + "plus"
+                            onClicked: QuickUI.editDir("", "", null)
+                            flat: true
+                        }
+                        IconOnlyButton {
+                            Layout.alignment: Qt.AlignVCenter
+                            text: qsTr("Pause all")
+                            icon.source: QuickUI.faUrlBase + "pause"
+                            onClicked: SyncthingData.connection.pauseAllDirs()
+                            flat: true
+                        }
+                        IconOnlyButton {
+                            Layout.alignment: Qt.AlignVCenter
+                            text: qsTr("Resume all")
+                            icon.source: QuickUI.faUrlBase + "play"
+                            onClicked: SyncthingData.connection.resumeAllDirs()
+                            flat: true
+                        }
+                        IconOnlyButton {
+                            Layout.alignment: Qt.AlignVCenter
+                            text: qsTr("Rescan all")
+                            icon.source: QuickUI.faUrlBase + "refresh"
+                            onClicked: SyncthingData.connection.rescanAllDirs()
+                            flat: true
+                        }
+                        IconOnlyButton {
+                            text: qsTr("Filter")
+                            icon.source: QuickUI.faUrlBase + "search"
+                            onClicked: foldersFilterField.toggle()
+                            flat: true
+                        }
+                        Item {
+                            Layout.preferredWidth: dirsListView.ScrollBar?.vertical.width
+                        }
+                    }
+                    FilterField {
+                        id: foldersFilterField
+                        view: dirsListView
+                    }
+                    DirListView {
+                        id: dirsListView
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        anchors.fill: null
+                        clip: true
+                        stackView: null
+                    }
+                }
+                ColumnLayout {
+                    id: rightColumn
+                    visible: !mainPane.compact || tabBar.currentIndex === devsButton.tabIndex || tabBar.currentIndex === statsButton.tabIndex
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    ColumnLayout {
+                        visible: !mainPane.compact || tabBar.currentIndex === statsButton.tabIndex
+                        Layout.fillWidth: true
+                        Layout.fillHeight: mainPane.compact
+                        RowLayout {
+                            Layout.fillWidth: true
+                            Label {
+                                Layout.fillWidth: true
+                                leftPadding: 5
+                                text: qsTr("Statistics")
+                                font.weight: Font.Medium
+                            }
+                            Item {
+                                Layout.fillWidth: true
+                            }
+                            IconOnlyButton {
+                                Layout.alignment: Qt.AlignVCenter
+                                text: qsTr("Recent changes")
+                                icon.source: QuickUI.faUrlBase + "history"
+                                onClicked: QuickUI.showRecentChanges()
+                                flat: true
+                            }
+                            IconOnlyButton {
+                                Layout.alignment: Qt.AlignVCenter
+                                text: qsTr("Show ID")
+                                icon.source: QuickUI.faUrlBase + "qrcode"
+                                onClicked: TrayWidget.showOwnDeviceId()
+                                flat: true
+                            }
+                            IconOnlyButton {
+                                Layout.alignment: Qt.AlignVCenter
+                                text: qsTr("Show logs")
+                                icon.source: QuickUI.faUrlBase + "terminal"
+                                onClicked: TrayWidget.showLog()
+                                flat: true
+                            }
+                            Item {
+                                Layout.preferredWidth: devsListView.ScrollBar?.vertical.width
+                            }
+                        }
+                        CustomFlickable {
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                            Layout.preferredHeight: statisticsLayout.implicitHeight
+                            Layout.maximumHeight: statisticsLayout.implicitHeight
+                            ScrollBar.vertical: ScrollBar {}
+                            ScrollIndicator.vertical: null
+                            ColumnLayout {
+                                id: statisticsLayout
+                                Statistics {
+                                    stats: localSyncProgress.stats.global
+                                    labelText: qsTr("Global state")
+                                    iconName: "globe"
+                                    dense: true
+                                    highlighted: false
+                                    hoverEnabled: false
+                                }
+                                Statistics {
+                                    stats: localSyncProgress.stats.local
+                                    labelText: qsTr("Local state")
+                                    iconName: "home"
+                                    dense: true
+                                    highlighted: false
+                                    hoverEnabled: false
+                                }
+                                LocalSyncProgress {
+                                    id: localSyncProgress
+                                    Layout.fillWidth: true
+                                    Layout.leftMargin: 15
+                                    Layout.rightMargin: 15
+                                    spacing: 10
+                                }
+                                RemoteSyncProgress {
+                                    Layout.fillWidth: true
+                                    Layout.leftMargin: 15
+                                    Layout.rightMargin: 15
+                                    spacing: 10
+                                }
+                            }
+                        }
+                    }
+                    ColumnLayout {
+                        visible: !mainPane.compact || tabBar.currentIndex === devsButton.tabIndex
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        RowLayout {
+                            Layout.fillWidth: true
+                            Label {
+                                Layout.fillWidth: true
+                                leftPadding: 10
+                                text: qsTr("Devices")
+                                font.weight: Font.Medium
+                            }
+                            Item {
+                                Layout.fillWidth: true
+                            }
+                            IconOnlyButton {
+                                Layout.alignment: Qt.AlignVCenter
+                                text: qsTr("Add device")
+                                icon.source: QuickUI.faUrlBase + "plus"
+                                onClicked: QuickUI.editDev("", "", null)
+                                flat: true
+                            }
+                            IconOnlyButton {
+                                Layout.alignment: Qt.AlignVCenter
+                                text: qsTr("Pause all")
+                                icon.source: QuickUI.faUrlBase + "pause"
+                                onClicked: SyncthingData.connection.pauseAllDevs()
+                                flat: true
+                            }
+                            IconOnlyButton {
+                                Layout.alignment: Qt.AlignVCenter
+                                text: qsTr("Resume all")
+                                icon.source: QuickUI.faUrlBase + "play"
+                                onClicked: SyncthingData.connection.resumeAllDevs()
+                                flat: true
+                            }
+                            IconOnlyButton {
+                                id: devsFilterButton
+                                text: qsTr("Filter")
+                                icon.source: QuickUI.faUrlBase + "search"
+                                onClicked: devsFilterField.toggle()
+                                flat: true
+                            }
+
+                            Item {
+                                Layout.preferredWidth: devsListView.ScrollBar?.vertical.width
+                            }
+                        }
+                        FilterField {
+                            id: devsFilterField
+                            view: devsListView
+                        }
+                        DevListView {
+                            id: devsListView
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                            anchors.fill: null
+                            clip: true
+                            stackView: null
+                        }
+                    }
                 }
             }
-            ColumnLayout {
+            TabBar {
+                id: tabBar
                 Layout.fillWidth: true
-                Layout.fillHeight: true
-                RowLayout {
-                    Layout.fillWidth: true
-                    Label {
-                        Layout.fillWidth: true
-                        leftPadding: 5
-                        text: qsTr("Statistics")
-                        font.weight: Font.Medium
-                    }
-                    Item {
-                        Layout.fillWidth: true
-                    }
-                    IconOnlyButton {
-                        Layout.alignment: Qt.AlignVCenter
-                        text: qsTr("Recent changes")
-                        icon.source: QuickUI.faUrlBase + "history"
-                        onClicked: QuickUI.showRecentChanges()
-                        flat: true
-                    }
-                    IconOnlyButton {
-                        Layout.alignment: Qt.AlignVCenter
-                        text: qsTr("Show ID")
-                        icon.source: QuickUI.faUrlBase + "qrcode"
-                        onClicked: TrayWidget.showOwnDeviceId()
-                        flat: true
-                    }
-                    IconOnlyButton {
-                        Layout.alignment: Qt.AlignVCenter
-                        text: qsTr("Show logs")
-                        icon.source: QuickUI.faUrlBase + "terminal"
-                        onClicked: TrayWidget.showLog()
-                        flat: true
-                    }
-                    Item {
-                        Layout.preferredWidth: devsListView.ScrollBar?.vertical.width
-                    }
+                visible: mainPane.compact
+                position: TabBar.Footer
+                MainTabButton {
+                    id: folderButton
+                    text: qsTr("Folders")
+                    iconName: "folder"
+                    tabIndex: 0
                 }
-                Statistics {
-                    stats: localSyncProgress.stats.global
-                    labelText: qsTr("Global state")
-                    iconName: "globe"
-                    dense: true
-                    highlighted: false
-                    hoverEnabled: false
+                MainTabButton {
+                    id: devsButton
+                    text: qsTr("Devices")
+                    iconName: "sitemap"
+                    tabIndex: 1
                 }
-                Statistics {
-                    stats: localSyncProgress.stats.local
-                    labelText: qsTr("Local state")
-                    iconName: "home"
-                    dense: true
-                    highlighted: false
-                    hoverEnabled: false
-                }
-                LocalSyncProgress {
-                    id: localSyncProgress
-                    Layout.fillWidth: true
-                    Layout.leftMargin: 15
-                    Layout.rightMargin: 15
-                    spacing: 10
-                }
-                RemoteSyncProgress {
-                    Layout.fillWidth: true
-                    Layout.leftMargin: 15
-                    Layout.rightMargin: 15
-                    spacing: 10
-                }
-                RowLayout {
-                    Layout.fillWidth: true
-                    Label {
-                        Layout.fillWidth: true
-                        leftPadding: 10
-                        text: qsTr("Devices")
-                        font.weight: Font.Medium
-                    }
-                    Item {
-                        Layout.fillWidth: true
-                    }
-                    IconOnlyButton {
-                        Layout.alignment: Qt.AlignVCenter
-                        text: qsTr("Add device")
-                        icon.source: QuickUI.faUrlBase + "plus"
-                        onClicked: QuickUI.editDev("", "", null)
-                        flat: true
-                    }
-                    IconOnlyButton {
-                        Layout.alignment: Qt.AlignVCenter
-                        text: qsTr("Pause all")
-                        icon.source: QuickUI.faUrlBase + "pause"
-                        onClicked: SyncthingData.connection.pauseAllDevs()
-                        flat: true
-                    }
-                    IconOnlyButton {
-                        Layout.alignment: Qt.AlignVCenter
-                        text: qsTr("Resume all")
-                        icon.source: QuickUI.faUrlBase + "play"
-                        onClicked: SyncthingData.connection.resumeAllDevs()
-                        flat: true
-                    }
-                    IconOnlyButton {
-                        id: devsFilterButton
-                        text: qsTr("Filter")
-                        icon.source: QuickUI.faUrlBase + "search"
-                        onClicked: devsFilterField.toggle()
-                        flat: true
-                    }
-
-                    Item {
-                        Layout.preferredWidth: devsListView.ScrollBar?.vertical.width
-                    }
-                }
-                FilterField {
-                    id: devsFilterField
-                    view: devsListView
-                }
-                DevListView {
-                    id: devsListView
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    anchors.fill: null
-                    clip: true
-                    stackView: null
+                MainTabButton {
+                    id: statsButton
+                    text: qsTr("Statistics")
+                    iconName: "area-chart"
+                    tabIndex: 2
                 }
             }
         }
+        readonly property bool compact: width < 400
     }
 
     MouseArea {
