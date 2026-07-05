@@ -8,15 +8,19 @@ import Tray
 ApplicationWindow {
     id: appWindow
     visible: true
-    width: 700
-    height: 500
+    width: 1200
+    height: 700
     title: meta.title + " - WORK IN PROGRESS"
     font: theming.font
     flags: QuickUI.extendedClientArea ? (Qt.Window | Qt.ExpandedClientAreaHint | Qt.NoTitleBarBackgroundHint) : (Qt.Window)
     leftPadding: 0
     rightPadding: 0
     onVisibleChanged: TrayWidget.handleMainWindowVisibleChanged(appWindow.visible)
+    Material.theme: theming.Material.theme
+    Material.primary: theming.Material.primary
+    Material.accent: theming.Material.accent
     header: Pane {
+        padding: 5
         RowLayout {
             anchors.fill: parent
             Icon {
@@ -47,6 +51,10 @@ ApplicationWindow {
                 }
             }
             MenuBar {
+                id: menuBar
+                Layout.preferredWidth: menuBar.contentWidth
+                Layout.leftMargin: menuBar.leftPadding
+                Layout.rightMargin: menuBar.rightPadding
                 Menu {
                     title: qsTr("&Help")
                     icon.source: QuickUI.faUrlBase + "question-circle"
@@ -58,31 +66,31 @@ ApplicationWindow {
                         font.weight: Font.Medium
                     }
                     Action {
-                        text: qsTr("&Home page")
+                        text: qsTr("Home page")
                         onTriggered: SyncthingModels.openUrlExternally("https://syncthing.net")
                     }
                     Action {
-                        text: qsTr("&Documentation")
+                        text: qsTr("Documentation")
                         onTriggered: SyncthingModels.openUrlExternally("https://docs.syncthing.net")
                     }
                     Action {
-                        text: qsTr("&Support")
+                        text: qsTr("Support")
                         onTriggered: SyncthingModels.openUrlExternally("https://forum.syncthing.net")
                     }
                     Action {
-                        text: qsTr("&Changelog")
+                        text: qsTr("Changelog")
                         onTriggered: SyncthingModels.openUrlExternally("https://github.com/syncthing/syncthing/releases")
                     }
                     Action {
-                        text: qsTr("&Statistics")
+                        text: qsTr("Statistics")
                         onTriggered: SyncthingModels.openUrlExternally("https://data.syncthing.net")
                     }
                     Action {
-                        text: qsTr("&Bugs")
+                        text: qsTr("Bugs")
                         onTriggered: SyncthingModels.openUrlExternally("https://github.com/syncthing/syncthing/issues")
                     }
                     Action {
-                        text: qsTr("&Source code")
+                        text: qsTr("Source code")
                         onTriggered: SyncthingModels.openUrlExternally("https://github.com/syncthing/syncthing")
                     }
                     MenuSeparator {
@@ -93,15 +101,15 @@ ApplicationWindow {
                         font.weight: Font.Medium
                     }
                     Action {
-                        text: qsTr("&Documentation")
+                        text: qsTr("Documentation")
                         onTriggered: SyncthingModels.openUrlExternally(SyncthingData.documentationUrl)
                     }
                     Action {
-                        text: qsTr("&Source code")
+                        text: qsTr("Source code")
                         onTriggered: SyncthingModels.openUrlExternally(SyncthingData.readmeUrl.replace(/\/blob\/.*/, ""))
                     }
                     Action {
-                        text: qsTr("&About")
+                        text: qsTr("About")
                         onTriggered: TrayWidget.showAboutDialog()
                     }
                 }
@@ -118,33 +126,38 @@ ApplicationWindow {
                     Action {
                         text: qsTr("&Settings")
                         onTriggered: QuickUI.showSettings()
+                        shortcut: "Ctrl+S"
                     }
                     Action {
                         text: qsTr("&Web-based UI")
                         onTriggered: TrayWidget.showSyncthingUI(true)
+                        shortcut: "Ctrl+W"
                     }
                     Action {
                         text: qsTr("&Recent changes")
                         onTriggered: QuickUI.showRecentChanges()
+                        shortcut: "Ctrl+R"
                     }
                     Action {
-                        text: qsTr("&Show ID")
+                        text: qsTr("Show &ID")
                         onTriggered: TrayWidget.showOwnDeviceId()
+                        shortcut: "Ctrl+I"
                     }
                     Action {
                         text: qsTr("&Logs")
                         onTriggered: TrayWidget.showLog()
+                        shortcut: "Ctrl+L"
                     }
                     Action {
                         text: qsTr("&Support Bundle")
                         enabled: false
                     }
                     Action {
-                        text: qsTr("&Restart")
+                        text: qsTr("Restart")
                         onTriggered: SyncthingData.connection.restart()
                     }
                     Action {
-                        text: qsTr("&Shutdown")
+                        text: qsTr("Shutdown")
                         onTriggered: SyncthingData.connection.shutdown()
                     }
                     MenuSeparator {
@@ -157,30 +170,30 @@ ApplicationWindow {
                     Action {
                         text: qsTr("&Settings")
                         onTriggered: TrayWidget.showSettingsDialog()
+                        shortcut: "Ctrl+Shift+S"
                     }
                     Action {
                         text: qsTr("&Wizard")
                         onTriggered: TrayWidget.showWizard()
+                        shortcut: "Ctrl+Shift+W"
                     }
                 }
             }
         }
     }
 
-    Material.theme: theming.Material.theme
-    Material.primary: theming.Material.primary
-    Material.accent: theming.Material.accent
-
     Pane {
         id: mainPane
         anchors.fill: parent
         anchors.leftMargin: parent.SafeArea.margins.left
         anchors.rightMargin: parent.SafeArea.margins.right
+        focus: true
         padding: 0
         topPadding: 10
         background: Rectangle {
             color: appWindow.palette.base
         }
+        Keys.onEscapePressed: appWindow.close()
         ColumnLayout {
             anchors.fill: parent
             RowLayout {
@@ -197,7 +210,7 @@ ApplicationWindow {
                         Label {
                             Layout.fillWidth: true
                             Layout.alignment: Qt.AlignVCenter
-                            leftPadding: 5
+                            leftPadding: 10
                             text: qsTr("Folders")
                             font.weight: Font.Medium
                         }
@@ -233,7 +246,7 @@ ApplicationWindow {
                             flat: true
                         }
                         IconOnlyButton {
-                            text: qsTr("Filter")
+                            text: qsTr("Filter folders")
                             icon.source: QuickUI.faUrlBase + "search"
                             onClicked: foldersFilterField.toggle()
                             flat: true
@@ -268,7 +281,7 @@ ApplicationWindow {
                             Layout.fillWidth: true
                             Label {
                                 Layout.fillWidth: true
-                                leftPadding: 5
+                                leftPadding: 10
                                 text: qsTr("Statistics")
                                 font.weight: Font.Medium
                             }
@@ -301,29 +314,34 @@ ApplicationWindow {
                             }
                         }
                         CustomFlickable {
+                            id: statisticsView
                             Layout.fillWidth: true
                             Layout.fillHeight: true
-                            Layout.preferredHeight: statisticsLayout.implicitHeight
-                            Layout.maximumHeight: statisticsLayout.implicitHeight
-                            ScrollBar.vertical: ScrollBar {}
+                            Layout.minimumHeight: mainPane.compact ? 0 : statisticsLayout.implicitHeight
+                            contentHeight: statisticsLayout.height
+                            clip: true
+                            ScrollBar.vertical: ScrollBar {
+                                id: statisticsScrollBar
+                            }
                             ScrollIndicator.vertical: null
                             ColumnLayout {
                                 id: statisticsLayout
-                                Statistics {
+                                width: statisticsView.width - statisticsScrollBar.width
+                                StatisticsRow {
+                                    Layout.fillWidth: true
+                                    Layout.leftMargin: 15
+                                    Layout.rightMargin: 15
                                     stats: localSyncProgress.stats.global
                                     labelText: qsTr("Global state")
                                     iconName: "globe"
-                                    dense: true
-                                    highlighted: false
-                                    hoverEnabled: false
                                 }
-                                Statistics {
+                                StatisticsRow {
+                                    Layout.fillWidth: true
+                                    Layout.leftMargin: 15
+                                    Layout.rightMargin: 15
                                     stats: localSyncProgress.stats.local
                                     labelText: qsTr("Local state")
                                     iconName: "home"
-                                    dense: true
-                                    highlighted: false
-                                    hoverEnabled: false
                                 }
                                 LocalSyncProgress {
                                     id: localSyncProgress
@@ -379,12 +397,11 @@ ApplicationWindow {
                             }
                             IconOnlyButton {
                                 id: devsFilterButton
-                                text: qsTr("Filter")
+                                text: qsTr("Filter devices")
                                 icon.source: QuickUI.faUrlBase + "search"
                                 onClicked: devsFilterField.toggle()
                                 flat: true
                             }
-
                             Item {
                                 Layout.preferredWidth: devsListView.ScrollBar?.vertical.width
                             }
@@ -410,21 +427,21 @@ ApplicationWindow {
                 visible: mainPane.compact
                 position: TabBar.Footer
                 MainTabButton {
+                    id: statsButton
+                    text: qsTr("Statistics")
+                    iconName: "area-chart"
+                    tabIndex: 0
+                }
+                MainTabButton {
                     id: folderButton
                     text: qsTr("Folders")
                     iconName: "folder"
-                    tabIndex: 0
+                    tabIndex: 1
                 }
                 MainTabButton {
                     id: devsButton
                     text: qsTr("Devices")
                     iconName: "sitemap"
-                    tabIndex: 1
-                }
-                MainTabButton {
-                    id: statsButton
-                    text: qsTr("Statistics")
-                    iconName: "area-chart"
                     tabIndex: 2
                 }
             }
@@ -432,6 +449,14 @@ ApplicationWindow {
         readonly property bool compact: width < 400
     }
 
+    Shortcut {
+        sequence: "Ctrl+F"
+        onActivated: foldersFilterField.toggle()
+    }
+    Shortcut {
+        sequence: "Ctrl+Shift+F"
+        onActivated: devsFilterField.toggle()
+    }
     MouseArea {
         anchors.fill: parent
         acceptedButtons: Qt.ForwardButton | Qt.BackButton

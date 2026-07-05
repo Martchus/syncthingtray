@@ -76,12 +76,14 @@ Pane {
                 rightPadding: toolBar.width
                 position: TabBar.Footer
                 MainTabButton {
+                    id: foldersButton
                     text: qsTr("Folders")
                     iconName: "folder"
                     tabIndex: 0
                     displayWithIcon: AbstractButton.TextBesideIcon
                 }
                 MainTabButton {
+                    id: devsButton
                     text: qsTr("Devices")
                     iconName: "sitemap"
                     tabIndex: 1
@@ -98,6 +100,18 @@ Pane {
                 id: toolBar
                 anchors.right: tabBar.right
                 anchors.verticalCenter: tabBar.verticalCenter
+                IconOnlyButton {
+                    visible: tabBar.currentIndex === foldersButton.tabIndex
+                    text: qsTr("Add folder")
+                    icon.source: QuickUI.faUrlBase + "plus"
+                    onClicked: QuickUI.editDir("", "", null)
+                }
+                IconOnlyButton {
+                    visible: tabBar.currentIndex === devsButton.tabIndex
+                    text: qsTr("Add device")
+                    icon.source: QuickUI.faUrlBase + "plus"
+                    onClicked: QuickUI.editDev("", "", null)
+                }
                 IconOnlyButton {
                     text: qsTr("Rescan all")
                     icon.source: QuickUI.faUrlBase + "refresh"

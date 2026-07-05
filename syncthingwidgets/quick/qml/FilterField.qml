@@ -14,12 +14,15 @@ SearchField {
     width: 250
     live: true
     onSearchTriggered: view.mainModel?.setFilterRegularExpressionPattern(text)
-    onClearButtonPressed: {
-        view.mainModel?.setFilterRegularExpressionPattern("");
-        field.visible = false;
-    }
+    onClearButtonPressed: field.clear()
+    Keys.onEscapePressed: field.clear()
     required property ExpandableListView view
     function toggle() {
         return (field.visible = !field.visible) && field.forceActiveFocus();
+    }
+    function clear() {
+        view.mainModel?.setFilterRegularExpressionPattern("");
+        field.text = "";
+        field.visible = false;
     }
 }

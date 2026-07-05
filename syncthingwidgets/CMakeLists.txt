@@ -155,6 +155,7 @@ set(QML_MAIN_FILES
     quick/qml/SettingsPage.qml
     quick/qml/StartPage.qml
     quick/qml/Statistics.qml
+    quick/qml/StatisticsRow.qml
     quick/qml/StatisticsPage.qml
     quick/qml/SectionHeader.qml
     quick/qml/SectionLabel.qml
@@ -441,8 +442,14 @@ if (QUICK_GUI)
     endif ()
 
     if ("desktop" IN_LIST QUICK_GUI_ENABLED_MODES)
-        list(APPEND QML_MAIN_FILES quick/qml/DesktopWindow.qml quick/qml/FilterField.qml quick/qml/PageWindow.qml
-             quick/qml/TrayView.qml)
+        list(
+            APPEND
+            QML_MAIN_FILES
+            quick/qml/DesktopWindow.qml
+            quick/qml/FilterField.qml
+            quick/qml/PageWindow.qml
+            quick/qml/PageWindowBackground.qml
+            quick/qml/TrayView.qml)
     endif ()
 
     # add main QML module

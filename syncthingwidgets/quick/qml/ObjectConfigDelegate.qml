@@ -229,10 +229,12 @@ DelegateChooser {
                 standardButtons: objectConfigPage.standardButtons
                 contentItem: ScrollView {
                     id: optionsScrollView
-                    contentWidth: availableWidth
+                    leftPadding: 10
+                    rightPadding: 10
+                    contentWidth: optionsScrollView.availableWidth
                     ColumnLayout {
                         id: optionsDlgLayout
-                        width: optionsScrollView.width - optionsScrollView.effectiveScrollBarWidth
+                        width: optionsScrollView.availableWidth - optionsScrollView.effectiveScrollBarWidth
                         ComboBox {
                             id: optionsValue
                             Layout.fillWidth: true
@@ -512,7 +514,9 @@ DelegateChooser {
                                                     itemLabel: modelData.itemLabel ?? "",
                                                     configTemplates: objectConfigPage.configTemplates,
                                                     specialEntries: objectConfigPage.specialEntriesByKey[neestedPath] ?? [],
-                                                    specialEntriesByKey: objectConfigPage.specialEntriesByKey ?? {}},
+                                                    specialEntriesByKey: objectConfigPage.specialEntriesByKey ?? {},
+                                                    background: QuickUI.makePageBackground(),
+                                                },
                                                 StackView.PushTransition)
             }
             required property var modelData

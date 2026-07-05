@@ -15,5 +15,4 @@ RoundButton {
     icon.width: 20 * QuickUI.densityScaleIconButtons
     icon.height: 20 * QuickUI.densityScaleIconButtons
     flat: QuickUI.densityScale < 1.0
-    scale: QuickUI.densityScale < QuickUI.densityScaleIconButtons ? QuickUI.densityScale : 1.0
 }

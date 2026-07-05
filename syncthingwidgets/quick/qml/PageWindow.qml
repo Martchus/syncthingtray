@@ -14,6 +14,26 @@ ApplicationWindow {
     flags: QuickUI.extendedClientArea ? (Qt.Window | Qt.ExpandedClientAreaHint | Qt.NoTitleBarBackgroundHint) : (Qt.Window)
     leftPadding: 0
     rightPadding: 0
+    onClosing: (event) => {
+        if (!pageWindow.forceClose) {
+            for (let i = 0, depth = stackView.depth; i !== depth; ++i) {
+                if (stackView.get(i).hasUnsavedChanges) {
+                    discardChangesDialog.open();
+                    event.accepted = false;
+                    return;
+                }
+            }
+        }
+        pageWindow.destroy();
+    }
+    Material.theme: theming.Material.theme
+    Material.primary: theming.Material.primary
+    Material.accent: theming.Material.accent
+    Component.onCompleted: {
+        page.stackView = stackView;
+        page.background = QuickUI.makePageBackground();
+        page.forceActiveFocus();
+    }
     footer: Pane {
         padding: 0
         DialogButtonBox {
@@ -77,19 +97,25 @@ ApplicationWindow {
         }
     }
 
-    Component.onCompleted: page.stackView = stackView
-
-    Material.theme: theming.Material.theme
-    Material.primary: theming.Material.primary
-    Material.accent: theming.Material.accent
-
     StackView {
         id: stackView
         anchors.fill: parent
         initialItem: page
+        Keys.onEscapePressed: (event) => pageWindow.close()
+    }
+    DiscardChangesDialog {
+        id: discardChangesDialog
+        meta: pageWindow.meta
+        pageStack: pageStack
+        prompt: qsTr("Do you really want to close without applying changes?")
+        onAccepted: {
+            pageWindow.forceClose = true;
+            pageWindow.close();
+        }
     }
 
     required property Page page
+    property bool forceClose: false
     property alias currentPage: stackView.currentItem
     readonly property Theming theming: Theming {
         currentPage: stackView.currentItem
