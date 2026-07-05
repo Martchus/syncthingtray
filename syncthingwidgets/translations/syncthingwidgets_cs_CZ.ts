@@ -4,37 +4,37 @@
 <context>
     <name>AboutDialog</name>
     <message>
-        <location filename="../quick/qml/AboutDialog.qml" line="14"/>
+        <location filename="../quick/qml/AboutDialog.qml" line="15"/>
         <source>About %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AboutDialog.qml" line="31"/>
+        <location filename="../quick/qml/AboutDialog.qml" line="32"/>
         <source>Developed by %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AboutDialog.qml" line="39"/>
+        <location filename="../quick/qml/AboutDialog.qml" line="40"/>
         <source>App version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AboutDialog.qml" line="54"/>
+        <location filename="../quick/qml/AboutDialog.qml" line="55"/>
         <source>Syncthing version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AboutDialog.qml" line="69"/>
+        <location filename="../quick/qml/AboutDialog.qml" line="70"/>
         <source>Qt version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AboutDialog.qml" line="85"/>
+        <location filename="../quick/qml/AboutDialog.qml" line="86"/>
         <source>Legal info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AboutDialog.qml" line="91"/>
+        <location filename="../quick/qml/AboutDialog.qml" line="92"/>
         <source>Website</source>
         <translation type="unfinished"></translation>
     </message>
@@ -42,37 +42,37 @@
 <context>
     <name>AdvancedConfigPage</name>
     <message>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="15"/>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="16"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="20"/>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="21"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="29"/>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="30"/>
         <source>Remove %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="33"/>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="34"/>
         <source>Do you really want to remove the %1?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="38"/>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="39"/>
         <source>This will only remove the %1 from Syncthing. No files will be deleted on disk.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="71"/>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="89"/>
         <source>The ID must not be empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="81"/>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="99"/>
         <source>Can&apos;t apply, ID is already used.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -671,22 +671,22 @@
 <context>
     <name>ChangesListView</name>
     <message>
-        <location filename="../quick/qml/ChangesListView.qml" line="77"/>
+        <location filename="../quick/qml/ChangesListView.qml" line="92"/>
         <source>Open item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ChangesListView.qml" line="83"/>
+        <location filename="../quick/qml/ChangesListView.qml" line="98"/>
         <source>Copy path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ChangesListView.qml" line="88"/>
+        <location filename="../quick/qml/ChangesListView.qml" line="103"/>
         <source>Copy device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ChangesListView.qml" line="93"/>
+        <location filename="../quick/qml/ChangesListView.qml" line="108"/>
         <source>Copy folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1004,37 +1004,37 @@
 <context>
     <name>DevDelegate</name>
     <message>
-        <location filename="../quick/qml/DevDelegate.qml" line="14"/>
+        <location filename="../quick/qml/DevDelegate.qml" line="36"/>
         <source>Resume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevDelegate.qml" line="14"/>
+        <location filename="../quick/qml/DevDelegate.qml" line="36"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevDelegate.qml" line="22"/>
+        <location filename="../quick/qml/DevDelegate.qml" line="45"/>
         <source>Copy name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevDelegate.qml" line="27"/>
+        <location filename="../quick/qml/DevDelegate.qml" line="51"/>
         <source>Copy ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevDelegate.qml" line="32"/>
+        <location filename="../quick/qml/DevDelegate.qml" line="57"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevDelegate.qml" line="37"/>
+        <location filename="../quick/qml/DevDelegate.qml" line="62"/>
         <source>Out of Sync items</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevDelegate.qml" line="43"/>
+        <location filename="../quick/qml/DevDelegate.qml" line="69"/>
         <source>Advanced config</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1584,67 +1584,67 @@
 <context>
     <name>DirDelegate</name>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="14"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="41"/>
         <source>Rescan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="20"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="48"/>
         <source>Resume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="20"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="48"/>
         <source>Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="25"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="54"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="32"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="62"/>
         <source>Copy label/ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="37"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="68"/>
         <source>Copy path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="42"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="74"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="47"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="79"/>
         <source>Out of Sync items</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="59"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="91"/>
         <source>Show errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="65"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="97"/>
         <source>Ignore patterns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="70"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="102"/>
         <source>Remote files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="76"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="109"/>
         <source>Advanced config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="81"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="114"/>
         <source>Media rescan</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1711,7 +1711,7 @@
 <context>
     <name>DiscardChangesDialog</name>
     <message>
-        <location filename="../quick/qml/DiscardChangesDialog.qml" line="14"/>
+        <location filename="../quick/qml/DiscardChangesDialog.qml" line="15"/>
         <source>Do you really want to go back without applying changes?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2245,8 +2245,8 @@
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="140"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="614"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="676"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="618"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="680"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2271,33 +2271,33 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="267"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="269"/>
         <source>A custom value has been entered.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="333"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="335"/>
         <source>Change encryption password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="333"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="335"/>
         <source>Set encryption password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="340"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="342"/>
         <source>Set encryption password for sharing with &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="347"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="349"/>
         <source>If untrusted, enter encryption password</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="621"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="683"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="625"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="687"/>
         <source>Edit manually</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2380,12 +2380,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="326"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="330"/>
         <source>Unable to add %1 because specified index is invalid.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="334"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="338"/>
         <source>Unable to add %1 because specified key is invalid.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2520,7 +2520,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1887"/>
+        <location filename="../settings/settingsdialog.cpp" line="1888"/>
         <source>Unable to restart via &quot;%1&quot;: %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3387,32 +3387,32 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="923"/>
+        <location filename="../settings/settingsdialog.cpp" line="924"/>
         <source>This is achieved by adding a *.desktop file under &lt;i&gt;~/.config/autostart&lt;/i&gt; so the setting only affects the current user.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="926"/>
+        <location filename="../settings/settingsdialog.cpp" line="927"/>
         <source>This is achieved by adding a registry key under &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; so the setting only affects the current user. Note that the startup entry is invalidated when moving &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="930"/>
+        <location filename="../settings/settingsdialog.cpp" line="931"/>
         <source>This is achieved by adding a *.plist file under &lt;i&gt;~/Library/LaunchAgents&lt;/i&gt; so the setting only affects the current user.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="934"/>
+        <location filename="../settings/settingsdialog.cpp" line="935"/>
         <source>This feature has not been implemented for your platform (yet).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1152"/>
+        <location filename="../settings/settingsdialog.cpp" line="1153"/>
         <source>unable to modify startup entry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1182"/>
+        <location filename="../settings/settingsdialog.cpp" line="1183"/>
         <source>There is already an autostart entry for &quot;%1&quot;. It will not be overridden when applying changes unless you delete it first.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3475,7 +3475,7 @@
     <name>QtGui::BuiltinWebViewOptionPage</name>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="1829"/>
+        <location filename="../settings/settingsdialog.cpp" line="1830"/>
         <source>Built-in web view</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3495,7 +3495,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1831"/>
+        <location filename="../settings/settingsdialog.cpp" line="1832"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4023,12 +4023,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1805"/>
+        <location filename="../settings/settingsdialog.cpp" line="1806"/>
         <source>Custom command to launch Syncthing&apos;s UI - </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1806"/>
+        <location filename="../settings/settingsdialog.cpp" line="1807"/>
         <source>&lt;p&gt;Enter a custom command to launch Syncthing&apos;s UI. The expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; will be replaced with the Syncthing-URL.&lt;/p&gt;&lt;p&gt;Leave the command empty to use the auto-detection.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4109,57 +4109,57 @@
 <context>
     <name>QtGui::IconsOptionPageBase</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="725"/>
+        <location filename="../settings/settingsdialog.cpp" line="726"/>
         <source>UI icons</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="731"/>
+        <location filename="../settings/settingsdialog.cpp" line="732"/>
         <source>System icons</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="727"/>
+        <location filename="../settings/settingsdialog.cpp" line="728"/>
         <source>These icon settings are used within Syncthing Tray&apos;s UI.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="732"/>
+        <location filename="../settings/settingsdialog.cpp" line="733"/>
         <source>These icon settings are used for the system tray icon and the notifications.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="734"/>
+        <location filename="../settings/settingsdialog.cpp" line="735"/>
         <source>Use same settings as for UI icons</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="795"/>
+        <location filename="../settings/settingsdialog.cpp" line="796"/>
         <source>Colorful background with gradient (default)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="801"/>
+        <location filename="../settings/settingsdialog.cpp" line="802"/>
         <source>Transparent background and dark foreground (for bright themes)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="807"/>
+        <location filename="../settings/settingsdialog.cpp" line="808"/>
         <source>Transparent background and bright foreground (for dark themes)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="870"/>
+        <location filename="../settings/settingsdialog.cpp" line="871"/>
         <source>Select colors manually (no longer follow system palette)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="871"/>
+        <location filename="../settings/settingsdialog.cpp" line="872"/>
         <source>Transparent background and foreground depending on system palette</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="828"/>
+        <location filename="../settings/settingsdialog.cpp" line="829"/>
         <source>%1 px (scaled to %2 px)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4308,7 +4308,7 @@
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="271"/>
-        <location filename="../settings/settingsdialog.cpp" line="1404"/>
+        <location filename="../settings/settingsdialog.cpp" line="1405"/>
         <source>Stop launched instance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4323,57 +4323,57 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1257"/>
+        <location filename="../settings/settingsdialog.cpp" line="1258"/>
         <source>%1-launcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1258"/>
+        <location filename="../settings/settingsdialog.cpp" line="1259"/>
         <source>Launch %1 when starting the tray icon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1261"/>
+        <location filename="../settings/settingsdialog.cpp" line="1262"/>
         <source>%1 executable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1262"/>
+        <location filename="../settings/settingsdialog.cpp" line="1263"/>
         <source>%1 log (interleaved stdout/stderr)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1273"/>
+        <location filename="../settings/settingsdialog.cpp" line="1274"/>
         <source>Leave empty for default path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1285"/>
+        <location filename="../settings/settingsdialog.cpp" line="1286"/>
         <source>Restore default</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1291"/>
+        <location filename="../settings/settingsdialog.cpp" line="1292"/>
         <source>Show Syncthing releases/downloads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1439"/>
+        <location filename="../settings/settingsdialog.cpp" line="1440"/>
         <source>%1 exited with exit code %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1442"/>
+        <location filename="../settings/settingsdialog.cpp" line="1443"/>
         <source>%1 crashed with exit code %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1475"/>
+        <location filename="../settings/settingsdialog.cpp" line="1476"/>
         <source>An error occurred when running %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1528"/>
+        <location filename="../settings/settingsdialog.cpp" line="1529"/>
         <source>Kill launched instance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4701,7 +4701,7 @@
 <context>
     <name>QtGui::QuickUI</name>
     <message>
-        <location filename="../quick/quickui.cpp" line="459"/>
+        <location filename="../quick/quickui.cpp" line="465"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4709,37 +4709,37 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1919"/>
+        <location filename="../settings/settingsdialog.cpp" line="1920"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1927"/>
+        <location filename="../settings/settingsdialog.cpp" line="1928"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1934"/>
+        <location filename="../settings/settingsdialog.cpp" line="1935"/>
         <source>Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1936"/>
+        <location filename="../settings/settingsdialog.cpp" line="1937"/>
         <source>additional tool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1936"/>
+        <location filename="../settings/settingsdialog.cpp" line="1937"/>
         <source>Extra launcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1977"/>
+        <location filename="../settings/settingsdialog.cpp" line="1978"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1983"/>
+        <location filename="../settings/settingsdialog.cpp" line="1984"/>
         <source>Start wizard</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4888,58 +4888,63 @@ This dialog closes automatically when the process finally terminates.</source>
 <context>
     <name>QtGui::SyncthingModels</name>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="86"/>
+        <location filename="../misc/syncthingmodels.cpp" line="87"/>
         <source>Triggered override of &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="88"/>
+        <location filename="../misc/syncthingmodels.cpp" line="89"/>
         <source>Triggered revert of &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="143"/>
-        <location filename="../misc/syncthingmodels.cpp" line="151"/>
+        <location filename="../misc/syncthingmodels.cpp" line="144"/>
+        <location filename="../misc/syncthingmodels.cpp" line="152"/>
         <source>Unable to open &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="172"/>
+        <location filename="../misc/syncthingmodels.cpp" line="164"/>
+        <source>Unable to find configuration file of local Syncthing instance under its default location.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/syncthingmodels.cpp" line="182"/>
         <source>Scanning is not supported.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="184"/>
+        <location filename="../misc/syncthingmodels.cpp" line="194"/>
         <source>Copied value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="188"/>
+        <location filename="../misc/syncthingmodels.cpp" line="198"/>
         <source>Unable to copy value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="196"/>
+        <location filename="../misc/syncthingmodels.cpp" line="206"/>
         <source>Unable to copy &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="215"/>
+        <location filename="../misc/syncthingmodels.cpp" line="225"/>
         <source>Unable to load ignore patterns: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="236"/>
+        <location filename="../misc/syncthingmodels.cpp" line="246"/>
         <source>Unable to save ignore patterns: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="298"/>
+        <location filename="../misc/syncthingmodels.cpp" line="308"/>
         <source>Unable to resolve URL &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="328"/>
+        <location filename="../misc/syncthingmodels.cpp" line="338"/>
         <source>Another config change is still pending.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4983,8 +4988,8 @@ This dialog closes automatically when the process finally terminates.</source>
         <location filename="../settings/systemdoptionpage.ui" line="117"/>
         <location filename="../settings/systemdoptionpage.ui" line="172"/>
         <location filename="../settings/systemdoptionpage.ui" line="261"/>
-        <location filename="../settings/settingsdialog.cpp" line="1688"/>
-        <location filename="../settings/settingsdialog.cpp" line="1697"/>
+        <location filename="../settings/settingsdialog.cpp" line="1689"/>
+        <location filename="../settings/settingsdialog.cpp" line="1698"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5024,27 +5029,27 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1564"/>
+        <location filename="../settings/settingsdialog.cpp" line="1565"/>
         <source>Reload all unit files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1623"/>
+        <location filename="../settings/settingsdialog.cpp" line="1624"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1629"/>
+        <location filename="../settings/settingsdialog.cpp" line="1630"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1661"/>
+        <location filename="../settings/settingsdialog.cpp" line="1662"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1683"/>
+        <location filename="../settings/settingsdialog.cpp" line="1684"/>
         <source>since </source>
         <translation type="unfinished"></translation>
     </message>
