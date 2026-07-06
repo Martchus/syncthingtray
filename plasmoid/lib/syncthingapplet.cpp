@@ -130,6 +130,10 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
 
 SyncthingApplet::~SyncthingApplet()
 {
+#if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    m_quickUI.reset();
+    emit quickUIChanged();
+#endif
     delete m_settingsDlg;
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
     delete m_webViewDlg;
@@ -231,20 +235,29 @@ void SyncthingApplet::initEngine(QObject *object)
         return;
     }
     const auto color = m_theme.color(Plasma::Theme::TextColor);
-    m_imageProvider
-        = new QtForkAwesome::QuickImageProvider(QtForkAwesome::Renderer::global(), color); // using global renderer for system icons override
-    connect(engine, &QObject::destroyed, this, &SyncthingApplet::handleImageProviderDestroyed); // engine has ownership over image provider
-    engine->addImageProvider(QStringLiteral("fa"), m_imageProvider);
+    if (!(m_imageProvider = qobject_cast<QtForkAwesome::QuickImageProvider *>(engine->imageProvider(QStringLiteral("fa"))))) {
+        m_imageProvider
+            = new QtForkAwesome::QuickImageProvider(QtForkAwesome::Renderer::global(), color); // using global renderer for system icons override
+        engine->addImageProvider(QStringLiteral("fa"), m_imageProvider);
+        connect(engine, &QObject::destroyed, this, &SyncthingApplet::handleEngineDestroyed);
+    }
 
 #if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
-    if (auto &settings = Settings::values(); settings.enableWipFeatures && !m_quickUI.has_value()) {
-        auto &quickUI = m_quickUI.emplace(qGuiApp, settings.qt, engine, QStringLiteral("desktop"));
-        dataObjectToProperty(engine, &m_data);
-        dataObjectToProperty(engine, &m_models);
-        dataObjectToProperty(engine, &quickUI);
-        dataObjectToProperty(engine, this);
-        //engine->rootContext()->setContextProperty(QStringLiteral("TrayWidget"), this);
-        connect(&quickUI, &QuickUI::changesWindowVisibleChanged, this, &SyncthingApplet::handleChangesWindowVisibleChanged);
+    if (auto &settings = Settings::values(); settings.enableWipFeatures && !m_quickUI) {
+        // use separate engine for showing regular Qt Quick UI as part of the Plasmoid so each instance of the Plasmoid can have its own regular Qt Quick UI with its own data/models
+        // notes: - Within this separate engine, this SyncthingApplet instance is exposed as TrayWidget singleton so QML code from the `syncthingwidgets` library can access it in
+        //          consistency with how it accesses the TrayWidget class from stand-alone tray app.
+        //        - Using a separate engine requires a 2nd image provider which is already taken care of by the QuickUI class.
+        //        - Using just one engine was not possible because then only one set of singletons could exist. This would also lead to lifetime issues as the engine might outlive
+        //          the SyncthingApplet instance so one needed to unregister the TrayWidget singleton.
+        //        - The QML code of the Plasmoid can therefore also not use the singletons. (So it has to use e.g. `plasmoid.data.connection` instead of `SyncthingData.connection`
+        //          to access the SyncthingConnection object of the current Plasmoid instance.)
+        auto &quickUI = m_quickUI.emplace(qGuiApp, settings.qt);
+        dataObjectToProperty(&m_quickUI->engine, &m_data);
+        dataObjectToProperty(&m_quickUI->engine, &m_models);
+        dataObjectToProperty(&m_quickUI->engine, &quickUI.ui);
+        dataObjectToProperty(&m_quickUI->engine, this);
+        connect(&m_quickUI->ui, &QuickUI::changesWindowVisibleChanged, this, &SyncthingApplet::handleChangesWindowVisibleChanged);
         emit quickUIChanged();
     }
 #endif
@@ -516,7 +529,7 @@ void SyncthingApplet::showWebUI()
 void SyncthingApplet::showQtQuickGui()
 {
     if (m_quickUI.has_value()) {
-        m_quickUI->showMainWindow();
+        m_quickUI->ui.showMainWindow();
     }
 }
 #endif
@@ -723,9 +736,9 @@ void SyncthingApplet::handleSystemdServiceError(const QString &context, const QS
         QNetworkReply::NoError, QNetworkRequest(), QByteArray());
 }
 
-void Plasmoid::SyncthingApplet::handleImageProviderDestroyed()
+void Plasmoid::SyncthingApplet::handleEngineDestroyed()
 {
-    m_imageProvider = nullptr;
+    m_imageProvider = nullptr; // engine has ownership over image provider
 }
 
 void SyncthingApplet::handleThemeChanged()

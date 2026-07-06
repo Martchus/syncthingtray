@@ -30,7 +30,6 @@
 #endif
 
 #if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
-#include <optional>
 #include <syncthingwidgets/quick/quickui.h>
 #endif
 
@@ -211,7 +210,7 @@ private Q_SLOTS:
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     void handleSystemdStatusChanged();
 #endif
-    void handleImageProviderDestroyed();
+    void handleEngineDestroyed();
     void handleThemeChanged();
     void setPassive(bool passive);
     void setBrightColors(bool brightColors);
@@ -231,7 +230,7 @@ private:
     QtGui::SyncthingModels m_models;
     Data::SyncthingOverallDirStatistics m_overallStats;
 #if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
-    std::optional<QtGui::QuickUI> m_quickUI;
+    std::optional<QtGui::QuickGuiEngine> m_quickUI;
 #endif
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     Data::SyncthingService m_service;
@@ -280,7 +279,7 @@ inline Data::SyncthingStatusSelectionModel *SyncthingApplet::passiveSelectionMod
 #if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
 inline QtGui::QuickUI *SyncthingApplet::quickUI() const
 {
-    return m_quickUI.has_value() ? const_cast<QtGui::QuickUI *>(&m_quickUI.value()) : nullptr;
+    return m_quickUI.has_value() ? const_cast<QtGui::QuickUI *>(&m_quickUI.value().ui) : nullptr;
 }
 #endif
 
