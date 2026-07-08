@@ -13,7 +13,7 @@ ObjectConfigPage {
     Component.onCompleted: initConfigObject()
     actions: [
         Action {
-            text: qsTr("Remove")
+            text: qsTr("Remove %1").arg(entryName)
             icon.source: QuickUI.faUrlBase + "trash-o"
             enabled: advancedConfigPage.configObjectExists
             onTriggered: removeDialog.open()
