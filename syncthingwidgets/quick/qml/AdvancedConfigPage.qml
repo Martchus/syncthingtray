@@ -13,15 +13,15 @@ ObjectConfigPage {
     Component.onCompleted: initConfigObject()
     actions: [
         Action {
-            text: qsTr("Apply")
-            icon.source: QuickUI.faUrlBase + "check"
-            onTriggered: advancedConfigPage.applyChanges()
-        },
-        Action {
             text: qsTr("Remove")
             icon.source: QuickUI.faUrlBase + "trash-o"
             enabled: advancedConfigPage.configObjectExists
             onTriggered: removeDialog.open()
+        },
+        Action {
+            text: qsTr("Apply")
+            icon.source: QuickUI.faUrlBase + "check"
+            onTriggered: advancedConfigPage.applyChanges()
         }
     ]
 
