@@ -598,11 +598,12 @@ void SyncthingApplet::showDirectoryErrors(const QString &dirId)
     dlg->show();
 }
 
-void SyncthingApplet::browseRemoteFiles(const QString &dirId)
+bool SyncthingApplet::showFileBrowser(const QString &dirId)
 {
     if (auto row = 0; auto *const dir = m_data.connection()->findDirInfo(dirId, row)) {
         showCenteredDialog(QtGui::browseRemoteFilesDialog(*m_data.connection(), *dir));
     }
+    return true;
 }
 
 void SyncthingApplet::showIgnorePatterns(const QString &dirId)

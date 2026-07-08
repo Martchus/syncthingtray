@@ -218,7 +218,7 @@ ColumnLayout {
                     text: qsTr("Browse remote files")
                     icon: "document-open-remote"
                     onClicked: directoryView.triggerNativeActionWithCurrentItemData(
-                                   "browseRemoteFiles", "dirId_")
+                                   "showFileBrowser", "dirId_")
                 }
                 PlasmaExtras.MenuItem {
                     id: showIgnorePatternsItem

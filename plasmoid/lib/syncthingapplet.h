@@ -162,7 +162,7 @@ public Q_SLOTS:
     void showNotificationsDialog();
     void showInternalErrorsDialog();
     void showDirectoryErrors(const QString &dirId);
-    void browseRemoteFiles(const QString &dirId);
+    bool showFileBrowser(const QString &dirId);
     void showIgnorePatterns(const QString &dirId);
     void copyToClipboard(const QString &text);
     void copyToClipboard(const QString &dirId, const QString &relativePath);
