@@ -234,7 +234,7 @@ Item {
                 compare(folderModel.get(pathIndex).value, newPath, "entered path has been set");
 
                 // add folder
-                const applyAction = pageStack.currentActions[2];
+                const applyAction = pageStack.currentActions[3];
                 discardChangesDialog.close();
                 tryVerify(() => !discardChangesDialog.visible);
                 compare(applyAction.text, "Apply");
