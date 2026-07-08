@@ -208,6 +208,8 @@ private:
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
     template <typename ReturnArg, typename... Args>
     bool invokeWidgetFunction(const char *member, QTemplatedMetaMethodReturnArgument<ReturnArg> r, Args &&...args);
+    template <typename... Args>
+    bool invokeWidgetFunction(const char *member, Args &&...args);
 #endif
 
     QGuiApplication *m_app;

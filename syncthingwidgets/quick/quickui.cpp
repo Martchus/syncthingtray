@@ -419,6 +419,7 @@ bool QuickUI::showPage(
     if (window) {
         *window = pageWindow;
     }
+    invokeWidgetFunction("closeMenu");
     return true;
 #else
     return false;
@@ -536,6 +537,15 @@ bool QuickUI::invokeWidgetFunction(const char *member, QTemplatedMetaMethodRetur
 {
     if (auto *const widget = m_engine->singletonInstance<QObject *>("Tray", "TrayWidget")) {
         return QMetaObject::invokeMethod(widget, member, Qt::DirectConnection, r, std::forward<Args>(args)...);
+    }
+    return false;
+}
+
+template <typename... Args>
+bool QuickUI::invokeWidgetFunction(const char *member, Args &&...args)
+{
+    if (auto *const widget = m_engine->singletonInstance<QObject *>("Tray", "TrayWidget")) {
+        return QMetaObject::invokeMethod(widget, member, Qt::DirectConnection,std::forward<Args>(args)...);
     }
     return false;
 }
