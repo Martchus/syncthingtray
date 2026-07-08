@@ -91,7 +91,7 @@ Page {
             iconName: modelData.iconName
             onClicked: {
                 if (modelData.specialPage.length > 0) {
-                    stackView.push(modelData.specialPage, {pages: stackView.pages}, StackView.PushTransition);
+                    stackView.push(modelData.specialPage, {pages: stackView.pages, background: QuickUI.makePageBackground(advancedPage.pageWindow)}, StackView.PushTransition);
                 } else if (modelData.func.length > 0) {
                     (App?.[modelData.func] ?? SyncthingModels?.[modelData.func])?.();
                 } else {
@@ -99,7 +99,7 @@ Page {
                     const se = (specialEntriesOnly ? advancedPage.specialEntries[modelData.specialEntriesKey] : advancedPage.specialEntriesByKey[modelData.key]) ?? [];
                     const pageTitle = modelData.title.length > 0 ? modelData.title : modelData.label;
                     const configObject = advancedPage.config[modelData.key];
-                    const properties = {title: pageTitle, isDangerous: modelData.isDangerous, configObject: configObject, parentObject: advancedPage.config, specialEntries: se, specialEntriesByKey: advancedPage.specialEntriesByKey, specialEntriesOnly: specialEntriesOnly, path: modelData.key, configCategory: `config-option-${modelData.key}`, itemLabel: modelData.itemLabel, helpUrl: modelData.helpUrl, stackView: stackView, parentPage: advancedPage};
+                    const properties = {title: pageTitle, isDangerous: modelData.isDangerous, configObject: configObject, parentObject: advancedPage.config, specialEntries: se, specialEntriesByKey: advancedPage.specialEntriesByKey, specialEntriesOnly: specialEntriesOnly, path: modelData.key, configCategory: `config-option-${modelData.key}`, itemLabel: modelData.itemLabel, helpUrl: modelData.helpUrl, stackView: stackView, parentPage: advancedPage, pageWindow: advancedPage.pageWindow, background: QuickUI.makePageBackground(advancedPage.pageWindow)};
                     if (!Array.isArray(configObject)) {
                         properties.actions = [discardAction, applyAction];
                     }
@@ -121,6 +121,7 @@ Page {
     readonly property string usernameDesc: qsTr("Set to require authentication for accessing the web-based GUI.")
     readonly property string passwordDesc: qsTr("Contains the bcrypt hash of the password used to restrict accessing the web-based GUI. You can also enter a plain password which will then be hashed when applying the configuration.")
     property StackView stackView: StackView {}
+    property var pageWindow: null
     property var specialEntries: ({
         "guiAuth": [
             {key: "user", label: qsTr("Username"), desc: advancedPage.usernameDesc},

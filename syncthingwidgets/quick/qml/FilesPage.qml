@@ -269,6 +269,8 @@ Page {
     property string path: model.path(delegateModel.rootIndex)
     property var modelActions: []
     property var extraActions: []
+    property StackView stackView
+    property var pageWindow
 
     function back() {
         const rootIndex = delegateModel.rootIndex;

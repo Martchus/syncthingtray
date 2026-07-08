@@ -41,5 +41,7 @@ Page {
 
     required property string dirName
     required property string dirId
+    property StackView stackView
+    property var pageWindow
     property list<Action> actions
 }

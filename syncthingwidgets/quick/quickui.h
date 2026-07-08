@@ -10,6 +10,7 @@
 
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
 #include <QQmlApplicationEngine>
+#include <QQuickWindow>
 #endif
 
 #include <QtQmlIntegration/qqmlintegration.h>
@@ -17,7 +18,6 @@
 QT_FORWARD_DECLARE_CLASS(QGuiApplication)
 QT_FORWARD_DECLARE_CLASS(QQmlEngine)
 QT_FORWARD_DECLARE_CLASS(QQuickItem)
-QT_FORWARD_DECLARE_CLASS(QQuickWindow)
 QT_FORWARD_DECLARE_CLASS(QJSEngine)
 
 namespace QtForkAwesome {
@@ -191,7 +191,7 @@ public:
     Q_INVOKABLE bool showSettings(QQuickItem *stackView = nullptr);
     Q_INVOKABLE bool showRecentChanges(QQuickItem *stackView = nullptr);
     Q_INVOKABLE QObject *loadComponent(QAnyStringView uri, QAnyStringView typeName, const QVariantMap &initialProperties = QVariantMap());
-    Q_INVOKABLE QQuickItem *makePageBackground();
+    Q_INVOKABLE QQuickItem *makePageBackground(QQuickWindow *pageWindow);
     Q_INVOKABLE void showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y, const QObject *event = nullptr);
 
 Q_SIGNALS:

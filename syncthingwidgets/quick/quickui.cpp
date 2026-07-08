@@ -520,11 +520,11 @@ QObject *QuickUI::loadComponent(QAnyStringView uri, QAnyStringView typeName, con
     return object;
 }
 
-QQuickItem *QuickUI::makePageBackground()
+QQuickItem *QuickUI::makePageBackground(QQuickWindow *pageWindow)
 {
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
-    if (isDesktop()) {
-        return qobject_cast<QQuickItem *>(loadComponent("Main", "PageWindowBackground", {}));
+    if (pageWindow && isDesktop()) {
+        return qobject_cast<QQuickItem *>(loadComponent("Main", "PageWindowBackground", {{QStringLiteral("pageWindow"), QVariant::fromValue(pageWindow)}}));
     }
 #endif
     return nullptr;

@@ -1,5 +1,7 @@
 import QtQuick
 
 Rectangle {
-    color: pageWindow.palette.base
+    id: background
+    color: background.pageWindow.palette.base
+    required property PageWindow pageWindow
 }

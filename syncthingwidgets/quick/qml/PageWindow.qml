@@ -31,7 +31,8 @@ ApplicationWindow {
     Material.accent: theming.Material.accent
     Component.onCompleted: {
         page.stackView = stackView;
-        page.background = QuickUI.makePageBackground();
+        page.pageWindow = pageWindow;
+        page.background = QuickUI.makePageBackground(pageWindow);
         page.forceActiveFocus();
     }
     footer: Pane {

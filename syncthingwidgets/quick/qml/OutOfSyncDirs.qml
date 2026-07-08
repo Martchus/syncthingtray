@@ -30,6 +30,7 @@ Page {
     required property int devIndex
     required property var devFilterModel
     property StackView stackView: StackView {}
+    property var pageWindow
     required property list<Action> actions
     function loadDirs() {
         listView.model = SyncthingModels.computeDirsNeedingItems(devFilterModel.index(page.devIndex, 0));

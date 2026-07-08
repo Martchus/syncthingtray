@@ -81,6 +81,8 @@ Page {
     property bool isRequestOngoing: false
     property int page: 1
     property int perPage: 25
+    property StackView stackView
+    property var pageWindow
     readonly property var stateLabels: ({
         progress: qsTr("In progress"),
         queued: qsTr("Queued"),

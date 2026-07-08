@@ -10,4 +10,6 @@ Page {
         id: changesListView
     }
     property alias model: changesListView.delegateModel
+    property StackView stackView
+    property var pageWindow
 }
