@@ -36,36 +36,12 @@ ApplicationWindow {
         page.forceActiveFocus();
     }
     footer: Pane {
+        id: footerPane
         padding: 0
-        DialogButtonBox {
-            width: parent.width
-            IconOnlyButton {  // using IconOnlyButton because normal Button does not show icon with Breeze style
-                visible: stackView.depth > 1
-                icon.source: QuickUI.faUrlBase + "arrow-left"
-                icon.width: QuickUI.iconSize
-                icon.height: QuickUI.iconSize
-                text: qsTr("Back")
-                onClicked: stackView.pop()
-            }
-            IconOnlyButton {
-                id: extraActionsMenuButton
-                visible: currentPage.extraActions?.length > 0
-                icon.source: QuickUI.faUrlBase + "ellipsis-v"
-                icon.width: QuickUI.iconSize
-                icon.height: QuickUI.iconSize
-                text: qsTr("More")
-                onClicked: currentPage?.showExtraActions() ?? extraActionsMenu.showCenteredIn(extraActionsMenuButton)
-                CustomMenu {
-                    id: extraActionsMenu
-                    MenuItemInstantiator {
-                        menu: extraActionsMenu
-                        model: {
-                            const extraActions = currentPage.showExtraActions === undefined ? currentPage.extraActions : undefined;
-                            return extraActions ?? [];
-                        }
-                    }
-                }
-            }
+        contentItem: DialogButtonBox {
+            id: textButtons
+            position: DialogButtonBox.Footer
+            leftPadding: iconButtons.width + 20
             Button {
                 display: AbstractButton.TextBesideIcon
                 icon.width: QuickUI.iconSize
@@ -96,6 +72,36 @@ ApplicationWindow {
                 }
             }
         }
+        RowLayout {
+            id: iconButtons
+            anchors.left: textButtons.left
+            anchors.leftMargin: 10
+            anchors.verticalCenter: textButtons.verticalCenter
+            IconOnlyButton {  // using IconOnlyButton because normal Button does not show icon with Breeze style
+                visible: stackView.depth > 1
+                icon.source: QuickUI.faUrlBase + "arrow-left"
+                text: qsTr("Back")
+                onClicked: stackView.pop()
+                onVisibleChanged: textButtons.width = Qt.binding(() => footerPane.width - 1)
+            }
+            IconOnlyButton {
+                id: extraActionsMenuButton
+                visible: currentPage.extraActions?.length > 0
+                icon.source: QuickUI.faUrlBase + "ellipsis-v"
+                text: qsTr("More")
+                onClicked: currentPage?.showExtraActions() ?? extraActionsMenu.showCenteredIn(extraActionsMenuButton)
+                CustomMenu {
+                    id: extraActionsMenu
+                    MenuItemInstantiator {
+                        menu: extraActionsMenu
+                        model: {
+                            const extraActions = currentPage.showExtraActions === undefined ? currentPage.extraActions : undefined;
+                            return extraActions ?? [];
+                        }
+                    }
+                }
+            }
+        }
     }
 
     StackView {
@@ -103,6 +109,7 @@ ApplicationWindow {
         anchors.fill: parent
         initialItem: page
         Keys.onEscapePressed: (event) => pageWindow.close()
+        Keys.onBackPressed: (event) => stackView.depth > 1 && stackView.pop()
     }
     DiscardChangesDialog {
         id: discardChangesDialog
