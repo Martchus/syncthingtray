@@ -779,6 +779,11 @@ void SyncthingApplet::applySettings(int changeConnectionIndex)
     setShowingSyncthingIcons(config.readEntry<bool>("showStIcons", true));
     m_iconManager.applySettings(&settings.icons.status, nullptr, settings.icons.usePaletteForStatus, false);
     m_defaultTab = config.readEntry<>("defaultTab", 0);
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    if (m_quickUI.has_value()) {
+        m_quickUI->ui.setSyncthingIconsVisible(m_showSyncthingIcons);
+    }
+#endif
 
     // restore selected states
     // note: The settings dialog writes this to the Plasmoid's config like the other settings. However, it
