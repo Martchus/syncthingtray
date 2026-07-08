@@ -9,7 +9,7 @@ ApplicationWindow {
     visible: true
     width: 700
     height: 500
-    title: (page.currentItem?.title ?? page.title) + " - " + meta.title + " - WORK IN PROGRESS"
+    title: `${(page.currentItem?.title ?? page.title)} - ${meta.title}`
     font: theming.font
     flags: QuickUI.extendedClientArea ? (Qt.Window | Qt.ExpandedClientAreaHint | Qt.NoTitleBarBackgroundHint) : (Qt.Window)
     leftPadding: 0

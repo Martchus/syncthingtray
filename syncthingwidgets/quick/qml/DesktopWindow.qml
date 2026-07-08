@@ -10,7 +10,7 @@ ApplicationWindow {
     visible: true
     width: 1200
     height: 700
-    title: meta.title + " - WORK IN PROGRESS"
+    title: meta.title
     font: theming.font
     flags: QuickUI.extendedClientArea ? (Qt.Window | Qt.ExpandedClientAreaHint | Qt.NoTitleBarBackgroundHint) : (Qt.Window)
     leftPadding: 0
