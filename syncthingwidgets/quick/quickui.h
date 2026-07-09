@@ -6,18 +6,18 @@
 #include <QJSValue>
 #include <QObject>
 #include <QPalette>
+#include <QQuickItem>
+#include <QQuickWindow>
 #include <QVariantMap>
 
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
 #include <QQmlApplicationEngine>
-#include <QQuickWindow>
 #endif
 
 #include <QtQmlIntegration/qqmlintegration.h>
 
 QT_FORWARD_DECLARE_CLASS(QGuiApplication)
 QT_FORWARD_DECLARE_CLASS(QQmlEngine)
-QT_FORWARD_DECLARE_CLASS(QQuickItem)
 QT_FORWARD_DECLARE_CLASS(QJSEngine)
 
 namespace QtForkAwesome {
