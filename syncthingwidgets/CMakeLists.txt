@@ -338,6 +338,14 @@ function (change_qt_quick_controls_style QML_FILES_VARIABLE)
         endif ()
         list(APPEND CHANGED_QML_FILES "${CHANGED_QML_FILE}")
     endforeach ()
+
+    set_source_files_properties(${${QML_FILES_VARIABLE}} PROPERTIES HEADER_FILE_ONLY TRUE)
+    source_group("Unprocessed QML" FILES ${${QML_FILES_VARIABLE}})
+    source_group("Generated QML (DO NOT EDIT)" FILES ${CHANGED_QML_FILES})
+
+    set(UNPROCESSED_QML_FILES
+        "${UNPROCESSED_QML_FILES};${${QML_FILES_VARIABLE}}"
+        PARENT_SCOPE)
     set("${QML_FILES_VARIABLE}"
         "${CHANGED_QML_FILES}"
         PARENT_SCOPE)
@@ -484,6 +492,9 @@ if (QUICK_GUI)
         list(APPEND PUBLIC_LIBRARIES ${META_TARGET_NAME}plugin)
         list(APPEND BUNDLED_TARGETS ${META_TARGET_NAME}plugin ${META_TARGET_NAME}plugin_init)
     endif ()
+
+    # add unprocessed QML files to target so they show up in Qt Creator
+    target_sources(${META_TARGET_NAME} PRIVATE ${UNPROCESSED_QML_FILES})
 
     # export additional interface link libraries added by qt_add_qml_module
     get_target_property(REQUIRED_TARGETS "${META_TARGET_NAME}" INTERFACE_LINK_LIBRARIES)
