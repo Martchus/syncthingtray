@@ -42,15 +42,7 @@ CustomListView {
                     Layout.fillWidth: true
                     text: [modelData.directoryName || modelData.directoryId, modelData.path].join(": ")
                     elide: Text.ElideRight
-                    font.weight: Font.Light
-                }
-                ForkAwesomeIcon {
-                    iconName: "calendar"
-                }
-                Label {
-                    Layout.preferredWidth: Math.max(implicitWidth, parent.width / 5)
-                    text: modelData.eventTime
-                    elide: Text.ElideRight
+                    wrapMode: Text.WordWrap
                     font.weight: Font.Light
                 }
                 Icon {
@@ -61,8 +53,18 @@ CustomListView {
                     height: 16
                 }
                 Label {
-                    Layout.preferredWidth: Math.max(implicitWidth, parent.width / 5)
+                    Layout.preferredWidth: Math.max(implicitWidth, parent.width / 6)
                     text: modelData.modifiedBy
+                    elide: Text.ElideRight
+                    wrapMode: Text.WordWrap
+                    font.weight: Font.Light
+                }
+                ForkAwesomeIcon {
+                    iconName: "calendar"
+                }
+                Label {
+                    Layout.preferredWidth: Math.max(implicitWidth, parent.width / 8)
+                    text: modelData.eventTime
                     elide: Text.ElideRight
                     font.weight: Font.Light
                 }
