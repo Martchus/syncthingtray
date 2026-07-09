@@ -42,16 +42,16 @@
 <context>
     <name>AdvancedConfigPage</name>
     <message>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="16"/>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="22"/>
         <source>Apply</source>
         <translation>Применить</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="21"/>
         <source>Remove</source>
-        <translation>Убрать</translation>
+        <translation type="vanished">Убрать</translation>
     </message>
     <message>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="16"/>
         <location filename="../quick/qml/AdvancedConfigPage.qml" line="30"/>
         <source>Remove %1</source>
         <translation>Убрать %1</translation>
@@ -223,419 +223,419 @@
         <translation>Содержит bcrypt-хеш пароля, используемого для ограничения доступа к веб-интерфейсу. Вы также можете ввести простой пароль, который будет хеширован при применении конфигурации.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="126"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="127"/>
         <source>Username</source>
         <translation>Имя пользователя</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="127"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="128"/>
         <source>Password (turned into bcrypt hash when saving)</source>
         <translation>Пароль (превращается в хэш bcrypt при сохранении)</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="132"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="133"/>
         <source>API Key</source>
         <translation>API-ключ</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="132"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="133"/>
         <source>If set, this is the API key that enables usage of the REST interface. The app uses the REST interface so this value must not be empty for the app to function.</source>
         <translation>Если задано, это ключ API, который позволяет использовать интерфейс REST. Приложение использует интерфейс REST, поэтому для его работы это значение не должно быть пустым.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="133"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="134"/>
         <source>GUI Listen Address</source>
         <translation>Адрес прослушивания графического интерфейса</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="133"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="134"/>
         <source>Set the listen address.</source>
         <translation>Установите адрес прослушивания.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="134"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="135"/>
         <source>GUI Authentication User</source>
         <translation>Пользователь аутентификации GUI</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="135"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="136"/>
         <source>GUI Authentication Password (bcrypt hash!)</source>
         <translation>Пароль аутентификации GUI (хэш bcrypt!)</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="136"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="137"/>
         <source>Use HTTPS for GUI and API</source>
         <translation>Используйте HTTPS для графического интерфейса и API</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="136"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="137"/>
         <source>If enabled, TLS (HTTPS) will be enforced. Non-HTTPS requests will be redirected to HTTPS. When set to false, TLS connections are still possible but not required.</source>
         <translation>Если включено, TLS (HTTPS) будет использоваться принудительно. Запросы, не использующие HTTPS, будут перенаправляться на HTTPS. Если установлено значение false, TLS-подключения по-прежнему возможны, но не обязательны.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="137"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="138"/>
         <source>Prompt for basic authentication</source>
         <translation>Запрос на базовую аутентификацию</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="137"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="138"/>
         <source>When this setting is enabled, the web-based GUI will respond to unauthenticated requests with a 401 response prompting for Basic Authorization, so that https://user:pass@localhost style URLs continue to work in standard browsers. Other clients that always send the Authorization request header do not need this setting.</source>
         <translation>Если этот параметр включен, веб-интерфейс будет отвечать на неаутентифицированные запросы кодом 401 с запросом базовой авторизации, поэтому URL-адреса в стиле https://user:pass@localhost продолжат работать в стандартных браузерах. Другим клиентам, которые всегда отправляют заголовок запроса авторизации, этот параметр не нужен.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="138"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="139"/>
         <source>Authentication mode</source>
         <translation>Режим аутентификации</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="138"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="139"/>
         <source>Authentication mode to use. If not present, the authentication mode (static) is controlled by the presence of user/password fields for backward compatibility.</source>
         <translation>Используемый режим аутентификации. Если он отсутствует, режим аутентификации (статический) определяется наличием полей «имя пользователя» и «пароль» для обеспечения обратной совместимости.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="139"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="140"/>
         <source>Authentication using user and password.</source>
         <translation>Аутентификация с использованием имени пользователя и пароля.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="140"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="141"/>
         <source>LDAP authentication. Requires ldap top level config section to be present.</source>
         <translation>Аутентификация LDAP. Требуется наличие раздела конфигурации верхнего уровня LDAP.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="142"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="143"/>
         <source>Theme of web-based GUI</source>
         <translation>Тема веб-графического интерфейса</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="142"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="143"/>
         <source>The name of the theme to use.</source>
         <translation>Название используемой темы.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="148"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="149"/>
         <source>Profiling and Debugging</source>
         <translation>Профилирование и отладка</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="148"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="149"/>
         <source>This enables Profiling and additional endpoints in the REST API.</source>
         <translation>Это позволяет использовать профилирование и дополнительные конечные точки в REST API.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="149"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="150"/>
         <source>Enabled</source>
         <translation>Включено</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="149"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="150"/>
         <source>If disabled, the GUI and API will not be started. The app needs this to function.</source>
         <translation>Если отключено, графический интерфейс и API не будут запущены. Это необходимо для работы приложения.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="152"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="153"/>
         <source>Audit Log</source>
         <translation>Журнал аудита</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="152"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="153"/>
         <source>Write events to timestamped file `audit-YYYYMMDD-HHMMSS.log` within the Syncthing home directory. The path can be overridden via &quot;Audit File&quot;.</source>
         <translation>Записывать события в файл с меткой времени `audit-YYYYMMDD-HHMMSS.log` в домашнем каталоге Syncthing. Путь можно переопределить с помощью «Файл аудита».</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="153"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="154"/>
         <source>Audit File</source>
         <translation>Файл аудита</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="153"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="154"/>
         <source>Path to store audit events under if &quot;Audit Log&quot; is enabled.</source>
         <translation>Путь для хранения событий аудита, если включен «Журнал аудита».</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="154"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="155"/>
         <source>Sync Protocol Listen Addresses</source>
         <translation>Адреса прослушивания протокола синхронизации</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="154"/>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="178"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="155"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="179"/>
         <source>Address</source>
         <translation>Адрес</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="154"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="155"/>
         <source>Specifies one or more listen addresses for the sync protocol. Set to default to listen on port TCP and QUIC port 22000.</source>
         <translation>Указывает один или несколько адресов прослушивания для протокола синхронизации. Установите значение по умолчанию для прослушивания порта TCP и порта QUIC 22000.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="155"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="156"/>
         <source>Incoming Rate Limit (KiB/s)</source>
         <translation>Предел входящей скорости (КиБ/с)</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="155"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="156"/>
         <source>Incoming data rate limits, in kibibytes per second.</source>
         <translation>Ограничения скорости входящих данных, в кибибайтах в секунду.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="156"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="157"/>
         <source>Outgoing Rate Limit (KiB/s)</source>
         <translation>Лимит исходящей скорости (КиБ/с)</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="156"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="157"/>
         <source>Outgoing data rate limit, in kibibytes per second.</source>
         <translation>Ограничение скорости исходящих данных, в кибибайтах в секунду.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="157"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="158"/>
         <source>Limit Bandwidth in LAN</source>
         <translation>Ограничить пропускную способность в локальной сети</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="157"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="158"/>
         <source>Whether to apply bandwidth limits to devices in the same broadcast domain as the local device.</source>
         <translation>Применять ли ограничения пропускной способности к устройствам в том же широковещательном домене, что и локальное устройство.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="158"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="159"/>
         <source>NAT traversal</source>
         <translation>обход NAT</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="158"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="159"/>
         <source>Whether to attempt to perform a UPnP and NAT-PMP port mapping for incoming sync connections.</source>
         <translation>Следует ли пытаться выполнить сопоставление портов UPnP и NAT-PMP для входящих синхронизирующих подключений.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="159"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="160"/>
         <source>Local Discovery</source>
         <translation>Локальное Окружение</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="159"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="160"/>
         <source>Whether to send announcements to the local LAN, also use such announcements to find other devices.</source>
         <translation>Отправлять ли объявления в локальную сеть LAN, а также использовать такие объявления для поиска других устройств.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="160"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="161"/>
         <source>Global Discovery</source>
         <translation>Глобальное открытие</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="160"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="161"/>
         <source>Whether to announce this device to the global announce (discovery) server, and also use it to look up other devices.</source>
         <translation>Следует ли анонсировать данное устройство на глобальном сервере анонсов (обнаружения), а также использовать его для поиска других устройств.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="161"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="162"/>
         <source>Global Discovery Servers</source>
         <translation>Глобальные серверы обнаружения</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="161"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="162"/>
         <source>URI</source>
         <translation>URI</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="161"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="162"/>
         <source>A URI to a global announce (discovery) server, or the word &quot;default&quot; to include the default servers. Multiple servers can be added. The syntax for non-default entries is that of an HTTP or HTTPS URL. A number of options may be added as query options to the URL: insecure to prevent certificate validation (required for HTTP URLs) and &quot;id=&lt;device ID&gt;&quot; to perform certificate pinning. The device ID to use is printed by the discovery server on startup.</source>
         <translation>URI глобального сервера анонсирования (обнаружения) или слово «default» для включения серверов по умолчанию. Можно добавить несколько серверов. Синтаксис нестандартных записей соответствует синтаксису URL-адресов HTTP или HTTPS. К URL-адресу можно добавить ряд параметров запроса: insecure для предотвращения проверки сертификата (требуется для URL-адресов HTTP) и «id=&lt;device ID&gt;» для закрепления сертификата. Идентификатор устройства, который будет использоваться, выводится сервером обнаружения при запуске.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="162"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="163"/>
         <source>Relaying</source>
         <translation>Ретрансляция</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="162"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="163"/>
         <source>Whether relays will be connected to and potentially used for device to device connections.</source>
         <translation>Будут ли реле подключаться и потенциально использоваться для соединений устройств друг с другом.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="163"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="164"/>
         <source>Minimum Free Space (Home)</source>
         <translation>Минимальное свободное место (дома)</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="163"/>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="168"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="164"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="169"/>
         <source>The minimum required free space that should be available on the partition holding the configuration and index. The element content is interpreted according to the given unit attribute. Accepted unit values are &quot;%&quot; (percent of the disk / volume size), kB, MB, GB and TB. Set to zero to disable.</source>
         <translation>Минимально необходимое свободное пространство, которое должно быть доступно на разделе, содержащем конфигурацию и индекс. Содержимое элемента интерпретируется в соответствии с заданным атрибутом единицы измерения. Допустимые значения единиц измерения: «%» (процент от размера диска/тома), КБ, МБ, ГБ и ТБ. Установите значение 0, чтобы отключить.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="164"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="165"/>
         <source>Announce LAN Addresses</source>
         <translation>Объявить адреса локальной сети</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="164"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="165"/>
         <source>Enable (the default) or disable announcing private (RFC1918) LAN IP addresses to global discovery.</source>
         <translation>Включить (по умолчанию) или отключить объявление частных (RFC1918) IP-адресов локальной сети для глобального обнаружения.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="165"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="166"/>
         <source>Networks to consider always local</source>
         <translation>Сети всегда следует рассматривать как локальные</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="165"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="166"/>
         <source>Network in CIDR notation</source>
         <translation>Сеть в нотации CIDR</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="165"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="166"/>
         <source>Network that should be considered as local given in CIDR notation.</source>
         <translation>Сеть, которую следует считать локальной, указанной в нотации CIDR.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="168"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="169"/>
         <source>Value</source>
         <translation>Значение</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="169"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="170"/>
         <source>Unit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="170"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="171"/>
         <source>Percent</source>
         <translation>Процент</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="170"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="171"/>
         <source>Percentage of the disk/volume size</source>
         <translation>Процент от размера диска/тома</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="171"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="172"/>
         <source>Kilobyte</source>
         <translation>Килобайт</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="171"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="172"/>
         <source>Absolute size in Kilobyte</source>
         <translation>Абсолютный размер в килобайтах</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="172"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="173"/>
         <source>Megabyte</source>
         <translation>Мегабайт</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="172"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="173"/>
         <source>Absolute size in Megabyte</source>
         <translation>Абсолютный размер в мегабайтах</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="173"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="174"/>
         <source>Gigabyte</source>
         <translation>Гигабайт</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="173"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="174"/>
         <source>Absolute size in Gigabyte</source>
         <translation>Абсолютный размер в гигабайтах</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="174"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="175"/>
         <source>Terrabyte</source>
         <translation>Терабайт</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="174"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="175"/>
         <source>Absolute size in Terrabyte</source>
         <translation>Абсолютный размер в терабайтах</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="178"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="179"/>
         <source>Set to the address of the LDAP server, with hostname and port. For example, &lt;code&gt;dc1.example.com:389&lt;/code&gt; for standard LDAP, or &lt;code&gt;dc1.example.com:636 for LDAPS. (See also &lt;em&gt;Transport&lt;/em&gt;)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="179"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="180"/>
         <source>Bind DN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="179"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="180"/>
         <source>This is the pattern for the bind user. The special token &lt;code&gt;%s&lt;/code&gt; must be inserted to represent the username entered by the user at the login prompt. Typical examples are &lt;code&gt;%s@ad.example.com&lt;/code&gt; for Active Directory or something like &lt;code&gt;CN=%s,CN=Users,DC=example,DC=com&lt;/code&gt; for standard LDAP servers.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="180"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="181"/>
         <source>Transport</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="181"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="182"/>
         <source>non-TLS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="181"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="182"/>
         <source>Non secure connection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="182"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="183"/>
         <source>TLS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="182"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="183"/>
         <source>TLS secured connection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="183"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="184"/>
         <source>StartTLS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="183"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="184"/>
         <source>StartTLS connection mode.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="185"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="186"/>
         <source>Skip certificate verification (insecure!)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="185"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="186"/>
         <source>When set, this option disables all certificate verification for LDAPS. Use with care and only when absolutely necessary.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="186"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="187"/>
         <source>Search Base DN</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="186"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="187"/>
         <source>Optional, base DN to use for user searches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="187"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="188"/>
         <source>Search Filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="187"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="188"/>
         <source>Optional, search filter to use for user searches.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="193"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="194"/>
         <source>Discard changes</source>
         <translation>Отменить изменения</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedMainPage.qml" line="204"/>
+        <location filename="../quick/qml/AdvancedMainPage.qml" line="205"/>
         <source>Apply changes</source>
         <translation>Применить изменения</translation>
     </message>
@@ -1022,22 +1022,22 @@
 <context>
     <name>ChangesListView</name>
     <message>
-        <location filename="../quick/qml/ChangesListView.qml" line="92"/>
+        <location filename="../quick/qml/ChangesListView.qml" line="94"/>
         <source>Open item</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ChangesListView.qml" line="98"/>
+        <location filename="../quick/qml/ChangesListView.qml" line="100"/>
         <source>Copy path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ChangesListView.qml" line="103"/>
+        <location filename="../quick/qml/ChangesListView.qml" line="105"/>
         <source>Copy device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ChangesListView.qml" line="108"/>
+        <location filename="../quick/qml/ChangesListView.qml" line="110"/>
         <source>Copy folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1446,11 +1446,6 @@
         <translation>Необязательная описательная метка для папки. Может отличаться на каждом устройстве.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirConfigPage.qml" line="14"/>
-        <source>Group to show the folder in the UI. Can be different on each device.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="15"/>
         <source>Paused</source>
         <translation>Приостановлено</translation>
@@ -1654,6 +1649,11 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="14"/>
         <source>Group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DirConfigPage.qml" line="14"/>
+        <source>Group to show the folder in the UI. Can be different on each device.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2074,7 +2074,7 @@
 <context>
     <name>EditTextFieldDialog</name>
     <message>
-        <location filename="../quick/qml/EditTextFieldDialog.qml" line="23"/>
+        <location filename="../quick/qml/EditTextFieldDialog.qml" line="24"/>
         <source>Make random ID</source>
         <translation>Создать случайный ID</translation>
     </message>
@@ -2557,18 +2557,18 @@
         <translation>Переместить в начало очереди</translation>
     </message>
     <message>
-        <location filename="../quick/qml/NeededPage.qml" line="85"/>
+        <location filename="../quick/qml/NeededPage.qml" line="87"/>
         <source>In progress</source>
         <translation>В ходе выполнения</translation>
     </message>
     <message>
-        <location filename="../quick/qml/NeededPage.qml" line="86"/>
+        <location filename="../quick/qml/NeededPage.qml" line="88"/>
         <source>Queued</source>
         <translation>В очереди</translation>
     </message>
     <message>
-        <location filename="../quick/qml/NeededPage.qml" line="87"/>
-        <location filename="../quick/qml/NeededPage.qml" line="88"/>
+        <location filename="../quick/qml/NeededPage.qml" line="89"/>
+        <location filename="../quick/qml/NeededPage.qml" line="90"/>
         <source>Out of Sync</source>
         <translation>Рассинхронизация</translation>
     </message>
@@ -2603,60 +2603,60 @@
         <translation type="vanished">Создать случайный ID</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="140"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="618"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="680"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="141"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="622"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="684"/>
         <source>Clear</source>
         <translation>Прозрачный</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="149"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="150"/>
         <source>Refresh list of devices</source>
         <translation>Обновить список устройств</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="165"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="166"/>
         <source>This device has already been added!</source>
         <translation>Это устройство уже добавлено!</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="165"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="166"/>
         <source>The device ID looks valid.</source>
         <translation>Идентификатор устройства выглядит действительным.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="165"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="166"/>
         <source>The entered device ID looks invalid!</source>
         <translation>Введенный идентификатор устройства выглядит недействительным!</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="269"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="271"/>
         <source>A custom value has been entered.</source>
         <translation>Введено пользовательское значение.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="335"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="337"/>
         <source>Change encryption password</source>
         <translation>Изменить пароль шифрования</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="335"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="337"/>
         <source>Set encryption password</source>
         <translation>Установить пароль шифрования</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="342"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="344"/>
         <source>Set encryption password for sharing with &quot;%1&quot;</source>
         <translation>Установить пароль шифрования для совместного использования с «%1»</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="349"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="351"/>
         <source>If untrusted, enter encryption password</source>
         <translation>Если не доверяете, введите пароль шифрования</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="625"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="687"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="629"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="691"/>
         <source>Edit manually</source>
         <translation>Редактировать вручную</translation>
     </message>
@@ -2729,22 +2729,22 @@
         <translation>Время добавления этой записи (для информационных целей).</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="158"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="159"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="164"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="165"/>
         <source>Add</source>
         <translation>Добавлять</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="330"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="331"/>
         <source>Unable to add %1 because specified index is invalid.</source>
         <translation>Невозможно добавить %1, так как указанный индекс недействителен.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="338"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="339"/>
         <source>Unable to add %1 because specified key is invalid.</source>
         <translation>Невозможно добавить %1, так как указанный ключ недействителен.</translation>
     </message>
@@ -5288,7 +5288,7 @@
 <context>
     <name>QtGui::QuickUI</name>
     <message>
-        <location filename="../quick/quickui.cpp" line="465"/>
+        <location filename="../quick/quickui.cpp" line="466"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
@@ -6146,36 +6146,6 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation>Истекло время передачи</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="193"/>
-        <source>Limit for recent changes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="193"/>
-        <source>The maximum number of recent changes to query/buffer.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="189"/>
-        <source>Poll interval for traffic</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="190"/>
-        <source>Poll interval for device statistics</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="191"/>
-        <source>Poll interval for errors</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="192"/>
-        <source>Re-connect interval</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../quick/qml/SettingsPage.qml" line="194"/>
         <source>Local path</source>
         <translation>Локальный путь</translation>
@@ -6301,12 +6271,17 @@ This dialog closes automatically when the process finally terminates.</source>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="188"/>
-        <source>The timeout for event API requests using long polling in milliseconds. Set to 0 to use the default limit of Syncthing.</source>
+        <source>Long polling timeout/interval</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="188"/>
-        <source>Long polling timeout/interval</source>
+        <source>The timeout for event API requests using long polling in milliseconds. Set to 0 to use the default limit of Syncthing.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="189"/>
+        <source>Poll interval for traffic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6321,7 +6296,17 @@ This dialog closes automatically when the process finally terminates.</source>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="190"/>
+        <source>Poll interval for device statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="190"/>
         <source>The poll interval for device statistics in milliseconds.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="191"/>
+        <source>Poll interval for errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6331,7 +6316,22 @@ This dialog closes automatically when the process finally terminates.</source>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="192"/>
+        <source>Re-connect interval</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="192"/>
         <source>The interval for re-connect attempts in milliseconds.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="193"/>
+        <source>Limit for recent changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="193"/>
+        <source>The maximum number of recent changes to query/buffer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

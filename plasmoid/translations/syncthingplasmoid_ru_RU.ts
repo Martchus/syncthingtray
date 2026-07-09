@@ -160,55 +160,55 @@
     <name>FullRepresentation</name>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="248"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="254"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="269"/>
         <source>Global</source>
         <translation>Глобальный</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="255"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="261"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="276"/>
         <source>Global incoming traffic</source>
         <translation>Глобальный входящий трафик</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="273"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="279"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="294"/>
         <source>Local</source>
         <translation>Локальный</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="280"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="286"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="301"/>
         <source>Global outgoing traffic</source>
         <translation>Глобальный исходящий трафик</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="35"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="41"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="42"/>
         <source>Folders</source>
         <translation>Папки</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="41"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="47"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="48"/>
         <source>Devices</source>
         <translation>Устройства</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="53"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="59"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="60"/>
         <source>Downloads</source>
         <translation>Загрузки</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="47"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="53"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="54"/>
         <source>History</source>
         <translation>История</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="106"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="112"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="127"/>
         <source>Toggle filter</source>
         <translation>Переключить фильтр</translation>
     </message>
@@ -349,22 +349,22 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="504"/>
+        <location filename="../lib/syncthingapplet.cpp" line="558"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="587"/>
+        <location filename="../lib/syncthingapplet.cpp" line="642"/>
         <source>Associated directory does not exist.</source>
         <translation>Связанный каталог не существует.</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="613"/>
+        <location filename="../lib/syncthingapplet.cpp" line="668"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation>Не удалось установить соединение с Syncthing.</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="681"/>
+        <location filename="../lib/syncthingapplet.cpp" line="736"/>
         <source>D-Bus error - unable to </source>
         <translation>Ошибка D-Bus - невозможно </translation>
     </message>

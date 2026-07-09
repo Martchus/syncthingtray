@@ -204,56 +204,56 @@
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="248"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="254"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="269"/>
         <source>Global</source>
         <translation>Globale</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="255"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="261"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="276"/>
         <source>Global incoming traffic</source>
         <translation>Globaler eingehender Datenverkehr</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="273"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="279"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="294"/>
         <source>Local</source>
         <translation>Lokale</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="280"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="286"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="301"/>
         <source>Global outgoing traffic</source>
         <translation>Globaler ausgehender Datenverkehr</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="35"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="41"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="42"/>
         <source>Folders</source>
         <translation>Ordner</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="41"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="47"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="48"/>
         <source>Devices</source>
         <translation>Geräte</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="53"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="59"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="60"/>
         <source>Downloads</source>
         <translation></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="47"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="53"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="54"/>
         <source>History</source>
         <translatorcomment>&quot;Letzte Änderungen&quot; is too long</translatorcomment>
         <translation>Änderungen</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="106"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="112"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="127"/>
         <source>Toggle filter</source>
         <translation>Filter ein-/ausblenden</translation>
     </message>
@@ -415,7 +415,7 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="504"/>
+        <location filename="../lib/syncthingapplet.cpp" line="558"/>
         <source>About</source>
         <translation>Über Syncthing Plasmoid</translation>
     </message>
@@ -424,17 +424,17 @@
         <translation type="vanished">Neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="587"/>
+        <location filename="../lib/syncthingapplet.cpp" line="642"/>
         <source>Associated directory does not exist.</source>
         <translation>Zugehöriges Verzeichnis existiert nicht.</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="613"/>
+        <location filename="../lib/syncthingapplet.cpp" line="668"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation>Verbindung zu Syncthing kann nicht hergestellt werden.</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="681"/>
+        <location filename="../lib/syncthingapplet.cpp" line="736"/>
         <source>D-Bus error - unable to </source>
         <translation>D-Bus-Fehler bei Aktion </translation>
     </message>
