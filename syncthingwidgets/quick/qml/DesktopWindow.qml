@@ -211,8 +211,9 @@ ApplicationWindow {
                             Layout.fillWidth: true
                             Layout.alignment: Qt.AlignVCenter
                             leftPadding: 10
+                            color: palette.accent
                             text: qsTr("Folders")
-                            font.weight: Font.Medium
+                            font.weight: Font.DemiBold
                         }
                         Item {
                             Layout.fillWidth: true
@@ -283,7 +284,8 @@ ApplicationWindow {
                                 Layout.fillWidth: true
                                 leftPadding: 10
                                 text: qsTr("Statistics")
-                                font.weight: Font.Medium
+                                color: palette.accent
+                                font.weight: Font.DemiBold
                             }
                             Item {
                                 Layout.fillWidth: true
@@ -369,7 +371,8 @@ ApplicationWindow {
                                 Layout.fillWidth: true
                                 leftPadding: 10
                                 text: qsTr("Devices")
-                                font.weight: Font.Medium
+                                color: palette.accent
+                                font.weight: Font.DemiBold
                             }
                             Item {
                                 Layout.fillWidth: true
