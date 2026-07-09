@@ -525,7 +525,8 @@ QQuickItem *QuickUI::makePageBackground(QQuickWindow *pageWindow)
 {
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
     if (pageWindow && isDesktop()) {
-        return qobject_cast<QQuickItem *>(loadComponent("Main", "PageWindowBackground", {{QStringLiteral("pageWindow"), QVariant::fromValue(pageWindow)}}));
+        return qobject_cast<QQuickItem *>(
+            loadComponent("Main", "PageWindowBackground", { { QStringLiteral("pageWindow"), QVariant::fromValue(pageWindow) } }));
     }
 #endif
     return nullptr;
@@ -541,11 +542,10 @@ bool QuickUI::invokeWidgetFunction(const char *member, QTemplatedMetaMethodRetur
     return false;
 }
 
-template <typename... Args>
-bool QuickUI::invokeWidgetFunction(const char *member, Args &&...args)
+template <typename... Args> bool QuickUI::invokeWidgetFunction(const char *member, Args &&...args)
 {
     if (auto *const widget = m_engine->singletonInstance<QObject *>("Tray", "TrayWidget")) {
-        return QMetaObject::invokeMethod(widget, member, Qt::DirectConnection,std::forward<Args>(args)...);
+        return QMetaObject::invokeMethod(widget, member, Qt::DirectConnection, std::forward<Args>(args)...);
     }
     return false;
 }
