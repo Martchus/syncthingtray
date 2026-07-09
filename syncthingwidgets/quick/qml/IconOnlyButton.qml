@@ -15,4 +15,5 @@ RoundButton {
     icon.width: 20 * QuickUI.densityScaleIconButtons
     icon.height: 20 * QuickUI.densityScaleIconButtons
     flat: QuickUI.densityScale < 1.0
+    scale: Utils.winUI ? 0.8 : 1.0
 }
