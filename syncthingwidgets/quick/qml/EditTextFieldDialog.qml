@@ -13,6 +13,7 @@ CustomDialog {
         TextField {
             id: textField
             Layout.fillWidth: true
+            focus: true
             text: modelData.value
             inputMethodHints: modelData.inputMethodHints ?? Qt.ImhNone
             enabled: modelData?.enabled ?? true

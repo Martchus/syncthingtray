@@ -33,7 +33,6 @@ ApplicationWindow {
         page.stackView = stackView;
         page.pageWindow = pageWindow;
         page.background = QuickUI.makePageBackground(pageWindow);
-        page.forceActiveFocus();
     }
     footer: Pane {
         id: footerPane
@@ -108,8 +107,7 @@ ApplicationWindow {
         id: stackView
         anchors.fill: parent
         initialItem: page
-        Keys.onEscapePressed: (event) => pageWindow.close()
-        Keys.onBackPressed: (event) => stackView.depth > 1 && stackView.pop()
+        onCurrentItemChanged: stackView.currentItem?.listView?.forceActiveFocus() ?? stackView.currentItem?.forceActiveFocus()
     }
     DiscardChangesDialog {
         id: discardChangesDialog
@@ -120,6 +118,18 @@ ApplicationWindow {
             pageWindow.forceClose = true;
             pageWindow.close();
         }
+    }
+    Shortcut {
+        sequence: "Esc"
+        onActivated: pageWindow.close()
+    }
+    Shortcut {
+        sequences: ["Back", "Ctrl+Backspace", "Left"]
+        onActivated: stackView.depth > 1 && stackView.pop()
+    }
+    Shortcut {
+        sequences: ["Forward", "Return", "Right"]
+        onActivated: stackView.currentItem?.listView?.currentItem?.click()
     }
 
     required property Page page

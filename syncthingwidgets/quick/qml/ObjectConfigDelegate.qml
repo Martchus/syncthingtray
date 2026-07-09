@@ -131,6 +131,7 @@ DelegateChooser {
                         ComboBox {
                             id: editedDeviceIdValue
                             Layout.fillWidth: true
+                            focus: true
                             enabled: modelData?.enabled ?? true
                             editable: true
                             onAccepted: deviceIdDlg.accept()
@@ -239,6 +240,7 @@ DelegateChooser {
                             id: optionsValue
                             Layout.fillWidth: true
                             model: modelData.options
+                            focus: true
                             editable: true
                             valueRole: "value"
                             textRole: "label"
@@ -457,6 +459,7 @@ DelegateChooser {
                 standardButtons: objectConfigPage.standardButtons
                 contentItem: TextField {
                     id: editedNumberValue
+                    focus: true
                     text: modelData.value
                     inputMethodHints: modelData.inputMethodHints ?? Qt.ImhNone
                     validator: DoubleValidator {
