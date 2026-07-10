@@ -266,7 +266,7 @@ if (QUICK_GUI AND WIDGETS_GUI)
 endif ()
 
 # use QQuickStyle if dynamic styling of Qt Quick Controls is enabled
-if (QUICK_GUI_CONTROLS_STYLE STREQUAL dynamic)
+if (QUICK_GUI AND QUICK_GUI_CONTROLS_STYLE STREQUAL dynamic)
     list(APPEND ADDITIONAL_QT_MODULES QuickControls2)
 endif ()
 
