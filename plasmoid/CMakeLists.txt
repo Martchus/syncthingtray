@@ -8,6 +8,11 @@ set(META_PROJECT_TYPE qtplugin)
 set(META_PLUGIN_CATEGORY plasma/applets)
 set(META_QT5_VERSION 5.8)
 
+# require BUILD_SHARED_LIBS=ON
+if (NOT BUILD_SHARED_LIBS)
+    message(FATAL_ERROR "Building the Plasmoid as static library is not supported. Configure the build with either -DBUILD_SHARED_LIBS=ON or with -DNO_PLASMOID=ON.")
+endif ()
+
 # use testfiles directory from syncthingconnector
 set(META_SRCDIR_REFS "${CMAKE_CURRENT_SOURCE_DIR}\n${CMAKE_CURRENT_SOURCE_DIR}/../syncthingconnector")
 

@@ -5,6 +5,14 @@ set(META_APP_DESCRIPTION "KIO file item action for ${META_SYNCTHING_NAME}")
 set(META_PROJECT_TYPE qtplugin)
 set(META_QT5_VERSION 5.8)
 
+# require BUILD_SHARED_LIBS=ON
+if (NOT BUILD_SHARED_LIBS)
+    message(
+        FATAL_ERROR
+            "Building the KIO-Plugin as static library is not supported. Configure the build with either -DBUILD_SHARED_LIBS=ON or with -DNO_FILE_ITEM_ACTION_PLUGIN=ON."
+    )
+endif ()
+
 # add project files
 set(HEADER_FILES syncthingmenuaction.h syncthinginfoaction.h syncthingdiractions.h syncthingfileitemactionstaticdata.h
                  syncthingfileitemaction.h)
