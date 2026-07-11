@@ -132,9 +132,11 @@ SwipeView {
     }
     function addDir(dirId, dirName, shareWithDeviceIds, existing) {
         showPage(1).add(dirId, dirName, shareWithDeviceIds, existing);
+        return true;
     }
-    function addDevice(deviceId, deviceName) {
+    function addDev(deviceId, deviceName) {
         showPage(2).add(deviceId, deviceName);
+        return true;
     }
     function updateSearchText(searchText, updateModel = true) {
         if (pageStack.searchText === searchText) {

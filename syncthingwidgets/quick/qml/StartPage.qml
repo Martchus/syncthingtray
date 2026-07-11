@@ -241,7 +241,7 @@ Page {
                 section: qsTr("Getting started")
             }
             CustomDelegate {
-                onClicked: pages.addDevice()
+                onClicked: pages.addDev()
                 visible: SyncthingData.connection.hasState
                 labelText: qsTr("Connect other device")
                 iconName: "laptop"

@@ -16,13 +16,13 @@ QtObject {
         }
         function onTextShared(text) {
             if (text.match(/^[0-9A-z]{7}(-[0-9A-z]{7}){7}$/)) {
-                pageStack.addDevice(text);
+                pageStack.addDev(text);
             } else {
                 showNotifiction(qsTr("Not a valid device ID."));
             }
         }
         function onNewDeviceTriggered(devId) {
-            pageStack.addDevice(devId);
+            pageStack.addDev(devId);
         }
         function onNewDirTriggered(devId, dirId, dirLabel) {
             pageStack.addDir(dirId, dirLabel, [devId]);

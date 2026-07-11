@@ -162,6 +162,6 @@ Page {
     }
 
     function shareFolder(dirId, selectedDevs) {
-        pages.addDir(dirId, labelForDir(dirId, selectedDevs), Object.keys(selectedDevs), SyncthingModels.hasDir(dirId));
+        (pages ?? QuickUI).addDir(dirId, labelForDir(dirId, selectedDevs), Object.keys(selectedDevs), SyncthingModels.hasDir(dirId));
     }
 }

@@ -426,16 +426,34 @@ bool QuickUI::showPage(
 #endif
 }
 
+static inline QAnyStringView dirComp(bool advanced)
+{
+    return QAnyStringView(advanced ? "AdvancedDirConfigPage" : "DirConfigPage");
+}
+
+static inline QAnyStringView devComp(bool advanced)
+{
+    return QAnyStringView(advanced ? "AdvancedDevConfigPage" : "DevConfigPage");
+}
+
 bool QuickUI::editDir(const QString &dirId, const QString &dirName, QQuickItem *stackView, bool advanced)
 {
-    const auto component = QAnyStringView(advanced ? "AdvancedDirConfigPage" : "DirConfigPage");
-    return showPage("Main", component, { { QStringLiteral("dirId"), dirId }, { QStringLiteral("dirName"), dirName } }, stackView);
+    return showPage("Main", dirComp(advanced), { { QStringLiteral("dirId"), dirId }, { QStringLiteral("dirName"), dirName } }, stackView);
 }
 
 bool QuickUI::editDev(const QString &devId, const QString &devName, QQuickItem *stackView, bool advanced)
 {
-    const auto component = QAnyStringView(advanced ? "AdvancedDevConfigPage" : "DevConfigPage");
-    return showPage("Main", component, { { QStringLiteral("devId"), devId }, { QStringLiteral("devName"), devName } }, stackView);
+    return showPage("Main", devComp(advanced), { { QStringLiteral("devId"), devId }, { QStringLiteral("devName"), devName } }, stackView);
+}
+
+bool QtGui::QuickUI::addDir(const QString &dirId, const QString &dirName, const QVariant &shareWithDeviceIds, bool existing, QQuickItem *stackView, bool advanced)
+{
+    return showPage("Main", dirComp(advanced), { { QStringLiteral("dirId"), dirId }, { QStringLiteral("dirName"), dirName }, { QStringLiteral("shareWithDeviceIds"), shareWithDeviceIds }, { QStringLiteral("existing"), existing } }, stackView);
+}
+
+bool QuickUI::addDev(const QString &devId, const QString &devName, QQuickItem *stackView, bool advanced)
+{
+    return showPage("Main", devComp(advanced), { { QStringLiteral("devId"), devId }, { QStringLiteral("devName"), devName }, { QStringLiteral("existing"), false } }, stackView);
 }
 
 bool QuickUI::showNeededItems(const QString &dirId, const QString &dirLabel, QQuickItem *stackView)

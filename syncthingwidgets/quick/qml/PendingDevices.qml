@@ -53,7 +53,7 @@ Page {
                     Button {
                         text: qsTr("Add device")
                         flat: true
-                        onClicked: pages.addDevice(modelData.devId, modelData.info.Name ?? modelData.info.name)
+                        onClicked: (pages ?? QuickUI).addDev(modelData.devId, modelData.info.Name ?? modelData.info.name)
                     }
                 }
             }
