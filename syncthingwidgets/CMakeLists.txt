@@ -332,7 +332,7 @@ function (change_qt_quick_controls_style QML_FILES_VARIABLE)
             OUTPUT "${CHANGED_QML_FILE}"
             COMMAND
                 "${PERL_BIN}" ARGS -p -e "s|QtQuick.Controls.Material|${OVERRIDE}|g;" -e
-                "s|Material.accent|palette.accent|g;" -e "s|.*Material\\..*||g;" "${CMAKE_CURRENT_SOURCE_DIR}/${QML_FILE}" >
+                "s|Material.accent(?!\\:)|palette.accent|g;" -e "s|.*Material\\..*||g;" "${CMAKE_CURRENT_SOURCE_DIR}/${QML_FILE}" >
                 "${CHANGED_QML_FILE}"
             COMMENT "Changing Qt Quick Controls style to ${QUICK_GUI_CONTROLS_STYLE}"
             VERBATIM)
