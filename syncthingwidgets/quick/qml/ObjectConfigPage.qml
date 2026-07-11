@@ -28,7 +28,7 @@ Page {
                     listModel.clear();
 
                     let index = 0;
-                    let category = undefined;
+                    let category = QuickUI.desktop && objectConfigPage.stackView.depth > 1 ? objectConfigPage.title : undefined;
                     let configObject = objectConfigPage.configObject;
                     if (configObject === undefined) {
                         return;
@@ -60,7 +60,9 @@ Page {
                         indexByKey[key] = -1;
                     });
                     if (category !== undefined) {
-                        category = qsTr("Miscellaneous");
+                        if (index > 0) {
+                            category = qsTr("Miscellaneous");
+                        }
                         objectListView.section.property = "category";
                     }
                     if (objectConfigPage.specialEntriesOnly) {
@@ -195,7 +197,7 @@ Page {
         };
     }
 
-    function makeConfigRow(configEntry, index, canAdd, childObjectTemplate, category = undefined) {
+    function makeConfigRow(configEntry, index, category = undefined) {
         const key = configEntry[0];
         const value = configEntry[1];
         const isArray = Array.isArray(objectConfigPage.configObject);
@@ -304,6 +306,7 @@ Page {
 
     function removeObjects(modelData, count) {
         if (!modelData.isArray) {
+            QuickUI.showError(qsTr("Unable to remove object from non-array."));
             return;
         }
         const index = modelData.index;
@@ -312,7 +315,7 @@ Page {
             objectConfigPage.configObject.splice(index, count);
             listModel.remove(index, count);
         }
-        for (let i = index, end = listModel.count; i !== end; ++i) {
+        for (let i = index, end = listModel.count; i < end; ++i) {
             listModel.set(i, {index: i, key: i});
         }
         objectConfigPage.hasUnsavedChanges = true;

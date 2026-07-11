@@ -5,6 +5,7 @@ import QtQuick.Controls.Material
 import Main
 
 RowLayout {
+    id: layout
     visible: rowData.isArray
     IconOnlyButton {
         text: qsTr("Move down")
@@ -30,7 +31,7 @@ RowLayout {
                 icon.width: QuickUI.iconSize
                 icon.height: QuickUI.iconSize
                 icon.source: QuickUI.faUrlBase + "minus"
-                onClicked: page.removeObjects(rowData, 1)
+                onClicked: layout.page.removeObjects(layout.rowData, 1)
             }
             MenuItem {
                 text: qsTr("Insert before")
@@ -39,9 +40,15 @@ RowLayout {
                 icon.width: QuickUI.iconSize
                 icon.height: QuickUI.iconSize
                 icon.source: QuickUI.faUrlBase + "plus"
-                onClicked: page.showNewValueDialog(rowData.index)
+                onClicked: layout.page.showNewValueDialog(layout.rowData.index)
             }
         }
+    }
+    TapHandler {
+        parent: layout.parent
+        acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad | PointerDevice.Stylus
+        acceptedButtons: Qt.RightButton
+        onTapped: menu.showCenteredInRight(menuButton)
     }
     required property var page
     required property var rowData
