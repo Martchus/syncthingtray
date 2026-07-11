@@ -618,6 +618,8 @@ void QuickUI::showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y, cons
                     { QStringLiteral("sitemap.fa"), QStringLiteral("network-server-symbolic") },
                     { QStringLiteral("files-o.fa"), QStringLiteral("edit-copy") },
                     { QStringLiteral("clipboard.fa"), QStringLiteral("edit-paste") },
+                    { QStringLiteral("minus.fa"), QStringLiteral("list-remove") },
+                    { QStringLiteral("plus.fa"), QStringLiteral("list-add") },
                 });
                 if (const auto iconThemeName = iconThemeMapping.find(iconName); iconThemeName != iconThemeMapping.end()) {
                     return QIcon::fromTheme(*iconThemeName);
@@ -625,7 +627,7 @@ void QuickUI::showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y, cons
                 return QIcon(iconName);
             }();
             auto *const action = widgetsMenu.addAction(icon, item->property("text").toString());
-            connect(action, SIGNAL(triggered()), item, SIGNAL(triggered()));
+            connect(action, SIGNAL(triggered()), item, SIGNAL(triggered())) || connect(action, SIGNAL(triggered()), item, SIGNAL(clicked()));
         }
         if (hasItems) {
             if (parent && event && event->property("key").isValid()) {
