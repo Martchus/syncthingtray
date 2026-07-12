@@ -519,7 +519,6 @@ DelegateChooser {
                                                     specialEntries: objectConfigPage.specialEntriesByKey[neestedPath] ?? [],
                                                     specialEntriesByKey: objectConfigPage.specialEntriesByKey ?? {},
                                                     pageWindow: objectConfigPage.pageWindow,
-                                                    background: QuickUI.makePageBackground(objectConfigPage.pageWindow),
                                                 },
                                                 StackView.PushTransition)
             }

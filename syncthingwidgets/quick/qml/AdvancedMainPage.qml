@@ -91,7 +91,7 @@ Page {
             iconName: modelData.iconName
             onClicked: {
                 if (modelData.specialPage.length > 0) {
-                    stackView.push(modelData.specialPage, {pages: stackView.pages, background: QuickUI.makePageBackground(advancedPage.pageWindow)}, StackView.PushTransition);
+                    stackView.push(modelData.specialPage, {pages: stackView.pages}, StackView.PushTransition);
                 } else if (modelData.func.length > 0) {
                     (App?.[modelData.func] ?? SyncthingModels?.[modelData.func])?.();
                 } else {
@@ -99,7 +99,7 @@ Page {
                     const se = (specialEntriesOnly ? advancedPage.specialEntries[modelData.specialEntriesKey] : advancedPage.specialEntriesByKey[modelData.key]) ?? [];
                     const pageTitle = modelData.title.length > 0 ? modelData.title : modelData.label;
                     const configObject = advancedPage.config[modelData.key];
-                    const properties = {title: pageTitle, isDangerous: modelData.isDangerous, configObject: configObject, parentObject: advancedPage.config, specialEntries: se, specialEntriesByKey: advancedPage.specialEntriesByKey, specialEntriesOnly: specialEntriesOnly, path: modelData.key, configCategory: `config-option-${modelData.key}`, itemLabel: modelData.itemLabel, helpUrl: modelData.helpUrl, stackView: stackView, parentPage: advancedPage, pageWindow: advancedPage.pageWindow, background: QuickUI.makePageBackground(advancedPage.pageWindow)};
+                    const properties = {title: pageTitle, isDangerous: modelData.isDangerous, configObject: configObject, parentObject: advancedPage.config, specialEntries: se, specialEntriesByKey: advancedPage.specialEntriesByKey, specialEntriesOnly: specialEntriesOnly, path: modelData.key, configCategory: `config-option-${modelData.key}`, itemLabel: modelData.itemLabel, helpUrl: modelData.helpUrl, stackView: stackView, parentPage: advancedPage, pageWindow: advancedPage.pageWindow};
                     if (!Array.isArray(configObject)) {
                         properties.actions = [discardAction, applyAction];
                     }

@@ -30,9 +30,8 @@ ApplicationWindow {
     Material.primary: theming.Material.primary
     Material.accent: theming.Material.accent
     Component.onCompleted: {
-        page.stackView = stackView;
         page.pageWindow = pageWindow;
-        page.background = QuickUI.makePageBackground(pageWindow);
+        page.stackView = stackView;
     }
     footer: Pane {
         id: footerPane
@@ -108,7 +107,15 @@ ApplicationWindow {
         id: stackView
         anchors.fill: parent
         initialItem: page
-        onCurrentItemChanged: stackView.currentItem?.listView?.forceActiveFocus() ?? stackView.currentItem?.forceActiveFocus()
+        onCurrentItemChanged: {
+            const item = stackView.currentItem;
+            if (item) {
+                item.listView?.forceActiveFocus() ?? item.forceActiveFocus();
+                if (!(item.background instanceof PageWindowBackground)) {
+                    item.background = QuickUI.makePageBackground(pageWindow);
+                }
+            }
+        }
         palette.accent: stackView.currentItem?.isDangerous ? QuickUI.red : pageWindow.palette.accent
     }
     DiscardChangesDialog {
