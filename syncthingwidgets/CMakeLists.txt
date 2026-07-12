@@ -163,8 +163,18 @@ set(QML_MAIN_FILES
     quick/qml/SectionLabel.qml
     quick/qml/Theming.qml
     quick/qml/Utils.qml)
+set(QML_MAIN_FILES_DESKTOP
+    quick/qml/DesktopWindow.qml
+    quick/qml/FilterField.qml
+    quick/qml/PageWindow.qml
+    quick/qml/PageWindowBackground.qml
+    quick/qml/TrayView.qml
+)
+set(QML_MAIN_FILES_APP_CONTROL
+    quick/qml/AppControl.qml
+)
 set(QML_SINGLETON_FILES quick/qml/Utils.qml)
-list(APPEND EXCLUDED_FILES ${QML_MAIN_FILES} quick/qml/WebViewPage.qml quick/qml/webview-webview/WebViewItem.qml
+list(APPEND EXCLUDED_FILES ${QML_MAIN_FILES} ${QML_MAIN_FILES_DESKTOP} ${QML_MAIN_FILES_APP_CONTROL} quick/qml/WebViewPage.qml quick/qml/webview-webview/WebViewItem.qml
      quick/qml/webview-none/WebViewItem.qml)
 if (ANDROID)
     list(APPEND QML_HEADER_FILES quick/android.h)
@@ -174,9 +184,7 @@ else ()
 endif ()
 option(QUICK_GUI_APP_CONTROL "enables AppControl as alternative entry point for the Qt Quick GUI" OFF)
 if (QUICK_GUI_APP_CONTROL)
-    list(APPEND QML_MAIN_FILES quick/qml/AppControl.qml)
-else ()
-    list(APPEND EXCLUDED_FILES quick/qml/AppControl.qml)
+    list(APPEND QML_MAIN_FILES ${QML_MAIN_FILES_APP_CONTROL})
 endif ()
 
 set(TS_FILES
@@ -453,18 +461,10 @@ if (QUICK_GUI)
         list(APPEND PUBLIC_LIBRARIES ${META_TARGET_NAME}_webviewitemplugin)
     endif ()
 
-    if ("desktop" IN_LIST QUICK_GUI_ENABLED_MODES)
-        list(
-            APPEND
-            QML_MAIN_FILES
-            quick/qml/DesktopWindow.qml
-            quick/qml/FilterField.qml
-            quick/qml/PageWindow.qml
-            quick/qml/PageWindowBackground.qml
-            quick/qml/TrayView.qml)
-    endif ()
-
     # add main QML module
+    if ("desktop" IN_LIST QUICK_GUI_ENABLED_MODES)
+        list(APPEND QML_MAIN_FILES ${QML_MAIN_FILES_DESKTOP})
+    endif ()
     if (BUILD_SHARED_LIBS)
         set(META_LIBRARY_TYPE SHARED)
         set(PLUGIN_ARG NO_PLUGIN) # creating a plugin library can be avoided
