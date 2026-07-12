@@ -18,4 +18,22 @@ QtObject {
             return Popup.Item;
         }
     }
+
+    function submitPage(page, force) {
+        // handle "dangerous flag" and unsaved changes
+        if (!page.hasUnsavedChanges || force) {
+            return false;
+        }
+        const parentPage = page.parentPage;
+        if (parentPage?.hasUnsavedChanges === undefined) {
+            return true;
+        }
+        parentPage.hasUnsavedChanges = true;
+        page.hasUnsavedChanges = false;
+        if (page.isDangerous) {
+            // propagate "dangerous flag" to parent page if changes on a dangerous page were made
+            parentPage.isDangerous = true;
+        }
+        return false;
+    }
 }

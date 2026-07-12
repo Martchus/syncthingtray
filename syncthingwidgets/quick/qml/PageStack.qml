@@ -76,21 +76,9 @@ SwipeView {
     function pop(force) {
         const currentChild = pageStack.currentChild;
         const currentPage = currentChild.currentItem ?? currentChild;
-
-        // handle "dangerous flag" and unsaved changes
-        if (!force && currentPage.hasUnsavedChanges) {
-            const parentPage = currentPage.parentPage;
-            if (parentPage?.hasUnsavedChanges !== undefined) {
-                parentPage.hasUnsavedChanges = true;
-                currentPage.hasUnsavedChanges = false;
-                // propagate "dangerous flag" to parent page if changes on a dangerous page were made
-                if (currentPage.isDangerous) {
-                    parentPage.isDangerous = true;
-                }
-            } else {
-                changesMightBeDiscarded();
-                return true;
-            }
+        if (Utils.submitPage(currentPage, force)) {
+            changesMightBeDiscarded();
+            return true;
         }
 
         // go back within the current page (e.g. on level up in the file browser) or go one config object page up

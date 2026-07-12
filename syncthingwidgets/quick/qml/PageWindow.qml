@@ -81,7 +81,7 @@ ApplicationWindow {
                 visible: stackView.depth > 1
                 icon.source: QuickUI.faUrlBase + "arrow-left"
                 text: qsTr("Back")
-                onClicked: stackView.pop()
+                onClicked: pageWindow.pop()
                 onVisibleChanged: textButtons.width = Qt.binding(() => footerPane.width - 1)
             }
             IconOnlyButton {
@@ -127,7 +127,7 @@ ApplicationWindow {
     }
     Shortcut {
         sequences: ["Back", "Ctrl+Backspace", "Left"]
-        onActivated: stackView.depth > 1 && stackView.pop()
+        onActivated: pageWindow.pop()
     }
     Shortcut {
         sequences: ["Forward", "Return", "Right"]
@@ -141,5 +141,12 @@ ApplicationWindow {
         currentPage: stackView.currentItem
     }
     readonly property Meta meta: Meta {
+    }
+
+    function pop(force) {
+        if (stackView.depth > 1) {
+            Utils.submitPage(pageWindow.currentPage);
+            stackView.pop();
+        }
     }
 }
