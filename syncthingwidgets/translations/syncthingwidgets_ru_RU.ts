@@ -994,27 +994,27 @@
 <context>
     <name>ArrayElementButtons</name>
     <message>
-        <location filename="../quick/qml/ArrayElementButtons.qml" line="10"/>
+        <location filename="../quick/qml/ArrayElementButtons.qml" line="11"/>
         <source>Move down</source>
         <translation>Двигаться вниз</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ArrayElementButtons.qml" line="15"/>
+        <location filename="../quick/qml/ArrayElementButtons.qml" line="16"/>
         <source>Move up</source>
         <translation>Двигаться вверх</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ArrayElementButtons.qml" line="21"/>
+        <location filename="../quick/qml/ArrayElementButtons.qml" line="22"/>
         <source>More options</source>
         <translation>Больше вариантов</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ArrayElementButtons.qml" line="27"/>
+        <location filename="../quick/qml/ArrayElementButtons.qml" line="28"/>
         <source>Remove</source>
         <translation>Удалять</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ArrayElementButtons.qml" line="36"/>
+        <location filename="../quick/qml/ArrayElementButtons.qml" line="37"/>
         <source>Insert before</source>
         <translation>Вставить перед</translation>
     </message>
@@ -1132,6 +1132,195 @@
         <location filename="../misc/syncthinglauncher.cpp" line="251"/>
         <source>Not built with libsyncthing support.</source>
         <translation>Не собран с поддержкой libsyncthing.</translation>
+    </message>
+</context>
+<context>
+    <name>DesktopWindow</name>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="59"/>
+        <source>&amp;Help</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="65"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="123"/>
+        <source>Syncthing</source>
+        <translation type="unfinished">Syncthing</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="69"/>
+        <source>Home page</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="73"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="104"/>
+        <source>Documentation</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="77"/>
+        <source>Support</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="81"/>
+        <source>Changelog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="85"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="286"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="434"/>
+        <source>Statistics</source>
+        <translation type="unfinished">Статистика</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="89"/>
+        <source>Bugs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="93"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="108"/>
+        <source>Source code</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="100"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="167"/>
+        <source>Syncthing Tray</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="112"/>
+        <source>About</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="117"/>
+        <source>&amp;Actions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="127"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="171"/>
+        <source>&amp;Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="132"/>
+        <source>&amp;Web-based UI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="137"/>
+        <source>&amp;Recent changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="142"/>
+        <source>Show &amp;ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="147"/>
+        <source>&amp;Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="152"/>
+        <source>&amp;Support Bundle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="156"/>
+        <source>Restart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="160"/>
+        <source>Shutdown</source>
+        <translation type="unfinished">Неисправность</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="176"/>
+        <source>&amp;Wizard</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="215"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="440"/>
+        <source>Folders</source>
+        <translation type="unfinished">Папки</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="223"/>
+        <source>Add folder</source>
+        <translation type="unfinished">Добавить папку</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="230"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="389"/>
+        <source>Pause all</source>
+        <translation type="unfinished">Приостановить все</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="237"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="396"/>
+        <source>Resume all</source>
+        <translation type="unfinished">Возобновить все</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="244"/>
+        <source>Rescan all</source>
+        <translation type="unfinished">Пересканировать все</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="250"/>
+        <source>Filter folders</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="295"/>
+        <source>Recent changes</source>
+        <translation type="unfinished">Последние изменения</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="302"/>
+        <source>Show ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="309"/>
+        <source>Show logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="337"/>
+        <source>Global state</source>
+        <translation type="unfinished">Глобально</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="345"/>
+        <source>Local state</source>
+        <translation type="unfinished">Локально</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="373"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="446"/>
+        <source>Devices</source>
+        <translation type="unfinished">Устройства</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="382"/>
+        <source>Add device</source>
+        <translation type="unfinished">Добавить устройство</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="403"/>
+        <source>Filter devices</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -2664,87 +2853,92 @@
 <context>
     <name>ObjectConfigPage</name>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="63"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="64"/>
         <source>Miscellaneous</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="87"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="89"/>
         <source>Add new value</source>
         <translation>Добавить новое значение</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="92"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="94"/>
         <source>Index</source>
         <translation>Индекс</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="92"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="94"/>
         <source>Key</source>
         <translation>Ключ</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="99"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="101"/>
         <source>Type</source>
         <translation>Тип</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="119"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="121"/>
         <source>Device ID</source>
         <translation>ID устройства</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="119"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="121"/>
         <source>The ID of the device to be ignored.</source>
         <translation>ID устройства, которое следует игнорировать.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="120"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="122"/>
         <source>Device Name</source>
         <translation>Имя устройства</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="120"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="122"/>
         <source>The name of the device being ignored (for informative purposes).</source>
         <translation>Имя игнорируемого устройства (в информационных целях).</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="121"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="123"/>
         <source>Address</source>
         <translation>Адрес</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="121"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="123"/>
         <source>The address of the device being ignored (for informative purposes).</source>
         <translation>Адрес игнорируемого устройства (в информационных целях).</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="122"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="124"/>
         <source>Time</source>
         <translation>Время</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="122"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="124"/>
         <source>The time when this entry was added (for informative purposes).</source>
         <translation>Время добавления этой записи (для информационных целей).</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="159"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="161"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="165"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="167"/>
         <source>Add</source>
         <translation>Добавлять</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="331"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="309"/>
+        <source>Unable to remove object from non-array.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="334"/>
         <source>Unable to add %1 because specified index is invalid.</source>
         <translation>Невозможно добавить %1, так как указанный индекс недействителен.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="339"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="342"/>
         <source>Unable to add %1 because specified key is invalid.</source>
         <translation>Невозможно добавить %1, так как указанный ключ недействителен.</translation>
     </message>
@@ -2783,6 +2977,29 @@
         <location filename="../quick/qml/OutOfSyncDirs.qml" line="22"/>
         <source>%1: %2 items needed, ~ %3</source>
         <translation>%1: необходимо %2 предметов, ~ %3</translation>
+    </message>
+</context>
+<context>
+    <name>PageWindow</name>
+    <message>
+        <location filename="../quick/qml/PageWindow.qml" line="49"/>
+        <source>Close</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/PageWindow.qml" line="83"/>
+        <source>Back</source>
+        <translation type="unfinished">Назад</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/PageWindow.qml" line="91"/>
+        <source>More</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/PageWindow.qml" line="118"/>
+        <source>Do you really want to close without applying changes?</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -5288,7 +5505,7 @@
 <context>
     <name>QtGui::QuickUI</name>
     <message>
-        <location filename="../quick/quickui.cpp" line="466"/>
+        <location filename="../quick/quickui.cpp" line="484"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
@@ -6772,6 +6989,54 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <source>Another config change is still pending.</source>
         <translation type="obsolete">Еще одно изменение конфигурации еще не внесено.</translation>
+    </message>
+</context>
+<context>
+    <name>TrayView</name>
+    <message>
+        <location filename="../quick/qml/TrayView.qml" line="80"/>
+        <source>Folders</source>
+        <translation type="unfinished">Папки</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/TrayView.qml" line="87"/>
+        <source>Devices</source>
+        <translation type="unfinished">Устройства</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/TrayView.qml" line="93"/>
+        <source>Recent changes</source>
+        <translation type="unfinished">Последние изменения</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/TrayView.qml" line="105"/>
+        <source>Add folder</source>
+        <translation type="unfinished">Добавить папку</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/TrayView.qml" line="111"/>
+        <source>Add device</source>
+        <translation type="unfinished">Добавить устройство</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/TrayView.qml" line="116"/>
+        <source>Rescan all</source>
+        <translation type="unfinished">Пересканировать все</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/TrayView.qml" line="121"/>
+        <source>Show ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/TrayView.qml" line="126"/>
+        <source>Show logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/TrayView.qml" line="131"/>
+        <source>Filter</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
