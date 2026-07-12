@@ -16,6 +16,7 @@ Dialog {
     bottomMargin: parent?.SafeArea.margins.bottom ?? 0
     standardButtons: Dialog.Yes | Dialog.No
     modal: true
+    clip: true
     onOpened: QuickUI.addDialog(dialog)
     onClosed: QuickUI.removeDialog(dialog)
     property int additionalSpacing: 20

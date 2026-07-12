@@ -48,6 +48,7 @@ RowLayout {
         parent: layout.parent
         acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad | PointerDevice.Stylus
         acceptedButtons: Qt.RightButton
+        enabled: layout.visible
         onTapped: menu.showCenteredInRight(menuButton)
     }
     required property var page

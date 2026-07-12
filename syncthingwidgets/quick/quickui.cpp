@@ -632,7 +632,7 @@ void QuickUI::showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y, cons
                 return QIcon(iconName);
             }();
             auto *const action = widgetsMenu.addAction(icon, item->property("text").toString());
-            connect(action, SIGNAL(triggered()), item, SIGNAL(triggered())) || connect(action, SIGNAL(triggered()), item, SIGNAL(clicked()));
+            connect(action, SIGNAL(triggered()), item, SIGNAL(clicked()));
         }
         if (hasItems) {
             if (parent && event && event->property("key").isValid()) {

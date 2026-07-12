@@ -325,8 +325,9 @@ Page {
         if (Array.isArray(objectConfigPage.configObject)) {
             const length = objectConfigPage.configObject.length;
             if (typeof key === "number" && key >= 0 && key <= length) {
+                const category = listModel.get(Math.min(key === length ? key - 1 : key, 0))?.category;
                 objectConfigPage.configObject.splice(key, 0, object);
-                listModel.insert(key, objectConfigPage.makeConfigRow([key.toString(), object], key));
+                listModel.insert(key, objectConfigPage.makeConfigRow([key.toString(), object], key, category));
                 for (let i = key + 1, end = listModel.count; i !== end; ++i) {
                     listModel.set(i, {index: i, key: i});
                 }

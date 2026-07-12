@@ -121,6 +121,35 @@ ApplicationWindow {
             pageWindow.close();
         }
     }
+    CustomDialog {
+        id: savingDialog
+        visible: SyncthingModels.savingConfig
+        standardButtons: Dialog.NoButton
+        closePolicy: Popup.NoAutoClose
+        popupType: Popup.Item
+        additionalSpacing: 80
+        contentItem: RowLayout {
+            id: savingLayout
+            Item {
+                Layout.fillWidth: true
+            }
+            BusyIndicator {
+                Layout.preferredWidth: QuickUI.iconSize * 1.5
+                Layout.preferredHeight: Layout.preferredWidth
+            }
+            Label {
+                Layout.leftMargin: 10
+                text: qsTr("Saving configuration …")
+                visible: savingDialog.width > 300
+                elide: Text.ElideRight
+                font.weight: Font.Light
+            }
+            Item {
+                Layout.fillWidth: true
+            }
+        }
+    }
+
     Shortcut {
         sequence: "Esc"
         onActivated: pageWindow.close()
