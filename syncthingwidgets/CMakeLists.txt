@@ -163,19 +163,19 @@ set(QML_MAIN_FILES
     quick/qml/SectionLabel.qml
     quick/qml/Theming.qml
     quick/qml/Utils.qml)
-set(QML_MAIN_FILES_DESKTOP
-    quick/qml/DesktopWindow.qml
-    quick/qml/FilterField.qml
-    quick/qml/PageWindow.qml
-    quick/qml/PageWindowBackground.qml
-    quick/qml/TrayView.qml
-)
-set(QML_MAIN_FILES_APP_CONTROL
-    quick/qml/AppControl.qml
-)
+set(QML_MAIN_FILES_DESKTOP quick/qml/DesktopWindow.qml quick/qml/FilterField.qml quick/qml/PageWindow.qml
+                           quick/qml/PageWindowBackground.qml quick/qml/TrayView.qml)
+set(QML_MAIN_FILES_APP_CONTROL quick/qml/AppControl.qml)
 set(QML_SINGLETON_FILES quick/qml/Utils.qml)
-list(APPEND EXCLUDED_FILES ${QML_MAIN_FILES} ${QML_MAIN_FILES_DESKTOP} ${QML_MAIN_FILES_APP_CONTROL} quick/qml/WebViewPage.qml quick/qml/webview-webview/WebViewItem.qml
-     quick/qml/webview-none/WebViewItem.qml)
+list(
+    APPEND
+    EXCLUDED_FILES
+    ${QML_MAIN_FILES}
+    ${QML_MAIN_FILES_DESKTOP}
+    ${QML_MAIN_FILES_APP_CONTROL}
+    quick/qml/WebViewPage.qml
+    quick/qml/webview-webview/WebViewItem.qml
+    quick/qml/webview-none/WebViewItem.qml)
 if (ANDROID)
     list(APPEND QML_HEADER_FILES quick/android.h)
     list(APPEND QML_SRC_FILES quick/android.cpp)
@@ -340,8 +340,8 @@ function (change_qt_quick_controls_style QML_FILES_VARIABLE)
             OUTPUT "${CHANGED_QML_FILE}"
             COMMAND
                 "${PERL_BIN}" ARGS -p -e "s|QtQuick.Controls.Material|${OVERRIDE}|g;" -e
-                "s|Material.accent(?!\\:)|palette.accent|g;" -e "s|.*Material\\..*||g;" "${CMAKE_CURRENT_SOURCE_DIR}/${QML_FILE}" >
-                "${CHANGED_QML_FILE}"
+                "s|Material.accent(?!\\:)|palette.accent|g;" -e "s|.*Material\\..*||g;"
+                "${CMAKE_CURRENT_SOURCE_DIR}/${QML_FILE}" > "${CHANGED_QML_FILE}"
             COMMENT "Changing Qt Quick Controls style to ${QUICK_GUI_CONTROLS_STYLE}"
             VERBATIM)
         set_source_files_properties("${CHANGED_QML_FILE}" PROPERTIES QT_RESOURCE_ALIAS "${QML_FILE}")

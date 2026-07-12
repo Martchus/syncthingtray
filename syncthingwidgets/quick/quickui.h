@@ -190,7 +190,8 @@ public:
         QQuickItem *stackView = nullptr, QQuickWindow **window = nullptr);
     Q_INVOKABLE bool editDir(const QString &dirId, const QString &dirName, QQuickItem *stackView = nullptr, bool advanced = false);
     Q_INVOKABLE bool editDev(const QString &devId, const QString &devName, QQuickItem *stackView = nullptr, bool advanced = false);
-    Q_INVOKABLE bool addDir(const QString &dirId, const QString &dirName, const QVariant &shareWithDeviceIds, bool existing = false, QQuickItem *stackView = nullptr, bool advanced = false);
+    Q_INVOKABLE bool addDir(const QString &dirId, const QString &dirName, const QVariant &shareWithDeviceIds, bool existing = false,
+        QQuickItem *stackView = nullptr, bool advanced = false);
     Q_INVOKABLE bool addDev(const QString &devId, const QString &devName, QQuickItem *stackView = nullptr, bool advanced = false);
     Q_INVOKABLE bool showNeededItems(const QString &dirId, const QString &dirLabel, QQuickItem *stackView = nullptr);
     Q_INVOKABLE bool showOutOfSyncDirs(

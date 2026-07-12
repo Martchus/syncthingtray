@@ -446,14 +446,19 @@ bool QuickUI::editDev(const QString &devId, const QString &devName, QQuickItem *
     return showPage("Main", devComp(advanced), { { QStringLiteral("devId"), devId }, { QStringLiteral("devName"), devName } }, stackView);
 }
 
-bool QtGui::QuickUI::addDir(const QString &dirId, const QString &dirName, const QVariant &shareWithDeviceIds, bool existing, QQuickItem *stackView, bool advanced)
+bool QtGui::QuickUI::addDir(
+    const QString &dirId, const QString &dirName, const QVariant &shareWithDeviceIds, bool existing, QQuickItem *stackView, bool advanced)
 {
-    return showPage("Main", dirComp(advanced), { { QStringLiteral("dirId"), dirId }, { QStringLiteral("dirName"), dirName }, { QStringLiteral("shareWithDeviceIds"), shareWithDeviceIds }, { QStringLiteral("existing"), existing } }, stackView);
+    return showPage("Main", dirComp(advanced),
+        { { QStringLiteral("dirId"), dirId }, { QStringLiteral("dirName"), dirName }, { QStringLiteral("shareWithDeviceIds"), shareWithDeviceIds },
+            { QStringLiteral("existing"), existing } },
+        stackView);
 }
 
 bool QuickUI::addDev(const QString &devId, const QString &devName, QQuickItem *stackView, bool advanced)
 {
-    return showPage("Main", devComp(advanced), { { QStringLiteral("devId"), devId }, { QStringLiteral("devName"), devName }, { QStringLiteral("existing"), false } }, stackView);
+    return showPage("Main", devComp(advanced),
+        { { QStringLiteral("devId"), devId }, { QStringLiteral("devName"), devName }, { QStringLiteral("existing"), false } }, stackView);
 }
 
 bool QuickUI::showNeededItems(const QString &dirId, const QString &dirLabel, QQuickItem *stackView)
