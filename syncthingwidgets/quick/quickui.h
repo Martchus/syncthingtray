@@ -3,6 +3,8 @@
 
 #include "../global.h"
 
+#include <syncthingmodel/colors.h>
+
 #include <QJSValue>
 #include <QObject>
 #include <QPalette>
@@ -47,6 +49,7 @@ class SYNCTHINGWIDGETS_EXPORT QuickUI : public QObject {
     Q_PROPERTY(QString style READ style CONSTANT)
     Q_PROPERTY(bool desktop READ isDesktop CONSTANT)
     Q_PROPERTY(bool darkmodeEnabled READ isDarkmodeEnabled NOTIFY darkmodeEnabledChanged)
+    Q_PROPERTY(QColor red READ red NOTIFY darkmodeEnabledChanged)
     Q_PROPERTY(qreal densityScale READ densityScale CONSTANT)
     Q_PROPERTY(qreal densityScaleIconButtons READ densityScaleIconButtons CONSTANT)
     Q_PROPERTY(int iconSize READ iconSize CONSTANT)
@@ -133,6 +136,11 @@ public:
     bool isDarkmodeEnabled() const
     {
         return m_darkmodeEnabled;
+    }
+
+    QColor red() const
+    {
+        return Data::Colors::red(m_darkmodeEnabled);
     }
 
     /*!

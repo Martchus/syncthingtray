@@ -61,10 +61,11 @@ ApplicationWindow {
                             display: AbstractButton.TextBesideIcon
                             icon.width: QuickUI.iconSize
                             icon.height: QuickUI.iconSize
+                            icon.source: Utils.winUI ? "" : modelData.icon.source
+                            palette.button: stackView.currentItem?.isDangerous ? Qt.tint(pageWindow.palette.button, "#50FF0000") : pageWindow.palette.button
                             enabled: modelData.enabled
                             text: modelData.text
                             flat: Utils.flatDialogButtons
-                            icon.source: Utils.winUI ? "" : modelData.icon.source
                             onClicked: modelData.trigger()
                         }
                     }
@@ -108,6 +109,7 @@ ApplicationWindow {
         anchors.fill: parent
         initialItem: page
         onCurrentItemChanged: stackView.currentItem?.listView?.forceActiveFocus() ?? stackView.currentItem?.forceActiveFocus()
+        palette.accent: stackView.currentItem?.isDangerous ? QuickUI.red : pageWindow.palette.accent
     }
     DiscardChangesDialog {
         id: discardChangesDialog
