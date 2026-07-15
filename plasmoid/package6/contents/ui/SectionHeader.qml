@@ -6,6 +6,7 @@ RowLayout {
     spacing: 10
     width: ListView.view.width
     PlasmaComponents3.Label {
+        id: label
         Layout.fillWidth: true
         Layout.topMargin: 10
         Layout.bottomMargin: 3
@@ -13,5 +14,6 @@ RowLayout {
         elide: Text.ElideRight
         font.weight: Font.Medium
         wrapMode: Text.WordWrap
+        color: label.linkColor
     }
 }
