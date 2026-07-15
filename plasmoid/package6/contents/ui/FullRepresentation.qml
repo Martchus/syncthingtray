@@ -96,6 +96,10 @@ PlasmaExtras.Representation {
         onActivated: clickCurrentItemButton("openButton")
     }
     Shortcut {
+        sequence: "Ctrl+F"
+        onActivated: searchButton.click()
+    }
+    Shortcut {
         sequences: ["Ctrl+M", "Menu"]
         onActivated: {
             const view = findCurrentPage().view
@@ -107,7 +111,17 @@ PlasmaExtras.Representation {
     }
     Shortcut {
         sequence: "Esc"
-        onActivated: plasmoid.expanded = false
+        onActivated: {
+            if (searchButton.visible) {
+                const filter = findCurrentFilter()
+                if (filter.activeFocus) {
+                    filter.explicitelyShown = false
+                    filter.text = ""
+                    return
+                }
+            }
+            plasmoid.expanded = false
+        }
     }
 
     // main contents
@@ -122,7 +136,7 @@ PlasmaExtras.Representation {
             icon.source: plasmoid.faUrl + "search"
             width: Kirigami.Units.iconSizes.smallMedium
             height: width
-            enabled: tabBar.currentIndex === 0
+            enabled: tabBar.currentIndex === 0 || tabBar.currentIndex === 1
             opacity: enabled ? 1.0 : 0.25
             tooltip: qsTr("Toggle filter")
             onClicked: {

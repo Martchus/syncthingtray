@@ -11,15 +11,8 @@ ColumnLayout {
     property alias filter: filter
     objectName: "DirectoriesPage"
 
-    PlasmaComponents3.TextField {
-        Layout.topMargin: Kirigami.Units.smallSpacing * 2
-        Layout.leftMargin: Kirigami.Units.smallSpacing * 2
-        Layout.rightMargin: Kirigami.Units.smallSpacing * 2
-        property bool explicitelyShown: false
+    FilterTextField {
         id: filter
-        clearButtonShown: true
-        Layout.fillWidth: true
-        visible: explicitelyShown || text !== ""
         placeholderText: qsTr("Filter folders")
         onTextChanged: directoryView.model.filterRegularExpression = new RegExp(text)
     }

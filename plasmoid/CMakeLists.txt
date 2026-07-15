@@ -32,6 +32,7 @@ set(PLASMOID_FILE_NAMES
     DirectoriesPage.qml
     DevicesPage.qml
     DownloadsPage.qml
+    FilterTextField.qml
     RecentChangesPage.qml
     TopLevelView.qml
     TopLevelItem.qml

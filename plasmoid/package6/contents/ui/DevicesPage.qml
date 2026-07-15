@@ -6,12 +6,20 @@ import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kirigami 2.20 as Kirigami
 
-Item {
+ColumnLayout {
     property alias view: deviceView
+    property alias filter: filter
     objectName: "DevicesPage"
 
+    FilterTextField {
+        id: filter
+        placeholderText: qsTr("Filter devices")
+        onTextChanged: deviceView.model.filterRegularExpression = new RegExp(text)
+    }
+
     PlasmaComponents3.ScrollView {
-        anchors.fill: parent
+        Layout.fillWidth: true
+        Layout.fillHeight: true
 
         // HACK: workaround for https://bugreports.qt.io/browse/QTBUG-83890
         PlasmaComponents3.ScrollBar.horizontal.policy: PlasmaComponents3.ScrollBar.AlwaysOff
