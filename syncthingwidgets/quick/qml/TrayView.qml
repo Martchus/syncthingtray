@@ -9,6 +9,7 @@ Pane {
     id: mainPane
     padding: 0
     anchors.fill: parent
+    font.pointSize: QuickUI.font.pointSize
     Material.theme: theming.Material.theme
     Material.primary: theming.Material.primary
     Material.accent: theming.Material.accent
@@ -73,6 +74,8 @@ Pane {
             TabBar {
                 id: tabBar
                 anchors.fill: parent
+                topPadding: 2
+                bottomPadding: 2
                 rightPadding: toolBar.width
                 position: TabBar.Footer
                 MainTabButton {

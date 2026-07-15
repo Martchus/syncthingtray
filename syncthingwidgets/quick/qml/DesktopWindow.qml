@@ -11,7 +11,7 @@ ApplicationWindow {
     width: 1200
     height: 700
     title: meta.title
-    font: theming.font
+    font.pointSize: QuickUI.font.pointSize
     flags: QuickUI.extendedClientArea ? (Qt.Window | Qt.ExpandedClientAreaHint | Qt.NoTitleBarBackgroundHint) : (Qt.Window)
     leftPadding: 0
     rightPadding: 0
