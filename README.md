@@ -212,7 +212,7 @@ devices. It also comes with a dashboard that looks similar to the official web-b
 
 The modern UI is still work-in-progress and is therefore only available if
 `SYNCTHINGTRAY_ENABLE_WIP_FEATURES=1` is set in the environment. Additionally, Syncthing Tray
-needs to be built with `-DQUICK_GUI=ON`.
+needs to be built with `-DQUICK_GUI=ON`. The modern UI requires Vulkan under GNU/Linux.
 
 In case you prefer the classic UI you can continue using it. It will not be deleted anytime soon.
 However, new UI features will mainly focus on the new UI now.
