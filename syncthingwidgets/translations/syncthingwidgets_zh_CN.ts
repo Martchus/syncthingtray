@@ -822,8 +822,8 @@
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="85"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="286"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="434"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="291"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="446"/>
         <source>Statistics</source>
         <translation type="unfinished"></translation>
     </message>
@@ -840,7 +840,7 @@
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="100"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="167"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="172"/>
         <source>Syncthing Tray</source>
         <translation type="unfinished"></translation>
     </message>
@@ -856,7 +856,7 @@
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="127"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="171"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="176"/>
         <source>&amp;Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -882,95 +882,105 @@
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="152"/>
+        <source>&amp;Statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="157"/>
         <source>&amp;Support Bundle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="156"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="161"/>
         <source>Restart</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="160"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="165"/>
         <source>Shutdown</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="176"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="181"/>
         <source>&amp;Wizard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="215"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="440"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="220"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="452"/>
         <source>Folders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="223"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="228"/>
         <source>Add folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="230"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="389"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="235"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="401"/>
         <source>Pause all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="237"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="396"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="242"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="408"/>
         <source>Resume all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="244"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="249"/>
         <source>Rescan all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="250"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="255"/>
         <source>Filter folders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="295"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="300"/>
         <source>Recent changes</source>
         <translation type="unfinished">最近的更改</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="302"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="307"/>
         <source>Show ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="309"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="314"/>
         <source>Show logs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="337"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="321"/>
+        <source>Show statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="349"/>
         <source>Global state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="345"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="357"/>
         <source>Local state</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="373"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="446"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="385"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="458"/>
         <source>Devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="382"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="394"/>
         <source>Add device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="403"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="415"/>
         <source>Filter devices</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1936,7 +1946,7 @@
 <context>
     <name>ExpandableItemDelegate</name>
     <message>
-        <location filename="../quick/qml/ExpandableItemDelegate.qml" line="81"/>
+        <location filename="../quick/qml/ExpandableItemDelegate.qml" line="83"/>
         <source>More actions</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2441,8 +2451,8 @@
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigDelegate.qml" line="141"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="622"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="684"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="621"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="683"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2492,8 +2502,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="629"/>
-        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="691"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="628"/>
+        <location filename="../quick/qml/ObjectConfigDelegate.qml" line="690"/>
         <source>Edit manually</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2581,12 +2591,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="334"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="335"/>
         <source>Unable to add %1 because specified index is invalid.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="342"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="343"/>
         <source>Unable to add %1 because specified key is invalid.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2630,23 +2640,28 @@
 <context>
     <name>PageWindow</name>
     <message>
-        <location filename="../quick/qml/PageWindow.qml" line="49"/>
+        <location filename="../quick/qml/PageWindow.qml" line="48"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/PageWindow.qml" line="83"/>
+        <location filename="../quick/qml/PageWindow.qml" line="82"/>
         <source>Back</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/PageWindow.qml" line="91"/>
+        <location filename="../quick/qml/PageWindow.qml" line="90"/>
         <source>More</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/PageWindow.qml" line="118"/>
+        <location filename="../quick/qml/PageWindow.qml" line="125"/>
         <source>Do you really want to close without applying changes?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/PageWindow.qml" line="149"/>
+        <source>Saving configuration …</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2914,337 +2929,337 @@
 <context>
     <name>QtGui::App</name>
     <message>
-        <location filename="../quick/app.cpp" line="161"/>
+        <location filename="../quick/app.cpp" line="163"/>
         <source>Checking for data to import …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="163"/>
+        <location filename="../quick/app.cpp" line="165"/>
         <source>Importing configuration …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="165"/>
+        <location filename="../quick/app.cpp" line="167"/>
         <source>Exporting configuration …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="167"/>
+        <location filename="../quick/app.cpp" line="169"/>
         <source>Checking locations to move home directory …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="169"/>
+        <location filename="../quick/app.cpp" line="171"/>
         <source>Moving home directory …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="171"/>
+        <location filename="../quick/app.cpp" line="173"/>
         <source>Cleaning home directory …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="173"/>
+        <location filename="../quick/app.cpp" line="175"/>
         <source>Saving support bundle …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="179"/>
+        <location filename="../quick/app.cpp" line="181"/>
         <source>Backend is starting …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="188"/>
+        <location filename="../quick/app.cpp" line="190"/>
         <source>Saving configuration …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="683"/>
+        <location filename="../quick/app.cpp" line="659"/>
         <source>Unable to minimize app.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="714"/>
+        <location filename="../quick/app.cpp" line="690"/>
         <source>Unable to save settings: </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="775"/>
+        <location filename="../quick/app.cpp" line="751"/>
         <source>App settings saved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="801"/>
+        <location filename="../quick/app.cpp" line="777"/>
         <source>No logfile present anyway</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="807"/>
+        <location filename="../quick/app.cpp" line="783"/>
         <source>Waiting for backend to terminate before clearing logs …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="816"/>
+        <location filename="../quick/app.cpp" line="792"/>
         <source>Persistent logging disabled and logfile removed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="818"/>
+        <location filename="../quick/app.cpp" line="794"/>
         <source>Unable to remove logfile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="850"/>
+        <location filename="../quick/app.cpp" line="826"/>
         <source>Another import/export still pending</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="890"/>
+        <location filename="../quick/app.cpp" line="866"/>
         <source>Settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="910"/>
+        <location filename="../quick/app.cpp" line="886"/>
         <source>Unable to extract archive: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="915"/>
+        <location filename="../quick/app.cpp" line="891"/>
         <source>Unable to create temp dir: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="919"/>
+        <location filename="../quick/app.cpp" line="895"/>
         <source>archiving is only supported on Android.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="943"/>
+        <location filename="../quick/app.cpp" line="919"/>
         <source>The Syncthing home directory under &quot;%1&quot; is empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="956"/>
+        <location filename="../quick/app.cpp" line="932"/>
         <source>No Syncthing configuration file found under &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1044"/>
+        <location filename="../quick/app.cpp" line="1020"/>
         <source>Triggered re-connect with Syncthing backend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1063"/>
+        <location filename="../quick/app.cpp" line="1039"/>
         <source>Unable to import settings: settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1070"/>
+        <location filename="../quick/app.cpp" line="1046"/>
         <source>Waiting for backend to terminate before importing settings …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1114"/>
+        <location filename="../quick/app.cpp" line="1090"/>
         <source>Imported app config from &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1127"/>
+        <location filename="../quick/app.cpp" line="1103"/>
         <source>Imported Syncthing config and database from &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1145"/>
+        <location filename="../quick/app.cpp" line="1121"/>
         <source>Unable to find folders/devices in current Syncthing config.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1161"/>
+        <location filename="../quick/app.cpp" line="1137"/>
         <source>Merging %1 folders and %2 devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1163"/>
+        <location filename="../quick/app.cpp" line="1139"/>
         <source>Unable to import folders/devices.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1172"/>
+        <location filename="../quick/app.cpp" line="1148"/>
         <source>Unable to remove temp dir: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1178"/>
+        <location filename="../quick/app.cpp" line="1154"/>
         <source>Nothing has been imported.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1188"/>
+        <location filename="../quick/app.cpp" line="1164"/>
         <source>Unable to import settings: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1233"/>
+        <location filename="../quick/app.cpp" line="1209"/>
         <source>Waiting for backend to terminate before exporting settings …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1249"/>
+        <location filename="../quick/app.cpp" line="1225"/>
         <source>settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1255"/>
+        <location filename="../quick/app.cpp" line="1231"/>
         <source>no destination or file or directory specified/configured.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1267"/>
+        <location filename="../quick/app.cpp" line="1243"/>
         <source>Settings have been archived to &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1269"/>
+        <location filename="../quick/app.cpp" line="1245"/>
         <source>Archiving is only supported on Android.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1275"/>
+        <location filename="../quick/app.cpp" line="1251"/>
         <source>unable to create export directory under &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1288"/>
+        <location filename="../quick/app.cpp" line="1264"/>
         <source>Settings have been exported to &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1295"/>
+        <location filename="../quick/app.cpp" line="1271"/>
         <source>Unable to export settings: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1368"/>
+        <location filename="../quick/app.cpp" line="1333"/>
         <source>Default directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1384"/>
+        <location filename="../quick/app.cpp" line="1349"/>
         <source>External storage %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1393"/>
+        <location filename="../quick/app.cpp" line="1358"/>
         <source>Current home directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1423"/>
+        <location filename="../quick/app.cpp" line="1388"/>
         <source>Unable to move Syncthing home: settings directory was not located.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1429"/>
+        <location filename="../quick/app.cpp" line="1394"/>
         <source>Waiting for backend to terminate before moving home …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1452"/>
+        <location filename="../quick/app.cpp" line="1417"/>
         <source>Home directory stays the same.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1463"/>
+        <location filename="../quick/app.cpp" line="1428"/>
         <source>Cleaned up new home directory &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1469"/>
+        <location filename="../quick/app.cpp" line="1434"/>
         <source>Copied data from previous home directory &quot;%1&quot; to new one.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1472"/>
+        <location filename="../quick/app.cpp" line="1437"/>
         <source>Cleaned up previous home directory.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1475"/>
+        <location filename="../quick/app.cpp" line="1440"/>
         <source>Configured &quot;%1&quot; as new/empty Syncthing home.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1477"/>
+        <location filename="../quick/app.cpp" line="1442"/>
         <source>Configured &quot;%1&quot; as Syncthing home.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1481"/>
+        <location filename="../quick/app.cpp" line="1446"/>
         <source>Unable to move home directory: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1519"/>
+        <location filename="../quick/app.cpp" line="1484"/>
         <source>Debugging needs to be enabled under advanced GUI settings first.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1526"/>
+        <location filename="../quick/app.cpp" line="1491"/>
         <source>No destination or file or directory specified/configured.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1535"/>
+        <location filename="../quick/app.cpp" line="1500"/>
         <source>Unable to open output file under &quot;%1&quot;: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1553"/>
+        <location filename="../quick/app.cpp" line="1518"/>
         <source>Unable to write bundle: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1556"/>
+        <location filename="../quick/app.cpp" line="1521"/>
         <source>Unable to download bundle: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1559"/>
+        <location filename="../quick/app.cpp" line="1524"/>
         <source>Support bundle saved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1588"/>
+        <location filename="../quick/app.cpp" line="1553"/>
         <source>Removed old database directory.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1590"/>
+        <location filename="../quick/app.cpp" line="1555"/>
         <source>Unable to remove old database directory.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1605"/>
+        <location filename="../quick/app.cpp" line="1570"/>
         <source>Unable to remove all support bundles.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1609"/>
+        <location filename="../quick/app.cpp" line="1574"/>
         <source>Support bundles have been removed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1625"/>
+        <location filename="../quick/app.cpp" line="1590"/>
         <source>Unable to remove leftovers from import under &quot;%1&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1630"/>
+        <location filename="../quick/app.cpp" line="1595"/>
         <source>Removed leftovers from import.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1635"/>
+        <location filename="../quick/app.cpp" line="1600"/>
         <source>There was nothing to clean up.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5154,7 +5169,7 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>QtGui::QuickUI</name>
     <message>
-        <location filename="../quick/quickui.cpp" line="484"/>
+        <location filename="../quick/quickui.cpp" line="489"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
@@ -6626,47 +6641,47 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>TrayView</name>
     <message>
-        <location filename="../quick/qml/TrayView.qml" line="80"/>
+        <location filename="../quick/qml/TrayView.qml" line="83"/>
         <source>Folders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/TrayView.qml" line="87"/>
+        <location filename="../quick/qml/TrayView.qml" line="90"/>
         <source>Devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/TrayView.qml" line="93"/>
+        <location filename="../quick/qml/TrayView.qml" line="96"/>
         <source>Recent changes</source>
         <translation type="unfinished">最近的更改</translation>
     </message>
     <message>
-        <location filename="../quick/qml/TrayView.qml" line="105"/>
+        <location filename="../quick/qml/TrayView.qml" line="108"/>
         <source>Add folder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/TrayView.qml" line="111"/>
+        <location filename="../quick/qml/TrayView.qml" line="114"/>
         <source>Add device</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/TrayView.qml" line="116"/>
+        <location filename="../quick/qml/TrayView.qml" line="119"/>
         <source>Rescan all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/TrayView.qml" line="121"/>
+        <location filename="../quick/qml/TrayView.qml" line="124"/>
         <source>Show ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/TrayView.qml" line="126"/>
+        <location filename="../quick/qml/TrayView.qml" line="129"/>
         <source>Show logs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/TrayView.qml" line="131"/>
+        <location filename="../quick/qml/TrayView.qml" line="134"/>
         <source>Filter</source>
         <translation type="unfinished"></translation>
     </message>
