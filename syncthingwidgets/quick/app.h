@@ -31,7 +31,6 @@ class SYNCTHINGWIDGETS_EXPORT App : public AppBase {
     Q_OBJECT
     Q_PROPERTY(QJsonObject settings READ settings WRITE setSettings NOTIFY settingsChanged)
     Q_PROPERTY(bool hasInternalErrors READ hasInternalErrors NOTIFY hasInternalErrorsChanged)
-    Q_PROPERTY(QVariantMap statistics READ statistics)
     Q_PROPERTY(bool syncthingStarting READ isSyncthingStarting NOTIFY syncthingStartingChanged)
     Q_PROPERTY(bool syncthingRunning READ isSyncthingRunning NOTIFY syncthingRunningChanged)
     Q_PROPERTY(QUrl syncthingGuiUrl READ syncthingGuiUrl NOTIFY syncthingGuiUrlChanged)
@@ -128,7 +127,6 @@ public:
     const QString &closePreference();
     qint64 databaseSize(const QString &path, const QString &extension) const;
     QVariant formattedDatabaseSize(const QString &path, const QString &extension) const;
-    QVariantMap statistics() const;
     void statistics(QVariantMap &res) const;
 
     // helper functions
@@ -158,7 +156,6 @@ public:
     Q_INVOKABLE bool moveSyncthingHome(QString newHomeDir, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool saveSupportBundle(QUrl url, const QJSValue &callback = QJSValue());
     Q_INVOKABLE void setCurrentControls(bool visible, int tabIndex = -1);
-    Q_INVOKABLE bool loadStatistics(const QJSValue &callback);
     Q_INVOKABLE bool minimize();
     Q_INVOKABLE void quit();
     Q_INVOKABLE bool requestStoragePermission();

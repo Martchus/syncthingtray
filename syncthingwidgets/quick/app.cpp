@@ -104,6 +104,8 @@ App::App(bool insecure, QQmlEngine *engine, QObject *parent)
     m_models.setBrightColors(m_ui.isDarkmodeEnabled());
     connect(&m_ui, &QuickUI::darkmodeEnabledChanged, &m_models, &SyncthingModels::setBrightColors);
 
+    m_models.statisticsFunction() = std::bind(&App::statistics, this, std::placeholders::_1);
+
     auto &iconManager = initIconManager();
     connect(&iconManager, &Data::IconManager::statusIconsChanged, m_data.statusInfo(), &StatusInfo::statusInfoChanged);
 
@@ -430,32 +432,6 @@ void App::setCurrentControls(bool visible, int tabIndex)
     CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DeviceStatistics, visible && tabIndex == 2);
     CppUtilities::modFlagEnum(flags, Data::SyncthingConnection::PollingFlags::DiskEvents, visible && tabIndex == 3);
     m_data.connection()->setPollingFlags(flags);
-}
-
-bool App::loadStatistics(const QJSValue &callback)
-{
-    if (!callback.isCallable()) {
-        return false;
-    }
-    auto query = m_data.connection()->requestJsonData(
-        QByteArrayLiteral("GET"), QStringLiteral("svc/report"), QUrlQuery(), QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
-            auto report = doc.object().toVariantMap();
-            report[QStringLiteral("uptime")] = QString::fromStdString(CppUtilities::TimeSpan::fromSeconds(report[QStringLiteral("uptime")].toDouble())
-                    .toString(CppUtilities::TimeSpanOutputFormat::WithMeasures));
-            report[QStringLiteral("memoryUsage")] = QString::fromStdString(
-                CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report.take(QStringLiteral("memoryUsageMiB")).toDouble() * 1024 * 1024)));
-            report[QStringLiteral("processRSS")] = QString::fromStdString(
-                CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report.take(QStringLiteral("processRSSMiB")).toDouble() * 1024 * 1024)));
-            report[QStringLiteral("memorySize")] = QString::fromStdString(
-                CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report[QStringLiteral("memorySize")].toDouble() * 1024 * 1024)));
-            report[QStringLiteral("totSize")] = QString::fromStdString(
-                CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report.take(QStringLiteral("totMiB")).toDouble() * 1024 * 1024)));
-            statistics(report);
-            callback.call(QJSValueList({ m_engine->toScriptValue(report), QJSValue(std::move(error)) }));
-        });
-    connect(this, &QObject::destroyed, query.reply, &QNetworkReply::deleteLater);
-    connect(this, &QObject::destroyed, [c = query.connection] () mutable { disconnect(c); });
-    return true;
 }
 
 void App::invalidateStatus()
@@ -1327,19 +1303,8 @@ QVariant App::formattedDatabaseSize(const QString &path, const QString &extensio
     return size > 0 ? QVariant(QString::fromStdString(CppUtilities::dataSizeToString(static_cast<std::uint64_t>(size)))) : QVariant();
 }
 
-QVariantMap App::statistics() const
-{
-    auto stats = QVariantMap();
-    statistics(stats);
-    return stats;
-}
-
 void App::statistics(QVariantMap &res) const
 {
-#ifdef Q_OS_ANDROID
-    res[QStringLiteral("extFilesDir")] = m_models.externalFilesDir();
-    res[QStringLiteral("extStoragePaths")] = m_models.externalStoragePaths();
-#endif
     if (!m_connectToLaunched) {
         return;
     }

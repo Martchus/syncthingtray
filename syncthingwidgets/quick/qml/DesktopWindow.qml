@@ -149,6 +149,11 @@ ApplicationWindow {
                         shortcut: "Ctrl+L"
                     }
                     Action {
+                        text: qsTr("&Statistics")
+                        onTriggered: QuickUI.showStats()
+                        shortcut: "Ctrl+L"
+                    }
+                    Action {
                         text: qsTr("&Support Bundle")
                         enabled: false
                     }
@@ -309,6 +314,13 @@ ApplicationWindow {
                                 text: qsTr("Show logs")
                                 icon.source: QuickUI.faUrlBase + "terminal"
                                 onClicked: TrayWidget.showLog()
+                                flat: true
+                            }
+                            IconOnlyButton {
+                                Layout.alignment: Qt.AlignVCenter
+                                text: qsTr("Show statistics")
+                                icon.source: QuickUI.faUrlBase + "area-chart"
+                                onClicked: QuickUI.showStats()
                                 flat: true
                             }
                             Item {

@@ -39,7 +39,7 @@ ObjectConfigPage {
     ]
     function loadStatistics() {
         page.isLoading = true;
-        App.loadStatistics((res, error) => {
+        SyncthingModels.loadStatistics((res, error) => {
             // delete unwanted or empty statistics
             delete res.version;
             Object.entries(res).forEach((entry) => {

@@ -28,6 +28,8 @@
 #include <QJSValue>
 #include <QtQmlIntegration/qqmlintegration.h>
 
+#include <functional>
+
 QT_FORWARD_DECLARE_CLASS(QJSEngine)
 #endif
 
@@ -101,6 +103,11 @@ public:
     {
         m_engine = engine;
     }
+
+    std::function<void(QVariantMap &res)> &statisticsFunction()
+    {
+        return m_statisticsFunction;
+    }
 #endif
 
     // functions used by different UIs
@@ -132,6 +139,7 @@ public:
     Q_INVOKABLE bool invokeDirAction(const QString &dirId, const QString &action);
     Q_INVOKABLE bool requestFromSyncthing(
         const QString &verb, const QString &path, const QVariantMap &parameters, const QJSValue &callback = QJSValue());
+    Q_INVOKABLE bool loadStatistics(const QJSValue &callback);
     Q_INVOKABLE QString formatTraffic(quint64 total, double rate) const;
     Q_INVOKABLE bool hasDevice(const QString &id);
     Q_INVOKABLE bool hasDir(const QString &id);
@@ -159,6 +167,7 @@ private:
     Data::SyncthingConnection::QueryResult m_pendingConfigChange;
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
     QQmlEngine *m_engine;
+    std::function<void(QVariantMap &res)> m_statisticsFunction;
 #endif
 };
 

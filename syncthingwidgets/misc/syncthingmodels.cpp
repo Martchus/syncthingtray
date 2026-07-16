@@ -379,6 +379,38 @@ bool SyncthingModels::requestFromSyncthing(const QString &verb, const QString &p
     return true;
 }
 
+bool SyncthingModels::loadStatistics(const QJSValue &callback)
+{
+    if (!callback.isCallable()) {
+        return false;
+    }
+    auto query = m_connection.requestJsonData(
+        QByteArrayLiteral("GET"), QStringLiteral("svc/report"), QUrlQuery(), QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
+            auto report = doc.object().toVariantMap();
+            report[QStringLiteral("uptime")] = QString::fromStdString(CppUtilities::TimeSpan::fromSeconds(report[QStringLiteral("uptime")].toDouble())
+                                                                          .toString(CppUtilities::TimeSpanOutputFormat::WithMeasures));
+            report[QStringLiteral("memoryUsage")] = QString::fromStdString(
+                CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report.take(QStringLiteral("memoryUsageMiB")).toDouble() * 1024 * 1024)));
+            report[QStringLiteral("processRSS")] = QString::fromStdString(
+                CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report.take(QStringLiteral("processRSSMiB")).toDouble() * 1024 * 1024)));
+            report[QStringLiteral("memorySize")] = QString::fromStdString(
+                CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report[QStringLiteral("memorySize")].toDouble() * 1024 * 1024)));
+            report[QStringLiteral("totSize")] = QString::fromStdString(
+                CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report.take(QStringLiteral("totMiB")).toDouble() * 1024 * 1024)));
+#ifdef Q_OS_ANDROID
+            report[QStringLiteral("extFilesDir")] = externalFilesDir();
+            report[QStringLiteral("extStoragePaths")] = externalStoragePaths();
+#endif
+            if (m_statisticsFunction) {
+                m_statisticsFunction(report);
+            }
+            callback.call(QJSValueList({ m_engine->toScriptValue(report), QJSValue(std::move(error)) }));
+        });
+    connect(this, &QObject::destroyed, query.reply, &QNetworkReply::deleteLater);
+    connect(this, &QObject::destroyed, [c = query.connection] () mutable { disconnect(c); });
+    return true;
+}
+
 QString SyncthingModels::formatTraffic(quint64 total, double rate) const
 {
     return Data::trafficString(total, rate);

@@ -54,7 +54,7 @@ StackView {
                     iconName: "exclamation-circle"
                 }
                 ListElement {
-                    callback: () => stackView.push("StatisticsPage.qml", {stackView: stackView}, StackView.PushTransition)
+                    callback: () => QuickUI.showStats(stackView)
                     label: qsTr("Statistics")
                     category: qsTr("Diagnostics")
                     iconName: "area-chart"

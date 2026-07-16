@@ -516,6 +516,11 @@ bool QuickUI::showRecentChanges(QQuickItem *stackView)
     return res;
 }
 
+bool QuickUI::showStats(QQuickItem *stackView)
+{
+    return showPage("Main", "StatisticsPage", { }, stackView);
+}
+
 bool QuickUI::browseFiles(const QString &dirId, const QString &dirName, QQuickItem *stackView)
 {
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
