@@ -681,6 +681,9 @@ bool QuickUI::eventFilter(QObject *object, QEvent *event)
 #endif
         }
         break;
+    case QEvent::LanguageChange:
+        m_engine->retranslate();
+        break;
     default:;
     }
     return false;
