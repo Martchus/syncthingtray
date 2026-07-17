@@ -194,6 +194,7 @@ public:
         QQuickItem *stackView = nullptr, bool advanced = false);
     Q_INVOKABLE bool addDev(const QString &devId, const QString &devName, QQuickItem *stackView = nullptr, bool advanced = false);
     Q_INVOKABLE bool showNeededItems(const QString &dirId, const QString &dirLabel, QQuickItem *stackView = nullptr);
+    Q_INVOKABLE bool showLocallyChangedItems(const QString &dirId, const QString &dirLabel, QQuickItem *stackView = nullptr);
     Q_INVOKABLE bool showOutOfSyncDirs(
         const QString &devId, const QString &devLabel, int devIndex, QObject *devFilterModel, QQuickItem *stackView = nullptr);
     Q_INVOKABLE bool showDirErrors(const QString &dirId, const QString &dirName, QQuickItem *stackView = nullptr);

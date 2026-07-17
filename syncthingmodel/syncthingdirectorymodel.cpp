@@ -43,6 +43,7 @@ QHash<int, QByteArray> SyncthingDirectoryModel::roleNames() const
         { DirectoryDetailIcon, "detailIcon" },
         { DirectoryDetailTooltip, "detailTooltip" },
         { DirectoryNeededItemsCount, "neededItemsCount" },
+        { DirectoryLocallyChangedItemsCount, "locallyChangedItemsCount" },
         { DirectoryOverrideRevertAction, "overrideRevertAction" },
         { DirectoryOverrideRevertActionLabel, "overrideRevertActionLabel" },
         { DirectoryStorageIcon, "storageIcon" },
@@ -388,6 +389,8 @@ QVariant SyncthingDirectoryModel::data(const QModelIndex &index, int role) const
         return dir.pullErrorCount;
     case DirectoryNeededItemsCount:
         return dir.neededStats.total;
+    case DirectoryLocallyChangedItemsCount:
+        return dir.receiveOnlyStats.total;
     case DirectoryOverrideRevertAction:
         switch (dir.dirType) {
         case SyncthingDirType::SendOnly:
@@ -459,7 +462,7 @@ void SyncthingDirectoryModel::dirStatusChanged(const SyncthingDir &dir, int inde
     const QModelIndex modelIndex1(this->index(index, 0, QModelIndex()));
     static const QVector<int> modelRoles1({ Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole, DirectoryPaused, DirectoryStatus,
         DirectoryStatusString, DirectoryStatusColor, DirectoryId, DirectoryPath, DirectoryPullErrorCount, DirectoryNeededItemsCount,
-        DirectoryOverrideRevertAction, DirectoryOverrideRevertActionLabel, DirectoryStorageIcon, DirectoryStorageTooltip, Group });
+        DirectoryLocallyChangedItemsCount, DirectoryOverrideRevertAction, DirectoryOverrideRevertActionLabel, DirectoryStorageIcon, DirectoryStorageTooltip, Group });
     emit dataChanged(modelIndex1, modelIndex1, modelRoles1);
     const QModelIndex modelIndex2(this->index(index, 1, QModelIndex()));
     static const QVector<int> modelRoles2({ Qt::DisplayRole, Qt::EditRole, Qt::ForegroundRole });

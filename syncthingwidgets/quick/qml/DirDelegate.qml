@@ -82,6 +82,12 @@ ExpandableDelegate {
                 onTriggered: QuickUI.showNeededItems(modelData.dirId, modelData.name, mainView.stackView)
             },
             Action {
+                text: qsTr("Locally changed items")
+                icon.source: QuickUI.faUrlBase + "exchange"
+                enabled: !modelData.paused && (modelData.locallyChangedItemsCount > 0)
+                onTriggered: QuickUI.showLocallyChangedItems(modelData.dirId, modelData.name, mainView.stackView)
+            },
+            Action {
                 text: modelData.overrideRevertActionLabel
                 icon.source: QuickUI.faUrlBase + "undo"
                 enabled: modelData.overrideRevertAction.length > 0

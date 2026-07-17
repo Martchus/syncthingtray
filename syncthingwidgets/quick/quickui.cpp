@@ -466,6 +466,11 @@ bool QuickUI::showNeededItems(const QString &dirId, const QString &dirLabel, QQu
     return showPage("Main", "NeededPage", { { QStringLiteral("dirId"), dirId }, { QStringLiteral("dirLabel"), dirLabel } }, stackView);
 }
 
+bool QtGui::QuickUI::showLocallyChangedItems(const QString &dirId, const QString &dirLabel, QQuickItem *stackView)
+{
+    return showPage("Main", "NeededPage", { { QStringLiteral("dirId"), dirId }, { QStringLiteral("dirLabel"), dirLabel }, { QStringLiteral("localChanged"), true } }, stackView);
+}
+
 bool QuickUI::showOutOfSyncDirs(const QString &devId, const QString &devLabel, int devIndex, QObject *devFilterModel, QQuickItem *stackView)
 {
     return showPage("Main", "OutOfSyncDirs",
@@ -680,6 +685,7 @@ bool QuickUI::eventFilter(QObject *object, QEvent *event)
     }
     return false;
 }
+
 #endif
 
 } // namespace QtGui

@@ -32,6 +32,7 @@ public:
         DirectoryOverrideRevertActionLabel,
         DirectoryStorageIcon,
         DirectoryStorageTooltip,
+        DirectoryLocallyChangedItemsCount,
     };
 
     explicit SyncthingDirectoryModel(SyncthingConnection &connection, QObject *parent = nullptr);
