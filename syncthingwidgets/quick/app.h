@@ -162,7 +162,6 @@ public:
     Q_INVOKABLE bool requestNotificationPermission();
     Q_INVOKABLE bool showLog(QObject *textArea);
     Q_INVOKABLE void clearLog();
-    Q_INVOKABLE bool loadDirErrors(const QString &dirId, QObject *view);
     Q_INVOKABLE void terminateSyncthing();
     Q_INVOKABLE void restartSyncthing();
     Q_INVOKABLE void shutdownSyncthing();

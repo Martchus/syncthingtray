@@ -126,6 +126,7 @@ public:
     Q_INVOKABLE bool copyText(const QString &text);
     Q_INVOKABLE bool copyPath(const QString &dirId, const QString &relativePath);
     Q_INVOKABLE QString getClipboardText() const;
+    Q_INVOKABLE bool loadDirErrors(const QString &dirId, QObject *view);
     Q_INVOKABLE bool loadIgnorePatterns(const QString &dirId, QObject *textArea);
     Q_INVOKABLE bool saveIgnorePatterns(const QString &dirId, QObject *textArea);
     Q_INVOKABLE bool openIgnorePatterns(const QString &dirId);
