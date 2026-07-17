@@ -1,14 +1,24 @@
 import QtQuick
+import QtQuick.Controls.Material
 
 import Main
 
 AdvancedConfigPage {
+    id: dirConfigPage
     title: qsTr("Advanced config of folder \"%1\"").arg(dirName)
     entryName: qsTr("folder")
     entriesKey: "folders"
     isEntry: (folder) => folder.id === dirId
     configCategory: "config-option-folder"
     componentName: "AdvancedDirConfigPage.qml"
+    extraActions: [
+        Action {
+            text: qsTr("Ignore patterns")
+            icon.source: QuickUI.faUrlBase + "filter"
+            enabled: dirConfigPage.configObjectExists
+            onTriggered: QuickUI.editIgnorePatterns(dirConfigPage.dirId, dirConfigPage.dirName, dirConfigPage.stackView)
+        }
+    ]
     required property string dirName
     required property string dirId
     function makeNewConfig() {
