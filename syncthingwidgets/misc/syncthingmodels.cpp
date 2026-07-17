@@ -220,23 +220,22 @@ QString SyncthingModels::getClipboardText() const
 
 bool SyncthingModels::loadDirErrors(const QString &dirId, QObject *view)
 {
-    auto connection
-        = connect(&m_connection, &Data::SyncthingConnection::dirStatusChanged, view, [this, dirId, view](const Data::SyncthingDir &dir) {
-              if (dir.id != dirId) {
-                  return;
-              }
-              auto array = m_engine->newArray(static_cast<quint32>(dir.itemErrors.size()));
-              auto index = quint32();
-              for (const auto &itemError : dir.itemErrors) {
-                  auto error = m_engine->newObject();
-                  error.setProperty(QStringLiteral("path"), itemError.path);
-                  error.setProperty(QStringLiteral("message"), itemError.message);
-                  array.setProperty(index++, error);
-              }
-              view->setProperty("model", array.toVariant());
-              view->setProperty("enabled", true);
-          });
-    connect(this, &QObject::destroyed, [connection] () mutable { disconnect(connection); });
+    auto connection = connect(&m_connection, &Data::SyncthingConnection::dirStatusChanged, view, [this, dirId, view](const Data::SyncthingDir &dir) {
+        if (dir.id != dirId) {
+            return;
+        }
+        auto array = m_engine->newArray(static_cast<quint32>(dir.itemErrors.size()));
+        auto index = quint32();
+        for (const auto &itemError : dir.itemErrors) {
+            auto error = m_engine->newObject();
+            error.setProperty(QStringLiteral("path"), itemError.path);
+            error.setProperty(QStringLiteral("message"), itemError.message);
+            array.setProperty(index++, error);
+        }
+        view->setProperty("model", array.toVariant());
+        view->setProperty("enabled", true);
+    });
+    connect(this, &QObject::destroyed, [connection]() mutable { disconnect(connection); });
     m_connection.requestDirPullErrors(dirId);
     return true;
 }
@@ -411,7 +410,7 @@ bool SyncthingModels::loadStatistics(const QJSValue &callback)
         QByteArrayLiteral("GET"), QStringLiteral("svc/report"), QUrlQuery(), QByteArray(), [this, callback](QJsonDocument &&doc, QString &&error) {
             auto report = doc.object().toVariantMap();
             report[QStringLiteral("uptime")] = QString::fromStdString(CppUtilities::TimeSpan::fromSeconds(report[QStringLiteral("uptime")].toDouble())
-                                                                          .toString(CppUtilities::TimeSpanOutputFormat::WithMeasures));
+                    .toString(CppUtilities::TimeSpanOutputFormat::WithMeasures));
             report[QStringLiteral("memoryUsage")] = QString::fromStdString(
                 CppUtilities::dataSizeToString(static_cast<std::uint64_t>(report.take(QStringLiteral("memoryUsageMiB")).toDouble() * 1024 * 1024)));
             report[QStringLiteral("processRSS")] = QString::fromStdString(
@@ -430,7 +429,7 @@ bool SyncthingModels::loadStatistics(const QJSValue &callback)
             callback.call(QJSValueList({ m_engine->toScriptValue(report), QJSValue(std::move(error)) }));
         });
     connect(this, &QObject::destroyed, query.reply, &QNetworkReply::deleteLater);
-    connect(this, &QObject::destroyed, [c = query.connection] () mutable { disconnect(c); });
+    connect(this, &QObject::destroyed, [c = query.connection]() mutable { disconnect(c); });
     return true;
 }
 

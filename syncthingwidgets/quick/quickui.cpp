@@ -468,7 +468,8 @@ bool QuickUI::showNeededItems(const QString &dirId, const QString &dirLabel, QQu
 
 bool QtGui::QuickUI::showLocallyChangedItems(const QString &dirId, const QString &dirLabel, QQuickItem *stackView)
 {
-    return showPage("Main", "NeededPage", { { QStringLiteral("dirId"), dirId }, { QStringLiteral("dirLabel"), dirLabel }, { QStringLiteral("localChanged"), true } }, stackView);
+    return showPage("Main", "NeededPage",
+        { { QStringLiteral("dirId"), dirId }, { QStringLiteral("dirLabel"), dirLabel }, { QStringLiteral("localChanged"), true } }, stackView);
 }
 
 bool QuickUI::showOutOfSyncDirs(const QString &devId, const QString &devLabel, int devIndex, QObject *devFilterModel, QQuickItem *stackView)
@@ -523,7 +524,7 @@ bool QuickUI::showRecentChanges(QQuickItem *stackView)
 
 bool QuickUI::showStats(QQuickItem *stackView)
 {
-    return showPage("Main", "StatisticsPage", { }, stackView);
+    return showPage("Main", "StatisticsPage", {}, stackView);
 }
 
 bool QuickUI::browseFiles(const QString &dirId, const QString &dirName, QQuickItem *stackView)

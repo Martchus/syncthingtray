@@ -460,9 +460,10 @@ void SyncthingDirectoryModel::dirStatusChanged(const SyncthingDir &dir, int inde
 
     // update top-level indices
     const QModelIndex modelIndex1(this->index(index, 0, QModelIndex()));
-    static const QVector<int> modelRoles1({ Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole, DirectoryPaused, DirectoryStatus,
-        DirectoryStatusString, DirectoryStatusColor, DirectoryId, DirectoryPath, DirectoryPullErrorCount, DirectoryNeededItemsCount,
-        DirectoryLocallyChangedItemsCount, DirectoryOverrideRevertAction, DirectoryOverrideRevertActionLabel, DirectoryStorageIcon, DirectoryStorageTooltip, Group });
+    static const QVector<int> modelRoles1(
+        { Qt::DisplayRole, Qt::EditRole, Qt::DecorationRole, DirectoryPaused, DirectoryStatus, DirectoryStatusString, DirectoryStatusColor,
+            DirectoryId, DirectoryPath, DirectoryPullErrorCount, DirectoryNeededItemsCount, DirectoryLocallyChangedItemsCount,
+            DirectoryOverrideRevertAction, DirectoryOverrideRevertActionLabel, DirectoryStorageIcon, DirectoryStorageTooltip, Group });
     emit dataChanged(modelIndex1, modelIndex1, modelRoles1);
     const QModelIndex modelIndex2(this->index(index, 1, QModelIndex()));
     static const QVector<int> modelRoles2({ Qt::DisplayRole, Qt::EditRole, Qt::ForegroundRole });
