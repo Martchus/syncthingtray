@@ -56,18 +56,7 @@ Page {
             required property var modelData
         }
         section.property: "state"
-        section.delegate: Pane {
-            id: sectionDelegate
-            width: listView.width
-            contentItem: RowLayout {
-                Label {
-                    Layout.fillWidth: true
-                    text: sectionDelegate.section
-                    elide: Text.ElideRight
-                    font.weight: Font.Medium
-                }
-            }
-            required property string section
+        section.delegate: DynamicSectionHeader {
         }
         onAtYEndChanged: atYEnd && neededPage.loadItems()
         footer: LoadingPane {
