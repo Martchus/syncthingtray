@@ -53,7 +53,7 @@ ExpandableDelegate {
                 id: openAction
                 text: qsTr("Open")
                 icon.source: QuickUI.faUrlBase + "folder"
-                onTriggered: SyncthingModels.openPath(modelData.path)
+                onTriggered: SyncthingModels.openPath(modelData.dirId, "")
             }
         ]
         extraActions: [

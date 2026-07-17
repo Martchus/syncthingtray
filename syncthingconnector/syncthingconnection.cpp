@@ -909,7 +909,7 @@ QString SyncthingConnection::fullPath(const QString &dirId, const QString &relat
 {
     auto row = int();
     auto dirInfo = findDirInfo(dirId, row);
-    return dirInfo ? (dirInfo->path % QChar('/') % relativePath) : QString();
+    return dirInfo ? substituteTilde(relativePath.isEmpty() ? dirInfo->path : dirInfo->path % QChar('/') % relativePath) : QString();
 }
 
 /*!
