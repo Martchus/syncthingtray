@@ -8,8 +8,8 @@ import Tray
 ApplicationWindow {
     id: appWindow
     visible: true
-    width: 1200
-    height: 700
+    width: 1250
+    height: 575
     title: meta.title
     font.pointSize: QuickUI.font.pointSize
     flags: QuickUI.extendedClientArea ? (Qt.Window | Qt.ExpandedClientAreaHint | Qt.NoTitleBarBackgroundHint) : (Qt.Window)
