@@ -2,6 +2,6 @@ import QtQuick
 
 Rectangle {
     id: background
-    color: background.pageWindow.palette.base
+    color: background.pageWindow.theming.baseColor(background.pageWindow.palette)
     required property PageWindow pageWindow
 }

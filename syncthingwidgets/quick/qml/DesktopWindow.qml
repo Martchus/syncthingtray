@@ -196,7 +196,7 @@ ApplicationWindow {
         padding: 0
         topPadding: 10
         background: Rectangle {
-            color: appWindow.palette.base
+            color: theming.baseColor(appWindow.palette)
         }
         Keys.onEscapePressed: appWindow.close()
         ColumnLayout {

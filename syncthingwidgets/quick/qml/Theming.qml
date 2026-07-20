@@ -14,4 +14,8 @@ QtObject {
 
     readonly property var font: QuickUI.font
     required property var currentPage
+
+    function baseColor(palette: Palette): color {
+        return Utils.winUI && QuickUI.darkmodeEnabled ? Qt.lighter(palette.window, 1.25) : palette.base;
+    }
 }

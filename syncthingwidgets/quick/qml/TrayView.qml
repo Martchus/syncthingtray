@@ -14,7 +14,7 @@ Pane {
     Material.primary: theming.Material.primary
     Material.accent: theming.Material.accent
     background: Rectangle {
-        color: mainPane.palette.base
+        color: theming.baseColor(mainPane.palette)
     }
     ColumnLayout {
         anchors.fill: parent
