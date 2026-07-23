@@ -205,14 +205,24 @@ located under `~/.config/Martchus/Syncthing Tray` on GNU/Linux and
 itself are also located within this directory when Syncthing is launched via the mobile UI.
 
 ### Modern UI
-It is possible to enable a more modern UI for the tray menu in the appearance settings. This UI is
-a result of porting Syncthing Tray to Android and brings back the modern design and many features
-of the mobile UI to Syncthing Tray on the desktop. For instance, it allows editing folders and
-devices. It also comes with a dashboard that looks similar to the official web-based UI.
+It is possible to enable a more modern UI. This UI is a result of porting Syncthing Tray to
+Android and brings back the modern design and many features of the mobile UI to Syncthing Tray
+on the desktop. For instance, it allows editing folders and devices. It also comes with a
+dashboard that looks similar to the official web-based UI.
 
 The modern UI is still work-in-progress and is therefore only available if
 `SYNCTHINGTRAY_ENABLE_WIP_FEATURES=1` is set in the environment. Additionally, Syncthing Tray
-needs to be built with `-DQUICK_GUI=ON`. The modern UI requires Vulkan under GNU/Linux.
+needs to be built with `-DQUICK_GUI=ON` and Qt 6.10 or newer is required. The modern UI requires
+Vulkan under GNU/Linux.
+
+With these conditions met, you can simply enable the modern UI under the appearance settings.
+The change requires a restart to take effect. In the settings for showing the web-based UI of
+Syncthing you can also select showing the UI provided by Syncthing Tray instead.
+
+Changing the [style](https://doc.qt.io/qt-6/qtquickcontrols-styles.html) of the modern UI via
+the environment variable `QT_QUICK_CONTROLS_STYLE` or the CLI option `--qqc2-style` only works
+if Syncthing Tray was built with `-DQUICK_GUI_CONTROLS_STYLE=dynamic` as it is done by my
+GNU/Linux packaging. Other builds don't support this to reduce the size of the executable.
 
 In case you prefer the classic UI you can continue using it. It will not be deleted anytime soon.
 However, new UI features will mainly focus on the new UI now.
