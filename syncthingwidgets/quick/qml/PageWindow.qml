@@ -169,6 +169,11 @@ ApplicationWindow {
         sequences: ["Forward", "Return", "Right"]
         onActivated: stackView.currentItem?.listView?.currentItem?.click()
     }
+    MouseArea {
+        anchors.fill: parent
+        acceptedButtons: Qt.BackButton
+        onClicked: pageWindow.pop()
+    }
 
     required property Page page
     property bool forceClose: false
