@@ -263,7 +263,7 @@ Item {
 
         function test_addingDeviceFromStartPage() {
             pageStack.showPage(0);
-            pageStack.addDevice();
+            pageStack.addDev();
 
             const addDevicePage = pageStack.currentPage;
             compare(addDevicePage.title, "Add new device", "page for adding new device shown");
