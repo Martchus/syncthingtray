@@ -37,54 +37,13 @@ public Q_SLOTS:
 
     void applicationAvailable()
     {
-        initTestLocale();
-        initTestSettings(Settings::values());
-        initTestHomeDir(m_settingsDir);
-        initTestConfig();
-        initTestSyncthingPath(m_syncthingPath);
-        QCOMPARE(m_exportDir.errorString(), QString());
-
-        auto hasWithSyncthing = false;
-        auto withSyncthing = qEnvironmentVariableIntValue("SYNCTHINGWIDGETS_APP_TESTS_WITH_SYNCTHING", &hasWithSyncthing);
-        auto settings = QJsonObject();
-        auto connectionSettings = QJsonObject();
-        auto launcherSettings = QJsonObject();
-        connectionSettings.insert(QStringLiteral("useLauncher"), true);
-        launcherSettings.insert(QStringLiteral("run"), (m_withSyncthing = !hasWithSyncthing || withSyncthing > 0));
-        launcherSettings.insert(QStringLiteral("exePath"), m_syncthingPath);
-        settings.insert(QStringLiteral("connection"), connectionSettings);
-        settings.insert(QStringLiteral("launcher"), launcherSettings);
-
-        const auto homePath = m_settingsDir.path();
-        const auto settingsFilePath = homePath + QStringLiteral("/appconfig.json");
-        const auto settingsDocument = QJsonDocument(settings);
-        const auto settingsData = settingsDocument.toJson();
-        auto settingsFile = QFile(settingsFilePath);
-        QVERIFY(settingsFile.open(QFile::WriteOnly | QFile::Truncate));
-        QCOMPARE(settingsFile.write(settingsData), settingsData.size());
-        QVERIFY(settingsFile.flush());
-        qputenv("SYNCTHINGWIDGETS_SETTINGS_DIR", homePath.toUtf8());
-
-        // use a single window; that's less noisy when running tests non-headless
-        qputenv("SYNCTHINGWIDGETS_POPUP_TYPE", "0");
-
-        m_testConfigDir = QString::fromStdString(testDirPath("testconfig"));
-        m_testConfigDir = QFileInfo(m_testConfigDir).absoluteFilePath();
-        QVERIFY2(!m_testConfigDir.isEmpty(), "test config dir located");
-        qDebug() << "test config dir: " << m_testConfigDir;
+        prepareTestEnvironment(
+            m_settingsDir, m_exportDir, m_syncthingPath, m_testConfigDir, m_withSyncthing, "SYNCTHINGWIDGETS_APP_TESTS_WITH_SYNCTHING");
     }
 
     void qmlEngineAvailable(QQmlEngine *engine)
     {
-        auto *const context = engine->rootContext();
-        context->setContextProperty(QStringLiteral("withSyncthing"), m_withSyncthing);
-        context->setContextProperty(QStringLiteral("settingsPath"), m_settingsDir.path());
-        context->setContextProperty(QStringLiteral("directoryIdRole"), Data::SyncthingDirectoryModel::DirectoryId);
-        context->setContextProperty(QStringLiteral("directoryPathRole"), Data::SyncthingDirectoryModel::DirectoryPath);
-        context->setContextProperty(QStringLiteral("deviceStatusStringRole"), Data::SyncthingDeviceModel::DeviceStatusString);
-        context->setContextProperty(QStringLiteral("testConfigDir"), m_testConfigDir);
-        context->setContextProperty(QStringLiteral("testExportDir"), m_exportDir.path());
-        context->setContextProperty(QStringLiteral("setup"), this);
+        registerCommonContextProperties(engine, m_withSyncthing, m_settingsDir.path(), m_testConfigDir, m_exportDir.path(), this);
 
         m_service.emplace(true);
         m_app.emplace(true, engine);

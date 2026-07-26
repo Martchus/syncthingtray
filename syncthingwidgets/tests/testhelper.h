@@ -14,6 +14,19 @@
 #include <QLocale>
 #include <QTemporaryDir>
 
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+#include <QFileInfo>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QQmlContext>
+#include <QQmlEngine>
+
+#include <syncthingmodel/syncthingdevicemodel.h>
+#include <syncthingmodel/syncthingdirectorymodel.h>
+
+#include "../../testhelper/helper.h"
+#endif
+
 /*!
  * \brief Ensure all text is English so checks can rely on it.
  */
@@ -66,5 +79,69 @@ inline void initTestSyncthingPath(QString &syncthingPath)
     const auto syncthingPathFromEnv = qgetenv("SYNCTHING_PATH");
     syncthingPath = syncthingPathFromEnv.isEmpty() ? QStringLiteral("syncthing") : QString::fromLocal8Bit(syncthingPathFromEnv);
 }
+
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+/*!
+ * \brief Prepares the test settings directory, export directory, launcher and settings configuration.
+ */
+inline void prepareTestEnvironment(QTemporaryDir &settingsDir, QTemporaryDir &exportDir, QString &syncthingPath, QString &testConfigDir,
+    bool &withSyncthing, const char *withSyncthingEnvVarName = nullptr)
+{
+    initTestLocale();
+    initTestSettings(Settings::values());
+    initTestHomeDir(settingsDir);
+    initTestConfig();
+    initTestSyncthingPath(syncthingPath);
+    QCOMPARE(exportDir.errorString(), QString());
+
+    auto hasWithSyncthing = false;
+    auto withSyncthingVal = withSyncthingEnvVarName && qEnvironmentVariableIntValue(withSyncthingEnvVarName, &hasWithSyncthing);
+    withSyncthing = !hasWithSyncthing || withSyncthingVal > 0;
+
+    auto settings = QJsonObject();
+    auto connectionSettings = QJsonObject();
+    auto launcherSettings = QJsonObject();
+    connectionSettings.insert(QStringLiteral("useLauncher"), true);
+    launcherSettings.insert(QStringLiteral("run"), withSyncthing);
+    launcherSettings.insert(QStringLiteral("exePath"), syncthingPath);
+    settings.insert(QStringLiteral("connection"), connectionSettings);
+    settings.insert(QStringLiteral("launcher"), launcherSettings);
+
+    const auto homePath = settingsDir.path();
+    const auto settingsFilePath = homePath + QStringLiteral("/appconfig.json");
+    const auto settingsDocument = QJsonDocument(settings);
+    const auto settingsData = settingsDocument.toJson();
+    auto settingsFile = QFile(settingsFilePath);
+    QVERIFY(settingsFile.open(QFile::WriteOnly | QFile::Truncate));
+    QCOMPARE(settingsFile.write(settingsData), settingsData.size());
+    QVERIFY(settingsFile.flush());
+    qputenv("SYNCTHINGWIDGETS_SETTINGS_DIR", homePath.toUtf8());
+
+    // use a single window; that's less noisy when running tests non-headless
+    qputenv("SYNCTHINGWIDGETS_POPUP_TYPE", "0");
+
+    testConfigDir = QString::fromStdString(testDirPath("testconfig"));
+    testConfigDir = QFileInfo(testConfigDir).absoluteFilePath();
+    QVERIFY2(!testConfigDir.isEmpty(), "test config dir located");
+    qDebug() << "test config dir: " << testConfigDir;
+}
+
+/*!
+ * \brief Registers context properties on QQmlEngine.
+ */
+inline void registerCommonContextProperties(QQmlEngine *engine, bool withSyncthing, const QString &settingsPath, const QString &testConfigDir,
+    const QString &testExportDir, QObject *setupObj)
+{
+    auto *const context = engine->rootContext();
+    context->setContextProperty(QStringLiteral("withSyncthing"), withSyncthing);
+    context->setContextProperty(QStringLiteral("settingsPath"), settingsPath);
+    context->setContextProperty(QStringLiteral("directoryIdRole"), Data::SyncthingDirectoryModel::DirectoryId);
+    context->setContextProperty(QStringLiteral("directoryPathRole"), Data::SyncthingDirectoryModel::DirectoryPath);
+    context->setContextProperty(QStringLiteral("deviceStatusStringRole"), Data::SyncthingDeviceModel::DeviceStatusString);
+    context->setContextProperty(QStringLiteral("testConfigDir"), testConfigDir);
+    context->setContextProperty(QStringLiteral("testExportDir"), testExportDir);
+    context->setContextProperty(QStringLiteral("setup"), setupObj);
+}
+#endif
 
 #endif // SYNCTHINGWIDGETS_TESTHELPER_H

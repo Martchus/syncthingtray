@@ -230,7 +230,14 @@ set(QT_WIDGETS_TESTS wizard)
 foreach (TEST "${QT_WIDGETS_TESTS}")
     list(APPEND EXCLUDED_FILES "tests/${TEST}.cpp")
 endforeach ()
-list(APPEND EXCLUDED_FILES tests/testhelper.h tests/tst_app.qml tests/apptests.cpp)
+list(
+    APPEND
+    EXCLUDED_FILES
+    tests/testhelper.h
+    tests/app/tst_app.qml
+    tests/apptests.cpp
+    tests/desktop/tst_desktop_ui.qml
+    tests/desktopuitests.cpp)
 if (WIDGETS_GUI)
     list(APPEND QT_TESTS "${QT_WIDGETS_TESTS}")
 endif ()
@@ -593,7 +600,7 @@ foreach (TEST ${QT_TESTS})
     endif ()
 endforeach ()
 
-if (QUICK_GUI)
+if (QUICK_GUI AND "app" IN_LIST QUICK_GUI_ENABLED_MODES)
     list(APPEND QT_QUICK_TEST_LIBRARIES ${META_TARGET_NAME})
     use_qt_module(LIBRARIES_VARIABLE "QT_QUICK_TEST_LIBRARIES" PREFIX "${QT_PACKAGE_PREFIX}" MODULE "QuickTest")
     configure_test_target(
@@ -610,7 +617,27 @@ if (QUICK_GUI)
         FULL_TEST_TARGET_APP
         UNSTABLE)
     target_compile_definitions("${FULL_TEST_TARGET_APP}"
-                               PRIVATE "QUICK_TEST_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}/tests\"")
+                               PRIVATE "QUICK_TEST_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}/tests/app\"")
     set_tests_properties("${FULL_TEST_NAME_APP}" PROPERTIES RESOURCE_LOCK "syncthingtestinstance")
     set_tests_properties("${FULL_TEST_NAME_APP}" PROPERTIES ENVIRONMENT "LIB_SYNCTHING_CONNECTOR_LOG_ALL=1")
+endif ()
+
+if (QUICK_GUI AND "desktop" IN_LIST QUICK_GUI_ENABLED_MODES)
+    configure_test_target(
+        TEST_NAME
+        "desktop_ui_tests"
+        SRC_FILES
+        "tests/testhelper.h"
+        "tests/desktopuitests.cpp"
+        LIBRARIES
+        "${QT_QUICK_TEST_LIBRARIES}"
+        FULL_TEST_NAME_OUT_VAR
+        FULL_TEST_NAME_DESKTOP_UI
+        FULL_TEST_TARGET_OUT_VAR
+        FULL_TEST_TARGET_DESKTOP_UI
+        UNSTABLE)
+    target_compile_definitions("${FULL_TEST_TARGET_DESKTOP_UI}"
+                               PRIVATE "QUICK_TEST_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}/tests/desktop\"")
+    set_tests_properties("${FULL_TEST_NAME_DESKTOP_UI}" PROPERTIES RESOURCE_LOCK "syncthingtestinstance")
+    set_tests_properties("${FULL_TEST_NAME_DESKTOP_UI}" PROPERTIES ENVIRONMENT "LIB_SYNCTHING_CONNECTOR_LOG_ALL=1")
 endif ()
