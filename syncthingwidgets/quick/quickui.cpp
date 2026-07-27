@@ -1,3 +1,5 @@
+#define QT_UTILITIES_GUI_QTQUICK
+
 #include "./quickui.h"
 
 #include "./helpers.h"
@@ -50,24 +52,6 @@ namespace QtGui {
 
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
 /*!
- * \macro SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
- * \brief Configures dark mode depending on the platform.
- * \remarks
- * 1. Some platforms just provide a "dark mode flag", e.g. Windows and Android. Qt can read this flag and
- *    provide a Qt::ColorScheme value. Qt will only populate an appropriate QPalette on some platforms, e.g.
- *    it does on Windows but not on Android. On platforms where Qt does not populate an appropriate palette
- *    we therefore need to go by the Qt::ColorScheme value and populate the QPalette ourselves from the colors
- *    used by the Qt Quick Controls 2 style. This behavior is enabled via SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
- *    in subsequent code.
- *    Custom icons (Syncthing icons, ForkAwesome icons) are rendered using the text color from the application
- *    QPalette. This is the reason why we still populate the QPalette in this case and don't just ignore it.
- * 2. Some platforms allow the user to configure a custom palette but do *not* provide a "dark mode flag", e.g.
- *    KDE. In this case reading the Qt::ColorScheme value from Qt is useless but QPalette will be populated. We
- *    therefore need to determine whether the current color scheme is dark from the QPalette and set the Qt
- *    Quick Controls 2 style based on that.
- */
-
-/*!
  * \class QuickUI
  * \brief The QuickUI class contains helper functions for the Qt Quick GUI.
  * \remarks This class is available as singleton in Qml code.
@@ -100,14 +84,14 @@ QuickUI::QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQml
     , m_iconWidthDelegate(SYNCTHING_APP_ICON_WIDTH_DELEGATE)
     , m_darkmodeEnabled(false)
     , m_darkColorScheme(false)
-    , m_darkPalette(app ? SYNCTHING_APP_IS_PALETTE_DARK(app->palette()) : false)
+    , m_darkPalette(app ? QT_UTILITIES_IS_PALETTE_DARK(app->palette()) : false)
     , m_syncthingIconsVisible(true)
 {
     if (app) {
         app->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
         app->installEventFilter(this);
 
-#ifdef SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
+#ifdef QT_UTILITIES_DARK_MODE_FROM_COLOR_SCHEME
         QtUtilities::onDarkModeChanged([this](bool darkColorScheme) { applyDarkmodeChange(darkColorScheme, m_darkPalette); }, this);
 #else
         applyDarkmodeChange(m_darkColorScheme, m_darkPalette);
@@ -317,7 +301,7 @@ QFont QuickUI::font() const
 
 void QuickUI::setPalette(const QColor &foreground, const QColor &background)
 {
-#ifdef SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
+#ifdef QT_UTILITIES_DARK_MODE_FROM_COLOR_SCHEME
     if (m_app) {
         auto palette = m_app->palette();
         palette.setColor(QPalette::Active, QPalette::Text, foreground);
@@ -334,7 +318,7 @@ void QuickUI::setPalette(const QColor &foreground, const QColor &background)
 
 void QuickUI::applyDarkmodeChange(const QPalette &palette)
 {
-    applyDarkmodeChange(m_darkColorScheme, SYNCTHING_APP_IS_PALETTE_DARK(palette));
+    applyDarkmodeChange(m_darkColorScheme, QT_UTILITIES_IS_PALETTE_DARK(palette));
 }
 
 void QuickUI::applyDarkmodeChange(bool isDarkColorSchemeEnabled, bool isDarkPaletteEnabled)
@@ -677,7 +661,7 @@ bool QuickUI::eventFilter(QObject *object, QEvent *event)
             if (m_imageProvider) {
                 m_imageProvider->setDefaultColor(palette.color(QPalette::Normal, QPalette::Text));
             }
-#ifndef SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
+#ifndef QT_UTILITIES_DARK_MODE_FROM_COLOR_SCHEME
             applyDarkmodeChange(palette);
 #endif
         }

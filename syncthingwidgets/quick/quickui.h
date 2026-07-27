@@ -33,14 +33,6 @@ class QtSettings;
 namespace QtGui {
 
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
-#ifdef Q_OS_ANDROID
-#define SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
-#endif
-#ifdef SYNCTHING_APP_DARK_MODE_FROM_COLOR_SCHEME
-#define SYNCTHING_APP_IS_PALETTE_DARK(palette) false
-#else
-#define SYNCTHING_APP_IS_PALETTE_DARK(palette) QtUtilities::isPaletteDark(palette)
-#endif
 
 class SYNCTHINGWIDGETS_EXPORT QuickUI : public QObject {
     Q_OBJECT
