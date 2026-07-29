@@ -337,11 +337,7 @@ void QuickUI::applyDarkmodeChange(bool isDarkColorSchemeEnabled, bool isDarkPale
 
 bool QuickUI::performHapticFeedback()
 {
-#ifdef Q_OS_ANDROID
-    return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("performHapticFeedback");
-#else
-    return false;
-#endif
+    return QtUtilities::performHapticFeedback();
 }
 
 bool QuickUI::showError(const QString &errorMessage)
