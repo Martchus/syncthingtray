@@ -244,10 +244,14 @@ public class Activity extends QtActivity {
     }
 
     public boolean showToast(String message) {
+        return showToast(message, Toast.LENGTH_LONG);
+    }
+
+    public boolean showToast(String message, int duration) {
         Activity activity = this;
         runOnUiThread(new Runnable() {
             public void run() {
-                Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
+                Toast.makeText(activity, message, duration).show();
             }
         });
         return true;

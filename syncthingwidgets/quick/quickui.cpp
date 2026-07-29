@@ -352,13 +352,7 @@ bool QuickUI::showError(const QString &errorMessage)
 
 bool QuickUI::showToast(const QString &message)
 {
-#ifdef Q_OS_ANDROID
-    return QJniObject(QNativeInterface::QAndroidApplication::context())
-        .callMethod<jboolean>("showToast", "(Ljava/lang/String;)Z", QJniObject::fromString(message));
-#else
-    Q_UNUSED(message)
-    return false;
-#endif
+    return QtUtilities::showToast(message);
 }
 
 bool QuickUI::showMainWindow()
