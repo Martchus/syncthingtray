@@ -340,7 +340,7 @@ if (QUICK_GUI)
     list(APPEND ADDITIONAL_QT_MODULES Concurrent Svg)
     list(APPEND ADDITIONAL_QT_REPOS svg)
     list(APPEND PRIVATE_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/quick")
-    qt_utilities_configure_qt_quick_controls("Material" "quickgui/initiatequick.cpp")
+    qt_utilities_configure_qt_quick_controls("Material" "quick/quickui.cpp")
 
     # enable private Qt headers for QAndroidIntent
     if (ANDROID)
