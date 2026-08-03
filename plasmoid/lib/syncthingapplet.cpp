@@ -243,7 +243,7 @@ void SyncthingApplet::initEngine(QObject *object)
     }
 
 #if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
-    if (auto &settings = Settings::values(); settings.enableWipFeatures && !m_quickUI) {
+    if (auto &settings = Settings::values(); !m_quickUI) {
         // use separate engine for showing regular Qt Quick UI as part of the Plasmoid so each instance of the Plasmoid can have its own regular Qt Quick UI with its own data/models
         // notes: - Within this separate engine, this SyncthingApplet instance is exposed as TrayWidget singleton so QML code from the `syncthingwidgets` library can access it in
         //          consistency with how it accesses the TrayWidget class from stand-alone tray app.

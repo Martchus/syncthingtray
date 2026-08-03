@@ -550,15 +550,10 @@ QWidget *AppearanceOptionPage::setupWidget()
     auto *const widget = AppearanceOptionPageBase::setupWidget();
     auto *const formLayout = ui()->formLayout;
     auto *const requiresRestartLabel = ui()->requiresRestartLabel;
-#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
-    const auto showStyleSelection = Settings::values().enableWipFeatures;
-#else
-    static constexpr auto showStyleSelection = false;
+#if !defined(GUI_QTQUICK) || !defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    setFormRowVisible(formLayout, ui()->styleLabel, ui()->styleComboBox, false);
+    ui()->syncthingIconsCheckBox->hide();
 #endif
-    if (!showStyleSelection) {
-        setFormRowVisible(formLayout, ui()->styleLabel, ui()->styleComboBox, false);
-        ui()->syncthingIconsCheckBox->hide();
-    }
     setFormRowVisible(formLayout, requiresRestartLabel, nullptr, false);
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
     QObject::connect(ui()->styleComboBox, &QComboBox::currentIndexChanged, formLayout, [this, formLayout, requiresRestartLabel](int index) {
@@ -1739,9 +1734,6 @@ QWidget *GeneralWebViewOptionPage::setupWidget()
     auto *const widget = GeneralWebViewOptionPageBase::setupWidget();
     auto *const cfgToolButton = ui()->appModeCfgToolButton;
 
-    if (!Settings::values().enableWipFeatures) {
-        ui()->ownRadioButton->hide();
-    }
 #if !defined(GUI_QTQUICK) || !defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
     ui()->ownRadioButton->setEnabled(false);
 #endif

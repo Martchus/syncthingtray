@@ -210,14 +210,14 @@ Android and brings back the modern design and many features of the mobile UI to 
 on the desktop. For instance, it allows editing folders and devices. It also comes with a
 dashboard that looks similar to the official web-based UI.
 
-The modern UI is still work-in-progress and is therefore only available if
-`SYNCTHINGTRAY_ENABLE_WIP_FEATURES=1` is set in the environment. Additionally, Syncthing Tray
-needs to be built with `-DQUICK_GUI=ON` and Qt 6.10 or newer is required. The modern UI requires
-Vulkan under GNU/Linux.
+The modern UI is new and there is still room for improvement. Hence it needs to be enabled
+manually. Additionally, Syncthing Tray needs to be built with `-DQUICK_GUI=ON` and Qt 6.10 or
+newer is required. This is the case for official Qt 6 based Syncthing Tray builds but might not
+be the case for downstream builds. The modern UIl also requires Vulkan under GNU/Linux.
 
-With these conditions met, you can simply enable the modern UI under the appearance settings.
-The change requires a restart to take effect. In the settings for showing the web-based UI of
-Syncthing you can also select showing the UI provided by Syncthing Tray instead.
+With these conditions met, you can enable the modern UI under the appearance settings. The
+change requires a restart of Syncthing Tray to take effect. In the settings for showing the
+web-based UI of Syncthing you can also select showing the UI provided by Syncthing Tray instead.
 
 Changing the [style](https://doc.qt.io/qt-6/qtquickcontrols-styles.html) of the modern UI via
 the environment variable `QT_QUICK_CONTROLS_STYLE` or the CLI option `--qqc2-style` only works
@@ -227,9 +227,8 @@ GNU/Linux packaging. Other builds don't support this to reduce the size of the e
 In case you prefer the classic UI you can continue using it. It will not be deleted anytime soon.
 However, new UI features will mainly focus on the new UI now.
 
-The Plasmoid still has its distinct UI. However, `SYNCTHINGTRAY_ENABLE_WIP_FEATURES=1` also enables
-some of the features of the modern UI in the Plasmoid, such as the ability to edit folders and
-devices.
+The Plasmoid still has its distinct UI. However, it also allows accessing the new features of
+the modern UI, such as the ability to edit folders and devices.
 
 ### Connect to Syncthing via Unix domain socket
 When using a Unix domain socket as the Syncthing GUI address (e.g., by starting Syncthing with
