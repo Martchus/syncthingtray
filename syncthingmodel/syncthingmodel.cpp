@@ -10,6 +10,7 @@ SyncthingModel::SyncthingModel(SyncthingConnection &connection, QObject *parent)
     , m_connection(connection)
     , m_brightColors(false)
     , m_singleColumnMode(true)
+    , m_newConfigPending(false)
 {
     connect(&m_connection, &SyncthingConnection::newConfig, this, &SyncthingModel::handleConfigInvalidated);
     connect(&m_connection, &SyncthingConnection::newConfigApplied, this, &SyncthingModel::handleNewConfigAvailable);
@@ -86,12 +87,20 @@ void SyncthingModel::setBrightColors(bool brightColors)
 
 void SyncthingModel::handleConfigInvalidated()
 {
-    beginResetModel();
+    if (!m_newConfigPending) {
+        // keep track of pending state as newConfig() might be emitted twice without newConfigApplied()
+        // being emitted in between but one must not call beginResetModel() without calling endResetModel()
+        m_newConfigPending = true;
+        beginResetModel();
+    }
 }
 
 void SyncthingModel::handleNewConfigAvailable()
 {
-    endResetModel();
+    if (m_newConfigPending) {
+        m_newConfigPending = false;
+        endResetModel();
+    }
 }
 
 void SyncthingModel::handleStatusIconsChanged()

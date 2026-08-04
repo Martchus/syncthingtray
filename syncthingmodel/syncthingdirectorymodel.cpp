@@ -492,15 +492,10 @@ void SyncthingDirectoryModel::dirStatusChanged(const SyncthingDir &dir, int inde
     emit dataChanged(this->index(0, 0, modelIndex1), this->index(newLastRow, 0, modelIndex1), modelRoles4);
 }
 
-void SyncthingDirectoryModel::handleConfigInvalidated()
-{
-    beginResetModel();
-}
-
 void SyncthingDirectoryModel::handleNewConfigAvailable()
 {
     updateRowCount();
-    endResetModel();
+    SyncthingModel::handleNewConfigAvailable();
 }
 
 void SyncthingDirectoryModel::handleStatusIconsChanged()

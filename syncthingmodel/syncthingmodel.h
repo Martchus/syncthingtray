@@ -42,7 +42,7 @@ protected:
     void invalidateAllIndicies(const QVector<int> &affectedRoles, const QModelIndex &parentIndex = QModelIndex());
     void invalidateAllIndicies(const QVector<int> &affectedRoles, int column, const QModelIndex &parentIndex = QModelIndex());
 
-private Q_SLOTS:
+protected Q_SLOTS:
     virtual void handleConfigInvalidated();
     virtual void handleNewConfigAvailable();
     virtual void handleStatusIconsChanged();
@@ -53,6 +53,7 @@ protected:
     Data::SyncthingConnection &m_connection;
     bool m_brightColors;
     bool m_singleColumnMode;
+    bool m_newConfigPending;
 };
 
 inline SyncthingConnection *SyncthingModel::connection()

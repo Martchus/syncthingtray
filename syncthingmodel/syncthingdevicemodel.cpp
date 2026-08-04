@@ -430,14 +430,14 @@ void SyncthingDeviceModel::devStatusChanged(const SyncthingDev &dev, int index)
 
 void SyncthingDeviceModel::handleConfigInvalidated()
 {
-    beginResetModel();
+    SyncthingModel::handleConfigInvalidated();
     m_thisDevVersion.clear();
 }
 
 void SyncthingDeviceModel::handleNewConfigAvailable()
 {
     updateRowCount();
-    endResetModel();
+    SyncthingModel::handleNewConfigAvailable();
 }
 
 void SyncthingDeviceModel::handleStatusIconsChanged()
