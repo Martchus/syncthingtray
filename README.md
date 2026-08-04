@@ -11,7 +11,7 @@ The following integrations are provided:
   [Dolphin](https://www.kde.org/applications/system/dolphin) file manager
 * [Plasmoid](#configuring-plasmoid) for [KDE Plasma](https://www.kde.org/plasma-desktop)
 * [Command-line interface](docs/cli.md)
-* [Android app](docs/android.md) (still experimental)
+* [Android app](docs/android.md)
 * Qt-ish C++ library
 
 ---
@@ -43,16 +43,17 @@ section of this document.
 Syncthing Tray is known to work under:
 
 * Windows 10 and 11
-* KDE Plasma
-* Openbox using lxqt/LXDE or using Tint2
-* GTK-centered desktops such as Cinnamon, GNOME and Xfce (with caveats, see remarks below)
-* COSMIC (only simple tray menu works, see remarks below)
-* Awesome
-* i3
+* Android (see [Android-specific documentation](docs/android.md))
+* GNU/Linux
+    * KDE Plasma
+    * Openbox using lxqt/LXDE or using Tint2
+    * GTK-centered desktops such as Cinnamon, GNOME and Xfce (with caveats, see remarks below)
+    * COSMIC (only simple tray menu works, see remarks below)
+    * Awesome
+    * i3
+    * Deepin Desktop Environment
+    * Sway/Swaybar/Waybar (with caveats, see remarks below)
 * macOS
-* Deepin Desktop Environment
-* Sway/Swaybar/Waybar (with caveats, see remarks below)
-* Android (still experimental, see [Android-specific documentation](docs/android.md))
 
 This does *not* mean Syncthing Tray is actively tested on all of these platforms or
 desktop environments.
@@ -198,11 +199,11 @@ Note that this only applies to Syncthing Tray. For Syncthing itself, check out
 The Plasmoid uses the same configuration file but also uses Plasma's configuration
 management for settings specific to a concrete instance of the Plasmoid.
 
-The experimental UI tailored for mobile devices uses a distinct configuration which is
-located under `~/.config/Martchus/Syncthing Tray` on GNU/Linux and
+The UI tailored for mobile devices uses a distinct configuration which is located under
 `/storage/emulated/0/Android/data/io.github.martchus.syncthingtray` on Android and
-`%appdata%\Martchus\Syncthing Tray` on Windows. The configuration and database of Syncthing
-itself are also located within this directory when Syncthing is launched via the mobile UI.
+`~/.config/Martchus/Syncthing Tray` on GNU/Linux and `%appdata%\Martchus\Syncthing Tray` on
+Windows. The configuration and database of Syncthing itself are also located within this
+directory when Syncthing is launched via the mobile UI.
 
 ### Modern UI
 It is possible to enable a more modern UI. This UI is a result of porting Syncthing Tray to

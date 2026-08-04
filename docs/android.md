@@ -1,6 +1,7 @@
 # Using the Android app
-**The Android app is still experimental.** Use it with care and create backups of your
-configuration and data before trying it. Before filing any issues, be sure to read the section
+**The Android app is only tested on a limited number of devices and not all of Syncthing's
+features are tested.** So use it with care and create backups of your configuration and data
+before trying it. Before filing any issues, be sure to read the section
 "[Caveats on Android](#caveats-on-android)". For screenshots, check out the section
 "[Screenshots of the mobile UI](screenshots.md#mobile-ui-on-android)".
 
