@@ -270,10 +270,9 @@ static int runApplication(int argc, const char *const *argv)
 #endif
 #ifdef GUI_QTQUICK
     auto &quickGuiArg = qtConfigArgs.qtQuickGuiArg();
-    quickGuiArg.setDescription("opens a mobile-optimized UI to run and access Syncthing");
-    auto modeArg = ConfigValueArgument("mode", '\0', "the mode to start the Qt Quick GUI in", { "mode" });
+    quickGuiArg.setDescription("opens an additional UI to run and access Syncthing");
+    auto modeArg = ConfigValueArgument("mode", '\0', "whether to start the mobile-optimized app or the regular desktop UI", { "mode" });
     modeArg.setPreDefinedCompletionValues(QuickUI::modes().data());
-    modeArg.markAsDeprecated(); // still experimental, so hide for now
     quickGuiArg.addSubArgument(&modeArg);
     quickGuiArg.addSubArgument(&insecureArg);
 #ifdef GUI_QTWIDGETS
