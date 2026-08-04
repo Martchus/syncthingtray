@@ -308,6 +308,8 @@ std::pair<const QNetworkInformation *, bool> loadNetworkInformationBackendForMet
             auto env = QJniEnvironment();
             if (auto method = env.findMethod(context.objectClass(), "isNetworkConnectionMetered", "()Z")) {
                 isInitiallyMetered = env->CallBooleanMethod(context.object(), method) == JNI_TRUE;
+            } else {
+                env.checkAndClearExceptions(QJniEnvironment::OutputMode::Silent);
             }
         }
     }
