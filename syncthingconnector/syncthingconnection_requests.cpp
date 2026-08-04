@@ -812,7 +812,7 @@ void SyncthingConnection::readSuspend()
             m_suspendedItems.clear();
         }
         m_suspendedItems.save();
-        suspensionOrResumeTriggered(suspend);
+        emit suspensionOrResumeTriggered(suspend);
         break;
     default:
         emitError(suspend ? tr("Unable to suspend Syncthing: ") : tr("Unable to resume Syncthing: "), SyncthingErrorCategory::SpecificRequest, reply,
