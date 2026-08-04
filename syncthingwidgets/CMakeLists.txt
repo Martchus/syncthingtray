@@ -534,9 +534,11 @@ foreach (TEST ${QT_TESTS})
     endif ()
 endforeach ()
 
-if (QUICK_GUI AND "app" IN_LIST QUICK_GUI_ENABLED_MODES)
+if (QUICK_GUI)
     list(APPEND QT_QUICK_TEST_LIBRARIES ${META_TARGET_NAME})
     use_qt_module(LIBRARIES_VARIABLE "QT_QUICK_TEST_LIBRARIES" PREFIX "${QT_PACKAGE_PREFIX}" MODULE "QuickTest")
+endif ()
+if (QUICK_GUI AND "app" IN_LIST QUICK_GUI_ENABLED_MODES)
     configure_test_target(
         TEST_NAME
         "app_tests"
@@ -555,7 +557,6 @@ if (QUICK_GUI AND "app" IN_LIST QUICK_GUI_ENABLED_MODES)
     set_tests_properties("${FULL_TEST_NAME_APP}" PROPERTIES RESOURCE_LOCK "syncthingtestinstance")
     set_tests_properties("${FULL_TEST_NAME_APP}" PROPERTIES ENVIRONMENT "LIB_SYNCTHING_CONNECTOR_LOG_ALL=1")
 endif ()
-
 if (QUICK_GUI AND "desktop" IN_LIST QUICK_GUI_ENABLED_MODES)
     configure_test_target(
         TEST_NAME
