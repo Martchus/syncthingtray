@@ -213,6 +213,7 @@ void SyncthingLauncher::setNetworkConnectionMetered(std::optional<bool> metered)
 #endif
             }
         }
+        qDebug() << "Metered state changed:" << metered;
         emit networkConnectionMeteredChanged(metered);
     }
 }
