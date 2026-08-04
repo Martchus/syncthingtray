@@ -53,6 +53,7 @@ protected:
     static QString readSettingFile(QFile &settingsFile, QJsonObject &settings);
     QString syncthingLogFilePath() const;
     bool openSettings();
+    bool handleReconnectingToLaunched(const QUrl &url);
     virtual void invalidateStatus();
     Data::IconManager &initIconManager();
 

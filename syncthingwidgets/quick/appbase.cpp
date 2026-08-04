@@ -123,6 +123,21 @@ bool AppBase::openSettings()
     return true;
 }
 
+bool AppBase::handleReconnectingToLaunched(const QUrl &url)
+{
+    if (!m_connectToLaunched) {
+        return false;
+    }
+    invalidateStatus();
+    if (url.isEmpty()) {
+        m_data.connection()->setAutoReconnectInterval(0);
+        m_data.connection()->disconnect();
+    } else if (m_data.connection()->applySettings(m_connectionSettingsFromLauncher) || !m_data.connection()->isConnected()) {
+        m_data.connection()->reconnect();
+    }
+    return true;
+}
+
 void AppBase::invalidateStatus()
 {
     m_status.reset();
@@ -253,15 +268,7 @@ void AppBase::handleGuiUrlChanged(const QUrl &newUrl)
     m_connectionSettingsFromLauncher.httpsCertPath = m_syncthingConfigDir + QStringLiteral("/https-cert.pem");
 #endif
 
-    if (m_connectToLaunched) {
-        invalidateStatus();
-        if (newUrl.isEmpty()) {
-            m_data.connection()->setAutoReconnectInterval(0);
-            m_data.connection()->disconnect();
-        } else if (m_data.connection()->applySettings(m_connectionSettingsFromLauncher) || !m_data.connection()->isConnected()) {
-            m_data.connection()->reconnect();
-        }
-    }
+    handleReconnectingToLaunched(newUrl);
 }
 
 } // namespace QtGui

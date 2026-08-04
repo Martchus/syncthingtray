@@ -415,10 +415,7 @@ void AppService::handleSyncthingError(QProcess::ProcessError error)
 
 void AppService::handleRunningChanged(bool isRunning)
 {
-    Q_UNUSED(isRunning)
-    if (m_connectToLaunched) {
-        invalidateStatus();
-    }
+    handleReconnectingToLaunched(isRunning ? m_launcher.guiUrl() : QUrl());
 }
 
 void AppService::handleChangedDevices()

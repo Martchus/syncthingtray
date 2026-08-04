@@ -421,9 +421,7 @@ void App::invalidateStatus()
 
 void App::handleRunningChanged(bool isRunning)
 {
-    if (m_connectToLaunched) {
-        invalidateStatus();
-    }
+    handleReconnectingToLaunched(isRunning ? m_syncthingGuiUrl : QUrl());
     if (!m_settingsImport.availableSettings.isEmpty() && !isRunning) {
         importSettings(m_settingsImport.availableSettings, m_settingsImport.selectedSettings, m_settingsImport.callback);
     } else if (m_settingsExport.url.has_value() && !isRunning) {
