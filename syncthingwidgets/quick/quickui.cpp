@@ -563,7 +563,9 @@ void QuickUI::showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y, cons
 {
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
     if (m_mode == QLatin1String("desktop")) {
-        auto widgetsMenu = QMenu();
+        auto widgetsMenu = new QMenu();
+        widgetsMenu->setWindowModality(Qt::ApplicationModal);
+        widgetsMenu->setAttribute(Qt::WA_DeleteOnClose, true);
         auto hasItems = false;
         for (auto i = 0, count = menu->property("count").toInt(); i != count; ++i) {
             QQuickItem *item = nullptr;
@@ -576,7 +578,7 @@ void QuickUI::showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y, cons
             hasItems = true;
             const auto *className = item->metaObject()->className();
             if (std::string_view(className).starts_with("MenuSeparator")) {
-                widgetsMenu.addSeparator();
+                widgetsMenu->addSeparator();
                 continue;
             }
             if (!item->property("enabled").toBool()) {
@@ -616,22 +618,23 @@ void QuickUI::showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y, cons
                 }
                 return QIcon(iconName);
             }();
-            auto *const action = widgetsMenu.addAction(icon, item->property("text").toString());
+            auto *const action = widgetsMenu->addAction(icon, item->property("text").toString());
             connect(action, SIGNAL(triggered()), item, SIGNAL(clicked()));
         }
         if (hasItems) {
             if (parent && event && event->property("key").isValid()) {
                 // show centered over parent item (menu button) when triggered via key event
-                widgetsMenu.exec(parent->mapToGlobal(parent->width() / 2, parent->height() / 2).toPoint());
+                widgetsMenu->popup(parent->mapToGlobal(parent->width() / 2, parent->height() / 2).toPoint());
             } else {
                 // show at current cursor position when triggered via mouse events or any other event
-                widgetsMenu.exec(QCursor::pos());
+                widgetsMenu->popup(QCursor::pos());
             }
             if (parent) {
                 parent->forceActiveFocus();
             }
             return;
         }
+        delete widgetsMenu;
     }
 #endif
     // clang-format off
