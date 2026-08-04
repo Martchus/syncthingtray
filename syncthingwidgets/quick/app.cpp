@@ -453,6 +453,9 @@ void App::handleStateChanged(Qt::ApplicationState state)
     if (m_isGuiLoaded && ((state == Qt::ApplicationSuspended) || (state & Qt::ApplicationHidden))) {
         qDebug() << "App considered suspended/hidden, reducing polling, stopping UI processing";
         setCurrentControls(false);
+#ifdef Q_OS_ANDROID
+        m_data.connection()->disconnect();
+#endif
         for (auto *const uiObject : m_uiObjects) {
             uiObject->moveToThread(nullptr);
         }
@@ -463,6 +466,9 @@ void App::handleStateChanged(Qt::ApplicationState state)
     } else if (state & Qt::ApplicationActive) {
         qDebug() << "App considered active, continuing polling, resuming UI processing";
         setCurrentControls(true);
+#ifdef Q_OS_ANDROID
+        m_data.connection()->connect();
+#endif
         auto *const uiThread = thread();
         for (auto *const uiObject : m_uiObjects) {
             uiObject->moveToThread(uiThread);
