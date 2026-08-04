@@ -1334,7 +1334,7 @@ void SyncthingConnection::emitError(const QString &message, const QJsonParseErro
  */
 static QByteArray formatErrorAndResponse(QNetworkReply *reply, QString &errorString, const QByteArray &response)
 {
-    auto res = response.isEmpty() ? reply->readAll() : response;
+    auto res = response.isEmpty() ? (reply->isReadable() ? reply->readAll() : QByteArrayLiteral("[no data received]")) : response;
 #if QT_VERSION < QT_VERSION_CHECK(6, 10, 1)
     if (errorString.endsWith(QLatin1String("server replied: "))) {
         errorString += res.trimmed();

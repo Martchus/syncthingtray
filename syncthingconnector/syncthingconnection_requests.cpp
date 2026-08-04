@@ -314,7 +314,7 @@ SyncthingConnection::Reply SyncthingConnection::handleReply(QNetworkReply *reply
     const auto log = m_loggingFlags && SyncthingConnectionLoggingFlags::ApiReplies;
     const auto data = Reply{
         .reply = (handleAborting && m_abortingAllRequests) ? nullptr : reply, // skip further processing if aborting to reconnect
-        .response = ((readData || log) && reply->isOpen()) ? reply->readAll() : QByteArray(),
+        .response = ((readData || log) && reply->isReadable()) ? reply->readAll() : QByteArray(),
     };
     reply->deleteLater();
 
