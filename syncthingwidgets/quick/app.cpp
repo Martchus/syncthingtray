@@ -422,6 +422,7 @@ void App::invalidateStatus()
 void App::handleRunningChanged(bool isRunning)
 {
     if (m_connectToLaunched) {
+        applyConnectionSettings(m_syncthingGuiUrl);
         invalidateStatus();
     }
     if (!m_settingsImport.availableSettings.isEmpty() && !isRunning) {

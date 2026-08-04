@@ -417,6 +417,7 @@ void AppService::handleRunningChanged(bool isRunning)
 {
     Q_UNUSED(isRunning)
     if (m_connectToLaunched) {
+        applyConnectionSettings(m_launcher.guiUrl());
         invalidateStatus();
     }
 }
