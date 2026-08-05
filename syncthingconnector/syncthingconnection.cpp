@@ -380,6 +380,12 @@ bool SyncthingConnection::setPausingOnMeteredConnection(bool pausingOnMeteredCon
     if (m_pausingOnMeteredConnection == pausingOnMeteredConnection) {
         return false;
     }
+    if (m_pausingOnMeteredConnection && !pausingOnMeteredConnection) {
+        if (!m_forceSuspend) {
+            suspendOrResume(m_pausingOnMeteredConnection = false);
+        }
+        return false;
+    }
     if ((m_pausingOnMeteredConnection = pausingOnMeteredConnection)) {
         // initialize handling of metered connections
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
@@ -421,14 +427,11 @@ QString SyncthingConnection::substituteTilde(const QString &path) const
  */
 bool SyncthingConnection::handleMeteredConnection()
 {
-    if (!m_hasConfig || m_myId.isEmpty()) {
+    if (!m_pausingOnMeteredConnection || !m_hasConfig || m_myId.isEmpty()) {
         return false;
     }
     if (m_forceSuspend) {
         return suspendOrResume(true);
-    }
-    if (!m_pausingOnMeteredConnection) {
-        return suspendOrResume(false);
     }
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
     const auto *const networkInformation = QNetworkInformation::instance();
@@ -697,9 +700,7 @@ void SyncthingConnection::applyRawConfig()
 {
     readDevs(m_rawConfig.value(QLatin1String("devices")).toArray());
     readDirs(m_rawConfig.value(QLatin1String("folders")).toArray());
-    if (m_pausingOnMeteredConnection) {
-        handleMeteredConnection();
-    }
+    handleMeteredConnection();
     emit newConfigApplied();
 }
 
@@ -1180,8 +1181,10 @@ bool SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
     setLongPollingTimeout(connectionSettings.longPollingTimeout);
     setDiskEventLimit(connectionSettings.diskEventLimit);
     setStatusComputionFlags(connectionSettings.statusComputionFlags);
-    if (setForceSuspendEnabled(connectionSettings.forceSuspend, true)
-        || setPausingOnMeteredConnection(connectionSettings.pauseOnMeteredConnection, true)) {
+
+    const auto forceSuspendChanged = setForceSuspendEnabled(connectionSettings.forceSuspend, true);
+    const auto pauseOnMeteredChanged = setPausingOnMeteredConnection(connectionSettings.pauseOnMeteredConnection, true);
+    if (forceSuspendChanged || pauseOnMeteredChanged) {
         handleMeteredConnection();
     }
 
