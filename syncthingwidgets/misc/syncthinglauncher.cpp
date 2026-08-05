@@ -9,6 +9,7 @@
 
 #include <c++utilities/io/ansiescapecodes.h>
 
+#include <QDebug>
 #include <QMetaObject>
 #include <QtConcurrentRun>
 
@@ -213,7 +214,13 @@ void SyncthingLauncher::setNetworkConnectionMetered(std::optional<bool> metered)
 #endif
             }
         }
-        qDebug() << "Metered state changed:" << metered;
+        qDebug() << "Metered state changed:" <<
+#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
+            metered
+#else
+            metered.value_or(false)
+#endif
+            ;
         emit networkConnectionMeteredChanged(metered);
     }
 }
