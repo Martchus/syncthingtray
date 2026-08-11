@@ -42,7 +42,7 @@ CustomListView {
                     Layout.fillWidth: true
                     text: [modelData.directoryName || modelData.directoryId, modelData.path].join(": ")
                     elide: Text.ElideRight
-                    wrapMode: Text.WordWrap
+                    wrapMode: Text.Wrap
                     font.weight: Font.Light
                 }
                 Icon {

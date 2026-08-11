@@ -20,7 +20,7 @@ Page {
                     Label {
                         Layout.fillWidth: true
                         text: modelData.path
-                        wrapMode: Text.WrapAnywhere
+                        wrapMode: Text.Wrap
                         font.weight: Font.Medium
                     }
                     Label {

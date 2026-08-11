@@ -25,7 +25,7 @@ ItemDelegate {
         Label {
             Layout.fillWidth: true
             text: modelData.message
-            wrapMode: Text.WordWrap
+            wrapMode: Text.Wrap
             font.weight: Font.Light
         }
     }
