@@ -624,10 +624,13 @@ void SyncthingConnection::reconnectLater(int milliSeconds)
 }
 
 /*!
- * \brief Internally called to reconnect; ensures currently cached config is cleared.
+ * \brief Internally called to reconnect; ensures currently cached config and connections are cleared.
  */
 void SyncthingConnection::continueReconnecting()
 {
+    // flush the internal cache of network connections to avoid staying stuck on stale connections
+    networkAccessManager().clearConnectionCache();
+
     // notify that we're about to invalidate the configuration if not already invalidated anyway
     const auto isConfigInvalidated = m_rawConfig.isEmpty();
     if (!isConfigInvalidated) {
