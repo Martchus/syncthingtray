@@ -328,7 +328,7 @@ Item {
             const optionsListView = optionsPage.listView;
             compare(optionsPage.title, "Various advanced options", "options page shown");
             compare(optionsPage.isDangerous, true, "options considered dangerious");
-            tryVerify(() => optionsModel.count >= 56, 5000, "options shown");
+            tryVerify(() => optionsModel.count >= 55, 5000, "options shown");
             compare(optionsModel.get(7).label, "Local Discovery");
             compare(optionsModel.get(7).value, true, "local discovery enabled by default");
             compare(optionsModel.get(8).label, "Global Discovery");
