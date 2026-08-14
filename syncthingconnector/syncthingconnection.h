@@ -47,8 +47,6 @@ namespace Data {
 
 struct SyncthingConnectionSettings;
 
-LIB_SYNCTHING_CONNECTOR_EXPORT QNetworkAccessManager &networkAccessManager();
-
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingLogEntry {
     SyncthingLogEntry(const QString &when = QString(), const QString &message = QString())
         : when(when)
@@ -343,6 +341,7 @@ public Q_SLOTS:
     void reconnect(Data::SyncthingConnectionSettings &connectionSettings);
     void reconnectLater(int milliSeconds);
     void abortAllRequests();
+    void clearConnectionCache();
 
     // methods to trigger certain actions (resume, rescan, restart, ...)
     bool pauseDevice(const QStringList &devIds);
@@ -582,6 +581,7 @@ private:
     bool m_abortingToConnect;
     bool m_abortingToReconnect;
     bool m_requestCompletion;
+    bool m_clearConnectionCache;
     QString m_eventMask;
     PollingFlags m_pollingFlags;
     StatusRecomputation m_statusRecomputationFlags;
@@ -671,6 +671,19 @@ private:
 inline QNetworkAccessManager &SyncthingConnection::networkAccessManager()
 {
     return *m_qnam;
+}
+
+/*!
+ * \brief Flushes the internal network connection cache of the QNetworkAccessManager instance on the next
+ *        call to connect() or reconnect().
+ * \remarks
+ * - This might help avoid staying stuck on stale connections.
+ * - This can't be done unconditionally as multiple SyncthingConnection instances using the same QNetworkAccessManager
+ *   would otherwise interfere each other.
+ */
+inline void SyncthingConnection::clearConnectionCache()
+{
+    m_clearConnectionCache = true;
 }
 
 /*!

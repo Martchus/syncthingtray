@@ -57,11 +57,12 @@ WebPage::WebPage(WebViewDialog *dlg, SYNCTHINGWIDGETS_WEB_VIEW *view)
         this, &WebPage::authenticationRequired, this, static_cast<void (WebPage::*)(const QUrl &, QAuthenticator *)>(&WebPage::supplyCredentials));
 #else // SYNCTHINGWIDGETS_USE_WEBKIT
     settings()->setAttribute(QWebSettings::JavascriptCanOpenWindows, true);
-    setNetworkAccessManager(&Data::networkAccessManager());
-    connect(&Data::networkAccessManager(), &QNetworkAccessManager::authenticationRequired, this,
-        static_cast<void (WebPage::*)(QNetworkReply *, QAuthenticator *)>(&WebPage::supplyCredentials));
-    connect(&Data::networkAccessManager(), &QNetworkAccessManager::sslErrors, this,
-        static_cast<void (WebPage::*)(QNetworkReply *, const QList<QSslError> &errors)>(&WebPage::handleSslErrors));
+    if (auto *const qnam = networkAccessManager()) {
+        connect(qnam, &QNetworkAccessManager::authenticationRequired, this,
+            static_cast<void (WebPage::*)(QNetworkReply *, QAuthenticator *)>(&WebPage::supplyCredentials));
+        connect(qnam, &QNetworkAccessManager::sslErrors, this,
+            static_cast<void (WebPage::*)(QNetworkReply *, const QList<QSslError> &errors)>(&WebPage::handleSslErrors));
+    }
 #endif
 
     if (!m_view) {

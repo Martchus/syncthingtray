@@ -45,18 +45,6 @@ using namespace CppUtilities::EscapeCodes;
 
 namespace Data {
 
-#ifndef LIB_SYNCTHING_CONNECTOR_MOCKED
-/*!
- * \brief Returns the QNetworkAccessManager instance used by SyncthingConnection instances if no network access
- *        manager is passed to the constructor.
- */
-QNetworkAccessManager &networkAccessManager()
-{
-    static auto networkAccessManager = new QNetworkAccessManager;
-    return *networkAccessManager;
-}
-#endif
-
 /*!
  * \class SyncthingConnection
  * \brief The SyncthingConnection class allows Qt applications to access Syncthing via its REST API.
@@ -83,7 +71,7 @@ QNetworkAccessManager &networkAccessManager()
 SyncthingConnection::SyncthingConnection(
     const QString &syncthingUrl, const QByteArray &apiKey, SyncthingConnectionLoggingFlags loggingFlags, QNetworkAccessManager *qnam, QObject *parent)
     : QObject(parent)
-    , m_qnam(qnam ? qnam : &Data::networkAccessManager())
+    , m_qnam(qnam ? qnam : new QNetworkAccessManager(this))
     , m_syncthingUrl(syncthingUrl)
     , m_apiKey(apiKey)
     , m_status(SyncthingStatus::Disconnected)
@@ -96,6 +84,7 @@ SyncthingConnection::SyncthingConnection(
     , m_abortingToConnect(false)
     , m_abortingToReconnect(false)
     , m_requestCompletion(true)
+    , m_clearConnectionCache(false)
     , m_pollingFlags(PollingFlags::All)
     , m_statusRecomputationFlags(StatusRecomputation::None)
     , m_lastEventId(0)
@@ -476,6 +465,10 @@ void SyncthingConnection::connect()
     m_connectionAborted = m_abortingToConnect = m_abortingToReconnect = m_hasConfig = m_hasStatus = m_hasEvents = m_hasDiskEvents = m_statsRequested
         = false;
 
+    if (m_clearConnectionCache) {
+        m_clearConnectionCache = false;
+        networkAccessManager().clearConnectionCache();
+    }
     if (!checkConnectionConfiguration()) {
         return;
     }
@@ -630,8 +623,10 @@ void SyncthingConnection::reconnectLater(int milliSeconds)
  */
 void SyncthingConnection::continueReconnecting()
 {
-    // flush the internal cache of network connections to avoid staying stuck on stale connections
-    networkAccessManager().clearConnectionCache();
+    if (m_clearConnectionCache) {
+        m_clearConnectionCache = false;
+        networkAccessManager().clearConnectionCache();
+    }
 
     // notify that we're about to invalidate the configuration if not already invalidated anyway
     const auto isConfigInvalidated = m_rawConfig.isEmpty();
@@ -639,7 +634,7 @@ void SyncthingConnection::continueReconnecting()
         emit newConfig(m_rawConfig = QJsonObject());
     }
 
-    // cleanup information from previous connection
+    // clear information from previous connection
     auto tempDirs = std::vector<SyncthingDir>();
     auto tempDevs = std::vector<SyncthingDev>();
     m_keepPolling = true;

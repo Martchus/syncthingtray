@@ -376,7 +376,6 @@ static int runApplication(int argc, const char *const *argv)
         LOAD_QT_TRANSLATIONS;
 
         auto serviceApp = AppService(insecureArg.isPresent());
-        networkAccessManager().setParent(&androidService);
         qDebug() << "Executing service";
         const auto res = androidService.exec();
         qDebug() << "Qt service event loop exited with return code " << res;
@@ -405,7 +404,6 @@ static int runApplication(int argc, const char *const *argv)
         qDebug() << "TLS support available: " << QSslSocket::supportsSsl();
 #endif
         qtConfigArgs.applySettings(true);
-        networkAccessManager().setParent(&app);
 #if !defined(Q_OS_ANDROID)
         auto appService = AppService(insecureArg.isPresent());
 #endif
@@ -468,7 +466,6 @@ static int runApplication(int argc, const char *const *argv)
             SingleInstance::passArgsToRunningInstance(2, replaceArgs, SingleInstance::applicationId(), true);
         }
         auto singleInstance = SingleInstance(argc, argv, newInstanceArg.isPresent(), replaceArg.isPresent());
-        networkAccessManager().setParent(&singleInstance);
         QObject::connect(&singleInstance, &SingleInstance::newInstance, &runApplication);
         Settings::restore();
         auto &settings = Settings::values();
@@ -507,8 +504,9 @@ static int runApplication(int argc, const char *const *argv)
         }
 #ifdef SYNCTHINGTRAY_SETUP_TOOLS_ENABLED
         auto verificationErrorMsgBox = QtUtilities::VerificationErrorMessageBox();
+        auto updateNetworkAccessManager = QNetworkAccessManager();
         auto updateHandler = QtUtilities::UpdateHandler(
-            QString(), QStringLiteral(SYNCTHINGTRAY_SIGNATURE_EXTENSION), &Settings::settings(), &networkAccessManager());
+            QString(), QStringLiteral(SYNCTHINGTRAY_SIGNATURE_EXTENSION), &Settings::settings(), &updateNetworkAccessManager);
         updateHandler.updater()->setVerifier([&verificationErrorMsgBox](const QtUtilities::Updater::Update &update) {
             auto error = QString();
             if (update.signature.empty()) {

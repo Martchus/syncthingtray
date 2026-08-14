@@ -72,9 +72,6 @@ Application::Application()
     , m_idleTimeout(0)
     , m_argsRead(false)
 {
-    // take ownership over the global QNetworkAccessManager
-    networkAccessManager().setParent(this);
-
     // setup callbacks
     m_args.parser.setExitFunction(&exitApplication);
     m_args.status.setCallback(bind(&Application::printStatus, this, _1));

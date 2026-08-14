@@ -993,6 +993,7 @@ void App::connectToSyncthing()
 void App::reconnectToSyncthing()
 {
     emit info(tr("Triggered re-connect with Syncthing backend"));
+    m_data.connection()->clearConnectionCache();
     m_data.connection()->reconnect();
 #ifdef Q_OS_ANDROID
     sendMessageToService(ServiceAction::ReconnectToSyncthing);

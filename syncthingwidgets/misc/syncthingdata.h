@@ -8,6 +8,7 @@
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/syncthingnotifier.h>
 
+#include <QNetworkAccessManager>
 #include <QObject>
 #include <QtGlobal> // for "#include <QtVersion>" which is not yet present in Qt 5
 
@@ -90,6 +91,7 @@ public Q_SLOTS:
     void updateDeviceInfo();
 
 private:
+    QNetworkAccessManager m_qnam;
     Data::SyncthingConnection m_connection;
     Data::SyncthingNotifier m_notifier;
     StatusInfo m_statusInfo;

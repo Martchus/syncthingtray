@@ -133,6 +133,7 @@ bool AppBase::handleReconnectingToLaunched(const QUrl &url)
         m_data.connection()->setAutoReconnectInterval(0);
         m_data.connection()->disconnect();
     } else if (m_data.connection()->applySettings(m_connectionSettingsFromLauncher) || !m_data.connection()->isConnected()) {
+        m_data.connection()->clearConnectionCache();
         m_data.connection()->reconnect();
     }
     return true;
@@ -220,6 +221,7 @@ void AppBase::applyConnectionSettings(const QUrl &syncthingUrl)
     if (m_connectToLaunched) {
         handleGuiUrlChanged(syncthingUrl);
     } else if (m_data.connection()->applySettings(m_connectionSettingsFromConfig) || !m_data.connection()->isConnected()) {
+        m_data.connection()->clearConnectionCache();
         m_data.connection()->reconnect();
     }
 }

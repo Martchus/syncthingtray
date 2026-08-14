@@ -21,6 +21,7 @@ namespace QtGui {
 
 SyncthingData::SyncthingData(QObject *parent, bool textOnly, bool clickToConnect)
     : QObject(parent)
+    , m_connection(QStringLiteral("http://localhost:8080"), QByteArray(), Data::SyncthingConnectionLoggingFlags::FromEnvironment, &m_qnam)
     , m_notifier(m_connection)
     , m_statusInfo(textOnly, clickToConnect)
 {
