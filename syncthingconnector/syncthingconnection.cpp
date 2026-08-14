@@ -47,7 +47,8 @@ namespace Data {
 
 #ifndef LIB_SYNCTHING_CONNECTOR_MOCKED
 /*!
- * \brief Returns the QNetworkAccessManager instance used by SyncthingConnection instances.
+ * \brief Returns the QNetworkAccessManager instance used by SyncthingConnection instances if no network access
+ *        manager is passed to the constructor.
  */
 QNetworkAccessManager &networkAccessManager()
 {
@@ -80,8 +81,9 @@ QNetworkAccessManager &networkAccessManager()
  * \brief Constructs a new instance ready to connect. To establish the connection, call connect().
  */
 SyncthingConnection::SyncthingConnection(
-    const QString &syncthingUrl, const QByteArray &apiKey, SyncthingConnectionLoggingFlags loggingFlags, QObject *parent)
+    const QString &syncthingUrl, const QByteArray &apiKey, SyncthingConnectionLoggingFlags loggingFlags, QNetworkAccessManager *qnam, QObject *parent)
     : QObject(parent)
+    , m_qnam(qnam ? qnam : &Data::networkAccessManager())
     , m_syncthingUrl(syncthingUrl)
     , m_apiKey(apiKey)
     , m_status(SyncthingStatus::Disconnected)

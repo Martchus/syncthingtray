@@ -189,7 +189,8 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
 
 public:
     explicit SyncthingConnection(const QString &syncthingUrl = QStringLiteral("http://localhost:8080"), const QByteArray &apiKey = QByteArray(),
-        SyncthingConnectionLoggingFlags loggingFlags = SyncthingConnectionLoggingFlags::FromEnvironment, QObject *parent = nullptr);
+        SyncthingConnectionLoggingFlags loggingFlags = SyncthingConnectionLoggingFlags::FromEnvironment,
+        QNetworkAccessManager *networkAccessManager = nullptr, QObject *parent = nullptr);
     ~SyncthingConnection() override;
 
     /// \brief The QueryResult struct is used to return the reply and associated signal/slot-connection of certain requests.
@@ -219,6 +220,7 @@ public:
     };
 
     // getter/setter for various properties
+    QNetworkAccessManager &networkAccessManager();
     const QString &syncthingUrl() const;
     void setSyncthingUrl(const QString &url);
     const QString &localPath() const;
@@ -563,6 +565,7 @@ private:
     QString folderErrorsPath() const;
     bool checkConnectionConfiguration();
 
+    QNetworkAccessManager *m_qnam;
     QString m_syncthingUrl;
     QString m_localPath;
     QByteArray m_apiKey;
@@ -661,6 +664,14 @@ private:
 #endif
     bool m_insecure;
 };
+
+/*!
+ * \brief Returns the QNetworkAccessManager used by this SyncthingConnection.
+ */
+inline QNetworkAccessManager &SyncthingConnection::networkAccessManager()
+{
+    return *m_qnam;
+}
 
 /*!
  * \brief Returns the URL used to connect to Syncthing.
