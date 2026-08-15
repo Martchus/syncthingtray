@@ -494,6 +494,7 @@ bool WizardTests::confirmMessageBox()
     const auto allToplevelWidgets = QApplication::topLevelWidgets();
     for (auto *const w : allToplevelWidgets) {
         if (auto *const mb = qobject_cast<QMessageBox *>(w)) {
+            mb->setDefaultButton(QMessageBox::Yes); // ensure consistent behavior independent from the platform default
             QTest::keyClick(mb, Qt::Key_Enter);
             return true;
         }
