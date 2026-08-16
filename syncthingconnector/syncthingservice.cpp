@@ -116,7 +116,14 @@ SyncthingService::SyncthingService(SystemdScope scope, QObject *parent)
     // initialize handling of metered connections
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
     if (const auto [networkInformation, isInitiallyMetered] = loadNetworkInformationBackendForMetered(true); networkInformation) {
-        connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, [this](bool isMetered) { setNetworkConnectionMetered(isMetered); });
+        connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, [this](bool isMetered) {
+#ifdef Q_OS_ANDROID
+            Q_UNUSED(isMetered)
+            setNetworkConnectionMetered(Data::isNetworkConnectionMetered());
+#else
+            setNetworkConnectionMetered(isMetered);
+#endif
+        });
         setNetworkConnectionMetered(isInitiallyMetered);
     }
 #endif

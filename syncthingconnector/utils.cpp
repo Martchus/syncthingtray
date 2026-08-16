@@ -304,17 +304,35 @@ std::pair<const QNetworkInformation *, bool> loadNetworkInformationBackendForMet
     // detect the initial status of whether the network connection is metered manually under Android because QNetworkInformation always
     // returns false on startup with no way to know when it has been initialized
     if (determineInitialValue && !isInitiallyMetered) {
-        if (const auto context = QNativeInterface::QAndroidApplication::context(); context.isValid()) {
-            auto env = QJniEnvironment();
-            if (auto method = env.findMethod(context.objectClass(), "isNetworkConnectionMetered", "()Z")) {
-                isInitiallyMetered = env->CallBooleanMethod(context.object(), method) == JNI_TRUE;
-            }
-        }
+        isInitiallyMetered = isNetworkConnectionMetered().value_or(false);
     }
 #else
     Q_UNUSED(determineInitialValue)
 #endif
     return std::make_pair(backend, isInitiallyMetered);
+}
+
+/*!
+ * \brief Returns whether the current network connection is metered.
+ * \remarks The network information backend needs to be initialized before, e.g. via loadNetworkInformationBackendForMetered().
+ */
+std::optional<bool> isNetworkConnectionMetered()
+{
+#ifdef Q_OS_ANDROID
+    if (const auto context = QNativeInterface::QAndroidApplication::context(); context.isValid()) {
+        auto env = QJniEnvironment();
+        if (auto method = env.findMethod(context.objectClass(), "isNetworkConnectionMetered", "()Z")) {
+            return std::make_optional(env->CallBooleanMethod(context.object(), method) == JNI_TRUE);
+        }
+    }
+    qDebug() << "Unable to determine whether network connection is metered.";
+    return std::nullopt;
+#else
+    const auto *const networkInformation = QNetworkInformation::instance();
+    return networkInformation && networkInformation->supports(QNetworkInformation::Feature::Metered)
+        ? std::make_optional(networkInformation->isMetered())
+        : std::nullopt;
+#endif
 }
 #endif
 

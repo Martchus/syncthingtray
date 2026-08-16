@@ -10,6 +10,7 @@
 #include <QUrl>
 
 #include <limits>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -47,6 +48,7 @@ LIB_SYNCTHING_CONNECTOR_EXPORT QString substituteTilde(const QString &path, cons
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
 LIB_SYNCTHING_CONNECTOR_EXPORT std::pair<const QNetworkInformation *, bool> loadNetworkInformationBackendForMetered(
     bool determineInitialValue = false);
+LIB_SYNCTHING_CONNECTOR_EXPORT std::optional<bool> isNetworkConnectionMetered();
 #endif
 
 /*!

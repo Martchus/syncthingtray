@@ -377,6 +377,7 @@ bool SyncthingConnection::setPausingOnMeteredConnection(bool pausingOnMeteredCon
         if (!m_forceSuspend && !m_handlingMeteredConnectionInitialized) {
             if (const auto [networkInformation, isMetered] = loadNetworkInformationBackendForMetered(); networkInformation) {
                 QObject::connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, &SyncthingConnection::handleMeteredConnection);
+                m_handlingMeteredConnectionInitialized = true;
                 return lazy || suspendOrResume(isMetered);
             }
         }
@@ -422,13 +423,8 @@ bool SyncthingConnection::handleMeteredConnection()
         return suspendOrResume(false);
     }
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
-    const auto *const networkInformation = QNetworkInformation::instance();
-    if (networkInformation
-#ifndef Q_OS_ANDROID // see comment in loadNetworkInformationBackendForMetered()
-        && networkInformation->supports(QNetworkInformation::Feature::Metered)
-#endif
-    ) {
-        return suspendOrResume(networkInformation->isMetered());
+    if (const auto metered = Data::isNetworkConnectionMetered(); metered.has_value()) {
+        return suspendOrResume(metered.value());
     }
 #endif
     return false;
