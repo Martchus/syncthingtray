@@ -743,7 +743,7 @@ bool SyncthingConnection::suspendOrResume(bool suspend)
         disableOption(QStringLiteral("relaysEnabled"), options, changedOptions);
         if (hasDevicesToPause || !changedOptions.isEmpty()) {
             config = m_rawConfig;
-            if (!changedOptions.isEmpty()) {
+            if (const auto currentOptions = m_rawConfig.value(QLatin1String("options")).toObject(); options != currentOptions) {
                 config.insert(QStringLiteral("options"), options);
                 altered = true;
             }
