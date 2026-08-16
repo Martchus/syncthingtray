@@ -1518,6 +1518,10 @@ SyncthingCompletion SyncthingConnection::computeOverallRemoteCompletion() const
  */
 void Data::SyncthingConnection::SuspendedItems::clear()
 {
+    const auto path = locatePersistentFile(populatedForDeviceId);
+    if (!path.isEmpty() && QFileInfo::exists(path)) {
+        QFile::remove(path);
+    }
     devIds.clear();
     changedOptions = QJsonObject();
     populatedForDeviceId.clear();
