@@ -376,7 +376,11 @@ bool SyncthingConnection::setPausingOnMeteredConnection(bool pausingOnMeteredCon
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
         if (!m_forceSuspend && !m_handlingMeteredConnectionInitialized) {
             if (const auto [networkInformation, isMetered] = loadNetworkInformationBackendForMetered(); networkInformation) {
-                QObject::connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, &SyncthingConnection::handleMeteredConnection);
+                QObject::connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, [this](bool isMetered2) {
+                    if (m_pausingOnMeteredConnection && !m_forceSuspend) {
+                        suspendOrResume(isMetered2);
+                    }
+                });
                 m_handlingMeteredConnectionInitialized = true;
                 return lazy || suspendOrResume(isMetered);
             }
