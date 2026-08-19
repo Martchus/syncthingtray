@@ -803,6 +803,61 @@ void ConnectionTests::testSuspendResume()
     }
     CPPUNIT_ASSERT(configBackToNormal);
 
+    // check whether we can still pause a device normally
+    cerr << "\n - Triggering pause after resuming after suspension ...\n";
+    auto errorConn3 = connectionSignal(&SyncthingConnection::error);
+    auto newConfigConn3 = connectionSignal(&SyncthingConnection::newConfig, handleNewConfig, &hasNewConfig);
+    auto triggeredPause = false;
+    auto devIdToPause = QStringLiteral("6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4");
+    auto handleDevicePauseTriggered = [&triggeredPause, &devIdToPause] (const QStringList &deviceIds) {
+        if (deviceIds.contains(devIdToPause)) {
+            triggeredPause = true;
+        }
+    };
+    auto pauseTriggeredConn
+        = connectionSignal(&SyncthingConnection::devicePauseTriggered, handleDevicePauseTriggered, &triggeredPause);
+    hasNewConfig = false;
+    waitForSignalsOrFail(
+        [this, &devIdToPause] { m_connection.pauseDevice(QStringList({devIdToPause})); }, 10000, errorConn3, newConfigConn3, pauseTriggeredConn);
+
+    // suspend Syncthing again
+    cerr << "\n - Suspending Syncthing again after pausing device manually ...\n";
+    auto errorConn4 = connectionSignal(&SyncthingConnection::error);
+    auto newConfigConn4 = connectionSignal(&SyncthingConnection::newConfig, handleNewConfig, &hasNewConfig);
+    auto suspendTriggeredConn4
+        = connectionSignal(&SyncthingConnection::suspensionOrResumeTriggered, handleSuspensionOrResumeTriggered, &hasSuspensionOrResumeTriggered);
+    hasNewConfig = false;
+    triggeringSuspension = true;
+    waitForSignalsOrFail(
+        [this] { CPPUNIT_ASSERT(m_connection.setForceSuspendEnabled(true)); }, 10000, errorConn4, newConfigConn4, suspendTriggeredConn4);
+
+    // resume Syncthing again
+    cerr << "\n - Resuming Syncthing again (manually paused dev supposed to stay paused) ...\n";
+    hasNewConfig = false;
+    triggeringSuspension = false;
+    auto errorConn5 = connectionSignal(&SyncthingConnection::error);
+    auto newConfigConn5 = connectionSignal(&SyncthingConnection::newConfig, handleNewConfig, &hasNewConfig);
+    auto suspendTriggeredConn5
+        = connectionSignal(&SyncthingConnection::suspensionOrResumeTriggered, handleSuspensionOrResumeTriggered, &hasSuspensionOrResumeTriggered);
+    waitForSignalsOrFail(
+        [this] { CPPUNIT_ASSERT(m_connection.setForceSuspendEnabled(false)); }, 10000, errorConn5, newConfigConn5, suspendTriggeredConn5);
+
+    // check whether all options/devices are resumed (except for manually paused dev)
+    const auto &resumedRawConfig = m_connection.rawConfig();
+    const auto resumedOptions = resumedRawConfig.value(QLatin1String("options")).toObject();
+    CPPUNIT_ASSERT(resumedOptions.value(QLatin1String("globalAnnounceEnabled")).toBool());
+    CPPUNIT_ASSERT(resumedOptions.value(QLatin1String("localAnnounceEnabled")).toBool());
+    CPPUNIT_ASSERT(resumedOptions.value(QLatin1String("relaysEnabled")).toBool());
+    const auto resumedDevices = resumedRawConfig.value(QLatin1String("devices")).toArray();
+    for (const auto &deviceVal : resumedDevices) {
+        const auto device = deviceVal.toObject();
+        const auto deviceId = device.value(QLatin1String("deviceID")).toString();
+        CPPUNIT_ASSERT(!deviceId.isEmpty());
+        if (deviceId != myId) {
+            CPPUNIT_ASSERT_EQUAL(deviceId == devIdToPause, device.value(QLatin1String("paused")).toBool());
+        }
+    }
+
     auto suspendedItemsDir = QDir(dataDir().path());
     CPPUNIT_ASSERT_MESSAGE("persistent storage created", suspendedItemsDir.cd(QStringLiteral("suspended-items")));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("persistent storage cleaned up", QStringList(), suspendedItemsDir.entryList(QDir::NoDotAndDotDot));
