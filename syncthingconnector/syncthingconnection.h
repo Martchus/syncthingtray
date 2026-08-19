@@ -630,7 +630,7 @@ private:
         QStringList devIds;
         QJsonObject changedOptions;
         QString populatedForDeviceId;
-        void clear();
+        void clear(bool onDisk = false);
         bool restore(const QString &thisDeviceId);
         bool save();
 

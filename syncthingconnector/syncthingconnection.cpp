@@ -1520,11 +1520,12 @@ SyncthingCompletion SyncthingConnection::computeOverallRemoteCompletion() const
 /*!
  * \brief Clears all fields.
  */
-void Data::SyncthingConnection::SuspendedItems::clear()
+void Data::SyncthingConnection::SuspendedItems::clear(bool onDisk)
 {
-    const auto path = locatePersistentFile(populatedForDeviceId);
-    if (!path.isEmpty() && QFileInfo::exists(path)) {
-        QFile::remove(path);
+    if (onDisk) {
+        if (const auto path = locatePersistentFile(populatedForDeviceId); !path.isEmpty()) {
+            QFile::remove(path);
+        }
     }
     devIds.clear();
     changedOptions = QJsonObject();
@@ -1596,6 +1597,9 @@ bool SyncthingConnection::SuspendedItems::save()
  */
 QString SyncthingConnection::SuspendedItems::locatePersistentFile(const QString &thisDeviceId)
 {
+    if (thisDeviceId.isEmpty()) {
+        return QString();
+    }
     if (!m_persistentDir.has_value()) {
         static const auto subDir = QStringLiteral("/suspended-items");
         const auto pathFromEnv = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_LOCAL_DATA_DIR");

@@ -808,10 +808,11 @@ void SyncthingConnection::readSuspend()
     const auto suspend = reply->property("suspend").toBool();
     switch (reply->error()) {
     case QNetworkReply::NoError:
-        if (!suspend) {
-            m_suspendedItems.clear();
+        if (suspend) {
+            m_suspendedItems.save();
+        } else {
+            m_suspendedItems.clear(true);
         }
-        m_suspendedItems.save();
         emit suspensionOrResumeTriggered(suspend);
         break;
     default:
