@@ -751,7 +751,7 @@ void ConnectionTests::testSuspendResume()
             hasNewConfig = true;
         }
     });
-    const auto handlesuspensionOrResumeTriggered = [&hasSuspensionOrResumeTriggered, &triggeringSuspension](bool suspend) {
+    const auto handleSuspensionOrResumeTriggered = [&hasSuspensionOrResumeTriggered, &triggeringSuspension](bool suspend) {
         if (triggeringSuspension == suspend) {
             hasSuspensionOrResumeTriggered = true;
         }
@@ -761,16 +761,16 @@ void ConnectionTests::testSuspendResume()
     auto errorConn = connectionSignal(&SyncthingConnection::error);
     auto newConfigConn = connectionSignal(&SyncthingConnection::newConfig, handleNewConfig, &hasNewConfig);
     auto suspendTriggeredConn
-        = connectionSignal(&SyncthingConnection::suspensionOrResumeTriggered, handlesuspensionOrResumeTriggered, &hasSuspensionOrResumeTriggered);
+        = connectionSignal(&SyncthingConnection::suspensionOrResumeTriggered, handleSuspensionOrResumeTriggered, &hasSuspensionOrResumeTriggered);
     waitForSignalsOrFail(
         [this] { CPPUNIT_ASSERT(m_connection.setForceSuspendEnabled(true)); }, 10000, errorConn, newConfigConn, suspendTriggeredConn);
 
     // check whether options/devices have been altered as expected
     const auto &alteredRawConfig = m_connection.rawConfig();
-    const auto alteredOptions = rawConfig.value(QLatin1String("options")).toObject();
-    CPPUNIT_ASSERT(alteredOptions.value(QLatin1String("globalAnnounceEnabled")).toBool());
-    CPPUNIT_ASSERT(alteredOptions.value(QLatin1String("localAnnounceEnabled")).toBool());
-    CPPUNIT_ASSERT(alteredOptions.value(QLatin1String("relaysEnabled")).toBool());
+    const auto alteredOptions = alteredRawConfig.value(QLatin1String("options")).toObject();
+    CPPUNIT_ASSERT(!alteredOptions.value(QLatin1String("globalAnnounceEnabled")).toBool());
+    CPPUNIT_ASSERT(!alteredOptions.value(QLatin1String("localAnnounceEnabled")).toBool());
+    CPPUNIT_ASSERT(!alteredOptions.value(QLatin1String("relaysEnabled")).toBool());
     const auto alteredDevices = alteredRawConfig.value(QLatin1String("devices")).toArray();
     for (const auto &deviceVal : alteredDevices) {
         const auto device = deviceVal.toObject();
@@ -791,7 +791,7 @@ void ConnectionTests::testSuspendResume()
     auto errorConn2 = connectionSignal(&SyncthingConnection::error);
     auto newConfigConn2 = connectionSignal(&SyncthingConnection::newConfig, handleNewConfig, &hasNewConfig);
     auto suspendTriggeredConn2
-        = connectionSignal(&SyncthingConnection::suspensionOrResumeTriggered, handlesuspensionOrResumeTriggered, &hasSuspensionOrResumeTriggered);
+        = connectionSignal(&SyncthingConnection::suspensionOrResumeTriggered, handleSuspensionOrResumeTriggered, &hasSuspensionOrResumeTriggered);
     waitForSignalsOrFail(
         [this] { CPPUNIT_ASSERT(m_connection.setForceSuspendEnabled(false)); }, 10000, errorConn2, newConfigConn2, suspendTriggeredConn2);
 
