@@ -14,42 +14,47 @@
     <name>DevicesPage</name>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="64"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="71"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="79"/>
         <source>Resume</source>
         <translation>恢复</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="64"/>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="116"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="71"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="130"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="79"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="138"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="102"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="116"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="124"/>
         <source>Copy name</source>
         <translation>复制名字</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="107"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="121"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="129"/>
         <source>Copy ID</source>
         <translation>复制 ID</translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="136"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="16"/>
+        <source>Filter devices</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="144"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="142"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="150"/>
         <source>Out of Sync items</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="147"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="155"/>
         <source>Advanced config</source>
         <translation type="unfinished"></translation>
     </message>
@@ -58,81 +63,81 @@
     <name>DirectoriesPage</name>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="22"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="23"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="16"/>
         <source>Filter folders</source>
         <translation>过滤文件夹</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="83"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="91"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="211"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="84"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="204"/>
         <source>Show errors</source>
         <translation>显示错误</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="94"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="163"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="102"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="177"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="95"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="170"/>
         <source>Rescan</source>
         <translation>重新扫描</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="102"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="110"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="103"/>
         <source>Resume</source>
         <translation>恢复</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="102"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="170"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="110"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="184"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="103"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="177"/>
         <source>Pause</source>
         <translation>暂停</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="112"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="177"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="120"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="191"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="113"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="184"/>
         <source>Open in file browser</source>
         <translation>在文件浏览器中打开</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="149"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="163"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="156"/>
         <source>Copy label/ID</source>
         <translation>复制标签/ID</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="154"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="168"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="161"/>
         <source>Copy path</source>
         <translation>复制路径</translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="197"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="190"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="204"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="197"/>
         <source>Out of Sync items</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="218"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="211"/>
         <source>Browse remote files</source>
         <translation>浏览远程文件</translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="225"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="218"/>
         <source>Show/edit ignore patterns</source>
         <translation>显示/编辑忽略模式</translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="231"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="224"/>
         <source>Advanced config</source>
         <translation type="unfinished"></translation>
     </message>
@@ -232,31 +237,31 @@
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="248"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="269"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="283"/>
         <source>Global</source>
         <translation>全局</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="255"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="276"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="290"/>
         <source>Global incoming traffic</source>
         <translation>全局下载流量</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="273"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="294"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="308"/>
         <source>Local</source>
         <translation>本地</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="280"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="301"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="315"/>
         <source>Global outgoing traffic</source>
         <translation>本地上传流量</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="106"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="127"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="141"/>
         <source>Toggle filter</source>
         <translation>切换过滤器</translation>
     </message>

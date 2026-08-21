@@ -748,42 +748,39 @@
 <context>
     <name>Data::SyncthingLauncher</name>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="151"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="159"/>
         <source>Syncthing is running</source>
         <translation>Syncthing est en cours d&apos;exécution</translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="153"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="161"/>
         <source>Syncthing is temporarily stopped due to metered connection</source>
         <translation>Syncthing est temporairement arrêté en raison d&apos;une connexion mesurée</translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="155"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="163"/>
         <source>Syncthing exited with status %1</source>
         <translation>Syncthing s&apos;est arrêté avec le statut %1</translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="157"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="165"/>
         <source>Syncthing is not running</source>
         <translation>Syncthing n&apos;est pas en cours d&apos;exécution</translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="180"/>
         <source>Network connection is metered</source>
-        <translation>La connexion réseau est mesurée</translation>
+        <translation type="vanished">La connexion réseau est mesurée</translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="180"/>
         <source>Network connection is not metered</source>
-        <translation>La connexion réseau n&apos;est pas mesurée</translation>
+        <translation type="vanished">La connexion réseau n&apos;est pas mesurée</translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="182"/>
         <source>State of network connection cannot be determined</source>
-        <translation>L&apos;état de la connexion réseau ne peut pas être déterminé</translation>
+        <translation type="vanished">L&apos;état de la connexion réseau ne peut pas être déterminé</translation>
     </message>
     <message>
-        <location filename="../misc/syncthinglauncher.cpp" line="251"/>
+        <location filename="../misc/syncthinglauncher.cpp" line="202"/>
         <source>Not built with libsyncthing support.</source>
         <translation>Non compilé avec le support libsyncthing.</translation>
     </message>
@@ -2772,7 +2769,7 @@
         <translation>Impossible de déterminer si la connexion réseau est mesurée ; on suppose une connexion non mesurée.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1888"/>
+        <location filename="../settings/settingsdialog.cpp" line="1882"/>
         <source>Unable to restart via &quot;%1&quot;: %2</source>
         <translation>Impossible de redémarrer via « %1 » : %2</translation>
     </message>
@@ -2825,292 +2822,292 @@
         <translation>Sauvegarde de la configuration …</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="636"/>
+        <location filename="../quick/app.cpp" line="634"/>
         <source>Unable to minimize app.</source>
         <translation>Impossible de minimiser l&apos;application.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="667"/>
+        <location filename="../quick/app.cpp" line="665"/>
         <source>Unable to save settings: </source>
         <translation>Impossible de sauvegarder les paramètres : </translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="728"/>
+        <location filename="../quick/app.cpp" line="726"/>
         <source>App settings saved</source>
         <translation>Paramètres de l&apos;application sauvegardés</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="754"/>
+        <location filename="../quick/app.cpp" line="752"/>
         <source>No logfile present anyway</source>
         <translation>Pas de fichier journal présent de toute façon</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="760"/>
+        <location filename="../quick/app.cpp" line="758"/>
         <source>Waiting for backend to terminate before clearing logs …</source>
         <translation>En attente de la terminaison du backend avant d&apos;effacer les journaux …</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="769"/>
+        <location filename="../quick/app.cpp" line="767"/>
         <source>Persistent logging disabled and logfile removed</source>
         <translation>Journalisation persistante désactivée et fichier journal supprimé</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="771"/>
+        <location filename="../quick/app.cpp" line="769"/>
         <source>Unable to remove logfile</source>
         <translation>Impossible de supprimer le fichier journal</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="803"/>
+        <location filename="../quick/app.cpp" line="801"/>
         <source>Another import/export still pending</source>
         <translation>Un autre import/export toujours en attente</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="843"/>
+        <location filename="../quick/app.cpp" line="841"/>
         <source>Settings directory was not located.</source>
         <translation>Le répertoire des paramètres n&apos;a pas été trouvé.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="863"/>
+        <location filename="../quick/app.cpp" line="861"/>
         <source>Unable to extract archive: %1</source>
         <translation>Impossible d&apos;extraire l&apos;archive : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="868"/>
+        <location filename="../quick/app.cpp" line="866"/>
         <source>Unable to create temp dir: %1</source>
         <translation>Impossible de créer le rép. temp : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="872"/>
+        <location filename="../quick/app.cpp" line="870"/>
         <source>archiving is only supported on Android.</source>
         <translation>L&apos;archivage n&apos;est supporté que sur Android.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="896"/>
+        <location filename="../quick/app.cpp" line="894"/>
         <source>The Syncthing home directory under &quot;%1&quot; is empty.</source>
         <translation>Le répertoire personnel de Syncthing sous « %1 » est vide.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="909"/>
+        <location filename="../quick/app.cpp" line="907"/>
         <source>No Syncthing configuration file found under &quot;%1&quot;.</source>
         <translation>Aucun fichier de configuration Syncthing trouvé sous « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="997"/>
+        <location filename="../quick/app.cpp" line="995"/>
         <source>Triggered re-connect with Syncthing backend</source>
         <translation>Reconnexion déclenchée avec le backend Syncthing</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1016"/>
+        <location filename="../quick/app.cpp" line="1015"/>
         <source>Unable to import settings: settings directory was not located.</source>
         <translation>Impossible d&apos;importer les paramètres : le répertoire des paramètres n&apos;a pas été trouvé.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1023"/>
+        <location filename="../quick/app.cpp" line="1022"/>
         <source>Waiting for backend to terminate before importing settings …</source>
         <translation>En attente de la terminaison du backend avant d&apos;importer les paramètres …</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1067"/>
+        <location filename="../quick/app.cpp" line="1066"/>
         <source>Imported app config from &quot;%1&quot;.</source>
         <translation>Configuration de l&apos;application importée depuis « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1080"/>
+        <location filename="../quick/app.cpp" line="1079"/>
         <source>Imported Syncthing config and database from &quot;%1&quot;.</source>
         <translation>Configuration Syncthing et base de données importées depuis « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1098"/>
+        <location filename="../quick/app.cpp" line="1097"/>
         <source>Unable to find folders/devices in current Syncthing config.</source>
         <translation>Impossible de trouver les dossiers/appareils dans la configuration Syncthing actuelle.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1114"/>
+        <location filename="../quick/app.cpp" line="1113"/>
         <source>Merging %1 folders and %2 devices</source>
         <translation>Fusion de %1 dossiers et %2 appareils</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1116"/>
+        <location filename="../quick/app.cpp" line="1115"/>
         <source>Unable to import folders/devices.</source>
         <translation>Impossible d&apos;importer les dossiers/appareils.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1125"/>
+        <location filename="../quick/app.cpp" line="1124"/>
         <source>Unable to remove temp dir: %1</source>
         <translation>Impossible de supprimer le rép. temp : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1131"/>
+        <location filename="../quick/app.cpp" line="1130"/>
         <source>Nothing has been imported.</source>
         <translation>Rien n&apos;a été importé.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1141"/>
+        <location filename="../quick/app.cpp" line="1140"/>
         <source>Unable to import settings: %1</source>
         <translation>Impossible d&apos;importer les paramètres : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1186"/>
+        <location filename="../quick/app.cpp" line="1185"/>
         <source>Waiting for backend to terminate before exporting settings …</source>
         <translation>En attente de la terminaison du backend avant d&apos;exporter les paramètres …</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1202"/>
+        <location filename="../quick/app.cpp" line="1201"/>
         <source>settings directory was not located.</source>
         <translation>Le répertoire des paramètres n&apos;a pas été trouvé.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1208"/>
+        <location filename="../quick/app.cpp" line="1207"/>
         <source>no destination or file or directory specified/configured.</source>
         <translation>aucune destination ou fichier ou répertoire spécifié/configuré.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1220"/>
+        <location filename="../quick/app.cpp" line="1219"/>
         <source>Settings have been archived to &quot;%1&quot;.</source>
         <translation>Les paramètres ont été archivés vers « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1222"/>
+        <location filename="../quick/app.cpp" line="1221"/>
         <source>Archiving is only supported on Android.</source>
         <translation>L&apos;archivage n&apos;est supporté que sur Android.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1228"/>
+        <location filename="../quick/app.cpp" line="1227"/>
         <source>unable to create export directory under &quot;%1&quot;</source>
         <translation>impossible de créer le répertoire d&apos;export sous « %1 »</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1241"/>
+        <location filename="../quick/app.cpp" line="1240"/>
         <source>Settings have been exported to &quot;%1&quot;.</source>
         <translation>Les paramètres ont été exportés vers « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1248"/>
+        <location filename="../quick/app.cpp" line="1247"/>
         <source>Unable to export settings: %1</source>
         <translation>Impossible d&apos;exporter les paramètres : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1310"/>
+        <location filename="../quick/app.cpp" line="1309"/>
         <source>Default directory</source>
         <translation>Répertoire par défaut</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1326"/>
+        <location filename="../quick/app.cpp" line="1325"/>
         <source>External storage %1</source>
         <translation>Stockage externe %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1335"/>
+        <location filename="../quick/app.cpp" line="1334"/>
         <source>Current home directory</source>
         <translation>Répertoire personnel actuel</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1365"/>
+        <location filename="../quick/app.cpp" line="1364"/>
         <source>Unable to move Syncthing home: settings directory was not located.</source>
         <translation>Impossible de déplacer le répertoire personnel Syncthing : le répertoire des paramètres n&apos;a pas été trouvé.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1371"/>
+        <location filename="../quick/app.cpp" line="1370"/>
         <source>Waiting for backend to terminate before moving home …</source>
         <translation>En attente de la terminaison du backend avant de déplacer le répertoire personnel …</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1394"/>
+        <location filename="../quick/app.cpp" line="1393"/>
         <source>Home directory stays the same.</source>
         <translation>Le répertoire personnel reste le même.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1405"/>
+        <location filename="../quick/app.cpp" line="1404"/>
         <source>Cleaned up new home directory &quot;%1&quot;.</source>
         <translation>Nettoyé le nouveau répertoire personnel « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1411"/>
+        <location filename="../quick/app.cpp" line="1410"/>
         <source>Copied data from previous home directory &quot;%1&quot; to new one.</source>
         <translation>Données copiées de l&apos;ancien répertoire personnel « %1 » vers le nouveau.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1414"/>
+        <location filename="../quick/app.cpp" line="1413"/>
         <source>Cleaned up previous home directory.</source>
         <translation>Nettoyé l&apos;ancien répertoire personnel.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1417"/>
+        <location filename="../quick/app.cpp" line="1416"/>
         <source>Configured &quot;%1&quot; as new/empty Syncthing home.</source>
         <translation>Configuré « %1 » comme nouveau répertoire personnel Syncthing vide.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1419"/>
+        <location filename="../quick/app.cpp" line="1418"/>
         <source>Configured &quot;%1&quot; as Syncthing home.</source>
         <translation>Configuré « %1 » comme répertoire personnel Syncthing.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1423"/>
+        <location filename="../quick/app.cpp" line="1422"/>
         <source>Unable to move home directory: %1</source>
         <translation>Impossible de déplacer le répertoire personnel : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1461"/>
+        <location filename="../quick/app.cpp" line="1460"/>
         <source>Debugging needs to be enabled under advanced GUI settings first.</source>
         <translation>Le débogage doit d&apos;abord être activé dans les paramètres avancés de l&apos;interface.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1468"/>
+        <location filename="../quick/app.cpp" line="1467"/>
         <source>No destination or file or directory specified/configured.</source>
         <translation>Aucune destination ou fichier ou répertoire spécifié/configuré.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1477"/>
+        <location filename="../quick/app.cpp" line="1476"/>
         <source>Unable to open output file under &quot;%1&quot;: %2</source>
         <translation>Impossible d&apos;ouvrir le fichier de sortie sous « %1 » : %2</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1495"/>
+        <location filename="../quick/app.cpp" line="1494"/>
         <source>Unable to write bundle: %1</source>
         <translation>Impossible d&apos;écrire le bundle : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1498"/>
+        <location filename="../quick/app.cpp" line="1497"/>
         <source>Unable to download bundle: %1</source>
         <translation>Impossible de télécharger le bundle : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1501"/>
+        <location filename="../quick/app.cpp" line="1500"/>
         <source>Support bundle saved</source>
         <translation>Bundle de support sauvegardé</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1530"/>
+        <location filename="../quick/app.cpp" line="1529"/>
         <source>Removed old database directory.</source>
         <translation>Ancien répertoire de base de données supprimé.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1532"/>
+        <location filename="../quick/app.cpp" line="1531"/>
         <source>Unable to remove old database directory.</source>
         <translation>Impossible de supprimer l&apos;ancien répertoire de base de données.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1547"/>
+        <location filename="../quick/app.cpp" line="1546"/>
         <source>Unable to remove all support bundles.</source>
         <translation>Impossible de supprimer tous les bundles de support.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1551"/>
+        <location filename="../quick/app.cpp" line="1550"/>
         <source>Support bundles have been removed.</source>
         <translation>Les bundles de support ont été supprimés.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1567"/>
+        <location filename="../quick/app.cpp" line="1566"/>
         <source>Unable to remove leftovers from import under &quot;%1&quot;.</source>
         <translation>Impossible de supprimer les restes de l&apos;import sous « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1572"/>
+        <location filename="../quick/app.cpp" line="1571"/>
         <source>Removed leftovers from import.</source>
         <translation>Restes de l&apos;import supprimés.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1577"/>
+        <location filename="../quick/app.cpp" line="1576"/>
         <source>There was nothing to clean up.</source>
         <translation>Il n&apos;y avait rien à nettoyer.</translation>
     </message>
@@ -3154,22 +3151,22 @@
         <translation>Impossible de créer le répertoire des paramètres sous « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/appbase.cpp" line="146"/>
+        <location filename="../quick/appbase.cpp" line="162"/>
         <source>Unable to read settings: </source>
         <translation>Impossible de lire les paramètres : </translation>
     </message>
     <message>
-        <location filename="../quick/appbase.cpp" line="155"/>
+        <location filename="../quick/appbase.cpp" line="171"/>
         <source>Unable to restore settings: </source>
         <translation>Impossible de restaurer les paramètres : </translation>
     </message>
     <message>
-        <location filename="../quick/appbase.cpp" line="156"/>
+        <location filename="../quick/appbase.cpp" line="172"/>
         <source>JSON document contains no object</source>
         <translation>Le document JSON ne contient pas d&apos;objet</translation>
     </message>
     <message>
-        <location filename="../quick/appbase.cpp" line="199"/>
+        <location filename="../quick/appbase.cpp" line="215"/>
         <source>Unable to load HTTPs certificate</source>
         <translation>Impossible de charger le certificat HTTPS</translation>
     </message>
@@ -3182,22 +3179,22 @@
         <translation>Le backend démarre …</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="207"/>
+        <location filename="../quick/appservice.cpp" line="210"/>
         <source>Unable to open persistent log file for Syncthing under &quot;%1&quot;: %2</source>
         <translation>Impossible d&apos;ouvrir le fichier journal persistant pour Syncthing sous « %1 » : %2</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="218"/>
+        <location filename="../quick/appservice.cpp" line="221"/>
         <source>This build of the app cannot launch Syncthing.</source>
         <translation>Cette version de l&apos;application ne peut pas lancer Syncthing.</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="297"/>
+        <location filename="../quick/appservice.cpp" line="300"/>
         <source>Syncthing App ran into error</source>
         <translation>L&apos;application Syncthing a rencontré une erreur</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="413"/>
+        <location filename="../quick/appservice.cpp" line="416"/>
         <source>An error occurred when running Syncthing: %2
 </source>
         <translation>Une erreur s&apos;est produite lors de l&apos;exécution de Syncthing : %2
@@ -3638,32 +3635,32 @@
         <translation>Supprimer l&apos;entrée existante</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="924"/>
+        <location filename="../settings/settingsdialog.cpp" line="921"/>
         <source>This is achieved by adding a *.desktop file under &lt;i&gt;~/.config/autostart&lt;/i&gt; so the setting only affects the current user.</source>
         <translation>Pour cela, un fichier *.desktop est ajouté sous &lt;i&gt;~/.config/autostart&lt;/i&gt;, donc ce paramètre n&apos;affecte que l&apos;utilisateur actuel.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="927"/>
+        <location filename="../settings/settingsdialog.cpp" line="924"/>
         <source>This is achieved by adding a registry key under &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt; so the setting only affects the current user. Note that the startup entry is invalidated when moving &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</source>
         <translation>Pour cela, une clé de registre est ajoutée sous &lt;i&gt;HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run&lt;/i&gt;, donc ce paramètre n&apos;affecte que l&apos;utilisateur actuel. Notez que l&apos;entrée de démarrage est invalidée lors du déplacement de &lt;i&gt;syncthingtray.exe&lt;/i&gt;.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="931"/>
+        <location filename="../settings/settingsdialog.cpp" line="928"/>
         <source>This is achieved by adding a *.plist file under &lt;i&gt;~/Library/LaunchAgents&lt;/i&gt; so the setting only affects the current user.</source>
         <translation>Pour cela, un fichier *.plist est ajouté sous &lt;i&gt;~/Library/LaunchAgents&lt;/i&gt;, donc ce paramètre n&apos;affecte que l&apos;utilisateur actuel.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="935"/>
+        <location filename="../settings/settingsdialog.cpp" line="932"/>
         <source>This feature has not been implemented for your platform (yet).</source>
         <translation>Cette fonctionnalité n&apos;a pas encore été implémentée pour votre plateforme.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1153"/>
+        <location filename="../settings/settingsdialog.cpp" line="1150"/>
         <source>unable to modify startup entry</source>
         <translation>impossible de modifier l&apos;entrée de démarrage</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1183"/>
+        <location filename="../settings/settingsdialog.cpp" line="1180"/>
         <source>There is already an autostart entry for &quot;%1&quot;. It will not be overridden when applying changes unless you delete it first.</source>
         <translation>Il existe déjà une entrée d&apos;autodémarrage pour « %1 ». Elle ne sera pas remplacée lors de l&apos;application des modifications sauf si vous la supprimez d&apos;abord.</translation>
     </message>
@@ -3727,7 +3724,7 @@
     <name>QtGui::BuiltinWebViewOptionPage</name>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="1830"/>
+        <location filename="../settings/settingsdialog.cpp" line="1824"/>
         <source>Built-in web view</source>
         <translation>Vue web intégrée</translation>
     </message>
@@ -3747,7 +3744,7 @@
         <translation>Garder la vue web en cours d&apos;exécution lorsqu&apos;elle n&apos;est pas actuellement affichée</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1832"/>
+        <location filename="../settings/settingsdialog.cpp" line="1826"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
         <translation>Syncthing Tray n&apos;a pas été compilé avec le support de la vue web utilisant Qt WebKit ou Qt WebEngine.</translation>
     </message>
@@ -4015,22 +4012,22 @@
         <translation>Sélectionner le fichier de configuration manuellement</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="181"/>
+        <location filename="../settings/settingsdialog.cpp" line="182"/>
         <source>Select Syncthing config file</source>
         <translation>Sélectionner le fichier de configuration Syncthing</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="189"/>
+        <location filename="../settings/settingsdialog.cpp" line="190"/>
         <source>Unable to parse the Syncthing config file.</source>
         <translation>Impossible d&apos;analyser le fichier de configuration Syncthing.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="283"/>
+        <location filename="../settings/settingsdialog.cpp" line="285"/>
         <source>Unable to load specified certificate &quot;%1&quot;.</source>
         <translation>Impossible de charger le certificat spécifié « %1 ».</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="309"/>
+        <location filename="../settings/settingsdialog.cpp" line="311"/>
         <source>Instance %1</source>
         <translation>Instance %1</translation>
     </message>
@@ -4274,12 +4271,12 @@
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1806"/>
+        <location filename="../settings/settingsdialog.cpp" line="1800"/>
         <source>Custom command to launch Syncthing&apos;s UI - </source>
         <translation>Commande personnalisée pour lancer l&apos;interface Syncthing - </translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1807"/>
+        <location filename="../settings/settingsdialog.cpp" line="1801"/>
         <source>&lt;p&gt;Enter a custom command to launch Syncthing&apos;s UI. The expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; will be replaced with the Syncthing-URL.&lt;/p&gt;&lt;p&gt;Leave the command empty to use the auto-detection.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Entrez une commande personnalisée pour lancer l&apos;interface Syncthing. L&apos;expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; sera remplacée par l&apos;URL Syncthing.&lt;/p&gt;&lt;p&gt;Laissez la commande vide pour utiliser la auto-détection.&lt;/p&gt;</translation>
     </message>
@@ -4360,57 +4357,57 @@
 <context>
     <name>QtGui::IconsOptionPageBase</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="726"/>
+        <location filename="../settings/settingsdialog.cpp" line="723"/>
         <source>UI icons</source>
         <translation>Icônes de l&apos;interface</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="732"/>
+        <location filename="../settings/settingsdialog.cpp" line="729"/>
         <source>System icons</source>
         <translation>Icônes du système</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="728"/>
+        <location filename="../settings/settingsdialog.cpp" line="725"/>
         <source>These icon settings are used within Syncthing Tray&apos;s UI.</source>
         <translation>Ces paramètres d&apos;icône sont utilisés dans l&apos;interface Syncthing Tray.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="733"/>
+        <location filename="../settings/settingsdialog.cpp" line="730"/>
         <source>These icon settings are used for the system tray icon and the notifications.</source>
         <translation>Ces paramètres d&apos;icône sont utilisés pour l&apos;icône de la barre système et les notifications.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="735"/>
+        <location filename="../settings/settingsdialog.cpp" line="732"/>
         <source>Use same settings as for UI icons</source>
         <translation>Utiliser les mêmes paramètres que pour les icônes de l&apos;interface</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="796"/>
+        <location filename="../settings/settingsdialog.cpp" line="793"/>
         <source>Colorful background with gradient (default)</source>
         <translation>Arrière-plan coloré avec dégradé (par défaut)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="802"/>
+        <location filename="../settings/settingsdialog.cpp" line="799"/>
         <source>Transparent background and dark foreground (for bright themes)</source>
         <translation>Arrière-plan transparent et premier plan sombre (pour les thèmes clairs)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="808"/>
+        <location filename="../settings/settingsdialog.cpp" line="805"/>
         <source>Transparent background and bright foreground (for dark themes)</source>
         <translation>Arrière-plan transparent et premier plan clair (pour les thèmes sombres)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="871"/>
+        <location filename="../settings/settingsdialog.cpp" line="868"/>
         <source>Select colors manually (no longer follow system palette)</source>
         <translation>Sélectionner les couleurs manuellement (ne suit plus la palette du système)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="872"/>
+        <location filename="../settings/settingsdialog.cpp" line="869"/>
         <source>Transparent background and foreground depending on system palette</source>
         <translation>Arrière-plan transparent et premier plan selon la palette du système</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="829"/>
+        <location filename="../settings/settingsdialog.cpp" line="826"/>
         <source>%1 px (scaled to %2 px)</source>
         <translation>%1 px (mis à l&apos;échelle à %2 px)</translation>
     </message>
@@ -4561,7 +4558,7 @@
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="271"/>
-        <location filename="../settings/settingsdialog.cpp" line="1405"/>
+        <location filename="../settings/settingsdialog.cpp" line="1402"/>
         <source>Stop launched instance</source>
         <translation>Arrêter l&apos;instance lancée</translation>
     </message>
@@ -4576,57 +4573,57 @@
         <translation>S&apos;assurer que le dernier journal est visible</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1258"/>
+        <location filename="../settings/settingsdialog.cpp" line="1255"/>
         <source>%1-launcher</source>
         <translation>%1-lanceur</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1259"/>
+        <location filename="../settings/settingsdialog.cpp" line="1256"/>
         <source>Launch %1 when starting the tray icon</source>
         <translation>Lancer %1 lors du démarrage de l&apos;icône de barre</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1262"/>
+        <location filename="../settings/settingsdialog.cpp" line="1259"/>
         <source>%1 executable</source>
         <translation>Exécutable %1</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1263"/>
+        <location filename="../settings/settingsdialog.cpp" line="1260"/>
         <source>%1 log (interleaved stdout/stderr)</source>
         <translation>Journal %1 (stdout/stderr entrelacés)</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1274"/>
+        <location filename="../settings/settingsdialog.cpp" line="1271"/>
         <source>Leave empty for default path</source>
         <translation>Laisser vide pour le chemin par défaut</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1286"/>
+        <location filename="../settings/settingsdialog.cpp" line="1283"/>
         <source>Restore default</source>
         <translation>Restaurer par défaut</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1292"/>
+        <location filename="../settings/settingsdialog.cpp" line="1289"/>
         <source>Show Syncthing releases/downloads</source>
         <translation>Afficher les versions/téléchargements Syncthing</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1440"/>
+        <location filename="../settings/settingsdialog.cpp" line="1437"/>
         <source>%1 exited with exit code %2</source>
         <translation>%1 s&apos;est terminé avec le code de sortie %2</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1443"/>
+        <location filename="../settings/settingsdialog.cpp" line="1440"/>
         <source>%1 crashed with exit code %2</source>
         <translation>%1 a planté avec le code de sortie %2</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1476"/>
+        <location filename="../settings/settingsdialog.cpp" line="1473"/>
         <source>An error occurred when running %1: %2</source>
         <translation>Une erreur s&apos;est produite lors de l&apos;exécution de %1 : %2</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1529"/>
+        <location filename="../settings/settingsdialog.cpp" line="1526"/>
         <source>Kill launched instance</source>
         <translation>Terminer l&apos;instance lancée</translation>
     </message>
@@ -4833,7 +4830,7 @@
         <translation> s</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="494"/>
+        <location filename="../settings/settingsdialog.cpp" line="496"/>
         <source>Configured to use D-Bus notifications but D-Bus notification daemon seems unavailabe.</source>
         <translation>Configuré pour utiliser les notifications D-Bus mais le démon de notification D-Bus semble indisponible.</translation>
     </message>
@@ -4954,7 +4951,7 @@
 <context>
     <name>QtGui::QuickUI</name>
     <message>
-        <location filename="../quick/quickui.cpp" line="495"/>
+        <location filename="../quick/quickui.cpp" line="469"/>
         <source>Settings</source>
         <translation>Paramètres</translation>
     </message>
@@ -4962,37 +4959,37 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1920"/>
+        <location filename="../settings/settingsdialog.cpp" line="1914"/>
         <source>Tray</source>
         <translation>Barre</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1928"/>
+        <location filename="../settings/settingsdialog.cpp" line="1922"/>
         <source>Web view</source>
         <translation>Vue web</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1935"/>
+        <location filename="../settings/settingsdialog.cpp" line="1929"/>
         <source>Startup</source>
         <translation>Démarrage</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1937"/>
+        <location filename="../settings/settingsdialog.cpp" line="1931"/>
         <source>additional tool</source>
         <translation>outil supplémentaire</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1937"/>
+        <location filename="../settings/settingsdialog.cpp" line="1931"/>
         <source>Extra launcher</source>
         <translation>Lanceur supplémentaire</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1978"/>
+        <location filename="../settings/settingsdialog.cpp" line="1972"/>
         <source>Settings</source>
         <translation>Paramètres</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1984"/>
+        <location filename="../settings/settingsdialog.cpp" line="1978"/>
         <source>Start wizard</source>
         <translation>Démarrer l&apos;assistant</translation>
     </message>
@@ -5111,7 +5108,7 @@
 <context>
     <name>QtGui::SyncthingData</name>
     <message>
-        <location filename="../misc/syncthingdata.h" line="68"/>
+        <location filename="../misc/syncthingdata.h" line="69"/>
         <source>not available</source>
         <translation>non disponible</translation>
     </message>
@@ -5244,8 +5241,8 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
         <location filename="../settings/systemdoptionpage.ui" line="117"/>
         <location filename="../settings/systemdoptionpage.ui" line="172"/>
         <location filename="../settings/systemdoptionpage.ui" line="261"/>
-        <location filename="../settings/settingsdialog.cpp" line="1689"/>
-        <location filename="../settings/settingsdialog.cpp" line="1698"/>
+        <location filename="../settings/settingsdialog.cpp" line="1686"/>
+        <location filename="../settings/settingsdialog.cpp" line="1695"/>
         <source>unknown</source>
         <translation>inconnu</translation>
     </message>
@@ -5285,27 +5282,27 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
         <translation>Service système</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1565"/>
+        <location filename="../settings/settingsdialog.cpp" line="1562"/>
         <source>Reload all unit files</source>
         <translation>Recharger tous les fichiers de service</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1624"/>
+        <location filename="../settings/settingsdialog.cpp" line="1621"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation>Il n&apos;est pas possible d&apos;afficher le bouton démarrer/arrêter pour le service systemd et le lanceur interne en même temps. Le service systemd est prioritaire.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1630"/>
+        <location filename="../settings/settingsdialog.cpp" line="1627"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation>Il n&apos;est pas possible de prendre en compte le service systemd et le lanceur interne pour les reconnexions en même temps. Le service systemd est prioritaire.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1662"/>
+        <location filename="../settings/settingsdialog.cpp" line="1659"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
         <translation>le service spécifié est soit inactif soit n&apos;existe pas</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1684"/>
+        <location filename="../settings/settingsdialog.cpp" line="1681"/>
         <source>since </source>
         <translation>depuis </translation>
     </message>
@@ -5332,7 +5329,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
 <context>
     <name>QtGui::WebPage</name>
     <message>
-        <location filename="../webview/webpage.cpp" line="499"/>
+        <location filename="../webview/webpage.cpp" line="500"/>
         <source>Select path for Syncthing directory …</source>
         <translation>Sélectionner le chemin du répertoire Syncthing…</translation>
     </message>
@@ -5655,7 +5652,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
 <context>
     <name>Settings::Connection</name>
     <message>
-        <location filename="../settings/settings.cpp" line="688"/>
+        <location filename="../settings/settings.cpp" line="713"/>
         <source>Backup of %1 (created by wizard)</source>
         <translation>Sauvegarde de %1 (créée par l&apos;assistant)</translation>
     </message>
@@ -5663,7 +5660,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../settings/settings.cpp" line="326"/>
+        <location filename="../settings/settings.cpp" line="342"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation>Impossible de charger le certificat « %1 » lors de la restauration des paramètres.</translation>
     </message>
