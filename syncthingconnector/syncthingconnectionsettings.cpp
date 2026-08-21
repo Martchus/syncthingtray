@@ -88,9 +88,6 @@ bool SyncthingConnectionSettings::loadFromJson(const QJsonObject &object)
     if (object.value(QLatin1String("pauseOnMeteredConnection")).toBool()) {
         enabledConditions += RuntimeCondition::Conditions::Metered;
     }
-    if (advanced.value(QLatin1String("forceSuspend")).toBool()) {
-        enabledConditions += RuntimeCondition::Conditions::ForceSuspend;
-    }
 #ifndef QT_NO_SSL
     httpsCertPath = object.value(QLatin1String("httpsCertPath")).toString();
     httpCertLastModified = QDateTime();
