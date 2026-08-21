@@ -157,9 +157,10 @@ QWidget *ConnectionOptionPage::setupWidget()
     QObject::connect(ui()->removePushButton, &QPushButton::clicked, bind(&ConnectionOptionPage::removeSelectedConfig, this));
     QObject::connect(ui()->advancedCheckBox, &QCheckBox::toggled, bind(&ConnectionOptionPage::toggleAdvancedSettings, this, std::placeholders::_1));
     const auto *const launcher = SyncthingLauncher::mainInstance();
-    configureMeteredCheckbox(ui()->pauseOnMeteredConnectionCheckBox, launcher ? launcher->isNetworkConnectionMetered() : std::nullopt);
+    configureMeteredCheckbox(
+        ui()->pauseOnMeteredConnectionCheckBox, launcher ? launcher->runtimeCondition()->isNetworkConnectionMetered() : std::nullopt);
     if (launcher) {
-        QObject::connect(launcher, &SyncthingLauncher::networkConnectionMeteredChanged,
+        QObject::connect(launcher->runtimeCondition(), &RuntimeCondition::networkConnectionMeteredChanged,
             bind(&configureMeteredCheckbox, ui()->pauseOnMeteredConnectionCheckBox, std::placeholders::_1));
     }
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
@@ -244,7 +245,7 @@ bool ConnectionOptionPage::showConnectionSettings(int index)
     ui()->pollErrorsSpinBox->setValue(connectionSettings.errorsPollInterval);
     ui()->reconnectSpinBox->setValue(connectionSettings.reconnectInterval);
     ui()->autoConnectCheckBox->setChecked(connectionSettings.autoConnect);
-    ui()->pauseOnMeteredConnectionCheckBox->setChecked(connectionSettings.pauseOnMeteredConnection);
+    ui()->pauseOnMeteredConnectionCheckBox->setChecked(connectionSettings.enabledConditions && RuntimeCondition::Conditions::Metered);
     m_statusComputionModel->setStatusComputionFlags(connectionSettings.statusComputionFlags);
     setCurrentIndex(index);
     return true;
@@ -276,7 +277,8 @@ bool ConnectionOptionPage::cacheCurrentSettings(bool applying)
     connectionSettings.errorsPollInterval = ui()->pollErrorsSpinBox->value();
     connectionSettings.reconnectInterval = ui()->reconnectSpinBox->value();
     connectionSettings.autoConnect = ui()->autoConnectCheckBox->isChecked();
-    connectionSettings.pauseOnMeteredConnection = ui()->pauseOnMeteredConnectionCheckBox->isChecked();
+    CppUtilities::modFlagEnum(
+        connectionSettings.enabledConditions, RuntimeCondition::Conditions::Metered, ui()->pauseOnMeteredConnectionCheckBox->isChecked());
     connectionSettings.statusComputionFlags = m_statusComputionModel->statusComputionFlags();
 #ifndef QT_NO_SSL
     if (!connectionSettings.loadHttpsCert()) {
@@ -1321,8 +1323,8 @@ QWidget *LauncherOptionPage::setupWidget()
         connect(ui()->logLevelComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this,
             &LauncherOptionPage::updateLibSyncthingLogLevel);
 #endif
-        configureMeteredCheckbox(ui()->stopOnMeteredCheckBox, m_launcher->isNetworkConnectionMetered());
-        connect(m_launcher, &SyncthingLauncher::networkConnectionMeteredChanged, this,
+        configureMeteredCheckbox(ui()->stopOnMeteredCheckBox, m_launcher->runtimeCondition()->isNetworkConnectionMetered());
+        connect(m_launcher->runtimeCondition(), &RuntimeCondition::networkConnectionMeteredChanged, this,
             std::bind(&configureMeteredCheckbox, ui()->stopOnMeteredCheckBox, std::placeholders::_1));
 
         m_launcher->setEmittingOutput(true);
@@ -1351,7 +1353,7 @@ bool LauncherOptionPage::apply()
         settings.showButton = ui()->showButtonCheckBox->isChecked();
         settings.stopOnMeteredConnection = ui()->stopOnMeteredCheckBox->isChecked();
         if (m_launcher) {
-            m_launcher->setStoppingOnMeteredConnection(settings.stopOnMeteredConnection);
+            m_launcher->runtimeCondition()->setEnabledConditions(settings.runtimeConditions());
         }
     } else {
         auto &params = settings.tools[m_tool];
@@ -1586,7 +1588,7 @@ QWidget *SystemdOptionPage::setupWidget()
 #else
             int
 #endif
-                checkState) { s->setStoppingOnMeteredConnection(checkState == Qt::Checked); });
+                checkState) { s->runtimeCondition()->modEnabledConditions(RuntimeCondition::Conditions::Metered, checkState == Qt::Checked); });
     m_unitChangedConn
         = QObject::connect(ui()->systemUnitCheckBox, &QCheckBox::clicked, m_service, bind(&SystemdOptionPage::handleSystemUnitChanged, this));
     m_descChangedConn
@@ -1598,8 +1600,8 @@ QWidget *SystemdOptionPage::setupWidget()
     if (const auto *optionPageWidget = qobject_cast<OptionPageWidget *>(widget)) {
         QObject::connect(optionPageWidget, &OptionPageWidget::paletteChanged, std::bind(&SystemdOptionPage::updateColors, this));
     }
-    configureMeteredCheckbox(ui()->stopOnMeteredCheckBox, m_service->isNetworkConnectionMetered());
-    QObject::connect(m_service, &SyncthingService::networkConnectionMeteredChanged,
+    configureMeteredCheckbox(ui()->stopOnMeteredCheckBox, m_service->runtimeCondition()->isNetworkConnectionMetered());
+    QObject::connect(m_service->runtimeCondition(), &RuntimeCondition::networkConnectionMeteredChanged,
         std::bind(&configureMeteredCheckbox, ui()->stopOnMeteredCheckBox, std::placeholders::_1));
     return widget;
 }

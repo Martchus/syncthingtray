@@ -101,7 +101,7 @@ AppService::AppService(bool insecure, QObject *parent)
     connect(&m_launcher, &SyncthingLauncher::runningChanged, this, &AppService::broadcastLauncherStatus);
     connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &AppService::handleGuiUrlChanged);
     connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &AppService::broadcastLauncherStatus);
-    connect(&m_launcher, &SyncthingLauncher::networkConnectionMeteredChanged, this, &AppService::broadcastLauncherStatus);
+    connect(m_launcher.runtimeCondition(), &RuntimeCondition::networkConnectionMeteredChanged, this, &AppService::broadcastLauncherStatus);
 
 #ifdef Q_OS_ANDROID
     connect(m_data.notifier(), &SyncthingNotifier::newDevice, this, &AppService::showNewDevice);
@@ -171,7 +171,10 @@ bool AppService::applyLauncherSettings()
 {
     const auto launcherSettingsObj = m_settings.value(QLatin1String("launcher")).toObject();
     const auto tweaksSettingsObj = m_settings.value(QLatin1String("tweaks")).toObject();
-    m_launcher.setStoppingOnMeteredConnection(launcherSettingsObj.value(QLatin1String("stopOnMetered")).toBool());
+    auto *const cond = m_launcher.runtimeCondition();
+    auto flags = cond->enabledConditions();
+    CppUtilities::modFlagEnum(flags, Data::RuntimeCondition::Conditions::Metered, launcherSettingsObj.value(QLatin1String("stopOnMetered")).toBool());
+    cond->setEnabledConditions(flags);
     const auto shouldRun = launcherSettingsObj.value(QLatin1String("run")).toBool();
     const auto exePath = launcherSettingsObj.value(QLatin1String("exePath")).toString();
     const auto useUnixDomainSocket = tweaksSettingsObj.value(QLatin1String("useUnixDomainSocket")).toBool();

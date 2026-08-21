@@ -13,10 +13,6 @@
 #include <QMetaObject>
 #include <QtConcurrentRun>
 
-#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
-#include <QNetworkInformation>
-#endif
-
 #include <algorithm>
 #include <functional>
 #include <iostream>
@@ -63,7 +59,6 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
     , m_stoppedMetered(false)
     , m_emittingOutput(false)
     , m_useLibSyncthing(false)
-    , m_stopOnMeteredConnection(false)
 {
     connect(&m_process, &SyncthingProcess::readyRead, this, &SyncthingLauncher::handleProcessReadyRead, Qt::QueuedConnection);
     connect(&m_process, static_cast<void (SyncthingProcess::*)(int exitCode, QProcess::ExitStatus exitStatus)>(&SyncthingProcess::finished), this,
@@ -75,13 +70,25 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
     connect(&m_startWatcher, &QFutureWatcher<std::int64_t>::finished, this, &SyncthingLauncher::handleLibSyncthingFinished);
 #endif
 
-    // initialize handling of metered connections
-#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
-    if (const auto [networkInformation, isInitiallyMetered] = loadNetworkInformationBackendForMetered(true); networkInformation) {
-        connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, [this](bool isMetered) { setNetworkConnectionMetered(isMetered); });
-        setNetworkConnectionMetered(isInitiallyMetered);
-    }
+    connect(&m_runtimeCondition, &RuntimeCondition::supposedToRunChanged, this, [this](bool supposedToRun) {
+        if (!supposedToRun) {
+            terminateDueToMeteredConnection();
+        } else if (m_stoppedMetered) {
+#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
+            if (m_lastLauncherSettings) {
+                launch(*m_lastLauncherSettings);
+            }
 #endif
+#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS) && defined(SYNCTHINGWIDGETS_USE_LIBSYNCTHING)
+            else
+#endif
+#if defined(SYNCTHINGWIDGETS_USE_LIBSYNCTHING)
+                if (m_lastRuntimeOptions) {
+                launch(*m_lastRuntimeOptions);
+            }
+#endif
+        }
+    });
 }
 
 /*!
@@ -127,7 +134,7 @@ void SyncthingLauncher::setRunning(bool running, LibSyncthing::RuntimeOptions &&
 {
     // check runtime conditions
     auto shouldBeRunning = running;
-    if (isStoppingOnMeteredConnection() && isNetworkConnectionMetered().value_or(false)) {
+    if (!m_runtimeCondition.isSupposedToRun()) {
         m_stoppedMetered = running;
         shouldBeRunning = false;
     }
@@ -170,70 +177,6 @@ void SyncthingLauncher::setEmittingOutput(bool emittingOutput)
     QByteArray data;
     m_outputBuffer.swap(data);
     emit outputAvailable(std::move(data));
-}
-
-/*!
- * \brief Returns a short status message about whether the network connection is metered.
- */
-QString SyncthingLauncher::meteredStatus() const
-{
-    if (m_metered.has_value()) {
-        return m_metered.value() ? tr("Network connection is metered") : tr("Network connection is not metered");
-    } else {
-        return tr("State of network connection cannot be determined");
-    }
-}
-
-/*!
- * \brief Sets whether the current network connection is metered and stops/starts Syncthing accordingly as needed.
- * \remarks
- * - This is detected and monitored automatically. A manually set value will be overridden again on the next change.
- * - One may set this manually for testing purposes or in case the automatic detection is not supported (then
- *   isNetworkConnectionMetered() returns a std::optional<bool> without value).
- */
-void SyncthingLauncher::setNetworkConnectionMetered(std::optional<bool> metered)
-{
-    if (metered != m_metered) {
-        m_metered = metered;
-        if (m_stopOnMeteredConnection) {
-            if (metered.value_or(false)) {
-                terminateDueToMeteredConnection();
-            } else if (!metered.value_or(true) && m_stoppedMetered) {
-#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
-                if (m_lastLauncherSettings) {
-                    launch(*m_lastLauncherSettings);
-                }
-#endif
-#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS) && defined(SYNCTHINGWIDGETS_USE_LIBSYNCTHING)
-                else
-#endif
-#if defined(SYNCTHINGWIDGETS_USE_LIBSYNCTHING)
-                    if (m_lastRuntimeOptions) {
-                    launch(*m_lastRuntimeOptions);
-                }
-#endif
-            }
-        }
-        qDebug() << "Metered state changed:" <<
-#if QT_VERSION >= QT_VERSION_CHECK(6, 7, 0)
-            metered
-#else
-            metered.value_or(false)
-#endif
-            ;
-        emit networkConnectionMeteredChanged(metered);
-    }
-}
-
-/*!
- * \brief Sets whether Syncthing should automatically be stopped as long as the network connection is metered.
- */
-void SyncthingLauncher::setStoppingOnMeteredConnection(bool stopOnMeteredConnection)
-{
-    if ((stopOnMeteredConnection != m_stopOnMeteredConnection) && (m_stopOnMeteredConnection = stopOnMeteredConnection)
-        && m_metered.value_or(false)) {
-        terminateDueToMeteredConnection();
-    }
 }
 
 /*!
@@ -319,7 +262,7 @@ void SyncthingLauncher::launch(const Settings::Launcher &launcherSettings)
     } else {
         launch(launcherSettings.syncthingPath, SyncthingProcess::splitArguments(launcherSettings.syncthingArgs));
     }
-    m_stopOnMeteredConnection = launcherSettings.stopOnMeteredConnection;
+    m_runtimeCondition.setEnabledConditions(launcherSettings.runtimeConditions());
     m_lastLauncherSettings = &launcherSettings;
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     m_lastRuntimeOptions.reset();
@@ -569,7 +512,7 @@ void SyncthingLauncher::handleOutputAvailable(int logLevel, const QByteArray &da
  */
 bool SyncthingLauncher::shouldBeRunningAccordingToRuntimeConditions(bool runningEnabled)
 {
-    if (isStoppingOnMeteredConnection() && isNetworkConnectionMetered().value_or(false)) {
+    if (!m_runtimeCondition.isSupposedToRun()) {
         m_stoppedMetered = runningEnabled;
         return false;
     }
@@ -638,7 +581,7 @@ void SyncthingLauncher::showLibSyncthingNotSupported(QByteArray &&reason)
 
 QVariantMap SyncthingLauncher::overallStatus() const
 {
-    const auto isMetered = isNetworkConnectionMetered();
+    const auto isMetered = m_runtimeCondition.isNetworkConnectionMetered();
     return QVariantMap{
         { QStringLiteral("isRunning"), isRunning() },
         { QStringLiteral("isStarting"), isStarting() },
@@ -647,7 +590,7 @@ QVariantMap SyncthingLauncher::overallStatus() const
         { QStringLiteral("errorString"), errorString() },
         { QStringLiteral("runningStatus"), runningStatus() },
         { QStringLiteral("isMetered"), isMetered.has_value() ? QVariant(isMetered.value()) : QVariant() },
-        { QStringLiteral("meteredStatus"), meteredStatus() },
+        { QStringLiteral("meteredStatus"), m_runtimeCondition.meteredStatus() },
     };
 }
 

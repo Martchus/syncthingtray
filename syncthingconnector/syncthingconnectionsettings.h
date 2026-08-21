@@ -2,6 +2,7 @@
 #define SYNCTHINGCONNECTIONSETTINGS_H
 
 #include "./global.h"
+#include "./runtimecondition.h"
 
 #include <c++utilities/misc/flagenumclass.h>
 
@@ -59,9 +60,8 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     QList<QSslError> expectedSslErrors;
 #endif
     SyncthingStatusComputionFlags statusComputionFlags = SyncthingStatusComputionFlags::Default;
+    RuntimeCondition::Conditions enabledConditions = RuntimeCondition::Conditions::None;
     bool autoConnect = false;
-    bool pauseOnMeteredConnection = false;
-    bool forceSuspend = false;
 #ifndef QT_NO_SSL
     static QList<QSslError> compileSslErrors(const QSslCertificate &trustedCert);
     bool loadHttpsCert();

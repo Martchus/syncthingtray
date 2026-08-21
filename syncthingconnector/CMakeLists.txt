@@ -10,6 +10,7 @@ set(META_PUBLIC_QT_MODULES Core Network)
 
 # add project files
 set(HEADER_FILES
+    runtimecondition.h
     syncthingcompletion.h
     syncthingdir.h
     syncthingdev.h
@@ -25,6 +26,7 @@ set(HEADER_FILES
     qstringhash.h
     utils.h)
 set(SRC_FILES
+    runtimecondition.cpp
     syncthingdir.cpp
     syncthingdev.cpp
     syncthingconnection.cpp

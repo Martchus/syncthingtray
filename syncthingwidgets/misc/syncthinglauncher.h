@@ -7,6 +7,7 @@
 #include <syncthing/interface.h>
 #endif
 
+#include <syncthingconnector/runtimecondition.h>
 #include <syncthingconnector/syncthingprocess.h>
 
 #include <c++utilities/io/buffersearch.h>
@@ -44,11 +45,8 @@ class SYNCTHINGWIDGETS_EXPORT SyncthingLauncher : public QObject {
     Q_PROPERTY(CppUtilities::DateTime activeSince READ activeSince)
     Q_PROPERTY(bool manuallyStopped READ isManuallyStopped WRITE setManuallyStopped)
     Q_PROPERTY(bool emittingOutput READ isEmittingOutput WRITE setEmittingOutput)
-    Q_PROPERTY(std::optional<bool> networkConnectionMetered READ isNetworkConnectionMetered WRITE setNetworkConnectionMetered NOTIFY
-            networkConnectionMeteredChanged)
-    Q_PROPERTY(QString meteredStatus READ meteredStatus NOTIFY networkConnectionMeteredChanged)
     Q_PROPERTY(QString runningStatus READ runningStatus NOTIFY runningChanged)
-    Q_PROPERTY(bool stoppingOnMeteredConnection READ isStoppingOnMeteredConnection WRITE setStoppingOnMeteredConnection)
+    Q_PROPERTY(Data::RuntimeCondition *runtimeCondition READ runtimeCondition CONSTANT)
     Q_PROPERTY(QUrl guiUrl READ guiUrl NOTIFY guiUrlChanged)
     Q_PROPERTY(SyncthingProcess *process READ process)
 
@@ -72,11 +70,6 @@ public:
     void setManualStopHandler(std::function<bool(void)> &&handler);
     bool isEmittingOutput() const;
     void setEmittingOutput(bool emittingOutput);
-    std::optional<bool> isNetworkConnectionMetered() const;
-    QString meteredStatus() const;
-    void setNetworkConnectionMetered(std::optional<bool> metered);
-    bool isStoppingOnMeteredConnection() const;
-    void setStoppingOnMeteredConnection(bool stopOnMeteredConnection);
     bool shouldLaunchAccordingToSettings() const;
     QString errorString() const;
     QUrl guiUrl() const;
@@ -91,6 +84,8 @@ public:
     void setLibSyncthingLogLevel(const QString &logLevel, LibSyncthing::LogLevel fallbackLogLevel = LibSyncthing::LogLevel::Info);
 #endif
     static bool isLibSyncthingAvailable();
+    Data::RuntimeCondition *runtimeCondition();
+    const Data::RuntimeCondition *runtimeCondition() const;
     static SyncthingLauncher *mainInstance();
     static void setMainInstance(SyncthingLauncher *mainInstance);
     static QString libSyncthingVersionInfo();
@@ -107,7 +102,6 @@ Q_SIGNALS:
     void exited(int exitCode, QProcess::ExitStatus exitStatus);
     void errorOccurred(QProcess::ProcessError error);
     void guiUrlChanged(const QUrl &newUrl);
-    void networkConnectionMeteredChanged(std::optional<bool> isMetered);
 
 public Q_SLOTS:
     void launch(const QString &program, const QStringList &arguments);
@@ -163,8 +157,7 @@ private:
     bool m_stoppedMetered;
     bool m_emittingOutput;
     bool m_useLibSyncthing;
-    bool m_stopOnMeteredConnection;
-    std::optional<bool> m_metered;
+    Data::RuntimeCondition m_runtimeCondition;
     std::optional<SyncthingExitStatus> m_lastExitStatus;
     static SyncthingLauncher *s_mainInstance;
 };
@@ -249,26 +242,23 @@ inline bool SyncthingLauncher::isEmittingOutput() const
     return m_emittingOutput;
 }
 
-/// \brief Returns whether the current network connection is metered.
-/// \remarks Returns an std::optional<bool> without value if it is unknown whether the network connection is metered.
-inline std::optional<bool> SyncthingLauncher::isNetworkConnectionMetered() const
-{
-    return m_metered;
-}
-
-/// \brief Returns whether Syncthing should automatically be stopped as long as the network connection is metered.
-inline bool SyncthingLauncher::isStoppingOnMeteredConnection() const
-{
-    return m_stopOnMeteredConnection;
-}
-
 /// \brief Returns whether Syncthing is supposed to be launched according to settings.
 /// \remarks
 /// - The only relevant setting so far is isStoppingOnMeteredConnection().
 /// - One can still launch Syncthing via the launch() functions despite shouldLaunchAccordingToSettings() returning true.
 inline bool SyncthingLauncher::shouldLaunchAccordingToSettings() const
 {
-    return !isStoppingOnMeteredConnection() || !isNetworkConnectionMetered().value_or(false);
+    return m_runtimeCondition.isSupposedToRun();
+}
+
+inline Data::RuntimeCondition *SyncthingLauncher::runtimeCondition()
+{
+    return &m_runtimeCondition;
+}
+
+inline const Data::RuntimeCondition *SyncthingLauncher::runtimeCondition() const
+{
+    return &m_runtimeCondition;
 }
 
 /// \brief Returns the last error message.

@@ -42,7 +42,7 @@ void SyncthingConnectionSettings::storeToJson(QJsonObject &object)
 {
     auto httpAuth = QJsonObject(), advanced = QJsonObject();
     object.insert(QLatin1String("syncthingUrl"), syncthingUrl);
-    object.insert(QLatin1String("pauseOnMeteredConnection"), pauseOnMeteredConnection);
+    object.insert(QLatin1String("pauseOnMeteredConnection"), enabledConditions && RuntimeCondition::Conditions::Metered);
     object.insert(QLatin1String("apiKey"), QString::fromUtf8(apiKey));
     httpAuth.insert(QLatin1String("enabled"), authEnabled);
     httpAuth.insert(QLatin1String("userName"), userName);
@@ -57,7 +57,7 @@ void SyncthingConnectionSettings::storeToJson(QJsonObject &object)
     advanced.insert(QLatin1String("longPollingTimeout"), longPollingTimeout);
     advanced.insert(QLatin1String("diskEventLimit"), diskEventLimit);
     advanced.insert(QLatin1String("autoConnect"), autoConnect);
-    advanced.insert(QLatin1String("forceSuspend"), forceSuspend);
+    advanced.insert(QLatin1String("forceSuspend"), enabledConditions && RuntimeCondition::Conditions::ForceSuspend);
     object.insert(QLatin1String("advanced"), advanced);
 #ifndef QT_NO_SSL
     object.insert(QLatin1String("httpsCertPath"), httpsCertPath);
@@ -70,7 +70,6 @@ bool SyncthingConnectionSettings::loadFromJson(const QJsonObject &object)
     const auto advanced = object.value(QLatin1String("advanced")).toObject();
     label.clear();
     syncthingUrl = object.value(QLatin1String("syncthingUrl")).toString();
-    pauseOnMeteredConnection = object.value(QLatin1String("pauseOnMeteredConnection")).toBool();
     apiKey = object.value(QLatin1String("apiKey")).toString().toUtf8();
     authEnabled = httpAuth.value(QLatin1String("enabled")).toBool();
     userName = httpAuth.value(QLatin1String("userName")).toString();
@@ -85,8 +84,13 @@ bool SyncthingConnectionSettings::loadFromJson(const QJsonObject &object)
     diskEventLimit = advanced.value(QLatin1String("diskEventLimit")).toInt(defaultDiskEventLimit);
     statusComputionFlags = SyncthingStatusComputionFlags::Default | SyncthingStatusComputionFlags::RemoteSynchronizing;
     autoConnect = advanced.value(QLatin1String("autoConnect")).toBool(true);
-    forceSuspend = advanced.value(QLatin1String("forceSuspend")).toBool(true);
-
+    enabledConditions = RuntimeCondition::Conditions::None;
+    if (object.value(QLatin1String("pauseOnMeteredConnection")).toBool()) {
+        enabledConditions += RuntimeCondition::Conditions::Metered;
+    }
+    if (advanced.value(QLatin1String("forceSuspend")).toBool()) {
+        enabledConditions += RuntimeCondition::Conditions::ForceSuspend;
+    }
 #ifndef QT_NO_SSL
     httpsCertPath = object.value(QLatin1String("httpsCertPath")).toString();
     httpCertLastModified = QDateTime();

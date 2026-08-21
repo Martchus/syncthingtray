@@ -1,6 +1,7 @@
 #ifndef SYNCTHINGCONNECTION_H
 #define SYNCTHINGCONNECTION_H
 
+#include "./runtimecondition.h"
 #include "./syncthingconnectionenums.h"
 #include "./syncthingconnectionstatus.h"
 #include "./syncthingdev.h"
@@ -181,8 +182,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnection : public QObject {
     Q_PROPERTY(bool guiRequiringAuth READ isGuiRequiringAuth NOTIFY newConfig)
     Q_PROPERTY(QJsonObject rawConfig READ rawConfig NOTIFY newConfig)
     Q_PROPERTY(bool useDeprecatedRoutes READ isUsingDeprecatedRoutes WRITE setUseDeprecatedRoutes)
-    Q_PROPERTY(bool pausingOnMeteredConnection READ isPausingOnMeteredConnection WRITE setPausingOnMeteredConnection)
-    Q_PROPERTY(bool forceSuspendEnabled READ isForceSuspendEnabled WRITE setForceSuspendEnabled)
+    Q_PROPERTY(Data::RuntimeCondition *runtimeCondition READ runtimeCondition CONSTANT)
     Q_PROPERTY(bool insecure READ isInsecure WRITE setInsecure)
 
 public:
@@ -273,10 +273,8 @@ public:
     void setLongPollingTimeout(int longPollingTimeout);
     int diskEventLimit() const;
     void setDiskEventLimit(int diskEventLimit);
-    bool isPausingOnMeteredConnection() const;
-    bool setPausingOnMeteredConnection(bool pausingOnMeteredConnection, bool lazy = false);
-    bool isForceSuspendEnabled() const;
-    bool setForceSuspendEnabled(bool forceSuspendEnabled, bool lazy = false);
+    RuntimeCondition *runtimeCondition();
+    const RuntimeCondition *runtimeCondition() const;
     bool isInsecure() const;
     void setInsecure(bool insecure);
     std::optional<QSet<QString>> &dirFilter();
@@ -516,7 +514,7 @@ private Q_SLOTS:
     void handleSslErrors(const QList<QSslError> &errors);
 #endif
     void handleRedirection(const QUrl &url);
-    bool handleMeteredConnection();
+    bool handleRuntimeConditionChanged();
     void recalculateStatus();
     void invalidateHasOutOfSyncDirs();
 
@@ -657,11 +655,7 @@ private:
     QJsonObject m_rawConfig;
     bool m_recordFileChanges;
     bool m_useDeprecatedRoutes;
-    bool m_pausingOnMeteredConnection;
-    bool m_forceSuspend;
-#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
-    bool m_handlingMeteredConnectionInitialized;
-#endif
+    RuntimeCondition m_runtimeCondition;
     bool m_insecure;
 };
 
@@ -1063,19 +1057,19 @@ inline void SyncthingConnection::setDiskEventLimit(int diskEventLimit)
 }
 
 /*!
- * \brief Returns whether to pause all devices, discovery and relaying on metered connections.
+ * \brief Returns the runtime condition used to determine whether Syncthing should be suspended.
  */
-inline bool SyncthingConnection::isPausingOnMeteredConnection() const
+inline RuntimeCondition *SyncthingConnection::runtimeCondition()
 {
-    return m_pausingOnMeteredConnection;
+    return &m_runtimeCondition;
 }
 
 /*!
- * \brief Returns whether to pause all devices, discovery and relaying when connecting.
+ * \brief Returns the runtime condition used to determine whether Syncthing should be suspended.
  */
-inline bool SyncthingConnection::isForceSuspendEnabled() const
+inline const RuntimeCondition *SyncthingConnection::runtimeCondition() const
 {
-    return m_forceSuspend;
+    return &m_runtimeCondition;
 }
 
 /*!

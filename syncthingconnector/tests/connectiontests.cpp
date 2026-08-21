@@ -762,8 +762,8 @@ void ConnectionTests::testSuspendResume()
     auto newConfigConn = connectionSignal(&SyncthingConnection::newConfig, handleNewConfig, &hasNewConfig);
     auto suspendTriggeredConn
         = connectionSignal(&SyncthingConnection::suspensionOrResumeTriggered, handleSuspensionOrResumeTriggered, &hasSuspensionOrResumeTriggered);
-    waitForSignalsOrFail(
-        [this] { CPPUNIT_ASSERT(m_connection.setForceSuspendEnabled(true)); }, 10000, errorConn, newConfigConn, suspendTriggeredConn);
+    waitForSignalsOrFail([this] { m_connection.runtimeCondition()->modEnabledConditions(RuntimeCondition::Conditions::ForceSuspend, true); }, 10000,
+        errorConn, newConfigConn, suspendTriggeredConn);
 
     // check whether options/devices have been altered as expected
     const auto &alteredRawConfig = m_connection.rawConfig();
@@ -792,8 +792,8 @@ void ConnectionTests::testSuspendResume()
     auto newConfigConn2 = connectionSignal(&SyncthingConnection::newConfig, handleNewConfig, &hasNewConfig);
     auto suspendTriggeredConn2
         = connectionSignal(&SyncthingConnection::suspensionOrResumeTriggered, handleSuspensionOrResumeTriggered, &hasSuspensionOrResumeTriggered);
-    waitForSignalsOrFail(
-        [this] { CPPUNIT_ASSERT(m_connection.setForceSuspendEnabled(false)); }, 10000, errorConn2, newConfigConn2, suspendTriggeredConn2);
+    waitForSignalsOrFail([this] { m_connection.runtimeCondition()->modEnabledConditions(RuntimeCondition::Conditions::ForceSuspend, false); }, 10000,
+        errorConn2, newConfigConn2, suspendTriggeredConn2);
 
     // check whether config is back to normal after resuming Syncthing
     const auto configBackToNormal = rawConfig == m_connection.rawConfig();
@@ -809,16 +809,15 @@ void ConnectionTests::testSuspendResume()
     auto newConfigConn3 = connectionSignal(&SyncthingConnection::newConfig, handleNewConfig, &hasNewConfig);
     auto triggeredPause = false;
     auto devIdToPause = QStringLiteral("6EIS2PN-J2IHWGS-AXS3YUL-HC5FT3K-77ZXTLL-AKQLJ4C-7SWVPUS-AZW4RQ4");
-    auto handleDevicePauseTriggered = [&triggeredPause, &devIdToPause] (const QStringList &deviceIds) {
+    auto handleDevicePauseTriggered = [&triggeredPause, &devIdToPause](const QStringList &deviceIds) {
         if (deviceIds.contains(devIdToPause)) {
             triggeredPause = true;
         }
     };
-    auto pauseTriggeredConn
-        = connectionSignal(&SyncthingConnection::devicePauseTriggered, handleDevicePauseTriggered, &triggeredPause);
+    auto pauseTriggeredConn = connectionSignal(&SyncthingConnection::devicePauseTriggered, handleDevicePauseTriggered, &triggeredPause);
     hasNewConfig = false;
     waitForSignalsOrFail(
-        [this, &devIdToPause] { m_connection.pauseDevice(QStringList({devIdToPause})); }, 10000, errorConn3, newConfigConn3, pauseTriggeredConn);
+        [this, &devIdToPause] { m_connection.pauseDevice(QStringList({ devIdToPause })); }, 10000, errorConn3, newConfigConn3, pauseTriggeredConn);
 
     // suspend Syncthing again
     cerr << "\n - Suspending Syncthing again after pausing device manually ...\n";
@@ -828,8 +827,8 @@ void ConnectionTests::testSuspendResume()
         = connectionSignal(&SyncthingConnection::suspensionOrResumeTriggered, handleSuspensionOrResumeTriggered, &hasSuspensionOrResumeTriggered);
     hasNewConfig = false;
     triggeringSuspension = true;
-    waitForSignalsOrFail(
-        [this] { CPPUNIT_ASSERT(m_connection.setForceSuspendEnabled(true)); }, 10000, errorConn4, newConfigConn4, suspendTriggeredConn4);
+    waitForSignalsOrFail([this] { m_connection.runtimeCondition()->modEnabledConditions(RuntimeCondition::Conditions::ForceSuspend, true); }, 10000,
+        errorConn4, newConfigConn4, suspendTriggeredConn4);
 
     // resume Syncthing again
     cerr << "\n - Resuming Syncthing again (manually paused dev supposed to stay paused) ...\n";
@@ -839,8 +838,8 @@ void ConnectionTests::testSuspendResume()
     auto newConfigConn5 = connectionSignal(&SyncthingConnection::newConfig, handleNewConfig, &hasNewConfig);
     auto suspendTriggeredConn5
         = connectionSignal(&SyncthingConnection::suspensionOrResumeTriggered, handleSuspensionOrResumeTriggered, &hasSuspensionOrResumeTriggered);
-    waitForSignalsOrFail(
-        [this] { CPPUNIT_ASSERT(m_connection.setForceSuspendEnabled(false)); }, 10000, errorConn5, newConfigConn5, suspendTriggeredConn5);
+    waitForSignalsOrFail([this] { m_connection.runtimeCondition()->modEnabledConditions(RuntimeCondition::Conditions::ForceSuspend, false); }, 10000,
+        errorConn5, newConfigConn5, suspendTriggeredConn5);
 
     // check whether all options/devices are resumed (except for manually paused dev)
     const auto &resumedRawConfig = m_connection.rawConfig();

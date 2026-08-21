@@ -1,6 +1,7 @@
 #if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD) && !defined(DATA_SYNCTHINGSERVICE_H)
 #define DATA_SYNCTHINGSERVICE_H
 
+#include "./runtimecondition.h"
 #include "./syncthingprocess.h"
 
 #include <c++utilities/chrono/datetime.h>
@@ -53,9 +54,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingService : public QObject {
     Q_PROPERTY(bool manuallyStopped READ isManuallyStopped)
     Q_PROPERTY(SystemdScope scope READ scope WRITE setScope NOTIFY scopeChanged)
     Q_PROPERTY(bool userScope READ isUserScope NOTIFY scopeChanged)
-    Q_PROPERTY(std::optional<bool> networkConnectionMetered READ isNetworkConnectionMetered WRITE setNetworkConnectionMetered NOTIFY
-            networkConnectionMeteredChanged)
-    Q_PROPERTY(bool stoppingOnMeteredConnection READ isStoppingOnMeteredConnection WRITE setStoppingOnMeteredConnection)
+    Q_PROPERTY(Data::RuntimeCondition *runtimeCondition READ runtimeCondition CONSTANT)
 
 public:
     explicit SyncthingService(SystemdScope scope = SystemdScope::User, QObject *parent = nullptr);
@@ -83,10 +82,8 @@ public:
     void setScopeAndUnitName(SystemdScope scope, const QString &unitName);
     bool isUserScope() const;
     QString displayName() const;
-    std::optional<bool> isNetworkConnectionMetered() const;
-    void setNetworkConnectionMetered(std::optional<bool> metered);
-    bool isStoppingOnMeteredConnection() const;
-    void setStoppingOnMeteredConnection(bool stopOnMeteredConnection);
+    RuntimeCondition *runtimeCondition();
+    const RuntimeCondition *runtimeCondition() const;
     static SyncthingService *mainInstance();
     static void setMainInstance(SyncthingService *mainInstance);
 
@@ -114,7 +111,6 @@ Q_SIGNALS:
     void enabledChanged(bool enable);
     void errorOccurred(const QString &context, const QString &name, const QString &message);
     void scopeChanged(Data::SystemdScope scope);
-    void networkConnectionMeteredChanged(std::optional<bool> isMetered);
 
 private Q_SLOTS:
     void handleUnitAdded(const QString &unitName, const QDBusObjectPath &unitPath);
@@ -167,8 +163,7 @@ private:
     bool m_manuallyStopped;
     bool m_stoppedMetered;
     bool m_unitAvailable;
-    bool m_stopOnMeteredConnection;
-    std::optional<bool> m_metered;
+    RuntimeCondition m_runtimeCondition;
 };
 
 /*!
@@ -365,17 +360,14 @@ inline void SyncthingService::disable()
     setEnabled(false);
 }
 
-/// \brief Returns whether the current network connection is metered.
-/// \remarks Returns an std::optional<bool> without value if it is unknown whether the network connection is metered.
-inline std::optional<bool> SyncthingService::isNetworkConnectionMetered() const
+inline RuntimeCondition *SyncthingService::runtimeCondition()
 {
-    return m_metered;
+    return &m_runtimeCondition;
 }
 
-/// \brief Returns whether Syncthing should automatically be stopped as long as the network connection is metered.
-inline bool SyncthingService::isStoppingOnMeteredConnection() const
+inline const RuntimeCondition *SyncthingService::runtimeCondition() const
 {
-    return m_stopOnMeteredConnection;
+    return &m_runtimeCondition;
 }
 
 /*!

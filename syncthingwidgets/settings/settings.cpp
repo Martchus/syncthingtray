@@ -134,7 +134,7 @@ std::vector<QtGui::ProcessWithConnection> Launcher::allProcesses()
 void Launcher::autostart() const
 {
     auto *const launcher(SyncthingLauncher::mainInstance());
-    if (autostartEnabled && launcher && (!stopOnMeteredConnection || !launcher->isNetworkConnectionMetered().value_or(false))) {
+    if (autostartEnabled && launcher && launcher->runtimeCondition()->isSupposedToRun(runtimeConditions())) {
         launcher->launch(*this);
     }
     auto &toolProcs = toolProcesses();
@@ -144,6 +144,13 @@ void Launcher::autostart() const
             toolProcs[i.key()].startSyncthing(toolParams.path, SyncthingProcess::splitArguments(toolParams.args));
         }
     }
+}
+
+RuntimeCondition::Conditions Launcher::runtimeConditions() const
+{
+    auto conds = RuntimeCondition::Conditions::None;
+    CppUtilities::modFlagEnum(conds, RuntimeCondition::Conditions::Metered, stopOnMeteredConnection);
+    return conds;
 }
 
 /*!
@@ -306,9 +313,18 @@ bool restore()
                 = settings.value(QStringLiteral("longPollingTimeout"), connectionSettings->longPollingTimeout).toInt();
             connectionSettings->diskEventLimit = settings.value(QStringLiteral("diskEventLimit"), connectionSettings->diskEventLimit).toInt();
             connectionSettings->autoConnect = settings.value(QStringLiteral("autoConnect"), connectionSettings->autoConnect).toBool();
-            connectionSettings->pauseOnMeteredConnection
-                = settings.value(QStringLiteral("pauseOnMetered"), connectionSettings->pauseOnMeteredConnection).toBool();
-            connectionSettings->forceSuspend = settings.value(QStringLiteral("forceSuspend"), connectionSettings->forceSuspend).toBool();
+            connectionSettings->enabledConditions = Data::RuntimeCondition::Conditions::None;
+            if (settings.contains(QStringLiteral("enabledConditions"))) {
+                connectionSettings->enabledConditions
+                    = static_cast<Data::RuntimeCondition::Conditions>(settings.value(QStringLiteral("enabledConditions")).toULongLong());
+            } else {
+                if (settings.value(QStringLiteral("pauseOnMetered"), false).toBool()) {
+                    connectionSettings->enabledConditions += Data::RuntimeCondition::Conditions::Metered;
+                }
+                if (settings.value(QStringLiteral("forceSuspend"), false).toBool()) {
+                    connectionSettings->enabledConditions += Data::RuntimeCondition::Conditions::ForceSuspend;
+                }
+            }
             const auto statusComputionFlags = settings.value(QStringLiteral("statusComputionFlags"),
                 QVariant::fromValue(static_cast<UnderlyingFlagType>(connectionSettings->statusComputionFlags)));
             if (statusComputionFlags.canConvert<UnderlyingFlagType>()) {
@@ -475,8 +491,10 @@ bool save()
         settings.setValue(QStringLiteral("requestTimeout"), connectionSettings->requestTimeout);
         settings.setValue(QStringLiteral("longPollingTimeout"), connectionSettings->longPollingTimeout);
         settings.setValue(QStringLiteral("autoConnect"), connectionSettings->autoConnect);
-        settings.setValue(QStringLiteral("pauseOnMetered"), connectionSettings->pauseOnMeteredConnection);
-        settings.setValue(QStringLiteral("forceSuspend"), connectionSettings->forceSuspend);
+        settings.setValue(QStringLiteral("pauseOnMetered"), connectionSettings->enabledConditions && Data::RuntimeCondition::Conditions::Metered);
+        settings.setValue(QStringLiteral("forceSuspend"), connectionSettings->enabledConditions && Data::RuntimeCondition::Conditions::ForceSuspend);
+        settings.setValue(QStringLiteral("enabledConditions"),
+            static_cast<std::underlying_type_t<Data::RuntimeCondition::Conditions>>(connectionSettings->enabledConditions));
         settings.setValue(QStringLiteral("statusComputionFlags"),
             QVariant::fromValue(static_cast<std::underlying_type_t<Data::SyncthingStatusComputionFlags>>(connectionSettings->statusComputionFlags)));
 #ifndef QT_NO_SSL
@@ -581,6 +599,13 @@ bool save()
     return v.error.isEmpty();
 }
 
+RuntimeCondition::Conditions Systemd::runtimeConditions() const
+{
+    auto conds = RuntimeCondition::Conditions::None;
+    CppUtilities::modFlagEnum(conds, RuntimeCondition::Conditions::Metered, stopOnMeteredConnection);
+    return conds;
+}
+
 /*!
  * \brief Applies the notification settings on the specified \a notifier.
  */
@@ -625,7 +650,7 @@ void Settings::apply(SyncthingNotifier &notifier) const
  */
 void Systemd::setupService(SyncthingService &service) const
 {
-    service.setStoppingOnMeteredConnection(stopOnMeteredConnection);
+    service.runtimeCondition()->setEnabledConditions(runtimeConditions());
     service.setScopeAndUnitName(systemUnit ? SystemdScope::System : SystemdScope::User, syncthingUnit);
 }
 

@@ -216,7 +216,7 @@ void AppBase::applyConnectionSettings(const QUrl &syncthingUrl)
     }
     m_data.connection()->setInsecure(m_insecure);
     if (!mayPauseDevicesOnMeteredNetworkConnection()) {
-        m_connectionSettingsFromConfig.pauseOnMeteredConnection = false;
+        m_connectionSettingsFromConfig.enabledConditions -= Data::RuntimeCondition::Conditions::Metered;
     }
     if (m_connectToLaunched) {
         handleGuiUrlChanged(syncthingUrl);
@@ -265,7 +265,7 @@ void AppBase::handleGuiUrlChanged(const QUrl &newUrl)
     m_connectionSettingsFromLauncher.apiKey = m_syncthingConfig.guiApiKey.toUtf8();
     m_connectionSettingsFromLauncher.authEnabled = false;
     m_connectionSettingsFromLauncher.reconnectInterval = isSyncthingRunning() ? SyncthingConnectionSettings::defaultReconnectInterval : 0;
-    m_connectionSettingsFromLauncher.pauseOnMeteredConnection = m_connectionSettingsFromConfig.pauseOnMeteredConnection;
+    m_connectionSettingsFromLauncher.enabledConditions = m_connectionSettingsFromConfig.enabledConditions;
 #ifndef QT_NO_SSL
     m_connectionSettingsFromLauncher.httpsCertPath = m_syncthingConfigDir + QStringLiteral("/https-cert.pem");
 #endif

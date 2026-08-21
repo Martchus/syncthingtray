@@ -25,11 +25,6 @@
 #include <QStringBuilder>
 #include <QTimer>
 
-#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
-#include <QNetworkInformation>
-#define SYNCTHINGCONNECTION_SUPPORT_METERED
-#endif
-
 #if SYNCTHINGCONNECTION_QDEBUG
 #define SYNCTHINGCONNECTION_LOG(message) qDebug() << message
 #else
@@ -115,13 +110,10 @@ SyncthingConnection::SyncthingConnection(
     , m_lastFileDeleted(false)
     , m_recordFileChanges(false)
     , m_useDeprecatedRoutes(true)
-    , m_pausingOnMeteredConnection(false)
-    , m_forceSuspend(false)
-#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
-    , m_handlingMeteredConnectionInitialized(false)
-#endif
     , m_insecure(false)
 {
+    QObject::connect(&m_runtimeCondition, &RuntimeCondition::supposedToRunChanged, this, &SyncthingConnection::handleRuntimeConditionChanged);
+
     m_trafficPollTimer.setInterval(SyncthingConnectionSettings::defaultTrafficPollInterval);
     m_trafficPollTimer.setTimerType(Qt::CoarseTimer);
     m_trafficPollTimer.setSingleShot(true);
@@ -362,49 +354,6 @@ void SyncthingConnection::disablePolling()
 }
 
 /*!
- * \brief Sets whether to pause all devices, discovery and relaying on metered connections.
- * \remark This is realized by calling the function suspendOrResume() which can also be called manually
- *         to temporarily override this.
- */
-bool SyncthingConnection::setPausingOnMeteredConnection(bool pausingOnMeteredConnection, bool lazy)
-{
-    if (m_pausingOnMeteredConnection == pausingOnMeteredConnection) {
-        return false;
-    }
-    if ((m_pausingOnMeteredConnection = pausingOnMeteredConnection)) {
-        // initialize handling of metered connections
-#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
-        if (!m_forceSuspend && !m_handlingMeteredConnectionInitialized) {
-            if (const auto [networkInformation, isMetered] = loadNetworkInformationBackendForMetered(); networkInformation) {
-                QObject::connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, [this](bool isMetered2) {
-                    if (m_pausingOnMeteredConnection && !m_forceSuspend) {
-                        suspendOrResume(isMetered2);
-                    }
-                });
-                m_handlingMeteredConnectionInitialized = true;
-                return lazy || suspendOrResume(isMetered);
-            }
-        }
-#endif
-    }
-    return lazy || handleMeteredConnection();
-}
-
-/*!
- * \brief Sets whether to pause all devices, discovery and relaying.
- * \remark This is realized by calling the function suspendOrResume() which can also be called manually
- *         to suspend only temporarily.
- */
-bool SyncthingConnection::setForceSuspendEnabled(bool forceSuspendEnabled, bool lazy)
-{
-    if (m_forceSuspend == forceSuspendEnabled) {
-        return false;
-    }
-    m_forceSuspend = forceSuspendEnabled;
-    return lazy || handleMeteredConnection();
-}
-
-/*!
  * \brief Substitutes the tilde as first element in \a path using current values of tilde() and pathSeparator().
  */
 QString SyncthingConnection::substituteTilde(const QString &path) const
@@ -413,25 +362,14 @@ QString SyncthingConnection::substituteTilde(const QString &path) const
 }
 
 /*!
- * \brief Ensures that devices, discovery and relaying are enabled depending on whether suspension is enabled or the network connection is metered.
+ * \brief Ensures that devices, discovery and relaying are enabled depending on whether Syncthing is supposed to run according to the runtime conditions.
  */
-bool SyncthingConnection::handleMeteredConnection()
+bool SyncthingConnection::handleRuntimeConditionChanged()
 {
     if (!m_hasConfig || m_myId.isEmpty()) {
         return false;
     }
-    if (m_forceSuspend) {
-        return suspendOrResume(true);
-    }
-    if (!m_pausingOnMeteredConnection) {
-        return suspendOrResume(false);
-    }
-#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
-    if (const auto metered = Data::isNetworkConnectionMetered(); metered.has_value()) {
-        return suspendOrResume(metered.value());
-    }
-#endif
-    return false;
+    return suspendOrResume(!m_runtimeCondition.isSupposedToRun());
 }
 
 /*!
@@ -697,8 +635,8 @@ void SyncthingConnection::applyRawConfig()
 {
     readDevs(m_rawConfig.value(QLatin1String("devices")).toArray());
     readDirs(m_rawConfig.value(QLatin1String("folders")).toArray());
-    if (m_pausingOnMeteredConnection) {
-        handleMeteredConnection();
+    if (m_runtimeCondition.enabledConditions() != RuntimeCondition::Conditions::None) {
+        handleRuntimeConditionChanged();
     }
     emit newConfigApplied();
 }
@@ -1180,10 +1118,7 @@ bool SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
     setLongPollingTimeout(connectionSettings.longPollingTimeout);
     setDiskEventLimit(connectionSettings.diskEventLimit);
     setStatusComputionFlags(connectionSettings.statusComputionFlags);
-    if (setForceSuspendEnabled(connectionSettings.forceSuspend, true)
-        || setPausingOnMeteredConnection(connectionSettings.pauseOnMeteredConnection, true)) {
-        handleMeteredConnection();
-    }
+    m_runtimeCondition.setEnabledConditions(connectionSettings.enabledConditions);
 
     return reconnectRequired;
 }

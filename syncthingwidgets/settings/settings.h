@@ -115,6 +115,7 @@ struct SYNCTHINGWIDGETS_EXPORT Launcher {
     static Data::SyncthingConnection *connectionForLauncher(Data::SyncthingLauncher *launcher);
     static std::vector<QtGui::ProcessWithConnection> allProcesses();
     void autostart() const;
+    Data::RuntimeCondition::Conditions runtimeConditions() const;
     static void terminate();
     struct SYNCTHINGWIDGETS_EXPORT LauncherStatus {
         bool relevant = false;
@@ -142,6 +143,7 @@ struct SYNCTHINGWIDGETS_EXPORT Systemd {
         bool showStartStopButton = false;
         bool userService = true;
     };
+    Data::RuntimeCondition::Conditions runtimeConditions() const;
     void setupService(Data::SyncthingService &) const;
     ServiceStatus apply(Data::SyncthingConnection &connection, const Data::SyncthingConnectionSettings *currentConnectionSettings,
         bool preventReconnect = false) const;
