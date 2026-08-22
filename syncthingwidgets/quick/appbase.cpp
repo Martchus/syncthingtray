@@ -215,8 +215,8 @@ void AppBase::applyConnectionSettings(const QUrl &syncthingUrl)
         emit error(tr("Unable to load HTTPs certificate"));
     }
     m_data.connection()->setInsecure(m_insecure);
-    if (!mayPauseDevicesOnMeteredNetworkConnection()) {
-        m_connectionSettingsFromConfig.enabledConditions -= Data::RuntimeCondition::Conditions::Metered;
+    if (!mayPauseDevicesDueToRuntimeConditions()) {
+        m_connectionSettingsFromConfig.enabledConditions = Data::RuntimeCondition::Conditions::None;
     }
     if (m_connectToLaunched) {
         handleGuiUrlChanged(syncthingUrl);

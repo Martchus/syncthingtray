@@ -56,7 +56,7 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
     , m_libsyncthingLogLevel(LibSyncthing::LogLevel::Info)
 #endif
     , m_manuallyStopped(true)
-    , m_stoppedMetered(false)
+    , m_stoppedDueToRuntimeCond(false)
     , m_emittingOutput(false)
     , m_useLibSyncthing(false)
 {
@@ -72,8 +72,8 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
 
     connect(&m_runtimeCondition, &RuntimeCondition::supposedToRunChanged, this, [this](bool supposedToRun) {
         if (!supposedToRun) {
-            terminateDueToMeteredConnection();
-        } else if (m_stoppedMetered) {
+            terminateDueToRuntimeCond();
+        } else if (m_stoppedDueToRuntimeCond) {
 #if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
             if (m_lastLauncherSettings) {
                 launch(*m_lastLauncherSettings);
@@ -106,7 +106,7 @@ SyncthingLauncher::~SyncthingLauncher()
 
 /*!
  * \brief Sets whether Syncthing is supposed to run or not.
- * \remarks This function takes runtime conditions such as isStoppingOnMeteredConnection() into account.
+ * \remarks This function takes runtime conditions into account.
  */
 void SyncthingLauncher::setRunning(bool running, const QString &program, const QStringList &arguments)
 {
@@ -128,14 +128,14 @@ void SyncthingLauncher::setRunning(bool running, const QString &program, const Q
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
 /*!
  * \brief Sets whether Syncthing is supposed to run or not.
- * \remarks This function takes runtime conditions such as isStoppingOnMeteredConnection() into account.
+ * \remarks This function takes runtime conditions into account.
  */
 void SyncthingLauncher::setRunning(bool running, LibSyncthing::RuntimeOptions &&runtimeOptions)
 {
     // check runtime conditions
     auto shouldBeRunning = running;
     if (!m_runtimeCondition.isSupposedToRun()) {
-        m_stoppedMetered = running;
+        m_stoppedDueToRuntimeCond = running;
         shouldBeRunning = false;
     }
     // start/stop Syncthing
@@ -157,7 +157,8 @@ QString SyncthingLauncher::runningStatus() const
 {
     if (isRunning()) {
         return tr("Syncthing is running");
-    } else if (m_stoppedMetered) {
+    } else if (m_stoppedDueToRuntimeCond) {
+        // FIXME: compute this message in RuntimeCondition
         return tr("Syncthing is temporarily stopped due to metered connection");
     } else if (m_lastExitStatus.has_value()) {
         return tr("Syncthing exited with status %1").arg(m_lastExitStatus.value().code);
@@ -415,7 +416,7 @@ void SyncthingLauncher::handleProcessFinished(int code, QProcess::ExitStatus sta
 void SyncthingLauncher::resetState()
 {
     m_manuallyStopped = false;
-    m_stoppedMetered = false;
+    m_stoppedDueToRuntimeCond = false;
     delete m_relevantConnection;
     m_relevantConnection = nullptr;
     m_guiListeningUrlSearch.reset();
@@ -513,16 +514,16 @@ void SyncthingLauncher::handleOutputAvailable(int logLevel, const QByteArray &da
 bool SyncthingLauncher::shouldBeRunningAccordingToRuntimeConditions(bool runningEnabled)
 {
     if (!m_runtimeCondition.isSupposedToRun()) {
-        m_stoppedMetered = runningEnabled;
+        m_stoppedDueToRuntimeCond = runningEnabled;
         return false;
     }
     return runningEnabled;
 }
 
-void SyncthingLauncher::terminateDueToMeteredConnection()
+void SyncthingLauncher::terminateDueToRuntimeCond()
 {
     if (!isRunning()) {
-        // do not set m_stoppedMetered (and basically don't do anything) if not running anyway; otherwise we'd
+        // do not set m_stoppedDueToRuntimeCond (and basically don't do anything) if not running anyway; otherwise we'd
         // always start Syncthing once the connection is not metered anymore (even if Syncthing has not even been
         // running before)
         return;
@@ -533,7 +534,7 @@ void SyncthingLauncher::terminateDueToMeteredConnection()
     }
 #endif
     terminate(m_relevantConnection);
-    m_stoppedMetered = true;
+    m_stoppedDueToRuntimeCond = true;
 }
 
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING

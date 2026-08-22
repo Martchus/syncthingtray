@@ -33,7 +33,7 @@ public:
     SyncthingData *data();
     virtual const QString &status();
     virtual bool isSyncthingRunning() const = 0;
-    virtual bool mayPauseDevicesOnMeteredNetworkConnection() const = 0;
+    virtual bool mayPauseDevicesDueToRuntimeConditions() const = 0;
 
     Q_INVOKABLE QDir &settingsDir();
     Q_INVOKABLE bool loadSettings(bool force = false);

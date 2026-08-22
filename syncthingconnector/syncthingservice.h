@@ -139,7 +139,7 @@ private:
         const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
     bool handlePropertyChanged(CppUtilities::DateTime &variable, const QString &propertyName, const QVariantMap &changedProperties,
         const QStringList &invalidatedProperties);
-    void stopDueToMeteredConnection();
+    void stopDueToRuntimeCond();
 
     static OrgFreedesktopSystemd1ManagerInterface *s_systemdUserInterface;
     static OrgFreedesktopSystemd1ManagerInterface *s_systemdSystemInterface;
@@ -161,7 +161,7 @@ private:
     std::unordered_set<QDBusPendingCallWatcher *> m_pendingCalls;
     SystemdScope m_scope;
     bool m_manuallyStopped;
-    bool m_stoppedMetered;
+    bool m_stoppedDueToRuntimeCond;
     bool m_unitAvailable;
     RuntimeCondition m_runtimeCondition;
 };

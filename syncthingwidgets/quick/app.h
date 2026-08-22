@@ -86,9 +86,9 @@ public:
     {
         return m_isSyncthingRunning;
     }
-    bool mayPauseDevicesOnMeteredNetworkConnection() const override final
+    bool mayPauseDevicesDueToRuntimeConditions() const override final
     {
-        return false; // handle pausing of devices on metered network connection only in the service
+        return false; // suspend/resume Syncthing according to runtime conditions only in service
     }
     const QUrl &syncthingGuiUrl() const
     {

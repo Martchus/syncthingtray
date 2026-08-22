@@ -444,7 +444,7 @@ void SyncthingApplet::showSettingsDialog()
 {
     if (!m_settingsDlg) {
         m_settingsDlg = new SettingsDialog(*this);
-        // create a launcher as its monitoring of whether the network is metered is required by the connection settings
+        // create a launcher as its RuntimeCondition is required by the connection settings to show whether the network is metered
 #if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
         if (!SyncthingLauncher::mainInstance()) {
             SyncthingLauncher::setMainInstance(new SyncthingLauncher(m_settingsDlg));

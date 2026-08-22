@@ -38,7 +38,7 @@ public:
     {
         return m_launcher.isRunning();
     }
-    bool mayPauseDevicesOnMeteredNetworkConnection() const override final
+    bool mayPauseDevicesDueToRuntimeConditions() const override final
     {
         return true;
     }

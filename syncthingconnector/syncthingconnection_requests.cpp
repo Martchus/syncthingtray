@@ -415,7 +415,7 @@ bool SyncthingConnection::resumeAllDevs()
  * \remarks This might result in errors caused by Syncthing not handling E notation correctly when using Qt < 5.9,
  *          see https://github.com/syncthing/syncthing/issues/4001.
  */
-bool SyncthingConnection::pauseResumeDevice(const QStringList &devIds, bool paused, bool dueToMetered)
+bool SyncthingConnection::pauseResumeDevice(const QStringList &devIds, bool paused, bool dueToRuntimeCond)
 {
     if (devIds.isEmpty()) {
         return false;
@@ -437,8 +437,8 @@ bool SyncthingConnection::pauseResumeDevice(const QStringList &devIds, bool paus
     reply->setProperty("resume", !paused);
     QObject::connect(reply, &QNetworkReply::finished, this, &SyncthingConnection::readDevPauseResume);
 
-    // avoid considering manually paused or resumed devices when the network connection is no longer metered
-    if (!dueToMetered && !m_suspendedItems.devIds.isEmpty()) {
+    // avoid considering manually paused or resumed devices when the runtime conditions are met again
+    if (!dueToRuntimeCond && !m_suspendedItems.devIds.isEmpty()) {
         for (const auto &devId : devIds) {
             m_suspendedItems.devIds.removeAll(devId);
         }
@@ -709,7 +709,7 @@ static void disableOption(const QString &option, QJsonObject &optionsToModify, Q
 /// \endcond
 
 /*!
- * \brief Suspends (if \a suspend is true) or resumes (if \a suspend is false) Syncthing to deal with metered connections.
+ * \brief Suspends (if \a suspend is true) or resumes (if \a suspend is false) Syncthing to handle changed runtime conditions.
  * \returns Returns whether this function requested changing the Syncthing config.
  * \remarks
  * - This function does nothing if the Syncthing devices last known "suspension state" is equal to \a suspend.
@@ -797,7 +797,7 @@ void SyncthingConnection::changeStatus()
 }
 
 /*!
- * \brief Reads results of suspendOrResumeForMeteredConnection().
+ * \brief Reads results of suspendOrResume().
  */
 void SyncthingConnection::readSuspend()
 {

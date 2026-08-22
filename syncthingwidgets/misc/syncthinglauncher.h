@@ -70,7 +70,6 @@ public:
     void setManualStopHandler(std::function<bool(void)> &&handler);
     bool isEmittingOutput() const;
     void setEmittingOutput(bool emittingOutput);
-    bool shouldLaunchAccordingToSettings() const;
     QString errorString() const;
     QUrl guiUrl() const;
     QVariantMap overallStatus() const;
@@ -127,7 +126,7 @@ private:
     void runLibSyncthing(const LibSyncthing::RuntimeOptions &runtimeOptions);
     void handleLibSyncthingFinished();
 #endif
-    void terminateDueToMeteredConnection();
+    void terminateDueToRuntimeCond();
     void showLibSyncthingNotSupported(QByteArray &&reason = QByteArrayLiteral("libsyncthing support not enabled"));
 
     SyncthingProcess m_process;
@@ -154,7 +153,7 @@ private:
 #endif
     std::function<bool(void)> m_manualStopHandler;
     bool m_manuallyStopped;
-    bool m_stoppedMetered;
+    bool m_stoppedDueToRuntimeCond;
     bool m_emittingOutput;
     bool m_useLibSyncthing;
     Data::RuntimeCondition m_runtimeCondition;
@@ -240,15 +239,6 @@ inline void SyncthingLauncher::setManualStopHandler(std::function<bool(void)> &&
 inline bool SyncthingLauncher::isEmittingOutput() const
 {
     return m_emittingOutput;
-}
-
-/// \brief Returns whether Syncthing is supposed to be launched according to settings.
-/// \remarks
-/// - The only relevant setting so far is isStoppingOnMeteredConnection().
-/// - One can still launch Syncthing via the launch() functions despite shouldLaunchAccordingToSettings() returning true.
-inline bool SyncthingLauncher::shouldLaunchAccordingToSettings() const
-{
-    return m_runtimeCondition.isSupposedToRun();
 }
 
 inline Data::RuntimeCondition *SyncthingLauncher::runtimeCondition()

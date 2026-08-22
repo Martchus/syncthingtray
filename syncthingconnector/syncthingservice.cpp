@@ -78,7 +78,7 @@ SyncthingService::SyncthingService(SystemdScope scope, QObject *parent)
     , m_currentSystemdInterface(nullptr)
     , m_scope(scope)
     , m_manuallyStopped(false)
-    , m_stoppedMetered(false)
+    , m_stoppedDueToRuntimeCond(false)
     , m_unitAvailable(false)
 {
     setupFreedesktopLoginInterface();
@@ -110,8 +110,8 @@ SyncthingService::SyncthingService(SystemdScope scope, QObject *parent)
 
     connect(&m_runtimeCondition, &RuntimeCondition::supposedToRunChanged, this, [this](bool supposedToRun) {
         if (!supposedToRun) {
-            stopDueToMeteredConnection();
-        } else if (m_stoppedMetered) {
+            stopDueToRuntimeCond();
+        } else if (m_stoppedDueToRuntimeCond) {
             start();
         }
     });
@@ -379,7 +379,7 @@ void SyncthingService::setRunning(bool running)
 {
 #ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
     m_manuallyStopped = !running;
-    m_stoppedMetered = false;
+    m_stoppedDueToRuntimeCond = false;
     if (!m_currentSystemdInterface) {
         setupSystemdInterface();
     }
@@ -506,7 +506,7 @@ void SyncthingService::handlePropertiesChanged(
     if (wasRunningBefore != currentlyRunning) {
         if (currentlyRunning) {
             m_manuallyStopped = false;
-            m_stoppedMetered = false;
+            m_stoppedDueToRuntimeCond = false;
         }
         emit runningChanged(currentlyRunning);
     }
@@ -599,14 +599,14 @@ bool SyncthingService::handlePropertyChanged(
 }
 
 /*!
- * \brief Internal helper to stop the service when the network connection becomes metered.
+ * \brief Internal helper to stop the service when the runtime conditions are no longer met.
  */
-void SyncthingService::stopDueToMeteredConnection()
+void SyncthingService::stopDueToRuntimeCond()
 {
     if (isRunning()) {
         setRunning(false);
     }
-    m_stoppedMetered = true;
+    m_stoppedDueToRuntimeCond = true;
 }
 
 /*!
@@ -634,15 +634,15 @@ void SyncthingService::setUnit(const QDBusObjectPath &objectPath)
     if (m_unit->isValid()) {
         m_activeSince = dateTimeFromSystemdTimeStamp(m_unit->activeEnterTimestamp());
         setProperties(true, m_unit->activeState(), m_unit->subState(), m_unit->unitFileState(), m_unit->description());
-        // handle metered network connection: if the connection is metered and we care about it, then …
+        // handle runtime conditions: if the runtime conditions are not met, then …
         if (!m_runtimeCondition.isSupposedToRun()) {
             if (isRunning()) {
                 // stop an already running service immediately
-                stopDueToMeteredConnection();
+                stopDueToRuntimeCond();
             } else {
-                // consider an already stopped service as stopped due to a metered connection; so we will start it as soon as the connection
-                // is no longer metered
-                m_stoppedMetered = true;
+                // consider an already stopped service as stopped due to runtime conditions; so we will start it as soon as the runtime
+                // conditions are met again
+                m_stoppedDueToRuntimeCond = true;
             }
         }
     } else {
@@ -693,14 +693,6 @@ void SyncthingService::setProperties(
         emit descriptionChanged(m_description = description);
     }
 }
-
-/*!
- * \brief Sets whether the current network connection is metered and stops/starts Syncthing accordingly as needed.
- * \remarks
- * - This is detected and monitored automatically. A manually set value will be overridden again on the next change.
- * - One may set this manually for testing purposes or in case the automatic detection is not supported (then
- *   isNetworkConnectionMetered() returns a std::optional<bool> without value).
- */
 
 } // namespace Data
 
