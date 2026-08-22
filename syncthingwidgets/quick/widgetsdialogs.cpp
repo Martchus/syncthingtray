@@ -1,13 +1,13 @@
 #include "./widgetsdialogs.h"
 
 #include <QFileDialog>
-#include <QQuickWindow>
+#include <QGuiApplication>
 #include <QWindow>
 
 namespace QtGui {
 
-FileDialog::FileDialog(QQuickItem *parent)
-    : QQuickItem(parent)
+FileDialog::FileDialog(QObject *parent)
+    : QObject(parent)
 {
 }
 
@@ -133,9 +133,18 @@ void FileDialog::open()
         }
     }
 
-    if (auto *w = window()) {
+    QWindow *parentWindow = nullptr;
+    if (auto *focusWindow = QGuiApplication::focusWindow()) {
+        parentWindow = focusWindow;
+    } else {
+        const auto topLevel = QGuiApplication::topLevelWindows();
+        if (!topLevel.isEmpty()) {
+            parentWindow = topLevel.first();
+        }
+    }
+    if (parentWindow) {
         if (auto *handle = m_dialog->windowHandle()) {
-            handle->setTransientParent(w);
+            handle->setTransientParent(parentWindow);
         }
     }
 
@@ -153,7 +162,7 @@ void FileDialog::close()
 void FileDialog::accept()
 {
     if (m_dialog && m_dialog->isVisible()) {
-        static_cast<QDialog *>(m_dialog)->accept();
+        static_cast<QDialog*>(m_dialog)->accept();
     } else {
         m_visible = false;
         Q_EMIT visibleChanged();
@@ -197,8 +206,8 @@ void FileDialog::ensureDialog()
     });
 }
 
-FolderDialog::FolderDialog(QQuickItem *parent)
-    : QQuickItem(parent)
+FolderDialog::FolderDialog(QObject *parent)
+    : QObject(parent)
 {
 }
 
@@ -307,9 +316,18 @@ void FolderDialog::open()
         }
     }
 
-    if (auto *w = window()) {
+    QWindow *parentWindow = nullptr;
+    if (auto *focusWindow = QGuiApplication::focusWindow()) {
+        parentWindow = focusWindow;
+    } else {
+        const auto topLevel = QGuiApplication::topLevelWindows();
+        if (!topLevel.isEmpty()) {
+            parentWindow = topLevel.first();
+        }
+    }
+    if (parentWindow) {
         if (auto *handle = m_dialog->windowHandle()) {
-            handle->setTransientParent(w);
+            handle->setTransientParent(parentWindow);
         }
     }
 
@@ -327,7 +345,7 @@ void FolderDialog::close()
 void FolderDialog::accept()
 {
     if (m_dialog && m_dialog->isVisible()) {
-        static_cast<QDialog *>(m_dialog)->accept();
+        static_cast<QDialog*>(m_dialog)->accept();
     } else {
         m_visible = false;
         Q_EMIT visibleChanged();

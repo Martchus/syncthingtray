@@ -1,14 +1,15 @@
 #pragma once
 
-#include <QQuickItem>
+#include <QObject>
 #include <QString>
 #include <QUrl>
+#include <QtQmlIntegration/qqmlintegration.h>
 
 QT_FORWARD_DECLARE_CLASS(QFileDialog)
 
 namespace QtGui {
 
-class FileDialog : public QQuickItem {
+class FileDialog : public QObject {
     Q_OBJECT
     QML_ELEMENT
 
@@ -27,7 +28,7 @@ public:
     enum Option { DontUseNativeDialog = 0x00000010 };
     Q_ENUM(Option)
 
-    explicit FileDialog(QQuickItem *parent = nullptr);
+    explicit FileDialog(QObject *parent = nullptr);
     ~FileDialog() override;
 
     QString title() const
@@ -102,7 +103,7 @@ private:
     QFileDialog *m_dialog = nullptr;
 };
 
-class FolderDialog : public QQuickItem {
+class FolderDialog : public QObject {
     Q_OBJECT
     QML_ELEMENT
 
@@ -117,7 +118,7 @@ public:
     enum Option { DontUseNativeDialog = 0x00000010 };
     Q_ENUM(Option)
 
-    explicit FolderDialog(QQuickItem *parent = nullptr);
+    explicit FolderDialog(QObject *parent = nullptr);
     ~FolderDialog() override;
 
     QString title() const
