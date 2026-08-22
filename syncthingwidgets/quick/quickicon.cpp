@@ -279,7 +279,7 @@ void Icon::updatePaintedGeometry()
 {
     auto newSize = QSizeF();
     if (!m_icon.width() || !m_icon.height()) {
-        newSize = {0, 0};
+        newSize = { 0, 0 };
     } else {
         const qreal roundedWidth = std::round(32 * m_devicePixelRatio) / m_devicePixelRatio;
         if (const auto roundedSize = QSizeF(roundedWidth, roundedWidth); size() == roundedSize) {
@@ -321,6 +321,6 @@ void Icon::itemChange(QQuickItem::ItemChange change, const QQuickItem::ItemChang
     QQuickItem::itemChange(change, value);
 }
 
-}
+} // namespace QtGui
 
 #include "moc_quickicon.cpp"
