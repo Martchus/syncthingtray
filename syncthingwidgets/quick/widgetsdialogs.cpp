@@ -6,6 +6,16 @@
 
 namespace QtGui {
 
+/*!
+ * \class FileDialog
+ * \brief The FileDialog class provides a Qt Widgets based drop-in replacement for the FileDialog QML
+ *        type from QtQuick.Dialogs.
+ * \remarks
+ * - This is useful when using a Qt build where no native dialog implementations are available and
+ *   the Qt Widgets based implementation is preferred over the Qt Quick implementation.
+ * - For this to work, be sure to import `Main` after `QtQuick.Dialogs`.
+ */
+
 FileDialog::FileDialog(QObject *parent)
     : QObject(parent)
 {
@@ -162,7 +172,7 @@ void FileDialog::close()
 void FileDialog::accept()
 {
     if (m_dialog && m_dialog->isVisible()) {
-        static_cast<QDialog*>(m_dialog)->accept();
+        static_cast<QDialog *>(m_dialog)->accept();
     } else {
         m_visible = false;
         Q_EMIT visibleChanged();
@@ -205,6 +215,16 @@ void FileDialog::ensureDialog()
         Q_EMIT rejected();
     });
 }
+
+/*!
+ * \class FolderDialog
+ * \brief The FolderDialog class provides a Qt Widgets based drop-in replacement for the FolderDialog
+ *        QML type from QtQuick.Dialogs.
+ * \remarks
+ * - This is useful when using a Qt build where no native dialog implementations are available and
+ *   the Qt Widgets based implementation is preferred over the Qt Quick implementation.
+ * - For this to work, be sure to import `Main` after `QtQuick.Dialogs`.
+ */
 
 FolderDialog::FolderDialog(QObject *parent)
     : QObject(parent)
@@ -345,7 +365,7 @@ void FolderDialog::close()
 void FolderDialog::accept()
 {
     if (m_dialog && m_dialog->isVisible()) {
-        static_cast<QDialog*>(m_dialog)->accept();
+        static_cast<QDialog *>(m_dialog)->accept();
     } else {
         m_visible = false;
         Q_EMIT visibleChanged();
