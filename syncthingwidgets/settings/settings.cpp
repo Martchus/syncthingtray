@@ -599,13 +599,6 @@ bool save()
     return v.error.isEmpty();
 }
 
-RuntimeCondition::Conditions Systemd::runtimeConditions() const
-{
-    auto conds = RuntimeCondition::Conditions::None;
-    CppUtilities::modFlagEnum(conds, RuntimeCondition::Conditions::Metered, stopOnMeteredConnection);
-    return conds;
-}
-
 /*!
  * \brief Applies the notification settings on the specified \a notifier.
  */
@@ -645,6 +638,13 @@ void Settings::apply(SyncthingNotifier &notifier) const
 }
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+RuntimeCondition::Conditions Systemd::runtimeConditions() const
+{
+    auto conds = RuntimeCondition::Conditions::None;
+    CppUtilities::modFlagEnum(conds, RuntimeCondition::Conditions::Metered, stopOnMeteredConnection);
+    return conds;
+}
+
 /*!
  * \brief Sets the scope and unit name of the specified \a service according to the settings.
  */
