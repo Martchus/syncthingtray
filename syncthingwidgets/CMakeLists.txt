@@ -166,6 +166,8 @@ set(QML_MAIN_FILES
 set(QML_MAIN_FILES_DESKTOP quick/qml/DesktopWindow.qml quick/qml/FilterField.qml quick/qml/PageWindow.qml
                            quick/qml/PageWindowBackground.qml quick/qml/TrayView.qml)
 set(QML_MAIN_FILES_APP_CONTROL quick/qml/AppControl.qml)
+set(QML_MAIN_SOURCE_FILES quick/quickicon.h quick/quickicon.cpp)
+set(QML_WIDGETS_DLGS_FILES quick/widgetsdialogs.h quick/widgetsdialogs.cpp)
 set(QML_SINGLETON_FILES quick/qml/Utils.qml)
 list(
     APPEND
@@ -173,6 +175,8 @@ list(
     ${QML_MAIN_FILES}
     ${QML_MAIN_FILES_DESKTOP}
     ${QML_MAIN_FILES_APP_CONTROL}
+    ${QML_MAIN_SOURCE_FILES}
+    ${QML_WIDGETS_DLGS_FILES}
     quick/qml/WebViewPage.qml
     quick/qml/webview-webview/WebViewItem.qml
     quick/qml/webview-none/WebViewItem.qml)
@@ -185,6 +189,10 @@ endif ()
 option(QUICK_GUI_APP_CONTROL "enables AppControl as alternative entry point for the Qt Quick GUI" OFF)
 if (QUICK_GUI_APP_CONTROL)
     list(APPEND QML_MAIN_FILES ${QML_MAIN_FILES_APP_CONTROL})
+endif ()
+option(QUICK_GUI_WIDGETS_DIALOGS "enables Qt Widgets based dialogs for the Qt Quick GUI" OFF)
+if (QUICK_GUI_WIDGETS_DIALOGS)
+    list(APPEND QML_MAIN_SOURCE_FILES ${QML_WIDGETS_DLGS_FILES})
 endif ()
 
 set(TS_FILES
@@ -427,8 +435,7 @@ if (QUICK_GUI)
         QML_FILES
         ${QML_MAIN_FILES}
         SOURCES
-        quick/quickicon.h
-        quick/quickicon.cpp
+        ${QML_MAIN_SOURCE_FILES}
         RESOURCE_PREFIX
         "/qt/qml/"
         ${PLUGIN_ARG}
