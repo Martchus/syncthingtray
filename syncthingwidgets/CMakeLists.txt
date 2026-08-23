@@ -176,10 +176,7 @@ list(
     ${QML_MAIN_FILES_DESKTOP}
     ${QML_MAIN_FILES_APP_CONTROL}
     ${QML_MAIN_SOURCE_FILES}
-    ${QML_WIDGETS_DLGS_FILES}
-    quick/qml/WebViewPage.qml
-    quick/qml/webview-webview/WebViewItem.qml
-    quick/qml/webview-none/WebViewItem.qml)
+    ${QML_WIDGETS_DLGS_FILES})
 if (ANDROID)
     list(APPEND QML_HEADER_FILES quick/android.h)
     list(APPEND QML_SRC_FILES quick/android.cpp)
@@ -334,12 +331,6 @@ include(BasicConfig)
 # configure Qt Quick GUI
 include(QtGuiConfig)
 include(QtLinkage)
-set(${META_PROJECT_VARNAME_UPPER}_HAS_WEBVIEW
-    OFF
-    PARENT_SCOPE)
-set(${META_PROJECT_VARNAME_UPPER}_HAS_WEBVIEW_PAGE
-    OFF
-    PARENT_SCOPE)
 if (QUICK_GUI)
     find_package(${PACKAGE_NAMESPACE_PREFIX}qtquickforkawesome${CONFIGURATION_PACKAGE_SUFFIX_QTFORKAWESOME} 0.1.0 REQUIRED)
     use_qt_quick_fork_awesome()
@@ -362,53 +353,6 @@ if (QUICK_GUI)
     set(CMAKE_AUTOMOC ON)
     set(CMAKE_AUTORCC ON)
     set(CMAKE_AUTOUIC ON)
-
-    # allow showing the web interface as page in the app (not used right now; hence disabled by default)
-    option(QUICK_GUI_WEBVIEW_PAGE "enables the web view page in the Qt Quick GUI" OFF)
-    if (QUICK_GUI_WEBVIEW_PAGE)
-        list(APPEND QML_MAIN_FILES quick/qml/WebViewPage.qml)
-        include(QtLinkage)
-        unset(WEBVIEWITEM_QML_FILES)
-        # check whether Qt WebView is present
-        option(QUICK_GUI_NO_WEBVIEW "disables web view support in the Qt Quick GUI" ON)
-        if (NOT QUICK_GUI_NO_WEBVIEW)
-            find_package("${QT_PACKAGE_PREFIX}WebView" "${META_QT_VERSION}")
-            find_package("${QT_PACKAGE_PREFIX}WebViewQuick" "${META_QT_VERSION}")
-            if ("${${QT_PACKAGE_PREFIX}WebView_FOUND}" AND "${${QT_PACKAGE_PREFIX}WebViewQuick_FOUND}")
-                list(APPEND ADDITIONAL_QT_MODULES WebView WebViewQuick)
-                list(APPEND ADDITIONAL_QT_REPOS webview)
-                list(APPEND WEBVIEWITEM_QML_FILES quick/qml/webview-webview/WebViewItem.qml)
-                set(${META_PROJECT_VARNAME_UPPER}_HAS_WEBVIEW
-                    ON
-                    PARENT_SCOPE)
-            endif ()
-        endif ()
-        if (NOT WEBVIEWITEM_QML_FILES)
-            list(APPEND WEBVIEWITEM_QML_FILES quick/qml/webview-none/WebViewItem.qml)
-        endif ()
-        set(${META_PROJECT_VARNAME_UPPER}_HAS_WEBVIEW_PAGE
-            ON
-            PARENT_SCOPE)
-
-        # add additional QML module for the web view
-        qt_policy(SET QTP0004 NEW)
-        qt_utilities_change_qt_quick_controls_style(WEBVIEWITEM_QML_FILES)
-        qt_add_qml_module(
-            ${META_TARGET_NAME}_webviewitem
-            URI
-            "WebViewItem"
-            VERSION
-            1.0
-            STATIC
-            QML_FILES
-            ${WEBVIEWITEM_QML_FILES}
-            RESOURCE_PREFIX
-            "/qt/qml/"
-            OUTPUT_DIRECTORY
-            "${CMAKE_CURRENT_BINARY_DIR}/WebViewItem"
-            NO_PLUGIN_OPTIONAL)
-        list(APPEND PUBLIC_LIBRARIES ${META_TARGET_NAME}_webviewitemplugin)
-    endif ()
 
     # add main QML module
     if ("desktop" IN_LIST QUICK_GUI_ENABLED_MODES)

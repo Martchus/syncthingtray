@@ -233,22 +233,6 @@ endif ()
 
 # configure Qt Quick GUI
 include(QtGuiConfig)
-if (QUICK_GUI)
-    # allow showing the web interface as page in the app (not used right now; hence disabled by default)
-    if (SYNCTHINGWIDGETS_HAS_WEBVIEW)
-        set_property(
-            SOURCE application/main.cpp
-            APPEND
-            PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_HAS_WEBVIEW)
-    endif ()
-    if (SYNCTHINGWIDGETS_HAS_WEBVIEW_PAGE)
-        set_property(
-            SOURCE application/main.cpp
-            APPEND
-            PROPERTY COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_HAS_WEBVIEW_PAGE)
-    endif ()
-endif ()
-
 # consider Java classes when generating API documentation
 set(ANDROID_JAVA_SRC_DIR "android/src/io/github/martchus/syncthingtray")
 list(

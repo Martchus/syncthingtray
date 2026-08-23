@@ -73,17 +73,6 @@ using QtApp = QApplication;
 using QtApp = QGuiApplication;
 #endif
 
-#ifdef GUI_QTQUICK
-#ifdef SYNCTHINGTRAY_HAS_WEBVIEW
-#include <QtWebView/QtWebView>
-#endif
-
-#ifdef SYNCTHINGTRAY_HAS_WEBVIEW_PAGE
-#include <QQmlEngineExtensionPlugin>
-Q_IMPORT_QML_PLUGIN(WebViewItemPlugin)
-#endif
-#endif
-
 #ifdef SYNCTHINGWIDGETS_HAS_SCHEME_HANDLER
 #include <QWebEngineUrlScheme>
 #endif
@@ -390,9 +379,6 @@ static int runApplication(int argc, const char *const *argv)
         // force Vulkan RHI backend to test it on Android or other platforms where setting an env variable is not so easy
         qputenv("QSG_RHI_BACKEND", "vulkan");
         qputenv("QSG_INFO", "1");
-#endif
-#ifdef SYNCTHINGTRAY_HAS_WEBVIEW
-        QtWebView::initialize();
 #endif
         SET_QT_APPLICATION_INFO;
         auto app = QtApp(argc, const_cast<char **>(argv));
