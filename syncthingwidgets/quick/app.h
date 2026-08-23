@@ -37,6 +37,7 @@ class SYNCTHINGWIDGETS_EXPORT App : public AppBase {
     Q_PROPERTY(bool usingUnixDomainSocket READ isUsingUnixDomainSocket NOTIFY syncthingGuiUrlChanged)
     Q_PROPERTY(QString syncthingRunningStatus READ syncthingRunningStatus NOTIFY syncthingRunningStatusChanged)
     Q_PROPERTY(QString meteredStatus READ meteredStatus NOTIFY meteredStatusChanged)
+    Q_PROPERTY(QString batterySavingStatus READ batterySavingStatus NOTIFY batterySavingStatusChanged)
     Q_PROPERTY(bool importExportOngoing READ isImportExportOngoing NOTIFY importExportOngoingChanged)
     Q_PROPERTY(bool manualServiceShutdown READ isServiceShutdownManual CONSTANT)
     Q_PROPERTY(bool storagePermissionGranted READ storagePermissionGranted NOTIFY storagePermissionGrantedChanged)
@@ -105,6 +106,10 @@ public:
     const QString &meteredStatus() const
     {
         return m_meteredStatus;
+    }
+    const QString &batterySavingStatus() const
+    {
+        return m_batterySavingStatus;
     }
     /*!
      * \brief Whether the shutdown of the accomanying AppService is manual.
@@ -185,6 +190,7 @@ Q_SIGNALS:
     void syncthingGuiUrlChanged(const QUrl &syncthingGuiUrl);
     void syncthingRunningStatusChanged(const QString &syncthingRunningStatus);
     void meteredStatusChanged(const QString &meteredStatus);
+    void batterySavingStatusChanged(const QString &batterySavingStatus);
     void importExportOngoingChanged(bool importExportOngoing);
     void textShared(const QString &text);
     void newDeviceTriggered(const QString &devId);
@@ -231,6 +237,7 @@ private:
     QString m_syncthingRunningStatus;
     QUrl m_syncthingGuiUrl;
     QString m_meteredStatus;
+    QString m_batterySavingStatus;
     QGuiApplication *m_app;
     QtUtilities::QtSettings m_qtSettings;
     QuickUI m_ui;

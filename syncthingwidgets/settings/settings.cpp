@@ -150,6 +150,7 @@ RuntimeCondition::Conditions Launcher::runtimeConditions() const
 {
     auto conds = RuntimeCondition::Conditions::None;
     CppUtilities::modFlagEnum(conds, RuntimeCondition::Conditions::Metered, stopOnMeteredConnection);
+    CppUtilities::modFlagEnum(conds, RuntimeCondition::Conditions::BatterySaving, stopOnBatterySaving);
     return conds;
 }
 
@@ -321,6 +322,9 @@ bool restore()
                 if (settings.value(QStringLiteral("pauseOnMetered"), false).toBool()) {
                     connectionSettings->enabledConditions += Data::RuntimeCondition::Conditions::Metered;
                 }
+                if (settings.value(QStringLiteral("pauseOnBatterySaving"), false).toBool()) {
+                    connectionSettings->enabledConditions += Data::RuntimeCondition::Conditions::BatterySaving;
+                }
                 if (settings.value(QStringLiteral("forceSuspend"), false).toBool()) {
                     connectionSettings->enabledConditions += Data::RuntimeCondition::Conditions::ForceSuspend;
                 }
@@ -415,6 +419,7 @@ bool restore()
     launcher.considerForReconnect = settings.value(QStringLiteral("considerLauncherForReconnect"), launcher.considerForReconnect).toBool();
     launcher.showButton = settings.value(QStringLiteral("showLauncherButton"), launcher.showButton).toBool();
     launcher.stopOnMeteredConnection = settings.value(QStringLiteral("stopOnMetered"), launcher.stopOnMeteredConnection).toBool();
+    launcher.stopOnBatterySaving = settings.value(QStringLiteral("stopOnBatterySaving"), launcher.stopOnBatterySaving).toBool();
     settings.beginGroup(QStringLiteral("tools"));
     const auto childGroups = settings.childGroups();
     for (const QString &tool : childGroups) {
@@ -433,6 +438,7 @@ bool restore()
     systemd.showButton = settings.value(QStringLiteral("showButton"), systemd.showButton).toBool();
     systemd.considerForReconnect = settings.value(QStringLiteral("considerForReconnect"), systemd.considerForReconnect).toBool();
     systemd.stopOnMeteredConnection = settings.value(QStringLiteral("stopServiceOnMetered"), systemd.stopOnMeteredConnection).toBool();
+    systemd.stopOnBatterySaving = settings.value(QStringLiteral("stopServiceOnBatterySaving"), systemd.stopOnBatterySaving).toBool();
 #endif
     settings.endGroup();
 
@@ -492,6 +498,8 @@ bool save()
         settings.setValue(QStringLiteral("longPollingTimeout"), connectionSettings->longPollingTimeout);
         settings.setValue(QStringLiteral("autoConnect"), connectionSettings->autoConnect);
         settings.setValue(QStringLiteral("pauseOnMetered"), connectionSettings->enabledConditions && Data::RuntimeCondition::Conditions::Metered);
+        settings.setValue(
+            QStringLiteral("pauseOnBatterySaving"), connectionSettings->enabledConditions && Data::RuntimeCondition::Conditions::BatterySaving);
         settings.setValue(QStringLiteral("forceSuspend"), connectionSettings->enabledConditions && Data::RuntimeCondition::Conditions::ForceSuspend);
         settings.setValue(QStringLiteral("enabledConditions"),
             static_cast<std::underlying_type_t<Data::RuntimeCondition::Conditions>>(connectionSettings->enabledConditions));
@@ -560,6 +568,7 @@ bool save()
     settings.setValue(QStringLiteral("considerLauncherForReconnect"), launcher.considerForReconnect);
     settings.setValue(QStringLiteral("showLauncherButton"), launcher.showButton);
     settings.setValue(QStringLiteral("stopOnMetered"), launcher.stopOnMeteredConnection);
+    settings.setValue(QStringLiteral("stopOnBatterySaving"), launcher.stopOnBatterySaving);
     settings.beginGroup(QStringLiteral("tools"));
     for (auto i = launcher.tools.cbegin(), end = launcher.tools.cend(); i != end; ++i) {
         const ToolParameter &toolParams = i.value();
@@ -577,6 +586,7 @@ bool save()
     settings.setValue(QStringLiteral("showButton"), systemd.showButton);
     settings.setValue(QStringLiteral("considerForReconnect"), systemd.considerForReconnect);
     settings.setValue(QStringLiteral("stopServiceOnMetered"), systemd.stopOnMeteredConnection);
+    settings.setValue(QStringLiteral("stopServiceOnBatterySaving"), systemd.stopOnBatterySaving);
 #endif
     settings.endGroup();
 
@@ -642,6 +652,7 @@ RuntimeCondition::Conditions Systemd::runtimeConditions() const
 {
     auto conds = RuntimeCondition::Conditions::None;
     CppUtilities::modFlagEnum(conds, RuntimeCondition::Conditions::Metered, stopOnMeteredConnection);
+    CppUtilities::modFlagEnum(conds, RuntimeCondition::Conditions::BatterySaving, stopOnBatterySaving);
     return conds;
 }
 

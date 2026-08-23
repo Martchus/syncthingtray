@@ -102,6 +102,7 @@ AppService::AppService(bool insecure, QObject *parent)
     connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &AppService::handleGuiUrlChanged);
     connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &AppService::broadcastLauncherStatus);
     connect(m_launcher.runtimeCondition(), &RuntimeCondition::networkConnectionMeteredChanged, this, &AppService::broadcastLauncherStatus);
+    connect(m_launcher.runtimeCondition(), &RuntimeCondition::batterySavingChanged, this, &AppService::broadcastLauncherStatus);
 
 #ifdef Q_OS_ANDROID
     connect(m_data.notifier(), &SyncthingNotifier::newDevice, this, &AppService::showNewDevice);
@@ -114,6 +115,10 @@ AppService::AppService(bool insecure, QObject *parent)
 
     if (!SyncthingLauncher::mainInstance()) {
         SyncthingLauncher::setMainInstance(&m_launcher);
+    }
+
+    if (const auto batterySaving = isBatterySaving(); batterySaving.has_value()) {
+        handlePowerSaveModeChanged(batterySaving.value());
     }
 
     reloadSettings();
@@ -174,6 +179,7 @@ bool AppService::applyLauncherSettings()
     auto *const cond = m_launcher.runtimeCondition();
     auto flags = cond->enabledConditions();
     CppUtilities::modFlagEnum(flags, Data::RuntimeCondition::Conditions::Metered, launcherSettingsObj.value(QLatin1String("stopOnMetered")).toBool());
+    CppUtilities::modFlagEnum(flags, Data::RuntimeCondition::Conditions::BatterySaving, launcherSettingsObj.value(QLatin1String("stopOnBatterySaving")).toBool());
     cond->setEnabledConditions(flags);
     const auto shouldRun = launcherSettingsObj.value(QLatin1String("run")).toBool();
     const auto exePath = launcherSettingsObj.value(QLatin1String("exePath")).toString();
@@ -419,6 +425,12 @@ void AppService::handleSyncthingError(QProcess::ProcessError error)
 void AppService::handleRunningChanged(bool isRunning)
 {
     handleReconnectingToLaunched(isRunning ? m_launcher.guiUrl() : QUrl());
+}
+
+void AppService::handlePowerSaveModeChanged(bool powerSaveMode)
+{
+    m_data.connection()->runtimeCondition()->setBatterySaving(powerSaveMode);
+    m_launcher.runtimeCondition()->setBatterySaving(powerSaveMode);
 }
 
 void AppService::handleChangedDevices()

@@ -158,8 +158,8 @@ QString SyncthingLauncher::runningStatus() const
     if (isRunning()) {
         return tr("Syncthing is running");
     } else if (m_stoppedDueToRuntimeCond) {
-        // FIXME: compute this message in RuntimeCondition
-        return tr("Syncthing is temporarily stopped due to metered connection");
+        const auto msg = m_runtimeCondition.stopStatusMessage();
+        return msg.isEmpty() ? tr("Syncthing is temporarily stopped due to runtime condition") : msg;
     } else if (m_lastExitStatus.has_value()) {
         return tr("Syncthing exited with status %1").arg(m_lastExitStatus.value().code);
     } else {
@@ -583,6 +583,7 @@ void SyncthingLauncher::showLibSyncthingNotSupported(QByteArray &&reason)
 QVariantMap SyncthingLauncher::overallStatus() const
 {
     const auto isMetered = m_runtimeCondition.isNetworkConnectionMetered();
+    const auto batterySaving = m_runtimeCondition.isBatterySaving();
     return QVariantMap{
         { QStringLiteral("isRunning"), isRunning() },
         { QStringLiteral("isStarting"), isStarting() },
@@ -592,6 +593,8 @@ QVariantMap SyncthingLauncher::overallStatus() const
         { QStringLiteral("runningStatus"), runningStatus() },
         { QStringLiteral("isMetered"), isMetered.has_value() ? QVariant(isMetered.value()) : QVariant() },
         { QStringLiteral("meteredStatus"), m_runtimeCondition.meteredStatus() },
+        { QStringLiteral("isBatterySaving"), batterySaving.has_value() ? QVariant(batterySaving.value()) : QVariant() },
+        { QStringLiteral("batterySavingStatus"), m_runtimeCondition.batterySavingStatus() },
     };
 }
 

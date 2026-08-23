@@ -50,6 +50,7 @@ LIB_SYNCTHING_CONNECTOR_EXPORT std::pair<const QNetworkInformation *, bool> load
     bool determineInitialValue = false);
 LIB_SYNCTHING_CONNECTOR_EXPORT std::optional<bool> isNetworkConnectionMetered();
 #endif
+LIB_SYNCTHING_CONNECTOR_EXPORT std::optional<bool> isBatterySaving();
 
 /*!
  * \brief Returns whether the host specified by the given \a url is the local machine.

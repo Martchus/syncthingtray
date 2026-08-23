@@ -56,6 +56,8 @@ bool RuntimeCondition::isSupposedToRun(Conditions conditions) const
 {
     if (conditions && Conditions::Metered && m_metered.value_or(false)) {
         return false;
+    } else if (conditions && Conditions::BatterySaving && m_batterySaving.value_or(false)) {
+        return false;
     } else if (conditions && Conditions::ForceSuspend) {
         return false;
     }
@@ -82,6 +84,45 @@ QString RuntimeCondition::meteredStatus() const
     } else {
         return tr("State of network connection cannot be determined");
     }
+}
+
+std::optional<bool> RuntimeCondition::isBatterySaving() const
+{
+    return m_batterySaving;
+}
+
+void RuntimeCondition::setBatterySaving(std::optional<bool> batterySaving)
+{
+    if (batterySaving != m_batterySaving) {
+        emit batterySavingChanged(m_batterySaving = batterySaving);
+        updateSupposedToRun();
+    }
+}
+
+QString RuntimeCondition::batterySavingStatus() const
+{
+    if (m_batterySaving.has_value()) {
+        return m_batterySaving.value() ? tr("Battery saving mode is enabled") : tr("Battery saving mode is disabled");
+    } else {
+        return tr("State of battery saving mode cannot be determined");
+    }
+}
+
+QString RuntimeCondition::stopStatusMessage() const
+{
+    return stopStatusMessage(m_enabledConditions);
+}
+
+QString RuntimeCondition::stopStatusMessage(Conditions conditions) const
+{
+    if (conditions && Conditions::Metered && m_metered.value_or(false)) {
+        return tr("Syncthing is temporarily stopped due to metered connection");
+    } else if (conditions && Conditions::BatterySaving && m_batterySaving.value_or(false)) {
+        return tr("Syncthing is temporarily stopped due to battery saving mode");
+    } else if (conditions && Conditions::ForceSuspend) {
+        return tr("Syncthing is temporarily stopped manually");
+    }
+    return QString();
 }
 
 void RuntimeCondition::setEnabledConditions(Conditions enabledConditions)

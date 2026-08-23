@@ -103,6 +103,22 @@ static void configureMeteredCheckbox(QCheckBox *checkBox, std::optional<bool> is
     checkBox->setToolTip(meteredToolTip(isMetered));
 }
 
+/// \brief Returns the tooltip text for the specified \a isBatterySaving value.
+static QString batterySavingToolTip(std::optional<bool> isBatterySaving)
+{
+    return isBatterySaving.has_value()
+        ? (isBatterySaving.value() ? QCoreApplication::translate("QtGui", "Battery saving mode is currently enabled.")
+                                   : QCoreApplication::translate("QtGui", "Battery saving mode is currently disabled."))
+        : QCoreApplication::translate("QtGui", "Unable to determine whether battery saving mode is enabled.");
+}
+
+/// \brief Configures the specified \a checkBox for the specified \a isBatterySaving value.
+static void configureBatterySavingCheckbox(QCheckBox *checkBox, std::optional<bool> isBatterySaving)
+{
+    checkBox->setEnabled(isBatterySaving.has_value());
+    checkBox->setToolTip(batterySavingToolTip(isBatterySaving));
+}
+
 // ConnectionOptionPage
 ConnectionOptionPage::ConnectionOptionPage(Data::SyncthingConnection *connection, QWidget *parentWidget)
     : ConnectionOptionPageBase(parentWidget)
@@ -159,9 +175,12 @@ QWidget *ConnectionOptionPage::setupWidget()
     const auto *const launcher = SyncthingLauncher::mainInstance();
     configureMeteredCheckbox(
         ui()->pauseOnMeteredConnectionCheckBox, launcher ? launcher->runtimeCondition()->isNetworkConnectionMetered() : std::nullopt);
+    configureBatterySavingCheckbox(ui()->pauseOnBatterySavingCheckBox, launcher ? launcher->runtimeCondition()->isBatterySaving() : std::nullopt);
     if (launcher) {
         QObject::connect(launcher->runtimeCondition(), &RuntimeCondition::networkConnectionMeteredChanged,
             bind(&configureMeteredCheckbox, ui()->pauseOnMeteredConnectionCheckBox, std::placeholders::_1));
+        QObject::connect(launcher->runtimeCondition(), &RuntimeCondition::batterySavingChanged,
+            bind(&configureBatterySavingCheckbox, ui()->pauseOnBatterySavingCheckBox, std::placeholders::_1));
     }
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
     ui()->timeoutSpinBox->setEnabled(false);
@@ -246,6 +265,7 @@ bool ConnectionOptionPage::showConnectionSettings(int index)
     ui()->reconnectSpinBox->setValue(connectionSettings.reconnectInterval);
     ui()->autoConnectCheckBox->setChecked(connectionSettings.autoConnect);
     ui()->pauseOnMeteredConnectionCheckBox->setChecked(connectionSettings.enabledConditions && RuntimeCondition::Conditions::Metered);
+    ui()->pauseOnBatterySavingCheckBox->setChecked(connectionSettings.enabledConditions && RuntimeCondition::Conditions::BatterySaving);
     m_statusComputionModel->setStatusComputionFlags(connectionSettings.statusComputionFlags);
     setCurrentIndex(index);
     return true;
@@ -279,6 +299,8 @@ bool ConnectionOptionPage::cacheCurrentSettings(bool applying)
     connectionSettings.autoConnect = ui()->autoConnectCheckBox->isChecked();
     CppUtilities::modFlagEnum(
         connectionSettings.enabledConditions, RuntimeCondition::Conditions::Metered, ui()->pauseOnMeteredConnectionCheckBox->isChecked());
+    CppUtilities::modFlagEnum(
+        connectionSettings.enabledConditions, RuntimeCondition::Conditions::BatterySaving, ui()->pauseOnBatterySavingCheckBox->isChecked());
     connectionSettings.statusComputionFlags = m_statusComputionModel->statusComputionFlags();
 #ifndef QT_NO_SSL
     if (!connectionSettings.loadHttpsCert()) {
@@ -401,15 +423,18 @@ void ConnectionOptionPage::toggleAdvancedSettings(bool show)
     }
 #if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
     for (auto *const widget : std::initializer_list<QWidget *>{ ui()->localPathLabel, ui()->authLabel, ui()->userNameLabel, ui()->passwordLabel,
-             ui()->timeoutLabel, ui()->longPollingLabel, ui()->diskEventLimitLabel, ui()->pollLabel, ui()->pauseOnMeteredConnectionCheckBox }) {
+             ui()->timeoutLabel, ui()->longPollingLabel, ui()->diskEventLimitLabel, ui()->pollLabel }) {
         ui()->formLayout->setRowVisible(widget, show);
     }
+    ui()->pauseOnMeteredConnectionCheckBox->setVisible(show);
+    ui()->pauseOnBatterySavingCheckBox->setVisible(show);
 #else
-    for (auto *const widget : std::initializer_list<QWidget *>{ ui()->localPathLabel, ui()->localPathLineEdit, ui()->authLabel, ui()->authCheckBox,
-             ui()->userNameLabel, ui()->userNameLineEdit, ui()->passwordLabel, ui()->passwordLineEdit, ui()->timeoutLabel, ui()->timeoutSpinBox,
-             ui()->longPollingLabel, ui()->longPollingSpinBox, ui()->diskEventLimitLabel, ui()->diskEventLimitSpinBox, ui()->pollLabel,
-             ui()->pollDevStatsLabel, ui()->pollDevStatsSpinBox, ui()->pollErrorsLabel, ui()->pollErrorsSpinBox, ui()->pollTrafficLabel,
-             ui()->pollTrafficSpinBox, ui()->reconnectLabel, ui()->reconnectSpinBox, ui()->pauseOnMeteredConnectionCheckBox }) {
+    for (auto *const widget :
+        std::initializer_list<QWidget *>{ ui()->localPathLabel, ui()->localPathLineEdit, ui()->authLabel, ui()->authCheckBox, ui()->userNameLabel,
+            ui()->userNameLineEdit, ui()->passwordLabel, ui()->passwordLineEdit, ui()->timeoutLabel, ui()->timeoutSpinBox, ui()->longPollingLabel,
+            ui()->longPollingSpinBox, ui()->diskEventLimitLabel, ui()->diskEventLimitSpinBox, ui()->pollLabel, ui()->pollDevStatsLabel,
+            ui()->pollDevStatsSpinBox, ui()->pollErrorsLabel, ui()->pollErrorsSpinBox, ui()->pollTrafficLabel, ui()->pollTrafficSpinBox,
+            ui()->reconnectLabel, ui()->reconnectSpinBox, ui()->pauseOnMeteredConnectionCheckBox, ui()->pauseOnBatterySavingCheckBox }) {
         widget->setVisible(show);
     }
 #endif
@@ -1263,6 +1288,7 @@ QWidget *LauncherOptionPage::setupWidget()
         ui()->considerForReconnectCheckBox->setVisible(false);
         ui()->showButtonCheckBox->setVisible(false);
         ui()->stopOnMeteredCheckBox->setVisible(false);
+        ui()->stopOnBatterySavingCheckBox->setVisible(false);
     }
 
     // set placeholder texts in path selections
@@ -1314,6 +1340,7 @@ QWidget *LauncherOptionPage::setupWidget()
             &LauncherOptionPage::handleSyncthingExited, Qt::QueuedConnection);
         connect(m_process, &SyncthingProcess::errorOccurred, this, &LauncherOptionPage::handleSyncthingError, Qt::QueuedConnection);
         configureMeteredCheckbox(ui()->stopOnMeteredCheckBox, std::nullopt);
+        configureBatterySavingCheckbox(ui()->stopOnBatterySavingCheckBox, std::nullopt);
     } else if (m_launcher) {
         connect(m_launcher, &SyncthingLauncher::runningChanged, this, &LauncherOptionPage::handleSyncthingLaunched);
         connect(m_launcher, &SyncthingLauncher::outputAvailable, this, &LauncherOptionPage::handleSyncthingOutputAvailable, Qt::QueuedConnection);
@@ -1326,6 +1353,9 @@ QWidget *LauncherOptionPage::setupWidget()
         configureMeteredCheckbox(ui()->stopOnMeteredCheckBox, m_launcher->runtimeCondition()->isNetworkConnectionMetered());
         connect(m_launcher->runtimeCondition(), &RuntimeCondition::networkConnectionMeteredChanged, this,
             std::bind(&configureMeteredCheckbox, ui()->stopOnMeteredCheckBox, std::placeholders::_1));
+        configureBatterySavingCheckbox(ui()->stopOnBatterySavingCheckBox, m_launcher->runtimeCondition()->isBatterySaving());
+        connect(m_launcher->runtimeCondition(), &RuntimeCondition::batterySavingChanged, this,
+            std::bind(&configureBatterySavingCheckbox, ui()->stopOnBatterySavingCheckBox, std::placeholders::_1));
 
         m_launcher->setEmittingOutput(true);
     }
@@ -1352,6 +1382,7 @@ bool LauncherOptionPage::apply()
         settings.considerForReconnect = ui()->considerForReconnectCheckBox->isChecked();
         settings.showButton = ui()->showButtonCheckBox->isChecked();
         settings.stopOnMeteredConnection = ui()->stopOnMeteredCheckBox->isChecked();
+        settings.stopOnBatterySaving = ui()->stopOnBatterySavingCheckBox->isChecked();
         if (m_launcher) {
             m_launcher->runtimeCondition()->setEnabledConditions(settings.runtimeConditions());
         }
@@ -1382,6 +1413,7 @@ void LauncherOptionPage::reset()
         ui()->considerForReconnectCheckBox->setChecked(settings.considerForReconnect);
         ui()->showButtonCheckBox->setChecked(settings.showButton);
         ui()->stopOnMeteredCheckBox->setChecked(settings.stopOnMeteredConnection);
+        ui()->stopOnBatterySavingCheckBox->setChecked(settings.stopOnBatterySaving);
     } else {
         const auto params = settings.tools.value(m_tool);
         ui()->useBuiltInVersionCheckBox->setChecked(false);
@@ -1565,6 +1597,7 @@ QWidget *SystemdOptionPage::setupWidget()
     ui()->syncthingUnitLineEdit->addCustomAction(refreshAction);
     if (!m_service) {
         ui()->stopOnMeteredCheckBox->setHidden(true);
+        ui()->stopOnBatterySavingCheckBox->setHidden(true);
         return widget;
     }
     QObject::connect(refreshAction, &QAction::triggered, m_service, &SyncthingService::reloadAllUnitFiles);
@@ -1589,6 +1622,22 @@ QWidget *SystemdOptionPage::setupWidget()
             int
 #endif
                 checkState) { s->runtimeCondition()->modEnabledConditions(RuntimeCondition::Conditions::Metered, checkState == Qt::Checked); });
+    QObject::connect(ui()->stopOnBatterySavingCheckBox,
+        &QCheckBox::
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 7, 0))
+            checkStateChanged
+#else
+            stateChanged
+#endif
+        ,
+        m_service,
+        [s = m_service](
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 7, 0))
+            Qt::CheckState
+#else
+            int
+#endif
+                checkState) { s->runtimeCondition()->modEnabledConditions(RuntimeCondition::Conditions::BatterySaving, checkState == Qt::Checked); });
     m_unitChangedConn
         = QObject::connect(ui()->systemUnitCheckBox, &QCheckBox::clicked, m_service, bind(&SystemdOptionPage::handleSystemUnitChanged, this));
     m_descChangedConn
@@ -1603,6 +1652,9 @@ QWidget *SystemdOptionPage::setupWidget()
     configureMeteredCheckbox(ui()->stopOnMeteredCheckBox, m_service->runtimeCondition()->isNetworkConnectionMetered());
     QObject::connect(m_service->runtimeCondition(), &RuntimeCondition::networkConnectionMeteredChanged,
         std::bind(&configureMeteredCheckbox, ui()->stopOnMeteredCheckBox, std::placeholders::_1));
+    configureBatterySavingCheckbox(ui()->stopOnBatterySavingCheckBox, m_service->runtimeCondition()->isBatterySaving());
+    QObject::connect(m_service->runtimeCondition(), &RuntimeCondition::batterySavingChanged,
+        std::bind(&configureBatterySavingCheckbox, ui()->stopOnBatterySavingCheckBox, std::placeholders::_1));
     return widget;
 }
 
@@ -1616,6 +1668,7 @@ bool SystemdOptionPage::apply()
     systemdSettings.showButton = ui()->showButtonCheckBox->isChecked();
     systemdSettings.considerForReconnect = ui()->considerForReconnectCheckBox->isChecked();
     systemdSettings.stopOnMeteredConnection = ui()->stopOnMeteredCheckBox->isChecked();
+    systemdSettings.stopOnBatterySaving = ui()->stopOnBatterySavingCheckBox->isChecked();
     auto result = true;
     if (systemdSettings.showButton && launcherSettings.showButton) {
         errors().append(QCoreApplication::translate("QtGui::SystemdOptionPage",
@@ -1640,6 +1693,7 @@ void SystemdOptionPage::reset()
     ui()->showButtonCheckBox->setChecked(settings.showButton);
     ui()->considerForReconnectCheckBox->setChecked(settings.considerForReconnect);
     ui()->stopOnMeteredCheckBox->setChecked(settings.stopOnMeteredConnection);
+    ui()->stopOnBatterySavingCheckBox->setChecked(settings.stopOnBatterySaving);
     if (!m_service) {
         return;
     }

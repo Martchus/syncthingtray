@@ -20,6 +20,7 @@ public:
         None = 0, /*!< No conditions enabled; always allowed to run. */
         Metered = (1 << 0), /*!< Checked to pause/suspend on metered network connections. */
         ForceSuspend = (1 << 1), /*!< Checked to force suspension of Syncthing. */
+        BatterySaving = (1 << 2), /*!< Checked to pause/suspend when battery saving is enabled. */
     };
 
 private:
@@ -27,6 +28,8 @@ private:
     Q_PROPERTY(bool supposedToRun READ isSupposedToRun NOTIFY supposedToRunChanged)
     Q_PROPERTY(std::optional<bool> networkConnectionMetered READ isNetworkConnectionMetered NOTIFY networkConnectionMeteredChanged)
     Q_PROPERTY(QString meteredStatus READ meteredStatus NOTIFY networkConnectionMeteredChanged)
+    Q_PROPERTY(std::optional<bool> batterySaving READ isBatterySaving NOTIFY batterySavingChanged)
+    Q_PROPERTY(QString batterySavingStatus READ batterySavingStatus NOTIFY batterySavingChanged)
     Q_PROPERTY(Conditions enabledConditions READ enabledConditions WRITE setEnabledConditions NOTIFY enabledConditionsChanged)
 
 public:
@@ -67,6 +70,31 @@ public:
     QString meteredStatus() const;
 
     /*!
+     * \brief Returns whether battery saving mode is enabled, or std::nullopt if unknown.
+     */
+    std::optional<bool> isBatterySaving() const;
+
+    /*!
+     * \brief Sets whether battery saving mode is enabled.
+     */
+    void setBatterySaving(std::optional<bool> batterySaving);
+
+    /*!
+     * \brief Returns a short translated status message about the battery saving mode.
+     */
+    QString batterySavingStatus() const;
+
+    /*!
+     * \brief Returns a short translated status message about why Syncthing is temporarily stopped, or empty string.
+     */
+    QString stopStatusMessage() const;
+
+    /*!
+     * \brief Returns a short translated status message about why Syncthing is temporarily stopped for the specified \a conditions, or empty string.
+     */
+    QString stopStatusMessage(Conditions conditions) const;
+
+    /*!
      * \brief Returns the currently enabled conditions.
      */
     Conditions enabledConditions() const;
@@ -93,6 +121,11 @@ Q_SIGNALS:
     void networkConnectionMeteredChanged(std::optional<bool> isMetered);
 
     /*!
+     * \brief Emitted when the battery saving mode has changed.
+     */
+    void batterySavingChanged(std::optional<bool> isBatterySaving);
+
+    /*!
      * \brief Emitted when the enabled conditions have changed.
      */
     void enabledConditionsChanged(Data::RuntimeCondition::Conditions enabledConditions);
@@ -102,6 +135,7 @@ private:
 
     Conditions m_enabledConditions;
     std::optional<bool> m_metered;
+    std::optional<bool> m_batterySaving;
     mutable std::optional<bool> m_supposedToRun;
 };
 

@@ -115,6 +115,11 @@ static void handleMessageFromActivity(JNIEnv *, jobject, jint what, jint arg1, j
     appServiceObjectForJava->handleMessageFromActivity(static_cast<ServiceAction>(what), arg1, arg2, QJniObject(str).toString());
 }
 
+static void handlePowerSaveModeChanged(JNIEnv *, jobject, jboolean powerSaveMode)
+{
+    QMetaObject::invokeMethod(appServiceObjectForJava, "handlePowerSaveModeChanged", Qt::QueuedConnection, Q_ARG(bool, powerSaveMode));
+}
+
 static void handleAndroidIntent(JNIEnv *, jobject, jstring page, jbyteArray array, jboolean fromNotification)
 {
     QMetaObject::invokeMethod(appObjectForJava, "handleAndroidIntent", Qt::QueuedConnection, Q_ARG(QString, QJniObject(page).toString()),
@@ -150,8 +155,9 @@ void registerServiceJniMethods(AppService *appService)
         { "stopLibSyncthing", "()V", reinterpret_cast<void *>(JniFn::stopLibSyncthing) },
         { "handleMessageFromActivity", "(IIILjava/lang/String;)V", reinterpret_cast<void *>(JniFn::handleMessageFromActivity) },
         { "broadcastLauncherStatus", "()V", reinterpret_cast<void *>(JniFn::broadcastLauncherStatus) },
+        { "handlePowerSaveModeChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handlePowerSaveModeChanged) },
     };
-    registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/SyncthingService", serviceMethods, 3) && registeredMethods;
+    registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/SyncthingService", serviceMethods, 4) && registeredMethods;
     if (!registeredMethods) {
         qWarning() << "Unable to register all native service methods in JNI environment.";
     }

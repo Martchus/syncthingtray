@@ -76,6 +76,7 @@ private Q_SLOTS:
     void gatherLogsFromString(const QString &newOutput);
     void gatherLogsFromBytes(const QByteArray &newOutput);
     void handleRunningChanged(bool isRunning);
+    void handlePowerSaveModeChanged(bool powerSaveMode);
     void handleChangedDevices();
     void handleNewErrors(const std::vector<Data::SyncthingError> &errors);
     void handleConnectionStatusChanged(Data::SyncthingStatus newStatus);

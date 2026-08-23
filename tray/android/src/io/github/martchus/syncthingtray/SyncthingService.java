@@ -14,6 +14,9 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
 import android.net.ConnectivityManager;
+import android.content.BroadcastReceiver;
+import android.content.IntentFilter;
+import android.os.PowerManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -54,6 +57,19 @@ public class SyncthingService extends QtService {
     // fields to communicate with activity
     private ArrayList<Messenger> m_clients = new ArrayList<Messenger>();
     private final Messenger m_messenger = new Messenger(new IncomingHandler());
+
+    private final BroadcastReceiver m_powerSaveReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (PowerManager.ACTION_POWER_SAVE_MODE_CHANGED.equals(intent.getAction())) {
+                try {
+                    handlePowerSaveModeChanged(isPowerSaveMode());
+                } catch (java.lang.UnsatisfiedLinkError e) {
+                    Log.i(TAG, "Unable to handle power save mode changed, backend not started yet");
+                }
+            }
+        }
+    };
 
     // messages to register/unregister clients (used from Java only)
     public static final int MSG_REGISTER_CLIENT = 1;
@@ -296,12 +312,20 @@ public class SyncthingService extends QtService {
         //       UnsatisfiedLinkError exception. Not being able to handle these calls on early startup does
         //       not seem to break anything.
         super.onCreate();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED);
+        registerReceiver(m_powerSaveReceiver, filter);
         Log.i(TAG, "Created service and notification");
     }
 
     @Override
     public void onDestroy() {
         s_instance = null;
+        try {
+            unregisterReceiver(m_powerSaveReceiver);
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to unregister power save receiver: " + e.getMessage());
+        }
         try {
             super.onDestroy();
             stopLibSyncthing();
@@ -372,6 +396,11 @@ public class SyncthingService extends QtService {
         return ((ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE)).isActiveNetworkMetered();
     }
 
+    public boolean isPowerSaveMode() {
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        return pm != null && pm.isPowerSaveMode();
+    }
+
     public String getGatewayIPv4() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? Util.getGatewayIPv4(this) : null;
     }
@@ -379,4 +408,5 @@ public class SyncthingService extends QtService {
     private static native void stopLibSyncthing();
     private static native void broadcastLauncherStatus();
     private static native void handleMessageFromActivity(int what, int arg1, int arg2, String str);
+    private static native void handlePowerSaveModeChanged(boolean powerSaveMode);
 }

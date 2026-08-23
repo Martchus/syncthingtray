@@ -20,12 +20,13 @@
 
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
 #include <QNetworkInformation>
+#endif
+
 #ifdef Q_OS_ANDROID
 #include <QCoreApplication>
 #include <QDebug>
 #include <QJniEnvironment>
 #include <QJniObject>
-#endif
 #endif
 
 #include <iostream>
@@ -335,5 +336,21 @@ std::optional<bool> isNetworkConnectionMetered()
 #endif
 }
 #endif
+
+std::optional<bool> isBatterySaving()
+{
+#ifdef Q_OS_ANDROID
+    if (const auto context = QNativeInterface::QAndroidApplication::context(); context.isValid()) {
+        auto env = QJniEnvironment();
+        if (auto method = env.findMethod(context.objectClass(), "isPowerSaveMode", "()Z")) {
+            return std::make_optional(env->CallBooleanMethod(context.object(), method) == JNI_TRUE);
+        }
+    }
+    qDebug() << "Unable to determine whether battery saving mode is enabled.";
+    return std::nullopt;
+#else
+    return std::nullopt;
+#endif
+}
 
 } // namespace Data

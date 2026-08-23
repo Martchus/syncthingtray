@@ -43,6 +43,7 @@ void SyncthingConnectionSettings::storeToJson(QJsonObject &object)
     auto httpAuth = QJsonObject(), advanced = QJsonObject();
     object.insert(QLatin1String("syncthingUrl"), syncthingUrl);
     object.insert(QLatin1String("pauseOnMeteredConnection"), enabledConditions && RuntimeCondition::Conditions::Metered);
+    object.insert(QLatin1String("pauseOnBatterySaving"), enabledConditions && RuntimeCondition::Conditions::BatterySaving);
     object.insert(QLatin1String("apiKey"), QString::fromUtf8(apiKey));
     httpAuth.insert(QLatin1String("enabled"), authEnabled);
     httpAuth.insert(QLatin1String("userName"), userName);
@@ -87,6 +88,9 @@ bool SyncthingConnectionSettings::loadFromJson(const QJsonObject &object)
     enabledConditions = RuntimeCondition::Conditions::None;
     if (object.value(QLatin1String("pauseOnMeteredConnection")).toBool()) {
         enabledConditions += RuntimeCondition::Conditions::Metered;
+    }
+    if (object.value(QLatin1String("pauseOnBatterySaving")).toBool()) {
+        enabledConditions += RuntimeCondition::Conditions::BatterySaving;
     }
 #ifndef QT_NO_SSL
     httpsCertPath = object.value(QLatin1String("httpsCertPath")).toString();
