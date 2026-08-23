@@ -89,8 +89,11 @@ using QtApp = QGuiApplication;
 
 using namespace std;
 using namespace CppUtilities;
-using namespace QtGui;
 using namespace Data;
+
+#if defined(GUI_QTWIDGETS) || defined(GUI_QTQUICK)
+using namespace QtGui;
+#endif
 
 // import static plugins
 #include <QtPlugin>
