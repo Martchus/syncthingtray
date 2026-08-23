@@ -4,18 +4,48 @@
 <context>
     <name>Data::RuntimeCondition</name>
     <message>
-        <location filename="../runtimecondition.cpp" line="81"/>
+        <location filename="../runtimecondition.cpp" line="83"/>
         <source>Network connection is metered</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../runtimecondition.cpp" line="81"/>
+        <location filename="../runtimecondition.cpp" line="83"/>
         <source>Network connection is not metered</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../runtimecondition.cpp" line="83"/>
+        <location filename="../runtimecondition.cpp" line="85"/>
         <source>State of network connection cannot be determined</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../runtimecondition.cpp" line="105"/>
+        <source>Battery saving mode is enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../runtimecondition.cpp" line="105"/>
+        <source>Battery saving mode is disabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../runtimecondition.cpp" line="107"/>
+        <source>State of battery saving mode cannot be determined</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../runtimecondition.cpp" line="119"/>
+        <source>Syncthing is temporarily stopped due to metered connection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../runtimecondition.cpp" line="121"/>
+        <source>Syncthing is temporarily stopped due to battery saving mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../runtimecondition.cpp" line="123"/>
+        <source>Syncthing is temporarily stopped manually</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -456,75 +486,75 @@
 <context>
     <name>Data::Utils</name>
     <message>
-        <location filename="../utils.cpp" line="44"/>
+        <location filename="../utils.cpp" line="45"/>
         <source>%1 ago</source>
         <translation>%1 之前</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="47"/>
+        <location filename="../utils.cpp" line="48"/>
         <source>right now</source>
         <translation>现在</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="58"/>
+        <location filename="../utils.cpp" line="59"/>
         <source>unknown</source>
         <translation>未知</translation>
     </message>
     <message numerus="yes">
-        <location filename="../utils.cpp" line="74"/>
+        <location filename="../utils.cpp" line="75"/>
         <source>%1 file(s)</source>
         <translation>
             <numerusform>%1 个文件</numerusform>
         </translation>
     </message>
     <message numerus="yes">
-        <location filename="../utils.cpp" line="75"/>
+        <location filename="../utils.cpp" line="76"/>
         <source>%1 dir(s)</source>
         <translation>
             <numerusform>%1 个目录</numerusform>
         </translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="90"/>
+        <location filename="../utils.cpp" line="91"/>
         <source>Synchronization of local folder %1 complete</source>
         <translation>完成本地目录 %1 的同步</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="93"/>
+        <location filename="../utils.cpp" line="94"/>
         <source>Synchronization of %1 on %2 complete</source>
         <translation>完成 %1 在 %2 上的同步</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="98"/>
+        <location filename="../utils.cpp" line="99"/>
         <source>Synchronization of the following local folders complete:
 </source>
         <translation>完成以下本地目录的同步：
 </translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="101"/>
+        <location filename="../utils.cpp" line="102"/>
         <source>Synchronization of the following folders on %1 complete:
 </source>
         <translation>完成以下目录在 %1 上的同步：
 </translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="112"/>
+        <location filename="../utils.cpp" line="113"/>
         <source>file system watcher and periodic rescan disabled</source>
         <translation>禁用文件系统监视和定期重新扫描</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="114"/>
+        <location filename="../utils.cpp" line="115"/>
         <source>file system watcher active, periodic rescan disabled</source>
         <translation>文件系统监视已激活，定期重新扫描已禁用</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="117"/>
+        <location filename="../utils.cpp" line="118"/>
         <source>, file system watcher enabled</source>
         <translation>，文件系统监视已启用</translation>
     </message>
     <message>
-        <location filename="../utils.cpp" line="118"/>
+        <location filename="../utils.cpp" line="119"/>
         <source>, file system watcher disabled</source>
         <translation>，文件系统监视已禁用</translation>
     </message>

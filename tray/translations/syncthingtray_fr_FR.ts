@@ -474,22 +474,22 @@ Pour &lt;i&gt;toutes&lt;/i&gt; les notifications, consultez le journal</translat
 <context>
     <name>main</name>
     <message>
-        <location filename="../application/main.cpp" line="124"/>
+        <location filename="../application/main.cpp" line="116"/>
         <source>Unable to </source>
         <translation>Impossible de </translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="170"/>
+        <location filename="../application/main.cpp" line="162"/>
         <source>The system tray is (currently) not available. You could open the tray menu as a regular window using the --windowed flag, though.It is also possible to start Syncthing Tray with --wait to wait until the system tray becomes available instead of showing this message.</source>
         <translation>La barre d&apos;état système n&apos;est pas disponible (actuellement). Vous pouvez néanmoins ouvrir le menu de la barre d&apos;état comme une fenêtre normale en utilisant l&apos;option --windowed. Il est également possible de démarrer Syncthing Tray avec --wait pour attendre que la barre d&apos;état devienne disponible au lieu d&apos;afficher ce message.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="197"/>
+        <location filename="../application/main.cpp" line="189"/>
         <source>The Qt libraries have not been built with tray icon support. You could open the tray menu as a regular window using the -w flag, though.</source>
         <translation>Les bibliothèques Qt n&apos;ont pas été compilées avec le support des icônes de la barre d&apos;état. Vous pouvez néanmoins ouvrir le menu comme une fenêtre normale en utilisant l&apos;option -w.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="523"/>
+        <location filename="../application/main.cpp" line="512"/>
         <source>&lt;p&gt;This can have different causes:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Data corruption occurred during the download/extraction. In this case cancelling and retrying the update will help.&lt;/li&gt;&lt;li&gt;The signing key or updating mechanism in general has changed. In this case an according release note will be present on &lt;a href=&quot;https://martchus.github.io/syncthingtray/#downloads-section&quot;&gt;the website&lt;/a&gt; and &lt;a href=&quot;https://github.com/Martchus/syncthingtray/releases&quot;&gt;GitHub&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;A bug in the newly introduced updater, see &lt;a href=&quot;https://github.com/Martchus/syncthingtray/issues&quot;&gt;issues on GitHub&lt;/a&gt; for potential bug reports.&lt;/li&gt;&lt;li&gt;Someone tries to distribute manipulated executables of Syncthing Tray.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;It is recommend to cancel the update and retry or cross-check the cause if the issue persists. If you ignore this error you &lt;i&gt;may&lt;/i&gt; install a corrupted/manipulated executable.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Ceci peut avoir plusieurs causes :&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Une corruption de données s&apos;est produite lors du téléchargement ou de l&apos;extraction. Dans ce cas, annuler et réessayer la mise à jour devrait aider.&lt;/li&gt;&lt;li&gt;La clé de signature ou le mécanisme de mise à jour a changé. Dans ce cas, une note de version correspondante sera présente sur &lt;a href=&quot;https://martchus.github.io/syncthingtray/#downloads-section&quot;&gt;le site web&lt;/a&gt; et &lt;a href=&quot;https://github.com/Martchus/syncthingtray/releases&quot;&gt;GitHub&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;Un bug dans le nouveau programme de mise à jour ; consultez les &lt;a href=&quot;https://github.com/Martchus/syncthingtray/issues&quot;&gt;tickets sur GitHub&lt;/a&gt; pour d&apos;éventuels rapports de bug.&lt;/li&gt;&lt;li&gt;Quelqu&apos;un tente de distribuer des exécutables falsifiés de Syncthing Tray.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Il est recommandé d&apos;annuler la mise à jour et de réessayer, ou de vérifier la cause si le problème persiste. Si vous ignorez cette erreur, vous &lt;i&gt;pourriez&lt;/i&gt; installer un exécutable corrompu ou malveillant.&lt;/p&gt;</translation>
     </message>
