@@ -341,6 +341,19 @@ ApplicationWindow {
                             ColumnLayout {
                                 id: statisticsLayout
                                 width: statisticsView.width - statisticsScrollBar.width
+                                LocalSyncProgress {
+                                    id: localSyncProgress
+                                    Layout.fillWidth: true
+                                    Layout.leftMargin: 15
+                                    Layout.rightMargin: 15
+                                    spacing: 10
+                                }
+                                RemoteSyncProgress {
+                                    Layout.fillWidth: true
+                                    Layout.leftMargin: 15
+                                    Layout.rightMargin: 15
+                                    spacing: 10
+                                }
                                 StatisticsRow {
                                     Layout.fillWidth: true
                                     Layout.leftMargin: 15
@@ -357,18 +370,39 @@ ApplicationWindow {
                                     labelText: qsTr("Local state")
                                     iconName: "home"
                                 }
-                                LocalSyncProgress {
-                                    id: localSyncProgress
+                                RowLayout {
+                                    id: trafficRow
+                                    spacing: 15
                                     Layout.fillWidth: true
                                     Layout.leftMargin: 15
                                     Layout.rightMargin: 15
-                                    spacing: 10
-                                }
-                                RemoteSyncProgress {
-                                    Layout.fillWidth: true
-                                    Layout.leftMargin: 15
-                                    Layout.rightMargin: 15
-                                    spacing: 10
+                                    ForkAwesomeIcon {
+                                        iconName: "tachometer"
+                                        Layout.alignment: Qt.AlignHCenter | Qt.AlignTop
+                                    }
+                                    GridLayout {
+                                        columns: trafficRow.parent.width > 300 ? 4 : 2
+                                        ForkAwesomeIcon {
+                                            iconName: "cloud-download"
+                                            opacity: 0.5
+                                        }
+                                        Label {
+                                            text: SyncthingModels.formatTraffic(SyncthingData.connection.totalIncomingTraffic, SyncthingData.connection.totalIncomingRate)
+                                            elide: Text.ElideRight
+                                            wrapMode: Text.Wrap
+                                            font.weight: Font.Light
+                                        }
+                                        ForkAwesomeIcon {
+                                            iconName: "cloud-upload"
+                                            opacity: 0.5
+                                        }
+                                        Label {
+                                            text: SyncthingModels.formatTraffic(SyncthingData.connection.totalOutgoingTraffic, SyncthingData.connection.totalOutgoingRate)
+                                            elide: Text.ElideRight
+                                            wrapMode: Text.Wrap
+                                            font.weight: Font.Light
+                                        }
+                                    }
                                 }
                             }
                         }
