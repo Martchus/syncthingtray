@@ -176,9 +176,9 @@ StackView {
         readonly property var specialEntries: ({
             connection: [
                 {key: "useLauncher", type: "boolean", label: qsTr("Automatic"), statusText: qsTr("Connect to the Syncthing backend launched via this app and disregard the manual settings below"), category: qsTr("General")},
-                {key: "pauseOnMeteredConnection", type: "boolean", defaultValue: false, label: qsTr("Pause devices, discovery and relaying on metered network connection"), statusText: Qt.binding(() => App.meteredStatus)},
-                {key: "pauseOnBatterySaving", type: "boolean", defaultValue: false, label: qsTr("Pause devices, discovery and relaying on battery saving mode"), statusText: Qt.binding(() => App.batterySavingStatus)},
                 {key: "advanced", label: qsTr("Advanced")},
+                {key: "pauseOnMeteredConnection", type: "boolean", defaultValue: false, label: qsTr("On metered network connection"), statusText: Qt.binding(() => App.meteredStatus), category: qsTr("Pause devices, discovery and relaying")},
+                {key: "pauseOnBatterySaving", type: "boolean", defaultValue: false, label: qsTr("On battery saving mode"), statusText: Qt.binding(() => App.batterySavingStatus)},
                 {key: "syncthingUrl", label: qsTr("Syncthing URL"), category: qsTr("Manual connection settings")},
                 {key: "apiKey", label: qsTr("API key"), inputMethodHints: Qt.ImhHiddenText | Qt.ImhSensitiveData | Qt.ImhNoAutoUppercase},
                 {key: "httpsCertPath", label: qsTr("HTTPs certificate path"), type: "filepath"},
@@ -202,9 +202,9 @@ StackView {
             ],
             launcher: [
                 {key: "run", label: qsTr("Run Syncthing"), statusText: Qt.binding(() => App.syncthingRunningStatus), category: qsTr("General")},
-                {key: "stopOnMetered", label: qsTr("Stop on metered network connection"), statusText: Qt.binding(() => App.meteredStatus)},
-                {key: "stopOnBatterySaving", label: qsTr("Stop on battery saving mode"), statusText: Qt.binding(() => App.batterySavingStatus)},
                 {key: "guiUrl", type: "readonly", label: qsTr("URL for GUI and API access"), defaultValue: "", statusText: Qt.binding(() => App.syncthingGuiUrl.toString() || qsTr("n/a"))},
+                {key: "stopOnMetered", label: qsTr("On metered network connection"), category: qsTr("Stop automatically"), statusText: Qt.binding(() => App.meteredStatus)},
+                {key: "stopOnBatterySaving", label: qsTr("On battery saving mode"), statusText: Qt.binding(() => App.batterySavingStatus)},
                 {key: "writeLogFile", label: qsTr("Write persistent log file"), statusText: qsTr("Write a persistent log file into the app directory"), category: qsTr("Logging")},
                 {key: "logLevel", label: qsTr("Log level"), type: "options", options: [
                     {value: "debug", label: qsTr("Debug")},
