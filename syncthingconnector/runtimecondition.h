@@ -65,6 +65,11 @@ public:
     void setNetworkConnectionMetered(std::optional<bool> metered);
 
     /*!
+     * \brief Sets whether the current network connection is metered.
+     */
+    void setNetworkConnectionMetered(bool metered);
+
+    /*!
      * \brief Returns a short translated status message about the metered state of the connection.
      */
     QString meteredStatus() const;
@@ -134,8 +139,9 @@ private:
     void updateSupposedToRun();
 
     Conditions m_enabledConditions;
-    std::optional<bool> m_metered;
-    std::optional<bool> m_batterySaving;
+    mutable Conditions m_initializedConditions;
+    mutable std::optional<bool> m_metered;
+    mutable std::optional<bool> m_batterySaving;
     mutable std::optional<bool> m_supposedToRun;
 };
 
@@ -148,6 +154,11 @@ namespace Data {
 inline RuntimeCondition::Conditions RuntimeCondition::enabledConditions() const
 {
     return m_enabledConditions;
+}
+
+inline void RuntimeCondition::setNetworkConnectionMetered(bool metered)
+{
+    setNetworkConnectionMetered(std::make_optional(metered));
 }
 
 inline void RuntimeCondition::modEnabledConditions(Conditions conditionsToModify, bool enable)

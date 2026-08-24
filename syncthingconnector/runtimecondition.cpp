@@ -24,16 +24,8 @@ namespace Data {
 RuntimeCondition::RuntimeCondition(Conditions conditions, QObject *parent)
     : QObject(parent)
     , m_enabledConditions(conditions)
+    , m_initializedConditions(Conditions::ForceSuspend)
 {
-#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
-    if (const auto [networkInformation, isInitiallyMetered] = loadNetworkInformationBackendForMetered(true); networkInformation) {
-        connect(networkInformation, &QNetworkInformation::isMeteredChanged, this, [this](bool isMetered) { setNetworkConnectionMetered(isMetered); });
-        m_metered = isInitiallyMetered;
-    }
-#endif
-
-    // force initial determination
-    isSupposedToRun();
 }
 
 RuntimeCondition::~RuntimeCondition() = default;
@@ -54,18 +46,22 @@ bool RuntimeCondition::isSupposedToRun() const
  */
 bool RuntimeCondition::isSupposedToRun(Conditions conditions) const
 {
-    if (conditions && Conditions::Metered && m_metered.value_or(false)) {
-        return false;
-    } else if (conditions && Conditions::BatterySaving && m_batterySaving.value_or(false)) {
-        return false;
-    } else if (conditions && Conditions::ForceSuspend) {
-        return false;
-    }
-    return true;
+    return !((conditions && Conditions::ForceSuspend) || (conditions && Conditions::Metered && isNetworkConnectionMetered().value_or(false))
+        || (conditions && Conditions::BatterySaving && isBatterySaving().value_or(false)));
 }
 
 std::optional<bool> RuntimeCondition::isNetworkConnectionMetered() const
 {
+#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
+    if (!(m_initializedConditions && Conditions::Metered)) {
+        if (const auto [networkInformation, isInitiallyMetered] = loadNetworkInformationBackendForMetered(true); networkInformation) {
+            connect(networkInformation, &QNetworkInformation::isMeteredChanged, this,
+                static_cast<void (RuntimeCondition::*)(bool)>(&RuntimeCondition::setNetworkConnectionMetered));
+            m_metered = isInitiallyMetered;
+        }
+        m_initializedConditions += Conditions::Metered;
+    }
+#endif
     return m_metered;
 }
 
@@ -79,8 +75,8 @@ void RuntimeCondition::setNetworkConnectionMetered(std::optional<bool> metered)
 
 QString RuntimeCondition::meteredStatus() const
 {
-    if (m_metered.has_value()) {
-        return m_metered.value() ? tr("Network connection is metered") : tr("Network connection is not metered");
+    if (const auto metered = isNetworkConnectionMetered(); metered.has_value()) {
+        return metered.value() ? tr("Network connection is metered") : tr("Network connection is not metered");
     } else {
         return tr("State of network connection cannot be determined");
     }
@@ -101,8 +97,8 @@ void RuntimeCondition::setBatterySaving(std::optional<bool> batterySaving)
 
 QString RuntimeCondition::batterySavingStatus() const
 {
-    if (m_batterySaving.has_value()) {
-        return m_batterySaving.value() ? tr("Battery saving mode is enabled") : tr("Battery saving mode is disabled");
+    if (const auto batterySaving = isBatterySaving(); batterySaving.has_value()) {
+        return batterySaving.value() ? tr("Battery saving mode is enabled") : tr("Battery saving mode is disabled");
     } else {
         return tr("State of battery saving mode cannot be determined");
     }
