@@ -146,12 +146,17 @@ void Launcher::autostart() const
     }
 }
 
-RuntimeCondition::Conditions Launcher::runtimeConditions() const
+template<typename Settings> static RuntimeCondition::Conditions runtimeConditions(const Settings &settings)
 {
     auto conds = RuntimeCondition::Conditions::None;
-    CppUtilities::modFlagEnum(conds, RuntimeCondition::Conditions::Metered, stopOnMeteredConnection);
-    CppUtilities::modFlagEnum(conds, RuntimeCondition::Conditions::BatterySaving, stopOnBatterySaving);
+    CppUtilities::modFlagEnum(conds, RuntimeCondition::Conditions::Metered, settings.stopOnMeteredConnection);
+    CppUtilities::modFlagEnum(conds, RuntimeCondition::Conditions::BatterySaving, settings.stopOnBatterySaving);
     return conds;
+}
+
+RuntimeCondition::Conditions Launcher::runtimeConditions() const
+{
+    return ::Settings::runtimeConditions(*this);
 }
 
 /*!
@@ -650,10 +655,7 @@ void Settings::apply(SyncthingNotifier &notifier) const
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 RuntimeCondition::Conditions Systemd::runtimeConditions() const
 {
-    auto conds = RuntimeCondition::Conditions::None;
-    CppUtilities::modFlagEnum(conds, RuntimeCondition::Conditions::Metered, stopOnMeteredConnection);
-    CppUtilities::modFlagEnum(conds, RuntimeCondition::Conditions::BatterySaving, stopOnBatterySaving);
-    return conds;
+    return ::Settings::runtimeConditions(*this);
 }
 
 /*!
