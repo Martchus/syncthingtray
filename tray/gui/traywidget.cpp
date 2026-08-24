@@ -359,6 +359,20 @@ SettingsDialog *TrayWidget::settingsDialog()
     return s_settingsDlg;
 }
 
+Data::SyncthingLauncher *TrayWidget::launcher() const
+{
+    return Data::SyncthingLauncher::mainInstance();
+}
+
+Data::SyncthingService *TrayWidget::service() const
+{
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    return Data::SyncthingService::mainInstance();
+#else
+    return nullptr;
+#endif
+}
+
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
 QuickGuiEngine &TrayWidget::quickGui()
 {
@@ -1032,6 +1046,7 @@ void TrayWidget::toggleRunning()
     }
 }
 
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
 QObject *TrayWidget::startStopButtonTarget()
 {
     switch (m_startStopButtonTarget) {
@@ -1051,6 +1066,7 @@ QObject *TrayWidget::startStopButtonTarget()
     }
     return nullptr;
 }
+#endif
 
 Settings::Launcher::LauncherStatus TrayWidget::handleLauncherStatusChanged()
 {

@@ -246,20 +246,6 @@ inline QQuickWidget *TrayWidget::quickWidget()
 {
     return m_quickWidget;
 }
-
-inline Data::SyncthingLauncher *TrayWidget::launcher() const
-{
-    return Data::SyncthingLauncher::mainInstance();
-}
-
-inline Data::SyncthingService *TrayWidget::service() const
-{
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    return Data::SyncthingService::mainInstance();
-#else
-    return nullptr;
-#endif
-}
 #endif
 
 } // namespace QtGui
