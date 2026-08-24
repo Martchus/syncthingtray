@@ -26,6 +26,9 @@ SyncthingData::SyncthingData(QObject *parent, bool textOnly, bool clickToConnect
     , m_statusInfo(textOnly, clickToConnect)
 {
     m_connection.setPollingFlags(Data::SyncthingConnection::PollingFlags::MainEvents | Data::SyncthingConnection::PollingFlags::Errors);
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+    connect(&m_notifier, &Data::SyncthingNotifier::statusChanged, this, &SyncthingData::connectionStatusChanged);
+#endif
 }
 
 SyncthingData::~SyncthingData()
@@ -43,5 +46,21 @@ QString SyncthingData::website() const
 {
     return QStringLiteral(APP_URL);
 }
+
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+QString SyncthingData::connectButtonState() const
+{
+    switch (m_connection.status()) {
+    case Data::SyncthingStatus::Disconnected:
+        return m_connection.isConnecting() ? QStringLiteral("connecting") : QStringLiteral("disconnected");
+    case Data::SyncthingStatus::Reconnecting:
+        return QStringLiteral("connecting");
+    case Data::SyncthingStatus::Paused:
+        return QStringLiteral("paused");
+    default:
+        return QStringLiteral("idle");
+    }
+}
+#endif
 
 } // namespace QtGui

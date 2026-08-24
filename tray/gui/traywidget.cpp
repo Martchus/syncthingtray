@@ -381,6 +381,11 @@ QuickGuiEngine &TrayWidget::quickGui()
     }
     return *m_quickUI;
 }
+
+bool TrayWidget::isStartStopEnabled() const
+{
+    return !m_ui->startStopPushButton->isHidden();
+}
 #endif
 
 void TrayWidget::showSettingsDialog()
@@ -701,6 +706,9 @@ void TrayWidget::applySettings(const QString &connectionConfig)
     const auto systemdOrLauncherRelevantForReconnect = launcherStatus.relevant;
 #endif
     m_ui->startStopPushButton->setVisible(showStartStopButton);
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    emit startStopEnabledChanged();
+#endif
     if (reconnectRequired && !systemdOrLauncherRelevantForReconnect) {
         // simply enforce the reconnect for this connection if the systemd or launcher status are relevant for it
         m_data.connection()->reconnect();
@@ -1024,6 +1032,26 @@ void TrayWidget::toggleRunning()
     }
 }
 
+QObject *TrayWidget::startStopButtonTarget()
+{
+    switch (m_startStopButtonTarget) {
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    case StartStopButtonTarget::Service:
+        if (auto *const service = SyncthingService::mainInstance()) {
+            return service;
+        }
+        break;
+#endif
+    case StartStopButtonTarget::Launcher:
+        if (auto *const launcher = SyncthingLauncher::mainInstance()) {
+            return launcher;
+        }
+        break;
+    default:;
+    }
+    return nullptr;
+}
+
 Settings::Launcher::LauncherStatus TrayWidget::handleLauncherStatusChanged()
 {
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
@@ -1035,6 +1063,9 @@ Settings::Launcher::LauncherStatus TrayWidget::handleLauncherStatusChanged()
     const auto showStartStopButton = launcherStatus.showStartStopButton;
 #endif
     m_ui->startStopPushButton->setVisible(showStartStopButton);
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    emit startStopEnabledChanged();
+#endif
     return launcherStatus;
 }
 
@@ -1079,12 +1110,18 @@ Settings::Systemd::ServiceStatus TrayWidget::handleSystemdStatusChanged()
     const auto systemdStatus = applySystemdSettings();
     if (systemdStatus.showStartStopButton) {
         m_ui->startStopPushButton->setVisible(true);
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+        emit startStopEnabledChanged();
+#endif
         return systemdStatus;
     }
 
     // update the start/stop button which might now control the internal launcher
     const auto launcherStatus = applyLauncherSettings(false, true, false);
     m_ui->startStopPushButton->setVisible(launcherStatus.showStartStopButton);
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    emit startStopEnabledChanged();
+#endif
 
     return systemdStatus;
 }

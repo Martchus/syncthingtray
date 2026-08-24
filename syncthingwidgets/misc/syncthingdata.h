@@ -33,6 +33,7 @@ class SYNCTHINGWIDGETS_EXPORT SyncthingData : public QObject {
     Q_PROPERTY(QString documentationUrl READ documentationUrl CONSTANT)
     Q_PROPERTY(QString website READ website CONSTANT)
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+    Q_PROPERTY(QString connectButtonState READ connectButtonState NOTIFY connectionStatusChanged)
     QML_ELEMENT
     QML_SINGLETON
 #endif
@@ -83,8 +84,17 @@ public:
     }
     QString website() const;
 
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+    QString connectButtonState() const;
+#endif
+
     Q_INVOKABLE QString formatIncomingTraffic() const;
     Q_INVOKABLE QString formatOutgoingTraffic() const;
+
+Q_SIGNALS:
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
+    void connectionStatusChanged();
+#endif
 
 public Q_SLOTS:
     void updateStatusInfo(const QString &configurationName = QString());

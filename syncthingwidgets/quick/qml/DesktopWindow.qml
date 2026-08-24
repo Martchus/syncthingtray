@@ -34,21 +34,132 @@ ApplicationWindow {
                 readonly property int size: 32
             }
             ColumnLayout {
-                Layout.fillWidth: true
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 spacing: 0
                 Label {
-                    Layout.fillWidth: true
                     font.weight: Font.Medium
                     text: SyncthingData.statusInfo.statusText
                     wrapMode: Text.WordWrap
                 }
                 Label {
-                    Layout.fillWidth: true
                     font.weight: Font.Light
                     text: SyncthingData.statusInfo.additionalStatusText
                     wrapMode: Text.WordWrap
                 }
+            }
+            Item {
+                Layout.fillWidth: true
+            }
+            ToolButton {
+                id: connectButton
+                states: [
+                    State {
+                        name: "disconnected"
+                        PropertyChanges {
+                            target: connectButton
+                            text: qsTr("Connect")
+                            icon.source: QuickUI.faUrlBase + "refresh"
+                            enabled: true
+                        }
+                    },
+                    State {
+                        name: "connecting"
+                        PropertyChanges {
+                            target: connectButton
+                            text: qsTr("Connecting …")
+                            icon.source: QuickUI.faUrlBase + "refresh"
+                            enabled: false
+                        }
+                    },
+                    State {
+                        name: "paused"
+                        PropertyChanges {
+                            target: connectButton
+                            text: qsTr("Resume")
+                            icon.source: QuickUI.faUrlBase + "play"
+                            enabled: true
+                        }
+                    },
+                    State {
+                        name: "idle"
+                        PropertyChanges {
+                            target: connectButton
+                            text: qsTr("Pause")
+                            icon.source: QuickUI.faUrlBase + "pause"
+                            enabled: true
+                        }
+                    }
+                ]
+                state: SyncthingData.connectButtonState
+                onClicked: SyncthingData.connection.changeStatus()
+                Shortcut {
+                    sequence: "Ctrl+Shift+P"
+                    onActivated: connectButton.clicked()
+                }
+            }
+            ToolButton {
+                id: startStopButton
+                states: [
+                    State {
+                        name: "running"
+                        PropertyChanges {
+                            target: startStopButton
+                            visible: true
+                            text: qsTr("Stop")
+                            icon.source: QuickUI.faUrlBase + "stop"
+                        }
+                        PropertyChanges {
+                            target: startStopToolTip
+                            text: (TrayWidget.service?.userScope ? "systemctl --user stop " : "systemctl stop ")
+                                     + TrayWidget.service?.unitName
+                        }
+                    },
+                    State {
+                        name: "stopped"
+                        PropertyChanges {
+                            target: startStopButton
+                            visible: true
+                            text: qsTr("Start")
+                            icon.source: QuickUI.faUrlBase + "play"
+                        }
+                        PropertyChanges {
+                            target: startStopToolTip
+                            text: (TrayWidget.service?.userScope ? "systemctl --user start " : "systemctl start ")
+                                     + TrayWidget.service?.unitName
+                        }
+                    },
+                    State {
+                        name: "irrelevant"
+                        PropertyChanges {
+                            target: startStopButton
+                            visible: false
+                        }
+                    }
+                ]
+                state: {
+                    // the systemd unit status is only relevant when connected to the local instance
+                    if (!SyncthingData.connection.local || !TrayWidget.startStopEnabled) {
+                        return "irrelevant"
+                    }
+                    // show start/stop button only when the configured unit is available
+                    const target = TrayWidget.startStopButtonTarget
+                    if (!target || target.systemdAvailable === false) {
+                        return "irrelevant"
+                    }
+                    return target.running || target.starting ? "running" : "stopped"
+                }
+                onClicked: TrayWidget.toggleRunning()
+                Shortcut {
+                    sequence: "Ctrl+Shift+S"
+                    onActivated: {
+                        if (startStopButton.visible) {
+                            startStopButton.clicked()
+                        }
+                    }
+                }
+            }
+            Item {
+                Layout.fillWidth: true
             }
             MenuBar {
                 id: menuBar

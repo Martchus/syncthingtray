@@ -71,7 +71,6 @@ class SyncthingApplet : public Plasma::Applet {
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     Q_PROPERTY(Data::SyncthingService *service READ service CONSTANT)
 #endif
-    Q_PROPERTY(QString connectButtonState READ connectButtonState NOTIFY connectionStatusChanged)
     Q_PROPERTY(QString incomingTraffic READ incomingTraffic NOTIFY trafficChanged)
     Q_PROPERTY(bool hasIncomingTraffic READ hasIncomingTraffic NOTIFY trafficChanged)
     Q_PROPERTY(QString outgoingTraffic READ outgoingTraffic NOTIFY trafficChanged)
@@ -84,6 +83,7 @@ class SyncthingApplet : public Plasma::Applet {
             currentConnectionConfigIndexChanged)
     Q_PROPERTY(int defaultTab READ defaultTab CONSTANT)
     Q_PROPERTY(bool startStopEnabled READ isStartStopEnabled NOTIFY settingsChanged)
+    Q_PROPERTY(QObject *startStopButtonTarget READ service CONSTANT)
     Q_PROPERTY(bool hasInternalErrors READ hasInternalErrors NOTIFY hasInternalErrorsChanged)
     Q_PROPERTY(QSize size READ size WRITE setSize NOTIFY sizeChanged)
     Q_PROPERTY(bool showTabTexts READ isShowingTabTexts WRITE setShowingTabTexts NOTIFY showTabTextsChanged)
@@ -115,7 +115,6 @@ public:
 #endif
     Data::SyncthingService *service() const;
     QIcon syncthingIcon() const;
-    QString connectButtonState() const;
     QString incomingTraffic() const;
     bool hasIncomingTraffic() const;
     QString outgoingTraffic() const;
@@ -168,6 +167,7 @@ public Q_SLOTS:
     void copyToClipboard(const QString &dirId, const QString &relativePath);
     void openLocalFileOrDir(const QString &dirId, const QString &relativePath);
     void updateStatusIconAndTooltip();
+    void toggleRunning();
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     void handleRelevantControlsChanged(bool visible, int index);
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
@@ -368,6 +368,13 @@ inline const QList<QtUtilities::ChecklistItem> &SyncthingApplet::passiveStates()
 inline QString SyncthingApplet::faUrl()
 {
     return m_faUrl;
+}
+
+inline void SyncthingApplet::toggleRunning()
+{
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    return m_service.toggleRunning();
+#endif
 }
 
 inline void SyncthingApplet::setPassive(bool passive)

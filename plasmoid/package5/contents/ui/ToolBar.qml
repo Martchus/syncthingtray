@@ -54,7 +54,7 @@ RowLayout {
                 }
             }
         ]
-        state: plasmoid.nativeInterface.connectButtonState
+        state: plasmoid.nativeInterface.data.connectButtonState
         onClicked: plasmoid.nativeInterface.data.connection.changeStatus()
         PlasmaComponents3.ToolTip {
             text: connectButton.text

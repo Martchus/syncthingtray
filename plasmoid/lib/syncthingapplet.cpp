@@ -263,20 +263,6 @@ void SyncthingApplet::initEngine(QObject *object)
 #endif
 }
 
-QString SyncthingApplet::connectButtonState() const
-{
-    switch (m_data.connection()->status()) {
-    case Data::SyncthingStatus::Disconnected:
-        return m_data.connection()->isConnecting() ? QStringLiteral("connecting") : QStringLiteral("disconnected");
-    case Data::SyncthingStatus::Reconnecting:
-        return QStringLiteral("connecting");
-    case Data::SyncthingStatus::Paused:
-        return QStringLiteral("paused");
-    default:
-        return QStringLiteral("idle");
-    }
-}
-
 QString SyncthingApplet::incomingTraffic() const
 {
     return m_data.formatIncomingTraffic();

@@ -71,6 +71,14 @@ class TrayWidget : public QWidget {
     QML_ELEMENT
     QML_SINGLETON
 #endif
+    Q_PROPERTY(Data::SyncthingLauncher *launcher READ launcher CONSTANT)
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    Q_PROPERTY(Data::SyncthingService *service READ service CONSTANT)
+#endif
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    Q_PROPERTY(bool startStopEnabled READ isStartStopEnabled NOTIFY startStopEnabledChanged)
+    Q_PROPERTY(QObject *startStopButtonTarget READ startStopButtonTarget NOTIFY startStopButtonTargetChanged)
+#endif
 
 public:
     enum class Style : int { Traditional, Modern };
@@ -89,7 +97,11 @@ public:
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
     QuickGuiEngine &quickGui();
     QQuickWidget *quickWidget();
+    bool isStartStopEnabled() const;
+    QObject *startStopButtonTarget();
 #endif
+    Data::SyncthingLauncher *launcher() const;
+    Data::SyncthingService *service() const;
 
 public Q_SLOTS:
     void showSettingsDialog();
@@ -117,9 +129,16 @@ public Q_SLOTS:
     void applySettingsChangesFromWizard();
     void saveSettings();
     void handleCurrentTabChanged(int index);
+    void toggleRunning();
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
     void handleMainWindowVisibleChanged(bool visible);
     void handleChangesWindowVisibleChanged(bool visible);
+#endif
+
+Q_SIGNALS:
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    void startStopEnabledChanged();
+    void startStopButtonTargetChanged();
 #endif
 
 protected:
@@ -142,7 +161,6 @@ private Q_SLOTS:
     bool updateTrafficText();
     void updateOverallStatistics();
     void updateIconAndTooltip();
-    void toggleRunning();
     Settings::Launcher::LauncherStatus handleLauncherStatusChanged();
     Settings::Launcher::LauncherStatus handleLauncherGuiAddressChanged(const QUrl &guiAddress);
     Settings::Launcher::LauncherStatus applyLauncherSettings(
@@ -227,6 +245,20 @@ inline Data::SyncthingConnectionSettings *TrayWidget::selectedConnection()
 inline QQuickWidget *TrayWidget::quickWidget()
 {
     return m_quickWidget;
+}
+
+inline Data::SyncthingLauncher *TrayWidget::launcher() const
+{
+    return Data::SyncthingLauncher::mainInstance();
+}
+
+inline Data::SyncthingService *TrayWidget::service() const
+{
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+    return Data::SyncthingService::mainInstance();
+#else
+    return nullptr;
+#endif
 }
 #endif
 
