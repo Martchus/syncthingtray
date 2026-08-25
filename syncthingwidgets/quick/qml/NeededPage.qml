@@ -27,8 +27,11 @@ Page {
             dynamicRoles: true
         }
         delegate: ItemDelegate {
+            id: delegate
             width: listView.width - (listView.ScrollBar?.vertical ? listView.ScrollBar.vertical.width : 0)
+            onPressAndHold: SyncthingModels.copyText(SyncthingData.connection.fullPath(neededPage.dirId, modelData.name))
             contentItem: RowLayout {
+                id: contentItem
                 GridLayout {
                     Layout.fillWidth: true
                     columns: listView.width < 250 ? 1 : 2
@@ -53,7 +56,33 @@ Page {
                     onClicked: SyncthingModels.requestFromSyncthing("POST", "db/prio", {folder: neededPage.dirId, file: modelData.name}, (res, error) => {})
                 }
             }
+            CustomMenu {
+                id: menu
+                MenuItemInstantiator {
+                    menu: menu
+                    model: delegate.actions
+                }
+            }
+            TapHandler {
+                acceptedButtons: Qt.LeftButton
+                onLongPressed: {
+                    QuickUI.performHapticFeedback();
+                    menu.showCentered(contentItem);
+                }
+            }
+            TapHandler {
+                acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad | PointerDevice.Stylus
+                acceptedButtons: Qt.RightButton
+                onTapped: menu.showCentered(contentItem)
+            }
             required property var modelData
+            readonly property list<Action> actions: [
+                Action {
+                    text: qsTr("Copy path")
+                    icon.source: QuickUI.faUrlBase + "files-o"
+                    onTriggered: SyncthingModels.copyText(SyncthingData.connection.fullPath(neededPage.dirId, modelData.name))
+                }
+            ]
         }
         section.property: "state"
         section.delegate: DynamicSectionHeader {
