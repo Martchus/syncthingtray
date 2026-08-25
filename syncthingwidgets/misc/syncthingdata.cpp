@@ -28,6 +28,7 @@ SyncthingData::SyncthingData(QObject *parent, bool textOnly, bool clickToConnect
     m_connection.setPollingFlags(Data::SyncthingConnection::PollingFlags::MainEvents | Data::SyncthingConnection::PollingFlags::Errors);
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
     connect(&m_notifier, &Data::SyncthingNotifier::statusChanged, this, &SyncthingData::connectionStatusChanged);
+    connect(m_connection.runtimeCondition(), &Data::RuntimeCondition::enabledConditionsChanged, this, &SyncthingData::connectionStatusChanged);
 #endif
 }
 
@@ -55,10 +56,9 @@ QString SyncthingData::connectButtonState() const
         return m_connection.isConnecting() ? QStringLiteral("connecting") : QStringLiteral("disconnected");
     case Data::SyncthingStatus::Reconnecting:
         return QStringLiteral("connecting");
-    case Data::SyncthingStatus::Paused:
-        return QStringLiteral("paused");
     default:
-        return QStringLiteral("idle");
+        const bool isForceSuspend = m_connection.runtimeCondition()->enabledConditions() && Data::RuntimeCondition::Conditions::ForceSuspend;
+        return isForceSuspend ? QStringLiteral("paused") : QStringLiteral("idle");
     }
 }
 #endif

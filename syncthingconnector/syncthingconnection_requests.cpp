@@ -787,12 +787,11 @@ void SyncthingConnection::changeStatus()
         break;
     case SyncthingStatus::Reconnecting:
         break;
-    case SyncthingStatus::Paused:
-        resumeAllDevs();
+    default: {
+        const bool isForceSuspend = m_runtimeCondition.enabledConditions() && RuntimeCondition::Conditions::ForceSuspend;
+        m_runtimeCondition.modEnabledConditions(RuntimeCondition::Conditions::ForceSuspend, !isForceSuspend);
         break;
-    default:
-        pauseAllDevs();
-        break;
+    }
     }
 }
 

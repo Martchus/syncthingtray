@@ -22,6 +22,7 @@
 #include <syncthingconnector/syncthingservice.h>
 #endif
 #include <syncthingconnector/utils.h>
+#include <syncthingconnector/runtimecondition.h>
 
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"
@@ -251,6 +252,9 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     connect(m_ui->webUiPushButton, &QPushButton::clicked, this, &TrayWidget::showWebUI);
     connect(m_ui->settingsPushButton, &QPushButton::clicked, this, &TrayWidget::showSettingsDialog);
     connect(m_data.connection(), &SyncthingConnection::statusChanged, this, &TrayWidget::handleStatusChanged);
+    connect(m_data.connection()->runtimeCondition(), &RuntimeCondition::enabledConditionsChanged, this, [this] {
+        handleStatusChanged(m_data.connection()->status());
+    });
     connect(m_data.connection(), &SyncthingConnection::trafficChanged, this, &TrayWidget::updateTraffic);
     connect(m_data.connection(), &SyncthingConnection::dirStatisticsChanged, this, &TrayWidget::updateOverallStatistics);
     connect(m_data.connection(), &SyncthingConnection::newErrors, this, &TrayWidget::handleNewErrors);
@@ -641,23 +645,21 @@ void TrayWidget::handleStatusChanged(SyncthingStatus status)
             }
         }
         return;
-    case SyncthingStatus::Idle:
-    case SyncthingStatus::Scanning:
-    case SyncthingStatus::Synchronizing:
-    case SyncthingStatus::RemoteNotInSync:
-    case SyncthingStatus::NoRemoteConnected:
-        m_ui->statusPushButton->setText(tr("Pause"));
-        m_ui->statusPushButton->setToolTip(tr("Syncthing is running, click to pause all devices"));
-        m_ui->statusPushButton->setIcon(QIcon(QStringLiteral("pause.fa")));
-        m_ui->statusPushButton->setEnabled(true);
+    default: {
+        const bool isForceSuspend = m_data.connection()->runtimeCondition()->enabledConditions() && RuntimeCondition::Conditions::ForceSuspend;
+        if (isForceSuspend) {
+            m_ui->statusPushButton->setText(tr("Continue"));
+            m_ui->statusPushButton->setToolTip(tr("Syncthing is force-paused, click to resume"));
+            m_ui->statusPushButton->setIcon(QIcon(QStringLiteral("play.fa")));
+            m_ui->statusPushButton->setEnabled(true);
+        } else {
+            m_ui->statusPushButton->setText(tr("Pause"));
+            m_ui->statusPushButton->setToolTip(tr("Syncthing is running, click to pause all devices, discovery and relaying"));
+            m_ui->statusPushButton->setIcon(QIcon(QStringLiteral("pause.fa")));
+            m_ui->statusPushButton->setEnabled(true);
+        }
         break;
-    case SyncthingStatus::Paused:
-        m_ui->statusPushButton->setText(tr("Continue"));
-        m_ui->statusPushButton->setToolTip(tr("At least one device is paused, click to resume"));
-        m_ui->statusPushButton->setIcon(QIcon(QStringLiteral("play.fa")));
-        m_ui->statusPushButton->setEnabled(true);
-        break;
-    default:;
+    }
     }
     concludeWizard();
 }
