@@ -147,6 +147,7 @@ ApplicationWindow {
                                 PropertyChanges {
                                     target: connectButton
                                     text: qsTr("Connect to Syncthing")
+                                    icon.source: QuickUI.faUrlBase + "refresh"
                                     enabled: true
                                 }
                             },
@@ -155,6 +156,7 @@ ApplicationWindow {
                                 PropertyChanges {
                                     target: connectButton
                                     text: qsTr("Connecting …")
+                                    icon.source: QuickUI.faUrlBase + "spinner"
                                     enabled: false
                                 }
                             },
