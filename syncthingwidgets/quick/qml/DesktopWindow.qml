@@ -67,30 +67,37 @@ ApplicationWindow {
                     }
                     Action {
                         text: qsTr("Home page")
+                        icon.source: QuickUI.faUrlBase + "home"
                         onTriggered: SyncthingModels.openUrlExternally("https://syncthing.net")
                     }
                     Action {
                         text: qsTr("Documentation")
+                        icon.source: QuickUI.faUrlBase + "book"
                         onTriggered: SyncthingModels.openUrlExternally("https://docs.syncthing.net")
                     }
                     Action {
                         text: qsTr("Support")
+                        icon.source: QuickUI.faUrlBase + "users"
                         onTriggered: SyncthingModels.openUrlExternally("https://forum.syncthing.net")
                     }
                     Action {
                         text: qsTr("Changelog")
+                        icon.source: QuickUI.faUrlBase + "file-text"
                         onTriggered: SyncthingModels.openUrlExternally("https://github.com/syncthing/syncthing/releases")
                     }
                     Action {
                         text: qsTr("Statistics")
+                        icon.source: QuickUI.faUrlBase + "bar-chart"
                         onTriggered: SyncthingModels.openUrlExternally("https://data.syncthing.net")
                     }
                     Action {
                         text: qsTr("Bugs")
+                        icon.source: QuickUI.faUrlBase + "bug"
                         onTriggered: SyncthingModels.openUrlExternally("https://github.com/syncthing/syncthing/issues")
                     }
                     Action {
                         text: qsTr("Source code")
+                        icon.source: QuickUI.faUrlBase + "file-code-o"
                         onTriggered: SyncthingModels.openUrlExternally("https://github.com/syncthing/syncthing")
                     }
                     MenuSeparator {
@@ -101,15 +108,23 @@ ApplicationWindow {
                         font.weight: Font.Medium
                     }
                     Action {
+                        text: qsTr("Home page")
+                        icon.source: QuickUI.faUrlBase + "home"
+                        onTriggered: SyncthingModels.openUrlExternally(SyncthingData.website)
+                    }
+                    Action {
                         text: qsTr("Documentation")
+                        icon.source: QuickUI.faUrlBase + "book"
                         onTriggered: SyncthingModels.openUrlExternally(SyncthingData.documentationUrl)
                     }
                     Action {
                         text: qsTr("Source code")
+                        icon.source: QuickUI.faUrlBase + "file-code-o"
                         onTriggered: SyncthingModels.openUrlExternally(SyncthingData.readmeUrl.replace(/\/blob\/.*/, ""))
                     }
                     Action {
                         text: qsTr("About")
+                        icon.source: QuickUI.faUrlBase + "info-circle"
                         onTriggered: TrayWidget.showAboutDialog()
                     }
                 }
@@ -208,40 +223,48 @@ ApplicationWindow {
                     }
                     Action {
                         text: qsTr("Restart")
+                        icon.source: QuickUI.faUrlBase + "refresh"
                         onTriggered: SyncthingData.connection.restart()
                     }
                     Action {
                         text: qsTr("&Settings")
+                        icon.source: QuickUI.faUrlBase + "cogs"
                         onTriggered: QuickUI.showSettings()
                         shortcut: "Ctrl+S"
                     }
                     Action {
                         text: qsTr("&Web-based UI")
+                        icon.source: QuickUI.faUrlBase + "globe"
                         onTriggered: TrayWidget.showSyncthingUI(true)
                         shortcut: "Ctrl+W"
                     }
                     Action {
                         text: qsTr("&Recent changes")
+                        icon.source: QuickUI.faUrlBase + "history"
                         onTriggered: QuickUI.showRecentChanges()
                         shortcut: "Ctrl+R"
                     }
                     Action {
                         text: qsTr("Show &ID")
+                        icon.source: QuickUI.faUrlBase + "qrcode"
                         onTriggered: TrayWidget.showOwnDeviceId()
                         shortcut: "Ctrl+I"
                     }
                     Action {
                         text: qsTr("&Logs")
+                        icon.source: QuickUI.faUrlBase + "terminal"
                         onTriggered: TrayWidget.showLog()
                         shortcut: "Ctrl+L"
                     }
                     Action {
                         text: qsTr("&Statistics")
+                        icon.source: QuickUI.faUrlBase + "area-chart"
                         onTriggered: QuickUI.showStats()
                         shortcut: "Ctrl+L"
                     }
                     Action {
                         text: qsTr("&Support Bundle")
+                        icon.source: QuickUI.faUrlBase + "user-md"
                         enabled: false
                     }
                     MenuSeparator {
@@ -254,10 +277,12 @@ ApplicationWindow {
                     Action {
                         text: qsTr("&Settings")
                         onTriggered: TrayWidget.showSettingsDialog()
+                        icon.source: QuickUI.faUrlBase + "cog"
                         shortcut: "Ctrl+Shift+S"
                     }
                     Action {
                         text: qsTr("&Wizard")
+                        icon.source: QuickUI.faUrlBase + "magic"
                         onTriggered: TrayWidget.showWizard()
                         shortcut: "Ctrl+Shift+W"
                     }
