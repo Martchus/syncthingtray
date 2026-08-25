@@ -41,7 +41,7 @@
     <message>
         <location filename="../package6/contents/ui/DevicesPage.qml" line="16"/>
         <source>Filter devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Geräte filtern</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/DevicesPage.qml" line="144"/>
@@ -420,7 +420,7 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="558"/>
+        <location filename="../lib/syncthingapplet.cpp" line="544"/>
         <source>About</source>
         <translation>Über Syncthing Plasmoid</translation>
     </message>
@@ -429,17 +429,17 @@
         <translation type="vanished">Neue Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="642"/>
+        <location filename="../lib/syncthingapplet.cpp" line="628"/>
         <source>Associated directory does not exist.</source>
         <translation>Zugehöriges Verzeichnis existiert nicht.</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="668"/>
+        <location filename="../lib/syncthingapplet.cpp" line="654"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation>Verbindung zu Syncthing kann nicht hergestellt werden.</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="736"/>
+        <location filename="../lib/syncthingapplet.cpp" line="722"/>
         <source>D-Bus error - unable to </source>
         <translation>D-Bus-Fehler bei Aktion </translation>
     </message>

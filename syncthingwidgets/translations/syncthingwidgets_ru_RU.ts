@@ -1143,198 +1143,229 @@
 <context>
     <name>DesktopWindow</name>
     <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="174"/>
+        <source>Pause</source>
+        <translation type="unfinished">Пауза</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="201"/>
+        <source>Stop</source>
+        <translation type="unfinished">Стоп</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="209"/>
+        <source>Start</source>
+        <translation type="unfinished">Старт</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="65"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="138"/>
+        <source>Syncthing</source>
+        <translation type="unfinished">Syncthing</translation>
+    </message>
+    <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="59"/>
         <source>&amp;Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="65"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="123"/>
-        <source>Syncthing</source>
-        <translation type="unfinished">Syncthing</translation>
-    </message>
-    <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="69"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="111"/>
         <source>Home page</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="73"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="104"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="74"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="116"/>
         <source>Documentation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="77"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="79"/>
         <source>Support</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="81"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="84"/>
         <source>Changelog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="85"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="291"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="480"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="89"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="395"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="584"/>
         <source>Statistics</source>
         <translation type="unfinished">Статистика</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="89"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="94"/>
         <source>Bugs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="93"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="108"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="99"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="121"/>
         <source>Source code</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="100"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="172"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="107"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="274"/>
         <source>Syncthing Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="112"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="126"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="117"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="132"/>
         <source>&amp;Actions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="127"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="176"/>
-        <source>&amp;Settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="132"/>
-        <source>&amp;Web-based UI</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="137"/>
-        <source>&amp;Recent changes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="142"/>
-        <source>Show &amp;ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="147"/>
-        <source>&amp;Logs</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="152"/>
-        <source>&amp;Statistics</source>
+        <location filename="../quick/qml/DesktopWindow.qml" line="149"/>
+        <source>Connect to Syncthing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="157"/>
-        <source>&amp;Support Bundle</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="161"/>
-        <source>Restart</source>
+        <source>Connecting …</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="165"/>
+        <source>Resume</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="225"/>
+        <source>Restart</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="217"/>
         <source>Shutdown</source>
         <translation type="unfinished">Неисправность</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="181"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="230"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="278"/>
+        <source>&amp;Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="236"/>
+        <source>&amp;Web-based UI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="242"/>
+        <source>&amp;Recent changes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="248"/>
+        <source>Show &amp;ID</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="254"/>
+        <source>&amp;Logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="260"/>
+        <source>&amp;Statistics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="266"/>
+        <source>&amp;Support Bundle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/DesktopWindow.qml" line="284"/>
         <source>&amp;Wizard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="220"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="486"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="324"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="590"/>
         <source>Folders</source>
         <translation type="unfinished">Папки</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="228"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="332"/>
         <source>Add folder</source>
         <translation type="unfinished">Добавить папку</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="235"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="435"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="339"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="539"/>
         <source>Pause all</source>
         <translation type="unfinished">Приостановить все</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="242"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="442"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="346"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="546"/>
         <source>Resume all</source>
         <translation type="unfinished">Возобновить все</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="249"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="353"/>
         <source>Rescan all</source>
         <translation type="unfinished">Пересканировать все</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="255"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="359"/>
         <source>Filter folders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="300"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="404"/>
         <source>Recent changes</source>
         <translation type="unfinished">Последние изменения</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="307"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="411"/>
         <source>Show ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="314"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="418"/>
         <source>Show logs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="321"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="425"/>
         <source>Show statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="362"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="466"/>
         <source>Global state</source>
         <translation type="unfinished">Глобально</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="370"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="474"/>
         <source>Local state</source>
         <translation type="unfinished">Локально</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="419"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="492"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="523"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="596"/>
         <source>Devices</source>
         <translation type="unfinished">Устройства</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="428"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="532"/>
         <source>Add device</source>
         <translation type="unfinished">Добавить устройство</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="449"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="553"/>
         <source>Filter devices</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2767,28 +2798,33 @@
         <translation>Обновить</translation>
     </message>
     <message>
-        <location filename="../quick/qml/NeededPage.qml" line="50"/>
+        <location filename="../quick/qml/NeededPage.qml" line="53"/>
         <source>Move to top of queue</source>
         <translation>Переместить в начало очереди</translation>
     </message>
     <message>
-        <location filename="../quick/qml/NeededPage.qml" line="79"/>
+        <location filename="../quick/qml/NeededPage.qml" line="81"/>
+        <source>Copy path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/NeededPage.qml" line="108"/>
         <source>In progress</source>
         <translation>В ходе выполнения</translation>
     </message>
     <message>
-        <location filename="../quick/qml/NeededPage.qml" line="80"/>
+        <location filename="../quick/qml/NeededPage.qml" line="109"/>
         <source>Queued</source>
         <translation>В очереди</translation>
     </message>
     <message>
-        <location filename="../quick/qml/NeededPage.qml" line="81"/>
-        <location filename="../quick/qml/NeededPage.qml" line="82"/>
+        <location filename="../quick/qml/NeededPage.qml" line="110"/>
+        <location filename="../quick/qml/NeededPage.qml" line="111"/>
         <source>Out of Sync</source>
         <translation>Рассинхронизация</translation>
     </message>
     <message>
-        <location filename="../quick/qml/NeededPage.qml" line="82"/>
+        <location filename="../quick/qml/NeededPage.qml" line="111"/>
         <source>Locally changed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5725,7 +5761,7 @@
 <context>
     <name>QtGui::SyncthingData</name>
     <message>
-        <location filename="../misc/syncthingdata.h" line="69"/>
+        <location filename="../misc/syncthingdata.h" line="70"/>
         <source>not available</source>
         <translation>нет в наличии</translation>
     </message>
@@ -6273,7 +6309,7 @@ This dialog closes automatically when the process finally terminates.</source>
 <context>
     <name>Settings::Connection</name>
     <message>
-        <location filename="../settings/settings.cpp" line="724"/>
+        <location filename="../settings/settings.cpp" line="726"/>
         <source>Backup of %1 (created by wizard)</source>
         <translation>Резервная копия %1 (созданная мастером)</translation>
     </message>
@@ -6281,7 +6317,7 @@ This dialog closes automatically when the process finally terminates.</source>
 <context>
     <name>Settings::restore</name>
     <message>
-        <location filename="../settings/settings.cpp" line="346"/>
+        <location filename="../settings/settings.cpp" line="351"/>
         <source>Unable to load certificate &quot;%1&quot; when restoring settings.</source>
         <translation>Не удалось загрузить сертификат «%1» при восстановлении настроек.</translation>
     </message>
@@ -6329,6 +6365,13 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation>Настройки</translation>
     </message>
     <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="27"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="34"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="41"/>
+        <source>Configuration</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../quick/qml/SettingsPage.qml" line="40"/>
         <source>Configure details of the app&apos;s behavior</source>
         <translation>Настройте детали поведения приложения</translation>
@@ -6337,6 +6380,14 @@ This dialog closes automatically when the process finally terminates.</source>
         <location filename="../quick/qml/SettingsPage.qml" line="46"/>
         <source>Syncthing notifications/errors</source>
         <translation>Уведомления/ошибки синхронизации</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="47"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="53"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="59"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="65"/>
+        <source>Diagnostics</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="52"/>
@@ -6354,6 +6405,12 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation>Импорт выбранных настроек/секретов/данных приложения и бэкэнда</translation>
     </message>
     <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="72"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="78"/>
+        <source>Backup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../quick/qml/SettingsPage.qml" line="77"/>
         <source>Export all settings/secrets/data of app and backend</source>
         <translation>Экспорт всех настроек/секретов/данных приложения и бэкэнда</translation>
@@ -6362,6 +6419,13 @@ This dialog closes automatically when the process finally terminates.</source>
         <location filename="../quick/qml/SettingsPage.qml" line="83"/>
         <source>Move Syncthing home directory</source>
         <translation>Переместить домашний каталог Syncthing</translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="84"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="91"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="98"/>
+        <source>Maintenance actions</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="89"/>
@@ -6423,23 +6487,6 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation>Дополнительно</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="180"/>
-        <location filename="../quick/qml/SettingsPage.qml" line="206"/>
-        <source>On metered network connection</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="180"/>
-        <source>Pause devices, discovery and relaying</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="181"/>
-        <location filename="../quick/qml/SettingsPage.qml" line="207"/>
-        <source>On battery saving mode</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../quick/qml/SettingsPage.qml" line="188"/>
         <source>Transfer timeout</source>
         <translation>Истекло время передачи</translation>
@@ -6480,11 +6527,6 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation>URL для доступа к интерфейсу пользователя и API</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="206"/>
-        <source>Stop automatically</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../quick/qml/SettingsPage.qml" line="217"/>
         <source>External executable</source>
         <translation>Внешний исполняемый файл</translation>
@@ -6519,34 +6561,6 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="vanished">Остановка при лимитном сетевом подключении</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="27"/>
-        <location filename="../quick/qml/SettingsPage.qml" line="34"/>
-        <location filename="../quick/qml/SettingsPage.qml" line="41"/>
-        <source>Configuration</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="47"/>
-        <location filename="../quick/qml/SettingsPage.qml" line="53"/>
-        <location filename="../quick/qml/SettingsPage.qml" line="59"/>
-        <location filename="../quick/qml/SettingsPage.qml" line="65"/>
-        <source>Diagnostics</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="72"/>
-        <location filename="../quick/qml/SettingsPage.qml" line="78"/>
-        <source>Backup</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="84"/>
-        <location filename="../quick/qml/SettingsPage.qml" line="91"/>
-        <location filename="../quick/qml/SettingsPage.qml" line="98"/>
-        <source>Maintenance actions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../quick/qml/SettingsPage.qml" line="178"/>
         <location filename="../quick/qml/SettingsPage.qml" line="204"/>
         <source>General</source>
@@ -6555,6 +6569,23 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="178"/>
         <source>Connect to the Syncthing backend launched via this app and disregard the manual settings below</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="180"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="206"/>
+        <source>On metered network connection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="180"/>
+        <source>Pause devices, discovery and relaying</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="181"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="207"/>
+        <source>On battery saving mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6645,6 +6676,11 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="195"/>
         <source>The path to the Unix domain socket when setting the Syncthing URL to &quot;unix+http://…&quot;.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="206"/>
+        <source>Stop automatically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
