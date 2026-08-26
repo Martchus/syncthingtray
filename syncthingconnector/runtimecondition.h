@@ -36,6 +36,7 @@ private:
     Q_PROPERTY(std::optional<int> batteryLevel READ batteryLevel NOTIFY batteryLevelChanged)
     Q_PROPERTY(int batteryPercentage READ batteryPercentage WRITE setBatteryPercentage NOTIFY batteryPercentageChanged)
     Q_PROPERTY(Conditions enabledConditions READ enabledConditions WRITE setEnabledConditions NOTIFY enabledConditionsChanged)
+    Q_PROPERTY(bool initializinbg READ isInitializing WRITE setInitializing)
 
 public:
     /*!
@@ -120,6 +121,11 @@ public:
     void setBatteryLevel(std::optional<int> batteryLevel);
 
     /*!
+     * \brief Sets whether the system is running on battery and the current battery level (0-100).
+     */
+    void setBatteryInfo(std::optional<bool> onBattery, std::optional<int> batteryLevel);
+
+    /*!
      * \brief Returns the configured battery percentage threshold under which to pause.
      */
     int batteryPercentage() const;
@@ -153,6 +159,17 @@ public:
      * \brief Modifies the specified \a conditionsToModify by enabling (if \a enable is true) or disabling them.
      */
     void modEnabledConditions(Conditions conditionsToModify, bool enable = true);
+
+    /*!
+     * \brief Returns whether the runtime condition is being initialized.
+     * \remarks The supposedToRunChanged() signal is not emitted while the runtime condition is initialized.
+     */
+    bool isInitializing() const;
+
+    /*!
+     * \brief Set whether the runtime condition is being initialized.
+     */
+    void setInitializing(bool initializing);
 
 Q_SIGNALS:
     /*!
@@ -201,6 +218,7 @@ private:
     mutable std::optional<int> m_batteryLevel;
     int m_batteryPercentage;
     mutable std::optional<bool> m_supposedToRun;
+    bool m_initializing;
 };
 
 } // namespace Data
@@ -223,6 +241,11 @@ inline void RuntimeCondition::modEnabledConditions(Conditions conditionsToModify
 {
     auto conds = m_enabledConditions;
     setEnabledConditions(CppUtilities::modFlagEnum(conds, conditionsToModify, enable));
+}
+
+inline bool RuntimeCondition::isInitializing() const
+{
+    return m_initializing;
 }
 
 } // namespace Data

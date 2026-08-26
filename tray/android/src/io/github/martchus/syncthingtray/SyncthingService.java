@@ -428,28 +428,19 @@ public class SyncthingService extends QtService {
         return pm != null && pm.isPowerSaveMode();
     }
 
-    public boolean isOnBattery() {
+    public int queryBatteryInfo() {
         IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
         Intent batteryStatus = registerReceiver(null, ifilter);
         if (batteryStatus != null) {
             int status = batteryStatus.getIntExtra(android.os.BatteryManager.EXTRA_STATUS, -1);
-            return status != android.os.BatteryManager.BATTERY_STATUS_CHARGING &&
-                   status != android.os.BatteryManager.BATTERY_STATUS_FULL;
-        }
-        return false;
-    }
-
-    public int getBatteryLevel() {
-        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
-        Intent batteryStatus = registerReceiver(null, ifilter);
-        if (batteryStatus != null) {
+            boolean onBattery = status != android.os.BatteryManager.BATTERY_STATUS_CHARGING &&
+                               status != android.os.BatteryManager.BATTERY_STATUS_FULL;
             int level = batteryStatus.getIntExtra(android.os.BatteryManager.EXTRA_LEVEL, -1);
             int scale = batteryStatus.getIntExtra(android.os.BatteryManager.EXTRA_SCALE, -1);
-            if (scale > 0) {
-                return (int) (level * 100 / (float) scale);
-            }
+            int batteryPct = scale > 0 ? (int) (level * 100 / (float) scale) : 100;
+            return onBattery ? batteryPct : (-1 - batteryPct);
         }
-        return 100;
+        return -101;
     }
 
     public String getGatewayIPv4() {

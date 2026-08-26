@@ -353,32 +353,21 @@ std::optional<bool> isBatterySaving()
 #endif
 }
 
-std::optional<bool> isOnBattery()
+std::optional<std::pair<bool, int>> queryBatteryInfo()
 {
 #ifdef Q_OS_ANDROID
     if (const auto context = QNativeInterface::QAndroidApplication::context(); context.isValid()) {
         auto env = QJniEnvironment();
-        if (auto method = env.findMethod(context.objectClass(), "isOnBattery", "()Z")) {
-            return std::make_optional(env->CallBooleanMethod(context.object(), method) == JNI_TRUE);
+        if (auto method = env.findMethod(context.objectClass(), "queryBatteryInfo", "()I")) {
+            const int val = static_cast<int>(env->CallIntMethod(context.object(), method));
+            if (val >= 0) {
+                return std::make_optional(std::make_pair(true, val));
+            } else {
+                return std::make_optional(std::make_pair(false, -1 - val));
+            }
         }
     }
-    qDebug() << "Unable to determine whether running on battery.";
-    return std::nullopt;
-#else
-    return std::nullopt;
-#endif
-}
-
-std::optional<int> batteryLevel()
-{
-#ifdef Q_OS_ANDROID
-    if (const auto context = QNativeInterface::QAndroidApplication::context(); context.isValid()) {
-        auto env = QJniEnvironment();
-        if (auto method = env.findMethod(context.objectClass(), "getBatteryLevel", "()I")) {
-            return std::make_optional(static_cast<int>(env->CallIntMethod(context.object(), method)));
-        }
-    }
-    qDebug() << "Unable to determine battery level.";
+    qDebug() << "Unable to determine battery info.";
     return std::nullopt;
 #else
     return std::nullopt;

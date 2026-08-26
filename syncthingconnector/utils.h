@@ -51,8 +51,7 @@ LIB_SYNCTHING_CONNECTOR_EXPORT std::pair<const QNetworkInformation *, bool> load
 LIB_SYNCTHING_CONNECTOR_EXPORT std::optional<bool> isNetworkConnectionMetered();
 #endif
 LIB_SYNCTHING_CONNECTOR_EXPORT std::optional<bool> isBatterySaving();
-LIB_SYNCTHING_CONNECTOR_EXPORT std::optional<bool> isOnBattery();
-LIB_SYNCTHING_CONNECTOR_EXPORT std::optional<int> batteryLevel();
+LIB_SYNCTHING_CONNECTOR_EXPORT std::optional<std::pair<bool, int>> queryBatteryInfo();
 
 /*!
  * \brief Returns whether the host specified by the given \a url is the local machine.

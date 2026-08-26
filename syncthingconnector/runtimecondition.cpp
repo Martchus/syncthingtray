@@ -26,6 +26,7 @@ RuntimeCondition::RuntimeCondition(Conditions conditions, QObject *parent)
     , m_enabledConditions(conditions)
     , m_initializedConditions(Conditions::ForceSuspend)
     , m_batteryPercentage(100)
+    , m_initializing(false)
 {
 }
 
@@ -151,6 +152,17 @@ void RuntimeCondition::setBatteryLevel(std::optional<int> batteryLevel)
     }
 }
 
+void RuntimeCondition::setBatteryInfo(std::optional<bool> onBattery, std::optional<int> batteryLevel)
+{
+    if (onBattery != m_onBattery || batteryLevel != m_batteryLevel) {
+        m_onBattery = onBattery;
+        m_batteryLevel = batteryLevel;
+        emit batteryLevelChanged(m_batteryLevel);
+        emit onBatteryChanged(m_onBattery);
+        updateSupposedToRun();
+    }
+}
+
 int RuntimeCondition::batteryPercentage() const
 {
     return m_batteryPercentage;
@@ -196,8 +208,18 @@ void RuntimeCondition::setEnabledConditions(Conditions enabledConditions)
     }
 }
 
+void RuntimeCondition::setInitializing(bool initializing)
+{
+    if (!(m_initializing = initializing)) {
+        updateSupposedToRun();
+    }
+}
+
 void RuntimeCondition::updateSupposedToRun()
 {
+    if (m_initializing) {
+        return;
+    }
     const bool oldSupposedToRun = m_supposedToRun.value_or(true);
     m_supposedToRun.reset();
     const bool newSupposedToRun = isSupposedToRun();
