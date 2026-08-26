@@ -146,7 +146,7 @@ void Launcher::autostart() const
     }
 }
 
-template<typename Settings> static RuntimeCondition::Conditions runtimeConditions(const Settings &settings)
+template <typename Settings> static RuntimeCondition::Conditions runtimeConditions(const Settings &settings)
 {
     auto conds = RuntimeCondition::Conditions::None;
     CppUtilities::modFlagEnum(conds, RuntimeCondition::Conditions::Metered, settings.stopOnMeteredConnection);

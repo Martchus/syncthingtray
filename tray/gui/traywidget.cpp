@@ -21,8 +21,8 @@
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 #include <syncthingconnector/syncthingservice.h>
 #endif
-#include <syncthingconnector/utils.h>
 #include <syncthingconnector/runtimecondition.h>
+#include <syncthingconnector/utils.h>
 
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"
@@ -252,9 +252,8 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     connect(m_ui->webUiPushButton, &QPushButton::clicked, this, &TrayWidget::showWebUI);
     connect(m_ui->settingsPushButton, &QPushButton::clicked, this, &TrayWidget::showSettingsDialog);
     connect(m_data.connection(), &SyncthingConnection::statusChanged, this, &TrayWidget::handleStatusChanged);
-    connect(m_data.connection()->runtimeCondition(), &RuntimeCondition::enabledConditionsChanged, this, [this] {
-        handleStatusChanged(m_data.connection()->status());
-    });
+    connect(m_data.connection()->runtimeCondition(), &RuntimeCondition::enabledConditionsChanged, this,
+        [this] { handleStatusChanged(m_data.connection()->status()); });
     connect(m_data.connection(), &SyncthingConnection::trafficChanged, this, &TrayWidget::updateTraffic);
     connect(m_data.connection(), &SyncthingConnection::dirStatisticsChanged, this, &TrayWidget::updateOverallStatistics);
     connect(m_data.connection(), &SyncthingConnection::newErrors, this, &TrayWidget::handleNewErrors);
