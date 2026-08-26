@@ -649,7 +649,7 @@ void SyncthingConnection::applyRawConfig()
     }
     if (auto row = 0, myIdRow = -1; !listOfDevsChanged) {
         if (m_devs.empty()) {
-            listOfDirsChanged = true;
+            listOfDevsChanged = true;
         } else {
             const auto &myId = m_devs.front().id;
             for (auto i = m_devs.begin() + 1, end = m_devs.end(); i != end;) {
