@@ -263,6 +263,7 @@ void SyncthingLauncher::launch(const Settings::Launcher &launcherSettings)
     } else {
         launch(launcherSettings.syncthingPath, SyncthingProcess::splitArguments(launcherSettings.syncthingArgs));
     }
+    m_runtimeCondition.setBatteryPercentage(launcherSettings.stopOnBatteryMinPercentage);
     m_runtimeCondition.setEnabledConditions(launcherSettings.runtimeConditions());
     m_lastLauncherSettings = &launcherSettings;
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
@@ -584,6 +585,7 @@ QVariantMap SyncthingLauncher::overallStatus() const
 {
     const auto isMetered = m_runtimeCondition.isNetworkConnectionMetered();
     const auto batterySaving = m_runtimeCondition.isBatterySaving();
+    const auto onBattery = m_runtimeCondition.isOnBattery();
     return QVariantMap{
         { QStringLiteral("isRunning"), isRunning() },
         { QStringLiteral("isStarting"), isStarting() },
@@ -595,6 +597,8 @@ QVariantMap SyncthingLauncher::overallStatus() const
         { QStringLiteral("meteredStatus"), m_runtimeCondition.meteredStatus() },
         { QStringLiteral("isBatterySaving"), batterySaving.has_value() ? QVariant(batterySaving.value()) : QVariant() },
         { QStringLiteral("batterySavingStatus"), m_runtimeCondition.batterySavingStatus() },
+        { QStringLiteral("isOnBattery"), onBattery.has_value() ? QVariant(onBattery.value()) : QVariant() },
+        { QStringLiteral("onBatteryStatus"), m_runtimeCondition.onBatteryStatus() },
     };
 }
 

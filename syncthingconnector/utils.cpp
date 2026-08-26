@@ -353,4 +353,36 @@ std::optional<bool> isBatterySaving()
 #endif
 }
 
+std::optional<bool> isOnBattery()
+{
+#ifdef Q_OS_ANDROID
+    if (const auto context = QNativeInterface::QAndroidApplication::context(); context.isValid()) {
+        auto env = QJniEnvironment();
+        if (auto method = env.findMethod(context.objectClass(), "isOnBattery", "()Z")) {
+            return std::make_optional(env->CallBooleanMethod(context.object(), method) == JNI_TRUE);
+        }
+    }
+    qDebug() << "Unable to determine whether running on battery.";
+    return std::nullopt;
+#else
+    return std::nullopt;
+#endif
+}
+
+std::optional<int> batteryLevel()
+{
+#ifdef Q_OS_ANDROID
+    if (const auto context = QNativeInterface::QAndroidApplication::context(); context.isValid()) {
+        auto env = QJniEnvironment();
+        if (auto method = env.findMethod(context.objectClass(), "getBatteryLevel", "()I")) {
+            return std::make_optional(static_cast<int>(env->CallIntMethod(context.object(), method)));
+        }
+    }
+    qDebug() << "Unable to determine battery level.";
+    return std::nullopt;
+#else
+    return std::nullopt;
+#endif
+}
+
 } // namespace Data

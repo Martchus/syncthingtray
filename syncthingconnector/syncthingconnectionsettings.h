@@ -61,6 +61,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
 #endif
     SyncthingStatusComputionFlags statusComputionFlags = SyncthingStatusComputionFlags::Default;
     RuntimeCondition::Conditions enabledConditions = RuntimeCondition::Conditions::None;
+    int pauseOnBatteryMinPercentage = 100;
     bool autoConnect = false;
 #ifndef QT_NO_SSL
     static QList<QSslError> compileSslErrors(const QSslCertificate &trustedCert);

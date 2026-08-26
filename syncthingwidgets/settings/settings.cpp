@@ -151,6 +151,7 @@ template <typename Settings> static RuntimeCondition::Conditions runtimeConditio
     auto conds = RuntimeCondition::Conditions::None;
     CppUtilities::modFlagEnum(conds, RuntimeCondition::Conditions::Metered, settings.stopOnMeteredConnection);
     CppUtilities::modFlagEnum(conds, RuntimeCondition::Conditions::BatterySaving, settings.stopOnBatterySaving);
+    CppUtilities::modFlagEnum(conds, RuntimeCondition::Conditions::OnBattery, settings.stopOnBattery);
     return conds;
 }
 
@@ -425,6 +426,8 @@ bool restore()
     launcher.showButton = settings.value(QStringLiteral("showLauncherButton"), launcher.showButton).toBool();
     launcher.stopOnMeteredConnection = settings.value(QStringLiteral("stopOnMetered"), launcher.stopOnMeteredConnection).toBool();
     launcher.stopOnBatterySaving = settings.value(QStringLiteral("stopOnBatterySaving"), launcher.stopOnBatterySaving).toBool();
+    launcher.stopOnBattery = settings.value(QStringLiteral("stopOnBattery"), launcher.stopOnBattery).toBool();
+    launcher.stopOnBatteryMinPercentage = settings.value(QStringLiteral("stopOnBatteryMinPercentage"), launcher.stopOnBatteryMinPercentage).toInt();
     settings.beginGroup(QStringLiteral("tools"));
     const auto childGroups = settings.childGroups();
     for (const QString &tool : childGroups) {
@@ -444,6 +447,9 @@ bool restore()
     systemd.considerForReconnect = settings.value(QStringLiteral("considerForReconnect"), systemd.considerForReconnect).toBool();
     systemd.stopOnMeteredConnection = settings.value(QStringLiteral("stopServiceOnMetered"), systemd.stopOnMeteredConnection).toBool();
     systemd.stopOnBatterySaving = settings.value(QStringLiteral("stopServiceOnBatterySaving"), systemd.stopOnBatterySaving).toBool();
+    systemd.stopOnBattery = settings.value(QStringLiteral("stopServiceOnBattery"), systemd.stopOnBattery).toBool();
+    systemd.stopOnBatteryMinPercentage
+        = settings.value(QStringLiteral("stopServiceOnBatteryMinPercentage"), systemd.stopOnBatteryMinPercentage).toInt();
 #endif
     settings.endGroup();
 
@@ -574,6 +580,8 @@ bool save()
     settings.setValue(QStringLiteral("showLauncherButton"), launcher.showButton);
     settings.setValue(QStringLiteral("stopOnMetered"), launcher.stopOnMeteredConnection);
     settings.setValue(QStringLiteral("stopOnBatterySaving"), launcher.stopOnBatterySaving);
+    settings.setValue(QStringLiteral("stopOnBattery"), launcher.stopOnBattery);
+    settings.setValue(QStringLiteral("stopOnBatteryMinPercentage"), launcher.stopOnBatteryMinPercentage);
     settings.beginGroup(QStringLiteral("tools"));
     for (auto i = launcher.tools.cbegin(), end = launcher.tools.cend(); i != end; ++i) {
         const ToolParameter &toolParams = i.value();
@@ -592,6 +600,8 @@ bool save()
     settings.setValue(QStringLiteral("considerForReconnect"), systemd.considerForReconnect);
     settings.setValue(QStringLiteral("stopServiceOnMetered"), systemd.stopOnMeteredConnection);
     settings.setValue(QStringLiteral("stopServiceOnBatterySaving"), systemd.stopOnBatterySaving);
+    settings.setValue(QStringLiteral("stopServiceOnBattery"), systemd.stopOnBattery);
+    settings.setValue(QStringLiteral("stopServiceOnBatteryMinPercentage"), systemd.stopOnBatteryMinPercentage);
 #endif
     settings.endGroup();
 
@@ -663,6 +673,7 @@ RuntimeCondition::Conditions Systemd::runtimeConditions() const
  */
 void Systemd::setupService(SyncthingService &service) const
 {
+    service.runtimeCondition()->setBatteryPercentage(stopOnBatteryMinPercentage);
     service.runtimeCondition()->setEnabledConditions(runtimeConditions());
     service.setScopeAndUnitName(systemUnit ? SystemdScope::System : SystemdScope::User, syncthingUnit);
 }

@@ -21,6 +21,7 @@ public:
         Metered = (1 << 0), /*!< Checked to pause/suspend on metered network connections. */
         ForceSuspend = (1 << 1), /*!< Checked to force suspension of Syncthing. */
         BatterySaving = (1 << 2), /*!< Checked to pause/suspend when battery saving is enabled. */
+        OnBattery = (1 << 3), /*!< Checked to pause/suspend when system is only on battery and under the configured percentage. */
     };
 
 private:
@@ -30,6 +31,10 @@ private:
     Q_PROPERTY(QString meteredStatus READ meteredStatus NOTIFY networkConnectionMeteredChanged)
     Q_PROPERTY(std::optional<bool> batterySaving READ isBatterySaving NOTIFY batterySavingChanged)
     Q_PROPERTY(QString batterySavingStatus READ batterySavingStatus NOTIFY batterySavingChanged)
+    Q_PROPERTY(std::optional<bool> onBattery READ isOnBattery NOTIFY onBatteryChanged)
+    Q_PROPERTY(QString onBatteryStatus READ onBatteryStatus NOTIFY onBatteryChanged)
+    Q_PROPERTY(std::optional<int> batteryLevel READ batteryLevel NOTIFY batteryLevelChanged)
+    Q_PROPERTY(int batteryPercentage READ batteryPercentage WRITE setBatteryPercentage NOTIFY batteryPercentageChanged)
     Q_PROPERTY(Conditions enabledConditions READ enabledConditions WRITE setEnabledConditions NOTIFY enabledConditionsChanged)
 
 public:
@@ -90,6 +95,41 @@ public:
     QString batterySavingStatus() const;
 
     /*!
+     * \brief Returns whether the system is running on battery, or std::nullopt if unknown.
+     */
+    std::optional<bool> isOnBattery() const;
+
+    /*!
+     * \brief Sets whether the system is running on battery.
+     */
+    void setOnBattery(std::optional<bool> onBattery);
+
+    /*!
+     * \brief Returns a short translated status message about the battery status.
+     */
+    QString onBatteryStatus() const;
+
+    /*!
+     * \brief Returns the current battery level (0-100), or std::nullopt if unknown.
+     */
+    std::optional<int> batteryLevel() const;
+
+    /*!
+     * \brief Sets the current battery level (0-100).
+     */
+    void setBatteryLevel(std::optional<int> batteryLevel);
+
+    /*!
+     * \brief Returns the configured battery percentage threshold under which to pause.
+     */
+    int batteryPercentage() const;
+
+    /*!
+     * \brief Sets the configured battery percentage threshold.
+     */
+    void setBatteryPercentage(int percentage);
+
+    /*!
      * \brief Returns a short translated status message about why Syncthing is temporarily stopped, or empty string.
      */
     QString stopStatusMessage() const;
@@ -131,6 +171,21 @@ Q_SIGNALS:
     void batterySavingChanged(std::optional<bool> isBatterySaving);
 
     /*!
+     * \brief Emitted when the battery status (on battery or not) has changed.
+     */
+    void onBatteryChanged(std::optional<bool> isOnBattery);
+
+    /*!
+     * \brief Emitted when the current battery level has changed.
+     */
+    void batteryLevelChanged(std::optional<int> batteryLevel);
+
+    /*!
+     * \brief Emitted when the configured battery percentage threshold has changed.
+     */
+    void batteryPercentageChanged(int percentage);
+
+    /*!
      * \brief Emitted when the enabled conditions have changed.
      */
     void enabledConditionsChanged(Data::RuntimeCondition::Conditions enabledConditions);
@@ -142,6 +197,9 @@ private:
     mutable Conditions m_initializedConditions;
     mutable std::optional<bool> m_metered;
     mutable std::optional<bool> m_batterySaving;
+    mutable std::optional<bool> m_onBattery;
+    mutable std::optional<int> m_batteryLevel;
+    int m_batteryPercentage;
     mutable std::optional<bool> m_supposedToRun;
 };
 

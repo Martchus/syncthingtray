@@ -25,6 +25,7 @@ RuntimeCondition::RuntimeCondition(Conditions conditions, QObject *parent)
     : QObject(parent)
     , m_enabledConditions(conditions)
     , m_initializedConditions(Conditions::ForceSuspend)
+    , m_batteryPercentage(100)
 {
 }
 
@@ -47,7 +48,9 @@ bool RuntimeCondition::isSupposedToRun() const
 bool RuntimeCondition::isSupposedToRun(Conditions conditions) const
 {
     return !((conditions && Conditions::ForceSuspend) || (conditions && Conditions::Metered && isNetworkConnectionMetered().value_or(false))
-        || (conditions && Conditions::BatterySaving && isBatterySaving().value_or(false)));
+        || (conditions && Conditions::BatterySaving && isBatterySaving().value_or(false))
+        || (conditions && Conditions::OnBattery && isOnBattery().value_or(false)
+            && (batteryLevel().value_or(100) < m_batteryPercentage || m_batteryPercentage == 100)));
 }
 
 std::optional<bool> RuntimeCondition::isNetworkConnectionMetered() const
@@ -104,6 +107,63 @@ QString RuntimeCondition::batterySavingStatus() const
     }
 }
 
+std::optional<bool> RuntimeCondition::isOnBattery() const
+{
+    return m_onBattery;
+}
+
+void RuntimeCondition::setOnBattery(std::optional<bool> onBattery)
+{
+    if (onBattery != m_onBattery) {
+        emit onBatteryChanged(m_onBattery = onBattery);
+        updateSupposedToRun();
+    }
+}
+
+QString RuntimeCondition::onBatteryStatus() const
+{
+    if (const auto onBattery = isOnBattery(); onBattery.has_value()) {
+        if (onBattery.value()) {
+            if (const auto level = batteryLevel(); level.has_value()) {
+                return tr("Running on battery (%1%)").arg(level.value());
+            } else {
+                return tr("Running on battery");
+            }
+        } else {
+            return tr("Power supply connected");
+        }
+    } else {
+        return tr("Battery status cannot be determined");
+    }
+}
+
+std::optional<int> RuntimeCondition::batteryLevel() const
+{
+    return m_batteryLevel;
+}
+
+void RuntimeCondition::setBatteryLevel(std::optional<int> batteryLevel)
+{
+    if (batteryLevel != m_batteryLevel) {
+        emit batteryLevelChanged(m_batteryLevel = batteryLevel);
+        emit onBatteryChanged(m_onBattery);
+        updateSupposedToRun();
+    }
+}
+
+int RuntimeCondition::batteryPercentage() const
+{
+    return m_batteryPercentage;
+}
+
+void RuntimeCondition::setBatteryPercentage(int percentage)
+{
+    if (percentage != m_batteryPercentage) {
+        emit batteryPercentageChanged(m_batteryPercentage = percentage);
+        updateSupposedToRun();
+    }
+}
+
 QString RuntimeCondition::stopStatusMessage() const
 {
     return stopStatusMessage(m_enabledConditions);
@@ -115,6 +175,13 @@ QString RuntimeCondition::stopStatusMessage(Conditions conditions) const
         return tr("Syncthing is temporarily stopped due to metered connection");
     } else if (conditions && Conditions::BatterySaving && m_batterySaving.value_or(false)) {
         return tr("Syncthing is temporarily stopped due to battery saving mode");
+    } else if (conditions && Conditions::OnBattery && isOnBattery().value_or(false)
+        && (batteryLevel().value_or(100) < m_batteryPercentage || m_batteryPercentage == 100)) {
+        if (m_batteryPercentage == 100) {
+            return tr("Syncthing is temporarily stopped due to running on battery");
+        } else {
+            return tr("Syncthing is temporarily stopped due to low battery");
+        }
     } else if (conditions && Conditions::ForceSuspend) {
         return tr("Syncthing is temporarily stopped manually");
     }

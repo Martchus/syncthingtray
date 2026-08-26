@@ -179,6 +179,8 @@ StackView {
                 {key: "advanced", label: qsTr("Advanced")},
                 {key: "pauseOnMeteredConnection", type: "boolean", defaultValue: false, label: qsTr("On metered network connection"), statusText: Qt.binding(() => App.meteredStatus), category: qsTr("Pause devices, discovery and relaying")},
                 {key: "pauseOnBatterySaving", type: "boolean", defaultValue: false, label: qsTr("On battery saving mode"), statusText: Qt.binding(() => App.batterySavingStatus)},
+                {key: "pauseOnBattery", type: "boolean", defaultValue: false, label: qsTr("On battery"), statusText: Qt.binding(() => App.onBatteryStatus)},
+                {key: "pauseOnBatteryMinPercentage", type: "range", from: 0, to: 100, suffix: " %", defaultValue: 100, label: qsTr("Battery percentage under")},
                 {key: "syncthingUrl", label: qsTr("Syncthing URL"), category: qsTr("Manual connection settings")},
                 {key: "apiKey", label: qsTr("API key"), inputMethodHints: Qt.ImhHiddenText | Qt.ImhSensitiveData | Qt.ImhNoAutoUppercase},
                 {key: "httpsCertPath", label: qsTr("HTTPs certificate path"), type: "filepath"},
@@ -205,6 +207,8 @@ StackView {
                 {key: "guiUrl", type: "readonly", label: qsTr("URL for GUI and API access"), defaultValue: "", statusText: Qt.binding(() => App.syncthingGuiUrl.toString() || qsTr("n/a"))},
                 {key: "stopOnMetered", label: qsTr("On metered network connection"), category: qsTr("Stop automatically"), statusText: Qt.binding(() => App.meteredStatus)},
                 {key: "stopOnBatterySaving", label: qsTr("On battery saving mode"), statusText: Qt.binding(() => App.batterySavingStatus)},
+                {key: "stopOnBattery", label: qsTr("On battery"), statusText: Qt.binding(() => App.onBatteryStatus)},
+                {key: "stopOnBatteryMinPercentage", type: "range", from: 0, to: 100, suffix: " %", defaultValue: 100, label: qsTr("Battery percentage under")},
                 {key: "writeLogFile", label: qsTr("Write persistent log file"), statusText: qsTr("Write a persistent log file into the app directory"), category: qsTr("Logging")},
                 {key: "logLevel", label: qsTr("Log level"), type: "options", options: [
                     {value: "debug", label: qsTr("Debug")},

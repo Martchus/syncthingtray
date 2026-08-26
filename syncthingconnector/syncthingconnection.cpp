@@ -1118,6 +1118,7 @@ bool SyncthingConnection::applySettings(SyncthingConnectionSettings &connectionS
     setLongPollingTimeout(connectionSettings.longPollingTimeout);
     setDiskEventLimit(connectionSettings.diskEventLimit);
     setStatusComputionFlags(connectionSettings.statusComputionFlags);
+    m_runtimeCondition.setBatteryPercentage(connectionSettings.pauseOnBatteryMinPercentage);
     m_runtimeCondition.setEnabledConditions(connectionSettings.enabledConditions);
 
     return reconnectRequired;

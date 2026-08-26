@@ -71,6 +71,25 @@ public class SyncthingService extends QtService {
         }
     };
 
+    private final BroadcastReceiver m_batteryReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (Intent.ACTION_BATTERY_CHANGED.equals(intent.getAction())) {
+                try {
+                    int status = intent.getIntExtra(android.os.BatteryManager.EXTRA_STATUS, -1);
+                    boolean onBattery = status != android.os.BatteryManager.BATTERY_STATUS_CHARGING &&
+                                       status != android.os.BatteryManager.BATTERY_STATUS_FULL;
+                    int level = intent.getIntExtra(android.os.BatteryManager.EXTRA_LEVEL, -1);
+                    int scale = intent.getIntExtra(android.os.BatteryManager.EXTRA_SCALE, -1);
+                    int batteryPct = scale > 0 ? (int) (level * 100 / (float) scale) : 100;
+                    handleBatteryStatusChanged(onBattery, batteryPct);
+                } catch (java.lang.UnsatisfiedLinkError e) {
+                    Log.i(TAG, "Unable to handle battery status changed, backend not started yet");
+                }
+            }
+        }
+    };
+
     // messages to register/unregister clients (used from Java only)
     public static final int MSG_REGISTER_CLIENT = 1;
     public static final int MSG_UNREGISTER_CLIENT = 2;
@@ -315,6 +334,9 @@ public class SyncthingService extends QtService {
         IntentFilter filter = new IntentFilter();
         filter.addAction(PowerManager.ACTION_POWER_SAVE_MODE_CHANGED);
         registerReceiver(m_powerSaveReceiver, filter);
+        IntentFilter batteryFilter = new IntentFilter();
+        batteryFilter.addAction(Intent.ACTION_BATTERY_CHANGED);
+        registerReceiver(m_batteryReceiver, batteryFilter);
         Log.i(TAG, "Created service and notification");
     }
 
@@ -325,6 +347,11 @@ public class SyncthingService extends QtService {
             unregisterReceiver(m_powerSaveReceiver);
         } catch (Exception e) {
             Log.e(TAG, "Failed to unregister power save receiver: " + e.getMessage());
+        }
+        try {
+            unregisterReceiver(m_batteryReceiver);
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to unregister battery receiver: " + e.getMessage());
         }
         try {
             super.onDestroy();
@@ -401,6 +428,30 @@ public class SyncthingService extends QtService {
         return pm != null && pm.isPowerSaveMode();
     }
 
+    public boolean isOnBattery() {
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = registerReceiver(null, ifilter);
+        if (batteryStatus != null) {
+            int status = batteryStatus.getIntExtra(android.os.BatteryManager.EXTRA_STATUS, -1);
+            return status != android.os.BatteryManager.BATTERY_STATUS_CHARGING &&
+                   status != android.os.BatteryManager.BATTERY_STATUS_FULL;
+        }
+        return false;
+    }
+
+    public int getBatteryLevel() {
+        IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+        Intent batteryStatus = registerReceiver(null, ifilter);
+        if (batteryStatus != null) {
+            int level = batteryStatus.getIntExtra(android.os.BatteryManager.EXTRA_LEVEL, -1);
+            int scale = batteryStatus.getIntExtra(android.os.BatteryManager.EXTRA_SCALE, -1);
+            if (scale > 0) {
+                return (int) (level * 100 / (float) scale);
+            }
+        }
+        return 100;
+    }
+
     public String getGatewayIPv4() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ? Util.getGatewayIPv4(this) : null;
     }
@@ -409,4 +460,5 @@ public class SyncthingService extends QtService {
     private static native void broadcastLauncherStatus();
     private static native void handleMessageFromActivity(int what, int arg1, int arg2, String str);
     private static native void handlePowerSaveModeChanged(boolean powerSaveMode);
+    private static native void handleBatteryStatusChanged(boolean onBattery, int batteryLevel);
 }

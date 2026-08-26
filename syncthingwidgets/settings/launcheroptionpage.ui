@@ -205,13 +205,60 @@
           </property>
          </widget>
         </item>
-        <item>
-         <widget class="QCheckBox" name="stopOnBatterySavingCheckBox">
-          <property name="text">
-           <string>Stop automatically when battery saving mode is enabled</string>
-          </property>
-         </widget>
-        </item>
+         <item>
+          <widget class="QCheckBox" name="stopOnBatterySavingCheckBox">
+           <property name="text">
+            <string>Stop automatically when battery saving mode is enabled</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="stopOnBatteryLayout">
+           <item>
+            <widget class="QCheckBox" name="stopOnBatteryCheckBox">
+             <property name="text">
+              <string>Stop automatically when running on battery</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="stopOnBatteryMinPercentageLabel">
+             <property name="text">
+              <string>under percentage:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="stopOnBatteryMinPercentageSpinBox">
+             <property name="suffix">
+              <string> %</string>
+             </property>
+             <property name="minimum">
+              <number>1</number>
+             </property>
+             <property name="maximum">
+              <number>100</number>
+             </property>
+             <property name="value">
+              <number>100</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="stopOnBatterySpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
        <item>
         <widget class="Line" name="line">
          <property name="sizePolicy">

@@ -266,6 +266,7 @@ void AppBase::handleGuiUrlChanged(const QUrl &newUrl)
     m_connectionSettingsFromLauncher.authEnabled = false;
     m_connectionSettingsFromLauncher.reconnectInterval = isSyncthingRunning() ? SyncthingConnectionSettings::defaultReconnectInterval : 0;
     m_connectionSettingsFromLauncher.enabledConditions = m_connectionSettingsFromConfig.enabledConditions;
+    m_connectionSettingsFromLauncher.pauseOnBatteryMinPercentage = m_connectionSettingsFromConfig.pauseOnBatteryMinPercentage;
 #ifndef QT_NO_SSL
     m_connectionSettingsFromLauncher.httpsCertPath = m_syncthingConfigDir + QStringLiteral("/https-cert.pem");
 #endif

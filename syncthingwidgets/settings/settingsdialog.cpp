@@ -119,6 +119,22 @@ static void configureBatterySavingCheckbox(QCheckBox *checkBox, std::optional<bo
     checkBox->setToolTip(batterySavingToolTip(isBatterySaving));
 }
 
+/// \brief Returns the tooltip text for the specified \a isOnBattery value.
+static QString onBatteryToolTip(std::optional<bool> isOnBattery)
+{
+    return isOnBattery.has_value()
+        ? (isOnBattery.value() ? QCoreApplication::translate("QtGui", "The system is currently running on battery.")
+                               : QCoreApplication::translate("QtGui", "The system is currently connected to a power supply."))
+        : QCoreApplication::translate("QtGui", "Unable to determine whether the system is running on battery.");
+}
+
+/// \brief Configures the specified \a checkBox for the specified \a isOnBattery value.
+static void configureOnBatteryCheckbox(QCheckBox *checkBox, std::optional<bool> isOnBattery)
+{
+    checkBox->setEnabled(isOnBattery.has_value());
+    checkBox->setToolTip(onBatteryToolTip(isOnBattery));
+}
+
 // ConnectionOptionPage
 ConnectionOptionPage::ConnectionOptionPage(Data::SyncthingConnection *connection, QWidget *parentWidget)
     : ConnectionOptionPageBase(parentWidget)
@@ -176,12 +192,17 @@ QWidget *ConnectionOptionPage::setupWidget()
     configureMeteredCheckbox(
         ui()->pauseOnMeteredConnectionCheckBox, launcher ? launcher->runtimeCondition()->isNetworkConnectionMetered() : std::nullopt);
     configureBatterySavingCheckbox(ui()->pauseOnBatterySavingCheckBox, launcher ? launcher->runtimeCondition()->isBatterySaving() : std::nullopt);
+    configureOnBatteryCheckbox(ui()->pauseOnBatteryConnectionCheckBox, launcher ? launcher->runtimeCondition()->isOnBattery() : std::nullopt);
     if (launcher) {
         QObject::connect(launcher->runtimeCondition(), &RuntimeCondition::networkConnectionMeteredChanged,
             bind(&configureMeteredCheckbox, ui()->pauseOnMeteredConnectionCheckBox, std::placeholders::_1));
         QObject::connect(launcher->runtimeCondition(), &RuntimeCondition::batterySavingChanged,
             bind(&configureBatterySavingCheckbox, ui()->pauseOnBatterySavingCheckBox, std::placeholders::_1));
+        QObject::connect(launcher->runtimeCondition(), &RuntimeCondition::onBatteryChanged,
+            bind(&configureOnBatteryCheckbox, ui()->pauseOnBatteryConnectionCheckBox, std::placeholders::_1));
     }
+    QObject::connect(ui()->pauseOnBatteryConnectionCheckBox, &QCheckBox::toggled, ui()->pauseOnBatteryMinPercentageSpinBox, &QSpinBox::setEnabled);
+    QObject::connect(ui()->pauseOnBatteryConnectionCheckBox, &QCheckBox::toggled, ui()->pauseOnBatteryMinPercentageLabel, &QLabel::setEnabled);
 #if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
     ui()->timeoutSpinBox->setEnabled(false);
 #endif
@@ -266,6 +287,10 @@ bool ConnectionOptionPage::showConnectionSettings(int index)
     ui()->autoConnectCheckBox->setChecked(connectionSettings.autoConnect);
     ui()->pauseOnMeteredConnectionCheckBox->setChecked(connectionSettings.enabledConditions && RuntimeCondition::Conditions::Metered);
     ui()->pauseOnBatterySavingCheckBox->setChecked(connectionSettings.enabledConditions && RuntimeCondition::Conditions::BatterySaving);
+    ui()->pauseOnBatteryConnectionCheckBox->setChecked(connectionSettings.enabledConditions && RuntimeCondition::Conditions::OnBattery);
+    ui()->pauseOnBatteryMinPercentageSpinBox->setValue(connectionSettings.pauseOnBatteryMinPercentage);
+    ui()->pauseOnBatteryMinPercentageSpinBox->setEnabled(connectionSettings.enabledConditions && RuntimeCondition::Conditions::OnBattery);
+    ui()->pauseOnBatteryMinPercentageLabel->setEnabled(connectionSettings.enabledConditions && RuntimeCondition::Conditions::OnBattery);
     m_statusComputionModel->setStatusComputionFlags(connectionSettings.statusComputionFlags);
     setCurrentIndex(index);
     return true;
@@ -301,6 +326,9 @@ bool ConnectionOptionPage::cacheCurrentSettings(bool applying)
         connectionSettings.enabledConditions, RuntimeCondition::Conditions::Metered, ui()->pauseOnMeteredConnectionCheckBox->isChecked());
     CppUtilities::modFlagEnum(
         connectionSettings.enabledConditions, RuntimeCondition::Conditions::BatterySaving, ui()->pauseOnBatterySavingCheckBox->isChecked());
+    CppUtilities::modFlagEnum(
+        connectionSettings.enabledConditions, RuntimeCondition::Conditions::OnBattery, ui()->pauseOnBatteryConnectionCheckBox->isChecked());
+    connectionSettings.pauseOnBatteryMinPercentage = ui()->pauseOnBatteryMinPercentageSpinBox->value();
     connectionSettings.statusComputionFlags = m_statusComputionModel->statusComputionFlags();
 #ifndef QT_NO_SSL
     if (!connectionSettings.loadHttpsCert()) {
@@ -428,13 +456,17 @@ void ConnectionOptionPage::toggleAdvancedSettings(bool show)
     }
     ui()->pauseOnMeteredConnectionCheckBox->setVisible(show);
     ui()->pauseOnBatterySavingCheckBox->setVisible(show);
+    ui()->pauseOnBatteryConnectionCheckBox->setVisible(show);
+    ui()->pauseOnBatteryMinPercentageLabel->setVisible(show);
+    ui()->pauseOnBatteryMinPercentageSpinBox->setVisible(show);
 #else
     for (auto *const widget :
         std::initializer_list<QWidget *>{ ui()->localPathLabel, ui()->localPathLineEdit, ui()->authLabel, ui()->authCheckBox, ui()->userNameLabel,
             ui()->userNameLineEdit, ui()->passwordLabel, ui()->passwordLineEdit, ui()->timeoutLabel, ui()->timeoutSpinBox, ui()->longPollingLabel,
             ui()->longPollingSpinBox, ui()->diskEventLimitLabel, ui()->diskEventLimitSpinBox, ui()->pollLabel, ui()->pollDevStatsLabel,
             ui()->pollDevStatsSpinBox, ui()->pollErrorsLabel, ui()->pollErrorsSpinBox, ui()->pollTrafficLabel, ui()->pollTrafficSpinBox,
-            ui()->reconnectLabel, ui()->reconnectSpinBox, ui()->pauseOnMeteredConnectionCheckBox, ui()->pauseOnBatterySavingCheckBox }) {
+            ui()->reconnectLabel, ui()->reconnectSpinBox, ui()->pauseOnMeteredConnectionCheckBox, ui()->pauseOnBatterySavingCheckBox,
+            ui()->pauseOnBatteryConnectionCheckBox, ui()->pauseOnBatteryMinPercentageLabel, ui()->pauseOnBatteryMinPercentageSpinBox }) {
         widget->setVisible(show);
     }
 #endif
@@ -1356,6 +1388,11 @@ QWidget *LauncherOptionPage::setupWidget()
         configureBatterySavingCheckbox(ui()->stopOnBatterySavingCheckBox, m_launcher->runtimeCondition()->isBatterySaving());
         connect(m_launcher->runtimeCondition(), &RuntimeCondition::batterySavingChanged, this,
             std::bind(&configureBatterySavingCheckbox, ui()->stopOnBatterySavingCheckBox, std::placeholders::_1));
+        configureOnBatteryCheckbox(ui()->stopOnBatteryCheckBox, m_launcher->runtimeCondition()->isOnBattery());
+        connect(m_launcher->runtimeCondition(), &RuntimeCondition::onBatteryChanged, this,
+            std::bind(&configureOnBatteryCheckbox, ui()->stopOnBatteryCheckBox, std::placeholders::_1));
+        connect(ui()->stopOnBatteryCheckBox, &QCheckBox::toggled, ui()->stopOnBatteryMinPercentageSpinBox, &QSpinBox::setEnabled);
+        connect(ui()->stopOnBatteryCheckBox, &QCheckBox::toggled, ui()->stopOnBatteryMinPercentageLabel, &QLabel::setEnabled);
 
         m_launcher->setEmittingOutput(true);
     }
@@ -1383,7 +1420,10 @@ bool LauncherOptionPage::apply()
         settings.showButton = ui()->showButtonCheckBox->isChecked();
         settings.stopOnMeteredConnection = ui()->stopOnMeteredCheckBox->isChecked();
         settings.stopOnBatterySaving = ui()->stopOnBatterySavingCheckBox->isChecked();
+        settings.stopOnBattery = ui()->stopOnBatteryCheckBox->isChecked();
+        settings.stopOnBatteryMinPercentage = ui()->stopOnBatteryMinPercentageSpinBox->value();
         if (m_launcher) {
+            m_launcher->runtimeCondition()->setBatteryPercentage(settings.stopOnBatteryMinPercentage);
             m_launcher->runtimeCondition()->setEnabledConditions(settings.runtimeConditions());
         }
     } else {
@@ -1414,6 +1454,10 @@ void LauncherOptionPage::reset()
         ui()->showButtonCheckBox->setChecked(settings.showButton);
         ui()->stopOnMeteredCheckBox->setChecked(settings.stopOnMeteredConnection);
         ui()->stopOnBatterySavingCheckBox->setChecked(settings.stopOnBatterySaving);
+        ui()->stopOnBatteryCheckBox->setChecked(settings.stopOnBattery);
+        ui()->stopOnBatteryMinPercentageSpinBox->setValue(settings.stopOnBatteryMinPercentage);
+        ui()->stopOnBatteryMinPercentageSpinBox->setEnabled(settings.stopOnBattery);
+        ui()->stopOnBatteryMinPercentageLabel->setEnabled(settings.stopOnBattery);
     } else {
         const auto params = settings.tools.value(m_tool);
         ui()->useBuiltInVersionCheckBox->setChecked(false);
@@ -1638,6 +1682,26 @@ QWidget *SystemdOptionPage::setupWidget()
             int
 #endif
                 checkState) { s->runtimeCondition()->modEnabledConditions(RuntimeCondition::Conditions::BatterySaving, checkState == Qt::Checked); });
+    QObject::connect(ui()->stopOnBatteryCheckBox,
+        &QCheckBox::
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 7, 0))
+            checkStateChanged
+#else
+            stateChanged
+#endif
+        ,
+        m_service,
+        [s = m_service](
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 7, 0))
+            Qt::CheckState
+#else
+            int
+#endif
+                checkState) { s->runtimeCondition()->modEnabledConditions(RuntimeCondition::Conditions::OnBattery, checkState == Qt::Checked); });
+    QObject::connect(ui()->stopOnBatteryMinPercentageSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), m_service,
+        [s = m_service](int val) { s->runtimeCondition()->setBatteryPercentage(val); });
+    QObject::connect(ui()->stopOnBatteryCheckBox, &QCheckBox::toggled, ui()->stopOnBatteryMinPercentageSpinBox, &QSpinBox::setEnabled);
+    QObject::connect(ui()->stopOnBatteryCheckBox, &QCheckBox::toggled, ui()->stopOnBatteryMinPercentageLabel, &QLabel::setEnabled);
     m_unitChangedConn
         = QObject::connect(ui()->systemUnitCheckBox, &QCheckBox::clicked, m_service, bind(&SystemdOptionPage::handleSystemUnitChanged, this));
     m_descChangedConn
@@ -1655,6 +1719,9 @@ QWidget *SystemdOptionPage::setupWidget()
     configureBatterySavingCheckbox(ui()->stopOnBatterySavingCheckBox, m_service->runtimeCondition()->isBatterySaving());
     QObject::connect(m_service->runtimeCondition(), &RuntimeCondition::batterySavingChanged,
         std::bind(&configureBatterySavingCheckbox, ui()->stopOnBatterySavingCheckBox, std::placeholders::_1));
+    configureOnBatteryCheckbox(ui()->stopOnBatteryCheckBox, m_service->runtimeCondition()->isOnBattery());
+    QObject::connect(m_service->runtimeCondition(), &RuntimeCondition::onBatteryChanged,
+        std::bind(&configureOnBatteryCheckbox, ui()->stopOnBatteryCheckBox, std::placeholders::_1));
     return widget;
 }
 
@@ -1669,6 +1736,8 @@ bool SystemdOptionPage::apply()
     systemdSettings.considerForReconnect = ui()->considerForReconnectCheckBox->isChecked();
     systemdSettings.stopOnMeteredConnection = ui()->stopOnMeteredCheckBox->isChecked();
     systemdSettings.stopOnBatterySaving = ui()->stopOnBatterySavingCheckBox->isChecked();
+    systemdSettings.stopOnBattery = ui()->stopOnBatteryCheckBox->isChecked();
+    systemdSettings.stopOnBatteryMinPercentage = ui()->stopOnBatteryMinPercentageSpinBox->value();
     auto result = true;
     if (systemdSettings.showButton && launcherSettings.showButton) {
         errors().append(QCoreApplication::translate("QtGui::SystemdOptionPage",
@@ -1694,6 +1763,10 @@ void SystemdOptionPage::reset()
     ui()->considerForReconnectCheckBox->setChecked(settings.considerForReconnect);
     ui()->stopOnMeteredCheckBox->setChecked(settings.stopOnMeteredConnection);
     ui()->stopOnBatterySavingCheckBox->setChecked(settings.stopOnBatterySaving);
+    ui()->stopOnBatteryCheckBox->setChecked(settings.stopOnBattery);
+    ui()->stopOnBatteryMinPercentageSpinBox->setValue(settings.stopOnBatteryMinPercentage);
+    ui()->stopOnBatteryMinPercentageSpinBox->setEnabled(settings.stopOnBattery);
+    ui()->stopOnBatteryMinPercentageLabel->setEnabled(settings.stopOnBattery);
     if (!m_service) {
         return;
     }

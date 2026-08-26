@@ -102,6 +102,8 @@ struct SYNCTHINGWIDGETS_EXPORT Launcher {
     bool showButton = false;
     bool stopOnMeteredConnection = false;
     bool stopOnBatterySaving = false;
+    bool stopOnBattery = false;
+    int stopOnBatteryMinPercentage = 100;
 
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     struct SYNCTHINGWIDGETS_EXPORT LibSyncthing {
@@ -137,6 +139,8 @@ struct SYNCTHINGWIDGETS_EXPORT Systemd {
     bool considerForReconnect = false;
     bool stopOnMeteredConnection = false;
     bool stopOnBatterySaving = false;
+    bool stopOnBattery = false;
+    int stopOnBatteryMinPercentage = 100;
 
     struct SYNCTHINGWIDGETS_EXPORT ServiceStatus {
         bool relevant = false;

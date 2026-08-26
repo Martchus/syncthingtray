@@ -494,12 +494,15 @@ void App::handleLauncherStatusBroadcast(const QVariant &status)
     const auto hasMeteredStatusChanged = meteredStatus != m_meteredStatus;
     const auto batterySavingStatus = launcherStatus.value(QStringLiteral("batterySavingStatus")).toString();
     const auto hasBatterySavingStatusChanged = batterySavingStatus != m_batterySavingStatus;
+    const auto onBatteryStatus = launcherStatus.value(QStringLiteral("onBatteryStatus")).toString();
+    const auto hasOnBatteryStatusChanged = onBatteryStatus != m_onBatteryStatus;
     m_isSyncthingStarting = isStarting;
     m_isSyncthingRunning = isRunning;
     m_syncthingGuiUrl = guiUrl;
     m_syncthingRunningStatus = runningStatus;
     m_meteredStatus = meteredStatus;
     m_batterySavingStatus = batterySavingStatus;
+    m_onBatteryStatus = onBatteryStatus;
     m_syncthingUnixSocketPath = unixSocketPath;
     if (isRunningChanged && isRunning) {
         m_isManuallyStopped = false;
@@ -517,6 +520,9 @@ void App::handleLauncherStatusBroadcast(const QVariant &status)
     }
     if (hasBatterySavingStatusChanged) {
         emit batterySavingStatusChanged(batterySavingStatus);
+    }
+    if (hasOnBatteryStatusChanged) {
+        emit onBatteryStatusChanged(onBatteryStatus);
     }
     if (guiUrlChanged || !m_data.connection()->isConnected()) {
         qDebug() << "GUI URL changed: " << guiUrl;
@@ -698,6 +704,8 @@ bool App::applyLauncherSettings()
     ensureDefault(mod, launcherSettingsObj, QLatin1String("exePath"), QString());
     ensureDefault(mod, launcherSettingsObj, QLatin1String("stopOnMetered"), false);
     ensureDefault(mod, launcherSettingsObj, QLatin1String("stopOnBatterySaving"), false);
+    ensureDefault(mod, launcherSettingsObj, QLatin1String("stopOnBattery"), false);
+    ensureDefault(mod, launcherSettingsObj, QLatin1String("stopOnBatteryMinPercentage"), 100);
     ensureDefault(mod, launcherSettingsObj, QLatin1String("writeLogFile"), false);
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     ensureDefault(mod, launcherSettingsObj, QLatin1String("logLevel"), SyncthingLauncher::libSyncthingLogLevelString(LibSyncthing::LogLevel::Info));

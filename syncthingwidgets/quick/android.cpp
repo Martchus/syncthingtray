@@ -120,6 +120,12 @@ static void handlePowerSaveModeChanged(JNIEnv *, jobject, jboolean powerSaveMode
     QMetaObject::invokeMethod(appServiceObjectForJava, "handlePowerSaveModeChanged", Qt::QueuedConnection, Q_ARG(bool, powerSaveMode));
 }
 
+static void handleBatteryStatusChanged(JNIEnv *, jobject, jboolean onBattery, jint batteryLevel)
+{
+    QMetaObject::invokeMethod(
+        appServiceObjectForJava, "handleBatteryStatusChanged", Qt::QueuedConnection, Q_ARG(bool, onBattery), Q_ARG(int, batteryLevel));
+}
+
 static void handleAndroidIntent(JNIEnv *, jobject, jstring page, jbyteArray array, jboolean fromNotification)
 {
     QMetaObject::invokeMethod(appObjectForJava, "handleAndroidIntent", Qt::QueuedConnection, Q_ARG(QString, QJniObject(page).toString()),
@@ -156,8 +162,9 @@ void registerServiceJniMethods(AppService *appService)
         { "handleMessageFromActivity", "(IIILjava/lang/String;)V", reinterpret_cast<void *>(JniFn::handleMessageFromActivity) },
         { "broadcastLauncherStatus", "()V", reinterpret_cast<void *>(JniFn::broadcastLauncherStatus) },
         { "handlePowerSaveModeChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handlePowerSaveModeChanged) },
+        { "handleBatteryStatusChanged", "(ZI)V", reinterpret_cast<void *>(JniFn::handleBatteryStatusChanged) },
     };
-    registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/SyncthingService", serviceMethods, 4) && registeredMethods;
+    registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/SyncthingService", serviceMethods, 5) && registeredMethods;
     if (!registeredMethods) {
         qWarning() << "Unable to register all native service methods in JNI environment.";
     }

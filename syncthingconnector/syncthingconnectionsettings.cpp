@@ -44,6 +44,8 @@ void SyncthingConnectionSettings::storeToJson(QJsonObject &object)
     object.insert(QLatin1String("syncthingUrl"), syncthingUrl);
     object.insert(QLatin1String("pauseOnMeteredConnection"), enabledConditions && RuntimeCondition::Conditions::Metered);
     object.insert(QLatin1String("pauseOnBatterySaving"), enabledConditions && RuntimeCondition::Conditions::BatterySaving);
+    object.insert(QLatin1String("pauseOnBattery"), enabledConditions && RuntimeCondition::Conditions::OnBattery);
+    object.insert(QLatin1String("pauseOnBatteryMinPercentage"), pauseOnBatteryMinPercentage);
     object.insert(QLatin1String("apiKey"), QString::fromUtf8(apiKey));
     httpAuth.insert(QLatin1String("enabled"), authEnabled);
     httpAuth.insert(QLatin1String("userName"), userName);
@@ -92,6 +94,10 @@ bool SyncthingConnectionSettings::loadFromJson(const QJsonObject &object)
     if (object.value(QLatin1String("pauseOnBatterySaving")).toBool()) {
         enabledConditions += RuntimeCondition::Conditions::BatterySaving;
     }
+    if (object.value(QLatin1String("pauseOnBattery")).toBool()) {
+        enabledConditions += RuntimeCondition::Conditions::OnBattery;
+    }
+    pauseOnBatteryMinPercentage = object.value(QLatin1String("pauseOnBatteryMinPercentage")).toInt(100);
 #ifndef QT_NO_SSL
     httpsCertPath = object.value(QLatin1String("httpsCertPath")).toString();
     httpCertLastModified = QDateTime();

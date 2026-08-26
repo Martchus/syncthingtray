@@ -103,6 +103,8 @@ AppService::AppService(bool insecure, QObject *parent)
     connect(&m_launcher, &SyncthingLauncher::guiUrlChanged, this, &AppService::broadcastLauncherStatus);
     connect(m_launcher.runtimeCondition(), &RuntimeCondition::networkConnectionMeteredChanged, this, &AppService::broadcastLauncherStatus);
     connect(m_launcher.runtimeCondition(), &RuntimeCondition::batterySavingChanged, this, &AppService::broadcastLauncherStatus);
+    connect(m_launcher.runtimeCondition(), &RuntimeCondition::onBatteryChanged, this, &AppService::broadcastLauncherStatus);
+    connect(m_launcher.runtimeCondition(), &RuntimeCondition::batteryLevelChanged, this, &AppService::broadcastLauncherStatus);
 
 #ifdef Q_OS_ANDROID
     connect(m_data.notifier(), &SyncthingNotifier::newDevice, this, &AppService::showNewDevice);
@@ -119,6 +121,14 @@ AppService::AppService(bool insecure, QObject *parent)
 
     if (const auto batterySaving = isBatterySaving(); batterySaving.has_value()) {
         handlePowerSaveModeChanged(batterySaving.value());
+    }
+    if (const auto onBattery = isOnBattery(); onBattery.has_value()) {
+        m_data.connection()->runtimeCondition()->setOnBattery(onBattery.value());
+        m_launcher.runtimeCondition()->setOnBattery(onBattery.value());
+    }
+    if (const auto level = batteryLevel(); level.has_value()) {
+        m_data.connection()->runtimeCondition()->setBatteryLevel(level.value());
+        m_launcher.runtimeCondition()->setBatteryLevel(level.value());
     }
 
     reloadSettings();
@@ -180,6 +190,8 @@ bool AppService::applyLauncherSettings()
     auto flags = cond->enabledConditions();
     CppUtilities::modFlagEnum(flags, Data::RuntimeCondition::Conditions::Metered, launcherSettingsObj.value(QLatin1String("stopOnMetered")).toBool());
     CppUtilities::modFlagEnum(flags, Data::RuntimeCondition::Conditions::BatterySaving, launcherSettingsObj.value(QLatin1String("stopOnBatterySaving")).toBool());
+    CppUtilities::modFlagEnum(flags, Data::RuntimeCondition::Conditions::OnBattery, launcherSettingsObj.value(QLatin1String("stopOnBattery")).toBool());
+    cond->setBatteryPercentage(launcherSettingsObj.value(QLatin1String("stopOnBatteryMinPercentage")).toInt(100));
     cond->setEnabledConditions(flags);
     const auto shouldRun = launcherSettingsObj.value(QLatin1String("run")).toBool();
     const auto exePath = launcherSettingsObj.value(QLatin1String("exePath")).toString();
@@ -431,6 +443,14 @@ void AppService::handlePowerSaveModeChanged(bool powerSaveMode)
 {
     m_data.connection()->runtimeCondition()->setBatterySaving(powerSaveMode);
     m_launcher.runtimeCondition()->setBatterySaving(powerSaveMode);
+}
+
+void AppService::handleBatteryStatusChanged(bool onBattery, int batteryLevel)
+{
+    m_data.connection()->runtimeCondition()->setOnBattery(onBattery);
+    m_data.connection()->runtimeCondition()->setBatteryLevel(batteryLevel);
+    m_launcher.runtimeCondition()->setOnBattery(onBattery);
+    m_launcher.runtimeCondition()->setBatteryLevel(batteryLevel);
 }
 
 void AppService::handleChangedDevices()
