@@ -453,27 +453,63 @@ DelegateChooser {
                 }
             }
             onClicked: numberDlg.visible = true
-            CustomDialog {
+            EditNumericFieldDialog {
                 id: numberDlg
-                title: modelData.label
-                standardButtons: objectConfigPage.standardButtons
-                contentItem: TextField {
-                    id: editedNumberValue
-                    focus: true
-                    text: modelData.value
-                    inputMethodHints: modelData.inputMethodHints ?? Qt.ImhNone
-                    validator: DoubleValidator {
-                        id: numberValidator
-                        locale: "en"
-                    }
-                    onAccepted: numberDlg.accept()
-                }
-                onAccepted: objectConfigPage.updateValue(modelData.index, modelData.key, Number.fromLocaleString(Qt.locale(numberValidator.locale), editedNumberValue.text))
-                onRejected: editedNumberValue.text = objectConfigPage.configObject[modelData.key]
-                onHelpRequested: numberHelpButton.clicked()
+                helpButton: numberHelpButton
             }
             required property var modelData
             property alias dialog: numberDlg
+        }
+    }
+    DelegateChoice {
+        roleValue: "range"
+        ItemDelegate {
+            width: chooser.width
+            contentItem: RowLayout {
+                ColumnLayout {
+                    Layout.fillWidth: true
+                    Label {
+                        Layout.fillWidth: true
+                        text: modelData.label
+                        elide: Text.ElideRight
+                        font.weight: Font.Medium
+                        wrapMode: Text.WordWrap
+                    }
+                    RowLayout {
+                        Layout.fillWidth: true
+                        Slider {
+                            id: rangeSlider
+                            Layout.fillWidth: true
+                            from: modelData.from
+                            stepSize: modelData.stepSize ?? 1.0
+                            to: modelData.to
+                            value: modelData.value
+                            onValueChanged: objectConfigPage.updateValue(modelData.index, modelData.key, rangeSlider.value)
+                        }
+                        Label {
+                            id: rangeLabel
+                            text: rangeSlider.value.toString() + (modelData.suffix ?? "")
+                        }
+                    }
+                }
+                ArrayElementButtons {
+                    page: objectConfigPage
+                    rowData: modelData
+                }
+                HelpButton {
+                    id: rangeHelpButton
+                    configCategory: objectConfigPage.configCategory
+                }
+            }
+            onClicked: rangeDlg.visible = true
+            EditNumericFieldDialog {
+                id: rangeDlg
+                helpButton: rangeHelpButton
+            }
+            required property var modelData
+            property alias dialog: rangeDlg
+            property alias value: rangeSlider.value
+            property alias labelText: rangeLabel.text
         }
     }
     DelegateChoice {

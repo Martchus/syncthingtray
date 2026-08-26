@@ -120,6 +120,7 @@ set(QML_MAIN_FILES
     quick/qml/DirsPage.qml
     quick/qml/DynamicSectionHeader.qml
     quick/qml/EditTextFieldDialog.qml
+    quick/qml/EditNumericFieldDialog.qml
     quick/qml/ErrorsDelegate.qml
     quick/qml/ErrorsPage.qml
     quick/qml/ExpandableDelegate.qml
@@ -488,6 +489,21 @@ endforeach ()
 if (QUICK_GUI)
     list(APPEND QT_QUICK_TEST_LIBRARIES ${META_TARGET_NAME})
     use_qt_module(LIBRARIES_VARIABLE "QT_QUICK_TEST_LIBRARIES" PREFIX "${QT_PACKAGE_PREFIX}" MODULE "QuickTest")
+    configure_test_target(
+        TEST_NAME
+        "basic_quick_tests"
+        SRC_FILES
+        "tests/testhelper.h"
+        "tests/basicquicktests.cpp"
+        LIBRARIES
+        "${QT_QUICK_TEST_LIBRARIES}"
+        FULL_TEST_NAME_OUT_VAR
+        FULL_TEST_NAME_BASIC_QUICK
+        FULL_TEST_TARGET_OUT_VAR
+        FULL_TEST_TARGET_BASIC_QUICK
+        UNSTABLE)
+    target_compile_definitions("${FULL_TEST_TARGET_BASIC_QUICK}"
+                               PRIVATE "QUICK_TEST_SOURCE_DIR=\"${CMAKE_CURRENT_SOURCE_DIR}/tests/basic\"")
 endif ()
 if (QUICK_GUI AND "app" IN_LIST QUICK_GUI_ENABLED_MODES)
     configure_test_target(
