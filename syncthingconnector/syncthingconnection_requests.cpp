@@ -2701,6 +2701,13 @@ void SyncthingConnection::readDirEvent(SyncthingEventId eventId, DateTime eventT
         if (dirInfo->paused) {
             dirInfo->paused = false;
             emit dirStatusChanged(*dirInfo, index);
+            // request status and completion of resumed directories
+            requestDirStatus(dirInfo->id);
+            if (m_requestCompletion) {
+                for (const auto &devId : dirInfo->deviceIds) {
+                    requestCompletion(devId, dirInfo->id);
+                }
+            }
         }
     }
     if (previousStatus != dirInfo->status) {
