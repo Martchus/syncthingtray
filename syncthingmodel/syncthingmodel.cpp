@@ -12,7 +12,7 @@ SyncthingModel::SyncthingModel(SyncthingConnection &connection, QObject *parent)
     , m_singleColumnMode(true)
     , m_newConfigPending(false)
 {
-    connect(&m_connection, &SyncthingConnection::newConfig, this, &SyncthingModel::handleConfigInvalidated);
+    connect(&m_connection, &SyncthingConnection::newConfigAboutToBeApplied, this, &SyncthingModel::handleConfigInvalidated);
     connect(&m_connection, &SyncthingConnection::newConfigApplied, this, &SyncthingModel::handleNewConfigAvailable);
 
     const auto &iconManager = IconManager::instance();

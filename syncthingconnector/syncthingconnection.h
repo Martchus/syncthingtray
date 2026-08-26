@@ -406,6 +406,7 @@ Q_SIGNALS:
     void newDevices(const std::vector<Data::SyncthingDev> &devs);
     void newErrors(const std::vector<Data::SyncthingError> &errors);
     void beforeNewErrors(const std::vector<Data::SyncthingError> &oldErrors, const std::vector<Data::SyncthingError> &newErrors);
+    void newConfigAboutToBeApplied();
     void newConfigApplied();
     void newEvents(const QJsonArray &events);
     void allEventsProcessed();
@@ -447,8 +448,8 @@ Q_SIGNALS:
 private Q_SLOTS:
     // handler to evaluate results from request...() methods
     void readConfig();
-    void readDirs(const QJsonArray &dirs);
-    void readDevs(const QJsonArray &devs);
+    void readDirs(const QJsonArray &dirs, bool inPlace);
+    void readDevs(const QJsonArray &devs, bool inPlace);
     void readStatus();
     void concludeReadingConfigAndStatus();
     void readConnections();

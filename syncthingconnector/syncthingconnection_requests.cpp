@@ -916,16 +916,19 @@ void SyncthingConnection::readConfig()
  * - The own device ID is required to filter it from the devices a directory is shared with.
  *   So the readStatus() should have been called first.
  */
-void SyncthingConnection::readDirs(const QJsonArray &dirs)
+void SyncthingConnection::readDirs(const QJsonArray &dirs, bool inPlace)
 {
     // store the new dirs in a temporary list which is assigned to m_dirs later
     auto newDirs = std::vector<SyncthingDir>();
-    newDirs.reserve(static_cast<std::size_t>(dirs.size()));
+    if (!inPlace) {
+        newDirs.reserve(static_cast<std::size_t>(dirs.size()));
+    }
 
+    auto row = int();
     auto index = int();
     for (const auto &dirVal : dirs) {
         const auto dirObj = dirVal.toObject();
-        auto *const dirItem = addDirInfo(newDirs, dirObj.value(QLatin1String("id")).toString());
+        auto *const dirItem = inPlace ? &m_dirs[static_cast<std::size_t>(row)] : addDirInfo(newDirs, dirObj.value(QLatin1String("id")).toString());
         if (!dirItem) {
             continue;
         }
@@ -956,33 +959,42 @@ void SyncthingConnection::readDirs(const QJsonArray &dirs)
         dirItem->paused = dirObj.value(QLatin1String("paused")).toBool(dirItem->paused);
         dirItem->fileSystemWatcherEnabled = dirObj.value(QLatin1String("fsWatcherEnabled")).toBool(false);
         dirItem->fileSystemWatcherDelay = dirObj.value(QLatin1String("fsWatcherDelayS")).toDouble(0.0);
+        if (inPlace) {
+            emit dirStatusChanged(*dirItem, row++);
+        }
     }
 
-    m_dirs.swap(newDirs);
-    emit this->newDirs(m_dirs);
+    if (!inPlace) {
+        m_dirs.swap(newDirs);
+        emit this->newDirs(m_dirs);
+    }
     m_hasOutOfSyncDirs.reset();
 }
 
 /*!
  * \brief Reads device results of requestConfig(); called by readConfig().
  */
-void SyncthingConnection::readDevs(const QJsonArray &devs)
+void SyncthingConnection::readDevs(const QJsonArray &devs, bool inPlace)
 {
     // store the new devs in a temporary list which is assigned to m_devs later
     auto newDevs = std::vector<SyncthingDev>();
-    newDevs.reserve(static_cast<std::size_t>(devs.size()));
-    auto *const thisDevice = addDevInfo(newDevs, m_myId);
+    if (!inPlace) {
+        newDevs.reserve(static_cast<std::size_t>(devs.size()));
+    }
+    auto row = int();
+    auto *const thisDevice = inPlace ? findDevInfo(m_myId, row) : addDevInfo(newDevs, m_myId);
     if (thisDevice) { // m_myId might be empty, then thisDevice will be nullptr
         thisDevice->id = m_myId;
         thisDevice->status = SyncthingDevStatus::ThisDevice;
         thisDevice->paused = false;
     }
+    row = 0;
 
     for (const auto &devVal : devs) {
         const auto devObj = devVal.toObject();
         const auto deviceId = devObj.value(QLatin1String("deviceID")).toString();
         const auto isThisDevice = deviceId == m_myId;
-        auto *const devItem = isThisDevice ? thisDevice : addDevInfo(newDevs, deviceId);
+        auto *const devItem = isThisDevice ? thisDevice : inPlace ? &m_devs[static_cast<std::size_t>(row)] : addDevInfo(newDevs, deviceId);
         if (!devItem) {
             continue;
         }
@@ -1000,10 +1012,15 @@ void SyncthingConnection::readDevs(const QJsonArray &devs)
             }
             devItem->paused = devObj.value(QLatin1String("paused")).toBool(devItem->paused);
         }
+        if (inPlace) {
+            emit devStatusChanged(*devItem, row++);
+        }
     }
 
-    m_devs.swap(newDevs);
-    emit this->newDevices(m_devs);
+    if (!inPlace) {
+        m_devs.swap(newDevs);
+        emit this->newDevices(m_devs);
+    }
 }
 
 // status of Syncthing (own ID, startup time)

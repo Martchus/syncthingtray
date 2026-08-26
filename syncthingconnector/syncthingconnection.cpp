@@ -570,6 +570,7 @@ void SyncthingConnection::continueReconnecting()
     const auto isConfigInvalidated = m_rawConfig.isEmpty();
     if (!isConfigInvalidated) {
         emit newConfig(m_rawConfig = QJsonObject());
+        emit newConfigAboutToBeApplied();
     }
 
     // clear information from previous connection
@@ -633,12 +634,57 @@ void SyncthingConnection::continueReconnecting()
  */
 void SyncthingConnection::applyRawConfig()
 {
-    readDevs(m_rawConfig.value(QLatin1String("devices")).toArray());
-    readDirs(m_rawConfig.value(QLatin1String("folders")).toArray());
+    // check whether the list of dirs or devs has changed
+    auto dirs = m_rawConfig.value(QLatin1String("folders")).toArray();
+    auto devs = m_rawConfig.value(QLatin1String("devices")).toArray();
+    auto listOfDirsChanged = dirs.size() != static_cast<int>(m_dirs.size());
+    auto listOfDevsChanged = devs.size() != static_cast<int>(m_devs.size());
+    if (auto row = 0; !listOfDirsChanged) {
+        for (const auto &dir : m_dirs) {
+            if (dir.id != dirs.at(row++).toObject().value(QLatin1String("id")).toString()) {
+                listOfDirsChanged = true;
+                break;
+            }
+        }
+    }
+    if (auto row = 0, myIdRow = -1; !listOfDevsChanged) {
+        if (m_devs.empty()) {
+            listOfDirsChanged = true;
+        } else {
+            const auto &myId = m_devs.front().id;
+            for (auto i = m_devs.begin() + 1, end = m_devs.end(); i != end;) {
+                auto id = devs.at(row++).toObject().value(QLatin1String("deviceID")).toString();
+                if (id == myId) {
+                    myIdRow = row;
+                    continue;
+                }
+                if (i->id != id) {
+                    listOfDevsChanged = true;
+                    break;
+                }
+                ++i;
+            }
+            if (myIdRow < 0) {
+                listOfDevsChanged = true;
+            }
+        }
+    }
+
+    // emit newConfigAboutToBeApplied() only if list of dirs or devs has changed to avoid model resets
+    // note: This is not about performance. Model resets are disturbing as they cause the view to reset its state.
+    if (listOfDirsChanged || listOfDevsChanged) {
+        emit newConfigAboutToBeApplied();
+    }
+
+    // read devs and then dirs (in that order as dirs need devs)
+    readDevs(devs, !listOfDevsChanged);
+    readDirs(dirs, !listOfDirsChanged);
     if (m_runtimeCondition.enabledConditions() != RuntimeCondition::Conditions::None) {
         handleRuntimeConditionChanged();
     }
-    emit newConfigApplied();
+    if (listOfDirsChanged || listOfDevsChanged) {
+        emit newConfigApplied();
+    }
 }
 
 /*!
