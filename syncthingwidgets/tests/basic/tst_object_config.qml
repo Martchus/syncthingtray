@@ -77,7 +77,11 @@ Item {
             view.currentIndex = 2;
             const item = view.currentItem;
             const dialog = item.dialog;
-            compare(item.value, 24, "slider value set");
+            const slider = item.slider;
+            compare(slider.value, 24, "slider value set");
+            compare(slider.from, 0, "slider from set");
+            compare(slider.to, 100, "slider to set");
+            compare(slider.stepSize, 1, "slider step size set");
             compare(item.labelText, "24 %", "slider label set with suffix");
 
             // rejecting dialog
@@ -87,6 +91,7 @@ Item {
             compare(dialog.text, "24", "dialog text set");
             dialog.text = "50";
             dialog.reject();
+            compare(slider.value, 24, "slider value not updated");
             compare(root.config.rangeKey, 24, "new range value not applied after dialog was rejected");
 
             // accepting dialog
@@ -94,7 +99,12 @@ Item {
             compare(dialog.text, "24", "dialog text reset");
             dialog.text = "50";
             dialog.accept();
+            compare(slider.value, 50, "slider value updated");
             compare(root.config.rangeKey, 50, "new range value applied after dialog was accepted");
+
+            // use slider
+            slider.increase();
+            compare(root.config.rangeKey, 51, "new range value applied via slider");
         }
     }
 }

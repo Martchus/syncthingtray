@@ -508,7 +508,7 @@ DelegateChooser {
             }
             required property var modelData
             property alias dialog: rangeDlg
-            property alias value: rangeSlider.value
+            property alias slider: rangeSlider
             property alias labelText: rangeLabel.text
         }
     }
