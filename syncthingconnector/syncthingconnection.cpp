@@ -429,6 +429,56 @@ bool SyncthingConnection::checkConnectionConfiguration()
 }
 
 /*!
+ * \brief Returns whether the list of currently known dirs is different from \a dirs.
+ */
+bool SyncthingConnection::hasListOfDirsChanged(const QJsonArray &dirs) const
+{
+    if (dirs.size() != static_cast<int>(m_dirs.size())) {
+        return true;
+    }
+    auto row = 0;
+    for (const auto &dir : m_dirs) {
+        if (dir.id != dirs.at(row++).toObject().value(QLatin1String("id")).toString()) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/*!
+ * \brief Returns whether the list of currently known devs is different from \a devs.
+ */
+bool SyncthingConnection::hasListOfDevsChanged(const QJsonArray &devs) const
+{
+    if (devs.size() != static_cast<int>(m_devs.size()) || m_devs.empty()) {
+        return true;
+    }
+
+    // check whether "this" device is present; it is always the first item in m_devs if present
+    auto hasThisDevice = !m_myId.isEmpty() && m_devs.front().id == m_myId;
+
+    // track whether "this" device is present in \a devs; it might occur at any position
+    auto foundThisDevice = false;
+
+    auto row = 0;
+    for (auto i = m_devs.begin() + (hasThisDevice ? 1 : 0), end = m_devs.end(); i != end;) {
+        auto id = devs.at(row++).toObject().value(QLatin1String("deviceID")).toString();
+        if (!m_myId.isEmpty() && id == m_myId) {
+            foundThisDevice = true;
+            continue;
+        }
+        if (i->id != id) {
+            return true;
+        }
+        ++i;
+    }
+    if (hasThisDevice != foundThisDevice) {
+        return true;
+    }
+    return false;
+}
+
+/*!
  * \brief Applies the specified configuration and tries to reconnect via reconnect() if properties requiring reconnect
  *        to take effect have changed.
  * \remarks The expected SSL errors of the specified configuration are updated accordingly.
@@ -635,40 +685,10 @@ void SyncthingConnection::continueReconnecting()
 void SyncthingConnection::applyRawConfig()
 {
     // check whether the list of dirs or devs has changed
-    auto dirs = m_rawConfig.value(QLatin1String("folders")).toArray();
-    auto devs = m_rawConfig.value(QLatin1String("devices")).toArray();
-    auto listOfDirsChanged = dirs.size() != static_cast<int>(m_dirs.size());
-    auto listOfDevsChanged = devs.size() != static_cast<int>(m_devs.size());
-    if (auto row = 0; !listOfDirsChanged) {
-        for (const auto &dir : m_dirs) {
-            if (dir.id != dirs.at(row++).toObject().value(QLatin1String("id")).toString()) {
-                listOfDirsChanged = true;
-                break;
-            }
-        }
-    }
-    if (auto row = 0, myIdRow = -1; !listOfDevsChanged) {
-        if (m_devs.empty()) {
-            listOfDevsChanged = true;
-        } else {
-            const auto &myId = m_devs.front().id;
-            for (auto i = m_devs.begin() + 1, end = m_devs.end(); i != end;) {
-                auto id = devs.at(row++).toObject().value(QLatin1String("deviceID")).toString();
-                if (id == myId) {
-                    myIdRow = row;
-                    continue;
-                }
-                if (i->id != id) {
-                    listOfDevsChanged = true;
-                    break;
-                }
-                ++i;
-            }
-            if (myIdRow < 0) {
-                listOfDevsChanged = true;
-            }
-        }
-    }
+    const auto dirs = m_rawConfig.value(QLatin1String("folders")).toArray();
+    const auto devs = m_rawConfig.value(QLatin1String("devices")).toArray();
+    const auto listOfDirsChanged = hasListOfDirsChanged(dirs);
+    const auto listOfDevsChanged = hasListOfDevsChanged(devs);
 
     // emit newConfigAboutToBeApplied() only if list of dirs or devs has changed to avoid model resets
     // note: This is not about performance. Model resets are disturbing as they cause the view to reset its state.

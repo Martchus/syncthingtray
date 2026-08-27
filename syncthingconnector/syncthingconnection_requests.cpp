@@ -915,10 +915,11 @@ void SyncthingConnection::readConfig()
  *   So when parsing the config, readDevs() should be called first.
  * - The own device ID is required to filter it from the devices a directory is shared with.
  *   So the readStatus() should have been called first.
+ * - If \a inPlace is set, the size of \a dirs must be equivalent to the size of m_dirs.
  */
 void SyncthingConnection::readDirs(const QJsonArray &dirs, bool inPlace)
 {
-    // store the new dirs in a temporary list which is assigned to m_dirs later
+    // store the new dirs in a temporary list which is assigned to m_dirs later (unless \a inPlace is set)
     auto newDirs = std::vector<SyncthingDir>();
     if (!inPlace) {
         newDirs.reserve(static_cast<std::size_t>(dirs.size()));
@@ -973,28 +974,39 @@ void SyncthingConnection::readDirs(const QJsonArray &dirs, bool inPlace)
 
 /*!
  * \brief Reads device results of requestConfig(); called by readConfig().
+ * \remarks
+ * - If myId() is not empty, a device with this ID will always be inserted as first device.
+ * - If \a inPlace is set, the size of \a devs must be equivalent to the size of m_devs.
  */
 void SyncthingConnection::readDevs(const QJsonArray &devs, bool inPlace)
 {
-    // store the new devs in a temporary list which is assigned to m_devs later
+    // store the new devs in a temporary list which is assigned to m_devs later (unless \a inPlace is set)
     auto newDevs = std::vector<SyncthingDev>();
     if (!inPlace) {
         newDevs.reserve(static_cast<std::size_t>(devs.size()));
     }
-    auto row = int();
-    auto *const thisDevice = inPlace ? findDevInfo(m_myId, row) : addDevInfo(newDevs, m_myId);
-    if (thisDevice) { // m_myId might be empty, then thisDevice will be nullptr
-        thisDevice->id = m_myId;
-        thisDevice->status = SyncthingDevStatus::ThisDevice;
-        thisDevice->paused = false;
-    }
-    row = 0;
+
+    // insert the "this" device always as first item into m_devs
+    auto row = 0, thisDeviceRow = -1;
+    auto *const thisDevice = ([&]() -> SyncthingDev * {
+        if (m_myId.isEmpty()) {
+            return nullptr;
+        }
+        auto *const devItem = inPlace ? findDevInfo(m_myId, thisDeviceRow) : addDevInfo(newDevs, m_myId);
+        devItem->id = m_myId;
+        devItem->status = SyncthingDevStatus::ThisDevice;
+        devItem->paused = false;
+        return devItem;
+    })();
+    assert(thisDeviceRow == 0 || thisDeviceRow == -1);
 
     for (const auto &devVal : devs) {
         const auto devObj = devVal.toObject();
         const auto deviceId = devObj.value(QLatin1String("deviceID")).toString();
         const auto isThisDevice = deviceId == m_myId;
-        auto *const devItem = isThisDevice ? thisDevice : inPlace ? &m_devs[static_cast<std::size_t>(row)] : addDevInfo(newDevs, deviceId);
+        auto *const devItem = isThisDevice
+            ? thisDevice
+            : (inPlace ? &m_devs[static_cast<std::size_t>(row == thisDeviceRow ? ++row : row)] : addDevInfo(newDevs, deviceId));
         if (!devItem) {
             continue;
         }
@@ -1013,7 +1025,7 @@ void SyncthingConnection::readDevs(const QJsonArray &devs, bool inPlace)
             devItem->paused = devObj.value(QLatin1String("paused")).toBool(devItem->paused);
         }
         if (inPlace) {
-            emit devStatusChanged(*devItem, row++);
+            emit devStatusChanged(*devItem, isThisDevice ? thisDeviceRow : row++);
         }
     }
 

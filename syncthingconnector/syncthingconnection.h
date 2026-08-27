@@ -562,6 +562,8 @@ private:
     QByteArray changeConfigVerb() const;
     QString folderErrorsPath() const;
     bool checkConnectionConfiguration();
+    bool hasListOfDirsChanged(const QJsonArray &dirs) const;
+    bool hasListOfDevsChanged(const QJsonArray &devs) const;
 
     QNetworkAccessManager *m_qnam;
     QString m_syncthingUrl;
