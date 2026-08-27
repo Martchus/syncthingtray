@@ -460,14 +460,15 @@ bool SyncthingConnection::hasListOfDevsChanged(const QJsonArray &devs) const
     // track whether "this" device is present in \a devs; it might occur at any position
     auto foundThisDevice = false;
 
-    auto row = 0;
-    for (auto i = m_devs.begin() + (hasThisDevice ? 1 : 0), end = m_devs.end(); i != end;) {
-        auto id = devs.at(row++).toObject().value(QLatin1String("deviceID")).toString();
+    auto i = m_devs.begin() + (hasThisDevice ? 1 : 0);
+    const auto end = m_devs.end();
+    for (int row = 0, size = static_cast<int>(devs.size()); row < size; ++row) {
+        auto id = devs.at(row).toObject().value(QLatin1String("deviceID")).toString();
         if (!m_myId.isEmpty() && id == m_myId) {
             foundThisDevice = true;
             continue;
         }
-        if (i->id != id) {
+        if (i == end || i->id != id) {
             return true;
         }
         ++i;

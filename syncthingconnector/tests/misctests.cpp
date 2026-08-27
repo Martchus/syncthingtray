@@ -40,6 +40,9 @@ class MiscTests : public TestFixture {
 #endif
     CPPUNIT_TEST(testConnectionSettingsAndLoadingSelfSignedCert);
     CPPUNIT_TEST(testSyncthingDir);
+    CPPUNIT_TEST(testDirInsertion);
+    CPPUNIT_TEST(testDevInsertionWithoutMyId);
+    CPPUNIT_TEST(testDevInsertionWithMyId);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -56,6 +59,9 @@ public:
     void testConnectionSettingsAndLoadingSelfSignedCert();
 #endif
     void testSyncthingDir();
+    void testDirInsertion();
+    void testDevInsertionWithoutMyId();
+    void testDevInsertionWithMyId();
 
     void setUp() override;
     void tearDown() override;
@@ -343,4 +349,115 @@ void MiscTests::testSyncthingDir()
     CPPUNIT_ASSERT_EQUAL_MESSAGE("dir considered unshared when no devs present", QStringLiteral("Unshared"), dir.statusString());
     CPPUNIT_ASSERT_MESSAGE("same status again not considered an update",
         !dir.assignStatus(QStringLiteral("idle"), updateEvent += 1, updateTime += TimeSpan::fromMinutes(1.5)));
+}
+
+void MiscTests::testDirInsertion()
+{
+    auto connection = SyncthingConnection();
+    auto &dirs = connection.m_dirs;
+    dirs.emplace_back(QStringLiteral("foo"), QStringLiteral("Foo"), QStringLiteral("/foo"));
+    dirs.emplace_back(QStringLiteral("bar"), QStringLiteral("Bar"), QStringLiteral("/bar"));
+
+    auto newFoo = QJsonObject({ { QStringLiteral("id"), QStringLiteral("foo") }, { QStringLiteral("label"), QStringLiteral("Foo changed") },
+        { QStringLiteral("path"), QStringLiteral("/foo-changed") } });
+    auto newBar = QJsonObject({ { QStringLiteral("id"), QStringLiteral("bar") }, { QStringLiteral("label"), QStringLiteral("Bar changed") },
+        { QStringLiteral("path"), QStringLiteral("/bar-changed") } });
+
+    CPPUNIT_ASSERT_MESSAGE("different size", connection.hasListOfDirsChanged({ newFoo }));
+    CPPUNIT_ASSERT_MESSAGE("different order/IDs", connection.hasListOfDirsChanged({ newBar, newFoo }));
+    CPPUNIT_ASSERT_MESSAGE("same order/IDs", !connection.hasListOfDirsChanged({ newFoo, newBar }));
+
+    connection.readDirs({ newFoo, newBar }, true);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("foo"), dirs.at(0).id);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("Foo changed"), dirs.at(0).label);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("/foo-changed"), dirs.at(0).path);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("bar"), dirs.at(1).id);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("Bar changed"), dirs.at(1).label);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("/bar-changed"), dirs.at(1).path);
+
+    connection.readDirs({ newBar, newFoo }, false);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("bar"), dirs.at(0).id);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("Bar changed"), dirs.at(0).label);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("/bar-changed"), dirs.at(0).path);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("foo"), dirs.at(1).id);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("Foo changed"), dirs.at(1).label);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("/foo-changed"), dirs.at(1).path);
+}
+
+void MiscTests::testDevInsertionWithoutMyId()
+{
+    auto connection = SyncthingConnection();
+    connection.m_myId.clear();
+    auto &devs = connection.m_devs;
+    devs.emplace_back(QStringLiteral("foo"), QStringLiteral("Foo"));
+    devs.emplace_back(QStringLiteral("bar"), QStringLiteral("Bar"));
+
+    auto newFoo = QJsonObject({ { QStringLiteral("deviceID"), QStringLiteral("foo") }, { QStringLiteral("name"), QStringLiteral("Foo changed") } });
+    auto newBar = QJsonObject({ { QStringLiteral("deviceID"), QStringLiteral("bar") }, { QStringLiteral("name"), QStringLiteral("Bar changed") } });
+
+    CPPUNIT_ASSERT_MESSAGE("different size", connection.hasListOfDevsChanged({ newFoo }));
+    CPPUNIT_ASSERT_MESSAGE("different order/IDs", connection.hasListOfDevsChanged({ newBar, newFoo }));
+    CPPUNIT_ASSERT_MESSAGE("same order/IDs", !connection.hasListOfDevsChanged({ newFoo, newBar }));
+
+    connection.readDevs({ newFoo, newBar }, true);
+    CPPUNIT_ASSERT_EQUAL(2_st, devs.size());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("foo"), devs.at(0).id);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("Foo changed"), devs.at(0).name);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("bar"), devs.at(1).id);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("Bar changed"), devs.at(1).name);
+
+    connection.readDevs({ newBar, newFoo }, false);
+    CPPUNIT_ASSERT_EQUAL(2_st, devs.size());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("bar"), devs.at(0).id);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("Bar changed"), devs.at(0).name);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("foo"), devs.at(1).id);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("Foo changed"), devs.at(1).name);
+}
+
+void MiscTests::testDevInsertionWithMyId()
+{
+    auto connection = SyncthingConnection();
+    connection.m_myId = QStringLiteral("my_id");
+    auto &devs = connection.m_devs;
+
+    auto newMyId = QJsonObject({ { QStringLiteral("deviceID"), QStringLiteral("my_id") }, { QStringLiteral("name"), QStringLiteral("My Device") } });
+    auto newFoo = QJsonObject({ { QStringLiteral("deviceID"), QStringLiteral("foo") }, { QStringLiteral("name"), QStringLiteral("Foo") } });
+    auto newBar = QJsonObject({ { QStringLiteral("deviceID"), QStringLiteral("bar") }, { QStringLiteral("name"), QStringLiteral("Bar") } });
+
+    // test with empty m_devs calling readDevs with inPlace = false
+    // note: Even if input devs don't contain "my_id", readDevs(..., false) will insert "this" device at index 0.
+    connection.readDevs({ newFoo, newBar }, false);
+    CPPUNIT_ASSERT_EQUAL(3_st, devs.size());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("my_id"), devs.at(0).id);
+    CPPUNIT_ASSERT_EQUAL(SyncthingDevStatus::ThisDevice, devs.at(0).status);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("foo"), devs.at(1).id);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("bar"), devs.at(2).id);
+
+    // test hasListOfDevsChanged with different JSON inputs
+    // note: Relative order of non-this devices: "foo", "bar"
+    CPPUNIT_ASSERT_MESSAGE("same relative order, this device in middle", !connection.hasListOfDevsChanged({ newFoo, newMyId, newBar }));
+    CPPUNIT_ASSERT_MESSAGE("same relative order, this device at end", !connection.hasListOfDevsChanged({ newFoo, newBar, newMyId }));
+    CPPUNIT_ASSERT_MESSAGE("same relative order, this device at start", !connection.hasListOfDevsChanged({ newMyId, newFoo, newBar }));
+    CPPUNIT_ASSERT_MESSAGE("different relative order (bar, then foo)", connection.hasListOfDevsChanged({ newMyId, newBar, newFoo }));
+    CPPUNIT_ASSERT_MESSAGE("different size (missing bar)", connection.hasListOfDevsChanged({ newMyId, newFoo }));
+    auto newBaz = QJsonObject({ { QStringLiteral("deviceID"), QStringLiteral("baz") }, { QStringLiteral("name"), QStringLiteral("Baz") } });
+    CPPUNIT_ASSERT_MESSAGE("this device missing", connection.hasListOfDevsChanged({ newFoo, newBar, newBaz }));
+
+    // test inPlace update with different order
+    // current m_devs: my_id, foo, bar
+    auto newFooChanged
+        = QJsonObject({ { QStringLiteral("deviceID"), QStringLiteral("foo") }, { QStringLiteral("name"), QStringLiteral("Foo changed") } });
+    auto newMyIdChanged
+        = QJsonObject({ { QStringLiteral("deviceID"), QStringLiteral("my_id") }, { QStringLiteral("name"), QStringLiteral("My Device changed") } });
+    auto newBarChanged
+        = QJsonObject({ { QStringLiteral("deviceID"), QStringLiteral("bar") }, { QStringLiteral("name"), QStringLiteral("Bar changed") } });
+
+    connection.readDevs({ newFooChanged, newMyIdChanged, newBarChanged }, true);
+    CPPUNIT_ASSERT_EQUAL(3_st, devs.size());
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("my_id"), devs.at(0).id);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("My Device changed"), devs.at(0).name);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("foo"), devs.at(1).id);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("Foo changed"), devs.at(1).name);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("bar"), devs.at(2).id);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("Bar changed"), devs.at(2).name);
 }
