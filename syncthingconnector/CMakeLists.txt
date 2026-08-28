@@ -182,6 +182,11 @@ if (NOT PROCESS_SUPPORT)
     list(APPEND META_PUBLIC_COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_NO_PROCESS)
 endif ()
 
+# enable private Qt headers for QAndroidService
+if (ANDROID)
+    list(APPEND ADDITIONAL_QT_MODULES CorePrivate)
+endif ()
+
 # include modules to apply configuration
 include(BasicConfig)
 include(QtConfig)

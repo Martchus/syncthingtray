@@ -119,18 +119,6 @@ AppService::AppService(bool insecure, QObject *parent)
         SyncthingLauncher::setMainInstance(&m_launcher);
     }
 
-    m_data.connection()->runtimeCondition()->setInitializing(true);
-    m_launcher.runtimeCondition()->setInitializing(true);
-    if (const auto batterySaving = isBatterySaving(); batterySaving.has_value()) {
-        handlePowerSaveModeChanged(batterySaving.value());
-    }
-    if (const auto batteryInfo = queryBatteryInfo(); batteryInfo.has_value()) {
-        const auto [onBattery, batteryLevel] = batteryInfo.value();
-        handleBatteryStatusChanged(onBattery, batteryLevel);
-    }
-    m_data.connection()->runtimeCondition()->setInitializing(false);
-    m_launcher.runtimeCondition()->setInitializing(false);
-
     reloadSettings();
 
 #ifdef SYNCTHINGWIDGETS_SHOW_TEST_ERROR
@@ -437,18 +425,6 @@ void AppService::handleSyncthingError(QProcess::ProcessError error)
 void AppService::handleRunningChanged(bool isRunning)
 {
     handleReconnectingToLaunched(isRunning ? m_launcher.guiUrl() : QUrl());
-}
-
-void AppService::handlePowerSaveModeChanged(bool powerSaveMode)
-{
-    m_data.connection()->runtimeCondition()->setBatterySaving(powerSaveMode);
-    m_launcher.runtimeCondition()->setBatterySaving(powerSaveMode);
-}
-
-void AppService::handleBatteryStatusChanged(bool onBattery, int batteryLevel)
-{
-    m_data.connection()->runtimeCondition()->setBatteryInfo(onBattery, batteryLevel);
-    m_launcher.runtimeCondition()->setBatteryInfo(onBattery, batteryLevel);
 }
 
 void AppService::handleChangedDevices()

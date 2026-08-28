@@ -18,10 +18,6 @@
 #include <QUrl>
 #include <utility>
 
-#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
-#include <QNetworkInformation>
-#endif
-
 #ifdef Q_OS_ANDROID
 #include <QCoreApplication>
 #include <QDebug>
@@ -258,120 +254,6 @@ QString substituteTilde(const QString &path, const QString &tilde, const QString
         return tilde % pathSeparator % QtUtilities::midRef(path, 1 + pathSeparator.size());
     }
     return path;
-}
-
-#ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
-/*!
- * \brief Loads the QNetworkInformation backend for determining whether the connection is metered.
- * \arg determineInitialValue Whether to try extra hard to determine the initial value.
- * \remarks Returns the backend and whether the network connection is metered right now.
- */
-std::pair<const QNetworkInformation *, bool> loadNetworkInformationBackendForMetered(bool determineInitialValue)
-{
-    static const auto *const backend = []() -> const QNetworkInformation * {
-#ifdef Q_OS_ANDROID
-        // load the network information plugin under Android by its name because it doesn't advertise supporting detection of metered
-        // connections even though it supports it (at least as of Qt 6.8.0)
-        constexpr auto expectedFeatures = QNetworkInformation::Feature::TransportMedium;
-        QNetworkInformation::loadBackendByName(QStringLiteral("android"));
-#else
-        constexpr auto expectedFeatures = QNetworkInformation::Feature::Metered;
-        QNetworkInformation::loadBackendByFeatures(expectedFeatures);
-#endif
-        if (const auto *const networkInformation = QNetworkInformation::instance();
-            networkInformation && networkInformation->supports(expectedFeatures)) {
-            return networkInformation;
-        }
-
-#ifdef Q_OS_ANDROID
-        qDebug() << "Unable to load network information backend, available backends: " << QNetworkInformation::availableBackends();
-#else
-        std::cerr << EscapeCodes::Phrases::Error
-                  << "Unable to load network information backend to monitor metered connections, available backends:" << EscapeCodes::Phrases::End;
-        const auto availableBackends = QNetworkInformation::availableBackends();
-        if (availableBackends.isEmpty()) {
-            std::cerr << "none\n";
-        } else {
-            for (const auto &backendName : availableBackends) {
-                std::cerr << " - " << backendName.toStdString() << '\n';
-            }
-        }
-#endif
-        return nullptr;
-    }();
-
-    auto isInitiallyMetered = backend && backend->isMetered();
-#ifdef Q_OS_ANDROID
-    // detect the initial status of whether the network connection is metered manually under Android because QNetworkInformation always
-    // returns false on startup with no way to know when it has been initialized
-    if (determineInitialValue && !isInitiallyMetered) {
-        isInitiallyMetered = isNetworkConnectionMetered().value_or(false);
-    }
-#else
-    Q_UNUSED(determineInitialValue)
-#endif
-    return std::make_pair(backend, isInitiallyMetered);
-}
-
-/*!
- * \brief Returns whether the current network connection is metered.
- * \remarks The network information backend needs to be initialized before, e.g. via loadNetworkInformationBackendForMetered().
- */
-std::optional<bool> isNetworkConnectionMetered()
-{
-#ifdef Q_OS_ANDROID
-    if (const auto context = QNativeInterface::QAndroidApplication::context(); context.isValid()) {
-        auto env = QJniEnvironment();
-        if (auto method = env.findMethod(context.objectClass(), "isNetworkConnectionMetered", "()Z")) {
-            return std::make_optional(env->CallBooleanMethod(context.object(), method) == JNI_TRUE);
-        }
-    }
-    qDebug() << "Unable to determine whether network connection is metered.";
-    return std::nullopt;
-#else
-    const auto *const networkInformation = QNetworkInformation::instance();
-    return networkInformation && networkInformation->supports(QNetworkInformation::Feature::Metered)
-        ? std::make_optional(networkInformation->isMetered())
-        : std::nullopt;
-#endif
-}
-#endif
-
-std::optional<bool> isBatterySaving()
-{
-#ifdef Q_OS_ANDROID
-    if (const auto context = QNativeInterface::QAndroidApplication::context(); context.isValid()) {
-        auto env = QJniEnvironment();
-        if (auto method = env.findMethod(context.objectClass(), "isPowerSaveMode", "()Z")) {
-            return std::make_optional(env->CallBooleanMethod(context.object(), method) == JNI_TRUE);
-        }
-    }
-    qDebug() << "Unable to determine whether battery saving mode is enabled.";
-    return std::nullopt;
-#else
-    return std::nullopt;
-#endif
-}
-
-std::optional<std::pair<bool, int>> queryBatteryInfo()
-{
-#ifdef Q_OS_ANDROID
-    if (const auto context = QNativeInterface::QAndroidApplication::context(); context.isValid()) {
-        auto env = QJniEnvironment();
-        if (auto method = env.findMethod(context.objectClass(), "queryBatteryInfo", "()I")) {
-            const int val = static_cast<int>(env->CallIntMethod(context.object(), method));
-            if (val >= 0) {
-                return std::make_optional(std::make_pair(true, val));
-            } else {
-                return std::make_optional(std::make_pair(false, -1 - val));
-            }
-        }
-    }
-    qDebug() << "Unable to determine battery info.";
-    return std::nullopt;
-#else
-    return std::nullopt;
-#endif
 }
 
 } // namespace Data

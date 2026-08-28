@@ -3,6 +3,8 @@
 #include "./app.h"
 #include "./appservice.h"
 
+#include <syncthingconnector/runtimecondition.h>
+
 #include <QJniEnvironment>
 #include <QStringView>
 #include <QtCore/private/qandroidextras_p.h>
@@ -115,17 +117,6 @@ static void handleMessageFromActivity(JNIEnv *, jobject, jint what, jint arg1, j
     appServiceObjectForJava->handleMessageFromActivity(static_cast<ServiceAction>(what), arg1, arg2, QJniObject(str).toString());
 }
 
-static void handlePowerSaveModeChanged(JNIEnv *, jobject, jboolean powerSaveMode)
-{
-    QMetaObject::invokeMethod(appServiceObjectForJava, "handlePowerSaveModeChanged", Qt::QueuedConnection, Q_ARG(bool, powerSaveMode));
-}
-
-static void handleBatteryStatusChanged(JNIEnv *, jobject, jboolean onBattery, jint batteryLevel)
-{
-    QMetaObject::invokeMethod(
-        appServiceObjectForJava, "handleBatteryStatusChanged", Qt::QueuedConnection, Q_ARG(bool, onBattery), Q_ARG(int, batteryLevel));
-}
-
 static void handleAndroidIntent(JNIEnv *, jobject, jstring page, jbyteArray array, jboolean fromNotification)
 {
     QMetaObject::invokeMethod(appObjectForJava, "handleAndroidIntent", Qt::QueuedConnection, Q_ARG(QString, QJniObject(page).toString()),
@@ -161,13 +152,12 @@ void registerServiceJniMethods(AppService *appService)
         { "stopLibSyncthing", "()V", reinterpret_cast<void *>(JniFn::stopLibSyncthing) },
         { "handleMessageFromActivity", "(IIILjava/lang/String;)V", reinterpret_cast<void *>(JniFn::handleMessageFromActivity) },
         { "broadcastLauncherStatus", "()V", reinterpret_cast<void *>(JniFn::broadcastLauncherStatus) },
-        { "handlePowerSaveModeChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handlePowerSaveModeChanged) },
-        { "handleBatteryStatusChanged", "(ZI)V", reinterpret_cast<void *>(JniFn::handleBatteryStatusChanged) },
     };
-    registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/SyncthingService", serviceMethods, 5) && registeredMethods;
+    registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/SyncthingService", serviceMethods, 3) && registeredMethods;
     if (!registeredMethods) {
         qWarning() << "Unable to register all native service methods in JNI environment.";
     }
+    Data::RuntimeCondition::registerServiceJniMethods();
 }
 
 void unregisterServiceJniMethods(AppService *appService)
@@ -175,6 +165,7 @@ void unregisterServiceJniMethods(AppService *appService)
     if (JniFn::appServiceObjectForJava == appService) {
         JniFn::appServiceObjectForJava = nullptr;
     }
+    Data::RuntimeCondition::unregisterServiceJniMethods();
 }
 
 void registerActivityJniMethods(App *app)

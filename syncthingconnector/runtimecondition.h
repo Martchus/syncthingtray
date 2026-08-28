@@ -10,6 +10,10 @@
 #include <memory>
 #include <optional>
 
+#if (QT_VERSION >= QT_VERSION_CHECK(6, 4, 0))
+#define SYNCTHINGCONNECTION_SUPPORT_METERED
+#endif
+
 namespace Data {
 
 class LIB_SYNCTHING_CONNECTOR_EXPORT RuntimeCondition : public QObject {
@@ -80,6 +84,11 @@ public:
      * \brief Returns a short translated status message about the metered state of the connection.
      */
     QString meteredStatus() const;
+
+#ifdef Q_OS_ANDROID
+    static void registerServiceJniMethods();
+    static void unregisterServiceJniMethods();
+#endif
 
     /*!
      * \brief Returns whether battery saving mode is enabled, or std::nullopt if unknown.
@@ -211,6 +220,10 @@ Q_SIGNALS:
 private:
     void updateSupposedToRun();
     void initializeBatteryMonitoring() const;
+    static void registerInstance(RuntimeCondition *instance);
+    static void unregisterInstance(RuntimeCondition *instance);
+    static std::optional<bool> queryBatterySaving();
+    static std::optional<std::pair<bool, int>> queryBatteryInfo();
 
     Conditions m_enabledConditions;
     mutable Conditions m_initializedConditions;
@@ -221,14 +234,6 @@ private:
     int m_batteryPercentage;
     mutable std::optional<bool> m_supposedToRun;
     bool m_initializing;
-
-#ifdef PLATFORM_WINDOWS
-    class WindowsBatteryMonitor;
-    mutable std::unique_ptr<WindowsBatteryMonitor> m_windowsMonitor;
-#elif defined(PLATFORM_LINUX) && !defined(PLATFORM_ANDROID)
-    class LinuxBatteryMonitor;
-    mutable std::unique_ptr<LinuxBatteryMonitor> m_linuxMonitor;
-#endif
 };
 
 } // namespace Data
