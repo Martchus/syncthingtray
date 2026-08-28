@@ -179,6 +179,17 @@ public Q_SLOTS:
 using BatteryMonitor = AndroidBatteryMonitor;
 
 #elif defined(PLATFORM_WINDOWS)
+
+#ifndef GUID_ACDC_POWER_SOURCE
+static const GUID GUID_ACDC_POWER_SOURCE = { 0x5ce81283, 0x4e6e, 0x409c, { 0x93, 0x4e, 0x91, 0x35, 0x2d, 0x18, 0x5f, 0x65 } };
+#endif
+#ifndef GUID_BATTERY_PERCENTAGE_REMAINING
+static const GUID GUID_BATTERY_PERCENTAGE_REMAINING = { 0xa7ad8041, 0x2c41, 0x4c14, { 0xb6, 0x91, 0x68, 0x26, 0x1a, 0xb4, 0x75, 0x4a } };
+#endif
+#ifndef GUID_POWER_SAVING_STATUS
+static const GUID GUID_POWER_SAVING_STATUS = { 0xe5812c53, 0xbc8e, 0x4eff, { 0xba, 0x1a, 0x98, 0x2c, 0x7e, 0x71, 0x0b, 0x77 } };
+#endif
+
 class WindowsBatteryMonitor : public BatteryMonitorBase {
 public:
     explicit WindowsBatteryMonitor()
