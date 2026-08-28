@@ -532,6 +532,11 @@ private Q_SLOTS:
             if (!typeFile.open(QIODevice::ReadOnly) || typeFile.readAll().trimmed() != QByteArrayLiteral("Battery")) {
                 continue;
             }
+            if (auto scopeFile = QFile(deviceDir.absoluteFilePath(QStringLiteral("scope"))); scopeFile.open(QIODevice::ReadOnly)) {
+                if (scopeFile.readAll().trimmed() == QByteArrayLiteral("Device")) {
+                    continue;
+                }
+            }
             hasBattery = true;
             if (auto statusFile = QFile(deviceDir.absoluteFilePath(QStringLiteral("status"))); statusFile.open(QIODevice::ReadOnly)) {
                 if (statusFile.readAll().trimmed() == QByteArrayLiteral("Discharging")) {
