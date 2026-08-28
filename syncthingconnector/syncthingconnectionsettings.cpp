@@ -7,26 +7,22 @@
 namespace Data {
 
 #ifndef QT_NO_SSL
-QList<QSslError> SyncthingConnectionSettings::compileSslErrors(const QSslCertificate &trustedCert)
-{
-    // clang-format off
-    return QList<QSslError>{
-        QSslError(QSslError::UnableToGetLocalIssuerCertificate, trustedCert),
-        QSslError(QSslError::UnableToVerifyFirstCertificate, trustedCert),
-        QSslError(QSslError::SelfSignedCertificate, trustedCert),
-        QSslError(QSslError::HostNameMismatch, trustedCert),
-        QSslError(QSslError::CertificateUntrusted, trustedCert),
-        QSslError(QSslError::CertificateRejected, trustedCert)
-    };
-    // clang-format on
-}
-
 QList<QSslError> SyncthingConnectionSettings::compileSslErrors(const QList<QSslCertificate> &trustedCerts)
 {
     auto sslErrors = QList<QSslError>();
+    sslErrors.reserve(trustedCerts.size() * 6);
     for (const auto &trustedCert : trustedCerts) {
         if (!trustedCert.isNull()) {
-            sslErrors.append(compileSslErrors(trustedCert));
+            // clang-format off
+            sslErrors.append({
+                QSslError(QSslError::UnableToGetLocalIssuerCertificate, trustedCert),
+                QSslError(QSslError::UnableToVerifyFirstCertificate, trustedCert),
+                QSslError(QSslError::SelfSignedCertificate, trustedCert),
+                QSslError(QSslError::HostNameMismatch, trustedCert),
+                QSslError(QSslError::CertificateUntrusted, trustedCert),
+                QSslError(QSslError::CertificateRejected, trustedCert)
+            });
+            // clang-format on
         }
     }
     return sslErrors;
