@@ -148,16 +148,17 @@ void registerServiceJniMethods(AppService *appService)
     JniFn::appServiceObjectForJava = appService;
     auto env = QJniEnvironment();
     auto registeredMethods = true;
+    static const auto *const serviceName = "io/github/martchus/syncthingtray/SyncthingService";
     static const JNINativeMethod serviceMethods[] = {
         { "stopLibSyncthing", "()V", reinterpret_cast<void *>(JniFn::stopLibSyncthing) },
         { "handleMessageFromActivity", "(IIILjava/lang/String;)V", reinterpret_cast<void *>(JniFn::handleMessageFromActivity) },
         { "broadcastLauncherStatus", "()V", reinterpret_cast<void *>(JniFn::broadcastLauncherStatus) },
     };
-    registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/SyncthingService", serviceMethods, 3) && registeredMethods;
+    registeredMethods = env.registerNativeMethods(serviceName, serviceMethods, 3) && registeredMethods;
+    registeredMethods = Data::RuntimeCondition::registerJniMethods(serviceName) && registeredMethods;
     if (!registeredMethods) {
         qWarning() << "Unable to register all native service methods in JNI environment.";
     }
-    Data::RuntimeCondition::registerServiceJniMethods();
 }
 
 void unregisterServiceJniMethods(AppService *appService)
@@ -165,7 +166,7 @@ void unregisterServiceJniMethods(AppService *appService)
     if (JniFn::appServiceObjectForJava == appService) {
         JniFn::appServiceObjectForJava = nullptr;
     }
-    Data::RuntimeCondition::unregisterServiceJniMethods();
+    Data::RuntimeCondition::unregisterJniMethods();
 }
 
 void registerActivityJniMethods(App *app)

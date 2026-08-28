@@ -529,17 +529,17 @@ static void handleBatteryStatusChanged(JNIEnv *, jobject, jboolean onBattery, ji
     }
 }
 
-void RuntimeCondition::registerServiceJniMethods()
+bool RuntimeCondition::registerJniMethods(const char *className)
 {
     auto env = QJniEnvironment();
-    static const JNINativeMethod serviceMethods[] = {
+    static const JNINativeMethod methods[] = {
         { "handlePowerSaveModeChanged", "(Z)V", reinterpret_cast<void *>(handlePowerSaveModeChanged) },
         { "handleBatteryStatusChanged", "(ZI)V", reinterpret_cast<void *>(handleBatteryStatusChanged) },
     };
-    env.registerNativeMethods("io/github/martchus/syncthingtray/SyncthingService", serviceMethods, 2);
+    return env.registerNativeMethods(className, methods, 2);
 }
 
-void RuntimeCondition::unregisterServiceJniMethods()
+void RuntimeCondition::unregisterJniMethods()
 {
 }
 #endif

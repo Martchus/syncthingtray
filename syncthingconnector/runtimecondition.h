@@ -57,6 +57,11 @@ public:
      */
     ~RuntimeCondition() override;
 
+#ifdef Q_OS_ANDROID
+    static bool registerJniMethods(const char *className);
+    static void unregisterJniMethods();
+#endif
+
     /*!
      * \brief Returns whether Syncthing is supposed to run based on the currently enabled conditions.
      * \note This is a cached/lazy-initialized property.
@@ -87,11 +92,6 @@ public:
      * \brief Returns a short translated status message about the metered state of the connection.
      */
     QString meteredStatus() const;
-
-#ifdef Q_OS_ANDROID
-    static void registerServiceJniMethods();
-    static void unregisterServiceJniMethods();
-#endif
 
     /*!
      * \brief Returns whether battery saving mode is enabled, or std::nullopt if unknown.
