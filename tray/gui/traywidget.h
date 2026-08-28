@@ -71,6 +71,7 @@ class TrayWidget : public QWidget {
     QML_ELEMENT
     QML_SINGLETON
 #endif
+    Q_PROPERTY(TrayMenu *menu READ menu CONSTANT)
     Q_PROPERTY(Data::SyncthingLauncher *launcher READ launcher CONSTANT)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     Q_PROPERTY(Data::SyncthingService *service READ service CONSTANT)
@@ -100,6 +101,7 @@ public:
     bool isStartStopEnabled() const;
     QObject *startStopButtonTarget();
 #endif
+    TrayMenu *menu();
     Data::SyncthingLauncher *launcher() const;
     Data::SyncthingService *service() const;
 
@@ -239,6 +241,11 @@ inline const std::vector<TrayWidget *> &TrayWidget::instances()
 inline Data::SyncthingConnectionSettings *TrayWidget::selectedConnection()
 {
     return m_selectedConnection;
+}
+
+inline TrayMenu *TrayWidget::menu()
+{
+    return m_menu;
 }
 
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)

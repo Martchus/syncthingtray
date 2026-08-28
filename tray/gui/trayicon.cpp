@@ -318,6 +318,32 @@ void TrayIcon::showNewVersionAvailable(const QString &version, const QString &ad
     }
 }
 
+void QtGui::TrayIcon::showError(const QString &title, const QString &message)
+{
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
+    if (m_dbusNotificationsEnabled) {
+        m_dbusNotifier.showError(title, message);
+    } else
+#endif
+    {
+        m_messageClickedAction = TrayIconMessageClickedAction::None;
+        showMessage(title, message, QSystemTrayIcon::Information);
+    }
+}
+
+void QtGui::TrayIcon::showInfo(const QString &title, const QString &message)
+{
+#ifdef QT_UTILITIES_SUPPORT_DBUS_NOTIFICATIONS
+    if (m_dbusNotificationsEnabled) {
+        m_dbusNotifier.showInfo(title, message);
+    } else
+#endif
+    {
+        m_messageClickedAction = TrayIconMessageClickedAction::None;
+        showMessage(title, message, QSystemTrayIcon::Critical);
+    }
+}
+
 void TrayIcon::showInternalErrorsDialog()
 {
     if (!InternalErrorsDialog::hasInstance()) {

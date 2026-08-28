@@ -646,4 +646,13 @@ ApplicationWindow {
         notifierConnections: Connections {}
         onOpeningUrlRequested: SyncthingModels.openUrlExternally(url)
     }
+    readonly property Connections modelsConnections: Connections {
+        target: SyncthingModels
+        function onError(message) {
+            TrayWidget.menu?.icon?.showError("", message);
+        }
+        function onInfo(message) {
+            TrayWidget.menu?.icon?.showInfo("", message);
+        }
+    }
 }

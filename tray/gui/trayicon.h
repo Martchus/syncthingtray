@@ -41,6 +41,8 @@ public Q_SLOTS:
     void showNewDev(const QString &devId, const QString &message);
     void showNewDir(const QString &devId, const QString &dirId, const QString &dirLabel, const QString &message);
     void showNewVersionAvailable(const QString &version, const QString &additionalInfo);
+    void showInfo(const QString &title, const QString &message);
+    void showError(const QString &title, const QString &message);
 
 private Q_SLOTS:
     void handleActivated(QSystemTrayIcon::ActivationReason reason);

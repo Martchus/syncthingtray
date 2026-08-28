@@ -33,6 +33,8 @@ public Q_SLOTS:
     void showNewDev(const QString &devId, const QString &message);
     void showNewDir(const QString &devId, const QString &dirId, const QString &dirLabel, const QString &message);
     void showNewVersionAvailable(const QString &version, const QString &additionalInfo);
+    void showInfo(const QString &title, const QString &message);
+    void showError(const QString &title, const QString &message);
     void setIcons(const Data::StatusIcons &statusIcons, const Data::StatusIcons &icons);
 
 Q_SIGNALS:
@@ -55,6 +57,8 @@ private:
     QtUtilities::DBusNotification m_newDevNotification;
     QtUtilities::DBusNotification m_newDirNotification;
     QtUtilities::DBusNotification m_newVersionNotification;
+    QtUtilities::DBusNotification m_infoNotification;
+    QtUtilities::DBusNotification m_errorNotification;
 };
 
 inline void DBusStatusNotifier::showDisconnect()
@@ -107,6 +111,20 @@ inline void DBusStatusNotifier::showNewVersionAvailable(const QString &version, 
     Q_UNUSED(additionalInfo)
     m_newVersionNotification.setMessage(tr("Version %1 is available").arg(version));
     m_newVersionNotification.show();
+}
+
+inline void DBusStatusNotifier::showInfo(const QString &title, const QString &message)
+{
+    m_infoNotification.setTitle(title.isEmpty() ? m_infoNotification.applicationName() : title);
+    m_infoNotification.update(message);
+    m_infoNotification.show();
+}
+
+inline void DBusStatusNotifier::showError(const QString &title, const QString &message)
+{
+    m_errorNotification.setTitle(title.isEmpty() ? m_errorNotification.applicationName() : title);
+    m_errorNotification.update(message);
+    m_errorNotification.show();
 }
 
 } // namespace QtGui

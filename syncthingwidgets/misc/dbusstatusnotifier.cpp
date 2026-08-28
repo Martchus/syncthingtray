@@ -29,6 +29,8 @@ DBusStatusNotifier::DBusStatusNotifier(QObject *parent)
     , m_newDevNotification(QStringLiteral(APP_NAME) + tr(" - new device"), NotificationIcon::Information, 5000)
     , m_newDirNotification(QStringLiteral(APP_NAME) + tr(" - new folder"), NotificationIcon::Information, 5000)
     , m_newVersionNotification(QStringLiteral(APP_NAME) + tr(" - new version"), NotificationIcon::Information, 5000)
+    , m_infoNotification(QStringLiteral(APP_NAME), NotificationIcon::Information, 5000)
+    , m_errorNotification(QStringLiteral(APP_NAME), NotificationIcon::Critical, 10000)
 {
     m_disconnectedNotification.setApplicationName(QStringLiteral(APP_NAME));
     m_disconnectedNotification.setMessage(tr("Disconnected from Syncthing"));
@@ -61,6 +63,9 @@ DBusStatusNotifier::DBusStatusNotifier(QObject *parent)
     m_newVersionNotification.setActions(QStringList({ QStringLiteral("update"), tr("Open updater") }));
     connect(&m_newVersionNotification, &DBusNotification::actionInvoked, this, &DBusStatusNotifier::updateSettingsRequested);
 
+    m_infoNotification.setApplicationName(QStringLiteral(APP_NAME));
+    m_errorNotification.setApplicationName(QStringLiteral(APP_NAME));
+
     const auto &iconManager = IconManager::instance();
     connect(&iconManager, &Data::IconManager::statusIconsChanged, this, &DBusStatusNotifier::setIcons);
     setIcons(iconManager.statusIcons(), iconManager.trayIcons());
@@ -71,13 +76,16 @@ void DBusStatusNotifier::setIcons(const StatusIcons &, const StatusIcons &icons)
     if (!icons.isValid) {
         return;
     }
+    m_disconnectedNotification.setImage(makeImage(icons.disconnected));
     m_launcherErrorNotification.setImage(makeImage(icons.error));
-    m_syncthingNotification.setImage(m_launcherErrorNotification.image());
+    m_internalErrorNotification.setImage(m_launcherErrorNotification.image());
     m_syncthingNotification.setImage(makeImage(icons.notify));
     m_syncCompleteNotification.setImage(makeImage(icons.syncComplete));
     m_newDevNotification.setImage(makeImage(icons.newItem));
     m_newDirNotification.setImage(m_newDevNotification.image());
     m_newVersionNotification.setImage(makeImage(icons.idling));
+    m_infoNotification.setImage(m_syncthingNotification.image());
+    m_errorNotification.setImage(m_launcherErrorNotification.image());
 }
 
 void DBusStatusNotifier::handleSyncthingNotificationAction(const QString &action)

@@ -16,6 +16,7 @@ class TrayWidget;
 
 class TrayMenu : public QMenu {
     Q_OBJECT
+    Q_PROPERTY(TrayIcon *icon READ icon CONSTANT)
 
 public:
     enum class WindowType {
