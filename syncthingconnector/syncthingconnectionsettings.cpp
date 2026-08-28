@@ -21,6 +21,17 @@ QList<QSslError> SyncthingConnectionSettings::compileSslErrors(const QSslCertifi
     // clang-format on
 }
 
+QList<QSslError> SyncthingConnectionSettings::compileSslErrors(const QList<QSslCertificate> &trustedCerts)
+{
+    auto sslErrors = QList<QSslError>();
+    for (const auto &trustedCert : trustedCerts) {
+        if (!trustedCert.isNull()) {
+            sslErrors.append(compileSslErrors(trustedCert));
+        }
+    }
+    return sslErrors;
+}
+
 bool SyncthingConnectionSettings::loadHttpsCert()
 {
     expectedSslErrors.clear();
@@ -33,7 +44,7 @@ bool SyncthingConnectionSettings::loadHttpsCert()
     }
 
     httpCertLastModified = QFileInfo(httpsCertPath).lastModified();
-    expectedSslErrors = compileSslErrors(certs.at(0));
+    expectedSslErrors = compileSslErrors(certs);
     return true;
 }
 #endif

@@ -1104,7 +1104,7 @@ bool SyncthingConnection::loadSelfSignedCertificate(const QUrl &url)
         emit error(tr("Unable to load certificate used by Syncthing."), SyncthingErrorCategory::OverallConnection, QNetworkReply::NoError);
         return false;
     }
-    m_expectedSslErrors = SyncthingConnectionSettings::compileSslErrors(certs.at(0));
+    m_expectedSslErrors = SyncthingConnectionSettings::compileSslErrors(certs);
     // keep track of the dynamically determined certificate path for handleSslErrors()
     if (m_certificatePath.isEmpty()) {
         m_dynamicallyDeterminedCertificatePath = certPath;

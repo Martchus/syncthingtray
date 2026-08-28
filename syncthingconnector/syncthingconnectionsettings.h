@@ -65,6 +65,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingConnectionSettings {
     bool autoConnect = false;
 #ifndef QT_NO_SSL
     static QList<QSslError> compileSslErrors(const QSslCertificate &trustedCert);
+    static QList<QSslError> compileSslErrors(const QList<QSslCertificate> &trustedCerts);
     bool loadHttpsCert();
 #endif
     void storeToJson(QJsonObject &object);
