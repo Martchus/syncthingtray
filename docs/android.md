@@ -171,8 +171,6 @@ This section is *not* taking changes after the maintainer switch into account.
   texts for many options in accordance with the official Syncthing documentation.
 * Syncthing Tray allows browsing the global file tree of a folder. Items can be selected and added
   to ignore patterns.
-* Syncthing Tray allows pausing and stopping Syncthing on metered network connections and on power
-  saving mode. The Syncthing-Fork app provides more advanced run conditions.
 * The Syncthing-Fork app probably works better on older or very low-budget devices.
 
 ## Caveats on Android

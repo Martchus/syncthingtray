@@ -104,7 +104,8 @@ platform-dependent.
 * Autostart configuration
 * [Launcher](#does-this-launch-or-bundle-syncthing-itself-what-about-my-existing-syncthing-installation) for Syncthing
 * [Systemd integration](#configuring-systemd-integration)
-* Suspending synchronization while the network connection is metered
+* Suspending synchronization under certain conditions (metered network connection, power saving mode,
+  on battery, battery level is below threshold)
 * Browser for the global file tree and selecting items to add to ignore patterns
 * Quick access to the official web-based UI
     * Can be opened as regular browser tab
