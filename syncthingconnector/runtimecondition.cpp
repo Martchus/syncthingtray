@@ -112,18 +112,24 @@ static std::vector<RuntimeCondition *> s_instances;
 
 class BatteryMonitorBase {
 public:
-    void queryState(RuntimeCondition *instance) const
+    void queryState(const RuntimeCondition *instance) const
     {
-        instance->setBatteryInfo(m_onBattery, m_batteryLevel);
-        instance->setBatterySaving(m_batterySaving);
+        instance->m_onBattery = m_onBattery;
+        instance->m_batteryLevel = m_batteryLevel;
+        instance->m_batterySaving = m_batterySaving;
     }
 
 protected:
     void updateInstances()
     {
-        for (auto *instance : s_instances) {
-            instance->setBatteryInfo(m_onBattery, m_batteryLevel);
-            instance->setBatterySaving(m_batterySaving);
+        for (auto *const instance : s_instances) {
+            instance->m_updating = true;
+            const auto batteryInfoChanged = instance->setBatteryInfo(m_onBattery, m_batteryLevel);
+            const auto batterySavingChanged = instance->setBatterySaving(m_batterySaving);
+            instance->m_updating = false;
+            if (batteryInfoChanged || batterySavingChanged) {
+                instance->updateSupposedToRun();
+            }
         }
     }
 
@@ -133,7 +139,8 @@ protected:
 };
 
 #if defined(Q_OS_ANDROID)
-class AndroidBatteryMonitor : public BatteryMonitorBase {
+class AndroidBatteryMonitor : public QObject, public BatteryMonitorBase {
+    Q_OBJECT
 public:
     explicit AndroidBatteryMonitor()
     {
@@ -153,6 +160,7 @@ public:
         }
     }
 
+public Q_SLOTS:
     void handlePowerSaveModeChanged(bool powerSaveMode)
     {
         m_batterySaving = powerSaveMode;
@@ -167,7 +175,8 @@ public:
     }
 };
 
-static std::unique_ptr<AndroidBatteryMonitor> s_androidMonitor;
+#define SYNCTHINGCONNECTION_SUPPORT_BATTERY_MONITORING
+using BatteryMonitor = AndroidBatteryMonitor;
 
 #elif defined(PLATFORM_WINDOWS)
 class WindowsBatteryMonitor : public BatteryMonitorBase {
@@ -248,7 +257,8 @@ private:
     HPOWERNOTIFY m_hPowerNotifySaver = nullptr;
 };
 
-static std::unique_ptr<WindowsBatteryMonitor> s_windowsMonitor;
+#define SYNCTHINGCONNECTION_SUPPORT_BATTERY_MONITORING
+using BatteryMonitor = WindowsBatteryMonitor;
 
 #elif defined(PLATFORM_LINUX)
 
@@ -495,22 +505,27 @@ private:
     bool m_logging;
 };
 
-static std::unique_ptr<LinuxBatteryMonitor> s_linuxMonitor;
+#define SYNCTHINGCONNECTION_SUPPORT_BATTERY_MONITORING
+using BatteryMonitor = LinuxBatteryMonitor;
+#endif
 
+#ifdef SYNCTHINGCONNECTION_SUPPORT_BATTERY_MONITORING
+static std::unique_ptr<BatteryMonitor> s_batteryMonitor;
 #endif
 
 #ifdef Q_OS_ANDROID
 static void handlePowerSaveModeChanged(JNIEnv *, jobject, jboolean powerSaveMode)
 {
-    if (s_androidMonitor) {
-        s_androidMonitor->handlePowerSaveModeChanged(powerSaveMode == JNI_TRUE);
+    if (s_batteryMonitor) {
+        QMetaObject::invokeMethod(s_batteryMonitor.get(), "handlePowerSaveModeChanged", Qt::QueuedConnection, Q_ARG(bool, powerSaveMode == JNI_TRUE));
     }
 }
 
 static void handleBatteryStatusChanged(JNIEnv *, jobject, jboolean onBattery, jint batteryLevel)
 {
-    if (s_androidMonitor) {
-        s_androidMonitor->handleBatteryStatusChanged(onBattery == JNI_TRUE, static_cast<int>(batteryLevel));
+    if (s_batteryMonitor) {
+        QMetaObject::invokeMethod(s_batteryMonitor.get(), "handleBatteryStatusChanged", Qt::QueuedConnection, Q_ARG(bool, onBattery == JNI_TRUE),
+            Q_ARG(int, static_cast<int>(batteryLevel)));
     }
 }
 
@@ -539,15 +554,11 @@ void RuntimeCondition::unregisterInstance(RuntimeCondition *instance)
     if (auto it = std::find(s_instances.begin(), s_instances.end(), instance); it != s_instances.end()) {
         s_instances.erase(it);
     }
+#ifdef SYNCTHINGCONNECTION_SUPPORT_BATTERY_MONITORING
     if (s_instances.empty()) {
-#if defined(PLATFORM_WINDOWS)
-        s_windowsMonitor.reset();
-#elif defined(PLATFORM_LINUX) && !defined(PLATFORM_ANDROID)
-        s_linuxMonitor.reset();
-#elif defined(Q_OS_ANDROID)
-        s_androidMonitor.reset();
-#endif
+        s_batteryMonitor.reset();
     }
+#endif
 }
 
 RuntimeCondition::RuntimeCondition(Conditions conditions, QObject *parent)
@@ -555,7 +566,7 @@ RuntimeCondition::RuntimeCondition(Conditions conditions, QObject *parent)
     , m_enabledConditions(conditions)
     , m_initializedConditions(Conditions::ForceSuspend)
     , m_batteryPercentage(100)
-    , m_initializing(false)
+    , m_updating(false)
 {
     registerInstance(this);
 }
@@ -593,7 +604,7 @@ std::optional<bool> RuntimeCondition::isNetworkConnectionMetered() const
     if (!(m_initializedConditions && Conditions::Metered)) {
         if (const auto [networkInformation, isInitiallyMetered] = loadNetworkInformationBackendForMetered(); networkInformation) {
             connect(networkInformation, &QNetworkInformation::isMeteredChanged, this,
-                static_cast<void (RuntimeCondition::*)(bool)>(&RuntimeCondition::setNetworkConnectionMetered));
+                static_cast<bool (RuntimeCondition::*)(bool)>(&RuntimeCondition::setNetworkConnectionMetered));
             m_metered = isInitiallyMetered;
         }
         m_initializedConditions += Conditions::Metered;
@@ -602,12 +613,14 @@ std::optional<bool> RuntimeCondition::isNetworkConnectionMetered() const
     return m_metered;
 }
 
-void RuntimeCondition::setNetworkConnectionMetered(std::optional<bool> metered)
+bool RuntimeCondition::setNetworkConnectionMetered(std::optional<bool> metered)
 {
     if (metered != m_metered) {
         emit networkConnectionMeteredChanged(m_metered = metered);
         updateSupposedToRun();
+        return true;
     }
+    return false;
 }
 
 QString RuntimeCondition::meteredStatus() const
@@ -625,12 +638,14 @@ std::optional<bool> RuntimeCondition::isBatterySaving() const
     return m_batterySaving;
 }
 
-void RuntimeCondition::setBatterySaving(std::optional<bool> batterySaving)
+bool RuntimeCondition::setBatterySaving(std::optional<bool> batterySaving)
 {
     if (batterySaving != m_batterySaving) {
         emit batterySavingChanged(m_batterySaving = batterySaving);
         updateSupposedToRun();
+        return true;
     }
+    return false;
 }
 
 QString RuntimeCondition::batterySavingStatus() const
@@ -648,12 +663,14 @@ std::optional<bool> RuntimeCondition::isOnBattery() const
     return m_onBattery;
 }
 
-void RuntimeCondition::setOnBattery(std::optional<bool> onBattery)
+bool RuntimeCondition::setOnBattery(std::optional<bool> onBattery)
 {
     if (onBattery != m_onBattery) {
         emit onBatteryChanged(m_onBattery = onBattery);
         updateSupposedToRun();
+        return true;
     }
+    return false;
 }
 
 QString RuntimeCondition::onBatteryStatus() const
@@ -679,16 +696,18 @@ std::optional<int> RuntimeCondition::batteryLevel() const
     return m_batteryLevel;
 }
 
-void RuntimeCondition::setBatteryLevel(std::optional<int> batteryLevel)
+bool RuntimeCondition::setBatteryLevel(std::optional<int> batteryLevel)
 {
     if (batteryLevel != m_batteryLevel) {
         emit batteryLevelChanged(m_batteryLevel = batteryLevel);
         emit onBatteryChanged(m_onBattery);
         updateSupposedToRun();
+        return true;
     }
+    return false;
 }
 
-void RuntimeCondition::setBatteryInfo(std::optional<bool> onBattery, std::optional<int> batteryLevel)
+bool RuntimeCondition::setBatteryInfo(std::optional<bool> onBattery, std::optional<int> batteryLevel)
 {
     if (onBattery != m_onBattery || batteryLevel != m_batteryLevel) {
         m_onBattery = onBattery;
@@ -696,7 +715,9 @@ void RuntimeCondition::setBatteryInfo(std::optional<bool> onBattery, std::option
         emit batteryLevelChanged(m_batteryLevel);
         emit onBatteryChanged(m_onBattery);
         updateSupposedToRun();
+        return true;
     }
+    return false;
 }
 
 int RuntimeCondition::batteryPercentage() const
@@ -704,12 +725,14 @@ int RuntimeCondition::batteryPercentage() const
     return m_batteryPercentage;
 }
 
-void RuntimeCondition::setBatteryPercentage(int percentage)
+bool RuntimeCondition::setBatteryPercentage(int percentage)
 {
     if (percentage != m_batteryPercentage) {
         emit batteryPercentageChanged(m_batteryPercentage = percentage);
         updateSupposedToRun();
+        return true;
     }
+    return false;
 }
 
 QString RuntimeCondition::stopStatusMessage() const
@@ -736,52 +759,39 @@ QString RuntimeCondition::stopStatusMessage(Conditions conditions) const
     return QString();
 }
 
-void RuntimeCondition::setEnabledConditions(Conditions enabledConditions)
+bool RuntimeCondition::setEnabledConditions(Conditions enabledConditions)
 {
     if (enabledConditions != m_enabledConditions) {
         emit enabledConditionsChanged(m_enabledConditions = enabledConditions);
         updateSupposedToRun();
+        return true;
     }
-}
-
-void RuntimeCondition::setInitializing(bool initializing)
-{
-    if (!(m_initializing = initializing)) {
-        updateSupposedToRun();
-    }
+    return false;
 }
 
 void RuntimeCondition::updateSupposedToRun()
 {
-    if (m_initializing) {
+    if (m_updating) {
         return;
     }
+    m_updating = true;
     const bool oldSupposedToRun = m_supposedToRun.value_or(true);
     m_supposedToRun.reset();
     const bool newSupposedToRun = isSupposedToRun();
     if (newSupposedToRun != oldSupposedToRun) {
         emit supposedToRunChanged(newSupposedToRun);
     }
+    m_updating = false;
 }
 
 void RuntimeCondition::initializeBatteryMonitoring() const
 {
     if (!(m_initializedConditions && (Conditions::BatterySaving | Conditions::OnBattery))) {
-#if defined(PLATFORM_WINDOWS)
-        if (!s_windowsMonitor) {
-            s_windowsMonitor = std::make_unique<WindowsBatteryMonitor>();
+#ifdef SYNCTHINGCONNECTION_SUPPORT_BATTERY_MONITORING
+        if (!s_batteryMonitor) {
+            s_batteryMonitor = std::make_unique<BatteryMonitor>();
         }
-        s_windowsMonitor->queryState(const_cast<RuntimeCondition *>(this));
-#elif defined(PLATFORM_LINUX) && !defined(PLATFORM_ANDROID)
-        if (!s_linuxMonitor) {
-            s_linuxMonitor = std::make_unique<LinuxBatteryMonitor>();
-        }
-        s_linuxMonitor->queryState(const_cast<RuntimeCondition *>(this));
-#elif defined(Q_OS_ANDROID)
-        if (!s_androidMonitor) {
-            s_androidMonitor = std::make_unique<AndroidBatteryMonitor>();
-        }
-        s_androidMonitor->queryState(const_cast<RuntimeCondition *>(this));
+        s_batteryMonitor->queryState(this);
 #endif
         m_initializedConditions += Conditions::BatterySaving | Conditions::OnBattery;
     }
@@ -789,6 +799,6 @@ void RuntimeCondition::initializeBatteryMonitoring() const
 
 } // namespace Data
 
-#if defined(PLATFORM_LINUX) && !defined(PLATFORM_ANDROID)
+#if defined(PLATFORM_LINUX)
 #include "runtimecondition.moc"
 #endif

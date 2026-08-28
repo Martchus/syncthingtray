@@ -16,7 +16,11 @@
 
 namespace Data {
 
+class BatteryMonitorBase;
+
 class LIB_SYNCTHING_CONNECTOR_EXPORT RuntimeCondition : public QObject {
+    friend class BatteryMonitorBase;
+
 public:
     /*!
      * \brief The Conditions enum specifies condition flags that can be enabled.
@@ -41,7 +45,6 @@ private:
     Q_PROPERTY(std::optional<int> batteryLevel READ batteryLevel NOTIFY batteryLevelChanged)
     Q_PROPERTY(int batteryPercentage READ batteryPercentage WRITE setBatteryPercentage NOTIFY batteryPercentageChanged)
     Q_PROPERTY(Conditions enabledConditions READ enabledConditions WRITE setEnabledConditions NOTIFY enabledConditionsChanged)
-    Q_PROPERTY(bool initializinbg READ isInitializing WRITE setInitializing)
 
 public:
     /*!
@@ -73,12 +76,12 @@ public:
     /*!
      * \brief Sets whether the current network connection is metered.
      */
-    void setNetworkConnectionMetered(std::optional<bool> metered);
+    bool setNetworkConnectionMetered(std::optional<bool> metered);
 
     /*!
      * \brief Sets whether the current network connection is metered.
      */
-    void setNetworkConnectionMetered(bool metered);
+    bool setNetworkConnectionMetered(bool metered);
 
     /*!
      * \brief Returns a short translated status message about the metered state of the connection.
@@ -98,7 +101,7 @@ public:
     /*!
      * \brief Sets whether battery saving mode is enabled.
      */
-    void setBatterySaving(std::optional<bool> batterySaving);
+    bool setBatterySaving(std::optional<bool> batterySaving);
 
     /*!
      * \brief Returns a short translated status message about the battery saving mode.
@@ -113,7 +116,7 @@ public:
     /*!
      * \brief Sets whether the system is running on battery.
      */
-    void setOnBattery(std::optional<bool> onBattery);
+    bool setOnBattery(std::optional<bool> onBattery);
 
     /*!
      * \brief Returns a short translated status message about the battery status.
@@ -128,12 +131,12 @@ public:
     /*!
      * \brief Sets the current battery level (0-100).
      */
-    void setBatteryLevel(std::optional<int> batteryLevel);
+    bool setBatteryLevel(std::optional<int> batteryLevel);
 
     /*!
      * \brief Sets whether the system is running on battery and the current battery level (0-100).
      */
-    void setBatteryInfo(std::optional<bool> onBattery, std::optional<int> batteryLevel);
+    bool setBatteryInfo(std::optional<bool> onBattery, std::optional<int> batteryLevel);
 
     /*!
      * \brief Returns the configured battery percentage threshold under which to pause.
@@ -143,7 +146,7 @@ public:
     /*!
      * \brief Sets the configured battery percentage threshold.
      */
-    void setBatteryPercentage(int percentage);
+    bool setBatteryPercentage(int percentage);
 
     /*!
      * \brief Returns a short translated status message about why Syncthing is temporarily stopped, or empty string.
@@ -163,23 +166,12 @@ public:
     /*!
      * \brief Sets the currently enabled conditions.
      */
-    void setEnabledConditions(Conditions enabledConditions);
+    bool setEnabledConditions(Conditions enabledConditions);
 
     /*!
      * \brief Modifies the specified \a conditionsToModify by enabling (if \a enable is true) or disabling them.
      */
-    void modEnabledConditions(Conditions conditionsToModify, bool enable = true);
-
-    /*!
-     * \brief Returns whether the runtime condition is being initialized.
-     * \remarks The supposedToRunChanged() signal is not emitted while the runtime condition is initialized.
-     */
-    bool isInitializing() const;
-
-    /*!
-     * \brief Set whether the runtime condition is being initialized.
-     */
-    void setInitializing(bool initializing);
+    bool modEnabledConditions(Conditions conditionsToModify, bool enable = true);
 
 Q_SIGNALS:
     /*!
@@ -227,13 +219,13 @@ private:
 
     Conditions m_enabledConditions;
     mutable Conditions m_initializedConditions;
+    mutable std::optional<bool> m_supposedToRun;
     mutable std::optional<bool> m_metered;
     mutable std::optional<bool> m_batterySaving;
     mutable std::optional<bool> m_onBattery;
     mutable std::optional<int> m_batteryLevel;
     int m_batteryPercentage;
-    mutable std::optional<bool> m_supposedToRun;
-    bool m_initializing;
+    mutable bool m_updating;
 };
 
 } // namespace Data
@@ -247,20 +239,15 @@ inline RuntimeCondition::Conditions RuntimeCondition::enabledConditions() const
     return m_enabledConditions;
 }
 
-inline void RuntimeCondition::setNetworkConnectionMetered(bool metered)
+inline bool RuntimeCondition::setNetworkConnectionMetered(bool metered)
 {
-    setNetworkConnectionMetered(std::make_optional(metered));
+    return setNetworkConnectionMetered(std::make_optional(metered));
 }
 
-inline void RuntimeCondition::modEnabledConditions(Conditions conditionsToModify, bool enable)
+inline bool RuntimeCondition::modEnabledConditions(Conditions conditionsToModify, bool enable)
 {
     auto conds = m_enabledConditions;
-    setEnabledConditions(CppUtilities::modFlagEnum(conds, conditionsToModify, enable));
-}
-
-inline bool RuntimeCondition::isInitializing() const
-{
-    return m_initializing;
+    return setEnabledConditions(CppUtilities::modFlagEnum(conds, conditionsToModify, enable));
 }
 
 } // namespace Data
