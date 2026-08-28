@@ -278,7 +278,7 @@ public:
     explicit WindowsBatteryMonitor(RuntimeCondition *condition)
         : m_condition(condition)
     {
-        SYSTEM_POWER_STATUS status;
+        auto status = SYSTEM_POWER_STATUS();
         if (GetSystemPowerStatus(&status)) {
             m_condition->setBatteryInfo(
                 status.ACLineStatus == 0 ? std::make_optional(true) : (status.ACLineStatus == 1 ? std::make_optional(false) : std::nullopt),
@@ -287,7 +287,7 @@ public:
                 status.SystemStatusFlag == 1 ? std::make_optional(true) : (status.SystemStatusFlag == 0 ? std::make_optional(false) : std::nullopt));
         }
 
-        WNDCLASSEXW wc = { sizeof(WNDCLASSEXW) };
+        auto wc = WNDCLASSEXW{ sizeof(WNDCLASSEXW) };
         wc.lpfnWndProc = wndProc;
         wc.hInstance = GetModuleHandleW(nullptr);
         wc.lpszClassName = L"SyncthingBatteryMonitorClass";
@@ -408,7 +408,7 @@ private:
         if (auto powerProfiles = QDBusInterface(QStringLiteral("org.freedesktop.UPower.PowerProfiles"),
                 QStringLiteral("/org/freedesktop/UPower/PowerProfiles"), QStringLiteral("org.freedesktop.UPower.PowerProfiles"), sysBus);
             powerProfiles.isValid()) {
-            const QString activeProfile = powerProfiles.property("ActiveProfile").toString();
+            const auto activeProfile = powerProfiles.property("ActiveProfile").toString();
             m_condition->setBatterySaving(activeProfile == QLatin1String("power-saver"));
         } else {
             queryPortalPowerSaver();
@@ -475,7 +475,7 @@ private Q_SLOTS:
         Q_UNUSED(interface)
         Q_UNUSED(invalidatedProperties)
         if (changedProperties.contains(QLatin1String("ActiveProfile"))) {
-            const QString activeProfile = changedProperties.value(QLatin1String("ActiveProfile")).toString();
+            const auto activeProfile = changedProperties.value(QLatin1String("ActiveProfile")).toString();
             m_condition->setBatterySaving(activeProfile == QLatin1String("power-saver"));
         }
     }
@@ -503,33 +503,27 @@ private Q_SLOTS:
             return;
         }
 
-        auto onBattery = false;
+        auto onBattery = false, hasBattery = false;
         auto minBatteryLevel = 100;
-        auto hasBattery = false;
 
         const auto entries = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
-        for (const QString &entry : entries) {
-            QDir deviceDir(dir.absoluteFilePath(entry));
-            QFile typeFile(deviceDir.absoluteFilePath(QStringLiteral("type")));
-            if (typeFile.open(QIODevice::ReadOnly)) {
-                QString type = QString::fromUtf8(typeFile.readAll()).trimmed();
-                if (type == QLatin1String("Battery")) {
-                    hasBattery = true;
-                    QFile statusFile(deviceDir.absoluteFilePath(QStringLiteral("status")));
-                    if (statusFile.open(QIODevice::ReadOnly)) {
-                        QString status = QString::fromUtf8(statusFile.readAll()).trimmed();
-                        if (status == QLatin1String("Discharging")) {
-                            onBattery = true;
-                        }
-                    }
-                    QFile capacityFile(deviceDir.absoluteFilePath(QStringLiteral("capacity")));
-                    if (capacityFile.open(QIODevice::ReadOnly)) {
-                        bool ok;
-                        int level = QString::fromUtf8(capacityFile.readAll()).trimmed().toInt(&ok);
-                        if (ok && level < minBatteryLevel) {
-                            minBatteryLevel = level;
-                        }
-                    }
+        for (const auto &entry : entries) {
+            auto deviceDir = QDir(dir.absoluteFilePath(entry));
+            auto typeFile = QFile(deviceDir.absoluteFilePath(QStringLiteral("type")));
+            if (!typeFile.open(QIODevice::ReadOnly) || typeFile.readAll().trimmed() != QByteArrayLiteral("Battery")) {
+                continue;
+            }
+            hasBattery = true;
+            if (auto statusFile = QFile(deviceDir.absoluteFilePath(QStringLiteral("status"))); statusFile.open(QIODevice::ReadOnly)) {
+                if (statusFile.readAll().trimmed() == QByteArrayLiteral("Discharging")) {
+                    onBattery = true;
+                }
+            }
+            if (auto capacityFile = QFile(deviceDir.absoluteFilePath(QStringLiteral("capacity"))); capacityFile.open(QIODevice::ReadOnly)) {
+                auto ok = false;
+                auto level = capacityFile.readAll().trimmed().toInt(&ok);
+                if (ok && level < minBatteryLevel) {
+                    minBatteryLevel = level;
                 }
             }
         }
