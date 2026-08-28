@@ -133,6 +133,9 @@ public:
     Q_INVOKABLE bool loadErrors(QObject *listView);
     Q_INVOKABLE bool showQrCode(Icon *icon);
     Q_INVOKABLE QString resolveUrl(const QUrl &url);
+    Q_INVOKABLE bool saveSupportBundle(const QUrl &url = QUrl(), const QJSValue &callback = QJSValue());
+    bool saveSupportBundle(
+        const QString &path, const QJSValue &callback, const std::function<void(const QString &message, bool success)> &onFinished);
     Q_INVOKABLE bool shouldIgnorePermissions(const QString &path);
     Q_INVOKABLE Data::SyncthingFileModel *createFileModel(const QString &dirId, QObject *parent);
     Q_INVOKABLE QtGui::DiffHighlighter *createDiffHighlighter(QTextDocument *parent);

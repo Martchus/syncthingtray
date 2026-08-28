@@ -7,8 +7,11 @@
 #include <qtutilities/misc/desktoputils.h>
 
 #include <QClipboard>
+#include <QCoreApplication>
 #include <QDesktopServices>
+#include <QFile>
 #include <QNetworkReply>
+#include <QStringList>
 #include <QUrlQuery>
 
 #ifdef Q_OS_ANDROID
@@ -30,6 +33,8 @@
 #include <qtutilities/misc/desktoputils.h>
 
 #include <c++utilities/conversion/stringconversion.h>
+
+#include <memory>
 
 namespace QtGui {
 
@@ -339,6 +344,70 @@ QString SyncthingModels::resolveUrl(const QUrl &url)
 #else
     return url.path();
 #endif
+}
+
+bool SyncthingModels::saveSupportBundle(const QUrl &url, const QJSValue &callback)
+{
+    const auto debuggingSetting = m_connection.rawConfig().value(QLatin1String("gui")).toObject().value(QLatin1String("debugging"));
+    if (!debuggingSetting.isUndefined() && !debuggingSetting.toBool()) {
+        emit error(QCoreApplication::translate("QtGui::App", "Debugging needs to be enabled under advanced GUI settings first."));
+        return false;
+    }
+    const auto path = resolveUrl(url);
+    if (path.isEmpty()) {
+        emit error(QCoreApplication::translate("QtGui::App", "No destination or file or directory specified/configured."));
+        return false;
+    }
+
+    const bool started = saveSupportBundle(path, callback, [this, callback](const QString &message, bool success) {
+        if (success) {
+            emit info(QCoreApplication::translate("QtGui::App", "Support bundle saved"));
+        } else {
+            emit error(message);
+        }
+        if (callback.isCallable()) {
+            callback.call(QJSValueList{ QJSValue(message), QJSValue(success) });
+        }
+    });
+
+    return started;
+}
+
+bool SyncthingModels::saveSupportBundle(
+    const QString &path, const QJSValue &callback, const std::function<void(const QString &message, bool success)> &onFinished)
+{
+    auto file = std::make_shared<QFile>(path);
+    if (!file->open(QFile::WriteOnly | QFile::Truncate)) {
+        onFinished(QCoreApplication::translate("QtGui::App", "Unable to open output file under \"%1\": %2").arg(path, file->errorString()), false);
+        return false;
+    }
+
+    auto *const reply = m_connection.downloadSupportBundle().reply;
+    QObject::connect(reply, &QNetworkReply::readyRead, this, [file, reply] {
+        file->write(reply->readAll());
+        if (file->error() != QFile::NoError) {
+            reply->abort();
+        }
+    });
+    QObject::connect(reply, &QNetworkReply::finished, this, [file, reply, callback, onFinished] {
+        reply->deleteLater();
+        file->write(reply->readAll());
+        file->flush();
+        auto errors = QStringList();
+        auto message = QString();
+        if (file->error() != QFile::NoError) {
+            errors << QCoreApplication::translate("QtGui::App", "Unable to write bundle: %1").arg(file->errorString());
+        }
+        if (const auto replyError = reply->error(); replyError != QNetworkReply::NoError && replyError != QNetworkReply::OperationCanceledError) {
+            errors << QCoreApplication::translate("QtGui::App", "Unable to download bundle: %1").arg(reply->errorString());
+        }
+        const bool success = errors.isEmpty();
+        if (!success) {
+            message = errors.join(QChar('\n'));
+        }
+        onFinished(message, success);
+    });
+    return true;
 }
 
 bool SyncthingModels::shouldIgnorePermissions(const QString &path)

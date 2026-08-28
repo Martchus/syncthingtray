@@ -1486,39 +1486,17 @@ bool App::saveSupportBundle(QUrl url, const QJSValue &callback)
     } else {
         path = m_models.resolveUrl(url);
     }
-    m_download.outputFile.emplace(path);
-    if (!m_download.outputFile->open(QFile::WriteOnly | QFile::Truncate)) {
-        emit error(tr("Unable to open output file under \"%1\": %2").arg(path, m_download.outputFile->errorString()));
-        return false;
-    }
     setImportExportStatus(ImportExportStatus::SavingSupportBundle);
-    auto *const reply = m_data.connection()->downloadSupportBundle().reply;
-    connect(reply, &QNetworkReply::readyRead, this, [this, reply] {
-        m_download.outputFile->write(reply->readAll());
-        if (m_download.outputFile->error() != QFile::NoError) {
-            reply->abort();
-        }
-    });
-    connect(reply, &QNetworkReply::finished, this, [this, reply, callback] {
-        reply->deleteLater();
-        m_download.outputFile->write(reply->readAll());
-        m_download.outputFile->flush();
-        auto errors = QStringList();
-        auto message = QString();
-        if (m_download.outputFile->error() != QFile::NoError) {
-            errors << tr("Unable to write bundle: %1").arg(m_download.outputFile->errorString());
-        }
-        if (const auto replyError = reply->error(); replyError != QNetworkReply::NoError && replyError != QNetworkReply::OperationCanceledError) {
-            errors << tr("Unable to download bundle: %1").arg(reply->errorString());
-        }
-        m_download.outputFile.reset();
-        errors.isEmpty() ? emit info(tr("Support bundle saved")) : emit error(message = errors.join(QChar('\n')));
+
+    const bool started = m_models.saveSupportBundle(path, callback, [this, callback](const QString &message, bool success) {
+        success ? emit info(tr("Support bundle saved")) : emit error(message);
         setImportExportStatus(ImportExportStatus::None);
         if (callback.isCallable()) {
-            callback.call(QJSValueList{ QJSValue(message), QJSValue(errors.isEmpty()) });
+            callback.call(QJSValueList{ QJSValue(message), QJSValue(success) });
         }
     });
-    return true;
+
+    return started;
 }
 
 /*!

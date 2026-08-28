@@ -1,6 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls.Material
+import QtQuick.Dialogs
 
 import Main
 import Tray
@@ -267,7 +268,8 @@ ApplicationWindow {
                     Action {
                         text: qsTr("&Support Bundle")
                         icon.source: QuickUI.faUrlBase + "user-md"
-                        enabled: false
+                        enabled: SyncthingData.connection.connected
+                        onTriggered: supportBundleFileDialog.open()
                     }
                     MenuSeparator {
                     }
@@ -622,6 +624,13 @@ ApplicationWindow {
             } else if (button === Qt.ForwardButton) {
             }
         }
+    }
+    FileDialog {
+        id: supportBundleFileDialog
+        fileMode: FileDialog.SaveFile
+        title: qsTr("Save support bundle")
+        nameFilters: [qsTr("Zip archives (*.zip)")]
+        onAccepted: SyncthingModels.saveSupportBundle(supportBundleFileDialog.selectedFile)
     }
 
     readonly property Theming theming: Theming {
