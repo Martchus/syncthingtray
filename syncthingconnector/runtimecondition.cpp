@@ -110,8 +110,30 @@ static std::pair<const QNetworkInformation *, bool> loadNetworkInformationBacken
 
 static std::vector<RuntimeCondition *> s_instances;
 
+class BatteryMonitorBase {
+public:
+    void queryState(RuntimeCondition *instance) const
+    {
+        instance->setBatteryInfo(m_onBattery, m_batteryLevel);
+        instance->setBatterySaving(m_batterySaving);
+    }
+
+protected:
+    void updateInstances()
+    {
+        for (auto *instance : s_instances) {
+            instance->setBatteryInfo(m_onBattery, m_batteryLevel);
+            instance->setBatterySaving(m_batterySaving);
+        }
+    }
+
+    std::optional<bool> m_onBattery;
+    std::optional<int> m_batteryLevel;
+    std::optional<bool> m_batterySaving;
+};
+
 #if defined(Q_OS_ANDROID)
-class AndroidBatteryMonitor {
+class AndroidBatteryMonitor : public BatteryMonitorBase {
 public:
     explicit AndroidBatteryMonitor()
     {
@@ -131,12 +153,6 @@ public:
         }
     }
 
-    void queryState(RuntimeCondition *instance) const
-    {
-        instance->setBatteryInfo(m_onBattery, m_batteryLevel);
-        instance->setBatterySaving(m_batterySaving);
-    }
-
     void handlePowerSaveModeChanged(bool powerSaveMode)
     {
         m_batterySaving = powerSaveMode;
@@ -149,25 +165,12 @@ public:
         m_batteryLevel = batteryLevel;
         updateInstances();
     }
-
-private:
-    void updateInstances()
-    {
-        for (auto *instance : s_instances) {
-            instance->setBatteryInfo(m_onBattery, m_batteryLevel);
-            instance->setBatterySaving(m_batterySaving);
-        }
-    }
-
-    std::optional<bool> m_onBattery;
-    std::optional<int> m_batteryLevel;
-    std::optional<bool> m_batterySaving;
 };
 
 static std::unique_ptr<AndroidBatteryMonitor> s_androidMonitor;
 
 #elif defined(PLATFORM_WINDOWS)
-class WindowsBatteryMonitor {
+class WindowsBatteryMonitor : public BatteryMonitorBase {
 public:
     explicit WindowsBatteryMonitor()
     {
@@ -194,12 +197,6 @@ public:
         }
     }
 
-    void queryState(RuntimeCondition *instance) const
-    {
-        instance->setBatteryInfo(m_onBattery, m_batteryLevel);
-        instance->setBatterySaving(m_batterySaving);
-    }
-
     ~WindowsBatteryMonitor()
     {
         if (m_hPowerNotifyACDC)
@@ -213,14 +210,6 @@ public:
     }
 
 private:
-    void updateInstances()
-    {
-        for (auto *instance : s_instances) {
-            instance->setBatteryInfo(m_onBattery, m_batteryLevel);
-            instance->setBatterySaving(m_batterySaving);
-        }
-    }
-
     static LRESULT CALLBACK wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         if (uMsg == WM_CREATE) {
@@ -257,16 +246,13 @@ private:
     HPOWERNOTIFY m_hPowerNotifyACDC = nullptr;
     HPOWERNOTIFY m_hPowerNotifyPercent = nullptr;
     HPOWERNOTIFY m_hPowerNotifySaver = nullptr;
-    std::optional<bool> m_onBattery;
-    std::optional<int> m_batteryLevel;
-    std::optional<bool> m_batterySaving;
 };
 
 static std::unique_ptr<WindowsBatteryMonitor> s_windowsMonitor;
 
 #elif defined(PLATFORM_LINUX)
 
-class LinuxBatteryMonitor : public QObject {
+class LinuxBatteryMonitor : public QObject, public BatteryMonitorBase {
     Q_OBJECT
 public:
     explicit LinuxBatteryMonitor()
@@ -283,21 +269,6 @@ public:
 #else
         setupSysFsFallback();
 #endif
-    }
-
-    void queryState(RuntimeCondition *instance) const
-    {
-        instance->setBatteryInfo(m_onBattery, m_batteryLevel);
-        instance->setBatterySaving(m_batterySaving);
-    }
-
-private:
-    void updateInstances()
-    {
-        for (auto *instance : s_instances) {
-            instance->setBatteryInfo(m_onBattery, m_batteryLevel);
-            instance->setBatterySaving(m_batterySaving);
-        }
     }
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_DBUS_BASED_POWER_MONITORING
@@ -521,9 +492,6 @@ private:
         timer->start(pollInterval);
     }
 
-    mutable std::optional<bool> m_onBattery;
-    mutable std::optional<int> m_batteryLevel;
-    mutable std::optional<bool> m_batterySaving;
     bool m_logging;
 };
 
