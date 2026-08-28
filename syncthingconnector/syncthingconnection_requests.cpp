@@ -1831,7 +1831,15 @@ void SyncthingConnection::requestRevert(const QString &dirId)
  */
 SyncthingConnection::QueryResult SyncthingConnection::downloadSupportBundle()
 {
-    return QueryResult{ networkAccessManager().get(prepareRequest(QStringLiteral("debug/support"), QUrlQuery())) };
+    auto res = QueryResult{ networkAccessManager().get(prepareRequest(QStringLiteral("debug/support"), QUrlQuery())) };
+    if (loggingFlags() && SyncthingConnectionLoggingFlags::ApiCalls) {
+#if SYNCTHINGCONNECTION_QDEBUG
+        qDebug() << "Querying support bundle: GET" << res.reply->url();
+#else
+        std::cerr << Phrases::Info << "Querying support bundle: GET " << res.reply->url().toString().toStdString() << Phrases::EndFlush;
+#endif
+    }
+    return res;
 }
 
 /*!
