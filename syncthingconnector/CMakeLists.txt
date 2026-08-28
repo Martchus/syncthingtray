@@ -131,6 +131,28 @@ else ()
     message(STATUS "systemd support disabled")
 endif ()
 
+# configure support for D-Bus-based power/battery monitoring
+if (UNIX
+    AND NOT APPLE
+    AND NOT ANDROID)
+    set(ENABLE_DBUS_BASED_POWER_MONITORING_BY_DEFAULT ON)
+else ()
+    set(ENABLE_DBUS_BASED_POWER_MONITORING_BY_DEFAULT OFF)
+endif ()
+option(DBUS_BASED_POWER_MONITORING "enables DBus-based battery and power saver monitoring"
+       ${ENABLE_DBUS_BASED_POWER_MONITORING_BY_DEFAULT})
+if (DBUS_BASED_POWER_MONITORING)
+    list(APPEND META_PUBLIC_COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_SUPPORT_DBUS_BASED_POWER_MONITORING)
+    message(STATUS "D-Bus-based power monitoring enabled")
+else ()
+    message(STATUS "D-Bus-based power monitoring disabled")
+endif ()
+
+# link also explicitly against DBus if systemd or DBus-based power monitoring is enabled
+if (SYSTEMD_SUPPORT OR DBUS_BASED_POWER_MONITORING)
+    list(APPEND ADDITIONAL_QT_MODULES DBus)
+endif ()
+
 # configure whether the SyncthingConnection class should be mocked for test purposes
 option(SYNCTHING_CONNECTION_MOCKED
        "enables mocking the SyncthingConnection class so it will provide only some fixed test data" OFF)

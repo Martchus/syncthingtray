@@ -5,6 +5,24 @@
 #include <QNetworkInformation>
 #endif
 
+#ifdef PLATFORM_WINDOWS
+#include <windows.h>
+#endif
+
+#if defined(PLATFORM_LINUX) && !defined(PLATFORM_ANDROID)
+#include <QDir>
+#include <QFile>
+#include <QTimer>
+
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_DBUS_BASED_POWER_MONITORING
+#include <QDBusConnection>
+#include <QDBusInterface>
+#include <QDBusMessage>
+#include <QDBusReply>
+#endif
+
+#endif
+
 namespace Data {
 
 /*!
@@ -88,6 +106,7 @@ QString RuntimeCondition::meteredStatus() const
 
 std::optional<bool> RuntimeCondition::isBatterySaving() const
 {
+    initializeBatteryMonitoring();
     return m_batterySaving;
 }
 
@@ -110,6 +129,7 @@ QString RuntimeCondition::batterySavingStatus() const
 
 std::optional<bool> RuntimeCondition::isOnBattery() const
 {
+    initializeBatteryMonitoring();
     return m_onBattery;
 }
 
@@ -140,6 +160,7 @@ QString RuntimeCondition::onBatteryStatus() const
 
 std::optional<int> RuntimeCondition::batteryLevel() const
 {
+    initializeBatteryMonitoring();
     return m_batteryLevel;
 }
 
@@ -228,4 +249,309 @@ void RuntimeCondition::updateSupposedToRun()
     }
 }
 
+void RuntimeCondition::initializeBatteryMonitoring() const
+{
+    if (!(m_initializedConditions && (Conditions::BatterySaving | Conditions::OnBattery))) {
+#if defined(PLATFORM_WINDOWS)
+        m_windowsMonitor = std::make_unique<WindowsBatteryMonitor>(const_cast<RuntimeCondition *>(this));
+#elif defined(PLATFORM_LINUX) && !defined(PLATFORM_ANDROID)
+        m_linuxMonitor = std::make_unique<LinuxBatteryMonitor>(const_cast<RuntimeCondition *>(this));
+#endif
+        m_initializedConditions += Conditions::BatterySaving | Conditions::OnBattery;
+    }
+}
+
+#ifdef PLATFORM_WINDOWS
+
+#ifndef GUID_ACDC_POWER_SOURCE
+static const GUID GUID_ACDC_POWER_SOURCE = { 0x5ce81283, 0x4e6e, 0x409c, { 0x93, 0x4e, 0x91, 0x35, 0x2d, 0x18, 0x5f, 0x65 } };
+#endif
+#ifndef GUID_BATTERY_PERCENTAGE_REMAINING
+static const GUID GUID_BATTERY_PERCENTAGE_REMAINING = { 0xa7ad8041, 0x2c41, 0x4c14, { 0xb6, 0x91, 0x68, 0x26, 0x1a, 0xb4, 0x75, 0x4a } };
+#endif
+#ifndef GUID_POWER_SAVING_STATUS
+static const GUID GUID_POWER_SAVING_STATUS = { 0xe5812c53, 0xbc8e, 0x4eff, { 0xba, 0x1a, 0x98, 0x2c, 0x7e, 0x71, 0x0b, 0x77 } };
+#endif
+
+class RuntimeCondition::WindowsBatteryMonitor {
+public:
+    explicit WindowsBatteryMonitor(RuntimeCondition *condition)
+        : m_condition(condition)
+    {
+        SYSTEM_POWER_STATUS status;
+        if (GetSystemPowerStatus(&status)) {
+            m_condition->setBatteryInfo(
+                status.ACLineStatus == 0 ? std::make_optional(true) : (status.ACLineStatus == 1 ? std::make_optional(false) : std::nullopt),
+                status.BatteryLifePercent != 255 ? std::make_optional(static_cast<int>(status.BatteryLifePercent)) : std::nullopt);
+            m_condition->setBatterySaving(
+                status.SystemStatusFlag == 1 ? std::make_optional(true) : (status.SystemStatusFlag == 0 ? std::make_optional(false) : std::nullopt));
+        }
+
+        WNDCLASSEXW wc = { sizeof(WNDCLASSEXW) };
+        wc.lpfnWndProc = wndProc;
+        wc.hInstance = GetModuleHandleW(nullptr);
+        wc.lpszClassName = L"SyncthingBatteryMonitorClass";
+        RegisterClassExW(&wc);
+
+        m_hwnd = CreateWindowExW(0, L"SyncthingBatteryMonitorClass", nullptr, 0, 0, 0, 0, 0, nullptr, nullptr, GetModuleHandleW(nullptr), this);
+        if (m_hwnd) {
+            m_hPowerNotifyACDC = RegisterPowerSettingNotification(m_hwnd, &GUID_ACDC_POWER_SOURCE, DEVICE_NOTIFY_WINDOW_HANDLE);
+            m_hPowerNotifyPercent = RegisterPowerSettingNotification(m_hwnd, &GUID_BATTERY_PERCENTAGE_REMAINING, DEVICE_NOTIFY_WINDOW_HANDLE);
+            m_hPowerNotifySaver = RegisterPowerSettingNotification(m_hwnd, &GUID_POWER_SAVING_STATUS, DEVICE_NOTIFY_WINDOW_HANDLE);
+        }
+    }
+
+    ~WindowsBatteryMonitor()
+    {
+        if (m_hPowerNotifyACDC)
+            UnregisterPowerSettingNotification(m_hPowerNotifyACDC);
+        if (m_hPowerNotifyPercent)
+            UnregisterPowerSettingNotification(m_hPowerNotifyPercent);
+        if (m_hPowerNotifySaver)
+            UnregisterPowerSettingNotification(m_hPowerNotifySaver);
+        if (m_hwnd)
+            DestroyWindow(m_hwnd);
+    }
+
+private:
+    static LRESULT CALLBACK wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+    {
+        if (uMsg == WM_CREATE) {
+            auto *createStruct = reinterpret_cast<CREATESTRUCTW *>(lParam);
+            SetWindowLongPtrW(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(createStruct->lpCreateParams));
+            return 0;
+        }
+        auto *self = reinterpret_cast<WindowsBatteryMonitor *>(GetWindowLongPtrW(hwnd, GWLP_USERDATA));
+        if (self && uMsg == WM_POWERBROADCAST && wParam == PBT_POWERSETTINGCHANGE) {
+            const auto *setting = reinterpret_cast<const POWERBROADCAST_SETTING *>(lParam);
+            self->handlePowerSetting(setting);
+        }
+        return DefWindowProcW(hwnd, uMsg, wParam, lParam);
+    }
+
+    void handlePowerSetting(const POWERBROADCAST_SETTING *setting)
+    {
+        if (setting->PowerSetting == GUID_ACDC_POWER_SOURCE) {
+            const auto value = *reinterpret_cast<const DWORD *>(setting->Data);
+            m_condition->setOnBattery(value == 1);
+        } else if (setting->PowerSetting == GUID_BATTERY_PERCENTAGE_REMAINING) {
+            const auto value = *reinterpret_cast<const DWORD *>(setting->Data);
+            m_condition->setBatteryLevel(static_cast<int>(value));
+        } else if (setting->PowerSetting == GUID_POWER_SAVING_STATUS) {
+            const auto value = *reinterpret_cast<const DWORD *>(setting->Data);
+            m_condition->setBatterySaving(value == 1);
+        }
+    }
+
+    RuntimeCondition *m_condition;
+    HWND m_hwnd = nullptr;
+    HPOWERNOTIFY m_hPowerNotifyACDC = nullptr;
+    HPOWERNOTIFY m_hPowerNotifyPercent = nullptr;
+    HPOWERNOTIFY m_hPowerNotifySaver = nullptr;
+};
+#endif
+
+#if defined(PLATFORM_LINUX) && !defined(PLATFORM_ANDROID)
+
+class RuntimeCondition::LinuxBatteryMonitor : public QObject {
+    Q_OBJECT
+public:
+    explicit LinuxBatteryMonitor(RuntimeCondition *condition)
+        : QObject(condition)
+        , m_condition(condition)
+    {
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_DBUS_BASED_POWER_MONITORING
+        if (setupDBus()) {
+            queryInitialDBusState();
+        } else {
+            setupSysFsFallback();
+        }
+#else
+        setupSysFsFallback();
+#endif
+    }
+
+private:
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_DBUS_BASED_POWER_MONITORING
+    bool setupDBus()
+    {
+        auto sysBus = QDBusConnection::systemBus();
+        if (!sysBus.isConnected()) {
+            return false;
+        }
+        auto connected = sysBus.connect(QStringLiteral("org.freedesktop.UPower"), QStringLiteral("/org/freedesktop/UPower/devices/DisplayDevice"),
+            QStringLiteral("org.freedesktop.DBus.Properties"), QStringLiteral("PropertiesChanged"), this,
+            SLOT(handleUPowerPropertiesChanged(QString, QVariantMap, QStringList)));
+        connected &= sysBus.connect(QStringLiteral("org.freedesktop.UPower.PowerProfiles"), QStringLiteral("/org/freedesktop/UPower/PowerProfiles"),
+            QStringLiteral("org.freedesktop.DBus.Properties"), QStringLiteral("PropertiesChanged"), this,
+            SLOT(handlePowerProfilesPropertiesChanged(QString, QVariantMap, QStringList)));
+        return connected;
+    }
+
+    void queryInitialDBusState()
+    {
+        auto sysBus = QDBusConnection::systemBus();
+        if (auto upowerDevice = QDBusInterface(QStringLiteral("org.freedesktop.UPower"),
+                QStringLiteral("/org/freedesktop/UPower/devices/DisplayDevice"), QStringLiteral("org.freedesktop.UPower.Device"), sysBus);
+            upowerDevice.isValid()) {
+            const bool isPresent = upowerDevice.property("IsPresent").toBool();
+            if (isPresent) {
+                const auto state = upowerDevice.property("State").toUInt();
+                const auto percentage = upowerDevice.property("Percentage").toDouble();
+                m_condition->setBatteryInfo(state == 2, static_cast<int>(percentage));
+            } else {
+                m_condition->setBatteryInfo(false, 100);
+            }
+        }
+        if (auto powerProfiles = QDBusInterface(QStringLiteral("org.freedesktop.UPower.PowerProfiles"),
+                QStringLiteral("/org/freedesktop/UPower/PowerProfiles"), QStringLiteral("org.freedesktop.UPower.PowerProfiles"), sysBus);
+            powerProfiles.isValid()) {
+            const QString activeProfile = powerProfiles.property("ActiveProfile").toString();
+            m_condition->setBatterySaving(activeProfile == QLatin1String("power-saver"));
+        } else {
+            queryPortalPowerSaver();
+        }
+    }
+
+    void queryPortalPowerSaver()
+    {
+        auto sessionBus = QDBusConnection::sessionBus();
+        if (!sessionBus.isConnected())
+            return;
+
+        auto portalSettings = QDBusInterface(QStringLiteral("org.freedesktop.portal.Desktop"), QStringLiteral("/org/freedesktop/portal/desktop"),
+            QStringLiteral("org.freedesktop.portal.Settings"), sessionBus);
+        if (portalSettings.isValid()) {
+            auto reply
+                = portalSettings.call(QStringLiteral("Read"), QStringLiteral("org.freedesktop.appearance"), QStringLiteral("power-saver-enabled"));
+            if (reply.type() == QDBusMessage::ReplyMessage && !reply.arguments().isEmpty()) {
+                const auto value = reply.arguments().at(0).value<QDBusVariant>().variant();
+                auto isSaving = false;
+                if (value.userType() == QMetaType::Bool) {
+                    isSaving = value.toBool();
+                } else if (value.userType() == QMetaType::UInt) {
+                    isSaving = (value.toUInt() == 1);
+                }
+                m_condition->setBatterySaving(isSaving);
+            }
+
+            sessionBus.connect(QStringLiteral("org.freedesktop.portal.Desktop"), QStringLiteral("/org/freedesktop/portal/desktop"),
+                QStringLiteral("org.freedesktop.portal.Settings"), QStringLiteral("SettingChanged"), this,
+                SLOT(handlePortalSettingChanged(QString, QString, QDBusVariant)));
+        }
+    }
+#endif
+
+private Q_SLOTS:
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_DBUS_BASED_POWER_MONITORING
+    void handleUPowerPropertiesChanged(const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
+    {
+        Q_UNUSED(interface)
+        Q_UNUSED(invalidatedProperties)
+        if (changedProperties.contains(QLatin1String("IsPresent"))) {
+            if (!changedProperties.value(QLatin1String("IsPresent")).toBool()) {
+                m_condition->setBatteryInfo(false, 100);
+                return;
+            }
+        }
+        if (changedProperties.contains(QLatin1String("State")) || changedProperties.contains(QLatin1String("Percentage"))) {
+            const auto state = changedProperties.contains(QLatin1String("State")) ? changedProperties.value(QLatin1String("State")).toUInt()
+                : m_condition->isOnBattery().value_or(false)                      ? 2u
+                                                                                  : 1u;
+            const auto percentage = changedProperties.contains(QLatin1String("Percentage"))
+                ? changedProperties.value(QLatin1String("Percentage")).toDouble()
+                : m_condition->batteryLevel().value_or(100);
+            m_condition->setBatteryInfo(state == 2, static_cast<int>(percentage));
+        }
+    }
+
+    void handlePowerProfilesPropertiesChanged(
+        const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
+    {
+        Q_UNUSED(interface)
+        Q_UNUSED(invalidatedProperties)
+        if (changedProperties.contains(QLatin1String("ActiveProfile"))) {
+            const QString activeProfile = changedProperties.value(QLatin1String("ActiveProfile")).toString();
+            m_condition->setBatterySaving(activeProfile == QLatin1String("power-saver"));
+        }
+    }
+
+    void handlePortalSettingChanged(const QString &namespaceName, const QString &key, const QDBusVariant &value)
+    {
+        if (namespaceName == QLatin1String("org.freedesktop.appearance") && key == QLatin1String("power-saver-enabled")) {
+            const auto variant = value.variant();
+            auto isSaving = false;
+            if (variant.userType() == QMetaType::Bool) {
+                isSaving = variant.toBool();
+            } else if (variant.userType() == QMetaType::UInt) {
+                isSaving = (variant.toUInt() == 1);
+            }
+            m_condition->setBatterySaving(isSaving);
+        }
+    }
+#endif
+
+    void pollSysFs()
+    {
+        auto dir = QDir(QStringLiteral("/sys/class/power_supply"));
+        if (!dir.exists()) {
+            m_condition->setBatteryInfo(std::nullopt, std::nullopt);
+            return;
+        }
+
+        auto onBattery = false;
+        auto minBatteryLevel = 100;
+        auto hasBattery = false;
+
+        const auto entries = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+        for (const QString &entry : entries) {
+            QDir deviceDir(dir.absoluteFilePath(entry));
+            QFile typeFile(deviceDir.absoluteFilePath(QStringLiteral("type")));
+            if (typeFile.open(QIODevice::ReadOnly)) {
+                QString type = QString::fromUtf8(typeFile.readAll()).trimmed();
+                if (type == QLatin1String("Battery")) {
+                    hasBattery = true;
+                    QFile statusFile(deviceDir.absoluteFilePath(QStringLiteral("status")));
+                    if (statusFile.open(QIODevice::ReadOnly)) {
+                        QString status = QString::fromUtf8(statusFile.readAll()).trimmed();
+                        if (status == QLatin1String("Discharging")) {
+                            onBattery = true;
+                        }
+                    }
+                    QFile capacityFile(deviceDir.absoluteFilePath(QStringLiteral("capacity")));
+                    if (capacityFile.open(QIODevice::ReadOnly)) {
+                        bool ok;
+                        int level = QString::fromUtf8(capacityFile.readAll()).trimmed().toInt(&ok);
+                        if (ok && level < minBatteryLevel) {
+                            minBatteryLevel = level;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (hasBattery) {
+            m_condition->setBatteryInfo(onBattery, minBatteryLevel);
+        } else {
+            m_condition->setBatteryInfo(false, 100);
+        }
+    }
+
+private:
+    void setupSysFsFallback()
+    {
+        pollSysFs();
+        auto *timer = new QTimer(this);
+        connect(timer, &QTimer::timeout, this, &LinuxBatteryMonitor::pollSysFs);
+        timer->start(60000); // poll every minute
+    }
+
+    RuntimeCondition *m_condition;
+};
+#endif
+
 } // namespace Data
+
+#if defined(PLATFORM_LINUX) && !defined(PLATFORM_ANDROID)
+#include "runtimecondition.moc"
+#endif

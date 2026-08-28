@@ -7,6 +7,7 @@
 
 #include <c++utilities/misc/flagenumclass.h>
 
+#include <memory>
 #include <optional>
 
 namespace Data {
@@ -209,6 +210,7 @@ Q_SIGNALS:
 
 private:
     void updateSupposedToRun();
+    void initializeBatteryMonitoring() const;
 
     Conditions m_enabledConditions;
     mutable Conditions m_initializedConditions;
@@ -219,6 +221,14 @@ private:
     int m_batteryPercentage;
     mutable std::optional<bool> m_supposedToRun;
     bool m_initializing;
+
+#ifdef PLATFORM_WINDOWS
+    class WindowsBatteryMonitor;
+    mutable std::unique_ptr<WindowsBatteryMonitor> m_windowsMonitor;
+#elif defined(PLATFORM_LINUX) && !defined(PLATFORM_ANDROID)
+    class LinuxBatteryMonitor;
+    mutable std::unique_ptr<LinuxBatteryMonitor> m_linuxMonitor;
+#endif
 };
 
 } // namespace Data
