@@ -379,12 +379,14 @@ private:
         if (!sysBus.isConnected()) {
             return false;
         }
+        // clang-format off
         auto connected = sysBus.connect(QStringLiteral("org.freedesktop.UPower"), QStringLiteral("/org/freedesktop/UPower/devices/DisplayDevice"),
             QStringLiteral("org.freedesktop.DBus.Properties"), QStringLiteral("PropertiesChanged"), this,
-            SLOT(handleUPowerPropertiesChanged(QString, QVariantMap, QStringList)));
+            SLOT(handleUPowerPropertiesChanged(QString,QVariantMap,QStringList)));
         connected &= sysBus.connect(QStringLiteral("org.freedesktop.UPower.PowerProfiles"), QStringLiteral("/org/freedesktop/UPower/PowerProfiles"),
             QStringLiteral("org.freedesktop.DBus.Properties"), QStringLiteral("PropertiesChanged"), this,
-            SLOT(handlePowerProfilesPropertiesChanged(QString, QVariantMap, QStringList)));
+            SLOT(handlePowerProfilesPropertiesChanged(QString,QVariantMap,QStringList)));
+        // clang-format on
         return connected;
     }
 
@@ -435,9 +437,11 @@ private:
                 m_condition->setBatterySaving(isSaving);
             }
 
+            // clang-format off
             sessionBus.connect(QStringLiteral("org.freedesktop.portal.Desktop"), QStringLiteral("/org/freedesktop/portal/desktop"),
                 QStringLiteral("org.freedesktop.portal.Settings"), QStringLiteral("SettingChanged"), this,
-                SLOT(handlePortalSettingChanged(QString, QString, QDBusVariant)));
+                SLOT(handlePortalSettingChanged(QString,QString,QDBusVariant)));
+            // clang-format on
         }
     }
 #endif
