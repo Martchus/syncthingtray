@@ -181,13 +181,13 @@ using BatteryMonitor = AndroidBatteryMonitor;
 #elif defined(PLATFORM_WINDOWS)
 
 #ifndef GUID_ACDC_POWER_SOURCE
-static const GUID GUID_ACDC_POWER_SOURCE = { 0x5ce81283, 0x4e6e, 0x409c, { 0x93, 0x4e, 0x91, 0x35, 0x2d, 0x18, 0x5f, 0x65 } };
+static const GUID GUID_ACDC_POWER_SOURCE = { 0x5d3e9a59, 0xe9d5, 0x4b00, { 0xa6, 0xbd, 0xff, 0x34, 0xff, 0x51, 0x65, 0x48 } };
 #endif
 #ifndef GUID_BATTERY_PERCENTAGE_REMAINING
-static const GUID GUID_BATTERY_PERCENTAGE_REMAINING = { 0xa7ad8041, 0x2c41, 0x4c14, { 0xb6, 0x91, 0x68, 0x26, 0x1a, 0xb4, 0x75, 0x4a } };
+static const GUID GUID_BATTERY_PERCENTAGE_REMAINING = { 0xa7ad8041, 0xb45a, 0x4cae, { 0x87, 0xa3, 0xee, 0xcb, 0xb4, 0x68, 0xa9, 0xe1 } };
 #endif
 #ifndef GUID_POWER_SAVING_STATUS
-static const GUID GUID_POWER_SAVING_STATUS = { 0xe5812c53, 0xbc8e, 0x4eff, { 0xba, 0x1a, 0x98, 0x2c, 0x7e, 0x71, 0x0b, 0x77 } };
+static const GUID GUID_POWER_SAVING_STATUS = { 0xe00958c0, 0xc213, 0x4ace, { 0xac, 0x77, 0xfe, 0xcc, 0xed, 0x2e, 0xee, 0xa5 } };
 #endif
 
 class WindowsBatteryMonitor : public BatteryMonitorBase {
@@ -203,13 +203,14 @@ public:
                                                             : (status.SystemStatusFlag == 0 ? std::make_optional(false) : std::nullopt));
         }
 
-        auto wc = WNDCLASSEXW{ sizeof(WNDCLASSEXW) };
+        auto wc = WNDCLASSEXW{};
+        wc.cbSize = sizeof(WNDCLASSEXW);
         wc.lpfnWndProc = wndProc;
         wc.hInstance = GetModuleHandleW(nullptr);
         wc.lpszClassName = L"SyncthingBatteryMonitorClass";
         RegisterClassExW(&wc);
 
-        m_hwnd = CreateWindowExW(0, L"SyncthingBatteryMonitorClass", nullptr, 0, 0, 0, 0, 0, nullptr, nullptr, GetModuleHandleW(nullptr), this);
+        m_hwnd = CreateWindowExW(0, L"SyncthingBatteryMonitorClass", nullptr, WS_POPUP, 0, 0, 0, 0, nullptr, nullptr, GetModuleHandleW(nullptr), this);
         if (m_hwnd) {
             m_hPowerNotifyACDC = RegisterPowerSettingNotification(m_hwnd, &GUID_ACDC_POWER_SOURCE, DEVICE_NOTIFY_WINDOW_HANDLE);
             m_hPowerNotifyPercent = RegisterPowerSettingNotification(m_hwnd, &GUID_BATTERY_PERCENTAGE_REMAINING, DEVICE_NOTIFY_WINDOW_HANDLE);
@@ -227,6 +228,7 @@ public:
             UnregisterPowerSettingNotification(m_hPowerNotifySaver);
         if (m_hwnd)
             DestroyWindow(m_hwnd);
+        UnregisterClassW(L"SyncthingBatteryMonitorClass", GetModuleHandleW(nullptr));
     }
 
 private:
@@ -247,15 +249,15 @@ private:
 
     void handlePowerSetting(const POWERBROADCAST_SETTING *setting)
     {
-        if (setting->PowerSetting == GUID_ACDC_POWER_SOURCE) {
+        if (IsEqualGUID(setting->PowerSetting, GUID_ACDC_POWER_SOURCE)) {
             const auto value = *reinterpret_cast<const DWORD *>(setting->Data);
             m_onBattery = (value == 1);
             updateInstances();
-        } else if (setting->PowerSetting == GUID_BATTERY_PERCENTAGE_REMAINING) {
+        } else if (IsEqualGUID(setting->PowerSetting, GUID_BATTERY_PERCENTAGE_REMAINING)) {
             const auto value = *reinterpret_cast<const DWORD *>(setting->Data);
             m_batteryLevel = static_cast<int>(value);
             updateInstances();
-        } else if (setting->PowerSetting == GUID_POWER_SAVING_STATUS) {
+        } else if (IsEqualGUID(setting->PowerSetting, GUID_POWER_SAVING_STATUS)) {
             const auto value = *reinterpret_cast<const DWORD *>(setting->Data);
             m_batterySaving = (value == 1);
             updateInstances();
