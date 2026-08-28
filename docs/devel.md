@@ -308,6 +308,7 @@ It is possible to turn on logging of the underlying library by setting environme
 * `LIB_SYNCTHING_CONNECTOR_LOG_DIRS_OR_DEVS_RESETTED`: log when folders/devices are internally reset
 * `LIB_SYNCTHING_CONNECTOR_LOG_NOTIFICATIONS`: log computed high-level notifications/events
 * `LIB_SYNCTHING_CONNECTOR_LOG_CERT_LOADING`: log loading of the (self-signed) certificate
+* `LIB_SYNCTHING_CONNECTOR_LOG_POWER_MONITORING`: log information about the power monitoring method
 * `SYNCTHINGTRAY_LOG_JS_CONSOLE`: log message from the JavaScript console of the built-in web view
 
 On Windows, you'll have to use the `syncthingtray-cli` executable to see output in the terminal.
@@ -324,6 +325,12 @@ On Windows, you'll have to use the `syncthingtray-cli` executable to see output 
   [Qt documentation](https://doc.qt.io/qt-6/qtquickcontrols-styles.html) for available options
 * `QT_QUICK_CONTROLS_MATERIAL_THEME`/`QT_QUICK_CONTROLS_UNIVERSAL_THEME`: the theme to use in the Qt
   Quick GUI, the variable and options depend on the style being used
+* `LIB_SYNCTHING_CONNECTOR_POWER_MONITORING_FORCE_SYS_FS`: forces polling `/sys/class/power_supply`
+  under GNU/Linux for battery monitoring (so it is also used in the presence of the `org.freedesktop.UPower`
+  D-Bus service)
+* `LIB_SYNCTHING_CONNECTOR_POWER_MONITORING_POLL_INTERVAL`: enables polling-based power monitoring if
+  no event-based APIs are available; defaults to `0` which disables falling back to polling-based power
+  monitoring
 * `LIB_SYNCTHING_CONNECTOR_SYNCTHING_CONFIG_DIR`: override the path where Syncthing Tray's backend expects
   Syncthing's `config.xml` file to be in
 * `SYNCTHINGTRAY_FAKE_FIRST_LAUNCH`: assume Syncthing Tray (or the Plasmoid) has been launched for the

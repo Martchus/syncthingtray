@@ -1,12 +1,10 @@
 #include "./runtimecondition.h"
 #include "./utils.h"
 
+#include "resources/config.h"
+
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
 #include <QNetworkInformation>
-#endif
-
-#ifdef PLATFORM_WINDOWS
-#include <windows.h>
 #endif
 
 #if defined(PLATFORM_LINUX) && !defined(PLATFORM_ANDROID)
@@ -20,8 +18,15 @@
 #include <QDBusMessage>
 #include <QDBusReply>
 #endif
-
 #endif
+
+#ifdef PLATFORM_WINDOWS
+#include <windows.h>
+#endif
+
+#include <c++utilities/io/ansiescapecodes.h>
+
+#include <iostream>
 
 namespace Data {
 
@@ -359,9 +364,11 @@ public:
     explicit LinuxBatteryMonitor(RuntimeCondition *condition)
         : QObject(condition)
         , m_condition(condition)
+        , m_logging(qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_POWER_MONITORING") != 0)
     {
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_DBUS_BASED_POWER_MONITORING
-        if (setupDBus()) {
+        const auto forceSysFs = qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_POWER_MONITORING_FORCE_SYS_FS") != 0;
+        if (!forceSysFs && setupDBus()) {
             queryInitialDBusState();
         } else {
             setupSysFsFallback();
@@ -387,6 +394,14 @@ private:
             QStringLiteral("org.freedesktop.DBus.Properties"), QStringLiteral("PropertiesChanged"), this,
             SLOT(handlePowerProfilesPropertiesChanged(QString,QVariantMap,QStringList)));
         // clang-format on
+        if (m_logging && !connected) {
+            using namespace CppUtilities::EscapeCodes;
+            std::cerr << Phrases::Warning
+                      << "Power monitoring via D-Bus not available as connecting to the D-Bus services "
+                         "\"org.freedesktop.UPower:/org/freedesktop/UPower/devices/DisplayDevice\" and "
+                         "\"org.freedesktop.UPower.PowerProfile:/org/freedesktop/UPower/PowerProfiless\" is not possible."
+                      << Phrases::End;
+        }
         return connected;
     }
 
@@ -499,6 +514,10 @@ private Q_SLOTS:
     {
         auto dir = QDir(QStringLiteral("/sys/class/power_supply"));
         if (!dir.exists()) {
+            if (m_logging) {
+                using namespace CppUtilities::EscapeCodes;
+                std::cerr << Phrases::Warning << "Power monitoring not available as \"/sys/class/power_supply\" does not exist." << Phrases::End;
+            }
             m_condition->setBatteryInfo(std::nullopt, std::nullopt);
             return;
         }
@@ -538,13 +557,33 @@ private Q_SLOTS:
 private:
     void setupSysFsFallback()
     {
+        using namespace CppUtilities::EscapeCodes;
+
+        // configure poll interval and log that the polling-based method is used
+        auto ok = false;
+        auto pollInterval = qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_POWER_MONITORING_POLL_INTERVAL", &ok);
+        if (pollInterval < 1) {
+            if (m_logging) {
+                std::cerr << Phrases::Info
+                          << "Polling \"/sys/class/power_supply\" is disabled. Set the environment variable " PROJECT_VARNAME_UPPER
+                             "_POWER_MONITORING_POLL_INTERVAL to enable this fall back by specifying the poll interval in milliseconds."
+                          << Phrases::End;
+            }
+            return;
+        }
+        if (m_logging) {
+            std::cerr << Phrases::Warning << "Falling back to polling \"/sys/class/power_supply\" every " << pollInterval
+                      << " ms to monitor power/battery status." << Phrases::End;
+        }
+
         pollSysFs();
-        auto *timer = new QTimer(this);
+        auto *const timer = new QTimer(this);
         connect(timer, &QTimer::timeout, this, &LinuxBatteryMonitor::pollSysFs);
-        timer->start(60000); // poll every minute
+        timer->start(pollInterval);
     }
 
     RuntimeCondition *m_condition;
+    bool m_logging;
 };
 #endif
 
