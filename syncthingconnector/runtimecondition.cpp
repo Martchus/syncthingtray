@@ -37,6 +37,20 @@
 
 namespace Data {
 
+/*!
+ * \class RuntimeCondition
+ * \brief The RuntimeCondition class evaluates and handles conditions determining whether Syncthing should run or suspend.
+ *
+ * This class monitors platform-specific network parameters (e.g. metered connections) and tracks custom
+ * runtime states (e.g. force suspend).
+ *
+ * \remarks
+ * When extending the \ref Conditions flags in the future (e.g., adding battery status):
+ * - Define a new flag within the enum.
+ * - Handle the new condition's evaluation inside the \ref isSupposedToRun(Conditions) const method.
+ * - Make sure to adjust `Settings::Launcher`, `SyncthingConnectionSettings` JSON serialization, and all related settings/UI code.
+ */
+
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
 /*!
  * \brief Loads the QNetworkInformation backend for determining whether the connection is metered.
@@ -94,22 +108,6 @@ static std::pair<const QNetworkInformation *, bool> loadNetworkInformationBacken
 }
 #endif
 
-/*!
- * \class RuntimeCondition
- * \brief The RuntimeCondition class evaluates and handles conditions determining whether Syncthing should run or suspend.
- *
- * This class monitors platform-specific network parameters (e.g. metered connections) and tracks custom
- * runtime states (e.g. force suspend).
- *
- * \remarks
- * When extending the \ref Conditions flags in the future (e.g., adding battery status):
- * - Define a new flag within the enum.
- * - Handle the new condition's evaluation inside the \ref isSupposedToRun(Conditions) const method.
- * - Make sure to adjust `Settings::Launcher`, `SyncthingConnectionSettings` JSON serialization, and all related settings/UI code.
- */
-
-static std::vector<RuntimeCondition *> s_instances;
-
 class BatteryMonitorBase {
 public:
     void queryState(const RuntimeCondition *instance) const
@@ -122,7 +120,7 @@ public:
 protected:
     void updateInstances()
     {
-        for (auto *const instance : s_instances) {
+        for (auto *const instance : RuntimeCondition::s_instances) {
             instance->m_updating = true;
             const auto batteryInfoChanged = instance->setBatteryInfo(m_onBattery, m_batteryLevel);
             const auto batterySavingChanged = instance->setBatterySaving(m_batterySaving);
@@ -139,10 +137,10 @@ protected:
 };
 
 #if defined(Q_OS_ANDROID)
-class AndroidBatteryMonitor : public QObject, public BatteryMonitorBase {
+class BatteryMonitor : public QObject, public BatteryMonitorBase {
     Q_OBJECT
 public:
-    explicit AndroidBatteryMonitor()
+    explicit BatteryMonitor()
     {
         if (const auto context = QNativeInterface::QAndroidApplication::context(); context.isValid()) {
             auto env = QJniEnvironment();
@@ -157,6 +155,22 @@ public:
                     m_batteryLevel = -1 - val;
                 }
             }
+        }
+    }
+
+    static void jniHandlePowerSaveModeChanged(JNIEnv *, jobject, jboolean powerSaveMode)
+    {
+        if (RuntimeCondition::s_batteryMonitor) {
+            QMetaObject::invokeMethod(
+                RuntimeCondition::s_batteryMonitor.get(), "handlePowerSaveModeChanged", Qt::QueuedConnection, Q_ARG(bool, powerSaveMode == JNI_TRUE));
+        }
+    }
+
+    static void jniHandleBatteryStatusChanged(JNIEnv *, jobject, jboolean onBattery, jint batteryLevel)
+    {
+        if (RuntimeCondition::s_batteryMonitor) {
+            QMetaObject::invokeMethod(RuntimeCondition::s_batteryMonitor.get(), "handleBatteryStatusChanged", Qt::QueuedConnection,
+                Q_ARG(bool, onBattery == JNI_TRUE), Q_ARG(int, static_cast<int>(batteryLevel)));
         }
     }
 
@@ -175,9 +189,6 @@ public Q_SLOTS:
     }
 };
 
-#define SYNCTHINGCONNECTION_SUPPORT_BATTERY_MONITORING
-using BatteryMonitor = AndroidBatteryMonitor;
-
 #elif defined(PLATFORM_WINDOWS)
 
 #ifndef GUID_ACDC_POWER_SOURCE
@@ -190,9 +201,9 @@ static const GUID GUID_BATTERY_PERCENTAGE_REMAINING = { 0xa7ad8041, 0xb45a, 0x4c
 static const GUID GUID_POWER_SAVING_STATUS = { 0xe00958c0, 0xc213, 0x4ace, { 0xac, 0x77, 0xfe, 0xcc, 0xed, 0x2e, 0xee, 0xa5 } };
 #endif
 
-class WindowsBatteryMonitor : public BatteryMonitorBase {
+class BatteryMonitor : public BatteryMonitorBase {
 public:
-    explicit WindowsBatteryMonitor()
+    explicit BatteryMonitor()
     {
         auto status = SYSTEM_POWER_STATUS();
         if (GetSystemPowerStatus(&status)) {
@@ -210,7 +221,8 @@ public:
         wc.lpszClassName = L"SyncthingBatteryMonitorClass";
         RegisterClassExW(&wc);
 
-        m_hwnd = CreateWindowExW(0, L"SyncthingBatteryMonitorClass", nullptr, WS_POPUP, 0, 0, 0, 0, nullptr, nullptr, GetModuleHandleW(nullptr), this);
+        m_hwnd
+            = CreateWindowExW(0, L"SyncthingBatteryMonitorClass", nullptr, WS_POPUP, 0, 0, 0, 0, nullptr, nullptr, GetModuleHandleW(nullptr), this);
         if (m_hwnd) {
             m_hPowerNotifyACDC = RegisterPowerSettingNotification(m_hwnd, &GUID_ACDC_POWER_SOURCE, DEVICE_NOTIFY_WINDOW_HANDLE);
             m_hPowerNotifyPercent = RegisterPowerSettingNotification(m_hwnd, &GUID_BATTERY_PERCENTAGE_REMAINING, DEVICE_NOTIFY_WINDOW_HANDLE);
@@ -218,7 +230,7 @@ public:
         }
     }
 
-    ~WindowsBatteryMonitor()
+    ~BatteryMonitor()
     {
         if (m_hPowerNotifyACDC)
             UnregisterPowerSettingNotification(m_hPowerNotifyACDC);
@@ -239,7 +251,7 @@ private:
             SetWindowLongPtrW(hwnd, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(createStruct->lpCreateParams));
             return 0;
         }
-        auto *self = reinterpret_cast<WindowsBatteryMonitor *>(GetWindowLongPtrW(hwnd, GWLP_USERDATA));
+        auto *self = reinterpret_cast<BatteryMonitor *>(GetWindowLongPtrW(hwnd, GWLP_USERDATA));
         if (self && uMsg == WM_POWERBROADCAST && wParam == PBT_POWERSETTINGCHANGE) {
             const auto *setting = reinterpret_cast<const POWERBROADCAST_SETTING *>(lParam);
             self->handlePowerSetting(setting);
@@ -270,15 +282,12 @@ private:
     HPOWERNOTIFY m_hPowerNotifySaver = nullptr;
 };
 
-#define SYNCTHINGCONNECTION_SUPPORT_BATTERY_MONITORING
-using BatteryMonitor = WindowsBatteryMonitor;
-
 #elif defined(PLATFORM_LINUX)
 
-class LinuxBatteryMonitor : public QObject, public BatteryMonitorBase {
+class BatteryMonitor : public QObject, public BatteryMonitorBase {
     Q_OBJECT
 public:
-    explicit LinuxBatteryMonitor()
+    explicit BatteryMonitor()
         : QObject(nullptr)
         , m_logging(qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_POWER_MONITORING") != 0)
     {
@@ -511,43 +520,41 @@ private:
 
         pollSysFs();
         auto *const timer = new QTimer(this);
-        connect(timer, &QTimer::timeout, this, &LinuxBatteryMonitor::pollSysFs);
+        connect(timer, &QTimer::timeout, this, &BatteryMonitor::pollSysFs);
         timer->start(pollInterval);
     }
 
     bool m_logging;
 };
-
-#define SYNCTHINGCONNECTION_SUPPORT_BATTERY_MONITORING
-using BatteryMonitor = LinuxBatteryMonitor;
 #endif
 
+std::vector<RuntimeCondition *> RuntimeCondition::s_instances;
 #ifdef SYNCTHINGCONNECTION_SUPPORT_BATTERY_MONITORING
-static std::unique_ptr<BatteryMonitor> s_batteryMonitor;
+std::unique_ptr<BatteryMonitor> RuntimeCondition::s_batteryMonitor;
 #endif
+
+RuntimeCondition::RuntimeCondition(Conditions conditions, QObject *parent)
+    : QObject(parent)
+    , m_enabledConditions(conditions)
+    , m_initializedConditions(Conditions::ForceSuspend)
+    , m_batteryPercentage(100)
+    , m_updating(false)
+{
+    registerInstance(this);
+}
+
+RuntimeCondition::~RuntimeCondition()
+{
+    unregisterInstance(this);
+}
 
 #ifdef Q_OS_ANDROID
-static void handlePowerSaveModeChanged(JNIEnv *, jobject, jboolean powerSaveMode)
-{
-    if (s_batteryMonitor) {
-        QMetaObject::invokeMethod(s_batteryMonitor.get(), "handlePowerSaveModeChanged", Qt::QueuedConnection, Q_ARG(bool, powerSaveMode == JNI_TRUE));
-    }
-}
-
-static void handleBatteryStatusChanged(JNIEnv *, jobject, jboolean onBattery, jint batteryLevel)
-{
-    if (s_batteryMonitor) {
-        QMetaObject::invokeMethod(s_batteryMonitor.get(), "handleBatteryStatusChanged", Qt::QueuedConnection, Q_ARG(bool, onBattery == JNI_TRUE),
-            Q_ARG(int, static_cast<int>(batteryLevel)));
-    }
-}
-
 bool RuntimeCondition::registerJniMethods(const char *className)
 {
     auto env = QJniEnvironment();
     static const JNINativeMethod methods[] = {
-        { "handlePowerSaveModeChanged", "(Z)V", reinterpret_cast<void *>(handlePowerSaveModeChanged) },
-        { "handleBatteryStatusChanged", "(ZI)V", reinterpret_cast<void *>(handleBatteryStatusChanged) },
+        { "handlePowerSaveModeChanged", "(Z)V", reinterpret_cast<void *>(BatteryMonitor::jniHandlePowerSaveModeChanged) },
+        { "handleBatteryStatusChanged", "(ZI)V", reinterpret_cast<void *>(BatteryMonitor::jniHandleBatteryStatusChanged) },
     };
     return env.registerNativeMethods(className, methods, 2);
 }
@@ -572,21 +579,6 @@ void RuntimeCondition::unregisterInstance(RuntimeCondition *instance)
         s_batteryMonitor.reset();
     }
 #endif
-}
-
-RuntimeCondition::RuntimeCondition(Conditions conditions, QObject *parent)
-    : QObject(parent)
-    , m_enabledConditions(conditions)
-    , m_initializedConditions(Conditions::ForceSuspend)
-    , m_batteryPercentage(100)
-    , m_updating(false)
-{
-    registerInstance(this);
-}
-
-RuntimeCondition::~RuntimeCondition()
-{
-    unregisterInstance(this);
 }
 
 /*!

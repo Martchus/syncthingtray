@@ -16,10 +16,17 @@
 
 namespace Data {
 
+#if defined(Q_OS_ANDROID) || defined(PLATFORM_WINDOWS) || defined(PLATFORM_LINUX)
+#define SYNCTHINGCONNECTION_SUPPORT_BATTERY_MONITORING
 class BatteryMonitorBase;
+class BatteryMonitor;
+#endif
 
 class LIB_SYNCTHING_CONNECTOR_EXPORT RuntimeCondition : public QObject {
+#ifdef SYNCTHINGCONNECTION_SUPPORT_BATTERY_MONITORING
     friend class BatteryMonitorBase;
+    friend class BatteryMonitor;
+#endif
 
 public:
     /*!
@@ -226,6 +233,11 @@ private:
     mutable std::optional<int> m_batteryLevel;
     int m_batteryPercentage;
     mutable bool m_updating;
+
+    static std::vector<RuntimeCondition *> s_instances;
+#ifdef SYNCTHINGCONNECTION_SUPPORT_BATTERY_MONITORING
+    static std::unique_ptr<BatteryMonitor> s_batteryMonitor;
+#endif
 };
 
 } // namespace Data
