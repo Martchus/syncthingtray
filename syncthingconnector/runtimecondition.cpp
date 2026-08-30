@@ -108,8 +108,15 @@ static std::pair<const QNetworkInformation *, bool> loadNetworkInformationBacken
 }
 #endif
 
+/*!
+ * \brief The BatteryMonitorBase class is a base class for battery monitoring,
+ * providing the capability to query and update battery states across all runtime condition instances.
+ */
 class BatteryMonitorBase {
 public:
+    /*!
+     * \brief Queries and copies the current battery monitoring states into the specified \a instance.
+     */
     void queryState(const RuntimeCondition *instance) const
     {
         instance->m_onBattery = m_onBattery;
@@ -118,6 +125,9 @@ public:
     }
 
 protected:
+    /*!
+     * \brief Updates the battery states and supposed-to-run status for all active RuntimeCondition instances.
+     */
     void updateInstances()
     {
         for (auto *const instance : RuntimeCondition::s_instances) {
@@ -131,15 +141,21 @@ protected:
         }
     }
 
-    std::optional<bool> m_onBattery;
-    std::optional<int> m_batteryLevel;
-    std::optional<bool> m_batterySaving;
+    std::optional<bool> m_onBattery; /*!< Whether the system is running on battery. */
+    std::optional<int> m_batteryLevel; /*!< The current battery level percentage (0-100). */
+    std::optional<bool> m_batterySaving; /*!< Whether battery saving mode is enabled. */
 };
 
 #if defined(Q_OS_ANDROID)
+/*!
+ * \brief The BatteryMonitor class monitors battery level, battery saving, and power source changes on Android.
+ */
 class BatteryMonitor : public QObject, public BatteryMonitorBase {
     Q_OBJECT
 public:
+    /*!
+     * \brief Constructs a new BatteryMonitor and queries the initial battery and power-saving states.
+     */
     explicit BatteryMonitor()
     {
         if (const auto context = QNativeInterface::QAndroidApplication::context(); context.isValid()) {
@@ -158,6 +174,9 @@ public:
         }
     }
 
+    /*!
+     * \brief JNI callback invoked when the Android power save mode changes.
+     */
     static void jniHandlePowerSaveModeChanged(JNIEnv *, jobject, jboolean powerSaveMode)
     {
         if (RuntimeCondition::s_batteryMonitor) {
@@ -166,6 +185,9 @@ public:
         }
     }
 
+    /*!
+     * \brief JNI callback invoked when the Android battery status changes.
+     */
     static void jniHandleBatteryStatusChanged(JNIEnv *, jobject, jboolean onBattery, jint batteryLevel)
     {
         if (RuntimeCondition::s_batteryMonitor) {
@@ -175,12 +197,18 @@ public:
     }
 
 public Q_SLOTS:
+    /*!
+     * \brief Handles changes in power save mode from Android.
+     */
     void handlePowerSaveModeChanged(bool powerSaveMode)
     {
         m_batterySaving = powerSaveMode;
         updateInstances();
     }
 
+    /*!
+     * \brief Handles changes in battery status from Android.
+     */
     void handleBatteryStatusChanged(bool onBattery, int batteryLevel)
     {
         m_onBattery = onBattery;
@@ -201,8 +229,14 @@ static const GUID GUID_BATTERY_PERCENTAGE_REMAINING = { 0xa7ad8041, 0xb45a, 0x4c
 static const GUID GUID_POWER_SAVING_STATUS = { 0xe00958c0, 0xc213, 0x4ace, { 0xac, 0x77, 0xfe, 0xcc, 0xed, 0x2e, 0xee, 0xa5 } };
 #endif
 
+/*!
+ * \brief The BatteryMonitor class monitors battery level, battery saving, and power source changes on Windows.
+ */
 class BatteryMonitor : public BatteryMonitorBase {
 public:
+    /*!
+     * \brief Constructs a new BatteryMonitor, queries the initial power status, and registers for power setting notifications.
+     */
     explicit BatteryMonitor()
     {
         auto status = SYSTEM_POWER_STATUS();
@@ -230,6 +264,9 @@ public:
         }
     }
 
+    /*!
+     * \brief Destructs the BatteryMonitor and unregisters all power setting notifications.
+     */
     ~BatteryMonitor()
     {
         if (m_hPowerNotifyACDC)
@@ -244,6 +281,9 @@ public:
     }
 
 private:
+    /*!
+     * \brief Window procedure to handle WM_POWERBROADCAST messages.
+     */
     static LRESULT CALLBACK wndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
     {
         if (uMsg == WM_CREATE) {
@@ -259,6 +299,9 @@ private:
         return DefWindowProcW(hwnd, uMsg, wParam, lParam);
     }
 
+    /*!
+     * \brief Handles changes in registered power settings.
+     */
     void handlePowerSetting(const POWERBROADCAST_SETTING *setting)
     {
         if (IsEqualGUID(setting->PowerSetting, GUID_ACDC_POWER_SOURCE)) {
@@ -276,17 +319,24 @@ private:
         }
     }
 
-    HWND m_hwnd = nullptr;
-    HPOWERNOTIFY m_hPowerNotifyACDC = nullptr;
-    HPOWERNOTIFY m_hPowerNotifyPercent = nullptr;
-    HPOWERNOTIFY m_hPowerNotifySaver = nullptr;
+    HWND m_hwnd = nullptr; /*!< Window handle for the monitor window. */
+    HPOWERNOTIFY m_hPowerNotifyACDC = nullptr; /*!< Power notification handle for AC/DC changes. */
+    HPOWERNOTIFY m_hPowerNotifyPercent = nullptr; /*!< Power notification handle for battery percentage changes. */
+    HPOWERNOTIFY m_hPowerNotifySaver = nullptr; /*!< Power notification handle for power saving state changes. */
 };
 
 #elif defined(PLATFORM_LINUX)
 
+/*!
+ * \brief The BatteryMonitor class monitors battery level, battery saving, and power source changes on Linux.
+ * \remarks It uses DBus-based power monitoring when available, falling back to SysFs-based polling.
+ */
 class BatteryMonitor : public QObject, public BatteryMonitorBase {
     Q_OBJECT
 public:
+    /*!
+     * \brief Constructs a new BatteryMonitor, setting up DBus power monitoring or SysFs polling fallback.
+     */
     explicit BatteryMonitor()
         : QObject(nullptr)
         , m_logging(qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_LOG_POWER_MONITORING") != 0)
@@ -304,6 +354,9 @@ public:
     }
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_DBUS_BASED_POWER_MONITORING
+    /*!
+     * \brief Sets up DBus connections to UPower and PowerProfiles.
+     */
     bool setupDBus()
     {
         auto sysBus = QDBusConnection::systemBus();
@@ -329,6 +382,9 @@ public:
         return connected;
     }
 
+    /*!
+     * \brief Queries initial battery and power saver state over DBus.
+     */
     void queryInitialDBusState()
     {
         auto sysBus = QDBusConnection::systemBus();
@@ -357,6 +413,9 @@ public:
         updateInstances();
     }
 
+    /*!
+     * \brief Queries the Flatpak Portal settings for the power saver mode status.
+     */
     void queryPortalPowerSaver()
     {
         auto sessionBus = QDBusConnection::sessionBus();
@@ -390,6 +449,9 @@ public:
 
 private Q_SLOTS:
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_DBUS_BASED_POWER_MONITORING
+    /*!
+     * \brief Slot called when UPower device properties change.
+     */
     void handleUPowerPropertiesChanged(const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
     {
         Q_UNUSED(interface)
@@ -415,6 +477,9 @@ private Q_SLOTS:
         }
     }
 
+    /*!
+     * \brief Slot called when UPower PowerProfiles properties change.
+     */
     void handlePowerProfilesPropertiesChanged(
         const QString &interface, const QVariantMap &changedProperties, const QStringList &invalidatedProperties)
     {
@@ -427,6 +492,9 @@ private Q_SLOTS:
         }
     }
 
+    /*!
+     * \brief Slot called when Flatpak Portal settings change.
+     */
     void handlePortalSettingChanged(const QString &namespaceName, const QString &key, const QDBusVariant &value)
     {
         if (namespaceName == QLatin1String("org.freedesktop.appearance") && key == QLatin1String("power-saver-enabled")) {
@@ -443,6 +511,9 @@ private Q_SLOTS:
     }
 #endif
 
+    /*!
+     * \brief Polls the Linux `/sys/class/power_supply` filesystem for battery status.
+     */
     void pollSysFs()
     {
         auto dir = QDir(QStringLiteral("/sys/class/power_supply"));
@@ -498,6 +569,9 @@ private Q_SLOTS:
     }
 
 private:
+    /*!
+     * \brief Sets up the SysFs fallback timer with the configured poll interval.
+     */
     void setupSysFsFallback()
     {
         using namespace CppUtilities::EscapeCodes;
@@ -528,11 +602,20 @@ private:
 };
 #endif
 
+/*!
+ * \brief Active instances of RuntimeCondition.
+ */
 std::vector<RuntimeCondition *> RuntimeCondition::s_instances;
 #ifdef SYNCTHINGCONNECTION_SUPPORT_BATTERY_MONITORING
+/*!
+ * \brief Active platform-specific battery monitor instance.
+ */
 std::unique_ptr<BatteryMonitor> RuntimeCondition::s_batteryMonitor;
 #endif
 
+/*!
+ * \brief Constructs a new RuntimeCondition with the specified \a conditions.
+ */
 RuntimeCondition::RuntimeCondition(Conditions conditions, QObject *parent)
     : QObject(parent)
     , m_enabledConditions(conditions)
@@ -543,12 +626,18 @@ RuntimeCondition::RuntimeCondition(Conditions conditions, QObject *parent)
     registerInstance(this);
 }
 
+/*!
+ * \brief Destructs the RuntimeCondition.
+ */
 RuntimeCondition::~RuntimeCondition()
 {
     unregisterInstance(this);
 }
 
 #ifdef Q_OS_ANDROID
+/*!
+ * \brief Registers native JNI methods for battery monitoring under Android.
+ */
 bool RuntimeCondition::registerJniMethods(const char *className)
 {
     auto env = QJniEnvironment();
@@ -559,16 +648,25 @@ bool RuntimeCondition::registerJniMethods(const char *className)
     return env.registerNativeMethods(className, methods, 2);
 }
 
+/*!
+ * \brief Unregisters native JNI methods.
+ */
 void RuntimeCondition::unregisterJniMethods()
 {
 }
 #endif
 
+/*!
+ * \brief Registers a RuntimeCondition \a instance for battery state updates.
+ */
 void RuntimeCondition::registerInstance(RuntimeCondition *instance)
 {
     s_instances.push_back(instance);
 }
 
+/*!
+ * \brief Unregisters a RuntimeCondition \a instance.
+ */
 void RuntimeCondition::unregisterInstance(RuntimeCondition *instance)
 {
     if (auto it = std::find(s_instances.begin(), s_instances.end(), instance); it != s_instances.end()) {
@@ -603,6 +701,9 @@ bool RuntimeCondition::isSupposedToRun(Conditions conditions) const
             && (batteryLevel().value_or(100) < m_batteryPercentage || m_batteryPercentage == 100)));
 }
 
+/*!
+ * \brief Returns whether the current network connection is metered, or std::nullopt if unknown.
+ */
 std::optional<bool> RuntimeCondition::isNetworkConnectionMetered() const
 {
 #ifdef SYNCTHINGCONNECTION_SUPPORT_METERED
@@ -618,6 +719,9 @@ std::optional<bool> RuntimeCondition::isNetworkConnectionMetered() const
     return m_metered;
 }
 
+/*!
+ * \brief Sets whether the current network connection is metered.
+ */
 bool RuntimeCondition::setNetworkConnectionMetered(std::optional<bool> metered)
 {
     if (metered != m_metered) {
@@ -628,6 +732,9 @@ bool RuntimeCondition::setNetworkConnectionMetered(std::optional<bool> metered)
     return false;
 }
 
+/*!
+ * \brief Returns a short translated status message about the metered state of the connection.
+ */
 QString RuntimeCondition::meteredStatus() const
 {
     if (const auto metered = isNetworkConnectionMetered(); metered.has_value()) {
@@ -637,12 +744,18 @@ QString RuntimeCondition::meteredStatus() const
     }
 }
 
+/*!
+ * \brief Returns whether battery saving mode is enabled, or std::nullopt if unknown.
+ */
 std::optional<bool> RuntimeCondition::isBatterySaving() const
 {
     initializeBatteryMonitoring();
     return m_batterySaving;
 }
 
+/*!
+ * \brief Sets whether battery saving mode is enabled.
+ */
 bool RuntimeCondition::setBatterySaving(std::optional<bool> batterySaving)
 {
     if (batterySaving != m_batterySaving) {
@@ -653,6 +766,9 @@ bool RuntimeCondition::setBatterySaving(std::optional<bool> batterySaving)
     return false;
 }
 
+/*!
+ * \brief Returns a short translated status message about the battery saving mode.
+ */
 QString RuntimeCondition::batterySavingStatus() const
 {
     if (const auto batterySaving = isBatterySaving(); batterySaving.has_value()) {
@@ -662,12 +778,18 @@ QString RuntimeCondition::batterySavingStatus() const
     }
 }
 
+/*!
+ * \brief Returns whether the system is running on battery, or std::nullopt if unknown.
+ */
 std::optional<bool> RuntimeCondition::isOnBattery() const
 {
     initializeBatteryMonitoring();
     return m_onBattery;
 }
 
+/*!
+ * \brief Sets whether the system is running on battery.
+ */
 bool RuntimeCondition::setOnBattery(std::optional<bool> onBattery)
 {
     if (onBattery != m_onBattery) {
@@ -678,6 +800,9 @@ bool RuntimeCondition::setOnBattery(std::optional<bool> onBattery)
     return false;
 }
 
+/*!
+ * \brief Returns a short translated status message about the battery status.
+ */
 QString RuntimeCondition::onBatteryStatus() const
 {
     if (const auto onBattery = isOnBattery(); onBattery.has_value()) {
@@ -774,6 +899,9 @@ bool RuntimeCondition::setEnabledConditions(Conditions enabledConditions)
     return false;
 }
 
+/*!
+ * \brief Recalculates and updates the cached supposed-to-run status, emitting the changed signal if necessary.
+ */
 void RuntimeCondition::updateSupposedToRun()
 {
     if (m_updating) {
@@ -789,6 +917,9 @@ void RuntimeCondition::updateSupposedToRun()
     m_updating = false;
 }
 
+/*!
+ * \brief Initializes the battery monitor instance if needed.
+ */
 void RuntimeCondition::initializeBatteryMonitoring() const
 {
     if (!(m_initializedConditions && (Conditions::BatterySaving | Conditions::OnBattery))) {
