@@ -491,6 +491,14 @@ public class Activity extends QtActivity {
         super.onStart();
     }
 
+    @Override
+    public void onWindowFocusChanged (boolean hasFocus) {
+        if (hasFocus) {
+            // work around https://qt-project.atlassian.net/browse/QTBUG-146830 that seems to happen as of 6.11.0
+            showSystemUI();
+        }
+    }
+
     public void onNativeReady() {
         startSyncthingService();
         connectToService();
@@ -605,6 +613,17 @@ public class Activity extends QtActivity {
         } catch (java.lang.UnsatisfiedLinkError e) {
             m_showPage = page;
             m_showFromNotification = fromNotification;
+        }
+    }
+
+    private void showSystemUI() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            WindowInsetsController controller = getWindow().getInsetsController();
+            if (controller != null) {
+                controller.show(WindowInsets.Type.statusBars() | WindowInsets.Type.navigationBars());
+            }
+        } else {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
     }
 
