@@ -120,6 +120,7 @@ private Q_SLOTS:
 
 private:
     bool shouldBeRunningAccordingToRuntimeConditions(bool runningEnabled);
+    bool prepareSetRunning(bool running);
     void resetState();
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     void handleLoggingCallback(LibSyncthing::LogLevel, const char *message, std::size_t messageSize);
@@ -127,6 +128,7 @@ private:
     void handleLibSyncthingFinished();
 #endif
     void terminateDueToRuntimeCond();
+    void handleStateChanged();
     void showLibSyncthingNotSupported(QByteArray &&reason = QByteArrayLiteral("libsyncthing support not enabled"));
 
     SyncthingProcess m_process;

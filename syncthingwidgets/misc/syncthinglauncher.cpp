@@ -74,19 +74,7 @@ SyncthingLauncher::SyncthingLauncher(QObject *parent)
         if (!supposedToRun) {
             terminateDueToRuntimeCond();
         } else if (m_stoppedDueToRuntimeCond) {
-#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
-            if (m_lastLauncherSettings) {
-                launch(*m_lastLauncherSettings);
-            }
-#endif
-#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS) && defined(SYNCTHINGWIDGETS_USE_LIBSYNCTHING)
-            else
-#endif
-#if defined(SYNCTHINGWIDGETS_USE_LIBSYNCTHING)
-                if (m_lastRuntimeOptions) {
-                launch(*m_lastRuntimeOptions);
-            }
-#endif
+            handleStateChanged();
         }
     });
 }
@@ -110,16 +98,13 @@ SyncthingLauncher::~SyncthingLauncher()
  */
 void SyncthingLauncher::setRunning(bool running, const QString &program, const QStringList &arguments)
 {
-    // check runtime conditions
-    auto shouldBeRunning = shouldBeRunningAccordingToRuntimeConditions(running);
-    // start/stop Syncthing
-    shouldBeRunning ? launch(program, arguments) : terminate();
-    // save runtime options so Syncthing can resume in case runtime conditions allow it
+    const auto shouldBeRunning = prepareSetRunning(running);
+    if (shouldBeRunning) {
+        launch(program, arguments);
+    }
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
+    // invalidate runtime options from other overload
     m_lastRuntimeOptions.reset();
-#endif
-#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
-    m_lastLauncherSettings = nullptr;
 #endif
     // emit signal in any case (even if there's no change) so runningStatus() is re-evaluated
     emit runningChanged(shouldBeRunning);
@@ -132,19 +117,12 @@ void SyncthingLauncher::setRunning(bool running, const QString &program, const Q
  */
 void SyncthingLauncher::setRunning(bool running, LibSyncthing::RuntimeOptions &&runtimeOptions)
 {
-    // check runtime conditions
-    auto shouldBeRunning = running;
-    if (!m_runtimeCondition.isSupposedToRun()) {
-        m_stoppedDueToRuntimeCond = running;
-        shouldBeRunning = false;
+    const auto shouldBeRunning = prepareSetRunning(running);
+    if (shouldBeRunning) {
+        launch(runtimeOptions);
     }
-    // start/stop Syncthing
-    shouldBeRunning ? launch(runtimeOptions) : terminate();
     // save runtime options so Syncthing can resume in case runtime conditions allow it
     m_lastRuntimeOptions = std::move(runtimeOptions);
-#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
-    m_lastLauncherSettings = nullptr;
-#endif
     // emit signal in any case (even if there's no change) so runningStatus() is re-evaluated
     emit runningChanged(shouldBeRunning);
 }
@@ -329,6 +307,7 @@ void SyncthingLauncher::launch(const LibSyncthing::RuntimeOptions &runtimeOption
 
 void SyncthingLauncher::terminate(SyncthingConnection *relevantConnection)
 {
+    m_stoppedDueToRuntimeCond = false;
     if (m_process.isRunning()) {
         setManuallyStopped(true);
         m_process.stopSyncthing(relevantConnection);
@@ -339,6 +318,7 @@ void SyncthingLauncher::terminate(SyncthingConnection *relevantConnection)
 
 void SyncthingLauncher::kill()
 {
+    m_stoppedDueToRuntimeCond = false;
     if (m_process.isRunning()) {
         setManuallyStopped(true);
         m_process.killSyncthing();
@@ -412,6 +392,7 @@ void SyncthingLauncher::handleProcessFinished(int code, QProcess::ExitStatus sta
     if (m_logFile.isOpen()) {
         m_logFile.flush();
     }
+    handleStateChanged();
 }
 
 void SyncthingLauncher::resetState()
@@ -521,6 +502,24 @@ bool SyncthingLauncher::shouldBeRunningAccordingToRuntimeConditions(bool running
     return runningEnabled;
 }
 
+/*!
+ * \brief Evaluates runtime conditions for setRunning().
+ */
+bool SyncthingLauncher::prepareSetRunning(bool running)
+{
+    const auto shouldBeRunning = shouldBeRunningAccordingToRuntimeConditions(running);
+    if (!shouldBeRunning) {
+        terminate();
+        if (running) {
+            m_stoppedDueToRuntimeCond = true;
+        }
+    }
+#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
+    m_lastLauncherSettings = nullptr;
+#endif
+    return shouldBeRunning;
+}
+
 void SyncthingLauncher::terminateDueToRuntimeCond()
 {
     if (!isRunning()) {
@@ -536,6 +535,25 @@ void SyncthingLauncher::terminateDueToRuntimeCond()
 #endif
     terminate(m_relevantConnection);
     m_stoppedDueToRuntimeCond = true;
+}
+
+void SyncthingLauncher::handleStateChanged()
+{
+    if (m_runtimeCondition.isSupposedToRun() && m_stoppedDueToRuntimeCond) {
+#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS)
+        if (m_lastLauncherSettings) {
+            launch(*m_lastLauncherSettings);
+        }
+#endif
+#if defined(SYNCTHINGWIDGETS_GUI_QTWIDGETS) && defined(SYNCTHINGWIDGETS_USE_LIBSYNCTHING)
+        else
+#endif
+#if defined(SYNCTHINGWIDGETS_USE_LIBSYNCTHING)
+            if (m_lastRuntimeOptions) {
+            launch(*m_lastRuntimeOptions);
+        }
+#endif
+    }
 }
 
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
@@ -568,6 +586,7 @@ void SyncthingLauncher::handleLibSyncthingFinished()
     if (m_logFile.isOpen()) {
         m_logFile.flush();
     }
+    handleStateChanged();
 }
 #endif
 
