@@ -6,77 +6,77 @@
     <message>
         <location filename="../runtimecondition.cpp" line="83"/>
         <source>Network connection is metered</source>
-        <translation type="unfinished"></translation>
+        <translation>La connexion réseau est mesurée</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="83"/>
         <source>Network connection is not metered</source>
-        <translation type="unfinished"></translation>
+        <translation>La connexion réseau n'est pas mesurée</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="85"/>
         <source>State of network connection cannot be determined</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de déterminer l&apos;état de la connexion réseau</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="105"/>
         <source>Battery saving mode is enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Le mode d&apos;économie de batterie est activé</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="105"/>
         <source>Battery saving mode is disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Le mode d&apos;économie de batterie est désactivé</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="107"/>
         <source>State of battery saving mode cannot be determined</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de déterminer l&apos;état du mode d&apos;économie de batterie</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="129"/>
         <source>Running on battery (%1%)</source>
-        <translation type="unfinished"></translation>
+        <translation>Fonctionnement sur batterie (%1%)</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="131"/>
         <source>Running on battery</source>
-        <translation type="unfinished"></translation>
+        <translation>Fonctionnement sur batterie</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="134"/>
         <source>Power supply connected</source>
-        <translation type="unfinished"></translation>
+        <translation>Alimentation électrique connectée</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="137"/>
         <source>Battery status cannot be determined</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de déterminer l&apos;état de la batterie</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="187"/>
         <source>Syncthing is temporarily stopped due to metered connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing est temporairement arrêté en raison d&apos;une connexion mesurée</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="189"/>
         <source>Syncthing is temporarily stopped due to battery saving mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing est temporairement arrêté en raison du mode d&apos;économie de batterie</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="193"/>
         <source>Syncthing is temporarily stopped due to running on battery</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing est temporairement arrêté car le système fonctionne sur batterie</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="195"/>
         <source>Syncthing is temporarily stopped due to low battery</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing est temporairement arrêté en raison d&apos;une batterie faible</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="198"/>
         <source>Syncthing is temporarily stopped manually</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing est temporairement arrêté manuellement</translation>
     </message>
 </context>
 <context>
@@ -134,7 +134,7 @@
     <message>
         <location filename="../syncthingconnection.cpp" line="986"/>
         <source>Unable to parse timestamp &quot;%1&quot; (%2): %3</source>
-        <translation>Impossible d&apos;analyser l&apos;horodatage &quot;%1&quot; (%2) : %3</translation>
+        <translation>Impossible d&apos;analyser l&apos;horodatage &quot;%1&quot; (%2): %3</translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="607"/>
