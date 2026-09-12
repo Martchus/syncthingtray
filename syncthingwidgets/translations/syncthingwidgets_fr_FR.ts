@@ -105,7 +105,7 @@
     <message>
         <location filename="../quick/qml/AdvancedDirConfigPage.qml" line="16"/>
         <source>Ignore patterns</source>
-        <translation type="unfinished">Motifs d&apos;ignorance</translation>
+        <translation>Motifs d'ignorance</translation>
     </message>
 </context>
 <context>
@@ -678,22 +678,22 @@
     <message>
         <location filename="../quick/qml/ChangesListView.qml" line="94"/>
         <source>Open item</source>
-        <translation type="unfinished"></translation>
+        <translation>Ouvrir l'élément</translation>
     </message>
     <message>
         <location filename="../quick/qml/ChangesListView.qml" line="100"/>
         <source>Copy path</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier le chemin</translation>
     </message>
     <message>
         <location filename="../quick/qml/ChangesListView.qml" line="105"/>
         <source>Copy device</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier l'appareil</translation>
     </message>
     <message>
         <location filename="../quick/qml/ChangesListView.qml" line="110"/>
         <source>Copy folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier le dossier</translation>
     </message>
 </context>
 <context>
@@ -759,7 +759,7 @@
     <message>
         <location filename="../misc/syncthinglauncher.cpp" line="162"/>
         <source>Syncthing is temporarily stopped due to runtime condition</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing est temporairement arrêté en raison d'une condition d'exécution</translation>
     </message>
     <message>
         <location filename="../misc/syncthinglauncher.cpp" line="164"/>
@@ -794,229 +794,229 @@
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="167"/>
         <source>Resume</source>
-        <translation type="unfinished">Reprendre</translation>
+        <translation>Reprendre</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="176"/>
         <source>Pause</source>
-        <translation type="unfinished">Pause</translation>
+        <translation>Pause</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="203"/>
         <source>Stop</source>
-        <translation type="unfinished">Arrêter</translation>
+        <translation>Arrêter</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="211"/>
         <source>Start</source>
-        <translation type="unfinished">Démarrer</translation>
+        <translation>Démarrer</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="65"/>
         <location filename="../quick/qml/DesktopWindow.qml" line="138"/>
         <source>Syncthing</source>
-        <translation type="unfinished">Syncthing</translation>
+        <translation>Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="59"/>
         <source>&amp;Help</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Aide</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="69"/>
         <location filename="../quick/qml/DesktopWindow.qml" line="111"/>
         <source>Home page</source>
-        <translation type="unfinished"></translation>
+        <translation>Page d'accueil</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="74"/>
         <location filename="../quick/qml/DesktopWindow.qml" line="116"/>
         <source>Documentation</source>
-        <translation type="unfinished"></translation>
+        <translation>Documentation</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="79"/>
         <source>Support</source>
-        <translation type="unfinished"></translation>
+        <translation>Assistance</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="84"/>
         <source>Changelog</source>
-        <translation type="unfinished"></translation>
+        <translation>Journal des modifications</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="89"/>
         <location filename="../quick/qml/DesktopWindow.qml" line="397"/>
         <location filename="../quick/qml/DesktopWindow.qml" line="586"/>
         <source>Statistics</source>
-        <translation type="unfinished">Statistiques</translation>
+        <translation>Statistiques</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="94"/>
         <source>Bugs</source>
-        <translation type="unfinished"></translation>
+        <translation>Bogues</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="99"/>
         <location filename="../quick/qml/DesktopWindow.qml" line="121"/>
         <source>Source code</source>
-        <translation type="unfinished"></translation>
+        <translation>Code source</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="107"/>
         <location filename="../quick/qml/DesktopWindow.qml" line="276"/>
         <source>Syncthing Tray</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing Tray</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="126"/>
         <source>About</source>
-        <translation type="unfinished"></translation>
+        <translation>A propos</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="132"/>
         <source>&amp;Actions</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Actions</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="149"/>
         <source>Connect to Syncthing</source>
-        <translation type="unfinished"></translation>
+        <translation>Se connecter à Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="158"/>
         <source>Connecting …</source>
-        <translation type="unfinished"></translation>
+        <translation>Connexion en cours…</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="219"/>
         <source>Shutdown</source>
-        <translation type="unfinished">Arrêter</translation>
+        <translation>Arrêter</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="227"/>
         <source>Restart</source>
-        <translation type="unfinished"></translation>
+        <translation>Redémarrer</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="232"/>
         <location filename="../quick/qml/DesktopWindow.qml" line="280"/>
         <source>&amp;Settings</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Paramètres</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="238"/>
         <source>&amp;Web-based UI</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Interface web</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="244"/>
         <source>&amp;Recent changes</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Modifications récentes</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="250"/>
         <source>Show &amp;ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher l&amp;#39;&amp;ID</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="256"/>
         <source>&amp;Logs</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Journaux</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="262"/>
         <source>&amp;Statistics</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Statistiques</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="268"/>
         <source>&amp;Support Bundle</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Paquet de support</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="286"/>
         <source>&amp;Wizard</source>
-        <translation type="unfinished"></translation>
+        <translation>&amp;Assistant</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="326"/>
         <location filename="../quick/qml/DesktopWindow.qml" line="592"/>
         <source>Folders</source>
-        <translation type="unfinished">Dossiers</translation>
+        <translation>Dossiers</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="334"/>
         <source>Add folder</source>
-        <translation type="unfinished">Ajouter un dossier</translation>
+        <translation>Ajouter un dossier</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="341"/>
         <location filename="../quick/qml/DesktopWindow.qml" line="541"/>
         <source>Pause all</source>
-        <translation type="unfinished">Tout mettre en pause</translation>
+        <translation>Tout mettre en pause</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="348"/>
         <location filename="../quick/qml/DesktopWindow.qml" line="548"/>
         <source>Resume all</source>
-        <translation type="unfinished">Tout reprendre</translation>
+        <translation>Tout reprendre</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="355"/>
         <source>Rescan all</source>
-        <translation type="unfinished">Tout réanalyser</translation>
+        <translation>Tout réanalyser</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="361"/>
         <source>Filter folders</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtrer les dossiers</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="406"/>
         <source>Recent changes</source>
-        <translation type="unfinished">Modifications récentes</translation>
+        <translation>Modifications récentes</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="413"/>
         <source>Show ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher l'ID</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="420"/>
         <source>Show logs</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher les journaux</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="427"/>
         <source>Show statistics</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher les statistiques</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="468"/>
         <source>Global state</source>
-        <translation type="unfinished">État global</translation>
+        <translation>État global</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="476"/>
         <source>Local state</source>
-        <translation type="unfinished">État local</translation>
+        <translation>État local</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="525"/>
         <location filename="../quick/qml/DesktopWindow.qml" line="598"/>
         <source>Devices</source>
-        <translation type="unfinished">Appareils</translation>
+        <translation>Appareils</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="534"/>
         <source>Add device</source>
-        <translation type="unfinished">Ajouter un appareil</translation>
+        <translation>Ajouter un appareil</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="555"/>
         <source>Filter devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtrer les appareils</translation>
     </message>
 </context>
 <context>
@@ -1059,7 +1059,7 @@
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="12"/>
         <source>Group to show the device in the UI. Can be different on each device.</source>
-        <translation type="unfinished"></translation>
+        <translation>Groupe dans lequel afficher l'appareil dans l'interface. Peut être différent sur chaque appareil.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevConfigPage.qml" line="13"/>
@@ -1252,12 +1252,12 @@
     <message>
         <location filename="../quick/qml/DevDelegate.qml" line="45"/>
         <source>Copy name</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier le nom</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevDelegate.qml" line="51"/>
         <source>Copy ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier l'ID</translation>
     </message>
     <message>
         <location filename="../quick/qml/DevDelegate.qml" line="57"/>
@@ -1423,7 +1423,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="26"/>
         <source>The frequency in which Syncthing will rescan the folder for changes. Can be set to 0 to rely on triggering rescans manually.</source>
-        <translation>La fréquence à laquelle Syncthing réanalysera le dossier pour détecter les modifications. Peut être défini à 0 pour rely on déclenchement manuel des réanalyses.</translation>
+        <translation>La fréquence à laquelle Syncthing réanalysera le dossier pour détecter les modifications. Peut être défini à 0 pour s'appuyer sur un déclenchement manuel des réanalyses.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="27"/>
@@ -1539,7 +1539,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="15"/>
         <source>Keep initially disabled to add ignore patterns before any syncing takes place.</source>
-        <translation type="unfinished"></translation>
+        <translation>Laisser initialement désactivé pour ajouter des motifs d'ignorance avant toute synchronisation.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="27"/>
@@ -1549,7 +1549,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="30"/>
         <source>The order in which needed files should be pulled from the cluster. It has no effect when the folder type is “send only”. Open the selection and go though the different options for details about them.</source>
-        <translation type="unfinished"></translation>
+        <translation>L'ordre dans lequel les fichiers nécessaires doivent être récupérés depuis le cluster. Cette option n'a aucun effet lorsque le type du dossier est « envoi seul ». Ouvrez la sélection et parcourez les différentes options pour plus de détails à leur sujet.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="38"/>
@@ -1842,12 +1842,12 @@
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="62"/>
         <source>Copy label/ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier l'étiquette/l'ID</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="68"/>
         <source>Copy path</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier le chemin</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="74"/>
@@ -1862,7 +1862,7 @@
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="85"/>
         <source>Locally changed items</source>
-        <translation type="unfinished"></translation>
+        <translation>éléments modifiés localement</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirDelegate.qml" line="97"/>
@@ -2295,17 +2295,17 @@
     <message>
         <location filename="../quick/qml/LocalSyncProgress.qml" line="17"/>
         <source>Local sync progress</source>
-        <translation type="unfinished">Progression de la synchronisation locale</translation>
+        <translation>Progression de la synchronisation locale</translation>
     </message>
     <message>
         <location filename="../quick/qml/LocalSyncProgress.qml" line="31"/>
         <source>Up to Date</source>
-        <translation type="unfinished">À jour</translation>
+        <translation>À jour</translation>
     </message>
     <message>
         <location filename="../quick/qml/LocalSyncProgress.qml" line="31"/>
         <source>%1 %, %2 remaining</source>
-        <translation type="unfinished">%1 %, %2 restant</translation>
+        <translation>%1 %, %2 restant</translation>
     </message>
 </context>
 <context>
@@ -2425,7 +2425,7 @@
     <message>
         <location filename="../quick/qml/NeededPage.qml" line="10"/>
         <source>Locally changed - %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifiés localement - %1</translation>
     </message>
     <message>
         <location filename="../quick/qml/NeededPage.qml" line="12"/>
@@ -2450,7 +2450,7 @@
     <message>
         <location filename="../quick/qml/NeededPage.qml" line="81"/>
         <source>Copy path</source>
-        <translation type="unfinished"></translation>
+        <translation>Copier le chemin</translation>
     </message>
     <message>
         <location filename="../quick/qml/NeededPage.qml" line="108"/>
@@ -2471,7 +2471,7 @@
     <message>
         <location filename="../quick/qml/NeededPage.qml" line="111"/>
         <source>Locally changed</source>
-        <translation type="unfinished"></translation>
+        <translation>Modifiés localement</translation>
     </message>
 </context>
 <context>
@@ -2638,7 +2638,7 @@
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="308"/>
         <source>Unable to remove object from non-array.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de supprimer l'objet car ce n'est pas un tableau.</translation>
     </message>
     <message>
         <location filename="../quick/qml/ObjectConfigPage.qml" line="334"/>
@@ -2692,27 +2692,27 @@
     <message>
         <location filename="../quick/qml/PageWindow.qml" line="48"/>
         <source>Close</source>
-        <translation type="unfinished">Fermer</translation>
+        <translation>Fermer</translation>
     </message>
     <message>
         <location filename="../quick/qml/PageWindow.qml" line="82"/>
         <source>Back</source>
-        <translation type="unfinished">Retour</translation>
+        <translation>Retour</translation>
     </message>
     <message>
         <location filename="../quick/qml/PageWindow.qml" line="90"/>
         <source>More</source>
-        <translation type="unfinished">Plus</translation>
+        <translation>Plus</translation>
     </message>
     <message>
         <location filename="../quick/qml/PageWindow.qml" line="125"/>
         <source>Do you really want to close without applying changes?</source>
-        <translation type="unfinished"></translation>
+        <translation>Voulez-vous vraiment fermer sans appliquer les modifications ?</translation>
     </message>
     <message>
         <location filename="../quick/qml/PageWindow.qml" line="149"/>
         <source>Saving configuration …</source>
-        <translation type="unfinished">Sauvegarde de la configuration …</translation>
+        <translation>Sauvegarde de la configuration …</translation>
     </message>
 </context>
 <context>
@@ -2811,32 +2811,32 @@
     <message>
         <location filename="../settings/settingsdialog.cpp" line="110"/>
         <source>Battery saving mode is currently enabled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le mode d'économie de batterie est actuellement activé.</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="111"/>
         <source>Battery saving mode is currently disabled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le mode d'économie de batterie est actuellement désactivé.</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="112"/>
         <source>Unable to determine whether battery saving mode is enabled.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de déterminer si le mode d'économie de batterie est activé.</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="126"/>
         <source>The system is currently running on battery.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le système fonctionne actuellement sur batterie.</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="127"/>
         <source>The system is currently connected to a power supply.</source>
-        <translation type="unfinished"></translation>
+        <translation>Le système est actuellement connecté à une alimentation électrique.</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="128"/>
         <source>Unable to determine whether the system is running on battery.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de déterminer si le système fonctionne sur batterie.</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="2009"/>
@@ -3451,7 +3451,7 @@
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="354"/>
         <source>Syncthing icons</source>
-        <translation type="unfinished"></translation>
+        <translation>Icônes Syncthing</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="368"/>
@@ -3516,22 +3516,22 @@
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="463"/>
         <source>Style</source>
-        <translation type="unfinished"></translation>
+        <translation>Style</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="477"/>
         <source>Traditional</source>
-        <translation type="unfinished"></translation>
+        <translation>Traditionnel</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="482"/>
         <source>Modern</source>
-        <translation type="unfinished"></translation>
+        <translation>Moderne</translation>
     </message>
     <message>
         <location filename="../settings/appearanceoptionpage.ui" line="490"/>
         <source>Requires restart to apply.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nécessite un redémarrage pour être appliqué.</translation>
     </message>
 </context>
 <context>
@@ -3969,22 +3969,22 @@
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="628"/>
         <source>Pause all devices, discovery and relaying while battery saving mode is enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Mettre en pause tous les appareils, la découverte et le relais lorsque le mode d'économie de batterie est activé</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="637"/>
         <source>Pause all devices, discovery and relaying while running on battery</source>
-        <translation type="unfinished"></translation>
+        <translation>Mettre en pause tous les appareils, la découverte et le relais lorsque le système fonctionne sur batterie</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="644"/>
         <source>under percentage:</source>
-        <translation type="unfinished"></translation>
+        <translation>si le pourcentage est inférieur à :</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="651"/>
         <source> %</source>
-        <translation type="unfinished"></translation>
+        <translation> %</translation>
     </message>
     <message>
         <location filename="../settings/connectionoptionpage.ui" line="684"/>
@@ -4343,7 +4343,7 @@
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="35"/>
         <source>Syncthing Tray&apos;s own UI (experimental, WIP)</source>
-        <translation type="unfinished"></translation>
+        <translation>Interface propre de Syncthing Tray (expérimental, en cours de développement)</translation>
     </message>
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="42"/>
@@ -4639,22 +4639,22 @@
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="211"/>
         <source>Stop automatically when battery saving mode is enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Arréter automatiquement lorsque le mode d'économie de batterie est activé</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="220"/>
         <source>Stop automatically when running on battery</source>
-        <translation type="unfinished"></translation>
+        <translation>Arréter automatiquement lorsque le système fonctionne sur batterie</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="227"/>
         <source>under percentage:</source>
-        <translation type="unfinished"></translation>
+        <translation>si le pourcentage est inférieur à :</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="234"/>
         <source> %</source>
-        <translation type="unfinished"></translation>
+        <translation> %</translation>
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="295"/>
@@ -5266,7 +5266,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../misc/syncthingmodels.cpp" line="164"/>
         <source>Unable to find configuration file of local Syncthing instance under its default location.</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de trouver le fichier de configuration de l'instance Syncthing locale à son emplacement par défaut.</translation>
     </message>
     <message>
         <location filename="../misc/syncthingmodels.cpp" line="182"/>
@@ -5340,22 +5340,22 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../settings/systemdoptionpage.ui" line="45"/>
         <source>Stop automatically when battery saving mode is enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Arréter automatiquement lorsque le mode d'économie de batterie est activé</translation>
     </message>
     <message>
         <location filename="../settings/systemdoptionpage.ui" line="54"/>
         <source>Stop automatically when running on battery</source>
-        <translation type="unfinished"></translation>
+        <translation>Arréter automatiquement lorsque le système fonctionne sur batterie</translation>
     </message>
     <message>
         <location filename="../settings/systemdoptionpage.ui" line="61"/>
         <source>under percentage:</source>
-        <translation type="unfinished"></translation>
+        <translation>si le pourcentage est inférieur à :</translation>
     </message>
     <message>
         <location filename="../settings/systemdoptionpage.ui" line="68"/>
         <source> %</source>
-        <translation type="unfinished"></translation>
+        <translation> %</translation>
     </message>
     <message>
         <location filename="../settings/systemdoptionpage.ui" line="133"/>
@@ -5753,22 +5753,22 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/RemoteSyncProgress.qml" line="17"/>
         <source>Remote sync progress (of connected devices)</source>
-        <translation type="unfinished">Progression de la synchronisation distante (des appareils connectés)</translation>
+        <translation>Progression de la synchronisation distante (des appareils connectés)</translation>
     </message>
     <message>
         <location filename="../quick/qml/RemoteSyncProgress.qml" line="31"/>
         <source>Up to Date</source>
-        <translation type="unfinished">À jour</translation>
+        <translation>À jour</translation>
     </message>
     <message>
         <location filename="../quick/qml/RemoteSyncProgress.qml" line="31"/>
         <source>Not available</source>
-        <translation type="unfinished">Non disponible</translation>
+        <translation>Non disponible</translation>
     </message>
     <message>
         <location filename="../quick/qml/RemoteSyncProgress.qml" line="31"/>
         <source>%1 %</source>
-        <translation type="unfinished">%1 %</translation>
+        <translation>%1 %</translation>
     </message>
 </context>
 <context>
@@ -6074,30 +6074,30 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
         <location filename="../quick/qml/SettingsPage.qml" line="180"/>
         <location filename="../quick/qml/SettingsPage.qml" line="208"/>
         <source>On metered network connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Sur connexion réseau mesurée</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="180"/>
         <source>Pause devices, discovery and relaying</source>
-        <translation type="unfinished"></translation>
+        <translation>Mettre en pause les appareils, la découverte et le relais</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="181"/>
         <location filename="../quick/qml/SettingsPage.qml" line="209"/>
         <source>On battery saving mode</source>
-        <translation type="unfinished"></translation>
+        <translation>En mode d'économie de batterie</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="182"/>
         <location filename="../quick/qml/SettingsPage.qml" line="210"/>
         <source>On battery</source>
-        <translation type="unfinished"></translation>
+        <translation>Sur batterie</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="183"/>
         <location filename="../quick/qml/SettingsPage.qml" line="211"/>
         <source>Battery percentage under</source>
-        <translation type="unfinished"></translation>
+        <translation>Pourcentage de batterie inférieur à</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="184"/>
@@ -6162,7 +6162,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="208"/>
         <source>Stop automatically</source>
-        <translation type="unfinished"></translation>
+        <translation>Arrêter automatiquement</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="212"/>
@@ -6293,12 +6293,12 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="234"/>
         <source>Show Syncthing icons</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher les icônes Syncthing</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="234"/>
         <source>Disable for a cleaner UI</source>
-        <translation type="unfinished"></translation>
+        <translation>Désactiver pour une interface plus épurée</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="240"/>
@@ -6560,47 +6560,47 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/TrayView.qml" line="83"/>
         <source>Folders</source>
-        <translation type="unfinished">Dossiers</translation>
+        <translation>Dossiers</translation>
     </message>
     <message>
         <location filename="../quick/qml/TrayView.qml" line="90"/>
         <source>Devices</source>
-        <translation type="unfinished">Appareils</translation>
+        <translation>Appareils</translation>
     </message>
     <message>
         <location filename="../quick/qml/TrayView.qml" line="96"/>
         <source>Recent changes</source>
-        <translation type="unfinished">Modifications récentes</translation>
+        <translation>Modifications récentes</translation>
     </message>
     <message>
         <location filename="../quick/qml/TrayView.qml" line="108"/>
         <source>Add folder</source>
-        <translation type="unfinished">Ajouter un dossier</translation>
+        <translation>Ajouter un dossier</translation>
     </message>
     <message>
         <location filename="../quick/qml/TrayView.qml" line="114"/>
         <source>Add device</source>
-        <translation type="unfinished">Ajouter un appareil</translation>
+        <translation>Ajouter un appareil</translation>
     </message>
     <message>
         <location filename="../quick/qml/TrayView.qml" line="119"/>
         <source>Rescan all</source>
-        <translation type="unfinished">Tout réanalyser</translation>
+        <translation>Tout réanalyser</translation>
     </message>
     <message>
         <location filename="../quick/qml/TrayView.qml" line="124"/>
         <source>Show ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher l'ID</translation>
     </message>
     <message>
         <location filename="../quick/qml/TrayView.qml" line="129"/>
         <source>Show logs</source>
-        <translation type="unfinished"></translation>
+        <translation>Afficher les journaux</translation>
     </message>
     <message>
         <location filename="../quick/qml/TrayView.qml" line="134"/>
         <source>Filter</source>
-        <translation type="unfinished"></translation>
+        <translation>Filtrer</translation>
     </message>
 </context>
 <context>

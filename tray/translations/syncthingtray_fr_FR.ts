@@ -402,7 +402,7 @@ Pour &lt;i&gt;toutes&lt;/i&gt; les notifications, consultez le journal</translat
     <message>
         <location filename="../gui/traywidget.cpp" line="651"/>
         <source>Syncthing is force-paused, click to resume</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing est mis en pause de force, cliquer pour reprendre</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="655"/>
@@ -412,7 +412,7 @@ Pour &lt;i&gt;toutes&lt;/i&gt; les notifications, consultez le journal</translat
     <message>
         <location filename="../gui/traywidget.cpp" line="656"/>
         <source>Syncthing is running, click to pause all devices, discovery and relaying</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing est en cours d'exécution, cliquer pour mettre en pause tous les appareils, la découverte et le relais</translation>
     </message>
     <message>
         <source>Syncthing is running, click to pause all devices</source>

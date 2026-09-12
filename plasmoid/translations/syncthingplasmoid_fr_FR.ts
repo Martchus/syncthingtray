@@ -38,6 +38,26 @@
         <source>Copy ID</source>
         <translation>Copier l'identifiant (ID)</translation>
     </message>
+    <message>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="16"/>
+        <source>Filter devices</source>
+        <translation>Filtrer les appareils</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="144"/>
+        <source>Edit</source>
+        <translation>Modifier</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="150"/>
+        <source>Out of Sync items</source>
+        <translation>Éléments hors synchronisation</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="155"/>
+        <source>Advanced config</source>
+        <translation>Configuration avancée</translation>
+    </message>
 </context>
 <context>
     <name>DirectoriesPage</name>
@@ -104,6 +124,21 @@
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="208"/>
         <source>Show/edit ignore patterns</source>
         <translation>Afficher/modifier les modèles d'exclusion</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="190"/>
+        <source>Edit</source>
+        <translation>Modifier</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="197"/>
+        <source>Out of Sync items</source>
+        <translation>Éléments hors synchronisation</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="224"/>
+        <source>Advanced config</source>
+        <translation>Configuration avancée</translation>
     </message>
 </context>
 <context>
@@ -254,6 +289,11 @@
         <location filename="../lib/appearanceoptionpage.ui" line="138"/>
         <source>Tab names</source>
         <translation>Afficher le texte des onglets</translation>
+    </message>
+    <message>
+        <location filename="../lib/appearanceoptionpage.ui" line="145"/>
+        <source>Syncthing icons</source>
+        <translation>Icônes Syncthing</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="159"/>
