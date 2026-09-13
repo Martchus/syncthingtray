@@ -2937,208 +2937,208 @@
         <translation>Impossible de supprimer le fichier journal</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="803"/>
+        <location filename="../quick/app.cpp" line="807"/>
         <source>Flush triggered</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="826"/>
+        <location filename="../quick/app.cpp" line="830"/>
         <source>Another import/export still pending</source>
         <translation>Un autre import/export toujours en attente</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="866"/>
+        <location filename="../quick/app.cpp" line="870"/>
         <source>Settings directory was not located.</source>
         <translation>Le répertoire des paramètres n&apos;a pas été trouvé.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="886"/>
+        <location filename="../quick/app.cpp" line="890"/>
         <source>Unable to extract archive: %1</source>
         <translation>Impossible d&apos;extraire l&apos;archive : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="891"/>
+        <location filename="../quick/app.cpp" line="895"/>
         <source>Unable to create temp dir: %1</source>
         <translation>Impossible de créer le rép. temp : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="895"/>
+        <location filename="../quick/app.cpp" line="899"/>
         <source>archiving is only supported on Android.</source>
         <translation>L&apos;archivage n&apos;est supporté que sur Android.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="919"/>
+        <location filename="../quick/app.cpp" line="923"/>
         <source>The Syncthing home directory under &quot;%1&quot; is empty.</source>
         <translation>Le répertoire personnel de Syncthing sous « %1 » est vide.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="932"/>
+        <location filename="../quick/app.cpp" line="936"/>
         <source>No Syncthing configuration file found under &quot;%1&quot;.</source>
         <translation>Aucun fichier de configuration Syncthing trouvé sous « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1020"/>
+        <location filename="../quick/app.cpp" line="1024"/>
         <source>Triggered re-connect with Syncthing backend</source>
         <translation>Reconnexion déclenchée avec le backend Syncthing</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1040"/>
+        <location filename="../quick/app.cpp" line="1044"/>
         <source>Unable to import settings: settings directory was not located.</source>
         <translation>Impossible d&apos;importer les paramètres : le répertoire des paramètres n&apos;a pas été trouvé.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1047"/>
+        <location filename="../quick/app.cpp" line="1051"/>
         <source>Waiting for backend to terminate before importing settings …</source>
         <translation>En attente de la terminaison du backend avant d&apos;importer les paramètres …</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1091"/>
+        <location filename="../quick/app.cpp" line="1095"/>
         <source>Imported app config from &quot;%1&quot;.</source>
         <translation>Configuration de l&apos;application importée depuis « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1104"/>
+        <location filename="../quick/app.cpp" line="1108"/>
         <source>Imported Syncthing config and database from &quot;%1&quot;.</source>
         <translation>Configuration Syncthing et base de données importées depuis « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1122"/>
+        <location filename="../quick/app.cpp" line="1126"/>
         <source>Unable to find folders/devices in current Syncthing config.</source>
         <translation>Impossible de trouver les dossiers/appareils dans la configuration Syncthing actuelle.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1138"/>
+        <location filename="../quick/app.cpp" line="1142"/>
         <source>Merging %1 folders and %2 devices</source>
         <translation>Fusion de %1 dossiers et %2 appareils</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1140"/>
+        <location filename="../quick/app.cpp" line="1144"/>
         <source>Unable to import folders/devices.</source>
         <translation>Impossible d&apos;importer les dossiers/appareils.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1149"/>
+        <location filename="../quick/app.cpp" line="1153"/>
         <source>Unable to remove temp dir: %1</source>
         <translation>Impossible de supprimer le rép. temp : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1155"/>
+        <location filename="../quick/app.cpp" line="1159"/>
         <source>Nothing has been imported.</source>
         <translation>Rien n&apos;a été importé.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1165"/>
+        <location filename="../quick/app.cpp" line="1169"/>
         <source>Unable to import settings: %1</source>
         <translation>Impossible d&apos;importer les paramètres : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1210"/>
+        <location filename="../quick/app.cpp" line="1214"/>
         <source>Waiting for backend to terminate before exporting settings …</source>
         <translation>En attente de la terminaison du backend avant d&apos;exporter les paramètres …</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1226"/>
+        <location filename="../quick/app.cpp" line="1230"/>
         <source>settings directory was not located.</source>
         <translation>Le répertoire des paramètres n&apos;a pas été trouvé.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1232"/>
+        <location filename="../quick/app.cpp" line="1236"/>
         <source>no destination or file or directory specified/configured.</source>
         <translation>aucune destination ou fichier ou répertoire spécifié/configuré.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1244"/>
+        <location filename="../quick/app.cpp" line="1248"/>
         <source>Settings have been archived to &quot;%1&quot;.</source>
         <translation>Les paramètres ont été archivés vers « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1246"/>
+        <location filename="../quick/app.cpp" line="1250"/>
         <source>Archiving is only supported on Android.</source>
         <translation>L&apos;archivage n&apos;est supporté que sur Android.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1252"/>
+        <location filename="../quick/app.cpp" line="1256"/>
         <source>unable to create export directory under &quot;%1&quot;</source>
         <translation>impossible de créer le répertoire d&apos;export sous « %1 »</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1265"/>
+        <location filename="../quick/app.cpp" line="1269"/>
         <source>Settings have been exported to &quot;%1&quot;.</source>
         <translation>Les paramètres ont été exportés vers « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1272"/>
+        <location filename="../quick/app.cpp" line="1276"/>
         <source>Unable to export settings: %1</source>
         <translation>Impossible d&apos;exporter les paramètres : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1334"/>
+        <location filename="../quick/app.cpp" line="1338"/>
         <source>Default directory</source>
         <translation>Répertoire par défaut</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1350"/>
+        <location filename="../quick/app.cpp" line="1354"/>
         <source>External storage %1</source>
         <translation>Stockage externe %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1359"/>
+        <location filename="../quick/app.cpp" line="1363"/>
         <source>Current home directory</source>
         <translation>Répertoire personnel actuel</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1389"/>
+        <location filename="../quick/app.cpp" line="1393"/>
         <source>Unable to move Syncthing home: settings directory was not located.</source>
         <translation>Impossible de déplacer le répertoire personnel Syncthing : le répertoire des paramètres n&apos;a pas été trouvé.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1395"/>
+        <location filename="../quick/app.cpp" line="1399"/>
         <source>Waiting for backend to terminate before moving home …</source>
         <translation>En attente de la terminaison du backend avant de déplacer le répertoire personnel …</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1418"/>
+        <location filename="../quick/app.cpp" line="1422"/>
         <source>Home directory stays the same.</source>
         <translation>Le répertoire personnel reste le même.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1429"/>
+        <location filename="../quick/app.cpp" line="1433"/>
         <source>Cleaned up new home directory &quot;%1&quot;.</source>
         <translation>Nettoyé le nouveau répertoire personnel « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1435"/>
+        <location filename="../quick/app.cpp" line="1439"/>
         <source>Copied data from previous home directory &quot;%1&quot; to new one.</source>
         <translation>Données copiées de l&apos;ancien répertoire personnel « %1 » vers le nouveau.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1438"/>
+        <location filename="../quick/app.cpp" line="1442"/>
         <source>Cleaned up previous home directory.</source>
         <translation>Nettoyé l&apos;ancien répertoire personnel.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1441"/>
+        <location filename="../quick/app.cpp" line="1445"/>
         <source>Configured &quot;%1&quot; as new/empty Syncthing home.</source>
         <translation>Configuré « %1 » comme nouveau répertoire personnel Syncthing vide.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1443"/>
+        <location filename="../quick/app.cpp" line="1447"/>
         <source>Configured &quot;%1&quot; as Syncthing home.</source>
         <translation>Configuré « %1 » comme répertoire personnel Syncthing.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1447"/>
+        <location filename="../quick/app.cpp" line="1451"/>
         <source>Unable to move home directory: %1</source>
         <translation>Impossible de déplacer le répertoire personnel : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1485"/>
+        <location filename="../quick/app.cpp" line="1489"/>
         <location filename="../misc/syncthingmodels.cpp" line="353"/>
         <source>Debugging needs to be enabled under advanced GUI settings first.</source>
         <translation>Le débogage doit d&apos;abord être activé dans les paramètres avancés de l&apos;interface.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1492"/>
+        <location filename="../quick/app.cpp" line="1496"/>
         <location filename="../misc/syncthingmodels.cpp" line="358"/>
         <source>No destination or file or directory specified/configured.</source>
         <translation>Aucune destination ou fichier ou répertoire spécifié/configuré.</translation>
@@ -3159,43 +3159,43 @@
         <translation>Impossible de télécharger le bundle : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1502"/>
+        <location filename="../quick/app.cpp" line="1506"/>
         <location filename="../misc/syncthingmodels.cpp" line="364"/>
         <source>Support bundle saved</source>
         <translation>Bundle de support sauvegardé</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1532"/>
+        <location filename="../quick/app.cpp" line="1536"/>
         <source>Removed old database directory.</source>
         <translation>Ancien répertoire de base de données supprimé.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1534"/>
+        <location filename="../quick/app.cpp" line="1538"/>
         <source>Unable to remove old database directory.</source>
         <translation>Impossible de supprimer l&apos;ancien répertoire de base de données.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1549"/>
+        <location filename="../quick/app.cpp" line="1553"/>
         <source>Unable to remove all support bundles.</source>
         <translation>Impossible de supprimer tous les bundles de support.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1553"/>
+        <location filename="../quick/app.cpp" line="1557"/>
         <source>Support bundles have been removed.</source>
         <translation>Les bundles de support ont été supprimés.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1569"/>
+        <location filename="../quick/app.cpp" line="1573"/>
         <source>Unable to remove leftovers from import under &quot;%1&quot;.</source>
         <translation>Impossible de supprimer les restes de l&apos;import sous « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1574"/>
+        <location filename="../quick/app.cpp" line="1578"/>
         <source>Removed leftovers from import.</source>
         <translation>Restes de l&apos;import supprimés.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1579"/>
+        <location filename="../quick/app.cpp" line="1583"/>
         <source>There was nothing to clean up.</source>
         <translation>Il n&apos;y avait rien à nettoyer.</translation>
     </message>
