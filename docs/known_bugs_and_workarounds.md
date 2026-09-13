@@ -48,9 +48,11 @@ setup is required under GNU/Linux.
 If the modern UI looks broken (e.g. icons are missing), it probably uses an
 unsupported style. This is the case with the new Union style of Plasma
 (`org.kde.union`) which does not yet support all Qt Quick Controls feature that
-Syncthing Tray uses. Start Syncthing Tray with `QT_QUICK_CONTROLS_STYLE=Fusion`
-or `QT_QUICK_CONTROLS_STYLE=org.kde.breeze` to use the Fusion or Breeze style
-instead.
+Syncthing Tray uses. Start Syncthing Tray with `QT_QUICK_CONTROLS_STYLE=Fusion`,
+`QT_QUICK_CONTROLS_STYLE=org.kde.desktop` or `QT_QUICK_CONTROLS_STYLE=org.kde.breeze`
+to use the [Fusion](https://doc.qt.io/qt-6/qtquickcontrols-fusion.html),
+[Desktop](https://invent.kde.org/frameworks/qqc2-desktop-style) or
+[Breeze](https://invent.kde.org/plasma/qqc2-breeze-style) style instead.
 
 ## Dark mode under Windows
 The dark mode introduced in Windows 10 does not affect traditional desktop
