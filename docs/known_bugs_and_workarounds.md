@@ -2,7 +2,7 @@
 The following bugs are caused by dependencies or limitations of certain
 platforms. For bugs of Syncthing Tray itself, check out the issues on GitHub.
 
-## Workaround issues under Wayland
+## Positioning issues under Wayland
 The stand-alone tray application works under Wayland but there are positioning
 issues and the settings regarding positioning have no effect (see
 "[List of bugs](#list-of-bugs)" section below). **Under KDE/Wayland one should
@@ -21,8 +21,8 @@ to place the window, e.g.:
 If your compositor does not support this, you can also select the window type
 "None" in the appearance settings. This opens Syncthing directly when the tray
 icon is clicked and thus completely circumvents this issue. When also enabling
-the [modern UI](../README.md#modern-ui) you can still avoid using the web-based
-UI for most tasks.
+the dashboard of the [modern UI](../README.md#modern-ui) you can still avoid
+using the web-based UI for most tasks.
 
 Alternatively, one can also configure Syncthing Tray to use a normal window in
 the appearance settings. That doesn't fix the positioning issue but then it
@@ -40,7 +40,7 @@ normal application.
   be automatically determined. One also had to add support in Qt for using
   different Wayland shells in one application.
 
-## Tweak GUI settings for dark mode under Windows
+## Dark mode under Windows
 The dark mode introduced in Windows 10 does not affect traditional desktop
 applications like Syncthing Tray. As of version 6.7 the underlying toolkit Qt
 nevertheless provides a style specifically for Windows 11 that supports dark mode.
@@ -98,7 +98,7 @@ Syncthing Tray supports
 out of the box as of Qt 6. You may tweak settings according to the
 [Qt documentation](https://doc.qt.io/qt-6/highdpi.html#configuring-windows).
 
-## Workaround broken High-DPI scaling of Plasmoid under X11
+## Broken High-DPI scaling of Plasmoid under X11
 This problem [has been resolved](https://bugs.kde.org/show_bug.cgi?id=356446#c88) so
 make sure you are using an up-to-date Plasma version. Otherwise, setting the environment
 variable `PLASMA_USE_QT_SCALING=1` might help.
