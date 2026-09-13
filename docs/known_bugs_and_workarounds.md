@@ -40,6 +40,18 @@ normal application.
   be automatically determined. One also had to add support in Qt for using
   different Wayland shells in one application.
 
+## Broken "Modern UI"
+If the modern UI is not shown at all or causes Syncthing Tray to crash under
+GNU/Linux, make sure Vulkan works on your system in general. A working Vulkan
+setup is required under GNU/Linux.
+
+If the modern UI looks broken (e.g. icons are missing), it probably uses an
+unsupported style. This is the case with the new Union style of Plasma
+(`org.kde.union`) which does not yet support all Qt Quick Controls feature that
+Syncthing Tray uses. Start Syncthing Tray with `QT_QUICK_CONTROLS_STYLE=Fusion`
+or `QT_QUICK_CONTROLS_STYLE=org.kde.breeze` to use the Fusion or Breeze style
+instead.
+
 ## Dark mode under Windows
 The dark mode introduced in Windows 10 does not affect traditional desktop
 applications like Syncthing Tray. As of version 6.7 the underlying toolkit Qt

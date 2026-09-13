@@ -210,7 +210,8 @@ directory when Syncthing is launched via the mobile UI.
 It is possible to enable a more modern UI. This UI is a result of porting Syncthing Tray to
 Android and brings back the modern design and many features of the mobile UI to Syncthing Tray
 on the desktop. For instance, it allows editing folders and devices. It also comes with a
-dashboard that looks similar to the official web-based UI.
+dashboard that looks similar to the official web-based UI which can be enabled as alternative
+in the web view settings.
 
 The modern UI is new and there is still room for improvement. Hence it needs to be enabled
 manually. Additionally, Syncthing Tray needs to be built with `-DQUICK_GUI=ON` and Qt 6.10 or
@@ -225,6 +226,9 @@ Changing the [style](https://doc.qt.io/qt-6/qtquickcontrols-styles.html) of the 
 the environment variable `QT_QUICK_CONTROLS_STYLE` or the CLI option `--qqc2-style` only works
 if Syncthing Tray was built with `-DQUICK_GUI_CONTROLS_STYLE=dynamic` as it is done by my
 GNU/Linux packaging. Other builds don't support this to reduce the size of the executable.
+
+If the modern UI does not work, check out the section
+["Broken modern UI"](docs/known_bugs_and_workarounds.md#broken-modern-ui).
 
 In case you prefer the classic UI you can continue using it. It will not be deleted anytime soon.
 However, new UI features will mainly focus on the new UI now.
