@@ -711,6 +711,9 @@ bool App::applyLauncherSettings()
     ensureDefault(mod, launcherSettingsObj, QLatin1String("logLevel"), SyncthingLauncher::libSyncthingLogLevelString(LibSyncthing::LogLevel::Info));
 #endif
     ensureDefault(mod, launcherSettingsObj, QLatin1String("stHomeDir"), QString());
+#ifdef Q_OS_ANDROID
+    ensureDefault(mod, launcherSettingsObj, QLatin1String("startOnBoot"), false);
+#endif
     if (mod) {
         m_settings.insert(QLatin1String("launcher"), launcherSettingsObj);
     }

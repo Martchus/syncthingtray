@@ -1,5 +1,5 @@
 /*
- * This code is based on com.nutomic.syncthingandroid.util from:
+ * Some of this code is based on com.nutomic.syncthingandroid.util from:
  * https://github.com/Catfriend1/syncthing-android/blob/main/app/src/main/java/com/nutomic/syncthingandroid/util/FileUtils.java
  * https://github.com/researchxxl/syncthing-android/blob/main/app/src/main/java/com/nutomic/syncthingandroid/util/FileUtils.java
  */
@@ -20,7 +20,11 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import org.json.JSONException;
+
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.IllegalArgumentException;
 import java.lang.reflect.Array;
 import java.lang.reflect.Method;
@@ -187,6 +191,35 @@ public class Util {
 
         // path does not match known external storage patterns
         return null;
+    }
+
+    private static org.json.JSONObject readConfig(Context context) throws IOException, JSONException {
+        File file = new File(context.getFilesDir(), "settings/appconfig.json");
+        if (!file.exists()) {
+            return new org.json.JSONObject();
+        }
+        java.io.FileInputStream fis = new java.io.FileInputStream(file);
+        byte[] data = new byte[(int) file.length()];
+        int bytesRead = fis.read(data);
+        fis.close();
+        if (bytesRead <= 0) {
+            return new org.json.JSONObject();
+        }
+        String jsonStr = new String(data, 0, bytesRead, "UTF-8");
+        return new org.json.JSONObject(jsonStr);
+    }
+
+    public static boolean shouldStartOnBoot(Context context) {
+        try {
+            org.json.JSONObject obj = readConfig(context);
+            if (obj.has("launcher")) {
+                org.json.JSONObject launcher = obj.getJSONObject("launcher");
+                return launcher.optBoolean("startOnBoot", false);
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "Failed to read startOnBoot setting from appconfig.json: " + e.getMessage());
+        }
+        return false;
     }
 
     private static native void initSigsysHandler();

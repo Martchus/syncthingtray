@@ -204,6 +204,7 @@ StackView {
             ],
             launcher: [
                 {key: "run", label: qsTr("Run Syncthing"), statusText: Qt.binding(() => App.syncthingRunningStatus), category: qsTr("General")},
+                {key: "startOnBoot", type: "boolean", cond: () => Qt.platform.os === "android", defaultValue: false, label: qsTr("Start on boot"), statusText: qsTr("Start the Syncthing service automatically when the device boots")},
                 {key: "guiUrl", type: "readonly", label: qsTr("URL for GUI and API access"), defaultValue: "", statusText: Qt.binding(() => App.syncthingGuiUrl.toString() || qsTr("n/a"))},
                 {key: "stopOnMetered", label: qsTr("On metered network connection"), category: qsTr("Stop automatically"), statusText: Qt.binding(() => App.meteredStatus)},
                 {key: "stopOnBatterySaving", label: qsTr("On battery saving mode"), statusText: Qt.binding(() => App.batterySavingStatus)},
