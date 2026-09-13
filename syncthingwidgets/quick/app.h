@@ -211,6 +211,7 @@ Q_SIGNALS:
     void syncthingConnectRequested();
     void syncthingReconnectRequested();
     void settingsReloadRequested();
+    void logfileFlushRequested();
     void launcherStatusRequested();
     void stoppingLibSyncthingRequested();
     void clearLogRequested();

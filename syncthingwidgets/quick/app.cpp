@@ -799,7 +799,11 @@ bool App::clearLogfile()
 
 bool App::flushLogfile()
 {
+#ifdef Q_OS_ANDROID
     sendMessageToService(ServiceAction::FlushLog);
+#else
+    emit logfileFlushRequested();
+#endif
     emit info(tr("Flush triggered"));
     return true;
 }

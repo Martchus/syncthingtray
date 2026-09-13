@@ -46,6 +46,7 @@ template <typename App, typename AppService> void connectAppAndService(App &quic
     QObject::connect(&quickApp, &App::syncthingReconnectRequested, appService.data()->connection(),
         static_cast<void (Data::SyncthingConnection::*)()>(&Data::SyncthingConnection::reconnect));
     QObject::connect(&quickApp, &App::settingsReloadRequested, &appService, &AppService::reloadSettings);
+    QObject::connect(&quickApp, &App::logfileFlushRequested, &appService, &AppService::flushLog);
     QObject::connect(&quickApp, &App::launcherStatusRequested, &appService, &AppService::broadcastLauncherStatus);
     QObject::connect(&quickApp, &App::clearLogRequested, &appService, &AppService::clearLog);
     QObject::connect(&quickApp, &App::replayLogRequested, &appService, &AppService::replayLog);
