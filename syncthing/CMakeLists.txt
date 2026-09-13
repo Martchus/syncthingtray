@@ -348,6 +348,7 @@ if (SYNCTHINGINTERNAL_LIBRARY_TYPE STREQUAL STATIC)
     if (WIN32)
         set(SYNCTHING_INTERNAL_LIBS ws2_32 winmm)
     elseif (UNIX)
+        set(SYNCTHING_INTERNAL_LIBS resolv)
         set_property(
             TARGET syncthinginternal
             APPEND
