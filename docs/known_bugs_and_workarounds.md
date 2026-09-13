@@ -3,12 +3,12 @@ The following bugs are caused by dependencies or limitations of certain
 platforms. For bugs of Syncthing Tray itself, check out the issues on GitHub.
 
 ## Workaround issues under Wayland
-The stand-alone tray application basically works under Wayland but there are
-positioning issues and the settings regarding positioning have no effect (see
+The stand-alone tray application works under Wayland but there are positioning
+issues and the settings regarding positioning have no effect (see
 "[List of bugs](#list-of-bugs)" section below). **Under KDE/Wayland one should
 simply use the Plasmoid instead of the stand-alone version.**
 
-Otherwise, one can workaround this limitation by telling the window manager how
+Otherwise, one can workaround this limitation by telling the compositor how
 to place the window, e.g.:
 
 * Under Sway one can add a configuration like this:
@@ -18,24 +18,27 @@ to place the window, e.g.:
 * Under KWin one can add a
   [KWin rule](https://raw.githubusercontent.com/Martchus/syncthingtray/refs/heads/master/tray/resources/wayland-positioning-workaround.kwinrule).
 
-It is also not possible to use a popup window under Wayland. Therefore a normal
-window without title bar is used. It will be closed manually when no windows are
-active anymore to emulate the auto-closing behavior of a popup window.
+If your compositor does not support this, you can also select the window type
+"None" in the appearance settings. This opens Syncthing directly when the tray
+icon is clicked and thus completely circumvents this issue. When also enabling
+the [modern UI](../README.md#modern-ui) you can still avoid using the web-based
+UI for most tasks.
 
 Alternatively, one can also configure Syncthing Tray to use a normal window in
 the appearance settings. That doesn't fix the positioning issue but then it
 becomes less problematic as Syncthing Tray will look and behave just like a
 normal application.
 
-You can also select the window type "None" in the appearance settings. This
-disables Syncthing Tray's own UI completely and instead opens Syncthing directly
-when the tray icon is clicked.
-
-Note that use of Layer Shell, which could potentially help, has not been
-implemented yet. Using Layer Shell would be quite some effort. One had to add
-settings in Syncthing Tray to decide where/how to display the popup as this
-could still not be automatically determined. One also had to add support in Qt
-for using different Wayland shells in one application.
+### Further remarks
+* It is not possible to use a popup window under Wayland. So when selecting
+  "Popup" as window type, a normal window without title bar is used. It will be
+  closed manually when no windows are active anymore to emulate the auto-closing
+  behavior of a popup window.
+* Use of Layer Shell, which could potentially help, has not been implemented yet.
+  Using Layer Shell would be quite some effort. One had to add settings in
+  Syncthing Tray to decide where/how to display the popup as this could still not
+  be automatically determined. One also had to add support in Qt for using
+  different Wayland shells in one application.
 
 ## Tweak GUI settings for dark mode under Windows
 The dark mode introduced in Windows 10 does not affect traditional desktop
