@@ -60,6 +60,10 @@ The first things to do after installing and starting the app:
     it into the Syncthing Tray app. So far, there is no in-app QR code scanning.
   * You can leave the device name empty to use the name the device advertises. The device name can
     also be changed later (in contrast to the IDs).
+  * Consider configuring runtime conditions so Syncthing is paused/stopped when the network is
+    metered or the battery is low. Note that some vendors (like Samsung) add the ability to
+    restrict a specific app to "Wi-Fi only" - blocking its mobile data access. This might be a
+    better alternative to handling metered network connections from within the app.
   * It is highly recommended to enable the option "Ignore permissions" on all folders under Android
     and when certain file systems are used. The app, therefore, enables this option by default in
     such cases when a path for a new folder has been selected. You can still disable the option
