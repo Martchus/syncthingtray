@@ -219,6 +219,7 @@ StackView {
                 ]},
                 {key: "openLogs", label: qsTr("Open logs"), statusText: qsTr("Show Syncthing logs since app startup"), defaultValue: () => stackView.push("LogPage.qml", {}, StackView.PushTransition)},
                 {key: "openPersistentLogs", label: qsTr("Open persistent logs"), statusText: qsTr("Open persistent log file externally"), defaultValue: () => App.openSyncthingLogFile()},
+                {key: "flushPersistentLogs", label: qsTr("Flush persistent logs"), statusText: qsTr("Flush persistent log file immediately"), defaultValue: () => App.flushLogfile()},
                 {key: "exePath", type: "filepath", label: qsTr("External executable"), helpUrl: "", desc: qsTr("Start an external executable instead of using the built-in version of Syncthing. When empty, the built-in version of Syncthing is used."), category: qsTr("Advanced")},
             ],
             tweaks: [

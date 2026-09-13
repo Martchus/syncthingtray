@@ -797,6 +797,13 @@ bool App::clearLogfile()
     return storeSettings() && ok;
 }
 
+bool App::flushLogfile()
+{
+    sendMessageToService(ServiceAction::FlushLog);
+    emit info(tr("Flush triggered"));
+    return true;
+}
+
 /*!
  * \brief Opens the Syncthing config file in the standard editor.
  */

@@ -29,6 +29,7 @@ enum class ServiceAction : int {
     CloseLog,
     RequestErrors,
     ReconnectToSyncthing,
+    FlushLog,
 };
 
 enum class ActivityAction : int {

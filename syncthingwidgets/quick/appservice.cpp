@@ -294,6 +294,22 @@ void AppService::replayLog()
 #endif
 }
 
+void AppService::flushLog()
+{
+    if (!m_launcher.logFile().isOpen()) {
+        return;
+    }
+    if (m_launcher.logFile().flush()) {
+        return;
+    }
+    const auto error = tr("Unable to flush log file: %1").arg(m_launcher.logFile().errorString());
+#ifdef Q_OS_ANDROID
+    showError(error);
+#else
+    qDebug() << error;
+#endif
+}
+
 #ifdef Q_OS_ANDROID
 /*!
  * \brief Shows service errors in form of an Android notifications.
@@ -365,6 +381,9 @@ void AppService::handleMessageFromActivity(ServiceAction action, int arg1, int a
         break;
     case ServiceAction::RequestErrors:
         QMetaObject::invokeMethod(m_data.connection(), "requestErrors", Qt::QueuedConnection);
+        break;
+    case ServiceAction::FlushLog:
+        QMetaObject::invokeMethod(this, "flushLog", Qt::QueuedConnection);
         break;
     default:;
     }

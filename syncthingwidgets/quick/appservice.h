@@ -63,6 +63,7 @@ public:
     Q_INVOKABLE void shutdownSyncthing();
     Q_INVOKABLE void clearLog();
     Q_INVOKABLE void replayLog();
+    Q_INVOKABLE void flushLog();
 #ifdef Q_OS_ANDROID
     Q_INVOKABLE void showError(const QString &error);
     Q_INVOKABLE void clearInternalErrors();

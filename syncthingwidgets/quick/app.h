@@ -153,6 +153,7 @@ public:
     Q_INVOKABLE bool applySettings();
     Q_INVOKABLE bool reloadSettings();
     Q_INVOKABLE bool clearLogfile();
+    Q_INVOKABLE bool flushLogfile();
     Q_INVOKABLE bool openSyncthingConfigFile();
     Q_INVOKABLE bool openSyncthingLogFile();
     Q_INVOKABLE QVariantList internalErrors() const;
