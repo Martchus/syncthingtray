@@ -113,7 +113,9 @@ public:
 #if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
     QtGui::QuickUI *quickUI() const;
 #endif
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     Data::SyncthingService *service() const;
+#endif
     QIcon syncthingIcon() const;
     QString incomingTraffic() const;
     bool hasIncomingTraffic() const;
@@ -283,14 +285,12 @@ inline QtGui::QuickUI *SyncthingApplet::quickUI() const
 }
 #endif
 
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 inline Data::SyncthingService *SyncthingApplet::service() const
 {
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     return const_cast<Data::SyncthingService *>(&m_service);
-#else
-    return nullptr;
-#endif
 }
+#endif
 
 inline int SyncthingApplet::currentConnectionConfigIndex() const
 {
