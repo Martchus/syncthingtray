@@ -83,7 +83,9 @@ class SyncthingApplet : public Plasma::Applet {
             currentConnectionConfigIndexChanged)
     Q_PROPERTY(int defaultTab READ defaultTab CONSTANT)
     Q_PROPERTY(bool startStopEnabled READ isStartStopEnabled NOTIFY settingsChanged)
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     Q_PROPERTY(QObject *startStopButtonTarget READ service CONSTANT)
+#endif
     Q_PROPERTY(bool hasInternalErrors READ hasInternalErrors NOTIFY hasInternalErrorsChanged)
     Q_PROPERTY(QSize size READ size WRITE setSize NOTIFY sizeChanged)
     Q_PROPERTY(bool showTabTexts READ isShowingTabTexts WRITE setShowingTabTexts NOTIFY showTabTextsChanged)
