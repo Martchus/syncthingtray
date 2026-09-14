@@ -108,6 +108,7 @@ static std::pair<const QNetworkInformation *, bool> loadNetworkInformationBacken
 }
 #endif
 
+#ifdef SYNCTHINGCONNECTION_SUPPORT_BATTERY_MONITORING
 /*!
  * \brief The BatteryMonitorBase class is a base class for battery monitoring,
  * providing the capability to query and update battery states across all runtime condition instances.
@@ -145,6 +146,7 @@ protected:
     std::optional<int> m_batteryLevel; /*!< The current battery level percentage (0-100). */
     std::optional<bool> m_batterySaving; /*!< Whether battery saving mode is enabled. */
 };
+#endif
 
 #if defined(Q_OS_ANDROID)
 /*!
