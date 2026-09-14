@@ -8,7 +8,7 @@ issues and the settings regarding positioning have no effect (see
 "[List of bugs](#list-of-bugs)" section below). **Under KDE/Wayland one should
 simply use the Plasmoid instead of the stand-alone version.**
 
-Otherwise, one can workaround this limitation by telling the compositor how
+Otherwise, one can work around this limitation by telling the compositor how
 to place the window, e.g.:
 
 * Under Sway one can add a configuration like this:
