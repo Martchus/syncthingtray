@@ -345,6 +345,9 @@ The following permissions are required:
     * Needed for automatically starting Syncthing after a reboot.
 * `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`
     * Needed to allow asking for permission to disable battery optimizations.
+* `ACCESS_LOCAL_NETWORK`
+    * On Android 17 and newer, local network access requires explicit permission. This is
+      needed for local discovery and direct transfers on your LAN.
 
 ### Permissions that might be required in the future
 These permissions are currently not required but might be required when further features are

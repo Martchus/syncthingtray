@@ -14,6 +14,8 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE"/>
+    <!-- permission for local network traffic will be required as of target SDK 37, see https://developer.android.com/privacy-and-security/local-network-permission#android-17-enforcement -->
+    <!--<uses-permission android:name="android.permission.ACCESS_LOCAL_NETWORK" />-->
     <!-- %%INSERT_FEATURES -->
     <supports-screens
         android:anyDensity="true"
