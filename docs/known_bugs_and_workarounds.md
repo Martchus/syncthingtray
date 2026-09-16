@@ -48,10 +48,11 @@ setup is required under GNU/Linux.
 If the modern UI looks broken (e.g. icons are missing), it probably uses an
 unsupported style. This is the case with the new
 [Union](https://invent.kde.org/plasma/union) style of Plasma (`org.kde.union`)
-which does not yet support all Qt Quick Controls feature that Syncthing Tray
-uses. Start Syncthing Tray with `QT_QUICK_CONTROLS_STYLE=Fusion`,
-`QT_QUICK_CONTROLS_STYLE=org.kde.desktop` or `QT_QUICK_CONTROLS_STYLE=org.kde.breeze`
-to use the [Fusion](https://doc.qt.io/qt-6/qtquickcontrols-fusion.html),
+which does [not yet support](https://bugs.kde.org/show_bug.cgi?id=525806) all
+Qt Quick Controls feature that Syncthing Tray uses. Start Syncthing Tray with
+`QT_QUICK_CONTROLS_STYLE=Fusion`, `QT_QUICK_CONTROLS_STYLE=org.kde.desktop` or
+`QT_QUICK_CONTROLS_STYLE=org.kde.breeze` to use the
+[Fusion](https://doc.qt.io/qt-6/qtquickcontrols-fusion.html),
 [Desktop](https://invent.kde.org/frameworks/qqc2-desktop-style) or
 [Breeze](https://invent.kde.org/plasma/qqc2-breeze-style) style instead.
 
