@@ -94,7 +94,7 @@ Application::Application()
     m_args.dev.setCallback(bind(&Application::initDevCompletion, this, ref(m_args.dev), _1));
 
     // connect signals and slots
-    connect(&m_connection, &SyncthingConnection::newConfig, this, &Application::invalidateDirsAndDevs);
+    connect(&m_connection, &SyncthingConnection::newConfigAboutToBeApplied, this, &Application::invalidateDirsAndDevs);
     connect(&m_connection, &SyncthingConnection::statusChanged, this, &Application::handleStatusChanged);
     connect(&m_connection, &SyncthingConnection::error, this, &Application::handleError);
 }
