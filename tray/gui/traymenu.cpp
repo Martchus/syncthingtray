@@ -300,7 +300,7 @@ void TrayMenu::paintEvent(QPaintEvent *event)
 void TrayMenu::focusOutEvent(QFocusEvent *)
 {
     if (m_windowType == WindowType::CustomWindow) {
-        if (const auto *fw = focusWidget(); fw->hasFocus()) {
+        if (const auto *fw = focusWidget(); fw && fw->hasFocus()) {
             return;
         }
         close();
