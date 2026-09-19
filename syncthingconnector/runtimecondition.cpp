@@ -926,10 +926,15 @@ void RuntimeCondition::initializeBatteryMonitoring() const
 {
     if (!(m_initializedConditions && (Conditions::BatterySaving | Conditions::OnBattery))) {
 #ifdef SYNCTHINGCONNECTION_SUPPORT_BATTERY_MONITORING
-        if (!s_batteryMonitor) {
+        static auto initializing = false;
+        if (!s_batteryMonitor && !initializing) {
+            initializing = true;
             s_batteryMonitor = std::make_unique<BatteryMonitor>();
+            initializing = false;
         }
-        s_batteryMonitor->queryState(this);
+        if (s_batteryMonitor) {
+            s_batteryMonitor->queryState(this);
+        }
 #endif
         m_initializedConditions += Conditions::BatterySaving | Conditions::OnBattery;
     }
