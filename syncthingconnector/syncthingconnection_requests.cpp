@@ -993,9 +993,11 @@ void SyncthingConnection::readDevs(const QJsonArray &devs, bool inPlace)
             return nullptr;
         }
         auto *const devItem = inPlace ? findDevInfo(m_myId, thisDeviceRow) : addDevInfo(newDevs, m_myId);
-        devItem->id = m_myId;
-        devItem->status = SyncthingDevStatus::ThisDevice;
-        devItem->paused = false;
+        if (devItem) {
+            devItem->id = m_myId;
+            devItem->status = SyncthingDevStatus::ThisDevice;
+            devItem->paused = false;
+        }
         return devItem;
     })();
     assert(thisDeviceRow == 0 || thisDeviceRow == -1);
