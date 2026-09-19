@@ -157,6 +157,11 @@ SyncthingProcess::SyncthingProcess(QObject *parent)
  */
 SyncthingProcess::~SyncthingProcess()
 {
+#ifdef Q_OS_WINDOWS
+    if (auto *const app = QCoreApplication::instance()) {
+        app->removeNativeEventFilter(this);
+    }
+#endif
 #ifdef LIB_SYNCTHING_CONNECTOR_BOOST_PROCESS
     // block until all callbacks have been processed
     const auto lock = std::lock_guard<std::mutex>(m_processMutex);
