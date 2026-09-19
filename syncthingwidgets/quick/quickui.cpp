@@ -106,7 +106,7 @@ QuickUI::~QuickUI()
 QuickUI *QuickUI::create(QQmlEngine *qmlEngine, QJSEngine *engine)
 {
     auto *const quickUI = dataObjectFromProperty<QuickUI>(qmlEngine, engine);
-    if (qmlEngine) {
+    if (quickUI) {
         auto *const imageProvider = new QtForkAwesome::QuickImageProvider(Data::IconManager::instance().forkAwesomeRenderer());
         connect(quickUI->m_imageProvider = imageProvider, &QObject::destroyed, quickUI, [quickUI]() { quickUI->m_imageProvider = nullptr; });
         qmlEngine->addImageProvider(QStringLiteral("fa"), imageProvider);
