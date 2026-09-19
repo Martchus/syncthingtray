@@ -294,7 +294,7 @@ private:
             return 0;
         }
         auto *self = reinterpret_cast<BatteryMonitor *>(GetWindowLongPtrW(hwnd, GWLP_USERDATA));
-        if (self && uMsg == WM_POWERBROADCAST && wParam == PBT_POWERSETTINGCHANGE) {
+        if (self && uMsg == WM_POWERBROADCAST && wParam == PBT_POWERSETTINGCHANGE && lParam) {
             const auto *setting = reinterpret_cast<const POWERBROADCAST_SETTING *>(lParam);
             self->handlePowerSetting(setting);
         }
