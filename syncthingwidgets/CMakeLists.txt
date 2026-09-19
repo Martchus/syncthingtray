@@ -8,7 +8,6 @@ set(META_PUBLIC_QT_MODULES Gui Widgets WebEngineCore WebEngineWidgets)
 set(META_WEBVIEW_SRC_DIR webview)
 set(META_WEBVIEW_WITH_CORE ON)
 set(META_GUI_OPTIONAL ON)
-set(META_CXX_STANDARD 20)
 if (QUICK_GUI AND WIDGETS_GUI)
     set(META_QT_VERSION 6.10.0)
 elseif (QUICK_GUI)
@@ -249,7 +248,7 @@ if (WIDGETS_GUI)
 endif ()
 
 # find c++utilities
-find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.31.0 REQUIRED)
+find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.36.0 REQUIRED)
 use_cpp_utilities(VISIBILITY PUBLIC)
 
 # find qtutilities

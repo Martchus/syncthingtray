@@ -117,11 +117,6 @@ set(REQUIRED_ICONS
     window-close
     window-pin)
 
-# configure use of C++ 20 in Android-specific code
-if (ANDROID)
-    set(META_CXX_STANDARD 20)
-endif ()
-
 # configure optional features
 option(
     SETUP_TOOLS
@@ -130,7 +125,7 @@ option(
 option(USE_LIBSYNCTHING "whether libsyncthing should be included for syncthingtray's CLI" OFF)
 
 # find c++utilities
-set(CPP_UTILITIES_REQUIRED_VERSION 5.33.0)
+set(CPP_UTILITIES_REQUIRED_VERSION 5.36.0)
 find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} ${CPP_UTILITIES_REQUIRED_VERSION}
              REQUIRED)
 use_cpp_utilities()
