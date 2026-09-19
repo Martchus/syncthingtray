@@ -103,10 +103,12 @@ public class SyncthingService extends QtService {
         public void handleMessage(Message msg) {
             switch (msg.what) {
             case MSG_REGISTER_CLIENT:
+                Log.i(TAG, "Client registered");
                 m_clients.add(msg.replyTo);
                 showForegroundNotification(); // ensure notification is still shown after it might have been dismissed
                 break;
             case MSG_UNREGISTER_CLIENT:
+                Log.i(TAG, "Client unregistered");
                 m_clients.remove(msg.replyTo);
                 break;
             case MSG_SHOW_FOREGROUND_NOTIFICATION:
@@ -153,6 +155,7 @@ public class SyncthingService extends QtService {
 
     public int sendMessageToClients(int what, int arg1, int arg2, Bundle data) {
         int messagesSent = 0;
+        Log.i(TAG, String.format("Sending message to %s clients: %s", m_clients.size(), what));
         for (int i = m_clients.size() - 1; i >= 0; --i) {
             try {
                 m_clients.get(i).send(obtainMessageWithBundle(what, arg1, arg2, data));
