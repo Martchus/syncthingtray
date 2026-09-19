@@ -1,3 +1,4 @@
+#include "../runtimecondition.h"
 #include "../syncthingconfig.h"
 #include "../syncthingconnection.h"
 #include "../syncthingconnectionsettings.h"
@@ -43,6 +44,7 @@ class MiscTests : public TestFixture {
     CPPUNIT_TEST(testDirInsertion);
     CPPUNIT_TEST(testDevInsertionWithoutMyId);
     CPPUNIT_TEST(testDevInsertionWithMyId);
+    CPPUNIT_TEST(testRuntimeCondition);
     CPPUNIT_TEST_SUITE_END();
 
 public:
@@ -62,6 +64,7 @@ public:
     void testDirInsertion();
     void testDevInsertionWithoutMyId();
     void testDevInsertionWithMyId();
+    void testRuntimeCondition();
 
     void setUp() override;
     void tearDown() override;
@@ -460,4 +463,37 @@ void MiscTests::testDevInsertionWithMyId()
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("Foo changed"), devs.at(1).name);
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("bar"), devs.at(2).id);
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("Bar changed"), devs.at(2).name);
+}
+
+/*!
+ * \brief Tests RuntimeCondition.
+ * \remarks This test is very basic that mainly ensures that it does not crash.
+ */
+void MiscTests::testRuntimeCondition()
+{
+    auto condition = RuntimeCondition(
+        RuntimeCondition::Conditions::Metered | RuntimeCondition::Conditions::BatterySaving | RuntimeCondition::Conditions::OnBattery);
+    auto meteredChangedEmitted = false;
+    auto batterySavingChangedEmitted = false;
+    auto onBatteryChangedEmitted = false;
+
+    // register handlers to verify that calling getters from signal handlers does not lead to infinite recursion
+    // note: Depending on the backend implementation, these might not be called at all in this test, though.
+    QObject::connect(&condition, &RuntimeCondition::networkConnectionMeteredChanged, &condition, [&condition, &meteredChangedEmitted]() {
+        meteredChangedEmitted = true;
+        condition.isNetworkConnectionMetered();
+    });
+    QObject::connect(&condition, &RuntimeCondition::batterySavingChanged, &condition, [&condition, &batterySavingChangedEmitted]() {
+        batterySavingChangedEmitted = true;
+        condition.isBatterySaving();
+    });
+    QObject::connect(&condition, &RuntimeCondition::onBatteryChanged, &condition, [&condition, &onBatteryChangedEmitted]() {
+        onBatteryChangedEmitted = true;
+        condition.isOnBattery();
+    });
+
+    CPPUNIT_ASSERT_NO_THROW(condition.isBatterySaving());
+    CPPUNIT_ASSERT_NO_THROW(condition.isBatterySaving());
+    CPPUNIT_ASSERT_NO_THROW(condition.isOnBattery());
+    CPPUNIT_ASSERT_NO_THROW(condition.isNetworkConnectionMetered());
 }
