@@ -210,14 +210,14 @@ StackView {
                 {key: "stopOnBatterySaving", label: qsTr("On battery saving mode"), statusText: Qt.binding(() => App.batterySavingStatus)},
                 {key: "stopOnBattery", label: qsTr("On battery"), statusText: Qt.binding(() => App.onBatteryStatus)},
                 {key: "stopOnBatteryMinPercentage", type: "range", from: 0, to: 100, suffix: " %", defaultValue: 100, label: qsTr("Battery percentage under")},
-                {key: "writeLogFile", label: qsTr("Write persistent log file"), statusText: qsTr("Write a persistent log file into the app directory"), category: qsTr("Logging")},
-                {key: "logLevel", label: qsTr("Log level"), type: "options", options: [
+                {key: "logLevel", label: qsTr("Log level"), type: "options", category: qsTr("Logging"), options: [
                     {value: "debug", label: qsTr("Debug")},
                     {value: "info", label: qsTr("Info")},
                     {value: "warning", label: qsTr("Warning")},
                     {value: "error", label: qsTr("Error")},
                 ]},
                 {key: "openLogs", label: qsTr("Open logs"), statusText: qsTr("Show Syncthing logs since app startup"), defaultValue: () => stackView.push("LogPage.qml", {}, StackView.PushTransition)},
+                {key: "writeLogFile", label: qsTr("Write persistent log file"), statusText: qsTr("Write a persistent log file into the app directory")},
                 {key: "openPersistentLogs", label: qsTr("Open persistent logs"), statusText: qsTr("Open persistent log file externally"), defaultValue: () => App.openSyncthingLogFile()},
                 {key: "flushPersistentLogs", label: qsTr("Flush persistent logs"), statusText: qsTr("Flush persistent log file immediately"), defaultValue: () => App.flushLogfile()},
                 {key: "exePath", type: "filepath", label: qsTr("External executable"), helpUrl: "", desc: qsTr("Start an external executable instead of using the built-in version of Syncthing. When empty, the built-in version of Syncthing is used."), category: qsTr("Advanced")},
