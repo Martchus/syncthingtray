@@ -323,6 +323,8 @@ On Windows, you'll have to use the `syncthingtray-cli` executable to see output 
   for details
 * `QT_QUICK_CONTROLS_STYLE`: the style to use in the Qt Quick GUI, check out the
   [Qt documentation](https://doc.qt.io/qt-6/qtquickcontrols-styles.html) for available options
+* `SYNCTHINGWIDGETS_QT_QUICK_CONTROLS_STYLE`: same as `QT_QUICK_CONTROLS_STYLE` but only affects
+  Syncthing Tray
 * `QT_QUICK_CONTROLS_MATERIAL_THEME`/`QT_QUICK_CONTROLS_UNIVERSAL_THEME`: the theme to use in the Qt
   Quick GUI, the variable and options depend on the style being used
 * `LIB_SYNCTHING_CONNECTOR_POWER_MONITORING_FORCE_SYS_FS`: forces polling `/sys/class/power_supply`

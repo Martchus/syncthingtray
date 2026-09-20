@@ -87,6 +87,11 @@ QuickUI::QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQml
     , m_darkPalette(app ? QT_UTILITIES_IS_PALETTE_DARK(app->palette()) : false)
     , m_syncthingIconsVisible(true)
 {
+#ifndef SYNCTHINGWIDGETS_QUICK_GUI_CONTROLS_STYLE
+    if (const auto style = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_QT_QUICK_CONTROLS_STYLE"); !style.isEmpty()) {
+        QQuickStyle::setStyle(m_style = style);
+    }
+#endif
     if (app) {
         app->setWindowIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
         app->installEventFilter(this);

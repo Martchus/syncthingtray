@@ -54,7 +54,9 @@ Qt Quick Controls feature that Syncthing Tray uses. Start Syncthing Tray with
 `QT_QUICK_CONTROLS_STYLE=org.kde.breeze` to use the
 [Fusion](https://doc.qt.io/qt-6/qtquickcontrols-fusion.html),
 [Desktop](https://invent.kde.org/frameworks/qqc2-desktop-style) or
-[Breeze](https://invent.kde.org/plasma/qqc2-breeze-style) style instead.
+[Breeze](https://invent.kde.org/plasma/qqc2-breeze-style) style instead. You
+can also use `SYNCTHINGWIDGETS_QT_QUICK_CONTROLS_STYLE` to apply the setting
+only to Syncthing Tray.
 
 ## Dark mode under Windows
 The dark mode introduced in Windows 10 does not affect traditional desktop
