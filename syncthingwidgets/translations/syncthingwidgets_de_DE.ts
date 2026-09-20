@@ -1398,7 +1398,7 @@
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="360"/>
         <source>Rescan all</source>
-        <translation>All scannen</translation>
+        <translation>Alle scannen</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="367"/>
