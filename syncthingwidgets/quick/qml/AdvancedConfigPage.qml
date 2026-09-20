@@ -14,12 +14,14 @@ ObjectConfigPage {
         Action {
             text: qsTr("Remove %1").arg(entryName)
             icon.source: QuickUI.faUrlBase + "trash-o"
+            icon.name: "entry-delete"
             enabled: advancedConfigPage.configObjectExists
             onTriggered: removeDialog.open()
         },
         Action {
             text: qsTr("Apply")
             icon.source: QuickUI.faUrlBase + "check"
+            icon.name: "dialog-apply"
             onTriggered: advancedConfigPage.applyChanges()
         }
     ]

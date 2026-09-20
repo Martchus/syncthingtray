@@ -8,8 +8,8 @@ import Main
 ItemDelegate {
     id: mainDelegate
     width: mainView.width - (mainView.ScrollBar?.vertical ? mainView.ScrollBar.vertical.width : 0)
-    topPadding: QuickUI.desktop ? 2 : 4
-    bottomPadding: QuickUI.desktop ? 2 : 4
+    topPadding: Utils.listItemTopPadding
+    bottomPadding: Utils.listItemBottomPadding
     activeFocusOnTab: true
     Keys.onReturnPressed: (event) => detailsView.visible = !detailsView.visible
     Keys.onMenuPressed: (event) => mainDelegate.showMenu(event)
@@ -73,6 +73,7 @@ ItemDelegate {
                     visible: buttonRepeater.visible
                     enabled: modelData.enabled
                     icon.source: modelData.icon.source
+                    icon.name: modelData.icon.name
                     onClicked: modelData.trigger(source)
                     required property Action modelData
                 }
@@ -82,6 +83,7 @@ ItemDelegate {
                 visible: !buttonRepeater.visible || mainDelegate.extraActions.length > 0
                 text: qsTr("More actions")
                 icon.source: QuickUI.faUrlBase + "ellipsis-v"
+                icon.name: Utils.fallbackIconName("view-more-horizontal-symbolic")
                 onClicked: mainDelegate.showMenu()
                 CustomMenu {
                     id: menu

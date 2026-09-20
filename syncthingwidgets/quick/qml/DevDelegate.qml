@@ -36,6 +36,7 @@ ExpandableDelegate {
                 text: modelData.paused ? qsTr("Resume") : qsTr("Pause")
                 enabled: !modelData.isThisDevice
                 icon.source: QuickUI.faUrlBase + (modelData.paused ? "play" : "pause")
+                icon.name: Utils.fallbackIconName(modelData.paused ? "media-playback-start" : "media-playback-pause")
                 onTriggered: SyncthingData.connection[modelData.paused ? "resumeDevice" : "pauseDevice"]([modelData.devId])
             }
         ]

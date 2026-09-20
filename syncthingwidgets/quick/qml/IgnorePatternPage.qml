@@ -12,11 +12,13 @@ Page {
         Action {
             text: qsTr("Help")
             icon.source: QuickUI.faUrlBase + "question"
+            icon.name: "help-symbolic"
             onTriggered: helpDialog.visible = true
         },
         Action {
             text: qsTr("Save")
             icon.source: QuickUI.faUrlBase + "floppy-o"
+            icon.name: "document-save"
             onTriggered: SyncthingModels.saveIgnorePatterns(page.dirId, textArea)
         }
     ]

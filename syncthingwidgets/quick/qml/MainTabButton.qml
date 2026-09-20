@@ -8,6 +8,7 @@ TabButton {
     display: parent.width > 400 ? tabButton.displayWithIcon : AbstractButton.IconOnly
     font.pointSize: 7
     icon.source: QuickUI.faUrlBase + iconName
+    icon.name: Utils.fallbackIconName(iconNameTheme)
     icon.width: QuickUI.iconSize
     icon.height: QuickUI.iconSize
     onClicked: pageStack?.setCurrentIndex(tabIndex)
@@ -16,6 +17,7 @@ TabButton {
     ToolTip.text: text
     ToolTip.delay: Qt.styleHints.mousePressAndHoldInterval
     required property string iconName
+    required property string iconNameTheme
     required property int tabIndex
     property int displayWithIcon: AbstractButton.TextUnderIcon
 }

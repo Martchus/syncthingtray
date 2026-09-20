@@ -82,6 +82,7 @@ Pane {
                     id: foldersButton
                     text: qsTr("Folders")
                     iconName: "folder"
+                    iconNameTheme: "folder-symbolic"
                     tabIndex: 0
                     displayWithIcon: AbstractButton.TextBesideIcon
                 }
@@ -89,12 +90,14 @@ Pane {
                     id: devsButton
                     text: qsTr("Devices")
                     iconName: "sitemap"
+                    iconNameTheme: "preferences-system-network-symbolic"
                     tabIndex: 1
                     displayWithIcon: AbstractButton.TextBesideIcon
                 }
                 MainTabButton {
                     text: qsTr("Recent changes")
                     iconName: "history"
+                    iconNameTheme: "view-history"
                     tabIndex: 2
                     displayWithIcon: AbstractButton.TextBesideIcon
                 }
@@ -107,32 +110,38 @@ Pane {
                     visible: tabBar.currentIndex === foldersButton.tabIndex
                     text: qsTr("Add folder")
                     icon.source: QuickUI.faUrlBase + "plus"
+                    icon.name: Utils.fallbackIconName("list-add")
                     onClicked: QuickUI.editDir("", "", null)
                 }
                 IconOnlyButton {
                     visible: tabBar.currentIndex === devsButton.tabIndex
                     text: qsTr("Add device")
                     icon.source: QuickUI.faUrlBase + "plus"
+                    icon.name: Utils.fallbackIconName("list-add")
                     onClicked: QuickUI.editDev("", "", null)
                 }
                 IconOnlyButton {
                     text: qsTr("Rescan all")
                     icon.source: QuickUI.faUrlBase + "refresh"
+                    icon.name: Utils.fallbackIconName("view-refresh")
                     onClicked: SyncthingData.connection.rescanAllDirs()
                 }
                 IconOnlyButton {
                     text: qsTr("Show ID")
                     icon.source: QuickUI.faUrlBase + "qrcode"
+                    icon.name: Utils.fallbackIconName("view-barcode-qr")
                     onClicked: TrayWidget.showOwnDeviceId()
                 }
                 IconOnlyButton {
                     text: qsTr("Show logs")
                     icon.source: QuickUI.faUrlBase + "terminal"
+                    icon.name: Utils.fallbackIconName("terminal-app-symbolic")
                     onClicked: TrayWidget.showLog()
                 }
                 IconOnlyButton {
                     text: qsTr("Filter")
                     icon.source: QuickUI.faUrlBase + "search"
+                    icon.name: Utils.fallbackIconName("search")
                     onClicked: searchField.toggle()
                 }
             }

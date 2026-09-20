@@ -8,6 +8,10 @@ import Main
 QtObject {
     readonly property bool flatDialogButtons: QuickUI.style === "Material"
     readonly property bool winUI: QuickUI.style === "FluentWinUI3"
+    readonly property bool kdeUnion: QuickUI.style === "org.kde.union"
+    readonly property bool kde: QuickUI.style.startsWith("org.kde.")
+    readonly property int listItemTopPadding: winUI ? 0 : kdeUnion ? 10 : 4
+    readonly property int listItemBottomPadding: winUI ? 0 : 4
     readonly property var popupType: {
         switch (QuickUI.popupType) {
         case 1:
@@ -17,6 +21,11 @@ QtObject {
         default:
             return Popup.Item;
         }
+    }
+
+    function fallbackIconName(n) {
+        // returns an icon name for styles not supporting icon.source
+        return kdeUnion ? n : "";
     }
 
     function submitPage(page, force) {

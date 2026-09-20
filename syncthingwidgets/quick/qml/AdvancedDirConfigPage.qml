@@ -15,6 +15,7 @@ AdvancedConfigPage {
         Action {
             text: qsTr("Ignore patterns")
             icon.source: QuickUI.faUrlBase + "filter"
+            icon.name: "filter-symbolic"
             enabled: dirConfigPage.configObjectExists
             onTriggered: QuickUI.editIgnorePatterns(dirConfigPage.dirId, dirConfigPage.dirName, dirConfigPage.stackView)
         }

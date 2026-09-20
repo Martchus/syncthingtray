@@ -45,6 +45,7 @@ ApplicationWindow {
                 icon.width: QuickUI.iconSize
                 icon.height: QuickUI.iconSize
                 icon.source: Utils.winUI ? "" : QuickUI.faUrlBase + "times"
+                icon.name: Utils.kde ? "dialog-cancel" : ""
                 text: qsTr("Close")
                 flat: Utils.flatDialogButtons
                 onClicked: pageWindow.close()
@@ -61,6 +62,7 @@ ApplicationWindow {
                             icon.width: QuickUI.iconSize
                             icon.height: QuickUI.iconSize
                             icon.source: Utils.winUI ? "" : modelData.icon.source
+                            icon.name: Utils.kde ? modelData.icon.name : ""
                             palette.button: stackView.currentItem?.isDangerous ? Qt.tint(pageWindow.palette.button, "#50FF0000") : pageWindow.palette.button
                             enabled: modelData.enabled
                             text: modelData.text
@@ -79,6 +81,7 @@ ApplicationWindow {
             IconOnlyButton {  // using IconOnlyButton because normal Button does not show icon with Breeze style
                 visible: stackView.depth > 1
                 icon.source: QuickUI.faUrlBase + "arrow-left"
+                icon.name: Utils.fallbackIconName("draw-arrow-back")
                 text: qsTr("Back")
                 onClicked: pageWindow.pop()
                 onVisibleChanged: textButtons.width = Qt.binding(() => footerPane.width - 1)
@@ -87,6 +90,7 @@ ApplicationWindow {
                 id: extraActionsMenuButton
                 visible: currentPage.extraActions?.length > 0
                 icon.source: QuickUI.faUrlBase + "ellipsis-v"
+                icon.name: Utils.fallbackIconName("view-more-horizontal-symbolic")
                 text: qsTr("More")
                 onClicked: currentPage?.showExtraActions() ?? extraActionsMenu.showCenteredIn(extraActionsMenuButton)
                 CustomMenu {

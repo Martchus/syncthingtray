@@ -21,6 +21,7 @@ StackView {
             Action {
                 text: qsTr("Add device")
                 icon.source: QuickUI.faUrlBase + "plus"
+                icon.name: Utils.fallbackIconName("list-add")
                 onTriggered: stackView.add()
             }
         ]
@@ -28,11 +29,13 @@ StackView {
             Action {
                 text: qsTr("Pause all")
                 icon.source: QuickUI.faUrlBase + "pause"
+                icon.name: Utils.fallbackIconName("media-playback-pause")
                 onTriggered: SyncthingData.connection.pauseAllDevs()
             },
             Action {
                 text: qsTr("Resume all")
                 icon.source: QuickUI.faUrlBase + "play"
+                icon.name: Utils.fallbackIconName("media-playback-start")
                 onTriggered: SyncthingData.connection.resumeAllDevs()
             }
         ]
