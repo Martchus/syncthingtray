@@ -42,7 +42,7 @@
 <context>
     <name>AdvancedConfigPage</name>
     <message>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="21"/>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="22"/>
         <source>Apply</source>
         <translation>Appliquer</translation>
     </message>
@@ -52,27 +52,27 @@
     </message>
     <message>
         <location filename="../quick/qml/AdvancedConfigPage.qml" line="15"/>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="29"/>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="31"/>
         <source>Remove %1</source>
         <translation>Supprimer %1</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="33"/>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="35"/>
         <source>Do you really want to remove the %1?</source>
         <translation>Voulez-vous vraiment supprimer %1 ?</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="38"/>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="40"/>
         <source>This will only remove the %1 from Syncthing. No files will be deleted on disk.</source>
         <translation>Cela supprimera uniquement %1 de Syncthing. Aucun fichier ne sera supprimé sur le disque.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="88"/>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="90"/>
         <source>The ID must not be empty.</source>
         <translation>L&apos;ID ne doit pas être vide.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedConfigPage.qml" line="98"/>
+        <location filename="../quick/qml/AdvancedConfigPage.qml" line="100"/>
         <source>Can&apos;t apply, ID is already used.</source>
         <translation>Impossible d&apos;appliquer, l&apos;ID est déjà utilisé.</translation>
     </message>
@@ -846,8 +846,8 @@
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="90"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="399"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="588"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="404"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="601"/>
         <source>Statistics</source>
         <translation>Statistiques</translation>
     </message>
@@ -941,7 +941,7 @@
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="328"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="594"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="608"/>
         <source>Folders</source>
         <translation>Dossiers</translation>
     </message>
@@ -951,80 +951,80 @@
         <translation>Ajouter un dossier</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="343"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="543"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="344"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="553"/>
         <source>Pause all</source>
         <translation>Tout mettre en pause</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="350"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="550"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="352"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="561"/>
         <source>Resume all</source>
         <translation>Tout reprendre</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="357"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="360"/>
         <source>Rescan all</source>
         <translation>Tout réanalyser</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="363"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="367"/>
         <source>Filter folders</source>
         <translation>Filtrer les dossiers</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="408"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="413"/>
         <source>Recent changes</source>
         <translation>Modifications récentes</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="415"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="421"/>
         <source>Show ID</source>
         <translation>Afficher l&apos;ID</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="422"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="429"/>
         <source>Show logs</source>
         <translation>Afficher les journaux</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="429"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="437"/>
         <source>Show statistics</source>
         <translation>Afficher les statistiques</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="470"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="479"/>
         <source>Global state</source>
         <translation>État global</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="478"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="487"/>
         <source>Local state</source>
         <translation>État local</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="527"/>
-        <location filename="../quick/qml/DesktopWindow.qml" line="600"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="536"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="615"/>
         <source>Devices</source>
         <translation>Appareils</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="536"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="545"/>
         <source>Add device</source>
         <translation>Ajouter un appareil</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="557"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="569"/>
         <source>Filter devices</source>
         <translation>Filtrer les appareils</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="631"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="647"/>
         <source>Save support bundle</source>
         <translation type="unfinished">Enregistrer le bundle de support</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DesktopWindow.qml" line="632"/>
+        <location filename="../quick/qml/DesktopWindow.qml" line="648"/>
         <source>Zip archives (*.zip)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1260,27 +1260,27 @@
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevDelegate.qml" line="45"/>
+        <location filename="../quick/qml/DevDelegate.qml" line="46"/>
         <source>Copy name</source>
         <translation>Copier le nom</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevDelegate.qml" line="51"/>
+        <location filename="../quick/qml/DevDelegate.qml" line="52"/>
         <source>Copy ID</source>
         <translation>Copier l&apos;ID</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevDelegate.qml" line="57"/>
+        <location filename="../quick/qml/DevDelegate.qml" line="58"/>
         <source>Edit</source>
         <translation>Modifier</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevDelegate.qml" line="62"/>
+        <location filename="../quick/qml/DevDelegate.qml" line="63"/>
         <source>Out of Sync items</source>
         <translation>Éléments hors synchronisation</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevDelegate.qml" line="69"/>
+        <location filename="../quick/qml/DevDelegate.qml" line="70"/>
         <source>Advanced config</source>
         <translation>Configuration avancée</translation>
     </message>
@@ -1298,12 +1298,12 @@
         <translation>Ajouter un appareil</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevsPage.qml" line="29"/>
+        <location filename="../quick/qml/DevsPage.qml" line="30"/>
         <source>Pause all</source>
         <translation>Tout mettre en pause</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DevsPage.qml" line="34"/>
+        <location filename="../quick/qml/DevsPage.qml" line="36"/>
         <source>Resume all</source>
         <translation>Tout reprendre</translation>
     </message>
@@ -1835,67 +1835,67 @@
         <translation>Réanalyser</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="48"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="49"/>
         <source>Resume</source>
         <translation>Reprendre</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="48"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="49"/>
         <source>Pause</source>
         <translation>Pause</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="54"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="56"/>
         <source>Open</source>
         <translation>Ouvrir</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="62"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="65"/>
         <source>Copy label/ID</source>
         <translation>Copier l&apos;étiquette/l&apos;ID</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="68"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="71"/>
         <source>Copy path</source>
         <translation>Copier le chemin</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="74"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="77"/>
         <source>Edit</source>
         <translation>Modifier</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="79"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="82"/>
         <source>Out of Sync items</source>
         <translation>Éléments hors synchronisation</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="85"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="88"/>
         <source>Locally changed items</source>
         <translation>éléments modifiés localement</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="97"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="100"/>
         <source>Show errors</source>
         <translation>Afficher les erreurs</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="103"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="106"/>
         <source>Ignore patterns</source>
         <translation>Motifs d&apos;ignorance</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="108"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="111"/>
         <source>Remote files</source>
         <translation>Fichiers distants</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="115"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="118"/>
         <source>Advanced config</source>
         <translation>Configuration avancée</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirDelegate.qml" line="120"/>
+        <location filename="../quick/qml/DirDelegate.qml" line="123"/>
         <source>Media rescan</source>
         <translation>Réanalyse média</translation>
     </message>
@@ -1944,17 +1944,17 @@
         <translation>Ajouter un dossier</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirsPage.qml" line="29"/>
+        <location filename="../quick/qml/DirsPage.qml" line="30"/>
         <source>Pause all</source>
         <translation>Tout mettre en pause</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirsPage.qml" line="34"/>
+        <location filename="../quick/qml/DirsPage.qml" line="36"/>
         <source>Resume all</source>
         <translation>Tout reprendre</translation>
     </message>
     <message>
-        <location filename="../quick/qml/DirsPage.qml" line="39"/>
+        <location filename="../quick/qml/DirsPage.qml" line="42"/>
         <source>Rescan all</source>
         <translation>Tout réanalyser</translation>
     </message>
@@ -1991,7 +1991,7 @@
 <context>
     <name>ExpandableItemDelegate</name>
     <message>
-        <location filename="../quick/qml/ExpandableItemDelegate.qml" line="83"/>
+        <location filename="../quick/qml/ExpandableItemDelegate.qml" line="84"/>
         <source>More actions</source>
         <translation>Plus d&apos;actions</translation>
     </message>
@@ -2103,72 +2103,72 @@
         <translation>Aide</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="48"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="50"/>
         <source>Edit externally</source>
         <translation>Modifier externellement</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="18"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="19"/>
         <source>Save</source>
         <translation>Enregistrer</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="25"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="27"/>
         <source>Undo</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="31"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="33"/>
         <source>Redo</source>
         <translation>Rétablir</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="37"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="39"/>
         <source>Clear</source>
         <translation>Effacer</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="43"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="45"/>
         <source>Ignore all</source>
         <translation>Tout ignorer</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="68"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="70"/>
         <source>Quick guide to patterns</source>
         <translation>Guide rapide des motifs</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="80"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="82"/>
         <source>Prefix indicating that the file can be deleted if preventing directory removal</source>
         <translation>Préfixe indiquant que le fichier peut être supprimé si cela empêche la suppression du répertoire</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="81"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="83"/>
         <source>Prefix indicating that the pattern should be matched without case sensitivity</source>
         <translation>Préfixe indiquant que le motif doit être comparé sans sensibilité à la casse</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="82"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="84"/>
         <source>Inversion of the given condition (i.e. do not exclude)</source>
         <translation>Inversion de la condition donnée (c&apos;est-à-dire ne pas exclure)</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="83"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="85"/>
         <source>Single level wildcard (matches within a directory only)</source>
         <translation>Joker à un seul niveau (correspond dans un répertoire uniquement)</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="84"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="86"/>
         <source>Multi level wildcard (matches multiple directory levels)</source>
         <translation>Joker multi-niveau (correspond à plusieurs niveaux de répertoires)</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="85"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="87"/>
         <source>Comment, when used at the start of a line</source>
         <translation>Commentaire, quand utilisé au début d&apos;une ligne</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="92"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="94"/>
         <source>Full documentation</source>
         <translation>Documentation complète</translation>
     </message>
@@ -2344,22 +2344,22 @@
         <translation>Démarrer</translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainTabBar.qml" line="17"/>
+        <location filename="../quick/qml/MainTabBar.qml" line="18"/>
         <source>Folders</source>
         <translation>Dossiers</translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainTabBar.qml" line="22"/>
+        <location filename="../quick/qml/MainTabBar.qml" line="24"/>
         <source>Devices</source>
         <translation>Appareils</translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainTabBar.qml" line="27"/>
+        <location filename="../quick/qml/MainTabBar.qml" line="30"/>
         <source>Recent changes</source>
         <translation>Modifications récentes</translation>
     </message>
     <message>
-        <location filename="../quick/qml/MainTabBar.qml" line="32"/>
+        <location filename="../quick/qml/MainTabBar.qml" line="36"/>
         <source>More</source>
         <translation>Plus</translation>
     </message>
@@ -2453,33 +2453,33 @@
         <translation>Actualiser</translation>
     </message>
     <message>
-        <location filename="../quick/qml/NeededPage.qml" line="53"/>
+        <location filename="../quick/qml/NeededPage.qml" line="54"/>
         <source>Move to top of queue</source>
         <translation>Déplacer en haut de la file</translation>
     </message>
     <message>
-        <location filename="../quick/qml/NeededPage.qml" line="81"/>
+        <location filename="../quick/qml/NeededPage.qml" line="82"/>
         <source>Copy path</source>
         <translation>Copier le chemin</translation>
     </message>
     <message>
-        <location filename="../quick/qml/NeededPage.qml" line="108"/>
+        <location filename="../quick/qml/NeededPage.qml" line="109"/>
         <source>In progress</source>
         <translation>En cours</translation>
     </message>
     <message>
-        <location filename="../quick/qml/NeededPage.qml" line="109"/>
+        <location filename="../quick/qml/NeededPage.qml" line="110"/>
         <source>Queued</source>
         <translation>En file d&apos;attente</translation>
     </message>
     <message>
-        <location filename="../quick/qml/NeededPage.qml" line="110"/>
         <location filename="../quick/qml/NeededPage.qml" line="111"/>
+        <location filename="../quick/qml/NeededPage.qml" line="112"/>
         <source>Out of Sync</source>
         <translation>Hors synchronisation</translation>
     </message>
     <message>
-        <location filename="../quick/qml/NeededPage.qml" line="111"/>
+        <location filename="../quick/qml/NeededPage.qml" line="112"/>
         <source>Locally changed</source>
         <translation>Modifiés localement</translation>
     </message>
@@ -2641,22 +2641,22 @@
         <translation>Aide</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="166"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="167"/>
         <source>Add</source>
         <translation>Ajouter</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="308"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="310"/>
         <source>Unable to remove object from non-array.</source>
         <translation>Impossible de supprimer l&apos;objet car ce n&apos;est pas un tableau.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="334"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="336"/>
         <source>Unable to add %1 because specified index is invalid.</source>
         <translation>Impossible d&apos;ajouter %1 car l&apos;index spécifié est invalide.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ObjectConfigPage.qml" line="342"/>
+        <location filename="../quick/qml/ObjectConfigPage.qml" line="344"/>
         <source>Unable to add %1 because specified key is invalid.</source>
         <translation>Impossible d&apos;ajouter %1 car la clé spécifiée est invalide.</translation>
     </message>
@@ -2692,7 +2692,7 @@
         <translation>Actualiser</translation>
     </message>
     <message>
-        <location filename="../quick/qml/OutOfSyncDirs.qml" line="22"/>
+        <location filename="../quick/qml/OutOfSyncDirs.qml" line="23"/>
         <source>%1: %2 items needed, ~ %3</source>
         <translation>%1 : %2 éléments nécessaires, ~ %3</translation>
     </message>
@@ -2700,27 +2700,27 @@
 <context>
     <name>PageWindow</name>
     <message>
-        <location filename="../quick/qml/PageWindow.qml" line="48"/>
+        <location filename="../quick/qml/PageWindow.qml" line="49"/>
         <source>Close</source>
         <translation>Fermer</translation>
     </message>
     <message>
-        <location filename="../quick/qml/PageWindow.qml" line="82"/>
+        <location filename="../quick/qml/PageWindow.qml" line="85"/>
         <source>Back</source>
         <translation>Retour</translation>
     </message>
     <message>
-        <location filename="../quick/qml/PageWindow.qml" line="90"/>
+        <location filename="../quick/qml/PageWindow.qml" line="94"/>
         <source>More</source>
         <translation>Plus</translation>
     </message>
     <message>
-        <location filename="../quick/qml/PageWindow.qml" line="125"/>
+        <location filename="../quick/qml/PageWindow.qml" line="129"/>
         <source>Do you really want to close without applying changes?</source>
         <translation>Voulez-vous vraiment fermer sans appliquer les modifications ?</translation>
     </message>
     <message>
-        <location filename="../quick/qml/PageWindow.qml" line="149"/>
+        <location filename="../quick/qml/PageWindow.qml" line="153"/>
         <source>Saving configuration …</source>
         <translation>Sauvegarde de la configuration …</translation>
     </message>
@@ -5084,7 +5084,7 @@
 <context>
     <name>QtGui::QuickUI</name>
     <message>
-        <location filename="../quick/quickui.cpp" line="469"/>
+        <location filename="../quick/quickui.cpp" line="474"/>
         <source>Settings</source>
         <translation>Paramètres</translation>
     </message>
@@ -6026,27 +6026,27 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
         <translation>Exécutable externe</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="214"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="213"/>
         <source>Log level</source>
         <translation>Niveau de journalisation</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="215"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="214"/>
         <source>Debug</source>
         <translation>Débogage</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="216"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="215"/>
         <source>Info</source>
         <translation>Info</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="217"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="216"/>
         <source>Warning</source>
         <translation>Avertissement</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="218"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="217"/>
         <source>Error</source>
         <translation>Erreur</translation>
     </message>
@@ -6198,12 +6198,12 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
         <translation>Arrêter automatiquement</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="213"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="220"/>
         <source>Write persistent log file</source>
         <translation>Écrire un fichier journal persistant</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="213"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="220"/>
         <source>Write a persistent log file into the app directory</source>
         <translation>Écrire un fichier journal persistant dans le répertoire de l&apos;application</translation>
     </message>
@@ -6213,12 +6213,12 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
         <translation>Journalisation</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="220"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="219"/>
         <source>Open logs</source>
         <translation>Ouvrir les journaux</translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="220"/>
+        <location filename="../quick/qml/SettingsPage.qml" line="219"/>
         <source>Show Syncthing logs since app startup</source>
         <translation>Afficher les journaux Syncthing depuis le démarrage de l&apos;application</translation>
     </message>
@@ -6503,97 +6503,97 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
         <translation>Actualiser</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StatisticsPage.qml" line="20"/>
+        <location filename="../quick/qml/StatisticsPage.qml" line="21"/>
         <source>Platform</source>
         <translation>Plateforme</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StatisticsPage.qml" line="21"/>
+        <location filename="../quick/qml/StatisticsPage.qml" line="22"/>
         <source>Syncthing version</source>
         <translation>Version Syncthing</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StatisticsPage.qml" line="22"/>
+        <location filename="../quick/qml/StatisticsPage.qml" line="23"/>
         <source>Uptime</source>
         <translation>Temps de fonctionnement</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StatisticsPage.qml" line="23"/>
+        <location filename="../quick/qml/StatisticsPage.qml" line="24"/>
         <source>Memory usage (only Go runtime)</source>
         <translation>Utilisation de la mémoire (uniquement le runtime Go)</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StatisticsPage.qml" line="24"/>
+        <location filename="../quick/qml/StatisticsPage.qml" line="25"/>
         <source>Resident set size (only Go runtime)</source>
         <translation>Taille de l&apos;ensemble résident (uniquement le runtime Go)</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StatisticsPage.qml" line="25"/>
+        <location filename="../quick/qml/StatisticsPage.qml" line="26"/>
         <source>NAT type</source>
         <translation>Type NAT</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StatisticsPage.qml" line="26"/>
+        <location filename="../quick/qml/StatisticsPage.qml" line="27"/>
         <source>Syncthing config directory</source>
         <translation>Répertoire de configuration Syncthing</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StatisticsPage.qml" line="27"/>
+        <location filename="../quick/qml/StatisticsPage.qml" line="28"/>
         <source>Syncthing data directory</source>
         <translation>Répertoire de données Syncthing</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StatisticsPage.qml" line="28"/>
+        <location filename="../quick/qml/StatisticsPage.qml" line="29"/>
         <source>Syncthing database size (LevelDB)</source>
         <translation>Taille de la base de données Syncthing (LevelDB)</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StatisticsPage.qml" line="29"/>
+        <location filename="../quick/qml/StatisticsPage.qml" line="30"/>
         <source>Syncthing database size (LevelDB, migrated)</source>
         <translation>Taille de la base de données Syncthing (LevelDB, migrée)</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StatisticsPage.qml" line="30"/>
+        <location filename="../quick/qml/StatisticsPage.qml" line="31"/>
         <source>Syncthing database size (SQLite)</source>
         <translation>Taille de la base de données Syncthing (SQLite)</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StatisticsPage.qml" line="31"/>
+        <location filename="../quick/qml/StatisticsPage.qml" line="32"/>
         <source>External files directory</source>
         <translation>Répertoire des fichiers externes</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StatisticsPage.qml" line="32"/>
+        <location filename="../quick/qml/StatisticsPage.qml" line="33"/>
         <source>External storage paths</source>
         <translation>Chemins de stockage externes</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StatisticsPage.qml" line="33"/>
+        <location filename="../quick/qml/StatisticsPage.qml" line="34"/>
         <source>CPU threads of system</source>
         <translation>Threads CPU du système</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StatisticsPage.qml" line="34"/>
+        <location filename="../quick/qml/StatisticsPage.qml" line="35"/>
         <source>Memory size of system</source>
         <translation>Taille de la mémoire du système</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StatisticsPage.qml" line="35"/>
+        <location filename="../quick/qml/StatisticsPage.qml" line="36"/>
         <source>Number of Syncthing devices</source>
         <translation>Nombre d&apos;appareils Syncthing</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StatisticsPage.qml" line="36"/>
+        <location filename="../quick/qml/StatisticsPage.qml" line="37"/>
         <source>Number of Syncthing folders</source>
         <translation>Nombre de dossiers Syncthing</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StatisticsPage.qml" line="37"/>
+        <location filename="../quick/qml/StatisticsPage.qml" line="38"/>
         <source>Number of files managed by Syncthing</source>
         <translation>Nombre de fichiers gérés par Syncthing</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StatisticsPage.qml" line="38"/>
+        <location filename="../quick/qml/StatisticsPage.qml" line="39"/>
         <source>Size of files managed by Syncthing</source>
         <translation>Taille des fichiers gérés par Syncthing</translation>
     </message>
@@ -6606,42 +6606,42 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
         <translation>Dossiers</translation>
     </message>
     <message>
-        <location filename="../quick/qml/TrayView.qml" line="90"/>
+        <location filename="../quick/qml/TrayView.qml" line="91"/>
         <source>Devices</source>
         <translation>Appareils</translation>
     </message>
     <message>
-        <location filename="../quick/qml/TrayView.qml" line="96"/>
+        <location filename="../quick/qml/TrayView.qml" line="98"/>
         <source>Recent changes</source>
         <translation>Modifications récentes</translation>
     </message>
     <message>
-        <location filename="../quick/qml/TrayView.qml" line="108"/>
+        <location filename="../quick/qml/TrayView.qml" line="111"/>
         <source>Add folder</source>
         <translation>Ajouter un dossier</translation>
     </message>
     <message>
-        <location filename="../quick/qml/TrayView.qml" line="114"/>
+        <location filename="../quick/qml/TrayView.qml" line="118"/>
         <source>Add device</source>
         <translation>Ajouter un appareil</translation>
     </message>
     <message>
-        <location filename="../quick/qml/TrayView.qml" line="119"/>
+        <location filename="../quick/qml/TrayView.qml" line="124"/>
         <source>Rescan all</source>
         <translation>Tout réanalyser</translation>
     </message>
     <message>
-        <location filename="../quick/qml/TrayView.qml" line="124"/>
+        <location filename="../quick/qml/TrayView.qml" line="130"/>
         <source>Show ID</source>
         <translation>Afficher l&apos;ID</translation>
     </message>
     <message>
-        <location filename="../quick/qml/TrayView.qml" line="129"/>
+        <location filename="../quick/qml/TrayView.qml" line="136"/>
         <source>Show logs</source>
         <translation>Afficher les journaux</translation>
     </message>
     <message>
-        <location filename="../quick/qml/TrayView.qml" line="134"/>
+        <location filename="../quick/qml/TrayView.qml" line="142"/>
         <source>Filter</source>
         <translation>Filtrer</translation>
     </message>
