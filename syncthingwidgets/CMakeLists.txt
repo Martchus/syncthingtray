@@ -453,6 +453,9 @@ if (QUICK_GUI)
                 "${CMAKE_CURRENT_BINARY_DIR}/.rcc/qmlcache/${META_TARGET_NAME}_quick/qml/${QML_FILE}_qml.cpp"
                 PROPERTIES COMPILE_FLAGS "-Wno-error=conversion")
         endforeach ()
+        set_source_files_properties(
+            "${CMAKE_CURRENT_BINARY_DIR}/.rcc/qmlcache/${META_TARGET_NAME}_qmlcache_loader.cpp"
+            PROPERTIES COMPILE_FLAGS "-Wno-error=null-dereference")
     endif ()
 
     # allow use of newer native Android APIs, see https://developer.android.com/ndk/guides/using-newer-apis

@@ -3,7 +3,10 @@
 
 #include "./global.h"
 
+CPP_UTILITIES_WARNING_PUSH
+CPP_UTILITIES_WARNING_DISARM("-Wnull-dereference")
 #include <QAbstractItemModel>
+CPP_UTILITIES_WARNING_POP
 
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 0, 0))
 Q_MOC_INCLUDE(<syncthingconnector / syncthingconnection.h>)

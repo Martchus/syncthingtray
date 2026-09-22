@@ -15,7 +15,10 @@
 #include <boost/version.hpp>
 
 #include <boost/asio/executor_work_guard.hpp>
+CPP_UTILITIES_WARNING_PUSH
+CPP_UTILITIES_WARNING_DISARM("-Wnull-dereference")
 #include <boost/asio/io_context.hpp>
+CPP_UTILITIES_WARNING_POP
 #include <boost/filesystem/path.hpp>
 #if BOOST_VERSION >= 108600
 #include <boost/process/v1/async.hpp>
@@ -820,14 +823,10 @@ bool SyncthingProcess::waitForFinished(int msecs)
         m_process->group.wait(ec);
     } else {
         // disable warning about deprecated/unreliable function `wait_for`; it is good enough for now
-#ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-#endif
+        CPP_UTILITIES_WARNING_PUSH
+        CPP_UTILITIES_WARNING_DISABLE("-Wdeprecated-declarations")
         m_process->group.wait_for(std::chrono::milliseconds(msecs), ec);
-#ifdef __GNUC__
-#pragma GCC diagnostic pop
-#endif
+        CPP_UTILITIES_WARNING_POP
     }
     return !ec || ec == std::errc::no_such_process || ec == std::errc::no_child_process;
 #else
