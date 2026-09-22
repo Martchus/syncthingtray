@@ -170,7 +170,7 @@ static int initSyncthingTray(bool windowed, bool waitForTray, const Argument &co
     settings.launcher.autostart();
 
     // show a tray icon for each connection
-    TrayWidget *widget;
+    TrayWidget *widget = nullptr;
     for (const auto *const connectionConfig : connectionConfigurations) {
         auto *const trayIcon = new TrayIcon(QString::fromLocal8Bit(connectionConfig), parentObject);
         trayIcon->show();
@@ -178,7 +178,7 @@ static int initSyncthingTray(bool windowed, bool waitForTray, const Argument &co
     }
 
     // show wizard on first launch
-    if (settings.firstLaunch || settings.fakeFirstLaunch) {
+    if (widget && (settings.firstLaunch || settings.fakeFirstLaunch)) {
         widget->showWizard();
     }
     return 0;
