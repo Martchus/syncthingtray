@@ -136,10 +136,7 @@ RowLayout {
         id: showNewNotifications
         icon.name: "emblem-warning"
         visible: plasmoid.data.connection.hasErrors
-        onClicked: {
-            plasmoid.showNotificationsDialog()
-            plasmoid.expanded = false
-        }
+        onClicked: plasmoid.showNotificationsDialog()
         PlasmaComponents3.ToolTip {
             text: qsTr("Show new notifications")
         }
@@ -155,10 +152,7 @@ RowLayout {
     ToolButton {
         icon.source: plasmoid.faUrl + "info"
         visible: showExtraButtons
-        onClicked: {
-            plasmoid.showAboutDialog()
-            plasmoid.expanded = false
-        }
+        onClicked: plasmoid.showAboutDialog()
         PlasmaComponents3.ToolTip {
             text: qsTr("About Syncthing Tray")
         }
@@ -167,10 +161,7 @@ RowLayout {
         id: showOwnIdButton
         icon.source: plasmoid.faUrl + "qrcode"
         visible: showExtraButtons
-        onClicked: {
-            plasmoid.showOwnDeviceId()
-            plasmoid.expanded = false
-        }
+        onClicked: plasmoid.showOwnDeviceId()
         PlasmaComponents3.ToolTip {
             text: qsTr("Show own device ID")
         }
@@ -183,10 +174,7 @@ RowLayout {
         id: showLogButton
         icon.source: plasmoid.faUrl + "file-text"
         visible: showExtraButtons
-        onClicked: {
-            plasmoid.showLog()
-            plasmoid.expanded = false
-        }
+        onClicked: plasmoid.showLog()
         PlasmaComponents3.ToolTip {
             text: qsTr("Show Syncthing log")
         }
@@ -211,10 +199,7 @@ RowLayout {
         id: settingsButton
         icon.source: plasmoid.faUrl + "cog"
         visible: showExtraButtons
-        onClicked: {
-            plasmoid.showSettingsDialog()
-            plasmoid.expanded = false
-        }
+        onClicked: plasmoid.showSettingsDialog()
         PlasmaComponents3.ToolTip {
             text: qsTr("Settings")
         }
@@ -226,10 +211,7 @@ RowLayout {
     ToolButton {
         id: webUIButton
         icon.source: plasmoid.faUrl + "syncthing"
-        onClicked: {
-            plasmoid.showWebUI()
-            plasmoid.expanded = false
-        }
+        onClicked: plasmoid.showWebUI()
         PlasmaComponents3.ToolTip {
             text: qsTr("Open Syncthing")
         }

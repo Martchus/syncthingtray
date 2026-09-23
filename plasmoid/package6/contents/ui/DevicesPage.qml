@@ -24,6 +24,8 @@ ColumnLayout {
         // HACK: workaround for https://bugreports.qt.io/browse/QTBUG-83890
         PlasmaComponents3.ScrollBar.horizontal.policy: PlasmaComponents3.ScrollBar.AlwaysOff
 
+        onActiveFocusChanged: (activeFocus) => activeFocus && fullRepresentation.mainLayout.forceActiveFocus()
+
         contentItem: TopLevelView {
             id: deviceView
             model: plasmoid.models.sortFilterDevModel

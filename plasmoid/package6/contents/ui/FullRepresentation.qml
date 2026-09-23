@@ -8,7 +8,10 @@ import org.kde.plasma.components 3.0 as PlasmaComponents3
 import org.kde.kirigami 2.20 as Kirigami
 
 PlasmaExtras.Representation {
+    id: fullRepresentation
+
     signal currentTabChanged(index: int)
+    property alias mainLayout: mainLayout
 
     // disable margins as they don't look good together with the scroll view
     // note: Would be collapsed automatically if the scroll view was the immediate content item.
@@ -19,7 +22,6 @@ PlasmaExtras.Representation {
 
     // header ("toolbar" with buttons and combo box) and footer ("tabbar")
     header: PlasmaExtras.PlasmoidHeading {
-        focus: true
         contentItem: ToolBar {
         }
     }
@@ -42,18 +44,21 @@ PlasmaExtras.Representation {
                 text: qsTr("Folders")
                 icon.source: plasmoid.faUrl + "folder"
                 width: tabBar.buttonWidth
+                focusPolicy: Qt.NoFocus
             }
             TabButton {
                 id: devsTabButton
                 text: qsTr("Devices")
                 icon.source: plasmoid.faUrl + "sitemap"
                 width: tabBar.buttonWidth
+                focusPolicy: Qt.NoFocus
             }
             TabButton {
                 id: recentChangesTabButton
                 text: qsTr("History")
                 icon.source: plasmoid.faUrl + "history"
                 width: tabBar.buttonWidth
+                focusPolicy: Qt.NoFocus
             }
             TabButton {
                 id: downloadsTabButton
@@ -61,6 +66,7 @@ PlasmaExtras.Representation {
                 icon.source: plasmoid.faUrl + "download"
                 visible: plasmoid.showDownloads
                 width: visible ? tabBar.buttonWidth : 0
+                focusPolicy: Qt.NoFocus
             }
         }
     }
@@ -85,42 +91,33 @@ PlasmaExtras.Representation {
     }
     Shortcut {
         sequence: "Ctrl+R"
+        enabled: syncthingApplet.expanded
         onActivated: clickCurrentItemButton("rescanButton")
     }
     Shortcut {
         sequence: "Ctrl+P"
+        enabled: syncthingApplet.expanded
         onActivated: clickCurrentItemButton("resumePauseButton")
     }
     Shortcut {
         sequence: "Ctrl+O"
+        enabled: syncthingApplet.expanded
         onActivated: clickCurrentItemButton("openButton")
     }
     Shortcut {
         sequence: "Ctrl+F"
+        enabled: syncthingApplet.expanded
         onActivated: searchButton.click()
     }
     Shortcut {
         sequences: ["Ctrl+M", "Menu"]
+        enabled: syncthingApplet.expanded
         onActivated: {
             const view = findCurrentPage().view
             const item = view.currentItem
             if (item) {
                 view.showContextMenu(item, item.x + item.width / 2, item.y + item.height / 2)
             }
-        }
-    }
-    Shortcut {
-        sequence: "Esc"
-        onActivated: {
-            if (searchButton.visible) {
-                const filter = findCurrentFilter()
-                if (filter.activeFocus) {
-                    filter.explicitelyShown = false
-                    filter.text = ""
-                    return
-                }
-            }
-            plasmoid.expanded = false
         }
     }
 
@@ -144,7 +141,7 @@ PlasmaExtras.Representation {
                 if (!filter) {
                     return
                 }
-                if (!filter.explicitelyShown) {
+                if (!filter.explicitelyShown || !filter.activeFocus) {
                     filter.explicitelyShown = true
                     filter.forceActiveFocus()
                 } else {
@@ -160,12 +157,12 @@ PlasmaExtras.Representation {
             spacing: 0
 
             // ensure keyboard events can be received after initialization
-            Component.onCompleted: forceActiveFocus()
+            Component.onCompleted: mainLayout.forceActiveFocus()
 
             // define custom key handling for switching tabs, selecting items and filtering
             function sendKeyEventToFilter(event) {
                 const filter = findCurrentFilter()
-                if (!filter || event.text === "" || filter.activeFocus) {
+                if (!filter || event.key === Qt.Key_Tab || event.text === "" || filter.activeFocus) {
                     return
                 }
                 if (event.key === Qt.Key_Backspace && filter.text === "") {
@@ -183,6 +180,9 @@ PlasmaExtras.Representation {
             Keys.onPressed: function(event) {
                 // note: event only received after clicking the tab buttons in plasmoidviewer
                 // but works as expected in plasmashell
+                if (!syncthingApplet.expanded) {
+                    return
+                }
                 switch (event.key) {
                 case Qt.Key_Up:
                     switch (event.modifiers) {
@@ -228,27 +228,24 @@ PlasmaExtras.Representation {
                     break
                 case Qt.Key_Escape:
                     const filter = findCurrentFilter()
-                    if (filter && filter.text !== "") {
-                        // reset filter
-                        filter.explicitelyShown = false
-                        filter.text = ""
-                        event.accepted = true
-                    } else {
-                        // hide plasmoid
-                        plasmoid.expanded = false
+                    if (!filter || filter.text === "") {
+                        return
                     }
+                    // reset filter
+                    filter.explicitelyShown = false
+                    filter.text = ""
                     break
                 case Qt.Key_1:
-                    tabBar.currentIndex = 0
+                    tabBar.currentIndex = Math.min(tabBar.buttonCount - 1, 0)
                     break
                 case Qt.Key_2:
-                    tabBar.currentIndex = 1
+                    tabBar.currentIndex = Math.min(tabBar.buttonCount - 1, 1)
                     break
                 case Qt.Key_3:
-                    tabBar.currentIndex = 2
+                    tabBar.currentIndex = Math.min(tabBar.buttonCount - 1, 2)
                     break
                 case Qt.Key_4:
-                    tabBar.currentIndex = 3
+                    tabBar.currentIndex = Math.min(tabBar.buttonCount - 1, 3)
                     break
                 default:
                     sendKeyEventToFilter(event)

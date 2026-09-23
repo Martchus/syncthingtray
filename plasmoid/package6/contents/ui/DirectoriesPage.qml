@@ -24,6 +24,8 @@ ColumnLayout {
         // HACK: workaround for https://bugreports.qt.io/browse/QTBUG-83890
         PlasmaComponents3.ScrollBar.horizontal.policy: PlasmaComponents3.ScrollBar.AlwaysOff
 
+        onActiveFocusChanged: (activeFocus) => activeFocus && fullRepresentation.mainLayout.forceActiveFocus()
+
         contentItem: TopLevelView {
             id: directoryView
             model: plasmoid.models.sortFilterDirModel
@@ -83,11 +85,7 @@ ColumnLayout {
                                 icon.source: plasmoid.faUrl + "exclamation-triangle"
                                 tooltip: qsTr("Show errors")
                                 visible: hasPullErrors
-                                onClicked: {
-                                    plasmoid.showDirectoryErrors(
-                                                dirId)
-                                    plasmoid.expanded = false
-                                }
+                                onClicked: plasmoid.showDirectoryErrors(dirId)
                             }
                             TinyButton {
                                 id: rescanButton
@@ -111,10 +109,7 @@ ColumnLayout {
                                 id: openButton
                                 icon.source: plasmoid.faUrl + "folder"
                                 tooltip: qsTr("Open in file browser")
-                                onClicked: {
-                                    Qt.openUrlExternally(plasmoid.data.connection.substituteTilde(path))
-                                    plasmoid.expanded = false
-                                }
+                                onClicked: Qt.openUrlExternally(plasmoid.data.connection.substituteTilde(path))
                             }
                         }
                     }

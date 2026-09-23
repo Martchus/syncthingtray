@@ -48,7 +48,6 @@ QString SyncthingData::website() const
     return QStringLiteral(APP_URL);
 }
 
-#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
 QString SyncthingData::connectButtonState() const
 {
     switch (m_connection.status()) {
@@ -61,6 +60,5 @@ QString SyncthingData::connectButtonState() const
         return isForceSuspend ? QStringLiteral("paused") : QStringLiteral("idle");
     }
 }
-#endif
 
 } // namespace QtGui

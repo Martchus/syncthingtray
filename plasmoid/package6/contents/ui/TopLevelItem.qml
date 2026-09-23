@@ -40,7 +40,7 @@ Item {
         onClicked: function(mouse) {
             switch (mouse.button) {
             case Qt.LeftButton:
-                expanded = !expanded
+                listItem.expanded = !listItem.expanded
                 break
             case Qt.RightButton:
                 const view = listItem.ListView.view

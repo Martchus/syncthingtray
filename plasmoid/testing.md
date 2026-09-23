@@ -18,7 +18,7 @@ rather than the regular home to separate testing from production.
       from the main README.md.
     * When using a suffix (e.g. development build via CMake presets), this suffix needs to be appended
       to the applet name.
-5. Keep `%{buildDir}` as working directory.
+5. Set `%{buildDir}` as working directory.
 6. In the execution environment there's nothing mandatory to be set because `starttesting.sh` should
    already take care of setting the environment.
       * The home directory is set in accordance with the directory used in step 2. but can be overridden
