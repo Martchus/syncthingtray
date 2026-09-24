@@ -1,8 +1,9 @@
 #define QT_UTILITIES_GUI_QTQUICK
 
 #include "./quickui.h"
-
 #include "./helpers.h"
+
+#include "../settings/settings.h"
 
 #include <qtutilities/misc/desktoputils.h>
 
@@ -45,6 +46,9 @@
 #include <qtutilities/settingsdialog/qtsettings.h>
 
 #include <c++utilities/conversion/stringconversion.h>
+#include <c++utilities/io/ansiescapecodes.h>
+
+#include <iostream>
 
 #include "resources/config.h"
 
@@ -89,7 +93,12 @@ QuickUI::QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQml
 {
 #ifndef SYNCTHINGWIDGETS_QUICK_GUI_CONTROLS_STYLE
     if (const auto style = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_QT_QUICK_CONTROLS_STYLE"); !style.isEmpty()) {
-        QQuickStyle::setStyle(m_style = style);
+        if (Settings::values().isPlasmoid) {
+            using namespace CppUtilities::EscapeCodes;
+            std::cerr << Phrases::Warning << "The Plasmoid does not support " PROJECT_VARNAME_UPPER "_QT_QUICK_CONTROLS_STYLE. Use QT_QUICK_CONTROLS_STYLE instead." << Phrases::End;
+        } else {
+            QQuickStyle::setStyle(m_style = style);
+        }
     }
 #endif
     if (app) {
