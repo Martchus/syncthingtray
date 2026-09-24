@@ -428,7 +428,7 @@ ApplicationWindow {
                                 Layout.alignment: Qt.AlignVCenter
                                 text: qsTr("Show logs")
                                 icon.source: QuickUI.faUrlBase + "terminal"
-                                icon.name: Utils.fallbackIconName("terminal-app-symbolic")
+                                icon.name: Utils.fallbackIconName("utilities-terminal-symbolic")
                                 onClicked: TrayWidget.showLog()
                                 flat: true
                             }

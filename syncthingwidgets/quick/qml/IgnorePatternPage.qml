@@ -12,7 +12,7 @@ Page {
         Action {
             text: qsTr("Help")
             icon.source: QuickUI.faUrlBase + "question"
-            icon.name: "help-symbolic"
+            icon.name: "help-contents"
             onTriggered: helpDialog.visible = true
         },
         Action {

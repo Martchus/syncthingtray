@@ -21,7 +21,7 @@ ObjectConfigPage {
         Action {
             text: qsTr("Apply")
             icon.source: QuickUI.faUrlBase + "check"
-            icon.name: "dialog-apply"
+            icon.name: "dialog-ok-apply"
             onTriggered: advancedConfigPage.applyChanges()
         }
     ]

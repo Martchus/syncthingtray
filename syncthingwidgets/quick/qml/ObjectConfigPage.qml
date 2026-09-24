@@ -160,7 +160,7 @@ Page {
             text: qsTr("Help")
             enabled: objectConfigPage.helpUrl.length > 0
             icon.source: QuickUI.faUrlBase + "question"
-            icon.name: "help-symbolic"
+            icon.name: "help-contents"
             onTriggered: QuickUI.requestOpeningUrl(objectConfigPage.helpUrl)
         },
         Action {
