@@ -266,7 +266,7 @@ use_syncthingconnector(VISIBILITY PUBLIC)
 find_package(syncthingmodel ${META_APP_VERSION} REQUIRED)
 use_syncthingmodel(VISIBILITY PUBLIC)
 find_package(syncthingtesthelper ${META_APP_VERSION} REQUIRED)
-list(APPEND PRIVATE_INCLUDE_DIRS "${CMAKE_CURRENT_BINARY_DIR}/../testhelper/include")
+list(APPEND PRIVATE_INCLUDE_DIRS "${CMAKE_CURRENT_BINARY_DIR}/../testhelper/geninclude")
 
 # configure libsyncthing
 if (NO_LIBSYNCTHING)

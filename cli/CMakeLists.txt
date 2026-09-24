@@ -18,7 +18,7 @@ set(TEST_SRC_FILES tests/application.cpp)
 set(META_SRCDIR_REFS "${CMAKE_CURRENT_SOURCE_DIR}\n${CMAKE_CURRENT_SOURCE_DIR}/../syncthingconnector")
 
 # find c++utilities
-find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.30.0 REQUIRED)
+find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFFIX} 5.37.0 REQUIRED)
 use_cpp_utilities()
 
 # find qtutilities
@@ -32,7 +32,7 @@ use_syncthingconnector()
 # find libraries used by tests
 find_package(syncthingtesthelper ${META_APP_VERSION} REQUIRED)
 list(APPEND TEST_LIBRARIES ${SYNCTHINGTESTHELPER_LIB})
-list(APPEND PRIVATE_INCLUDE_DIRS "${CMAKE_CURRENT_BINARY_DIR}/../testhelper/include")
+list(APPEND PRIVATE_INCLUDE_DIRS "${CMAKE_CURRENT_BINARY_DIR}/../testhelper/geninclude")
 use_standard_filesystem(LIBRARIES_VARIABLE "TEST_LIBRARIES" PACKAGES_VARIABLE "TEST_PACKAGES" OPTIONAL)
 
 # include modules to apply configuration
