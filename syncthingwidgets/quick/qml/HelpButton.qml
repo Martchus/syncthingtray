@@ -9,6 +9,7 @@ IconOnlyButton {
     visible: helpButton.desc.length > 0 || modelData.helpUrl?.length > 0 || (configCategory.length > 0 && !Array.isArray(configObject))
     text: qsTr("Open help")
     icon.source: QuickUI.faUrlBase + "question"
+    icon.name: Utils.fallbackIconName("view-refresh")
     onClicked: helpButton.desc.length > 0 ? helpDlg.open() : helpButton.openSyncthingDocs()
 
     CustomDialog {
@@ -22,11 +23,13 @@ IconOnlyButton {
         footer: DialogButtonBox {
             Button {
                 text: qsTr("Close")
+                icon.name: Utils.kde ? "dialog-cancel" : ""
                 flat: Utils.flatDialogButtons
                 DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
             }
             Button {
                 text: qsTr("Details")
+                icon.name: Utils.kde ? "help-contents" : ""
                 flat: Utils.flatDialogButtons
                 enabled: helpButton.url.toString().length > 0
                 DialogButtonBox.buttonRole: DialogButtonBox.HelpRole

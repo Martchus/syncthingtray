@@ -193,6 +193,7 @@ Page {
             id: discardAction
             text: qsTr("Discard changes")
             icon.source: QuickUI.faUrlBase + "undo"
+            icon.name: "edit-undo"
             enabled: advancedPage.hasUnsavedChanges
             onTriggered: {
                 advancedPage.config = SyncthingData.connection.rawConfig;
@@ -204,6 +205,7 @@ Page {
             id: applyAction
             text: qsTr("Apply changes")
             icon.source: QuickUI.faUrlBase + "check"
+            icon.name: "dialog-ok-apply"
             enabled: advancedPage.hasUnsavedChanges
             onTriggered: {
                 const cfg = SyncthingData.connection.rawConfig;

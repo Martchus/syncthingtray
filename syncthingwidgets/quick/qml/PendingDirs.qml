@@ -12,6 +12,7 @@ Page {
         Action {
             text: qsTr("Refresh")
             icon.source: QuickUI.faUrlBase + "refresh"
+            icon.name: "view-refresh"
             onTriggered: page.load()
         }
     ]

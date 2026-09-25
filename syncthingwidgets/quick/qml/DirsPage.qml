@@ -21,7 +21,7 @@ StackView {
             Action {
                 text: qsTr("Add folder")
                 icon.source: QuickUI.faUrlBase + "plus"
-                icon.name: Utils.fallbackIconName("list-add")
+                icon.name: "list-add"
                 onTriggered: stackView.add()
             }
         ]
@@ -29,18 +29,19 @@ StackView {
             Action {
                 text: qsTr("Pause all")
                 icon.source: QuickUI.faUrlBase + "pause"
-                icon.name: Utils.fallbackIconName("media-playback-pause")
+                icon.name: "media-playback-pause"
                 onTriggered: SyncthingData.connection.pauseAllDirs()
             },
             Action {
                 text: qsTr("Resume all")
                 icon.source: QuickUI.faUrlBase + "play"
-                icon.name: Utils.fallbackIconName("media-playback-start")
+                icon.name: "media-playback-start"
                 onTriggered: SyncthingData.connection.resumeAllDirs()
             },
             Action {
                 text: qsTr("Rescan all")
                 icon.source: QuickUI.faUrlBase + "refresh"
+                icon.name: "view-refresh"
                 onTriggered: SyncthingData.connection.rescanAllDirs()
             }
         ]
