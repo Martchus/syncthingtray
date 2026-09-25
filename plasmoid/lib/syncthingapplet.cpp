@@ -595,7 +595,11 @@ bool SyncthingApplet::showFileBrowser(const QString &dirId)
 void SyncthingApplet::showIgnorePatterns(const QString &dirId)
 {
     if (auto row = 0; auto *const dir = m_data.connection()->findDirInfo(dirId, row)) {
-        showCenteredDialog(QtGui::ignorePatternsDialog(*m_data.connection(), *dir));
+        if (m_quickUI.has_value()) {
+            m_quickUI->ui.editIgnorePatterns(dir->id, dir->displayName());
+        } else {
+            showCenteredDialog(QtGui::ignorePatternsDialog(*m_data.connection(), *dir));
+        }
     }
 }
 
