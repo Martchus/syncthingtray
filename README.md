@@ -428,9 +428,9 @@ See the [release section on GitHub](https://github.com/Martchus/syncthingtray/re
 
 ### Packages and binaries
 * Arch Linux
-    * for PKGBUILDs check out [my GitHub repository](https://github.com/Martchus/PKGBUILDs) or
-      [the AUR](https://aur.archlinux.org/packages?SeB=m&K=Martchus)
-    * there is also a [binary repository](https://martchus.dyn.f3l.de/repo/arch/ownstuff)
+    * check out the [regular Arch Linux repository](https://archlinux.org/packages/?q=syncthingtray)
+    * there is also an [upstream-maintained binary repository](https://martchus.dyn.f3l.de/repo/arch/ownstuff)
+    * for PKGBUILDs check out [my GitHub repository](https://github.com/Martchus/PKGBUILDs)
 * Tumbleweed, Leap, Fedora
     * RPM \*.spec files and binaries are available via openSUSE Build Service
         * remarks
