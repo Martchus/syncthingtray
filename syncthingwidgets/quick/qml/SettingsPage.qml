@@ -11,7 +11,8 @@ StackView {
     Layout.fillHeight: true
     initialItem: Page {
         id: appSettingsPage
-        title: qsTr("App settings")
+
+        title: hasUnsavedChanges ? qsTr("%1 - changes not saved yet").arg(mainTitle) : mainTitle
         Layout.fillWidth: true
         Layout.fillHeight: true
 
@@ -147,6 +148,7 @@ StackView {
         property alias backupFolderDialog: backupFolderDialog
         property string currentBackupFunction
         property var currentBackupCallback
+
         function initiateBackup(functionName, callback) {
             const tweaks = App.settings.tweaks;
             appSettingsPage.currentBackupFunction = functionName;
@@ -156,6 +158,7 @@ StackView {
             }
             return tweaks.importExportAsArchive || functionName === "saveSupportBundle" ? backupFileDialog.open() : backupFolderDialog.open();
         }
+
         function openNestedSettings(title, key) {
             if (appSettingsPage.config[key] === undefined) {
                 appSettingsPage.config[key] = {};
@@ -172,7 +175,9 @@ StackView {
                            StackView.PushTransition)
         }
 
+        property string mainTitle: qsTr("App settings")
         property var config: App.settings
+        property bool hasUnsavedChanges: false
         readonly property var specialEntries: ({
             connection: [
                 {key: "useLauncher", type: "boolean", label: qsTr("Automatic"), statusText: qsTr("Connect to the Syncthing backend launched via this app and disregard the manual settings below"), category: qsTr("General")},
@@ -236,11 +241,33 @@ StackView {
                 {key: "syncthingIconsVisible", type: "boolean", defaultValue: true, label: qsTr("Show Syncthing icons"), statusText: qsTr("Disable for a cleaner UI")},
             ]
         })
-        property bool hasUnsavedChanges: false
+
+        function resetHasUnsavedChanges() {
+            for (let i = 0, count = depth; i !== count; ++i) {
+                const item = stackView.get(i);
+                if (item.hasUnsavedChanges) {
+                    item.hasUnsavedChanges = false;
+                }
+            }
+            appSettingsPage.hasUnsavedChanges = false;
+        }
+
         property list<Action> actions: [
+            Action {
+                id: discardAction
+                text: qsTr("Discard changes")
+                icon.source: QuickUI.faUrlBase + "undo"
+                icon.name: "edit-undo"
+                enabled: stackView.depth === 1 && appSettingsPage.hasUnsavedChanges
+                onTriggered: {
+                    appSettingsPage.config = App.settings;
+                    appSettingsPage.resetHasUnsavedChanges();
+                }
+            },
             Action {
                 text: qsTr("Apply")
                 icon.source: QuickUI.faUrlBase + "check"
+                icon.name: "dialog-ok-apply"
                 onTriggered: {
                     const cfg = App.settings;
                     for (let i = 0, count = model.count; i !== count; ++i) {
@@ -250,12 +277,7 @@ StackView {
                         }
                     }
                     App.settings = cfg;
-                    for (let i = 0, count = depth; i !== count; ++i) {
-                        const item = stackView.get(i);
-                        if (item.hasUnsavedChanges) {
-                            item.hasUnsavedChanges = false;
-                        }
-                    }
+                    appSettingsPage.resetHasUnsavedChanges();
                     return true;
                 }
             }
