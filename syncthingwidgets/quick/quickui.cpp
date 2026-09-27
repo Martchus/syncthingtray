@@ -3,7 +3,10 @@
 #include "./quickui.h"
 #include "./helpers.h"
 
+#if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP) && !defined(SYNCTHINGWIDGETS_QUICK_GUI_CONTROLS_STYLE)
+#define SYNCTHINGWIDGETS_ALLOW_QQC_STYLE_OVERRIDE
 #include "../settings/settings.h"
+#endif
 
 #include <qtutilities/misc/desktoputils.h>
 
@@ -91,7 +94,7 @@ QuickUI::QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQml
     , m_darkPalette(app ? QT_UTILITIES_IS_PALETTE_DARK(app->palette()) : false)
     , m_syncthingIconsVisible(true)
 {
-#ifndef SYNCTHINGWIDGETS_QUICK_GUI_CONTROLS_STYLE
+#ifdef SYNCTHINGWIDGETS_ALLOW_QQC_STYLE_OVERRIDE
     if (const auto style = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_QT_QUICK_CONTROLS_STYLE"); !style.isEmpty()) {
         if (Settings::values().isPlasmoid) {
             using namespace CppUtilities::EscapeCodes;
