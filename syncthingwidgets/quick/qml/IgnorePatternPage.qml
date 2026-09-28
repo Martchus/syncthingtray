@@ -70,11 +70,15 @@ Page {
         title: qsTr("Quick guide to patterns")
         standardButtons: Dialog.Ok
         implicitWidth: 500
+        // use Popup.Window in combination with `modal: false` to allow editing while showing the help
+        popupType: QuickUI.desktop ? Popup.Window : Popup.Item
+        modal: false
         contentItem: ScrollView {
+            id: scrollView
+            ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
             contentWidth: availableWidth
             Label {
-                width: parent.width
-                height: implicitHeight
+                width: scrollView.availableWidth
                 wrapMode: Text.Wrap
                 textFormat: Text.RichText
                 text: `
@@ -92,6 +96,7 @@ Page {
         footer: DialogButtonBox {
             Button {
                 text: qsTr("Full documentation")
+                icon.name: Utils.kde ? "help-contents" : ""
                 flat: Utils.flatDialogButtons
                 onClicked: QuickUI.requestOpeningUrl("https://docs.syncthing.net/users/ignoring")
                 DialogButtonBox.buttonRole: DialogButtonBox.HelpRole
