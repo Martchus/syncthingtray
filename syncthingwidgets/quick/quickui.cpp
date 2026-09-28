@@ -98,7 +98,9 @@ QuickUI::QuickUI(QGuiApplication *app, QtUtilities::QtSettings &qtSettings, QQml
     if (const auto style = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_QT_QUICK_CONTROLS_STYLE"); !style.isEmpty()) {
         if (Settings::values().isPlasmoid) {
             using namespace CppUtilities::EscapeCodes;
-            std::cerr << Phrases::Warning << "The Plasmoid does not support " PROJECT_VARNAME_UPPER "_QT_QUICK_CONTROLS_STYLE. Use QT_QUICK_CONTROLS_STYLE instead." << Phrases::End;
+            std::cerr << Phrases::Warning
+                      << "The Plasmoid does not support " PROJECT_VARNAME_UPPER "_QT_QUICK_CONTROLS_STYLE. Use QT_QUICK_CONTROLS_STYLE instead."
+                      << Phrases::End;
         } else {
             QQuickStyle::setStyle(m_style = style);
         }

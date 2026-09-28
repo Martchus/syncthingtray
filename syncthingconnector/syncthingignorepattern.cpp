@@ -198,8 +198,8 @@ bool SyncthingIgnorePattern::matches(const QString &path, QChar pathSeparator) c
         }
         // forget single asterisks from previous path segments as they must not match across path separators
         if (matchedChar == pathSeparator || matchedChar == genericPathSeparator) {
-            asterisks.erase(std::remove_if(asterisks.begin(), asterisks.end(),
-                [](const auto &a) { return a.state == MatchManyAny; }), asterisks.end());
+            asterisks.erase(
+                std::remove_if(asterisks.begin(), asterisks.end(), [](const auto &a) { return a.state == MatchManyAny; }), asterisks.end());
         }
     };
 
