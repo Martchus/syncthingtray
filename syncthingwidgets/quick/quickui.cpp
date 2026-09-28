@@ -376,8 +376,7 @@ bool QuickUI::showMainWindow()
     if (m_mainWindow) {
         m_mainWindow->show();
         return true;
-    } else if ((m_mainWindow = qobject_cast<QQuickWindow *>(loadComponent("Main", "DesktopWindow")))) {
-        static_cast<QObject *>(m_mainWindow)->setParent(m_engine);
+    } else if ((m_mainWindow = qobject_cast<QQuickWindow *>(loadComponent("Main", "DesktopWindow", m_engine)))) {
         return true;
     } else {
         return false;
@@ -398,17 +397,16 @@ bool QuickUI::showPage(
         return QMetaObject::invokeMethod(stackView, "pushItem", Qt::DirectConnection, &pageComponent, properties);
     }
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
-    auto *const page = qobject_cast<QQuickItem *>(loadComponent(uri, typeName, initialProperties));
+    auto *const page = qobject_cast<QQuickItem *>(loadComponent(uri, typeName, m_engine, initialProperties));
     if (!page) {
         return false;
     }
     auto *const pageWindow
-        = qobject_cast<QQuickWindow *>(loadComponent("Main", "PageWindow", { { QStringLiteral("page"), QVariant::fromValue(page) } }));
+        = qobject_cast<QQuickWindow *>(loadComponent("Main", "PageWindow", m_engine, { { QStringLiteral("page"), QVariant::fromValue(page) } }));
+    static_cast<QObject *>(page)->setParent(pageWindow);
     if (!pageWindow) {
         return false;
     }
-    static_cast<QObject *>(pageWindow)->setParent(m_engine);
-    static_cast<QObject *>(page)->setParent(pageWindow);
     if (window) {
         *window = pageWindow;
     }
@@ -530,12 +528,12 @@ bool QuickUI::browseFiles(const QString &dirId, const QString &dirName, QQuickIt
     return showPage("Main", "FilesPage", { { QStringLiteral("dirId"), dirId }, { QStringLiteral("dirName"), dirName } }, stackView);
 }
 
-QObject *QuickUI::loadComponent(QAnyStringView uri, QAnyStringView typeName, const QVariantMap &initialProperties)
+QObject *QuickUI::loadComponent(QAnyStringView uri, QAnyStringView typeName, QObject *parent, const QVariantMap &initialProperties)
 {
     auto component = QQmlComponent(m_engine, uri, typeName, m_engine);
     auto *const object = component.createWithInitialProperties(initialProperties);
     if (object) {
-        // ensure the JavaScript engine deletes the object if we don't assign a parent in C++
+        object->setParent(parent);
         m_engine->setObjectOwnership(object, QJSEngine::JavaScriptOwnership);
     } else {
         const auto message = QStringLiteral("Unable to load component \"%1\" of Qt Quick UI: %2").arg(typeName, component.errorString());
@@ -553,7 +551,7 @@ QQuickItem *QuickUI::makePageBackground(QQuickWindow *pageWindow)
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
     if (pageWindow && isDesktop()) {
         return qobject_cast<QQuickItem *>(
-            loadComponent("Main", "PageWindowBackground", { { QStringLiteral("pageWindow"), QVariant::fromValue(pageWindow) } }));
+            loadComponent("Main", "PageWindowBackground", pageWindow, { { QStringLiteral("pageWindow"), QVariant::fromValue(pageWindow) } }));
     }
 #endif
     return nullptr;
