@@ -258,6 +258,7 @@ void SyncthingApplet::initEngine(QObject *object)
         dataObjectToProperty(&m_quickUI->engine, &quickUI.ui);
         dataObjectToProperty(&m_quickUI->engine, this);
         connect(&m_quickUI->ui, &QuickUI::changesWindowVisibleChanged, this, &SyncthingApplet::handleChangesWindowVisibleChanged);
+        connect(&m_quickUI->ui, &QuickUI::openingUrlRequested, &m_models, [this] (const QUrl &url) { m_models.openUrlExternally(url); });
         emit quickUIChanged();
     }
 #endif

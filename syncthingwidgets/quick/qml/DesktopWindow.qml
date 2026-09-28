@@ -660,7 +660,6 @@ ApplicationWindow {
         uiConnections: Connections {}
         connectionConnections: Connections {}
         notifierConnections: Connections {}
-        onOpeningUrlRequested: SyncthingModels.openUrlExternally(url)
     }
     readonly property Connections modelsConnections: Connections {
         target: SyncthingModels
