@@ -180,6 +180,7 @@ public Q_SLOTS:
 #endif
 #endif
     void saveSettings();
+    void closeMenu();
 
 Q_SIGNALS:
     void connectionStatusChanged();
@@ -377,6 +378,11 @@ inline void SyncthingApplet::toggleRunning()
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     return m_service.toggleRunning();
 #endif
+}
+
+inline void SyncthingApplet::closeMenu()
+{
+    // empty function in accordance with TrayWidget to avoid warning
 }
 
 inline void SyncthingApplet::setPassive(bool passive)
