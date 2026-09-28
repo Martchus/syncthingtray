@@ -323,11 +323,26 @@ void ConnectionTests::testErrorCases()
     bool authErrorStatus = false, authErrorConfig = false;
     bool apiKeyErrorStatus = false, apiKeyErrorConfig = false;
     bool allErrorsEmitted = false;
-    const auto errorHandler = [&](const QString &errorMessage) {
+    const auto errorHandler = [&](const QString &errorMessage, SyncthingErrorCategory category, int /*networkError*/,
+                                  const QNetworkRequest & /*request*/, const QByteArray &response) {
         // check whether Syncthing is available
-        if ((errorMessage == QStringLiteral("Unable to request Syncthing status: Connection refused"))
-            || (errorMessage == QStringLiteral("Unable to request Syncthing config: Connection refused"))) {
-            // consider test failed if we receive "Connection refused" when another error has already occurred
+        const auto isUnavailable = (errorMessage == QStringLiteral("Unable to request Syncthing status: Connection refused"))
+            || (errorMessage == QStringLiteral("Unable to request Syncthing config: Connection refused"));
+        const auto isNonJsonResponse = category == SyncthingErrorCategory::Parsing
+            || errorMessage.startsWith(QStringLiteral("Unable to parse Syncthing config: "))
+            || errorMessage.startsWith(QStringLiteral("Unable to parse Syncthing status: "));
+        if (isUnavailable || isNonJsonResponse) {
+            if (isNonJsonResponse) {
+                cerr << " - Received non-JSON response (possibly during startup/migration): ";
+                if (!response.isEmpty()) {
+                    cerr.write(response.constData(), response.size());
+                } else {
+                    cerr << errorMessage.toLocal8Bit().data();
+                }
+                cerr << endl;
+            }
+
+            // consider test failed if we receive "Connection refused" / non-JSON response when another error has already occurred
             if (syncthingAvailable) {
                 CPPUNIT_FAIL("Syncthing became unavailable after another error had already occurred");
             }
