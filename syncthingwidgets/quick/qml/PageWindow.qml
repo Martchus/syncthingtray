@@ -125,7 +125,7 @@ ApplicationWindow {
     DiscardChangesDialog {
         id: discardChangesDialog
         meta: pageWindow.meta
-        pageStack: pageStack
+        pageStack: null
         prompt: qsTr("Do you really want to close without applying changes?")
         onAccepted: {
             pageWindow.forceClose = true;

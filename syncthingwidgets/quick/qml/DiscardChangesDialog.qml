@@ -15,7 +15,7 @@ CustomDialog {
         text: qsTr("Do you really want to go back without applying changes?")
         wrapMode: Text.WordWrap
     }
-    onAccepted: pageStack.pop(true)
+    onAccepted: pageStack?.pop(true)
     required property Meta meta
     required property PageStack pageStack
     property alias prompt: label.text
