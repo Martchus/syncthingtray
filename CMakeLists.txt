@@ -24,17 +24,6 @@ set(SPHINX_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 project(${META_PROJECT_NAME})
 enable_testing()
 
-# disable experimental Qt Quick GUI by default except on mobile platforms, enable libsyncthing by default
-if (ANDROID OR IOS)
-    set(WIDGET_GUI_ENABLED_BY_DEFAULT OFF)
-    set(QUICK_GUI_ENABLED_BY_DEFAULT ON)
-    set(LIBSYNCTHING_DISABLED_BY_DEFAULT OFF)
-else ()
-    set(WIDGET_GUI_ENABLED_BY_DEFAULT ON)
-    set(QUICK_GUI_ENABLED_BY_DEFAULT OFF)
-    set(LIBSYNCTHING_DISABLED_BY_DEFAULT ON)
-endif ()
-
 # disable KDE integration under Android, Windows and MacOS by default
 if(ANDROID OR WIN32 OR APPLE)
     set(FILE_ITEM_ACTION_PLUGIN_DISABLED_BY_DEFAULT ON)
@@ -60,6 +49,37 @@ if (KF_PACKAGE_PREFIX MATCHES ".*KF([0-9]+).*")
     set(KF_MAJOR_VERSION "${CMAKE_MATCH_1}")
 endif ()
 
+# configure whether Qt Widgets GUI, Qt Quick GUI and libsyncthing are enabled by default
+if (ANDROID OR IOS)
+    # configure defaults for mobile platforms
+    set(LIBSYNCTHING_DISABLED_BY_DEFAULT OFF)
+    set(WIDGET_GUI_ENABLED_BY_DEFAULT OFF)
+    set(QUICK_GUI_ENABLED_BY_DEFAULT ON)
+    set(QUICK_GUI_DEFAULT_STYLE "")
+    set(QUICK_GUI_WIDGETS_DIALOGS_ENABLED_BY_DEFAULT OFF)
+    if (IOS)
+        set(QUICK_GUI_DEFAULT_STYLE "iOS")
+    endif ()
+else ()
+    # configure defaults for desktop platforms
+    set(LIBSYNCTHING_DISABLED_BY_DEFAULT ON)
+    set(WIDGET_GUI_ENABLED_BY_DEFAULT ON)
+    set(QUICK_GUI_ENABLED_BY_DEFAULT OFF)
+    if (QT_MAJOR_VERSION GREATER_EQUAL 6)
+        set(QUICK_GUI_ENABLED_BY_DEFAULT ON)
+    endif ()
+    set(QUICK_GUI_DEFAULT_STYLE "dynamic")
+    set(QUICK_GUI_WIDGETS_DIALOGS_ENABLED_BY_DEFAULT OFF)
+    if (WIN32)
+        set(QUICK_GUI_DEFAULT_STYLE "FluentWinUI3")
+    elseif (APPLE)
+        set(QUICK_GUI_DEFAULT_STYLE "macOS")
+    elseif (NOT BUILD_SHARED_LIBS)
+        set(QUICK_GUI_DEFAULT_STYLE "Fusion")
+        set(QUICK_GUI_WIDGETS_DIALOGS_ENABLED_BY_DEFAULT ON)
+    endif()
+endif ()
+
 # add options for partial build
 option(NO_LIBSYNCTHING "whether building Syncthing itself as a library should be skipped" "${LIBSYNCTHING_DISABLED_BY_DEFAULT}")
 option(NO_CLI "whether building CLI should be skipped" OFF)
@@ -69,7 +89,9 @@ option(NO_MODEL "whether building models should be skipped, implies NO_TRAY" OFF
 option(NO_WIDGETS "whether building widgets should be skipped, implies NO_TRAY" OFF)
 option(NO_PLASMOID "whether building the Plasmoid for the Plasma desktop should be skipped" "${PLASMOID_DISABLED_BY_DEFAULT}")
 option(WIDGETS_GUI "enables/disables building the Qt Widgets GUI" ${WIDGET_GUI_ENABLED_BY_DEFAULT})
-option(QUICK_GUI "enables/disables building the experimental Qt Quick GUI" ${QUICK_GUI_ENABLED_BY_DEFAULT})
+option(QUICK_GUI "enables/disables building the Qt Quick GUI" ${QUICK_GUI_ENABLED_BY_DEFAULT})
+option(QUICK_GUI_WIDGETS_DIALOGS "enables Qt Widgets based dialogs for the Qt Quick GUI" ${QUICK_GUI_WIDGETS_DIALOGS_ENABLED_BY_DEFAULT})
+set(QUICK_GUI_CONTROLS_STYLE "${QUICK_GUI_DEFAULT_STYLE}" CACHE STRING "sets the Qt Quick Controls style")
 
 # allow using non-default configuration-suffix/package-namespace
 set(CONFIGURATION_PACKAGE_SUFFIX "" CACHE STRING "sets the suffix for find_package() calls to packages configured via c++utilities")
