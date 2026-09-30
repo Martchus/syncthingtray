@@ -395,7 +395,7 @@ QuickGuiEngine &TrayWidget::quickGui()
         dataObjectToProperty(engine, &m_models);
         dataObjectToProperty(engine, &quickUI.ui);
         connect(&quickUI.ui, &QuickUI::changesWindowVisibleChanged, this, &TrayWidget::handleChangesWindowVisibleChanged);
-        connect(&quickUI.ui, &QuickUI::openingUrlRequested, &m_models, [this] (const QUrl &url) { m_models.openUrlExternally(url); });
+        connect(&quickUI.ui, &QuickUI::openingUrlRequested, &m_models, [this](const QUrl &url) { m_models.openUrlExternally(url); });
     }
     return *m_quickUI;
 }
