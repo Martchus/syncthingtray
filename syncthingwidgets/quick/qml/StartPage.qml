@@ -165,7 +165,11 @@ Page {
                     standardButtons: Dialog.NoButton
                     implicitWidth: 400
                     implicitHeight: implicitWidth
-                    onAboutToShow: SyncthingModels.showQrCode(qrCodeIcon)
+                    onAboutToShow: SyncthingModels.showQrCode((image) => {
+                        if (qrCodeIcon) {
+                            qrCodeIcon.source = image;
+                        }
+                    })
                     contentItem: Icon {
                         id: qrCodeIcon
                     }

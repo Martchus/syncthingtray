@@ -10,6 +10,7 @@
 #include <QCoreApplication>
 #include <QDesktopServices>
 #include <QFile>
+#include <QImage>
 #include <QNetworkReply>
 #include <QStringList>
 #include <QUrlQuery>
@@ -223,59 +224,61 @@ QString SyncthingModels::getClipboardText() const
     return QString();
 }
 
-bool SyncthingModels::loadDirErrors(const QString &dirId, QObject *view)
+bool SyncthingModels::loadDirErrors(const QString &dirId, const QJSValue &callback)
 {
-    auto connection = connect(&m_connection, &Data::SyncthingConnection::dirStatusChanged, view, [this, dirId, view](const Data::SyncthingDir &dir) {
-        if (dir.id != dirId) {
-            return;
-        }
-        auto array = m_engine->newArray(static_cast<quint32>(dir.itemErrors.size()));
-        auto index = quint32();
-        for (const auto &itemError : dir.itemErrors) {
-            auto error = m_engine->newObject();
-            error.setProperty(QStringLiteral("path"), itemError.path);
-            error.setProperty(QStringLiteral("message"), itemError.message);
-            array.setProperty(index++, error);
-        }
-        view->setProperty("model", array.toVariant());
-        view->setProperty("enabled", true);
-    });
-    connect(this, &QObject::destroyed, [connection]() mutable { disconnect(connection); });
+    const auto connection = std::make_shared<QMetaObject::Connection>();
+    connect(this, &QObject::destroyed, [connection]() { disconnect(*connection); });
+    *connection = connect(
+        &m_connection, &Data::SyncthingConnection::dirStatusChanged, this, [this, dirId, callback, connection](const Data::SyncthingDir &dir) {
+            if (dir.id != dirId) {
+                return;
+            }
+            disconnect(*connection);
+            if (!m_engine || !callback.isCallable()) {
+                return;
+            }
+            auto array = m_engine->newArray(static_cast<quint32>(dir.itemErrors.size()));
+            auto index = quint32();
+            for (const auto &itemError : dir.itemErrors) {
+                auto error = m_engine->newObject();
+                error.setProperty(QStringLiteral("path"), itemError.path);
+                error.setProperty(QStringLiteral("message"), itemError.message);
+                array.setProperty(index++, error);
+            }
+            callback.call(QJSValueList{ array });
+        });
     m_connection.requestDirPullErrors(dirId);
     return true;
 }
 
-bool SyncthingModels::loadIgnorePatterns(const QString &dirId, QObject *textArea)
+bool SyncthingModels::loadIgnorePatterns(const QString &dirId, const QJSValue &callback)
 {
-    auto res = m_connection.ignores(dirId, [this, textArea](Data::SyncthingIgnores &&ignores, QString &&error) {
+    auto query = m_connection.ignores(dirId, [this, callback](Data::SyncthingIgnores &&ignores, QString &&error) {
         if (!error.isEmpty()) {
             emit this->error(tr("Unable to load ignore patterns: ") + error);
         }
-        textArea->setProperty("text", ignores.ignore.join(QChar('\n')));
-        textArea->setProperty("enabled", true);
+        if (m_engine && callback.isCallable()) {
+            callback.call(QJSValueList{ ignores.ignore.join(QChar('\n')), error });
+        }
     });
-    connect(textArea, &QObject::destroyed, res.reply, &QNetworkReply::deleteLater);
-    connect(this, &QObject::destroyed, [connection = res.connection] { disconnect(connection); });
+    connect(this, &QObject::destroyed, query.reply, &QNetworkReply::deleteLater);
+    connect(this, &QObject::destroyed, [c = query.connection]() mutable { disconnect(c); });
     return true;
 }
 
-bool SyncthingModels::saveIgnorePatterns(const QString &dirId, QObject *textArea)
+bool SyncthingModels::saveIgnorePatterns(const QString &dirId, const QString &text, const QJSValue &callback)
 {
-    textArea->setProperty("enabled", false);
-    const auto text = textArea->property("text");
-    if (text.userType() != QMetaType::QString) {
-        textArea->setProperty("enabled", true);
-        return false;
-    }
-    auto res = m_connection.setIgnores(
-        dirId, Data::SyncthingIgnores{ .ignore = text.toString().split(QChar('\n')), .expanded = QStringList() }, [this, textArea](QString &&error) {
+    auto query = m_connection.setIgnores(
+        dirId, Data::SyncthingIgnores{ .ignore = text.split(QChar('\n')), .expanded = QStringList() }, [this, callback](QString &&error) {
             if (!error.isEmpty()) {
                 emit this->error(tr("Unable to save ignore patterns: ") + error);
             }
-            textArea->setProperty("enabled", true);
+            if (m_engine && callback.isCallable()) {
+                callback.call(QJSValueList{ error });
+            }
         });
-    connect(textArea, &QObject::destroyed, res.reply, &QNetworkReply::deleteLater);
-    connect(this, &QObject::destroyed, [connection = res.connection] { disconnect(connection); });
+    connect(this, &QObject::destroyed, query.reply, &QNetworkReply::deleteLater);
+    connect(this, &QObject::destroyed, [c = query.connection]() mutable { disconnect(c); });
     return true;
 }
 
@@ -284,22 +287,31 @@ bool SyncthingModels::openIgnorePatterns(const QString &dirId)
     return openPath(dirId, QStringLiteral(".stignore"));
 }
 
-bool SyncthingModels::loadErrors(QObject *listView)
+bool SyncthingModels::loadErrors(const QJSValue &callback)
 {
-    listView->setProperty("model", QVariant::fromValue(new Data::SyncthingErrorModel(m_connection, listView)));
+    if (!m_engine || !callback.isCallable()) {
+        return false;
+    }
+    auto *const model = new Data::SyncthingErrorModel(m_connection);
+    m_engine->setObjectOwnership(model, QQmlEngine::JavaScriptOwnership);
+    callback.call(QJSValueList{ m_engine->toScriptValue(model) });
     return true;
 }
 
-bool SyncthingModels::showQrCode(Icon *icon)
+bool SyncthingModels::showQrCode(const QJSValue &callback)
 {
-    if (m_connection.myId().isEmpty()) {
+    if (m_connection.myId().isEmpty() || !callback.isCallable()) {
         return false;
     }
-    connect(&m_connection, &Data::SyncthingConnection::qrCodeAvailable, icon,
-        [icon, requestedId = m_connection.myId(), this](const QString &id, const QByteArray &data) {
+    const auto connection = std::make_shared<QMetaObject::Connection>();
+    connect(this, &QObject::destroyed, [connection]() { disconnect(*connection); });
+    *connection = connect(&m_connection, &Data::SyncthingConnection::qrCodeAvailable, this,
+        [this, callback, requestedId = m_connection.myId(), connection](const QString &id, const QByteArray &data) {
             if (id == requestedId) {
-                disconnect(&m_connection, nullptr, icon, nullptr);
-                icon->setSource(QImage::fromData(data));
+                disconnect(*connection);
+                if (m_engine && callback.isCallable()) {
+                    callback.call(QJSValueList{ m_engine->toScriptValue(QImage::fromData(data)) });
+                }
             }
         });
     m_connection.requestQrCode(m_connection.myId());

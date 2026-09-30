@@ -6,7 +6,11 @@ import Main
 
 Page {
     title: qsTr("Notifications/errors")
-    Component.onCompleted: SyncthingModels.loadErrors(listView)
+    Component.onCompleted: SyncthingModels.loadErrors((model) => {
+        if (listView) {
+            listView.model = model;
+        }
+    })
     actions: [
         Action {
             text: qsTr("Clear")

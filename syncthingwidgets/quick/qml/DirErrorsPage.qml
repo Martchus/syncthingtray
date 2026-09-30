@@ -6,7 +6,12 @@ import Main
 
 Page {
     title: qsTr("Errors of folder \"%1\"").arg(dirName)
-    Component.onCompleted: SyncthingModels.loadDirErrors(dirId, listView)
+    Component.onCompleted: SyncthingModels.loadDirErrors(dirId, (errors) => {
+        if (listView) {
+            listView.model = errors;
+            listView.enabled = true;
+        }
+    })
     ScrollView {
         anchors.fill: parent
         CustomListView {

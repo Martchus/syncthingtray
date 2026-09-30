@@ -7,10 +7,6 @@
 #include "./diffhighlighter.h"
 #endif
 
-#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
-#include "../quick/quickicon.h"
-#endif
-
 #include <syncthingmodel/syncthingdevicemodel.h>
 #include <syncthingmodel/syncthingdirectorymodel.h>
 #include <syncthingmodel/syncthingrecentchangesmodel.h>
@@ -126,12 +122,12 @@ public:
     Q_INVOKABLE bool copyText(const QString &text);
     Q_INVOKABLE bool copyPath(const QString &dirId, const QString &relativePath);
     Q_INVOKABLE QString getClipboardText() const;
-    Q_INVOKABLE bool loadDirErrors(const QString &dirId, QObject *view);
-    Q_INVOKABLE bool loadIgnorePatterns(const QString &dirId, QObject *textArea);
-    Q_INVOKABLE bool saveIgnorePatterns(const QString &dirId, QObject *textArea);
+    Q_INVOKABLE bool loadDirErrors(const QString &dirId, const QJSValue &callback = QJSValue());
+    Q_INVOKABLE bool loadIgnorePatterns(const QString &dirId, const QJSValue &callback = QJSValue());
+    Q_INVOKABLE bool saveIgnorePatterns(const QString &dirId, const QString &text, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool openIgnorePatterns(const QString &dirId);
-    Q_INVOKABLE bool loadErrors(QObject *listView);
-    Q_INVOKABLE bool showQrCode(Icon *icon);
+    Q_INVOKABLE bool loadErrors(const QJSValue &callback = QJSValue());
+    Q_INVOKABLE bool showQrCode(const QJSValue &callback = QJSValue());
     Q_INVOKABLE QString resolveUrl(const QUrl &url);
     Q_INVOKABLE bool saveSupportBundle(const QUrl &url = QUrl(), const QJSValue &callback = QJSValue());
     bool saveSupportBundle(

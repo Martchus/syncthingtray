@@ -7,7 +7,12 @@ import Main
 Page {
     id: page
     title: qsTr("Ignore patterns of \"%1\"").arg(dirName)
-    Component.onCompleted: SyncthingModels.loadIgnorePatterns(dirId, textArea)
+    Component.onCompleted: SyncthingModels.loadIgnorePatterns(dirId, (patterns, error) => {
+        if (textArea) {
+            textArea.text = patterns;
+            textArea.enabled = true;
+        }
+    })
     property list<Action> actions: [
         Action {
             text: qsTr("Help")
@@ -19,7 +24,14 @@ Page {
             text: qsTr("Save")
             icon.source: QuickUI.faUrlBase + "floppy-o"
             icon.name: "document-save"
-            onTriggered: SyncthingModels.saveIgnorePatterns(page.dirId, textArea)
+            onTriggered: {
+                textArea.enabled = false;
+                SyncthingModels.saveIgnorePatterns(page.dirId, textArea.text, (error) => {
+                    if (textArea) {
+                        textArea.enabled = true;
+                    }
+                });
+            }
         }
     ]
     property list<Action> extraActions: [
