@@ -319,8 +319,8 @@ before. If you have added the Plasmoid to a panel or the desktop you can delete 
 any other Plasmoid.
 
 If the Plasmoid won't show up, check out the
-"[Troubleshooting KDE integration](#troubleshooting-kde-integration)" section below for
-further help.
+"[Troubleshooting KDE integrations](docs/devel.md#troubleshooting-kde-integrations)" section
+below for further help.
 
 ### Configuring Dolphin integration
 The Dolphin integration can be enabled/disabled in Dolphin's context-menu settings. It will

@@ -185,7 +185,7 @@ itself is used instead of OpenSSL.)
 * Add `-DJS_PROVIDER:STRING=script/qml/none` to the CMake arguments to use either Qt Script, Qt QML or no JavaScript
   engine at all. If no JavaScript engine is used, the CLI does not support scripting configuration changes.
 
-### Troubleshooting KDE integration
+### Troubleshooting KDE integrations
 All KDE integrations are provided for KDE 5 and 6. The Qt version you have built Syncthing Tray against
 must match the KDE version you want to build the integrations for.
 
