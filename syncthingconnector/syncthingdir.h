@@ -145,6 +145,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     explicit SyncthingDir(const QString &id = QString(), const QString &label = QString(), const QString &path = QString());
     bool assignStatus(const QString &statusStr, SyncthingEventId eventId, CppUtilities::DateTime time);
     bool assignStatus(SyncthingDirStatus newStatus, SyncthingEventId eventId, CppUtilities::DateTime time);
+    bool assignScanProgress(int percentage, double rate, SyncthingEventId eventId, CppUtilities::DateTime time);
     bool assignDirType(const QString &dirType);
     const QString &displayName() const;
     QString statusString() const;
@@ -183,7 +184,7 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
     SyncthingEventId lastStatisticsUpdateEvent = 0;
     CppUtilities::DateTime lastStatisticsUpdateTime;
     CppUtilities::DateTime lastScanTime;
-    SyncthingEventId lastFileEvent;
+    SyncthingEventId lastFileEvent = 0;
     CppUtilities::DateTime lastFileTime;
     QString lastFileName;
     std::vector<SyncthingItemDownloadProgress> downloadingItems;

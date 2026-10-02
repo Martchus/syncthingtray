@@ -1076,7 +1076,15 @@ void SyncthingConnection::readStatus()
         const auto replyObj = replyDoc.object();
         emitMyIdChanged(replyObj.value(QLatin1String("myID")).toString());
         emitTildeChanged(replyObj.value(QLatin1String("tilde")).toString(), replyObj.value(QLatin1String("pathSeparator")).toString());
+        const auto previousStartTime = m_startTime;
         m_startTime = parseTimeStamp(replyObj.value(QLatin1String("startTime")), QStringLiteral("start time"));
+        if (!previousStartTime.isNull() && !m_startTime.isNull() && previousStartTime != m_startTime) {
+            if (m_loggingFlags && SyncthingConnectionLoggingFlags::ApiCalls) {
+                std::cerr << Phrases::Info << "Syncthing start time has changed (" << previousStartTime.toString()
+                          << " -> " << m_startTime.toString() << "), resetting event tracking" << Phrases::End;
+            }
+            resetEventTracking();
+        }
         m_hasStatus = true;
 
         if (m_keepPolling) {
@@ -2464,6 +2472,9 @@ void SyncthingConnection::readEvents()
         const auto replyArray = replyDoc.array();
         emit newEvents(replyArray);
         const auto res = readEventsFromJsonArray(replyArray, m_lastEventId);
+        if (!res) {
+            return;
+        }
         emit allEventsProcessed();
         if (hadStateChanged) {
             emit hasStateChanged();
@@ -2481,10 +2492,6 @@ void SyncthingConnection::readEvents()
             for (const SyncthingDir &dir : m_dirs) {
                 requestDirStatus(dir.id);
             }
-        }
-
-        if (!res) {
-            return;
         }
 
         if (!replyArray.isEmpty() && (loggingFlags() && SyncthingConnectionLoggingFlags::Events)) {
@@ -2726,10 +2733,9 @@ void SyncthingConnection::readDirEvent(SyncthingEventId eventId, DateTime eventT
         const auto total = eventData.value(QLatin1String("total")).toDouble(0);
         const auto rate = eventData.value(QLatin1String("rate")).toDouble(0);
         if (current > 0 && total > 0) {
-            dirInfo->scanningPercentage = static_cast<int>(current * 100 / total);
-            dirInfo->scanningRate = rate;
-            dirInfo->assignStatus(SyncthingDirStatus::Scanning, eventId, eventTime); // ensure state is scanning
-            emit dirStatusChanged(*dirInfo, index);
+            if (dirInfo->assignScanProgress(static_cast<int>(current * 100 / total), rate, eventId, eventTime)) {
+                emit dirStatusChanged(*dirInfo, index);
+            }
         }
     } else if (eventType == QLatin1String("FolderPaused")) {
         if (!dirInfo->paused) {

@@ -1495,6 +1495,35 @@ void SyncthingConnection::invalidateHasOutOfSyncDirs()
 }
 
 /*!
+ * \brief Internally called to reset event IDs and per-directory event tracking when Syncthing has restarted.
+ */
+void SyncthingConnection::resetEventTracking()
+{
+    m_lastEventId = 0;
+    m_lastDiskEventId = 0;
+    m_lastEventIdByMask.clear();
+    m_lastConnectionsUpdateEvent = 0;
+    m_lastFileEvent = 0;
+    m_statsRequested = false;
+    m_hasEvents = false;
+    m_hasDiskEvents = false;
+    auto index = int();
+    for (auto &dir : m_dirs) {
+        dir.lastStatusUpdateEvent = 0;
+        dir.lastSyncStartedEvent = 0;
+        dir.lastStatisticsUpdateEvent = 0;
+        dir.lastFileEvent = 0;
+        dir.scanningPercentage = 0;
+        dir.scanningRate = 0.0;
+        if (dir.status == SyncthingDirStatus::Scanning) {
+            dir.status = SyncthingDirStatus::Unknown;
+            emit dirStatusChanged(dir, index);
+        }
+        ++index;
+    }
+}
+
+/*!
  * \brief Returns syncthingUrl() with userName() and password().
  */
 QUrl SyncthingConnection::makeUrlWithCredentials() const

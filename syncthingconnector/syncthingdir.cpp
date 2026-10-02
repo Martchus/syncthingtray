@@ -93,6 +93,11 @@ bool SyncthingDir::finalizeStatusUpdate(SyncthingDirStatus newStatus, SyncthingE
         newStatus = SyncthingDirStatus::OutOfSync;
     }
 
+    if (newStatus != SyncthingDirStatus::Scanning) {
+        scanningPercentage = 0;
+        scanningRate = 0.0;
+    }
+
     if (newStatus == status) {
         return false;
     }
@@ -151,6 +156,22 @@ bool SyncthingDir::assignStatus(const QString &statusStr, SyncthingEventId event
 
     rawStatus = statusStr;
     return finalizeStatusUpdate(newStatus, eventId, time);
+}
+
+/*!
+ * \brief Assigns the scanning progress from the specified percentage and rate.
+ * \returns Returns whether the status or progress has actually changed.
+ */
+bool SyncthingDir::assignScanProgress(int percentage, double rate, SyncthingEventId eventId, DateTime time)
+{
+    if (!checkWhetherStatusUpdateRelevant(eventId, time)) {
+        return false;
+    }
+    const auto progressChanged = scanningPercentage != percentage || scanningRate != rate;
+    scanningPercentage = percentage;
+    scanningRate = rate;
+    const auto statusChanged = finalizeStatusUpdate(SyncthingDirStatus::Scanning, eventId, time);
+    return statusChanged || progressChanged;
 }
 
 bool SyncthingDir::assignDirType(const QString &dirTypeStr)

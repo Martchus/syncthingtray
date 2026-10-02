@@ -518,6 +518,7 @@ private Q_SLOTS:
     bool handleRuntimeConditionChanged();
     void recalculateStatus();
     void invalidateHasOutOfSyncDirs();
+    void resetEventTracking();
 
 private:
     // handler to evaluate results from request...() methods

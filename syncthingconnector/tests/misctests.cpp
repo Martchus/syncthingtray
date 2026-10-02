@@ -306,9 +306,19 @@ void MiscTests::testSyncthingDir()
     CPPUNIT_ASSERT(dir.lastScanTime.isNull());
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("Scanning"), dir.statusString());
 
+    CPPUNIT_ASSERT(dir.assignScanProgress(99, 1000.0, updateEvent += 1, updateTime += TimeSpan::fromSeconds(1)));
+    CPPUNIT_ASSERT_EQUAL(99, dir.scanningPercentage);
+    CPPUNIT_ASSERT_EQUAL(1000.0, dir.scanningRate);
+    CPPUNIT_ASSERT(dir.statusString().startsWith(QStringLiteral("Scanning (99 %")));
+
+    CPPUNIT_ASSERT(!dir.assignScanProgress(50, 500.0, updateEvent - 1, updateTime));
+    CPPUNIT_ASSERT_EQUAL(99, dir.scanningPercentage);
+
     CPPUNIT_ASSERT(dir.assignStatus(SyncthingDirStatus::Idle, updateEvent += 1, updateTime += TimeSpan::fromSeconds(2)));
     CPPUNIT_ASSERT_EQUAL_MESSAGE("event updated", updateEvent, dir.lastStatusUpdateEvent);
     CPPUNIT_ASSERT_EQUAL_MESSAGE("time updated", updateTime, dir.lastStatusUpdateTime);
+    CPPUNIT_ASSERT_EQUAL(0, dir.scanningPercentage);
+    CPPUNIT_ASSERT_EQUAL(0.0, dir.scanningRate);
     CPPUNIT_ASSERT(dir.lastScanTime >= lastScanTime);
 
     dir.status = SyncthingDirStatus::Unknown;
@@ -385,6 +395,18 @@ void MiscTests::testDirInsertion()
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("foo"), dirs.at(1).id);
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("Foo changed"), dirs.at(1).label);
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("/foo-changed"), dirs.at(1).path);
+
+    dirs.at(0).lastStatusUpdateEvent = 100;
+    dirs.at(0).lastStatisticsUpdateEvent = 100;
+    dirs.at(0).status = SyncthingDirStatus::Scanning;
+    dirs.at(0).scanningPercentage = 99;
+    connection.m_lastEventId = 100;
+    connection.resetEventTracking();
+    CPPUNIT_ASSERT_EQUAL(static_cast<SyncthingEventId>(0), connection.m_lastEventId);
+    CPPUNIT_ASSERT_EQUAL(static_cast<SyncthingEventId>(0), dirs.at(0).lastStatusUpdateEvent);
+    CPPUNIT_ASSERT_EQUAL(static_cast<SyncthingEventId>(0), dirs.at(0).lastStatisticsUpdateEvent);
+    CPPUNIT_ASSERT_EQUAL(0, dirs.at(0).scanningPercentage);
+    CPPUNIT_ASSERT_EQUAL(SyncthingDirStatus::Unknown, dirs.at(0).status);
 }
 
 void MiscTests::testDevInsertionWithoutMyId()
