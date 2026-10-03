@@ -5,7 +5,8 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:8.8.0'
+        //noinspection AndroidGradlePluginVersion
+        classpath 'com.android.tools.build:gradle:9.2.1'
     }
 }
 
@@ -24,7 +25,7 @@ apply plugin: qtGradlePluginType
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
     //noinspection GradleDependency
-    implementation 'androidx.core:core:1.16.0'
+    implementation 'androidx.core:core:1.17.0'
     implementation "androidx.browser:browser:1.8.0"
     implementation 'net.lingala.zip4j:zip4j:2.11.5'
 }
@@ -53,6 +54,7 @@ android {
         main {
             manifest.srcFile 'AndroidManifest.xml'
             java.srcDirs = [qtAndroidDir + '/src', 'src', 'java']
+            kotlin.srcDirs = [qtAndroidDir + '/src', 'src', 'kotlin']
             aidl.srcDirs = [qtAndroidDir + '/src', 'src', 'aidl']
             res.srcDirs = [qtAndroidDir + '/res', 'res']
             resources.srcDirs = ['resources']
@@ -63,24 +65,23 @@ android {
     }
 
     tasks.withType(JavaCompile) {
-        options.incremental = true
+        options.compilerArgs += ['-Xlint:all']
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
-    lintOptions {
-        abortOnError = false
-    }
-
-    // Do not compress Qt binary resources file
     aaptOptions {
+        // Do not compress Qt binary resources file
         noCompress 'rcc'
     }
 
     packagingOptions {
+        jniLibs {
+            useLegacyPackaging = false
+        }
         if (project.hasProperty('cmakeDoNotStrip') && project.cmakeDoNotStrip == true) {
             println "not stipping symbols of libsyncthing*.so libraries as perl "
             doNotStrip "**/libsyncthing*.so"
