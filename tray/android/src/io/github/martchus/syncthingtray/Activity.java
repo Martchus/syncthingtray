@@ -59,11 +59,13 @@ public class Activity extends QtActivity {
 
     // various fields for activity-internal state
     private static final int STORAGE_PERMISSION_REQUEST = 100;
+    private static final int LOCAL_NETWORK_PERMISSION_REQUEST = 101;
     private static final int s_themeColor = 0xFF03A9F4;
     private float m_fontScale = 1.0f;
     private int m_fontWeightAdjustment = 0;
     private boolean m_storagePermissionRequested = false;
     private boolean m_notificationPermissionRequested = false;
+    private boolean m_localNetworkPermissionRequested = false;
     private boolean m_restarting = false;
     private boolean m_explicitShutdown = false;
     private boolean m_keepRunningAfterDestruction = false;
@@ -232,6 +234,28 @@ public class Activity extends QtActivity {
             showToast(getString(R.string.unable_to_request_notification_permission));
             return false;
         }
+    }
+
+    public boolean localNetworkPermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 37) {
+            return checkSelfPermission("android.permission.ACCESS_LOCAL_NETWORK") == PackageManager.PERMISSION_GRANTED;
+        } else {
+            return true;
+        }
+    }
+
+    public boolean requestLocalNetworkPermission() {
+        if (Build.VERSION.SDK_INT >= 37) {
+            try {
+                m_localNetworkPermissionRequested = true;
+                ActivityCompat.requestPermissions(this, new String[]{"android.permission.ACCESS_LOCAL_NETWORK"}, LOCAL_NETWORK_PERMISSION_REQUEST);
+                return true;
+            } catch (Exception e) {
+                Log.e(TAG, "Unable to request local network permission", e);
+                showToast(getString(R.string.unable_to_request_local_network_permission));
+            }
+        }
+        return false;
     }
 
     public boolean minimize() {
@@ -520,6 +544,10 @@ public class Activity extends QtActivity {
             m_notificationPermissionRequested = false;
             handleNotificationPermissionChanged(notificationPermissionGranted());
         }
+        if (m_localNetworkPermissionRequested) {
+            m_localNetworkPermissionRequested = false;
+            handleLocalNetworkPermissionChanged(localNetworkPermissionGranted());
+        }
         super.onResume();
 
         // ensure the foreground notification is shown again when opening the app as the notification might have been dismissed
@@ -596,6 +624,8 @@ public class Activity extends QtActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == STORAGE_PERMISSION_REQUEST) {
             handleStoragePermissionChanged(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED);
+        } else if (requestCode == LOCAL_NETWORK_PERMISSION_REQUEST) {
+            handleLocalNetworkPermissionChanged(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED);
         }
     }
 
@@ -616,4 +646,5 @@ public class Activity extends QtActivity {
     private static native void handleAndroidIntent(String page, byte[] data, boolean fromNotification);
     private static native void handleStoragePermissionChanged(boolean storagePermissionGranted);
     private static native void handleNotificationPermissionChanged(boolean notificationPermissionGranted);
+    private static native void handleLocalNetworkPermissionChanged(boolean localNetworkPermissionGranted);
 }

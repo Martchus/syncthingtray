@@ -43,6 +43,7 @@ class SYNCTHINGWIDGETS_EXPORT App : public AppBase {
     Q_PROPERTY(bool manualServiceShutdown READ isServiceShutdownManual CONSTANT)
     Q_PROPERTY(bool storagePermissionGranted READ storagePermissionGranted NOTIFY storagePermissionGrantedChanged)
     Q_PROPERTY(bool notificationPermissionGranted READ notificationPermissionGranted NOTIFY notificationPermissionGrantedChanged)
+    Q_PROPERTY(bool localNetworkPermissionGranted READ localNetworkPermissionGranted NOTIFY localNetworkPermissionGrantedChanged)
     Q_PROPERTY(QString currentSyncthingHomeDir READ currentSyncthingHomeDir)
     Q_PROPERTY(QString closePreference READ closePreference)
     QML_ELEMENT
@@ -132,6 +133,7 @@ public:
     }
     bool storagePermissionGranted() const;
     bool notificationPermissionGranted() const;
+    bool localNetworkPermissionGranted() const;
     QString currentSyncthingHomeDir() const;
     QObject *currentDialog();
     const QString &closePreference();
@@ -171,6 +173,7 @@ public:
     Q_INVOKABLE void quit();
     Q_INVOKABLE bool requestStoragePermission();
     Q_INVOKABLE bool requestNotificationPermission();
+    Q_INVOKABLE bool requestLocalNetworkPermission();
     Q_INVOKABLE bool showLog(QObject *textArea);
     Q_INVOKABLE void clearLog();
     Q_INVOKABLE void terminateSyncthing();
@@ -204,6 +207,7 @@ Q_SIGNALS:
     void newDirTriggered(const QString &devId, const QString &dirId, const QString &dirLabel);
     void storagePermissionGrantedChanged(bool storagePermissionGranted);
     void notificationPermissionGrantedChanged(bool notificationPermissionGranted);
+    void localNetworkPermissionGrantedChanged(bool localNetworkPermissionGranted);
 #ifndef Q_OS_ANDROID
     void syncthingTerminationRequested();
     void syncthingRestartRequested();
@@ -234,6 +238,7 @@ private Q_SLOTS:
     void handleAndroidIntent(const QString &page, const QByteArray &data, bool fromNotification);
     void handleStoragePermissionChanged(bool storagePermissionGranted);
     void handleNotificationPermissionChanged(bool notificationPermissionGranted);
+    void handleLocalNetworkPermissionChanged(bool localNetworkPermissionGranted);
 #endif
 
 private:
@@ -254,6 +259,7 @@ private:
 #ifdef Q_OS_ANDROID
     mutable std::optional<bool> m_storagePermissionGranted;
     mutable std::optional<bool> m_notificationPermissionGranted;
+    mutable std::optional<bool> m_localNetworkPermissionGranted;
 #endif
     struct {
         QVariantMap availableSettings;

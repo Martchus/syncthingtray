@@ -42,7 +42,7 @@ section "[Select Qt module for web view and JavaScript](#select-qt-module-for-we
 The Qt Quick UI needs at least Qt 6.10 and also additional Qt modules found in the Qt Declarative repository.
 If only building the Qt Quick UI, Qt Widgets is not required.
 
-When building for Android at least Qt 6.9 is required.
+When building for Android at least Qt 6.12 is required.
 
 It is recommended to use at least Qt 6.7 to avoid limitations in previous versions (see
 [the documentation on known bugs](known_bugs_and_workarounds.md) for details). When building the Quick UI and

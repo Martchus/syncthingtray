@@ -20,7 +20,7 @@ Page {
             spacing: 0
             SectionHeader {
                 section: qsTr("Pending setup tasks")
-                visible: storagePermissionDelegate.visible || notificationPermissionDelegate.visible || authSetupDelegate.visible
+                visible: storagePermissionDelegate.visible || notificationPermissionDelegate.visible || localNetworkPermissionDelegate.visible || authSetupDelegate.visible
             }
             CustomDelegate {
                 id: storagePermissionDelegate
@@ -35,6 +35,13 @@ Page {
                 visible: !App.notificationPermissionGranted
                 labelText: qsTr("Request notification permission")
                 iconName: "bell"
+            }
+            CustomDelegate {
+                id: localNetworkPermissionDelegate
+                onClicked: App.requestLocalNetworkPermission()
+                visible: !App.localNetworkPermissionGranted
+                labelText: qsTr("Request local network permission")
+                iconName: "wifi"
             }
             ItemDelegate {
                 id: authSetupDelegate

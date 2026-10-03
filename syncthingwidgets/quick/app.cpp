@@ -320,6 +320,19 @@ bool App::notificationPermissionGranted() const
 #endif
 }
 
+bool App::localNetworkPermissionGranted() const
+{
+#ifdef Q_OS_ANDROID
+    if (!m_localNetworkPermissionGranted.has_value()) {
+        m_localNetworkPermissionGranted
+            = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("localNetworkPermissionGranted");
+    }
+    return m_localNetworkPermissionGranted.value();
+#else
+    return true;
+#endif
+}
+
 bool App::requestStoragePermission()
 {
 #ifdef Q_OS_ANDROID
@@ -333,6 +346,15 @@ bool App::requestNotificationPermission()
 {
 #ifdef Q_OS_ANDROID
     return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("requestNotificationPermission");
+#else
+    return false;
+#endif
+}
+
+bool App::requestLocalNetworkPermission()
+{
+#ifdef Q_OS_ANDROID
+    return QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("requestLocalNetworkPermission");
 #else
     return false;
 #endif
@@ -622,6 +644,13 @@ void App::handleNotificationPermissionChanged(bool notificationPermissionGranted
 {
     if (!m_notificationPermissionGranted.has_value() || m_notificationPermissionGranted.value() != notificationPermissionGranted) {
         emit notificationPermissionGrantedChanged(m_notificationPermissionGranted.emplace(notificationPermissionGranted));
+    }
+}
+
+void App::handleLocalNetworkPermissionChanged(bool localNetworkPermissionGranted)
+{
+    if (!m_localNetworkPermissionGranted.has_value() || m_localNetworkPermissionGranted.value() != localNetworkPermissionGranted) {
+        emit localNetworkPermissionGrantedChanged(m_localNetworkPermissionGranted.emplace(localNetworkPermissionGranted));
     }
 }
 #endif

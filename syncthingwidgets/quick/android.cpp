@@ -134,6 +134,12 @@ static void handleNotificationPermissionChanged(JNIEnv *, jobject, jboolean noti
         appObjectForJava, "handleNotificationPermissionChanged", Qt::QueuedConnection, Q_ARG(bool, notificationPermissionGranted));
 }
 
+static void handleLocalNetworkPermissionChanged(JNIEnv *, jobject, jboolean localNetworkPermissionGranted)
+{
+    QMetaObject::invokeMethod(
+        appObjectForJava, "handleLocalNetworkPermissionChanged", Qt::QueuedConnection, Q_ARG(bool, localNetworkPermissionGranted));
+}
+
 static bool returnFalse(JNIEnv *, jobject)
 {
     return false;
@@ -184,6 +190,7 @@ void registerActivityJniMethods(App *app)
         { "handleAndroidIntent", "(Ljava/lang/String;[BZ)V", reinterpret_cast<void *>(JniFn::handleAndroidIntent) },
         { "handleStoragePermissionChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handleStoragePermissionChanged) },
         { "handleNotificationPermissionChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handleNotificationPermissionChanged) },
+        { "handleLocalNetworkPermissionChanged", "(Z)V", reinterpret_cast<void *>(JniFn::handleLocalNetworkPermissionChanged) },
         { "loadQtQuickGui", "()V", reinterpret_cast<void *>(JniFn::loadQtQuickGui) },
         { "unloadQtQuickGui", "()V", reinterpret_cast<void *>(JniFn::unloadQtQuickGui) },
         { "openUrlExternally", "(Ljava/lang/String;)V", reinterpret_cast<void *>(JniFn::openUrlExternally) },
@@ -191,7 +198,7 @@ void registerActivityJniMethods(App *app)
     static const JNINativeMethod delegateMethods[] = {
         { "canOverrideColorSchemeHint", "()Z", reinterpret_cast<void *>(JniFn::returnFalse) },
     };
-    registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 8) && registeredMethods;
+    registeredMethods = env.registerNativeMethods("io/github/martchus/syncthingtray/Activity", activityMethods, 9) && registeredMethods;
     registeredMethods = env.registerNativeMethods("org/qtproject/qt/android/QtActivityDelegateBase", delegateMethods, 1) && registeredMethods;
     if (!registeredMethods) {
         qWarning() << "Unable to register all native activity methods in JNI environment.";
