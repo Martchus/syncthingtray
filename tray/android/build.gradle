@@ -89,7 +89,7 @@ android {
     }
 
     defaultConfig {
-        resConfig "en"
+        resConfigs "en", "de", "fr", "ru", "zh"
         minSdkVersion qtMinSdkVersion
         targetSdkVersion qtTargetSdkVersion
         ndk.abiFilters = qtTargetAbiList.split(",")

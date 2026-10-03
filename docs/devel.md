@@ -269,7 +269,8 @@ Translations for further locales can be added quite easily:
    for the new locale also in `tray/android/res/xml/locale_config.xml`. This is required
    for the locale to be selectable in app-specific language settings on Android.
 7. If you want to add translations for Android-specific text, check out files under
-   `tray/android/res/values*/*.xml` and create similar files for the new locale.
+   `tray/android/res/values*/*.xml` and create similar files for the new locale. Also make sure
+   the locale is listed in `resConfigs` in `tray/tray/android/build.gradle`.
 
 ### Extend/update existing translations
 * For English, update the corresponding string literals within the source code.
