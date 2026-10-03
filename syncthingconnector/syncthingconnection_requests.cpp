@@ -117,6 +117,18 @@ QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQ
 #endif
 }
 
+/// \cond
+#if !SYNCTHINGCONNECTION_QDEBUG
+void logDataToStdErr(const QByteArray &data)
+{
+    cerr.write(data.data(), static_cast<std::streamsize>(data.size()));
+    if (!data.endsWith('\n')) {
+        cerr << '\n';
+    }
+}
+#endif
+/// \endcond
+
 /*!
  * \brief Posts asynchronously data using the rest API.
  */
@@ -132,7 +144,7 @@ QNetworkReply *SyncthingConnection::postData(const QString &path, const QUrlQuer
         qDebug() << "Querying API: POST" << reply->url() << data;
 #else
         cerr << Phrases::Info << "Querying API: POST " << reply->url().toString().toStdString() << Phrases::EndFlush;
-        cerr.write(data.data(), static_cast<std::streamsize>(data.size()));
+        logDataToStdErr(data);
 #endif
     }
     return reply;
@@ -159,7 +171,7 @@ QNetworkReply *SyncthingConnection::sendData(
         qDebug() << "Querying API:" << verb << reply->url() << data;
 #else
         cerr << Phrases::Info << "Querying API: " << verb.data() << ' ' << reply->url().toString().toStdString() << Phrases::EndFlush;
-        cerr.write(data.data(), static_cast<std::streamsize>(data.size()));
+        logDataToStdErr(data);
 #endif
     }
     return reply;
@@ -1080,8 +1092,8 @@ void SyncthingConnection::readStatus()
         m_startTime = parseTimeStamp(replyObj.value(QLatin1String("startTime")), QStringLiteral("start time"));
         if (!previousStartTime.isNull() && !m_startTime.isNull() && previousStartTime != m_startTime) {
             if (m_loggingFlags && SyncthingConnectionLoggingFlags::ApiCalls) {
-                std::cerr << Phrases::Info << "Syncthing start time has changed (" << previousStartTime.toString()
-                          << " -> " << m_startTime.toString() << "), resetting event tracking" << Phrases::End;
+                std::cerr << Phrases::Info << "Syncthing start time has changed (" << previousStartTime.toString() << " -> " << m_startTime.toString()
+                          << "), resetting event tracking" << Phrases::End;
             }
             resetEventTracking();
         }
@@ -1901,7 +1913,7 @@ SyncthingConnection::QueryResult SyncthingConnection::requestJsonData(const QByt
         qDebug() << "Querying API:" << verb << reply->url() << data;
 #else
         cerr << Phrases::Info << "Querying API: " << verb.data() << ' ' << reply->url().toString().toStdString() << Phrases::EndFlush;
-        cerr.write(data.data(), static_cast<std::streamsize>(data.size()));
+        logDataToStdErr(data);
 #endif
     }
 #else
@@ -2244,8 +2256,7 @@ void SyncthingConnection::readPostConfig(std::function<void(QString &&)> &&callb
         }
         break;
     default:
-        auto errorMessage = tr("Unable to post config: ") + reply->errorString();
-        emitError(errorMessage, SyncthingErrorCategory::SpecificRequest, reply, response);
+        auto errorMessage = emitError(tr("Unable to post config: "), SyncthingErrorCategory::SpecificRequest, reply, response);
         if (callback) {
             callback(std::move(errorMessage));
         }

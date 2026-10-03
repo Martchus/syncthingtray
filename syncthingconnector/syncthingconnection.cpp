@@ -1351,26 +1351,27 @@ static QByteArray formatErrorAndResponse(QNetworkReply *reply, QString &errorStr
 /*!
  * \brief Internally called to emit a network error (server replied error code or server could not be reached at all).
  */
-void SyncthingConnection::emitError(const QString &message, SyncthingErrorCategory category, QNetworkReply *reply, const QByteArray &response)
+QString SyncthingConnection::emitError(const QString &message, SyncthingErrorCategory category, QNetworkReply *reply, const QByteArray &response)
 {
     auto error = reply->error();
     auto errorString = reply->errorString();
     auto resp = formatErrorAndResponse(reply, errorString, response);
+    auto fullMessage = QString(message % QChar('\n') % errorString);
     if (loggingFlags() && SyncthingConnectionLoggingFlags::ApiReplies) {
 #if SYNCTHINGCONNECTION_QDEBUG
-        qDebug() << "Syncthing connetion error:" << message << errorString;
+        qDebug() << "Syncthing connetion error:" << fullMessage;
 #else
-        std::cerr << Phrases::Error << "Syncthing connection error: " << message.toLocal8Bit().data() << errorString.toLocal8Bit().data()
-                  << Phrases::End;
+        std::cerr << Phrases::Error << "Syncthing connection error: " << fullMessage.toLocal8Bit().data() << Phrases::End;
 #endif
     }
-    emit this->error(message + errorString, category, error, reply->request(), resp);
+    emit this->error(fullMessage, category, error, reply->request(), resp);
 
     // request errors immediately after a failed API request so errors like "Decoding posted config: folder has empty ID" show up immediately
     if (category == SyncthingErrorCategory::SpecificRequest && m_errorsPollTimer.isActive()) {
         requestErrors();
         m_errorsPollTimer.start(); // this stops and restarts the active timer to reset the remaining time
     }
+    return fullMessage;
 }
 
 /*!
