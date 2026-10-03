@@ -1983,7 +1983,7 @@
         <translation>Notifications/erreurs</translation>
     </message>
     <message>
-        <location filename="../quick/qml/ErrorsPage.qml" line="12"/>
+        <location filename="../quick/qml/ErrorsPage.qml" line="16"/>
         <source>Clear</source>
         <translation>Effacer</translation>
     </message>
@@ -2098,77 +2098,77 @@
         <translation>Motifs d&apos;ignorance de « %1 »</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="13"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="18"/>
         <source>Help</source>
         <translation>Aide</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="50"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="62"/>
         <source>Edit externally</source>
         <translation>Modifier externellement</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="19"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="24"/>
         <source>Save</source>
         <translation>Enregistrer</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="27"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="39"/>
         <source>Undo</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="33"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="45"/>
         <source>Redo</source>
         <translation>Rétablir</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="39"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="51"/>
         <source>Clear</source>
         <translation>Effacer</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="45"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="57"/>
         <source>Ignore all</source>
         <translation>Tout ignorer</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="70"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="82"/>
         <source>Quick guide to patterns</source>
         <translation>Guide rapide des motifs</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="82"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="98"/>
         <source>Prefix indicating that the file can be deleted if preventing directory removal</source>
         <translation>Préfixe indiquant que le fichier peut être supprimé si cela empêche la suppression du répertoire</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="83"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="99"/>
         <source>Prefix indicating that the pattern should be matched without case sensitivity</source>
         <translation>Préfixe indiquant que le motif doit être comparé sans sensibilité à la casse</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="84"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="100"/>
         <source>Inversion of the given condition (i.e. do not exclude)</source>
         <translation>Inversion de la condition donnée (c&apos;est-à-dire ne pas exclure)</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="85"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="101"/>
         <source>Single level wildcard (matches within a directory only)</source>
         <translation>Joker à un seul niveau (correspond dans un répertoire uniquement)</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="86"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="102"/>
         <source>Multi level wildcard (matches multiple directory levels)</source>
         <translation>Joker multi-niveau (correspond à plusieurs niveaux de répertoires)</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="87"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="103"/>
         <source>Comment, when used at the start of a line</source>
         <translation>Commentaire, quand utilisé au début d&apos;une ligne</translation>
     </message>
     <message>
-        <location filename="../quick/qml/IgnorePatternPage.qml" line="94"/>
+        <location filename="../quick/qml/IgnorePatternPage.qml" line="110"/>
         <source>Full documentation</source>
         <translation>Documentation complète</translation>
     </message>
@@ -2902,300 +2902,300 @@
         <translation>Sauvegarde de la configuration …</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="646"/>
+        <location filename="../quick/app.cpp" line="675"/>
         <source>Unable to minimize app.</source>
         <translation>Impossible de minimiser l&apos;application.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="677"/>
+        <location filename="../quick/app.cpp" line="706"/>
         <source>Unable to save settings: </source>
         <translation>Impossible de sauvegarder les paramètres : </translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="744"/>
+        <location filename="../quick/app.cpp" line="773"/>
         <source>App settings saved</source>
         <translation>Paramètres de l&apos;application sauvegardés</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="770"/>
+        <location filename="../quick/app.cpp" line="799"/>
         <source>No logfile present anyway</source>
         <translation>Pas de fichier journal présent de toute façon</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="776"/>
+        <location filename="../quick/app.cpp" line="805"/>
         <source>Waiting for backend to terminate before clearing logs …</source>
         <translation>En attente de la terminaison du backend avant d&apos;effacer les journaux …</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="785"/>
+        <location filename="../quick/app.cpp" line="814"/>
         <source>Persistent logging disabled and logfile removed</source>
         <translation>Journalisation persistante désactivée et fichier journal supprimé</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="787"/>
+        <location filename="../quick/app.cpp" line="816"/>
         <source>Unable to remove logfile</source>
         <translation>Impossible de supprimer le fichier journal</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="807"/>
+        <location filename="../quick/app.cpp" line="836"/>
         <source>Flush triggered</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="830"/>
+        <location filename="../quick/app.cpp" line="859"/>
         <source>Another import/export still pending</source>
         <translation>Un autre import/export toujours en attente</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="870"/>
+        <location filename="../quick/app.cpp" line="899"/>
         <source>Settings directory was not located.</source>
         <translation>Le répertoire des paramètres n&apos;a pas été trouvé.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="890"/>
+        <location filename="../quick/app.cpp" line="919"/>
         <source>Unable to extract archive: %1</source>
         <translation>Impossible d&apos;extraire l&apos;archive : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="895"/>
+        <location filename="../quick/app.cpp" line="924"/>
         <source>Unable to create temp dir: %1</source>
         <translation>Impossible de créer le rép. temp : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="899"/>
+        <location filename="../quick/app.cpp" line="928"/>
         <source>archiving is only supported on Android.</source>
         <translation>L&apos;archivage n&apos;est supporté que sur Android.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="923"/>
+        <location filename="../quick/app.cpp" line="952"/>
         <source>The Syncthing home directory under &quot;%1&quot; is empty.</source>
         <translation>Le répertoire personnel de Syncthing sous « %1 » est vide.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="936"/>
+        <location filename="../quick/app.cpp" line="965"/>
         <source>No Syncthing configuration file found under &quot;%1&quot;.</source>
         <translation>Aucun fichier de configuration Syncthing trouvé sous « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1024"/>
+        <location filename="../quick/app.cpp" line="1053"/>
         <source>Triggered re-connect with Syncthing backend</source>
         <translation>Reconnexion déclenchée avec le backend Syncthing</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1044"/>
+        <location filename="../quick/app.cpp" line="1073"/>
         <source>Unable to import settings: settings directory was not located.</source>
         <translation>Impossible d&apos;importer les paramètres : le répertoire des paramètres n&apos;a pas été trouvé.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1051"/>
+        <location filename="../quick/app.cpp" line="1080"/>
         <source>Waiting for backend to terminate before importing settings …</source>
         <translation>En attente de la terminaison du backend avant d&apos;importer les paramètres …</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1095"/>
+        <location filename="../quick/app.cpp" line="1124"/>
         <source>Imported app config from &quot;%1&quot;.</source>
         <translation>Configuration de l&apos;application importée depuis « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1108"/>
+        <location filename="../quick/app.cpp" line="1137"/>
         <source>Imported Syncthing config and database from &quot;%1&quot;.</source>
         <translation>Configuration Syncthing et base de données importées depuis « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1126"/>
+        <location filename="../quick/app.cpp" line="1155"/>
         <source>Unable to find folders/devices in current Syncthing config.</source>
         <translation>Impossible de trouver les dossiers/appareils dans la configuration Syncthing actuelle.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1142"/>
+        <location filename="../quick/app.cpp" line="1171"/>
         <source>Merging %1 folders and %2 devices</source>
         <translation>Fusion de %1 dossiers et %2 appareils</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1144"/>
+        <location filename="../quick/app.cpp" line="1173"/>
         <source>Unable to import folders/devices.</source>
         <translation>Impossible d&apos;importer les dossiers/appareils.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1153"/>
+        <location filename="../quick/app.cpp" line="1182"/>
         <source>Unable to remove temp dir: %1</source>
         <translation>Impossible de supprimer le rép. temp : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1159"/>
+        <location filename="../quick/app.cpp" line="1188"/>
         <source>Nothing has been imported.</source>
         <translation>Rien n&apos;a été importé.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1169"/>
+        <location filename="../quick/app.cpp" line="1198"/>
         <source>Unable to import settings: %1</source>
         <translation>Impossible d&apos;importer les paramètres : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1214"/>
+        <location filename="../quick/app.cpp" line="1243"/>
         <source>Waiting for backend to terminate before exporting settings …</source>
         <translation>En attente de la terminaison du backend avant d&apos;exporter les paramètres …</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1230"/>
+        <location filename="../quick/app.cpp" line="1259"/>
         <source>settings directory was not located.</source>
         <translation>Le répertoire des paramètres n&apos;a pas été trouvé.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1236"/>
+        <location filename="../quick/app.cpp" line="1265"/>
         <source>no destination or file or directory specified/configured.</source>
         <translation>aucune destination ou fichier ou répertoire spécifié/configuré.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1248"/>
+        <location filename="../quick/app.cpp" line="1277"/>
         <source>Settings have been archived to &quot;%1&quot;.</source>
         <translation>Les paramètres ont été archivés vers « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1250"/>
+        <location filename="../quick/app.cpp" line="1279"/>
         <source>Archiving is only supported on Android.</source>
         <translation>L&apos;archivage n&apos;est supporté que sur Android.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1256"/>
+        <location filename="../quick/app.cpp" line="1285"/>
         <source>unable to create export directory under &quot;%1&quot;</source>
         <translation>impossible de créer le répertoire d&apos;export sous « %1 »</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1269"/>
+        <location filename="../quick/app.cpp" line="1298"/>
         <source>Settings have been exported to &quot;%1&quot;.</source>
         <translation>Les paramètres ont été exportés vers « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1276"/>
+        <location filename="../quick/app.cpp" line="1305"/>
         <source>Unable to export settings: %1</source>
         <translation>Impossible d&apos;exporter les paramètres : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1338"/>
+        <location filename="../quick/app.cpp" line="1367"/>
         <source>Default directory</source>
         <translation>Répertoire par défaut</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1354"/>
+        <location filename="../quick/app.cpp" line="1383"/>
         <source>External storage %1</source>
         <translation>Stockage externe %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1363"/>
+        <location filename="../quick/app.cpp" line="1392"/>
         <source>Current home directory</source>
         <translation>Répertoire personnel actuel</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1393"/>
+        <location filename="../quick/app.cpp" line="1422"/>
         <source>Unable to move Syncthing home: settings directory was not located.</source>
         <translation>Impossible de déplacer le répertoire personnel Syncthing : le répertoire des paramètres n&apos;a pas été trouvé.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1399"/>
+        <location filename="../quick/app.cpp" line="1428"/>
         <source>Waiting for backend to terminate before moving home …</source>
         <translation>En attente de la terminaison du backend avant de déplacer le répertoire personnel …</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1422"/>
+        <location filename="../quick/app.cpp" line="1451"/>
         <source>Home directory stays the same.</source>
         <translation>Le répertoire personnel reste le même.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1433"/>
+        <location filename="../quick/app.cpp" line="1462"/>
         <source>Cleaned up new home directory &quot;%1&quot;.</source>
         <translation>Nettoyé le nouveau répertoire personnel « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1439"/>
+        <location filename="../quick/app.cpp" line="1468"/>
         <source>Copied data from previous home directory &quot;%1&quot; to new one.</source>
         <translation>Données copiées de l&apos;ancien répertoire personnel « %1 » vers le nouveau.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1442"/>
+        <location filename="../quick/app.cpp" line="1471"/>
         <source>Cleaned up previous home directory.</source>
         <translation>Nettoyé l&apos;ancien répertoire personnel.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1445"/>
+        <location filename="../quick/app.cpp" line="1474"/>
         <source>Configured &quot;%1&quot; as new/empty Syncthing home.</source>
         <translation>Configuré « %1 » comme nouveau répertoire personnel Syncthing vide.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1447"/>
+        <location filename="../quick/app.cpp" line="1476"/>
         <source>Configured &quot;%1&quot; as Syncthing home.</source>
         <translation>Configuré « %1 » comme répertoire personnel Syncthing.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1451"/>
+        <location filename="../quick/app.cpp" line="1480"/>
         <source>Unable to move home directory: %1</source>
         <translation>Impossible de déplacer le répertoire personnel : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1489"/>
-        <location filename="../misc/syncthingmodels.cpp" line="353"/>
+        <location filename="../quick/app.cpp" line="1518"/>
+        <location filename="../misc/syncthingmodels.cpp" line="365"/>
         <source>Debugging needs to be enabled under advanced GUI settings first.</source>
         <translation>Le débogage doit d&apos;abord être activé dans les paramètres avancés de l&apos;interface.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1496"/>
-        <location filename="../misc/syncthingmodels.cpp" line="358"/>
+        <location filename="../quick/app.cpp" line="1525"/>
+        <location filename="../misc/syncthingmodels.cpp" line="370"/>
         <source>No destination or file or directory specified/configured.</source>
         <translation>Aucune destination ou fichier ou répertoire spécifié/configuré.</translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="381"/>
+        <location filename="../misc/syncthingmodels.cpp" line="393"/>
         <source>Unable to open output file under &quot;%1&quot;: %2</source>
         <translation>Impossible d&apos;ouvrir le fichier de sortie sous « %1 » : %2</translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="399"/>
+        <location filename="../misc/syncthingmodels.cpp" line="411"/>
         <source>Unable to write bundle: %1</source>
         <translation>Impossible d&apos;écrire le bundle : %1</translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="402"/>
+        <location filename="../misc/syncthingmodels.cpp" line="414"/>
         <source>Unable to download bundle: %1</source>
         <translation>Impossible de télécharger le bundle : %1</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1506"/>
-        <location filename="../misc/syncthingmodels.cpp" line="364"/>
+        <location filename="../quick/app.cpp" line="1535"/>
+        <location filename="../misc/syncthingmodels.cpp" line="376"/>
         <source>Support bundle saved</source>
         <translation>Bundle de support sauvegardé</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1536"/>
+        <location filename="../quick/app.cpp" line="1565"/>
         <source>Removed old database directory.</source>
         <translation>Ancien répertoire de base de données supprimé.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1538"/>
+        <location filename="../quick/app.cpp" line="1567"/>
         <source>Unable to remove old database directory.</source>
         <translation>Impossible de supprimer l&apos;ancien répertoire de base de données.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1553"/>
+        <location filename="../quick/app.cpp" line="1582"/>
         <source>Unable to remove all support bundles.</source>
         <translation>Impossible de supprimer tous les bundles de support.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1557"/>
+        <location filename="../quick/app.cpp" line="1586"/>
         <source>Support bundles have been removed.</source>
         <translation>Les bundles de support ont été supprimés.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1573"/>
+        <location filename="../quick/app.cpp" line="1602"/>
         <source>Unable to remove leftovers from import under &quot;%1&quot;.</source>
         <translation>Impossible de supprimer les restes de l&apos;import sous « %1 ».</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1578"/>
+        <location filename="../quick/app.cpp" line="1607"/>
         <source>Removed leftovers from import.</source>
         <translation>Restes de l&apos;import supprimés.</translation>
     </message>
     <message>
-        <location filename="../quick/app.cpp" line="1583"/>
+        <location filename="../quick/app.cpp" line="1612"/>
         <source>There was nothing to clean up.</source>
         <translation>Il n&apos;y avait rien à nettoyer.</translation>
     </message>
@@ -5084,7 +5084,7 @@
 <context>
     <name>QtGui::QuickUI</name>
     <message>
-        <location filename="../quick/quickui.cpp" line="483"/>
+        <location filename="../quick/quickui.cpp" line="486"/>
         <source>Settings</source>
         <translation>Paramètres</translation>
     </message>
@@ -5271,63 +5271,63 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
 <context>
     <name>QtGui::SyncthingModels</name>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="92"/>
+        <location filename="../misc/syncthingmodels.cpp" line="93"/>
         <source>Triggered override of &quot;%1&quot;</source>
         <translation>Substitution de « %1 » déclenchée</translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="94"/>
+        <location filename="../misc/syncthingmodels.cpp" line="95"/>
         <source>Triggered revert of &quot;%1&quot;</source>
         <translation>Rétablissement de « %1 » déclenché</translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="149"/>
-        <location filename="../misc/syncthingmodels.cpp" line="157"/>
+        <location filename="../misc/syncthingmodels.cpp" line="150"/>
+        <location filename="../misc/syncthingmodels.cpp" line="158"/>
         <source>Unable to open &quot;%1&quot;</source>
         <translation>Impossible d&apos;ouvrir « %1 »</translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="169"/>
+        <location filename="../misc/syncthingmodels.cpp" line="170"/>
         <source>Unable to find configuration file of local Syncthing instance under its default location.</source>
         <translation>Impossible de trouver le fichier de configuration de l&apos;instance Syncthing locale à son emplacement par défaut.</translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="187"/>
+        <location filename="../misc/syncthingmodels.cpp" line="188"/>
         <source>Scanning is not supported.</source>
         <translation>L&apos;analyse n&apos;est pas prise en charge.</translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="199"/>
+        <location filename="../misc/syncthingmodels.cpp" line="200"/>
         <source>Copied value</source>
         <translation>Valeur copiée</translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="203"/>
+        <location filename="../misc/syncthingmodels.cpp" line="204"/>
         <source>Unable to copy value</source>
         <translation>Impossible de copier la valeur</translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="211"/>
+        <location filename="../misc/syncthingmodels.cpp" line="212"/>
         <source>Unable to copy &quot;%1&quot;</source>
         <translation>Impossible de copier « %1 »</translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="252"/>
+        <location filename="../misc/syncthingmodels.cpp" line="258"/>
         <source>Unable to load ignore patterns: </source>
         <translation>Impossible de charger les motifs d&apos;ignorance : </translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="273"/>
+        <location filename="../misc/syncthingmodels.cpp" line="274"/>
         <source>Unable to save ignore patterns: </source>
         <translation>Impossible d&apos;enregistrer les motifs d&apos;ignorance : </translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="335"/>
+        <location filename="../misc/syncthingmodels.cpp" line="347"/>
         <source>Unable to resolve URL &quot;%1&quot;.</source>
         <translation>Impossible de résoudre l&apos;URL « %1 ».</translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="429"/>
+        <location filename="../misc/syncthingmodels.cpp" line="441"/>
         <source>Another config change is still pending.</source>
         <translation>Une autre modification de configuration est encore en attente.</translation>
     </message>
@@ -6382,17 +6382,22 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
         <translation>Demander la permission de notification</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="53"/>
+        <location filename="../quick/qml/StartPage.qml" line="43"/>
+        <source>Request local network permission</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/StartPage.qml" line="60"/>
         <source>Set password for web-based GUI</source>
         <translation>Définir le mot de passe pour l&apos;interface web</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="59"/>
+        <location filename="../quick/qml/StartPage.qml" line="66"/>
         <source>Otherwise other apps can access the web-based GUI without authentication.</source>
         <translation>Sinon, d&apos;autres applications peuvent accéder à l&apos;interface web sans authentification.</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="67"/>
+        <location filename="../quick/qml/StartPage.qml" line="74"/>
         <source>Status and statistics</source>
         <translation>État et statistiques</translation>
     </message>
@@ -6421,73 +6426,73 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
         <translation type="vanished">%1 %</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="109"/>
+        <location filename="../quick/qml/StartPage.qml" line="116"/>
         <source>Status</source>
         <translation>État</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="149"/>
-        <location filename="../quick/qml/StartPage.qml" line="164"/>
+        <location filename="../quick/qml/StartPage.qml" line="156"/>
+        <location filename="../quick/qml/StartPage.qml" line="171"/>
         <source>Own device ID</source>
         <translation>ID de l&apos;appareil own</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="174"/>
+        <location filename="../quick/qml/StartPage.qml" line="185"/>
         <source>Copy as text</source>
         <translation>Copier comme texte</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="179"/>
+        <location filename="../quick/qml/StartPage.qml" line="190"/>
         <source>Close</source>
         <translation>Fermer</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="198"/>
+        <location filename="../quick/qml/StartPage.qml" line="209"/>
         <source>Traffic</source>
         <translation>Trafic</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="231"/>
+        <location filename="../quick/qml/StartPage.qml" line="242"/>
         <source>Global state</source>
         <translation>État global</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="236"/>
+        <location filename="../quick/qml/StartPage.qml" line="247"/>
         <source>Local state</source>
         <translation>État local</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="240"/>
+        <location filename="../quick/qml/StartPage.qml" line="251"/>
         <source>Getting started</source>
         <translation>Pour commencer</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="245"/>
+        <location filename="../quick/qml/StartPage.qml" line="256"/>
         <source>Connect other device</source>
         <translation>Connecter un autre appareil</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="251"/>
+        <location filename="../quick/qml/StartPage.qml" line="262"/>
         <source>Share folder</source>
         <translation>Partager un dossier</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="257"/>
+        <location filename="../quick/qml/StartPage.qml" line="268"/>
         <source>Open Syncthing in web browser</source>
         <translation>Ouvrir Syncthing dans le navigateur web</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="262"/>
+        <location filename="../quick/qml/StartPage.qml" line="273"/>
         <source>Open documentation</source>
         <translation>Ouvrir la documentation</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="270"/>
+        <location filename="../quick/qml/StartPage.qml" line="281"/>
         <source>Restart Syncthing</source>
         <translation>Redémarrer Syncthing</translation>
     </message>
     <message>
-        <location filename="../quick/qml/StartPage.qml" line="275"/>
+        <location filename="../quick/qml/StartPage.qml" line="286"/>
         <source>Quit app</source>
         <translation>Quitter l&apos;application</translation>
     </message>
