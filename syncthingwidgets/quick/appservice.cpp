@@ -49,6 +49,9 @@ static constexpr auto textOnly = true;
 #if defined(Q_OS_ANDROID)
 // avoid using too much RAM under Android for logs
 static constexpr auto defaultMaxLogSize = qsizetype(512 * 1024);
+// stay below Binder's 1 MB limit (see https://developer.android.com/reference/android/os/TransactionTooLargeException)
+// note: Strings are UTF-16 so this limit means we use half of an MiB; that leaves enough headroom for overhead.
+static constexpr auto logChunkSize = qsizetype(256 * 1024);
 #else
 static constexpr auto defaultMaxLogSize = qsizetype();
 #endif
@@ -301,10 +304,31 @@ void AppService::replayLog()
 {
 #ifdef Q_OS_ANDROID
     m_clientsFollowingLog = true;
-    QJniObject(QNativeInterface::QAndroidApplication::context())
-        .callMethod<jint>("sendMessageToClients", static_cast<jint>(ActivityAction::AppendLog), 0, 0, m_log);
+#endif
+    replayLogString(m_log);;
+}
+
+void AppService::replayLogString(const QString &log)
+{
+    if (log.isEmpty()) {
+        return;
+    }
+#ifdef Q_OS_ANDROID
+    if (!m_clientsFollowingLog) {
+        return;
+    }
+    if (log.size() <= logChunkSize) {
+        QJniObject(QNativeInterface::QAndroidApplication::context())
+        .callMethod<jint>("sendMessageToClients", static_cast<jint>(ActivityAction::AppendLog), 0, 0, log);
+    } else {
+        for (auto offset = qsizetype(); offset < log.size(); offset += logChunkSize) {
+            const auto chunk = log.mid(offset, logChunkSize);
+            QJniObject(QNativeInterface::QAndroidApplication::context())
+                .callMethod<jint>("sendMessageToClients", static_cast<jint>(ActivityAction::AppendLog), 0, 0, chunk);
+        }
+    }
 #else
-    emit logsAvailable(m_log);
+    emit logsAvailable(log);
 #endif
 }
 
@@ -429,14 +453,7 @@ void AppService::invalidateStatus()
 
 void AppService::gatherLogsFromString(const QString &newOutput)
 {
-#ifdef Q_OS_ANDROID
-    if (m_clientsFollowingLog) {
-        QJniObject(QNativeInterface::QAndroidApplication::context())
-            .callMethod<jint>("sendMessageToClients", static_cast<jint>(ActivityAction::AppendLog), 0, 0, newOutput);
-    }
-#else
-    emit logsAvailable(newOutput);
-#endif
+    replayLogString(newOutput);
     m_log.append(newOutput);
     limitLogSize();
 }
