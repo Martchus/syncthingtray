@@ -25,14 +25,14 @@ Page {
                     Label {
                         Layout.fillWidth: true
                         text: textData
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         wrapMode: Text.Wrap
                         font.weight: Font.Medium
                     }
                     Label {
                         Layout.fillWidth: true
                         text: details
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         wrapMode: Text.Wrap
                         font.weight: Font.Light
                     }
@@ -254,7 +254,7 @@ Page {
                     Label {
                         Layout.fillWidth: true
                         text: drawerDelegate.text
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         wrapMode: Text.WordWrap
                     }
                 }

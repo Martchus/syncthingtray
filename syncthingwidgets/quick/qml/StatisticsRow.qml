@@ -17,7 +17,7 @@ RowLayout {
             id: label
             Layout.fillWidth: true
             font.weight: Font.Medium
-            elide: Text.ElideRight
+            elide: Text.ElideMiddle
             visible: !dense
         }
         GridLayout {

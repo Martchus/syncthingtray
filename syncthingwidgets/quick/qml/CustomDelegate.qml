@@ -14,7 +14,7 @@ ItemDelegate {
         Label {
             id: label
             Layout.fillWidth: true
-            elide: Text.ElideRight
+            elide: Text.ElideMiddle
             font.weight: Font.Medium
             wrapMode: Text.WordWrap
         }

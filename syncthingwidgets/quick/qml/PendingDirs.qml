@@ -26,7 +26,7 @@ Page {
                 Label {
                     Layout.fillWidth: true
                     text: SyncthingModels.dirDisplayName(modelData.dirId)
-                    elide: Text.ElideRight
+                    elide: Text.ElideMiddle
                     font.weight: Font.Medium
                     wrapMode: Text.WordWrap
                 }
@@ -35,7 +35,7 @@ Page {
                     Label {
                         Layout.fillWidth: true
                         text: qsTr("Offered by:")
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Light
                     }
                     Repeater {
@@ -56,7 +56,7 @@ Page {
                                 Label {
                                     Layout.fillWidth: true
                                     text: SyncthingModels.deviceDisplayName(modelData.devId)
-                                    elide: Text.ElideRight
+                                    elide: Text.ElideMiddle
                                     font.weight: Font.Light
                                     wrapMode: Text.WordWrap
                                 }
@@ -67,7 +67,7 @@ Page {
                     Label {
                         Layout.fillWidth: true
                         text: qsTr("For selected devices:")
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Light
                     }
                     RowLayout {

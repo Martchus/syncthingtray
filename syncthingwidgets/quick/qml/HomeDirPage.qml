@@ -31,13 +31,13 @@ Page {
                     Label {
                         Layout.fillWidth: true
                         text: dirDelegate.modelData.label
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Medium
                     }
                     Label {
                         Layout.fillWidth: true
                         text: dirDelegate.modelData.path
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Light
                         wrapMode: Text.Wrap
                     }
@@ -45,7 +45,7 @@ Page {
                         Layout.fillWidth: true
                         visible: text.length > 0
                         text: page.warningForDir(dirDelegate.modelData.populated, dirDelegate.modelData.defaultSelected)
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Light
                         wrapMode: Text.Wrap
                     }
@@ -68,13 +68,13 @@ Page {
                     Label {
                         Layout.fillWidth: true
                         text: qsTr("Custom path")
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Medium
                     }
                     Label {
                         Layout.fillWidth: true
                         text: page.customDirPath.length > 0 ? page.customDirPath : qsTr("Click to select a custom path")
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Light
                         wrapMode: Text.Wrap
                     }
@@ -82,7 +82,7 @@ Page {
                         Layout.fillWidth: true
                         visible: page.customDirPath.length > 0 && text.length > 0
                         text: page.warningForDir(page.customDirPopulated)
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Light
                         wrapMode: Text.Wrap
                     }

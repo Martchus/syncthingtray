@@ -25,21 +25,21 @@ Page {
                 Label {
                     Layout.fillWidth: true
                     text: SyncthingModels.deviceDisplayName(modelData.devId)
-                    elide: Text.ElideRight
+                    elide: Text.ElideMiddle
                     font.weight: Font.Medium
                     wrapMode: Text.WordWrap
                 }
                 Label {
                     Layout.fillWidth: true
                     text: qsTr("Name: ") + (modelData.info.Name ?? modelData.info.name)
-                    elide: Text.ElideRight
+                    elide: Text.ElideMiddle
                     font.weight: Font.Light
                     wrapMode: Text.WordWrap
                 }
                 Label {
                     Layout.fillWidth: true
                     text: qsTr("Address: ") + (modelData.info.Address ?? modelData.info.address)
-                    elide: Text.ElideRight
+                    elide: Text.ElideMiddle
                     font.weight: Font.Light
                     wrapMode: Text.WordWrap
                 }

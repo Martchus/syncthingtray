@@ -16,7 +16,7 @@ ItemDelegate {
         Label {
             Layout.fillWidth: true
             text: modelData.when
-            elide: Text.ElideRight
+            elide: Text.ElideMiddle
             font.weight: Font.Light
         }
         ForkAwesomeIcon {

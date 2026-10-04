@@ -25,7 +25,7 @@ RowLayout {
         Kirigami.Heading {
             id: tooltipMaintext
             level: 3
-            elide: Text.ElideRight
+            elide: Text.ElideMiddle
             text: plasmoid.data.statusInfo.statusText
         }
         PlasmaComponents3.Label {

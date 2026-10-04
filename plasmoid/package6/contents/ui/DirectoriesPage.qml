@@ -64,7 +64,7 @@ ColumnLayout {
                         PlasmaComponents3.Label {
                             Layout.fillWidth: true
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                            elide: Text.ElideRight
+                            elide: Text.ElideMiddle
                             text: name
                         }
                         RowLayout {

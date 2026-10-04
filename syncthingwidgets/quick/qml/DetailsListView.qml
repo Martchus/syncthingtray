@@ -53,7 +53,7 @@ ListView {
                     id: detailLabel
                     Layout.fillWidth: true
                     text: detailValue
-                    elide: Text.ElideRight
+                    elide: Text.ElideMiddle
                     font.weight: Font.Light
                     horizontalAlignment: Qt.AlignRight
                     ToolTip.delay: 1000

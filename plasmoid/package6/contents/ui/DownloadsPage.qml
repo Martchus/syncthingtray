@@ -40,7 +40,7 @@ Item {
                             spacing: Kirigami.Units.smallSpacing
                             PlasmaComponents3.Label {
                                 Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                                elide: Text.ElideRight
+                                elide: Text.ElideMiddle
                                 text: name ? name : "?"
                             }
                         }
@@ -100,12 +100,12 @@ Item {
                                             Layout.fillWidth: true
                                             text: name
                                             font.pointSize: theme.defaultFont.pointSize * 0.8
-                                            elide: Text.ElideRight
+                                            elide: Text.ElideMiddle
                                         }
                                         PlasmaComponents3.Label {
                                             text: progressLabel
                                             font.pointSize: theme.defaultFont.pointSize * 0.8
-                                            elide: Text.ElideRight
+                                            elide: Text.ElideMiddle
                                         }
                                     }
                                     PlasmaComponents3.ProgressBar {

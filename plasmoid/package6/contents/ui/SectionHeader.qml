@@ -11,7 +11,7 @@ RowLayout {
         Layout.topMargin: 10
         Layout.bottomMargin: 3
         text: section // from context, `required property string section` might not work, see DynamicSectionHeader
-        elide: Text.ElideRight
+        elide: Text.ElideMiddle
         font.weight: Font.Medium
         wrapMode: Text.WordWrap
         color: label.linkColor

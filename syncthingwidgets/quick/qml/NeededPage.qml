@@ -46,7 +46,7 @@ Page {
                     Label {
                         Layout.alignment: Qt.AlignTop
                         text: SyncthingModels.formatDataSize(modelData.size ?? 0)
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Light
                     }
                 }

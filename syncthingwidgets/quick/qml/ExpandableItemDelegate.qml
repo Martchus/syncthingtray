@@ -33,14 +33,14 @@ ItemDelegate {
                     Layout.fillWidth: true
                     id: nameLabel
                     text: modelData.name
-                    elide: Text.ElideRight
+                    elide: Text.ElideMiddle
                     font.weight: Font.Medium
                 }
                 Label {
                     id: statusLabel
                     text: modelData.statusString ?? '?'
                     color: modelData.statusColor ?? palette.text
-                    elide: Text.ElideRight
+                    elide: Text.ElideMiddle
                     font.weight: Font.Light
                 }
             }

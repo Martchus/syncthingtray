@@ -41,7 +41,7 @@ CustomListView {
                 Label {
                     Layout.fillWidth: true
                     text: [modelData.directoryName || modelData.directoryId, modelData.path].join(": ")
-                    elide: Text.ElideRight
+                    elide: Text.ElideMiddle
                     wrapMode: Text.Wrap
                     font.weight: Font.Light
                 }
@@ -55,7 +55,7 @@ CustomListView {
                 Label {
                     Layout.preferredWidth: Math.max(implicitWidth, parent.width / 6)
                     text: modelData.modifiedBy
-                    elide: Text.ElideRight
+                    elide: Text.ElideMiddle
                     wrapMode: Text.WordWrap
                     font.weight: Font.Light
                 }
@@ -65,7 +65,7 @@ CustomListView {
                 Label {
                     Layout.preferredWidth: Math.max(implicitWidth, parent.width / 8)
                     text: modelData.eventTime
-                    elide: Text.ElideRight
+                    elide: Text.ElideMiddle
                     font.weight: Font.Light
                 }
             }

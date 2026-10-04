@@ -30,14 +30,14 @@ Page {
                         Label {
                             Layout.fillWidth: true
                             text: qsTr("An error occurred when checking selected directory")
-                            elide: Text.ElideRight
+                            elide: Text.ElideMiddle
                             font.weight: Font.Medium
                             wrapMode: Text.WordWrap
                         }
                         Label {
                             Layout.fillWidth: true
                             text: importPage.availableSettings.error ?? ""
-                            elide: Text.ElideRight
+                            elide: Text.ElideMiddle
                             font.weight: Font.Light
                             wrapMode: Text.WordWrap
                         }
@@ -58,14 +58,14 @@ Page {
                         Label {
                             Layout.fillWidth: true
                             text: qsTr("App configuration")
-                            elide: Text.ElideRight
+                            elide: Text.ElideMiddle
                             font.weight: Font.Medium
                             wrapMode: Text.WordWrap
                         }
                         Label {
                             Layout.fillWidth: true
                             text: qsTr("Replace the app configuration with the one from the selected directory.")
-                            elide: Text.ElideRight
+                            elide: Text.ElideMiddle
                             font.weight: Font.Light
                             wrapMode: Text.WordWrap
                         }
@@ -93,14 +93,14 @@ Page {
                         Label {
                             Layout.fillWidth: true
                             text: qsTr("Full Syncthing configuration and database")
-                            elide: Text.ElideRight
+                            elide: Text.ElideMiddle
                             font.weight: Font.Medium
                             wrapMode: Text.WordWrap
                         }
                         Label {
                             Layout.fillWidth: true
                             text: qsTr("Replace entire (existing) Syncthing configuration and database with the one from the selected directory. Use this with care as restoring the database is potentially dangerous.")
-                            elide: Text.ElideRight
+                            elide: Text.ElideMiddle
                             font.weight: Font.Light
                             wrapMode: Text.WordWrap
                         }

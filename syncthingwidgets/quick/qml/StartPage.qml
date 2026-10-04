@@ -58,7 +58,7 @@ Page {
                         Label {
                             Layout.fillWidth: true
                             text: qsTr("Set password for web-based GUI")
-                            elide: Text.ElideRight
+                            elide: Text.ElideMiddle
                             font.weight: Font.Medium
                         }
                         Label {
@@ -114,7 +114,7 @@ Page {
                         Label {
                             Layout.fillWidth: true
                             text: qsTr("Status")
-                            elide: Text.ElideRight
+                            elide: Text.ElideMiddle
                             font.weight: Font.Medium
                         }
                         Label {
@@ -154,13 +154,13 @@ Page {
                         Layout.fillWidth: true
                         Label {
                             text: qsTr("Own device ID")
-                            elide: Text.ElideRight
+                            elide: Text.ElideMiddle
                             font.weight: Font.Medium
                         }
                         Label {
                             Layout.fillWidth: true
                             text: SyncthingData.connection.myId
-                            elide: Text.ElideRight
+                            elide: Text.ElideMiddle
                             wrapMode: Text.Wrap
                             font.weight: Font.Light
                         }
@@ -207,7 +207,7 @@ Page {
                         Layout.fillWidth: true
                         Label {
                             text: qsTr("Traffic")
-                            elide: Text.ElideRight
+                            elide: Text.ElideMiddle
                             font.weight: Font.Medium
                         }
                         RowLayout {
@@ -217,7 +217,7 @@ Page {
                             Label {
                                 Layout.fillWidth: true
                                 text: SyncthingModels.formatTraffic(SyncthingData.connection.totalIncomingTraffic, SyncthingData.connection.totalIncomingRate)
-                                elide: Text.ElideRight
+                                elide: Text.ElideMiddle
                                 wrapMode: Text.Wrap
                                 font.weight: Font.Light
                             }
@@ -229,7 +229,7 @@ Page {
                             Label {
                                 Layout.fillWidth: true
                                 text: SyncthingModels.formatTraffic(SyncthingData.connection.totalOutgoingTraffic, SyncthingData.connection.totalOutgoingRate)
-                                elide: Text.ElideRight
+                                elide: Text.ElideMiddle
                                 wrapMode: Text.Wrap
                                 font.weight: Font.Light
                             }

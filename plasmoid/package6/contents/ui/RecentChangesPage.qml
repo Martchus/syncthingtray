@@ -37,7 +37,7 @@ Item {
                         PlasmaComponents3.Label {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
                             Layout.fillWidth: true
-                            elide: Text.ElideRight
+                            elide: Text.ElideMiddle
                             text: extendedAction
                         }
                         Item {
@@ -53,7 +53,7 @@ Item {
                         }
                         PlasmaComponents3.Label {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                            elide: Text.ElideRight
+                            elide: Text.ElideMiddle
                             text: eventTime
                         }
                         Item {
@@ -69,7 +69,7 @@ Item {
                         }
                         PlasmaComponents3.Label {
                             Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
-                            elide: Text.ElideRight
+                            elide: Text.ElideMiddle
                             text: modifiedBy
                         }
                     }
@@ -90,7 +90,7 @@ Item {
                         PlasmaComponents3.Label {
                             Layout.fillWidth: true
                             text: path
-                            elide: Text.ElideRight
+                            elide: Text.ElideMiddle
                         }
                     }
                 }

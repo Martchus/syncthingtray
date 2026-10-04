@@ -505,7 +505,7 @@ ApplicationWindow {
                                         }
                                         Label {
                                             text: SyncthingModels.formatTraffic(SyncthingData.connection.totalIncomingTraffic, SyncthingData.connection.totalIncomingRate)
-                                            elide: Text.ElideRight
+                                            elide: Text.ElideMiddle
                                             wrapMode: Text.Wrap
                                             font.weight: Font.Light
                                         }
@@ -515,7 +515,7 @@ ApplicationWindow {
                                         }
                                         Label {
                                             text: SyncthingModels.formatTraffic(SyncthingData.connection.totalOutgoingTraffic, SyncthingData.connection.totalOutgoingRate)
-                                            elide: Text.ElideRight
+                                            elide: Text.ElideMiddle
                                             wrapMode: Text.Wrap
                                             font.weight: Font.Light
                                         }

@@ -36,7 +36,7 @@ Item {
             Layout.fillWidth: true
             ToolTip.delay: 1000
             text: detailValue
-            elide: Text.ElideRight
+            elide: Text.ElideMiddle
             horizontalAlignment: Qt.AlignRight
         }
     }

@@ -20,13 +20,13 @@ DelegateChooser {
                     Label {
                         Layout.fillWidth: true
                         text: modelData.label
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Medium
                         wrapMode: Text.WordWrap
                     }
                     Label {
                         Layout.fillWidth: true
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Light
                         wrapMode: Text.WordWrap
                         Component.onCompleted: text = modelData.statusText ?? displayText(modelData.value, modelData.inputMethodHints)
@@ -61,14 +61,14 @@ DelegateChooser {
                     Label {
                         Layout.fillWidth: true
                         text: modelData.label
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Medium
                         wrapMode: Text.WordWrap
                     }
                     Label {
                         Layout.fillWidth: true
                         text: displayText(modelData.value, modelData.inputMethodHints)
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Light
                     }
                 }
@@ -101,13 +101,13 @@ DelegateChooser {
                     Label {
                         Layout.fillWidth: true
                         text: modelData.label
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Medium
                     }
                     Label {
                         Layout.fillWidth: true
                         text: modelData.value ?? ""
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Light
                     }
                 }
@@ -203,14 +203,14 @@ DelegateChooser {
                     Label {
                         Layout.fillWidth: true
                         text: modelData.label
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Medium
                         wrapMode: Text.WordWrap
                     }
                     Label {
                         Layout.fillWidth: true
                         text: optionsValue.editText // `${optionsValue.editText} (${modelData.value})`
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Light
                     }
                 }
@@ -299,7 +299,7 @@ DelegateChooser {
                     Label {
                         Layout.fillWidth: true
                         text: modelData.label
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Medium
                     }
                     ArrayElementButtons {
@@ -324,7 +324,7 @@ DelegateChooser {
                                     id: deviceNameOrIdLabel
                                     Layout.fillWidth: true
                                     text: SyncthingData.connection.deviceNameOrId(modelData.deviceID)
-                                    elide: Text.ElideRight
+                                    elide: Text.ElideMiddle
                                     font.weight: Font.Light
                                 }
                                 Switch {
@@ -432,14 +432,14 @@ DelegateChooser {
                     Label {
                         Layout.fillWidth: true
                         text: modelData.label
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Medium
                         wrapMode: Text.WordWrap
                     }
                     Label {
                         Layout.fillWidth: true
                         text: displayText(modelData.value, modelData.inputMethodHints)
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Light
                     }
                 }
@@ -471,7 +471,7 @@ DelegateChooser {
                     Label {
                         Layout.fillWidth: true
                         text: modelData.label
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Medium
                         wrapMode: Text.WordWrap
                     }
@@ -521,7 +521,7 @@ DelegateChooser {
                     id: objNameLabel
                     Layout.fillWidth: true
                     text: modelData.label
-                    elide: Text.ElideRight
+                    elide: Text.ElideMiddle
                     font.weight: Font.Medium
                     wrapMode: Text.WordWrap
                     readonly property int modelIndex: modelData.index
@@ -572,14 +572,14 @@ DelegateChooser {
                     Label {
                         Layout.fillWidth: true
                         text: modelData.label
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Medium
                         wrapMode: Text.WordWrap
                     }
                     Label {
                         Layout.fillWidth: true
                         visible: text.length > 0
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Light
                         wrapMode: Text.WordWrap
                         Component.onCompleted: text = modelData.statusText ?? ""
@@ -610,14 +610,14 @@ DelegateChooser {
                 Label {
                     Layout.fillWidth: true
                     text: modelData.label
-                    elide: Text.ElideRight
+                    elide: Text.ElideMiddle
                     font.weight: Font.Medium
                     wrapMode: Text.WordWrap
                 }
                 Label {
                     Layout.fillWidth: true
                     visible: text.length > 0
-                    elide: Text.ElideRight
+                    elide: Text.ElideMiddle
                     font.weight: Font.Light
                     wrapMode: Text.WordWrap
                     Component.onCompleted: text = modelData.statusText ?? ""
@@ -637,14 +637,14 @@ DelegateChooser {
                     Label {
                         Layout.fillWidth: true
                         text: modelData.label
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Medium
                         wrapMode: Text.WordWrap
                     }
                     Label {
                         Layout.fillWidth: true
                         text: modelData.value
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Light
                         wrapMode: Text.WordWrap
                     }
@@ -698,7 +698,7 @@ DelegateChooser {
                     Label {
                         Layout.fillWidth: true
                         text: modelData.label
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Medium
                         wrapMode: Text.WordWrap
                     }
@@ -706,7 +706,7 @@ DelegateChooser {
                         id: folderpathValue
                         Layout.fillWidth: true
                         text: modelData.value
-                        elide: Text.ElideRight
+                        elide: Text.ElideMiddle
                         font.weight: Font.Light
                         wrapMode: Text.WordWrap
                     }

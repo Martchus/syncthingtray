@@ -16,7 +16,7 @@ Pane {
         }
         Label {
             text: qsTr("Loading …")
-            elide: Text.ElideRight
+            elide: Text.ElideMiddle
             font.weight: Font.Light
         }
         Item {

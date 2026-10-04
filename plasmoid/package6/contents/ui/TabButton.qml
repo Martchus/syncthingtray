@@ -38,7 +38,7 @@ PlasmaComponents3.TabButton {
             visible: text.length > 0
             text: root.showTabText ? root.text : ""
             color: Kirigami.Theme.textColor
-            elide: Text.ElideRight
+            elide: Text.ElideMiddle
             Layout.fillHeight: true
         }
         Item {

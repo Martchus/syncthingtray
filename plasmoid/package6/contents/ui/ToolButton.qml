@@ -23,7 +23,7 @@ PlasmaComponents3.ToolButton {
             visible: text.length > 0
             text: root.text
             color: Kirigami.Theme.textColor
-            elide: Text.ElideRight
+            elide: Text.ElideMiddle
             Layout.fillWidth: true
             Layout.fillHeight: true
         }

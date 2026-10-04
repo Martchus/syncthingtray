@@ -152,7 +152,7 @@ ApplicationWindow {
                 Layout.leftMargin: 10
                 text: qsTr("Saving configuration …")
                 visible: savingDialog.width > 300
-                elide: Text.ElideRight
+                elide: Text.ElideMiddle
                 font.weight: Font.Light
             }
             Item {

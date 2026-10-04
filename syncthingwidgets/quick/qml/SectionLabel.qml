@@ -8,7 +8,7 @@ Label {
     Layout.topMargin: 20
     Layout.bottomMargin: 10
     color: Material.accent
-    elide: Text.ElideRight
+    elide: Text.ElideMiddle
     font.weight: Font.Medium
     wrapMode: Text.WordWrap
 }

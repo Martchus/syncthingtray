@@ -23,14 +23,14 @@ ItemDelegate {
                 id: mainLabel
                 text: delegate.text
                 Layout.fillWidth: true
-                elide: Text.ElideRight
+                elide: Text.ElideMiddle
                 font.weight: Font.Medium
                 wrapMode: Text.WordWrap
             }
             Label {
                 id: descriptionLabel
                 Layout.fillWidth: true
-                elide: Text.ElideRight
+                elide: Text.ElideMiddle
                 font.weight: Font.Light
                 wrapMode: Text.WordWrap
             }
@@ -64,7 +64,7 @@ ItemDelegate {
                             Layout.fillWidth: true
                             text: modelData.displayName
                             font.weight: Font.Medium
-                            elide: Text.ElideRight
+                            elide: Text.ElideMiddle
                             wrapMode: Text.WordWrap
                         }
                         ItemDelegate {
