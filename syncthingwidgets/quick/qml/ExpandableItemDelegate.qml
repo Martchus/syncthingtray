@@ -10,6 +10,7 @@ ItemDelegate {
     width: mainView.width - (mainView.ScrollBar?.vertical ? mainView.ScrollBar.vertical.width : 0)
     topPadding: Utils.listItemTopPadding
     bottomPadding: Utils.listItemBottomPadding
+    implicitHeight: implicitContentHeight + topPadding + bottomPadding
     activeFocusOnTab: true
     Keys.onReturnPressed: (event) => detailsView.visible = !detailsView.visible
     Keys.onMenuPressed: (event) => mainDelegate.showMenu(event)
