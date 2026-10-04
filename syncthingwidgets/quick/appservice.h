@@ -76,6 +76,7 @@ private Q_SLOTS:
     void invalidateStatus() override;
     void gatherLogsFromString(const QString &newOutput);
     void gatherLogsFromBytes(const QByteArray &newOutput);
+    void limitLogSize();
     void handleRunningChanged(bool isRunning);
     void handleChangedDevices();
     void handleNewErrors(const std::vector<Data::SyncthingError> &errors);
@@ -103,6 +104,7 @@ private:
 
     Data::SyncthingLauncher m_launcher;
     QString m_log;
+    qsizetype m_maxLogSize;
 #ifdef Q_OS_ANDROID
 #ifdef SYNCTHINGTRAY_SERVICE_WITH_ICON_RENDERING
     QHash<const QIcon *, QJniObject> m_androidIconCache;

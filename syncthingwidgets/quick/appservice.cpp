@@ -12,11 +12,13 @@
 
 #include <QDebug>
 #include <QStringBuilder>
+#include <QtEnvironmentVariables>
+
+#include "resources/config.h"
 
 #ifdef Q_OS_ANDROID
 #include <QCoreApplication>
 #include <QtCore/private/qandroidextras_p.h>
-#include <QtEnvironmentVariables>
 #endif
 
 using namespace Data;
@@ -44,6 +46,13 @@ static constexpr auto textOnly = false;
 static constexpr auto textOnly = true;
 #endif
 
+#if defined(Q_OS_ANDROID)
+// avoid using too much RAM under Android for logs
+static constexpr auto defaultMaxLogSize = qsizetype(512 * 1024);
+#else
+static constexpr auto defaultMaxLogSize = qsizetype();
+#endif
+
 /*!
  * \brief Initializes the Syncthing launcher and related platform-specific functionality.
  * \remarks
@@ -57,6 +66,11 @@ AppService::AppService(bool insecure, QObject *parent)
     , m_clientsFollowingLog(false)
 #endif
 {
+    // initialize max log size
+    auto hasMaxLogSizeFromEnv = false;
+    const auto maxLogSizeFromEnv = qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_MAX_LOG_SIZE", &hasMaxLogSizeFromEnv);
+    m_maxLogSize = hasMaxLogSizeFromEnv && maxLogSizeFromEnv >= 0 ? static_cast<qsizetype>(maxLogSizeFromEnv) : defaultMaxLogSize;
+
     qDebug() << "Initializing service app";
 
 #ifdef Q_OS_ANDROID
@@ -424,11 +438,23 @@ void AppService::gatherLogsFromString(const QString &newOutput)
     emit logsAvailable(newOutput);
 #endif
     m_log.append(newOutput);
+    limitLogSize();
 }
 
 void AppService::gatherLogsFromBytes(const QByteArray &newOutput)
 {
     gatherLogsFromString(QString::fromUtf8(newOutput));
+}
+
+void AppService::limitLogSize()
+{
+    if (m_maxLogSize <= 0 || m_log.size() <= m_maxLogSize) {
+        return;
+    }
+    const auto excess = m_log.size() - m_maxLogSize;
+    const auto newlinePos = m_log.indexOf(QChar('\n'), excess);
+    const auto toRemove = newlinePos >= 0 && newlinePos < m_log.size() ? newlinePos + 1 : excess;
+    m_log.remove(0, toRemove);
 }
 
 void AppService::handleSyncthingError(QProcess::ProcessError error)
