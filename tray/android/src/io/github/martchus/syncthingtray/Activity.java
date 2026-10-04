@@ -105,14 +105,7 @@ public class Activity extends QtActivity {
                                        IBinder service) {
             Log.i(TAG, "Connected to service");
             m_service = new Messenger(service);
-            try {
-                Message msg = Message.obtain(null, SyncthingService.MSG_REGISTER_CLIENT);
-                msg.replyTo = m_messenger;
-                m_service.send(msg);
-                sendMessageToService(SyncthingService.MSG_SERVICE_ACTION_BROADCAST_LAUNCHER_STATUS, 0, 0, "");
-            } catch (RemoteException e) {
-                Log.w(TAG, "Unable to register with service: " + e.getMessage());
-            }
+            registerWithService();
         }
 
         public void onServiceDisconnected(ComponentName className) {
@@ -124,7 +117,36 @@ public class Activity extends QtActivity {
                 connectToService();
             }
         }
+
+        public void onBindingDied(ComponentName className) {
+            Log.i(TAG, "Binding to service died, trying to reconnect");
+            try {
+                unbindService(m_connection);
+            } catch (Exception e) {
+                Log.w(TAG, "Unable to unbind after binding died: " + e.getMessage());
+            }
+            m_service = null;
+            m_isBound = false;
+            if (!Activity.this.isFinishing()) {
+                startSyncthingService();
+                connectToService();
+            }
+        }
     };
+
+    private void registerWithService() {
+        if (m_service == null) {
+            return;
+        }
+        try {
+            Message msg = Message.obtain(null, SyncthingService.MSG_REGISTER_CLIENT);
+            msg.replyTo = m_messenger;
+            m_service.send(msg);
+            sendMessageToService(SyncthingService.MSG_SERVICE_ACTION_BROADCAST_LAUNCHER_STATUS, 0, 0, "");
+        } catch (RemoteException e) {
+            Log.w(TAG, "Unable to register with service: " + e.getMessage());
+        }
+    }
 
     private void connectToService() {
         if (!m_isBound) {
@@ -549,6 +571,9 @@ public class Activity extends QtActivity {
             handleLocalNetworkPermissionChanged(localNetworkPermissionGranted());
         }
         super.onResume();
+
+        // ensure client is registered and request latest launcher status
+        registerWithService();
 
         // ensure the foreground notification is shown again when opening the app as the notification might have been dismissed
         // note: This won't work on the initial startup as the service connection hasn't been established then. That is not a problem

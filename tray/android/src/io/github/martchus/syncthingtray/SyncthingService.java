@@ -19,14 +19,17 @@ import android.content.IntentFilter;
 import android.os.PowerManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.DeadObjectException;
 import android.os.IBinder;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
+import android.os.TransactionTooLargeException;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.qtproject.qt.android.bindings.QtService;
 
@@ -55,7 +58,7 @@ public class SyncthingService extends QtService {
     private static Bitmap s_notificationIcon = null;
 
     // fields to communicate with activity
-    private ArrayList<Messenger> m_clients = new ArrayList<Messenger>();
+    private final CopyOnWriteArrayList<Messenger> m_clients = new CopyOnWriteArrayList<Messenger>();
     private final Messenger m_messenger = new Messenger(new IncomingHandler());
 
     private final BroadcastReceiver m_powerSaveReceiver = new BroadcastReceiver() {
@@ -104,12 +107,37 @@ public class SyncthingService extends QtService {
             switch (msg.what) {
             case MSG_REGISTER_CLIENT:
                 Log.i(TAG, "Client registered");
-                m_clients.add(msg.replyTo);
+                final Messenger client = msg.replyTo;
+                if (client != null) {
+                    final IBinder binder = client.getBinder();
+                    for (Messenger existingClient : m_clients) {
+                        if (!existingClient.getBinder().isBinderAlive()) {
+                            m_clients.remove(existingClient);
+                        }
+                    }
+                    if (!m_clients.contains(client)) {
+                        try {
+                            binder.linkToDeath(new IBinder.DeathRecipient() {
+                                @Override
+                                public void binderDied() {
+                                    Log.i(TAG, "Client binder died");
+                                    m_clients.remove(client);
+                                    binder.unlinkToDeath(this, 0);
+                                }
+                            }, 0);
+                            m_clients.add(client);
+                        } catch (RemoteException e) {
+                            Log.w(TAG, "Client already dead: " + e.getMessage());
+                        }
+                    }
+                }
                 showForegroundNotification(); // ensure notification is still shown after it might have been dismissed
                 break;
             case MSG_UNREGISTER_CLIENT:
                 Log.i(TAG, "Client unregistered");
-                m_clients.remove(msg.replyTo);
+                if (msg.replyTo != null) {
+                    m_clients.remove(msg.replyTo);
+                }
                 break;
             case MSG_SHOW_FOREGROUND_NOTIFICATION:
                 showForegroundNotification();
@@ -156,13 +184,17 @@ public class SyncthingService extends QtService {
     public int sendMessageToClients(int what, int arg1, int arg2, Bundle data) {
         int messagesSent = 0;
         Log.i(TAG, String.format("Sending message to %s clients: %s", m_clients.size(), what));
-        for (int i = m_clients.size() - 1; i >= 0; --i) {
+        for (Messenger client : m_clients) {
             try {
-                m_clients.get(i).send(obtainMessageWithBundle(what, arg1, arg2, data));
+                client.send(obtainMessageWithBundle(what, arg1, arg2, data));
                 ++messagesSent;
+            } catch (DeadObjectException e) {
+                Log.w(TAG, "Client is dead, removing: " + e.getMessage());
+                m_clients.remove(client);
+            } catch (TransactionTooLargeException e) {
+                Log.e(TAG, "Transaction too large when sending message " + what + " to frontend: " + e.getMessage());
             } catch (RemoteException e) {
                 Log.w(TAG, "Unable to send message to frontend: " + e.getMessage());
-                m_clients.remove(i); // remove presumably dead client
             }
         }
         return messagesSent;
