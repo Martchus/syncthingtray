@@ -75,6 +75,7 @@ ItemDelegate {
                     enabled: modelData.enabled
                     icon.source: modelData.icon.source
                     icon.name: modelData.icon.name
+                    scale: mainDelegate.iconScale
                     onClicked: modelData.trigger(source)
                     required property Action modelData
                 }
@@ -85,6 +86,7 @@ ItemDelegate {
                 text: qsTr("More actions")
                 icon.source: QuickUI.faUrlBase + "ellipsis-v"
                 icon.name: Utils.fallbackIconName("view-more-horizontal-symbolic")
+                scale: mainDelegate.iconScale
                 onClicked: mainDelegate.showMenu()
                 CustomMenu {
                     id: menu
@@ -133,6 +135,7 @@ ItemDelegate {
     required property ListView mainView
     readonly property bool breakpoint: mainView.width > (500 * Math.max(0.8, QuickUI.densityScale))
     readonly property real statusIconWidth: statusIcon.visible ? statusIcon.width : 0
+    readonly property real iconScale: Utils.winUI ? 0.65 : 1.0
     property list<Action> actions
     property list<Action> extraActions
 }
