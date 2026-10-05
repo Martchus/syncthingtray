@@ -83,8 +83,8 @@ Page {
         standardButtons: Dialog.Ok
         implicitWidth: 500
         // use Popup.Window in combination with `modal: false` to allow editing while showing the help
-        popupType: QuickUI.desktop ? Popup.Window : Popup.Item
-        modal: false
+        popupType: QuickUI.desktop && !Utils.winUI ? Popup.Window : Popup.Item
+        modal: helpDialog.popupType === Popup.Item
         contentItem: ScrollView {
             id: scrollView
             ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
