@@ -1356,7 +1356,7 @@ QString SyncthingConnection::emitError(const QString &message, SyncthingErrorCat
     auto error = reply->error();
     auto errorString = reply->errorString();
     auto resp = formatErrorAndResponse(reply, errorString, response);
-    auto fullMessage = QString(message % QChar('\n') % errorString);
+    auto fullMessage = message + errorString; // no deleminiter needed, message is supposed to end with a ' '
     if (loggingFlags() && SyncthingConnectionLoggingFlags::ApiReplies) {
 #if SYNCTHINGCONNECTION_QDEBUG
         qDebug() << "Syncthing connetion error:" << fullMessage;
