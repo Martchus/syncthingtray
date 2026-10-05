@@ -118,8 +118,8 @@ QNetworkReply *SyncthingConnection::requestData(const QString &path, const QUrlQ
 }
 
 /// \cond
-#if !SYNCTHINGCONNECTION_QDEBUG
-void logDataToStdErr(const QByteArray &data)
+#if !SYNCTHINGCONNECTION_QDEBUG && !defined(LIB_SYNCTHING_CONNECTOR_CONNECTION_MOCKED) && !defined(LIB_SYNCTHING_CONNECTOR_MOCKED)
+static void logDataToStdErr(const QByteArray &data)
 {
     cerr.write(data.data(), static_cast<std::streamsize>(data.size()));
     if (!data.endsWith('\n')) {
