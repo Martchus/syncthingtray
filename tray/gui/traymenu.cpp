@@ -62,8 +62,8 @@ TrayMenu::TrayMenu(TrayIcon *trayIcon, QWidget *parent)
     , m_isWindows11Style(isWindows11Style(this))
 #endif
 {
-    // disable use of the popup type under platforms that don't support it and emulate closing the window by checking
-    // the application state
+    // disable use of the popup type under platforms that don't support it and rely on emulating closing the window by
+    // checking the application state for WindowType::Popup as well
     // note: The Wayland platform does not support popups without a parent that received input events. Trying to show
     //       the menu as popup would lead to "qt.qpa.wayland: Failed to create grabbing popup. Ensure popup … has a
     //       transientParent set and that parent window has received input." and the menu would not show up. This is
@@ -71,20 +71,25 @@ TrayMenu::TrayMenu(TrayIcon *trayIcon, QWidget *parent)
 #ifdef QT_PLATFORM_MAY_NOT_SUPPORT_POPUP
     if (QGuiApplication::platformName() == QStringLiteral("wayland")) {
         popupFlags = Qt::Dialog | Qt::CustomizeWindowHint | QT_PLATFORM_POPUP_EXTRA_FLAGS;
-        QObject::connect(qGuiApp, &QGuiApplication::applicationStateChanged, this, [this](Qt::ApplicationState state) {
-            // close the menu if the application becomes inactive
-            // note: This is not perfect as the menu will stay open if another window is active.
-            switch (state) {
-            case Qt::ApplicationInactive:
-                if (m_windowType == WindowType::Popup) {
-                    close();
-                }
-                break;
-            default:;
-            }
-        });
     }
 #endif
+
+    // close the menu if the application becomes inactive for WindowType::CustomWindow
+    QObject::connect(qGuiApp, &QGuiApplication::applicationStateChanged, this, [this](Qt::ApplicationState state) {
+        // note: This is not perfect as the menu will stay open if another window is active.
+        switch (state) {
+        case Qt::ApplicationInactive:
+            if (
+#ifdef QT_PLATFORM_MAY_NOT_SUPPORT_POPUP
+                m_windowType == WindowType::Popup ||
+#endif
+                m_windowType == WindowType::CustomWindow) {
+                close();
+            }
+            break;
+        default:;
+        }
+    });
 
     setObjectName(QStringLiteral("QtGui::TrayMenu"));
     setLayout(m_layout);
