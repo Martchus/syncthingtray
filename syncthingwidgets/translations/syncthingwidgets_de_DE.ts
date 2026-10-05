@@ -1977,7 +1977,7 @@
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="15"/>
         <source>Keep initially disabled to add ignore patterns before any syncing takes place.</source>
-        <translation>Lasse das Verzeichnis beim Hinzufügen pausiert, um Ignoriermuster hinzuzufügen bevor die Synchronisation startet.</translation>
+        <translation>Lasse das Verzeichnis beim Hinzufügen pausiert, um Ignoriermuster hinzuzufügen, bevor die Synchronisation startet.</translation>
     </message>
     <message>
         <location filename="../quick/qml/DirConfigPage.qml" line="27"/>
@@ -2418,7 +2418,7 @@
 <context>
     <name>ExpandableItemDelegate</name>
     <message>
-        <location filename="../quick/qml/ExpandableItemDelegate.qml" line="84"/>
+        <location filename="../quick/qml/ExpandableItemDelegate.qml" line="86"/>
         <source>More actions</source>
         <translation>Weitere Aktionen</translation>
     </message>
@@ -3979,70 +3979,70 @@
 <context>
     <name>QtGui::AppService</name>
     <message>
-        <location filename="../quick/appservice.cpp" line="155"/>
+        <location filename="../quick/appservice.cpp" line="172"/>
         <source>Backend is starting …</source>
         <translation>Backend startet …</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="216"/>
+        <location filename="../quick/appservice.cpp" line="233"/>
         <source>Unable to open persistent log file for Syncthing under &quot;%1&quot;: %2</source>
         <translation>Persistente Log-Datei für Syncthing kann unter &quot;%1&quot; nicht angelegt werden: %2</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="227"/>
+        <location filename="../quick/appservice.cpp" line="244"/>
         <source>This build of the app cannot launch Syncthing.</source>
         <translation>Diese Version der App kann Syncthing nicht ausführen.</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="305"/>
+        <location filename="../quick/appservice.cpp" line="343"/>
         <source>Unable to flush log file: %1</source>
         <translation>Kann Logs nicht auf Speichermedium schreiben: %1</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="322"/>
+        <location filename="../quick/appservice.cpp" line="360"/>
         <source>Syncthing App ran into error</source>
         <translation>In der Syncthing-App ist ein Fehler aufgetreten</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="441"/>
+        <location filename="../quick/appservice.cpp" line="484"/>
         <source>An error occurred when running Syncthing: %2
 </source>
         <translation>Beim Ausführen von Syncthing ist ein Fehler aufgetreten: %2
 </translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="542"/>
+        <location filename="../quick/appservice.cpp" line="585"/>
         <source>Syncthing error/notification</source>
         <translation>Syncthing Fehler/Benachrichtigung</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="542"/>
+        <location filename="../quick/appservice.cpp" line="585"/>
         <source>%1 Syncthing errors/notifications</source>
         <translation>%1 Syncthing Fehler/Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="543"/>
-        <location filename="../quick/appservice.cpp" line="571"/>
+        <location filename="../quick/appservice.cpp" line="586"/>
+        <location filename="../quick/appservice.cpp" line="614"/>
         <source>Most recent: </source>
         <translation>Letzte: </translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="570"/>
+        <location filename="../quick/appservice.cpp" line="613"/>
         <source>Syncthing API error</source>
         <translation>Syncthing-API-Fehler</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="570"/>
+        <location filename="../quick/appservice.cpp" line="613"/>
         <source>%1 Syncthing API errors</source>
         <translation>%1 Syncthing-API-Fehler</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="585"/>
+        <location filename="../quick/appservice.cpp" line="628"/>
         <source>Syncthing device wants to connect</source>
         <translation>Syncthing-Gerät will sich verbinden</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="599"/>
+        <location filename="../quick/appservice.cpp" line="642"/>
         <source>Syncthing device wants to share folder</source>
         <translation>Syncthing-Gerät will einen Ordner teilen</translation>
     </message>

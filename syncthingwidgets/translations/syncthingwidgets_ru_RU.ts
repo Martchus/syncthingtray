@@ -2346,7 +2346,7 @@
 <context>
     <name>ExpandableItemDelegate</name>
     <message>
-        <location filename="../quick/qml/ExpandableItemDelegate.qml" line="84"/>
+        <location filename="../quick/qml/ExpandableItemDelegate.qml" line="86"/>
         <source>More actions</source>
         <translation>Больше действий</translation>
     </message>
@@ -3820,69 +3820,69 @@
 <context>
     <name>QtGui::AppService</name>
     <message>
-        <location filename="../quick/appservice.cpp" line="155"/>
+        <location filename="../quick/appservice.cpp" line="172"/>
         <source>Backend is starting …</source>
         <translation>Бэкэнд запускается…</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="216"/>
+        <location filename="../quick/appservice.cpp" line="233"/>
         <source>Unable to open persistent log file for Syncthing under &quot;%1&quot;: %2</source>
         <translation>Невозможно открыть постоянный файл журнала для Syncthing в разделе «%1»: %2</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="227"/>
+        <location filename="../quick/appservice.cpp" line="244"/>
         <source>This build of the app cannot launch Syncthing.</source>
         <translation>Эта сборка приложения не может запустить Syncthing.</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="305"/>
+        <location filename="../quick/appservice.cpp" line="343"/>
         <source>Unable to flush log file: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="322"/>
+        <location filename="../quick/appservice.cpp" line="360"/>
         <source>Syncthing App ran into error</source>
         <translation>В приложении Syncthing произошла ошибка</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="441"/>
+        <location filename="../quick/appservice.cpp" line="484"/>
         <source>An error occurred when running Syncthing: %2
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="542"/>
+        <location filename="../quick/appservice.cpp" line="585"/>
         <source>Syncthing error/notification</source>
         <translation>Ошибка/уведомление синхронизации</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="542"/>
+        <location filename="../quick/appservice.cpp" line="585"/>
         <source>%1 Syncthing errors/notifications</source>
         <translation>%1 Ошибки/уведомления синхронизации</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="543"/>
-        <location filename="../quick/appservice.cpp" line="571"/>
+        <location filename="../quick/appservice.cpp" line="586"/>
+        <location filename="../quick/appservice.cpp" line="614"/>
         <source>Most recent: </source>
         <translation>Самые последние: </translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="570"/>
+        <location filename="../quick/appservice.cpp" line="613"/>
         <source>Syncthing API error</source>
         <translation>Ошибка API синхронизации</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="570"/>
+        <location filename="../quick/appservice.cpp" line="613"/>
         <source>%1 Syncthing API errors</source>
         <translation>Ошибки синхронизации %1</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="585"/>
+        <location filename="../quick/appservice.cpp" line="628"/>
         <source>Syncthing device wants to connect</source>
         <translation>Устройство Syncthing хочет подключиться</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="599"/>
+        <location filename="../quick/appservice.cpp" line="642"/>
         <source>Syncthing device wants to share folder</source>
         <translation>Устройство Syncthing хочет предоставить общий доступ к папке</translation>
     </message>
