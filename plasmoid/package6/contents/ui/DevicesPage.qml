@@ -7,9 +7,15 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.kirigami 2.20 as Kirigami
 
 ColumnLayout {
+    objectName: "DevicesPage"
+
     property alias view: deviceView
     property alias filter: filter
-    objectName: "DevicesPage"
+    readonly property string name: qsTr("device")
+    readonly property bool canAdd: plasmoid.quickUI !== null
+    function add() {
+        plasmoid.quickUI?.editDev("", "", null)
+    }
 
     FilterTextField {
         id: filter

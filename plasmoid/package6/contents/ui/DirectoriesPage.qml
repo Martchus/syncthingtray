@@ -7,9 +7,15 @@ import org.kde.plasma.extras 2.0 as PlasmaExtras
 import org.kde.kirigami 2.20 as Kirigami
 
 ColumnLayout {
+    objectName: "DirectoriesPage"
+
     property alias view: directoryView
     property alias filter: filter
-    objectName: "DirectoriesPage"
+    readonly property string name: qsTr("folder")
+    readonly property bool canAdd: plasmoid.quickUI !== null
+    function add() {
+        plasmoid.quickUI?.editDir("", "", null)
+    }
 
     FilterTextField {
         id: filter

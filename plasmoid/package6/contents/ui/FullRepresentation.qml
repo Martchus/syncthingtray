@@ -12,6 +12,16 @@ PlasmaExtras.Representation {
 
     signal currentTabChanged(index: int)
     property alias mainLayout: mainLayout
+    property var currentPage: {
+        switch (tabBar.currentIndex) {
+        case 0: return directoriesPage
+        case 1: return devicesPage
+        case 2: return recentChangesPage
+        case 3: return downloadsPage
+        default: return directoriesPage
+        }
+    }
+    property var currentFilter: fullRepresentation.currentPage.filter
 
     // disable margins as they don't look good together with the scroll view
     // note: Would be collapsed automatically if the scroll view was the immediate content item.
@@ -71,23 +81,9 @@ PlasmaExtras.Representation {
         }
     }
 
-    // define functions to locate the current page and filter
-    function findCurrentPage() {
-        switch (tabBar.currentIndex) {
-        case 0: return directoriesPage
-        case 1: return devicesPage
-        case 2: return recentChangesPage
-        case 3: return downloadsPage
-        default: return directoriesPage
-        }
-    }
-    function findCurrentFilter() {
-        return findCurrentPage().filter
-    }
-
     // define shortcuts to trigger actions for currently selected item
     function clickCurrentItemButton(buttonName) {
-        findCurrentPage().view.clickCurrentItemButton(buttonName)
+        fullRepresentation.currentPage.view.clickCurrentItemButton(buttonName)
     }
     Shortcut {
         sequence: "Ctrl+R"
@@ -110,10 +106,15 @@ PlasmaExtras.Representation {
         onActivated: searchButton.click()
     }
     Shortcut {
+        sequence: "Ctrl+Shift+A"
+        enabled: syncthingApplet.expanded
+        onActivated: addButton.click()
+    }
+    Shortcut {
         sequences: ["Ctrl+M", "Menu"]
         enabled: syncthingApplet.expanded
         onActivated: {
-            const view = findCurrentPage().view
+            const view = fullRepresentation.currentPage.view
             const item = view.currentItem
             if (item) {
                 view.showContextMenu(item, item.x + item.width / 2, item.y + item.height / 2)
@@ -126,27 +127,41 @@ PlasmaExtras.Representation {
         anchors.fill: parent
         anchors.topMargin: Kirigami.Units.smallSpacing * 2
 
-        TinyButton {
-            id: searchButton
+        RowLayout {
             anchors.right: mainLayout.right
             anchors.rightMargin: Kirigami.Units.smallSpacing * 2
-            icon.source: plasmoid.faUrl + "search"
-            width: Kirigami.Units.iconSizes.smallMedium
-            height: width
-            enabled: tabBar.currentIndex === 0 || tabBar.currentIndex === 1
-            opacity: enabled ? 1.0 : 0.25
-            tooltip: qsTr("Toggle filter")
-            onClicked: {
-                const filter = findCurrentFilter()
-                if (!filter) {
-                    return
-                }
-                if (!filter.explicitelyShown || !filter.activeFocus) {
-                    filter.explicitelyShown = true
-                    filter.forceActiveFocus()
-                } else {
-                    filter.explicitelyShown = false
-                    filter.text = ""
+
+            TinyButton {
+                id: addButton
+                icon.source: plasmoid.faUrl + "plus"
+                width: Kirigami.Units.iconSizes.smallMedium
+                height: width
+                enabled: fullRepresentation.currentPage.canAdd === true
+                opacity: enabled ? 1.0 : 0.25
+                visible: plasmoid.quickUI !== null
+                tooltip: qsTr("Add %1").arg(fullRepresentation.currentPage.name ?? "?")
+                onClicked: fullRepresentation.currentPage?.add()
+            }
+            TinyButton {
+                id: searchButton
+                icon.source: plasmoid.faUrl + "search"
+                width: Kirigami.Units.iconSizes.smallMedium
+                height: width
+                enabled: tabBar.currentIndex === 0 || tabBar.currentIndex === 1
+                opacity: enabled ? 1.0 : 0.25
+                tooltip: qsTr("Toggle filter")
+                onClicked: {
+                    const filter = fullRepresentation.currentFilter
+                    if (!filter) {
+                        return
+                    }
+                    if (!filter.explicitelyShown) {
+                        filter.explicitelyShown = true
+                        filter.forceActiveFocus()
+                    } else {
+                        filter.explicitelyShown = false
+                        filter.text = ""
+                    }
                 }
             }
         }
@@ -161,7 +176,7 @@ PlasmaExtras.Representation {
 
             // define custom key handling for switching tabs, selecting items and filtering
             function sendKeyEventToFilter(event) {
-                const filter = findCurrentFilter()
+                const filter = fullRepresentation.currentFilter
                 if (!filter || event.key === Qt.Key_Tab || event.text === "" || filter.activeFocus) {
                     return
                 }
@@ -188,7 +203,7 @@ PlasmaExtras.Representation {
                     switch (event.modifiers) {
                     case Qt.NoModifier:
                         // select previous item in current tab
-                        findCurrentPage().view.decrementCurrentIndex()
+                        fullRepresentation.currentPage.view.decrementCurrentIndex()
                         break
                     case Qt.ShiftModifier:
                         // select previous connection
@@ -200,7 +215,7 @@ PlasmaExtras.Representation {
                     switch (event.modifiers) {
                     case Qt.NoModifier:
                         // select next item in current tab
-                        findCurrentPage().view.incrementCurrentIndex()
+                        fullRepresentation.currentPage.view.incrementCurrentIndex()
                         break
                     case Qt.ShiftModifier:
                         // select previous connection
@@ -221,13 +236,13 @@ PlasmaExtras.Representation {
                     // fallthrough
                 case Qt.Key_Return:
                     // toggle expanded state of current item
-                    const currentItem = findCurrentPage().view.currentItem
+                    const currentItem = fullRepresentation.currentPage.view.currentItem
                     if (currentItem) {
                         currentItem.expanded = !currentItem.expanded
                     }
                     break
                 case Qt.Key_Escape:
-                    const filter = findCurrentFilter()
+                    const filter = fullRepresentation.currentFilter
                     if (!filter || filter.text === "") {
                         return
                     }
