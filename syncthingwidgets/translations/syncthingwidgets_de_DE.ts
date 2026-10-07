@@ -3979,70 +3979,70 @@
 <context>
     <name>QtGui::AppService</name>
     <message>
-        <location filename="../quick/appservice.cpp" line="172"/>
+        <location filename="../quick/appservice.cpp" line="180"/>
         <source>Backend is starting …</source>
         <translation>Backend startet …</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="233"/>
+        <location filename="../quick/appservice.cpp" line="241"/>
         <source>Unable to open persistent log file for Syncthing under &quot;%1&quot;: %2</source>
         <translation>Persistente Log-Datei für Syncthing kann unter &quot;%1&quot; nicht angelegt werden: %2</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="244"/>
+        <location filename="../quick/appservice.cpp" line="252"/>
         <source>This build of the app cannot launch Syncthing.</source>
         <translation>Diese Version der App kann Syncthing nicht ausführen.</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="343"/>
+        <location filename="../quick/appservice.cpp" line="355"/>
         <source>Unable to flush log file: %1</source>
         <translation>Kann Logs nicht auf Speichermedium schreiben: %1</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="360"/>
+        <location filename="../quick/appservice.cpp" line="372"/>
         <source>Syncthing App ran into error</source>
         <translation>In der Syncthing-App ist ein Fehler aufgetreten</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="484"/>
+        <location filename="../quick/appservice.cpp" line="496"/>
         <source>An error occurred when running Syncthing: %2
 </source>
         <translation>Beim Ausführen von Syncthing ist ein Fehler aufgetreten: %2
 </translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="585"/>
+        <location filename="../quick/appservice.cpp" line="597"/>
         <source>Syncthing error/notification</source>
         <translation>Syncthing Fehler/Benachrichtigung</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="585"/>
+        <location filename="../quick/appservice.cpp" line="597"/>
         <source>%1 Syncthing errors/notifications</source>
         <translation>%1 Syncthing Fehler/Benachrichtigungen</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="586"/>
-        <location filename="../quick/appservice.cpp" line="614"/>
+        <location filename="../quick/appservice.cpp" line="598"/>
+        <location filename="../quick/appservice.cpp" line="626"/>
         <source>Most recent: </source>
         <translation>Letzte: </translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="613"/>
+        <location filename="../quick/appservice.cpp" line="625"/>
         <source>Syncthing API error</source>
         <translation>Syncthing-API-Fehler</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="613"/>
+        <location filename="../quick/appservice.cpp" line="625"/>
         <source>%1 Syncthing API errors</source>
         <translation>%1 Syncthing-API-Fehler</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="628"/>
+        <location filename="../quick/appservice.cpp" line="640"/>
         <source>Syncthing device wants to connect</source>
         <translation>Syncthing-Gerät will sich verbinden</translation>
     </message>
     <message>
-        <location filename="../quick/appservice.cpp" line="642"/>
+        <location filename="../quick/appservice.cpp" line="654"/>
         <source>Syncthing device wants to share folder</source>
         <translation>Syncthing-Gerät will einen Ordner teilen</translation>
     </message>
