@@ -4346,7 +4346,7 @@
     </message>
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="35"/>
-        <source>Syncthing Tray&apos;s own UI</source>
+        <source>Syncthing Tray&apos;s own dashboard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

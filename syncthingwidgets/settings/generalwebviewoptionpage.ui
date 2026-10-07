@@ -32,7 +32,7 @@
       <item>
        <widget class="QRadioButton" name="ownRadioButton">
         <property name="text">
-         <string>Syncthing Tray's own UI</string>
+         <string>Syncthing Tray's own dashboard</string>
         </property>
        </widget>
       </item>
