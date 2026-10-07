@@ -529,6 +529,8 @@ void setForkAwesomeThemeOverrides()
     renderer.addThemeOverride(QtForkAwesome::Icon::Cog, QStringLiteral("settings-configure"));
     renderer.addThemeOverride(QtForkAwesome::Icon::Cog, QStringLiteral("system-settings-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::Plug, QStringLiteral("network-connect"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::Plus, QStringLiteral("list-add"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::Minus, QStringLiteral("list-remove"));
     renderer.addThemeOverride(QtForkAwesome::Icon::Qrcode, QStringLiteral("qrscanner-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::Qrcode, QStringLiteral("view-barcode-qr"));
     renderer.addThemeOverride(QtForkAwesome::Icon::PowerOff, QStringLiteral("system-shutdown-symbolic"));

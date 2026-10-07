@@ -619,6 +619,8 @@ void QuickUI::showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y, cons
                     { QStringLiteral("exchange.fa"), QStringLiteral("item") },
                     { QStringLiteral("undo.fa"), QStringLiteral("edit-undo") },
                     { QStringLiteral("redo.fa"), QStringLiteral("edit-redo") },
+                    { QStringLiteral("repeat.fa"), QStringLiteral("edit-redo") },
+                    { QStringLiteral("eraser.fa"), QStringLiteral("edit-clear-all") },
                     { QStringLiteral("exclamation-triangle.fa"), QStringLiteral("dialog-warning") },
                     { QStringLiteral("folder-open.fa"), QStringLiteral("document-open") },
                     { QStringLiteral("folder-open-o.fa"), QStringLiteral("document-open-remote") },
