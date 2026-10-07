@@ -371,18 +371,16 @@ void Application::requestLog(const ArgumentOccurrence &)
 
 void Application::requestShutdown(const ArgumentOccurrence &)
 {
-    connect(&m_connection, &SyncthingConnection::shutdownTriggered, &QCoreApplication::quit);
+    connect(&m_connection, &SyncthingConnection::shutdownTriggered, std::bind(&printDone, "Shutdown requested\n"));
     m_connection.shutdown();
     cerr << "Request shutdown " << m_settings.syncthingUrl.toLocal8Bit().data() << " ...";
-    cerr.flush();
 }
 
 void Application::requestRestart(const ArgumentOccurrence &)
 {
-    connect(&m_connection, &SyncthingConnection::restartTriggered, &QCoreApplication::quit);
+    connect(&m_connection, &SyncthingConnection::restartTriggered, std::bind(&printDone, "Restart requested\n"));
     m_connection.restart();
     cerr << "Request restart " << m_settings.syncthingUrl.toLocal8Bit().data() << " ...";
-    cerr.flush();
 }
 
 void Application::requestRescan(const ArgumentOccurrence &occurrence)
@@ -742,6 +740,12 @@ void Application::printStatus(const ArgumentOccurrence &)
     }
 
     cout.flush();
+    QCoreApplication::exit();
+}
+
+void Application::printDone(std::string_view message)
+{
+    cerr << Phrases::Override << message;
     QCoreApplication::exit();
 }
 

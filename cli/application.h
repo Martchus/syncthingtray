@@ -68,6 +68,7 @@ private:
     void printDev(const Data::SyncthingDev *dev) const;
     void printStatus(const ArgumentOccurrence &);
     static void printLog(const std::vector<Data::SyncthingLogEntry> &logEntries);
+    static void printDone(std::string_view message);
     void printConfig(const ArgumentOccurrence &);
     void editConfig(const ArgumentOccurrence &);
     QByteArray editConfigViaEditor() const;
