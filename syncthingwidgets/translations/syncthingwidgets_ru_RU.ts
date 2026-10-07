@@ -4922,7 +4922,7 @@
     </message>
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="35"/>
-        <source>Syncthing Tray&apos;s own UI (experimental, WIP)</source>
+        <source>Syncthing Tray&apos;s own UI</source>
         <translation type="unfinished"></translation>
     </message>
     <message>

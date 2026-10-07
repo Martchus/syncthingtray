@@ -14,47 +14,52 @@
     <name>DevicesPage</name>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="64"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="81"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="87"/>
         <source>Resume</source>
         <translation>Pokračovat</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="64"/>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="116"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="81"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="140"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="87"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="146"/>
         <source>Pause</source>
         <translation>Pozastavit</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="102"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="126"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="132"/>
         <source>Copy name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DevicesPage.qml" line="107"/>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="131"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="137"/>
         <source>Copy ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="16"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="14"/>
+        <source>device</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="22"/>
         <source>Filter devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="146"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="152"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="152"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="158"/>
         <source>Out of Sync items</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DevicesPage.qml" line="157"/>
+        <location filename="../package6/contents/ui/DevicesPage.qml" line="163"/>
         <source>Advanced config</source>
         <translation type="unfinished"></translation>
     </message>
@@ -63,81 +68,86 @@
     <name>DirectoriesPage</name>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="22"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="16"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="22"/>
         <source>Filter folders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="83"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="86"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="199"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="92"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="205"/>
         <source>Show errors</source>
         <translation>Zobrazit chyby</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="94"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="163"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="93"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="165"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="99"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="171"/>
         <source>Rescan</source>
         <translation>Znovu proskenovat</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="102"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="101"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="107"/>
         <source>Resume</source>
         <translation>Pokračovat</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="102"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="170"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="101"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="172"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="107"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="178"/>
         <source>Pause</source>
         <translation>Pozastavit</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="112"/>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="177"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="111"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="179"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="117"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="185"/>
         <source>Open in file browser</source>
         <translation>Otevřít ve správci souborů</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="149"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="151"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="157"/>
         <source>Copy label/ID</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/DirectoriesPage.qml" line="154"/>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="156"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="162"/>
         <source>Copy path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="185"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="14"/>
+        <source>folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="191"/>
         <source>Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="192"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="198"/>
         <source>Out of Sync items</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="206"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="212"/>
         <source>Browse remote files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="213"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="219"/>
         <source>Show/edit ignore patterns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="219"/>
+        <location filename="../package6/contents/ui/DirectoriesPage.qml" line="225"/>
         <source>Advanced config</source>
         <translation type="unfinished"></translation>
     </message>
@@ -209,61 +219,66 @@
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="35"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="44"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="54"/>
         <source>Folders</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="41"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="51"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="61"/>
         <source>Devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="47"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="58"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="68"/>
         <source>History</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="53"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="65"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="75"/>
         <source>Downloads</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="248"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="280"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="295"/>
         <source>Global</source>
         <translation>Globální</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="255"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="287"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="302"/>
         <source>Global incoming traffic</source>
         <translation>Globální příchozí provoz</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="273"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="305"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="320"/>
         <source>Local</source>
         <translation>Lokální</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="280"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="312"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="327"/>
         <source>Global outgoing traffic</source>
         <translation>Globální odchozí provoz</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="106"/>
-        <location filename="../package6/contents/ui/FullRepresentation.qml" line="138"/>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="152"/>
         <source>Toggle filter</source>
         <translation>Vyp/zap. filtr</translation>
     </message>
     <message>
         <source>About Syncthing Tray</source>
         <translation type="vanished">O Syncthing Tray</translation>
+    </message>
+    <message>
+        <location filename="../package6/contents/ui/FullRepresentation.qml" line="142"/>
+        <source>Add %1</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

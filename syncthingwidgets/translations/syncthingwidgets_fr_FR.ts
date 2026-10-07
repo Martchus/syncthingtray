@@ -4365,8 +4365,12 @@
     </message>
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="35"/>
+        <source>Syncthing Tray&apos;s own UI</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>Syncthing Tray&apos;s own UI (experimental, WIP)</source>
-        <translation>Interface propre de Syncthing Tray (expérimental, en cours de développement)</translation>
+        <translation type="vanished">Interface propre de Syncthing Tray (expérimental, en cours de développement)</translation>
     </message>
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="42"/>

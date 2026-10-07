@@ -5153,8 +5153,12 @@ Die Weboberfläche wird stattdessen im Standardwebrowser geöffnet.</translation
     </message>
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="35"/>
+        <source>Syncthing Tray&apos;s own UI</source>
+        <translation>der von Syncthing Tray bereitgestellten Oberfläche</translation>
+    </message>
+    <message>
         <source>Syncthing Tray&apos;s own UI (experimental, WIP)</source>
-        <translation>der von Syncthing Tray bereitgestellten Oberfläche (experimentell, noch nicht fertig)</translation>
+        <translation type="vanished">der von Syncthing Tray bereitgestellten Oberfläche (experimentell, noch nicht fertig)</translation>
     </message>
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="42"/>
