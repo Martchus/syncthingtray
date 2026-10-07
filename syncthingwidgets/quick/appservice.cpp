@@ -49,9 +49,17 @@ static constexpr auto textOnly = true;
 #if defined(Q_OS_ANDROID)
 // avoid using too much RAM under Android for logs
 static constexpr auto defaultMaxLogSize = qsizetype(512 * 1024);
-// stay below Binder's 1 MB limit (see https://developer.android.com/reference/android/os/TransactionTooLargeException)
-// note: Strings are UTF-16 so this limit means we use half of an MiB; that leaves enough headroom for overhead.
-static constexpr auto logChunkSize = qsizetype(256 * 1024);
+// stay well below Binder's limit for asynchronous ("oneway") transactions.
+// note: The total Binder buffer is typically 1 MB (see
+// https://developer.android.com/reference/android/os/TransactionTooLargeException), but Android's kernel
+// Binder driver (binder_alloc.c) restricts asynchronous transactions to at most half of the buffer space
+// (~512 KB or less). Messenger uses android.os.IMessenger.aidl which is a oneway interface, making
+// client.send() asynchronous. Furthermore, pending asynchronous transactions accumulate until the receiver
+// drains them.
+// Strings are UTF-16 (2 bytes per character), so 32 * 1024 characters equal 64 KiB of string data, leaving
+// plenty of headroom below the 512 KB limit and staying below the 200 KB threshold where Android starts
+// warning about large outgoing transactions.
+static constexpr auto logChunkSize = qsizetype(32 * 1024);
 #else
 static constexpr auto defaultMaxLogSize = qsizetype();
 #endif
@@ -305,7 +313,7 @@ void AppService::replayLog()
 #ifdef Q_OS_ANDROID
     m_clientsFollowingLog = true;
 #endif
-    replayLogString(m_log);;
+    replayLogString(m_log);
 }
 
 void AppService::replayLogString(const QString &log)
@@ -319,13 +327,17 @@ void AppService::replayLogString(const QString &log)
     }
     if (log.size() <= logChunkSize) {
         QJniObject(QNativeInterface::QAndroidApplication::context())
-        .callMethod<jint>("sendMessageToClients", static_cast<jint>(ActivityAction::AppendLog), 0, 0, log);
+            .callMethod<jint>("sendMessageToClients", static_cast<jint>(ActivityAction::AppendLog), 0, 0, log);
     } else {
-        for (auto offset = qsizetype(); offset < log.size(); offset += logChunkSize) {
-            const auto chunk = log.mid(offset, logChunkSize);
-            QJniObject(QNativeInterface::QAndroidApplication::context())
-                .callMethod<jint>("sendMessageToClients", static_cast<jint>(ActivityAction::AppendLog), 0, 0, chunk);
-        }
+        // return only the tail of the log
+        // note: Sending multiple chunks in a loop across asynchronous ("oneway") Binder transactions would cause transactions
+        // to accumulate and exhaust the shared ~512 KB async Binder buffer before the receiver can drain them.
+        const auto excess = log.size() - logChunkSize;
+        const auto newlinePos = log.indexOf(QChar('\n'), excess);
+        const auto offset = newlinePos >= 0 && newlinePos < log.size() ? newlinePos + 1 : excess;
+        const auto tail = log.mid(offset);
+        QJniObject(QNativeInterface::QAndroidApplication::context())
+            .callMethod<jint>("sendMessageToClients", static_cast<jint>(ActivityAction::AppendLog), 0, 0, tail);
     }
 #else
     emit logsAvailable(log);
