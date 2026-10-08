@@ -179,7 +179,7 @@ ApplicationWindow {
         onClicked: pageWindow.pop()
     }
 
-    required property Page page
+    required property var page
     property bool forceClose: false
     property alias currentPage: stackView.currentItem
     readonly property Theming theming: Theming {
