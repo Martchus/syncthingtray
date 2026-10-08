@@ -9,14 +9,19 @@ Item {
     width: 640
     height: 480
 
-    readonly property Theming theming: Theming {
-        currentPage: null
-    }
-    readonly property Meta meta: Meta {}
-
     TrayView {
         id: trayView
         anchors.fill: parent
+        readonly property DesktopWindow window: DesktopWindow {
+            id: desktopWindow
+        }
+        readonly property PageWindow pageWindow: PageWindow {
+            id: pageWindow
+            page: Page {
+                id: page
+                title: "test"
+            }
+        }
     }
 
     TestCase {
@@ -61,6 +66,18 @@ Item {
             tabBar.itemAt(2).click();
             compare(tabBar.currentIndex, 2, "tab bar active index updated");
             compare(stackLayout.currentIndex, 2, "recent changes shown");
+        }
+
+        function test_desktopWindow() {
+            verify(desktopWindow.header !== null, "header present");
+            verify(desktopWindow.theming !== null, "theming present");
+            verify(desktopWindow.meta !== null, "meta present");
+        }
+
+        function test_pageWindow() {
+            verify(pageWindow.currentPage === page, "page shown");
+            verify(pageWindow.theming !== null, "theming present");
+            verify(pageWindow.meta !== null, "meta present");
         }
     }
 }
