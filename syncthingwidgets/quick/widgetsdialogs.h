@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <QString>
+#include <QStringList>
 #include <QUrl>
 #include <QtQmlIntegration/qqmlintegration.h>
 
@@ -20,6 +21,7 @@ class FileDialog : public QObject {
     Q_PROPERTY(int options READ options WRITE setOptions NOTIFY optionsChanged)
     Q_PROPERTY(int popupType READ popupType WRITE setPopupType NOTIFY popupTypeChanged)
     Q_PROPERTY(bool visible READ visible WRITE setVisible NOTIFY visibleChanged)
+    Q_PROPERTY(QStringList nameFilters READ nameFilters WRITE setNameFilters NOTIFY nameFiltersChanged)
 
 public:
     enum FileMode { OpenFile = 0, OpenFiles = 1, SaveFile = 2 };
@@ -73,6 +75,12 @@ public:
     }
     void setVisible(bool visible);
 
+    QStringList nameFilters() const
+    {
+        return m_nameFilters;
+    }
+    void setNameFilters(const QStringList &filters);
+
 public Q_SLOTS:
     void open();
     void close();
@@ -87,6 +95,7 @@ Q_SIGNALS:
     void optionsChanged();
     void popupTypeChanged();
     void visibleChanged();
+    void nameFiltersChanged();
     void accepted();
     void rejected();
 
@@ -100,6 +109,7 @@ private:
     int m_options = 0;
     int m_popupType = 0;
     bool m_visible = false;
+    QStringList m_nameFilters;
     QFileDialog *m_dialog = nullptr;
 };
 
@@ -113,6 +123,7 @@ class FolderDialog : public QObject {
     Q_PROPERTY(int options READ options WRITE setOptions NOTIFY optionsChanged)
     Q_PROPERTY(int popupType READ popupType WRITE setPopupType NOTIFY popupTypeChanged)
     Q_PROPERTY(bool visible READ visible WRITE setVisible NOTIFY visibleChanged)
+    Q_PROPERTY(QStringList nameFilters READ nameFilters WRITE setNameFilters NOTIFY nameFiltersChanged)
 
 public:
     enum Option { DontUseNativeDialog = 0x00000010 };
@@ -157,6 +168,12 @@ public:
     }
     void setVisible(bool visible);
 
+    QStringList nameFilters() const
+    {
+        return m_nameFilters;
+    }
+    void setNameFilters(const QStringList &filters);
+
 public Q_SLOTS:
     void open();
     void close();
@@ -170,6 +187,7 @@ Q_SIGNALS:
     void optionsChanged();
     void popupTypeChanged();
     void visibleChanged();
+    void nameFiltersChanged();
     void accepted();
     void rejected();
 
@@ -182,6 +200,7 @@ private:
     int m_options = 0;
     int m_popupType = 0;
     bool m_visible = false;
+    QStringList m_nameFilters;
     QFileDialog *m_dialog = nullptr;
 };
 

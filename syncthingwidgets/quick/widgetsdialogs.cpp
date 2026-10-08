@@ -110,6 +110,18 @@ void FileDialog::setVisible(bool visible)
     }
 }
 
+void FileDialog::setNameFilters(const QStringList &filters)
+{
+    if (m_nameFilters == filters) {
+        return;
+    }
+    m_nameFilters = filters;
+    Q_EMIT nameFiltersChanged();
+    if (m_dialog) {
+        m_dialog->setNameFilters(m_nameFilters);
+    }
+}
+
 void FileDialog::open()
 {
     ensureDialog();
@@ -142,6 +154,8 @@ void FileDialog::open()
             m_dialog->setDirectory(m_currentFolder.toString());
         }
     }
+
+    m_dialog->setNameFilters(m_nameFilters);
 
     QWindow *parentWindow = nullptr;
     if (auto *focusWindow = QGuiApplication::focusWindow()) {
@@ -311,6 +325,18 @@ void FolderDialog::setVisible(bool visible)
     }
 }
 
+void FolderDialog::setNameFilters(const QStringList &filters)
+{
+    if (m_nameFilters == filters) {
+        return;
+    }
+    m_nameFilters = filters;
+    Q_EMIT nameFiltersChanged();
+    if (m_dialog) {
+        m_dialog->setNameFilters(m_nameFilters);
+    }
+}
+
 void FolderDialog::open()
 {
     ensureDialog();
@@ -335,6 +361,8 @@ void FolderDialog::open()
             m_dialog->setDirectory(m_currentFolder.toString());
         }
     }
+
+    m_dialog->setNameFilters(m_nameFilters);
 
     QWindow *parentWindow = nullptr;
     if (auto *focusWindow = QGuiApplication::focusWindow()) {
