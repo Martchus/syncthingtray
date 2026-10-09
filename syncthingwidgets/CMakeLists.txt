@@ -467,9 +467,9 @@ endif ()
 
 # configure test target
 include(TestUtilities)
-list(APPEND QT_TEST_LIBRARIES ${CPP_UTILITIES_LIB} ${META_TARGET_NAME})
-use_qt_module(LIBRARIES_VARIABLE "QT_TEST_LIBRARIES" PREFIX "${QT_PACKAGE_PREFIX}" MODULE "Test")
 foreach (TEST ${QT_TESTS})
+    set(QT_WIZARD_TEST_LIBRARIES ${QT_TEST_LIBRARIES} ${CPP_UTILITIES_LIB} ${META_TARGET_NAME})
+    use_qt_module(LIBRARIES_VARIABLE "QT_WIZARD_TEST_LIBRARIES" PREFIX "${QT_PACKAGE_PREFIX}" MODULE "Test")
     configure_test_target(
         TEST_NAME
         "${TEST}_tests"
@@ -477,7 +477,7 @@ foreach (TEST ${QT_TESTS})
         "tests/testhelper.h"
         "tests/${TEST}.cpp"
         LIBRARIES
-        "${QT_TEST_LIBRARIES}"
+        "${QT_WIZARD_TEST_LIBRARIES}"
         FULL_TEST_NAME_OUT_VAR
         FULL_TEST_NAME_${TEST})
     # avoid running wizard tests in parallel with other tests spawning a Syncthing test instance
@@ -488,7 +488,7 @@ foreach (TEST ${QT_TESTS})
 endforeach ()
 
 if (QUICK_GUI)
-    list(APPEND QT_QUICK_TEST_LIBRARIES ${META_TARGET_NAME})
+    set(QT_QUICK_TEST_LIBRARIES ${QT_TEST_LIBRARIES} ${META_TARGET_NAME})
     use_qt_module(LIBRARIES_VARIABLE "QT_QUICK_TEST_LIBRARIES" PREFIX "${QT_PACKAGE_PREFIX}" MODULE "QuickTest")
     configure_test_target(
         TEST_NAME
