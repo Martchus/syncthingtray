@@ -490,7 +490,7 @@ endforeach ()
 if (QUICK_GUI)
     set(QT_QUICK_TEST_LIBRARIES ${QT_TEST_LIBRARIES} ${META_TARGET_NAME})
     use_qt_module(LIBRARIES_VARIABLE "QT_QUICK_TEST_LIBRARIES" PREFIX "${QT_PACKAGE_PREFIX}" MODULE "QuickTest")
-    # ensure the plugin for the Material style is linked against as it is used unconditionally in tests
+    # ensure the plugins for Qt Test and the Material style (used unconditionally) are linked against
     if (STATIC_LINKAGE OR QT_TARGET_TYPE STREQUAL STATIC_LIBRARY)
         use_qt_module(
             LIBRARIES_VARIABLE
@@ -500,6 +500,7 @@ if (QUICK_GUI)
             MODULE
             Qml
             PLUGINS
+            "QuickTestplugin"
             "qtquickcontrols2materialstyleplugin"
             PLUGINS_LITERAL
             ONLY_PLUGINS)
