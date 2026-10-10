@@ -9,8 +9,8 @@ Syncthing Tray provides two command-line interfaces:
     * If Syncthing itself is built into Syncthing Tray (like the Linux and Windows builds found in
       the release section on GitHub), then Syncthing's own command-line interface is also exposed via
       `syncthingtray`.
-    * The experimental mobile UI can be launched on the desktop with the `qt-quick-gui` subcommand
-      when Syncthing Tray is built with support for it.
+    * The mobile UI can be launched on the desktop with the `qt-quick-gui` subcommand when Syncthing Tray
+      is built with support for it.
 
 `syncthingtray` and `syncthingctl` support Bash completion when installed via GNU/Linux packaging.
 In case of `syncthingctl` the completion also works for folder and device names/IDs.

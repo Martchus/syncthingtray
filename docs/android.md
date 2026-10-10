@@ -12,7 +12,8 @@ for download links. When building from sources, check out the
 of the `c++utilities` README.
 
 ## Compatibility
-The Android app requires Android 9 or later, though it is mainly tested on Android 14, 15 and 16.
+The Android app requires Android 9 or later, though it is mainly tested on Android 14, 15, 16
+and 17.
 
 Depending on the Android version and vendor-specific limitations, you might run into permission
 errors and [the app being stopped by the OS](https://dontkillmyapp.com).

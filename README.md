@@ -152,9 +152,8 @@ Syncthing installation. You might consider different configurations:
     * Check out the "[Configuring the built-in launcher](#configuring-the-built-in-launcher)" section for further details.
 * It is also possible to let Syncthing Tray connect to a Syncthing instance running on a different machine.
 
-Note that the experimental UI tailored for mobile devices is more limited. Currently, it can only start a built-in
-version of Syncthing or connect to an externally started Syncthing instance. It will set a custom config/data
-directory for Syncthing so any Syncthing instance launched via the mobile UI will not interfere with existing setups.
+Note that the app for mobile devices behaves differently: It sets a custom config/data directory for Syncthing so the
+Syncthing instance launched by it will not interfere with existing setups.
 
 ## Installation and deinstallation
 Check out [the website](https://martchus.github.io/syncthingtray/#downloads-section) for obtaining the executable
