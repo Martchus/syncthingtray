@@ -89,7 +89,7 @@ AppService::AppService(bool insecure, QObject *parent)
 #endif
 
 #if defined(Q_OS_ANDROID) && defined(SYNCTHINGTRAY_SERVICE_WITH_ICON_RENDERING)
-    // initialize experimental icon rendering within service to have icon on notification
+    // initialize experimental icon rendering within the service to have the notification icon show the status
     const auto scaleFactor = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jfloat>("scaleFactor", "()F");
     const auto darkmode = QJniObject(QNativeInterface::QAndroidApplication::context()).callMethod<jboolean>("isDarkmodeEnabled");
     qDebug() << "Scale factor for notification/service icons: " << scaleFactor;
