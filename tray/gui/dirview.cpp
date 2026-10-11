@@ -101,7 +101,8 @@ void DirView::showContextMenu(const QPoint &position)
                         tr("Pause")),
                 &QAction::triggered, triggerActionForSelectedRow(this, &DirView::pauseResumeDir));
         }
-        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("folder-open-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/folder-open.svg"))),
+        connect(menu.addAction(QIcon::fromTheme(
+                                   QStringLiteral("folder-open-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/folder-open.svg"))),
                     tr("Open in file browser")),
             &QAction::triggered, triggerActionForSelectedRow(this, &DirView::openDir));
         connect(menu.addAction(QIcon::fromTheme(QStringLiteral("document-open-remote"),
