@@ -675,6 +675,11 @@ void SyncthingConnection::readRestart()
     switch (reply->error()) {
     case QNetworkReply::NoError:
         emit restartTriggered();
+        if (m_loggingFlags && SyncthingConnectionLoggingFlags::ApiCalls) {
+            std::cerr << Phrases::Info << "Restart successfully triggered, reconnecting..." << Phrases::End;
+        }
+        m_clearConnectionCache = true;
+        reconnect();
         break;
     default:
         emitError(tr("Unable to request restart: "), SyncthingErrorCategory::SpecificRequest, reply, response);
