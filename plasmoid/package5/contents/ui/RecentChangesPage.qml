@@ -125,7 +125,7 @@ Item {
                 }
                 PlasmaComponents.MenuItem {
                     text: qsTr("Copy folder ID")
-                    icon: "folder"
+                    icon: "folder-symbolic"
                     onClicked: recentChangesView.currentItem.copyDirectoryId()
                 }
             }

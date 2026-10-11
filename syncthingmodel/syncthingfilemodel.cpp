@@ -513,7 +513,7 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
             res << res.back();
         }
         if (!m_localPath.isEmpty() && item->isFilesystemItem()) {
-            res << QIcon::fromTheme(QStringLiteral("folder"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/folder-open.svg")));
+            res << QIcon::fromTheme(QStringLiteral("folder-open-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/folder-open.svg")));
             res << QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/edit-copy.svg")));
         }
         return res;

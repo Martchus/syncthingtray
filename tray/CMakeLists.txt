@@ -79,6 +79,7 @@ set(REQUIRED_ICONS
     folder
     folder-download
     folder-open
+    folder-open-symbolic
     folder-sync
     go-down
     go-up

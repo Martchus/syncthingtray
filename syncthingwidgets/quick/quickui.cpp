@@ -613,7 +613,7 @@ void QuickUI::showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y, cons
                     { QStringLiteral("refresh.fa"), QStringLiteral("view-refresh") },
                     { QStringLiteral("play.fa"), QStringLiteral("media-playback-start") },
                     { QStringLiteral("pause.fa"), QStringLiteral("media-playback-pause") },
-                    { QStringLiteral("folder.fa"), QStringLiteral("folder") },
+                    { QStringLiteral("folder.fa"), QStringLiteral("folder-open-symbolic") },
                     { QStringLiteral("pencil.fa"), QStringLiteral("document-edit") },
                     { QStringLiteral("filter.fa"), QStringLiteral("view-filter") },
                     { QStringLiteral("exchange.fa"), QStringLiteral("item") },

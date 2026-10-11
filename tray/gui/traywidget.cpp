@@ -964,7 +964,7 @@ void TrayWidget::showRecentChangesContextMenu(const QPoint &position)
                                QIcon(QStringLiteral(":/icons/hicolor/scalable/places/network-workgroup.svg"))),
                 tr("Copy device ID")),
         &QAction::triggered, this, copyRole(SyncthingRecentChangesModel::ModifiedBy));
-    connect(menu.addAction(QIcon::fromTheme(QStringLiteral("folder"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/folder.svg"))),
+    connect(menu.addAction(QIcon::fromTheme(QStringLiteral("folder-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/folder.svg"))),
                 tr("Copy folder ID")),
         &QAction::triggered, this, copyRole(SyncthingRecentChangesModel::DirectoryId));
     showViewMenu(position, *m_ui->recentChangesTreeView, menu);

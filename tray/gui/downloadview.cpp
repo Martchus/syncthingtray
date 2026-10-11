@@ -72,7 +72,7 @@ void DownloadView::showContextMenu(const QPoint &position)
                     tr("Copy label/ID")),
             &QAction::triggered, copyToClipboard(dir->displayName()));
         menu.addSeparator();
-        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("folder"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/folder-open.svg"))),
+        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("folder-open-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/folder-open.svg"))),
                     tr("Open in file browser")),
             &QAction::triggered, triggerActionForSelectedRow(this, &DownloadView::emitOpenDir));
     }

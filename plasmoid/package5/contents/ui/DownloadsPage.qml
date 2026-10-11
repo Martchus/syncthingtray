@@ -145,7 +145,7 @@ Item {
                 PlasmaComponents.MenuItem {
                     id: openItem
                     text: qsTr("Open in file browser")
-                    icon: "folder"
+                    icon: "folder-open-symbolic"
                     onClicked: downloadView.clickCurrentItemButton("openButton")
                 }
             }
