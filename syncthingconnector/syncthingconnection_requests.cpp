@@ -2520,15 +2520,15 @@ void SyncthingConnection::readEvents()
         }
         break;
     }
-    case QNetworkReply::TimeoutError:
-        // no new events available, keep polling
-        break;
     case QNetworkReply::OperationCanceledError:
         if (reply == expectedReply) {
             handleAdditionalRequestCanceled();
         }
         return;
     default:
+        // treat QNetworkReply::TimeoutError as a fatal connection error ensuruing that a hung or stalled event polling
+        // request (such as after an ungraceful restart) drops the connection and triggers reconnection rather than repeatedly
+        // querying with a stale event ID
         emitError(tr("Unable to request Syncthing events: "), SyncthingErrorCategory::OverallConnection, reply, response);
         handleFatalConnectionError();
         return;
@@ -3156,15 +3156,13 @@ void SyncthingConnection::readDiskEvents()
         }
         break;
     }
-    case QNetworkReply::TimeoutError:
-        // no new events available, keep polling
-        break;
     case QNetworkReply::OperationCanceledError:
         if (reply == expectedReply) {
             handleAdditionalRequestCanceled();
         }
         return;
     default:
+        // see readEvents() for why QNetworkReply::TimeoutError is also treated as fatal connection error
         emitError(tr("Unable to request disk events: "), SyncthingErrorCategory::OverallConnection, reply, response);
         handleFatalConnectionError();
         return;
