@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/hicolor/scalable/status/syncthing-default.svg</file>
         <file>icons/hicolor/scalable/mimetypes/text-x-generic.svg</file>
     </qresource>
 </RCC>

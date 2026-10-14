@@ -36,7 +36,7 @@ set(SRC_FILES
     syncthingicons.cpp)
 set(WIDGETS_HEADER_FILES syncthingdownloadmodel.h)
 set(WIDGETS_SRC_FILES syncthingdownloadmodel.cpp)
-set(RES_FILES resources/${META_PROJECT_NAME}icons.qrc)
+set(WIDGETS_RES_FILES resources/${META_PROJECT_NAME}icons.qrc)
 
 set(TS_FILES
     translations/${META_PROJECT_NAME}_zh_CN.ts translations/${META_PROJECT_NAME}_cs_CZ.ts

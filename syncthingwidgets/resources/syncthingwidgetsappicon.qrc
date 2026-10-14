@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/hicolor/scalable/app/syncthingtray.svg</file>
+    </qresource>
+</RCC>

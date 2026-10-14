@@ -40,6 +40,7 @@ set(SRC_FILES
     misc/utils.cpp
     misc/syncthingdata.cpp
     misc/syncthingmodels.cpp)
+set(GUI_RES_FILES resources/${META_PROJECT_NAME}appicon.qrc)
 set(WIDGETS_HEADER_FILES
     settings/settings.h
     settings/settingsdialog.h
@@ -69,7 +70,7 @@ set(WIDGETS_SRC_FILES
     misc/dbusstatusnotifier.cpp
     misc/otherdialogs.cpp
     misc/syncthingkiller.cpp)
-set(RES_FILES resources/${META_PROJECT_NAME}icons.qrc)
+set(WIDGETS_RES_FILES resources/${META_PROJECT_NAME}icons.qrc)
 set(WIDGETS_UI_FILES
     settings/connectionoptionpage.ui
     settings/notificationsoptionpage.ui
