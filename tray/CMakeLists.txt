@@ -107,7 +107,6 @@ set(REQUIRED_ICONS
     system-run
     system-search-symbolic
     system-file-manager-symbolic
-    system-software-update
     text-x-generic-symbolic
     quickwizard
     view-filter-symbolic
@@ -215,7 +214,7 @@ if (SETUP_TOOLS)
     if (NOT USE_LIBSYNCTHING)
         use_crypto()
     endif ()
-    list(APPEND REQUIRED_ICONS install-symbolic info-symbolic)
+    list(APPEND REQUIRED_ICONS install-symbolic info-symbolic system-software-update-symbolic)
     list(APPEND META_PRIVATE_COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_SETUP_TOOLS_ENABLED)
 endif ()
 

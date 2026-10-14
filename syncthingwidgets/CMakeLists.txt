@@ -220,7 +220,6 @@ set(REQUIRED_ICONS
     preferences-desktop-notification
     preferences-system-startup
     preferences-system-services
-    system-software-update
     view-refresh-symbolic
     emblem-checked-symbolic
     network-connect-symbolic
@@ -312,7 +311,7 @@ if (SETUP_TOOLS)
         SOURCE settings/settingsdialog.cpp
         APPEND
         PROPERTY COMPILE_DEFINITIONS SYNCTHINGWIDGETS_SETUP_TOOLS_ENABLED)
-    list(APPEND REQUIRED_ICONS install-symbolic info-symbolic system-software-update)
+    list(APPEND REQUIRED_ICONS install-symbolic info-symbolic system-software-update-symbolic)
 endif ()
 
 # allow enabling extended client area
