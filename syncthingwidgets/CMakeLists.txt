@@ -198,36 +198,37 @@ set(TS_FILES
     translations/${META_PROJECT_NAME}_fr_FR.ts translations/${META_PROJECT_NAME}_en_US.ts)
 
 set(REQUIRED_ICONS
-    color-profile
-    dialog-ok
-    dialog-cancel
-    document-open
-    document-edit
-    folder
+    color-profile-symbolic
+    dialog-ok-symbolic
+    dialog-cancel-symbolic
+    document-open-symbolic
+    document-edit-symbolic
+    folder-symbolic
     preferences-other
-    process-stop
-    list-add
-    preferences-desktop
+    process-stop-symbolic
+    list-add-symbolic
     internet-web-browser
     system-run
-    edit-copy
-    edit-paste
-    edit-select
-    edit-undo
-    list-remove
+    edit-copy-symbolic
+    edit-paste-symbolic
+    edit-select-symbolic
+    edit-undo-symbolic
+    list-remove-symbolic
+    preferences-desktop
+    preferences-desktop-icons
     preferences-desktop-notification
     preferences-system-startup
     preferences-system-services
-    system-software-update-symbolic
-    view-refresh
-    emblem-checked
-    network-connect
-    emblem-remove
-    go-down
-    go-up
-    quickwizard
-    help-contents
-    question)
+    system-software-update
+    view-refresh-symbolic
+    emblem-checked-symbolic
+    network-connect-symbolic
+    emblem-remove-symbolic
+    go-down-symbolic
+    go-up-symbolic
+    quickwizard-symbolic
+    help-contents-symbolic
+    question-symbolic)
 
 # configure test files
 set(QT_TESTS misc)
@@ -252,10 +253,7 @@ find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFF
 use_cpp_utilities(VISIBILITY PUBLIC)
 
 # find qtutilities
-set(REQUIRED_QTUTILITIES_VERSION 6.21.0)
-if (QUICK_GUI)
-    set(REQUIRED_QTUTILITIES_VERSION 6.22.0)
-endif ()
+set(REQUIRED_QTUTILITIES_VERSION 6.23.0)
 find_package(${PACKAGE_NAMESPACE_PREFIX}qtutilities${CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES}
              ${REQUIRED_QTUTILITIES_VERSION} REQUIRED)
 use_qt_utilities()
@@ -313,7 +311,7 @@ if (SETUP_TOOLS)
         SOURCE settings/settingsdialog.cpp
         APPEND
         PROPERTY COMPILE_DEFINITIONS SYNCTHINGWIDGETS_SETUP_TOOLS_ENABLED)
-    list(APPEND REQUIRED_ICONS install info)
+    list(APPEND REQUIRED_ICONS install-symbolic info-symbolic system-software-update)
 endif ()
 
 # allow enabling extended client area

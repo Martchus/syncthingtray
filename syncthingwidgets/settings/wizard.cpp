@@ -545,7 +545,7 @@ DetectionWizardPage::DetectionWizardPage(QWidget *parent)
     m_checkAgainButton = new QPushButton(this);
     m_checkAgainButton->setText(tr("Check again"));
     m_checkAgainButton->hide();
-    m_checkAgainButton->setIcon(QIcon::fromTheme(QStringLiteral("view-refresh")));
+    m_checkAgainButton->setIcon(QIcon::fromTheme(QStringLiteral("view-refresh-symbolic")));
     m_checkAgainButton->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     connect(m_checkAgainButton, &QPushButton::clicked, this, &DetectionWizardPage::refresh);
 

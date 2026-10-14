@@ -136,7 +136,7 @@ Item {
 
                 PlasmaComponents.MenuItem {
                     text: qsTr("Copy label/ID")
-                    icon: "edit-copy"
+                    icon: "edit-copy-symbolic"
                     onClicked: downloadView.copyCurrentItemData("downloadName")
                 }
                 PlasmaComponents.MenuItem {

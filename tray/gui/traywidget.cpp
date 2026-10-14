@@ -203,7 +203,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     // setup connection menu
     m_connectionsActionGroup = new QActionGroup(m_connectionsMenu = new QMenu(tr("Connection"), this));
     m_connectionsMenu->setIcon(
-        QIcon::fromTheme(QStringLiteral("network-connect"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/network-connect.svg"))));
+        QIcon::fromTheme(QStringLiteral("network-connect-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/network-connect.svg"))));
     m_ui->connectionsPushButton->setMenu(m_connectionsMenu);
 
     // setup notifications menu
@@ -226,7 +226,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
         m_internalErrorsButton = new QPushButton(m_cornerFrame);
         m_internalErrorsButton->setToolTip(tr("Show internal errors"));
         m_internalErrorsButton->setIcon(
-            QIcon::fromTheme(QStringLiteral("emblem-error"), QIcon(QStringLiteral(":/icons/hicolor/scalable/emblems/8/emblem-error.svg"))));
+            QIcon::fromTheme(QStringLiteral("emblem-error-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/emblems/8/emblem-error.svg"))));
         m_internalErrorsButton->setFlat(true);
         m_internalErrorsButton->setVisible(false);
         connect(m_internalErrorsButton, &QPushButton::clicked, this, &TrayWidget::showInternalErrorsDialog);
@@ -240,7 +240,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
 #ifdef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
     auto *quitButton = new QPushButton(m_cornerFrame);
     quitButton->setToolTip(tr("Quit Syncthing Tray"));
-    quitButton->setIcon(QIcon::fromTheme(QStringLiteral("window-close"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/window-close.svg"))));
+    quitButton->setIcon(QIcon::fromTheme(QStringLiteral("window-close-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/window-close.svg"))));
     quitButton->setFlat(true);
     connect(quitButton, &QPushButton::clicked, this, &TrayWidget::quitTray);
     cornerFrameLayout->addWidget(quitButton);
@@ -952,12 +952,12 @@ void TrayWidget::showRecentChangesContextMenu(const QPoint &position)
                 index.data(SyncthingRecentChangesModel::DirectoryId).toString(), index.data(SyncthingRecentChangesModel::Path).toString());
             !fullPath.isEmpty()) {
             connect(menu.addAction(QIcon::fromTheme(
-                                       QStringLiteral("document-open"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/document-open.svg"))),
+                                       QStringLiteral("document-open-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/document-open.svg"))),
                         tr("Open item")),
                 &QAction::triggered, this, std::bind(&openLocalFileOrDir, fullPath));
         }
     }
-    connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
+    connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                 tr("Copy path")),
         &QAction::triggered, this, copyRole(SyncthingRecentChangesModel::Path));
     connect(menu.addAction(QIcon::fromTheme(QStringLiteral("network-server-symbolic"),

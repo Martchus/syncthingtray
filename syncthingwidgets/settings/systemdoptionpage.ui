@@ -7,7 +7,7 @@
   </property>
   <property name="windowIcon">
    <iconset theme="preferences-system-services">
-    <normaloff>.</normaloff>.</iconset>
+    </iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -240,7 +240,7 @@
           </property>
           <property name="icon">
            <iconset theme="system-run">
-            <normaloff>.</normaloff>.</iconset>
+            </iconset>
           </property>
          </widget>
         </item>
@@ -257,7 +257,7 @@
           </property>
           <property name="icon">
            <iconset theme="process-stop">
-            <normaloff>.</normaloff>.</iconset>
+            </iconset>
           </property>
          </widget>
         </item>
@@ -329,7 +329,7 @@
           </property>
           <property name="icon">
            <iconset theme="emblem-checked">
-            <normaloff>.</normaloff>.</iconset>
+            </iconset>
           </property>
          </widget>
         </item>
@@ -346,7 +346,7 @@
           </property>
           <property name="icon">
            <iconset theme="emblem-remove">
-            <normaloff>.</normaloff>.</iconset>
+            </iconset>
           </property>
          </widget>
         </item>

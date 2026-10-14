@@ -25,7 +25,7 @@ SyncthingDownloadModel::SyncthingDownloadModel(SyncthingConnection &connection, 
     : SyncthingModel(connection, parent)
     , m_dirs(connection.dirInfo())
     , m_unknownIcon(
-          QIcon::fromTheme(QStringLiteral("text-x-generic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/mimetypes/text-x-generic.svg"))))
+          QIcon::fromTheme(QStringLiteral("text-x-generic-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/mimetypes/text-x-generic.svg"))))
     , m_pendingDownloads(0)
 {
     connect(&m_connection, &SyncthingConnection::downloadProgressChanged, this, &SyncthingDownloadModel::downloadProgressChanged);

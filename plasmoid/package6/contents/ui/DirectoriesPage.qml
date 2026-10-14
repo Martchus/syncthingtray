@@ -155,12 +155,12 @@ ColumnLayout {
 
                 PlasmaExtras.MenuItem {
                     text: qsTr("Copy label/ID")
-                    icon: "edit-copy"
+                    icon: "edit-copy-symbolic"
                     onClicked: directoryView.copyCurrentItemData("dirName")
                 }
                 PlasmaExtras.MenuItem {
                     text: qsTr("Copy path")
-                    icon: "edit-copy"
+                    icon: "edit-copy-symbolic"
                     onClicked: directoryView.copyCurrentItemData("dirPath")
                 }
                 PlasmaExtras.MenuItem {
@@ -169,14 +169,14 @@ ColumnLayout {
                 PlasmaExtras.MenuItem {
                     id: rescanItem
                     text: qsTr("Rescan")
-                    icon: "view-refresh"
+                    icon: "view-refresh-symbolic"
                     onClicked: directoryView.clickCurrentItemButton(
                                    "rescanButton")
                 }
                 PlasmaExtras.MenuItem {
                     id: resumePauseItem
                     text: qsTr("Pause")
-                    icon: "media-playback-pause"
+                    icon: "media-playback-pause-symbolic"
                     onClicked: directoryView.clickCurrentItemButton(
                                    "resumePauseButton")
                 }
@@ -189,41 +189,41 @@ ColumnLayout {
                 }
                 PlasmaExtras.MenuItem {
                     text: qsTr("Edit")
-                    icon: "document-edit"
+                    icon: "document-edit-symbolic"
                     visible: plasmoid.quickUI !== null
                     onClicked: plasmoid.quickUI.editDir(contextMenu.dirId, contextMenu.dirName, null)
                 }
                 PlasmaExtras.MenuItem {
                     id: showOutOfSyncItems
                     text: qsTr("Out of Sync items")
-                    icon: "item"
+                    icon: "item-symbolic"
                     visible: plasmoid.quickUI !== null
                     onClicked: plasmoid.quickUI.showNeededItems(contextMenu.dirId, contextMenu.dirName, null)
                 }
                 PlasmaExtras.MenuItem {
                     id: showErrors
                     text: qsTr("Show errors")
-                    icon: "dialog-warning"
+                    icon: "dialog-warning-symbolic"
                     visible: plasmoid.quickUI !== null
                     onClicked: plasmoid.quickUI.showDirErrors(contextMenu.dirId, contextMenu.name, null)
                 }
                 PlasmaExtras.MenuItem {
                     id: browseRemoteFilesItem
                     text: qsTr("Browse remote files")
-                    icon: "document-open-remote"
+                    icon: "document-open-remote-symbolic"
                     onClicked: directoryView.triggerNativeActionWithCurrentItemData(
                                    "showFileBrowser", "dirId_")
                 }
                 PlasmaExtras.MenuItem {
                     id: showIgnorePatternsItem
                     text: qsTr("Show/edit ignore patterns")
-                    icon: "document-edit"
+                    icon: "document-edit-symbolic"
                     onClicked: directoryView.triggerNativeActionWithCurrentItemData(
                                    "showIgnorePatterns", "dirId_")
                 }
                 PlasmaExtras.MenuItem {
                     text: qsTr("Advanced config")
-                    icon: "settings-configure"
+                    icon: "settings-configure-symbolic"
                     visible: plasmoid.quickUI !== null
                     onClicked: plasmoid.quickUI.editDir(contextMenu.dirId, contextMenu.dirName, null, true)
                 }

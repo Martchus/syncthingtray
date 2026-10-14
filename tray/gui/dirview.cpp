@@ -73,30 +73,30 @@ void DirView::showContextMenu(const QPoint &position)
     }
     QMenu menu(this);
     if (selectedIndex.parent().isValid()) {
-        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
+        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy value")),
             &QAction::triggered,
             copyToClipboard(selectedRow.model->data(selectedRow.model->index(selectedIndex.row(), 1, selectedIndex.parent())).toString()));
     } else {
         const auto *const dir = selectedRow.data;
-        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
+        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy label/ID")),
             &QAction::triggered, copyToClipboard(dir->displayName()));
-        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
+        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy path")),
             &QAction::triggered, copyToClipboard(dir->path));
         menu.addSeparator();
         connect(menu.addAction(
-                    QIcon::fromTheme(QStringLiteral("view-refresh"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))),
+                    QIcon::fromTheme(QStringLiteral("view-refresh-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))),
                     tr("Rescan")),
             &QAction::triggered, triggerActionForSelectedRow(this, &DirView::scanDir));
         if (dir->paused) {
-            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("media-playback-start"),
+            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("media-playback-start-symbolic"),
                                        QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-start.svg"))),
                         tr("Resume")),
                 &QAction::triggered, triggerActionForSelectedRow(this, &DirView::pauseResumeDir));
         } else {
-            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("media-playback-pause"),
+            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("media-playback-pause-symbolic"),
                                        QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-pause.svg"))),
                         tr("Pause")),
                 &QAction::triggered, triggerActionForSelectedRow(this, &DirView::pauseResumeDir));
@@ -105,11 +105,11 @@ void DirView::showContextMenu(const QPoint &position)
                                    QStringLiteral("folder-open-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/folder-open.svg"))),
                     tr("Open in file browser")),
             &QAction::triggered, triggerActionForSelectedRow(this, &DirView::openDir));
-        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("document-open-remote"),
+        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("document-open-remote-symbolic"),
                                    QIcon(QStringLiteral(":/icons/hicolor/scalable/places/document-open-remote.svg"))),
                     tr("Browse remote files")),
             &QAction::triggered, triggerActionForSelectedRow(this, &DirView::browseRemoteFiles));
-        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("document-edit")), tr("Show/edit ignore patterns")), &QAction::triggered,
+        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("document-edit-symbolic")), tr("Show/edit ignore patterns")), &QAction::triggered,
             triggerActionForSelectedRow(this, &DirView::showIgnorePatterns));
     }
     showViewMenu(position, *this, menu);

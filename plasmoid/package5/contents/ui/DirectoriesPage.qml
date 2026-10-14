@@ -147,12 +147,12 @@ ColumnLayout {
 
                 PlasmaComponents.MenuItem {
                     text: qsTr("Copy label/ID")
-                    icon: "edit-copy"
+                    icon: "edit-copy-symbolic"
                     onClicked: directoryView.copyCurrentItemData("dirName")
                 }
                 PlasmaComponents.MenuItem {
                     text: qsTr("Copy path")
-                    icon: "edit-copy"
+                    icon: "edit-copy-symbolic"
                     onClicked: directoryView.copyCurrentItemData("dirPath")
                 }
                 PlasmaComponents.MenuItem {
@@ -161,14 +161,14 @@ ColumnLayout {
                 PlasmaComponents.MenuItem {
                     id: rescanItem
                     text: qsTr("Rescan")
-                    icon: "view-refresh"
+                    icon: "view-refresh-symbolic"
                     onClicked: directoryView.clickCurrentItemButton(
                                    "rescanButton")
                 }
                 PlasmaComponents.MenuItem {
                     id: resumePauseItem
                     text: qsTr("Pause")
-                    icon: "media-playback-pause"
+                    icon: "media-playback-pause-symbolic"
                     onClicked: directoryView.clickCurrentItemButton(
                                    "resumePauseButton")
                 }

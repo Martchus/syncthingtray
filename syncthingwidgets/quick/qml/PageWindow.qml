@@ -45,7 +45,7 @@ ApplicationWindow {
                 icon.width: QuickUI.iconSize
                 icon.height: QuickUI.iconSize
                 icon.source: Utils.winUI ? "" : QuickUI.faUrlBase + "times"
-                icon.name: Utils.kde ? "dialog-cancel" : ""
+                icon.name: Utils.kde ? "dialog-cancel-symbolic" : ""
                 text: qsTr("Close")
                 flat: Utils.flatDialogButtons
                 onClicked: pageWindow.close()
@@ -81,7 +81,7 @@ ApplicationWindow {
             IconOnlyButton {  // using IconOnlyButton because normal Button does not show icon with Breeze style
                 visible: stackView.depth > 1
                 icon.source: QuickUI.faUrlBase + "arrow-left"
-                icon.name: Utils.fallbackIconName("draw-arrow-back")
+                icon.name: Utils.fallbackIconName("draw-arrow-back-symbolic")
                 text: qsTr("Back")
                 onClicked: pageWindow.pop()
                 onVisibleChanged: textButtons.width = Qt.binding(() => footerPane.width - 1)

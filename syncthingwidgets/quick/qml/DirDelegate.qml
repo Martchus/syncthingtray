@@ -41,14 +41,14 @@ ExpandableDelegate {
                 text: qsTr("Rescan")
                 enabled: !modelData.paused
                 icon.source: QuickUI.faUrlBase + "refresh"
-                icon.name: Utils.fallbackIconName("view-refresh")
+                icon.name: Utils.fallbackIconName("view-refresh-symbolic")
                 onTriggered: SyncthingData.connection.rescan(modelData.dirId)
             },
             Action {
                 id: pauseAction
                 text: modelData.paused ? qsTr("Resume") : qsTr("Pause")
                 icon.source: QuickUI.faUrlBase + (modelData.paused ? "play" : "pause")
-                icon.name: Utils.fallbackIconName(modelData.paused ? "media-playback-start" : "media-playback-pause")
+                icon.name: Utils.fallbackIconName(modelData.paused ? "media-playback-start-symbolic" : "media-playback-pause-symbolic")
                 onTriggered: SyncthingData.connection[modelData.paused ? "resumeDirectories" : "pauseDirectories"]([modelData.dirId])
             },
             Action {

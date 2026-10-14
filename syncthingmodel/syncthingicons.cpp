@@ -508,37 +508,37 @@ QImage aboutDialogImage()
 void setForkAwesomeThemeOverrides()
 {
     auto &renderer = QtForkAwesome::Renderer::global();
-    renderer.addThemeOverride(QtForkAwesome::Icon::File, QStringLiteral("text-plain"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::File, QStringLiteral("text-plain-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::Folder, QStringLiteral("folder-symbolic"));
-    renderer.addThemeOverride(QtForkAwesome::Icon::FileO, QStringLiteral("document-multiple"));
-    renderer.addThemeOverride(QtForkAwesome::Icon::FileO, QStringLiteral("text-plain"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::FileO, QStringLiteral("document-multiple-symbolic"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::FileO, QStringLiteral("text-plain-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::HddO, QStringLiteral("drive-harddisk-symbolic"));
-    renderer.addThemeOverride(QtForkAwesome::Icon::HddO, QStringLiteral("drive"));
     renderer.addThemeOverride(QtForkAwesome::Icon::FolderO, QStringLiteral("folder-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::Sitemap, QStringLiteral("network-server-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::Download, QStringLiteral("folder-download-symbolic"));
-    renderer.addThemeOverride(QtForkAwesome::Icon::History, QStringLiteral("shallow-history"));
-    renderer.addThemeOverride(QtForkAwesome::Icon::History, QStringLiteral("view-history"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::History, QStringLiteral("shallow-history-symbolic"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::History, QStringLiteral("view-history-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::Refresh, QStringLiteral("view-refresh-symbolic"));
-    renderer.addThemeOverride(QtForkAwesome::Icon::Pause, QStringLiteral("media-playback-pause"));
-    renderer.addThemeOverride(QtForkAwesome::Icon::Play, QStringLiteral("media-playback-start"));
-    renderer.addThemeOverride(QtForkAwesome::Icon::Stop, QStringLiteral("media-playback-stop"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::Pause, QStringLiteral("media-playback-pause-symbolic"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::Play, QStringLiteral("media-playback-start-symbolic"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::Stop, QStringLiteral("media-playback-stop-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::Home, QStringLiteral("user-home-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::Globe, QStringLiteral("globe-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::Info, QStringLiteral("help-about-symbolic"));
-    renderer.addThemeOverride(QtForkAwesome::Icon::Cog, QStringLiteral("settings-configure"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::Cog, QStringLiteral("settings-configure-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::Cog, QStringLiteral("system-settings-symbolic"));
-    renderer.addThemeOverride(QtForkAwesome::Icon::Plug, QStringLiteral("network-connect"));
-    renderer.addThemeOverride(QtForkAwesome::Icon::Plus, QStringLiteral("list-add"));
-    renderer.addThemeOverride(QtForkAwesome::Icon::Minus, QStringLiteral("list-remove"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::Plug, QStringLiteral("network-connect-symbolic"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::Plus, QStringLiteral("list-add-symbolic"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::Minus, QStringLiteral("list-remove-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::Qrcode, QStringLiteral("qrscanner-symbolic"));
-    renderer.addThemeOverride(QtForkAwesome::Icon::Qrcode, QStringLiteral("view-barcode-qr"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::Qrcode, QStringLiteral("view-barcode-qr-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::PowerOff, QStringLiteral("system-shutdown-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::FileText, QStringLiteral("utilities-terminal-symbolic"));
     renderer.addThemeOverride(QtForkAwesome::Icon::FileText, QStringLiteral("terminal-symbolic"));
-    renderer.addThemeOverride(QtForkAwesome::Icon::CloudUpload, QStringLiteral("cloud-upload"));
-    renderer.addThemeOverride(QtForkAwesome::Icon::CloudDownload, QStringLiteral("cloud-download"));
-    renderer.addThemeOverride(QtForkAwesome::Icon::Search, QStringLiteral("search"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::CloudUpload, QStringLiteral("cloud-upload-symbolic"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::CloudDownload, QStringLiteral("cloud-download-symbolic"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::Search, QStringLiteral("system-search-symbolic"));
+    renderer.addThemeOverride(QtForkAwesome::Icon::Search, QStringLiteral("search-symbolic"));
 }
 
 } // namespace Data

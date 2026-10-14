@@ -218,7 +218,7 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
         if (const auto selectionActions = model->selectionActions(); !selectionActions.isEmpty()) {
             menu.addSeparator();
             auto *const selectionMenu = menu.addMenu(QCoreApplication::translate("QtGui::OtherDialogs", "Manage ignore patterns (experimental)"));
-            selectionMenu->setIcon(QIcon::fromTheme(QStringLiteral("document-edit")));
+            selectionMenu->setIcon(QIcon::fromTheme(QStringLiteral("document-edit-symbolic")));
             selectionMenu->addActions(selectionActions);
             for (auto *const selectionAction : selectionActions) {
                 selectionAction->setParent(&menu);
@@ -259,12 +259,12 @@ QDialog *browseRemoteFilesDialog(Data::SyncthingConnection &connection, const Da
             auto *const browser = messageBox.browser();
             auto *const highlighter = new DiffHighlighter(browser->document());
             auto *const buttonLayout = new QHBoxLayout(&messageBox);
-            auto *const editBtn = new QPushButton(QIcon::fromTheme(QStringLiteral("document-edit")),
+            auto *const editBtn = new QPushButton(QIcon::fromTheme(QStringLiteral("document-edit-symbolic")),
                 QCoreApplication::translate("QtGui::OtherDialogs", "Edit patterns manually"), &messageBox);
             auto *const yesBtn = new QPushButton(
-                QIcon::fromTheme(QStringLiteral("dialog-ok")), QCoreApplication::translate("QtGui::OtherDialogs", "Apply"), &messageBox);
+                QIcon::fromTheme(QStringLiteral("dialog-ok-symbolic")), QCoreApplication::translate("QtGui::OtherDialogs", "Apply"), &messageBox);
             auto *const noBtn = new QPushButton(
-                QIcon::fromTheme(QStringLiteral("dialog-cancel")), QCoreApplication::translate("QtGui::OtherDialogs", "No"), &messageBox);
+                QIcon::fromTheme(QStringLiteral("dialog-cancel-symbolic")), QCoreApplication::translate("QtGui::OtherDialogs", "No"), &messageBox);
             auto widgetIndex = 0;
             QObject::connect(yesBtn, &QAbstractButton::clicked, &messageBox, [&messageBox] { messageBox.accept(); });
             QObject::connect(noBtn, &QAbstractButton::clicked, &messageBox, [&messageBox] { messageBox.reject(); });
@@ -442,7 +442,7 @@ QDialog *errorNotificationsDialog(Data::SyncthingConnection &connection, QWidget
             return;
         }
         auto menu = QMenu(view);
-        QObject::connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy")), QCoreApplication::translate("QtGui::OtherDialogs", "Copy")),
+        QObject::connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy-symbolic")), QCoreApplication::translate("QtGui::OtherDialogs", "Copy")),
             &QAction::triggered, &menu, [text = std::move(text)] {
                 if (auto *const clipboard = QGuiApplication::clipboard()) {
                     clipboard->setText(text);
@@ -479,7 +479,7 @@ QDialog *errorNotificationsDialog(Data::SyncthingConnection &connection, QWidget
     auto *const bottomLayout = new QHBoxLayout;
     auto *const clearButton = new QPushButton(dlg);
     clearButton->setText(QCoreApplication::translate("QtGui::OtherDialogs", "Clear all notifications"));
-    clearButton->setIcon(QIcon::fromTheme(QStringLiteral("edit-clear")));
+    clearButton->setIcon(QIcon::fromTheme(QStringLiteral("edit-clear-symbolic")));
     clearButton->setVisible(connection.hasErrors());
     bottomLayout->addItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
     bottomLayout->setContentsMargins(0, 7, 0, 0);

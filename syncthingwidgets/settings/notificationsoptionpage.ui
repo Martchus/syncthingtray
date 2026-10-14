@@ -7,7 +7,7 @@
   </property>
   <property name="windowIcon">
    <iconset theme="preferences-desktop-notification">
-    <normaloff>.</normaloff>.</iconset>
+    </iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>

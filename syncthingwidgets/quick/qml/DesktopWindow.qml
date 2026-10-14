@@ -335,7 +335,7 @@ ApplicationWindow {
                             Layout.alignment: Qt.AlignVCenter
                             text: qsTr("Add folder")
                             icon.source: QuickUI.faUrlBase + "plus"
-                            icon.name: Utils.fallbackIconName("list-add")
+                            icon.name: Utils.fallbackIconName("list-add-symbolic")
                             onClicked: QuickUI.editDir("", "", null)
                             flat: true
                         }
@@ -343,7 +343,7 @@ ApplicationWindow {
                             Layout.alignment: Qt.AlignVCenter
                             text: qsTr("Pause all")
                             icon.source: QuickUI.faUrlBase + "pause"
-                            icon.name: Utils.fallbackIconName("media-playback-pause")
+                            icon.name: Utils.fallbackIconName("media-playback-pause-symbolic")
                             onClicked: SyncthingData.connection.pauseAllDirs()
                             flat: true
                         }
@@ -351,7 +351,7 @@ ApplicationWindow {
                             Layout.alignment: Qt.AlignVCenter
                             text: qsTr("Resume all")
                             icon.source: QuickUI.faUrlBase + "play"
-                            icon.name: Utils.fallbackIconName("media-playback-start")
+                            icon.name: Utils.fallbackIconName("media-playback-start-symbolic")
                             onClicked: SyncthingData.connection.resumeAllDirs()
                             flat: true
                         }
@@ -359,14 +359,14 @@ ApplicationWindow {
                             Layout.alignment: Qt.AlignVCenter
                             text: qsTr("Rescan all")
                             icon.source: QuickUI.faUrlBase + "refresh"
-                            icon.name: Utils.fallbackIconName("view-refresh")
+                            icon.name: Utils.fallbackIconName("view-refresh-symbolic")
                             onClicked: SyncthingData.connection.rescanAllDirs()
                             flat: true
                         }
                         IconOnlyButton {
                             text: qsTr("Filter folders")
                             icon.source: QuickUI.faUrlBase + "search"
-                            icon.name: Utils.fallbackIconName("search")
+                            icon.name: Utils.fallbackIconName("system-search-symbolic")
                             onClicked: foldersFilterField.toggle()
                             flat: true
                         }
@@ -412,7 +412,7 @@ ApplicationWindow {
                                 Layout.alignment: Qt.AlignVCenter
                                 text: qsTr("Recent changes")
                                 icon.source: QuickUI.faUrlBase + "history"
-                                icon.name: Utils.fallbackIconName("view-history")
+                                icon.name: Utils.fallbackIconName("view-history-symbolic")
                                 onClicked: QuickUI.showRecentChanges()
                                 flat: true
                             }
@@ -420,7 +420,7 @@ ApplicationWindow {
                                 Layout.alignment: Qt.AlignVCenter
                                 text: qsTr("Show ID")
                                 icon.source: QuickUI.faUrlBase + "qrcode"
-                                icon.name: Utils.fallbackIconName("view-barcode-qr")
+                                icon.name: Utils.fallbackIconName("view-barcode-qr-symbolic")
                                 onClicked: TrayWidget.showOwnDeviceId()
                                 flat: true
                             }
@@ -436,7 +436,7 @@ ApplicationWindow {
                                 Layout.alignment: Qt.AlignVCenter
                                 text: qsTr("Show statistics")
                                 icon.source: QuickUI.faUrlBase + "area-chart"
-                                icon.name: Utils.fallbackIconName("view-statistics")
+                                icon.name: Utils.fallbackIconName("view-statistics-symbolic")
                                 onClicked: QuickUI.showStats()
                                 flat: true
                             }
@@ -544,7 +544,7 @@ ApplicationWindow {
                                 Layout.alignment: Qt.AlignVCenter
                                 text: qsTr("Add device")
                                 icon.source: QuickUI.faUrlBase + "plus"
-                                icon.name: Utils.fallbackIconName("view-add")
+                                icon.name: Utils.fallbackIconName("list-add-symbolic")
                                 onClicked: QuickUI.editDev("", "", null)
                                 flat: true
                             }
@@ -552,7 +552,7 @@ ApplicationWindow {
                                 Layout.alignment: Qt.AlignVCenter
                                 text: qsTr("Pause all")
                                 icon.source: QuickUI.faUrlBase + "pause"
-                                icon.name: Utils.fallbackIconName("media-playback-pause")
+                                icon.name: Utils.fallbackIconName("media-playback-pause-symbolic")
                                 onClicked: SyncthingData.connection.pauseAllDevs()
                                 flat: true
                             }
@@ -560,7 +560,7 @@ ApplicationWindow {
                                 Layout.alignment: Qt.AlignVCenter
                                 text: qsTr("Resume all")
                                 icon.source: QuickUI.faUrlBase + "play"
-                                icon.name: Utils.fallbackIconName("media-playback-start")
+                                icon.name: Utils.fallbackIconName("media-playback-start-symbolic")
                                 onClicked: SyncthingData.connection.resumeAllDevs()
                                 flat: true
                             }
@@ -568,7 +568,7 @@ ApplicationWindow {
                                 id: devsFilterButton
                                 text: qsTr("Filter devices")
                                 icon.source: QuickUI.faUrlBase + "search"
-                                icon.name: Utils.fallbackIconName("search")
+                                icon.name: Utils.fallbackIconName("system-search-symbolic")
                                 onClicked: devsFilterField.toggle()
                                 flat: true
                             }

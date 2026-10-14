@@ -12,7 +12,7 @@ ListView {
         id: contextMenu
         PlasmaComponents.MenuItem {
             text: qsTr('Copy value')
-            icon: "edit-copy"
+            icon: "edit-copy-symbolic"
             onClicked: {
                 var item = detailView.contextMenuItem
                 if (item) {

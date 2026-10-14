@@ -61,26 +61,26 @@ void DevView::showContextMenu(const QPoint &position)
     }
     QMenu menu(this);
     if (selectedIndex.parent().isValid()) {
-        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
+        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy value")),
             &QAction::triggered,
             copyToClipboard(selectedRow.model->data(selectedRow.model->index(selectedIndex.row(), 1, selectedIndex.parent())).toString()));
     } else {
         const auto *const dev = selectedRow.data;
-        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
+        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy name")),
             &QAction::triggered, copyToClipboard(dev->displayName()));
-        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
+        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy ID")),
             &QAction::triggered, copyToClipboard(dev->id));
         menu.addSeparator();
         if (dev->paused) {
-            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("media-playback-start"),
+            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("media-playback-start-symbolic"),
                                        QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-start.svg"))),
                         tr("Resume")),
                 &QAction::triggered, triggerActionForSelectedRow(this, &DevView::pauseResumeDev));
         } else if (dev->status != SyncthingDevStatus::ThisDevice) {
-            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("media-playback-pause"),
+            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("media-playback-pause-symbolic"),
                                        QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/media-playback-pause.svg"))),
                         tr("Pause")),
                 &QAction::triggered, triggerActionForSelectedRow(this, &DevView::pauseResumeDev));

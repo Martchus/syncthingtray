@@ -1340,13 +1340,13 @@ QWidget *LauncherOptionPage::setupWidget()
         m_restoreArgsAction = new QAction(ui()->argumentsLineEdit);
         m_restoreArgsAction->setText(tr("Restore default"));
         m_restoreArgsAction->setIcon(
-            QIcon::fromTheme(QStringLiteral("edit-undo"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-paste.svg"))));
+            QIcon::fromTheme(QStringLiteral("edit-undo-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-paste.svg"))));
         connect(m_restoreArgsAction, &QAction::triggered, this, &LauncherOptionPage::restoreDefaultArguments);
         ui()->argumentsLineEdit->addCustomAction(m_restoreArgsAction);
         m_syncthingDownloadAction = new QAction(ui()->syncthingPathSelection);
         m_syncthingDownloadAction->setText(tr("Show Syncthing releases/downloads"));
         m_syncthingDownloadAction->setIcon(
-            QIcon::fromTheme(QStringLiteral("download"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/download.svg"))));
+            QIcon::fromTheme(QStringLiteral("download-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/download.svg"))));
         connect(m_syncthingDownloadAction, &QAction::triggered,
             [] { QDesktopServices::openUrl(QUrl(QStringLiteral("https://github.com/syncthing/syncthing/releases"))); });
         ui()->syncthingPathSelection->lineEdit()->addCustomAction(m_syncthingDownloadAction);
@@ -1637,7 +1637,7 @@ QWidget *SystemdOptionPage::setupWidget()
     auto *const widget = SystemdOptionPageBase::setupWidget();
     auto *const refreshAction = new QAction(QCoreApplication::translate("QtGui::SystemdOptionPage", "Reload all unit files"), widget);
     refreshAction->setIcon(
-        QIcon::fromTheme(QStringLiteral("view-refresh"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))));
+        QIcon::fromTheme(QStringLiteral("view-refresh-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))));
     ui()->syncthingUnitLineEdit->addCustomAction(refreshAction);
     if (!m_service) {
         ui()->stopOnMeteredCheckBox->setHidden(true);

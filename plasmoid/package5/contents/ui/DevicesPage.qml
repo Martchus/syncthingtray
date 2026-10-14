@@ -100,12 +100,12 @@ Item {
 
                 PlasmaComponents.MenuItem {
                     text: qsTr("Copy name")
-                    icon: "edit-copy"
+                    icon: "edit-copy-symbolic"
                     onClicked: deviceView.copyCurrentItemData("devName")
                 }
                 PlasmaComponents.MenuItem {
                     text: qsTr("Copy ID")
-                    icon: "edit-copy"
+                    icon: "edit-copy-symbolic"
                     onClicked: deviceView.copyCurrentItemData("devID")
                 }
                 PlasmaComponents.MenuItem {
@@ -114,7 +114,7 @@ Item {
                 PlasmaComponents.MenuItem {
                     id: resumePauseItem
                     text: qsTr("Pause")
-                    icon: "media-playback-pause"
+                    icon: "media-playback-pause-symbolic"
                     onClicked: deviceView.clickCurrentItemButton(
                                    "resumePauseButton")
                 }

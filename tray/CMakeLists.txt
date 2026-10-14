@@ -55,68 +55,66 @@ set(DOC_FILES README.md)
 # declare required icons; used when bundling icon themes (Icons required by libraries the tray application depends on need to
 # be specified as well.)
 set(REQUIRED_ICONS
-    color-profile
-    dialog-cancel
-    dialog-ok
-    dialog-ok-apply
-    dialog-warning
-    document-edit
-    document-open
-    document-open-remote
-    download
-    edit-copy
-    edit-clear
-    edit-cut
-    edit-delete
-    edit-paste
-    edit-redo
-    edit-select
-    edit-undo
-    emblem-checked
-    emblem-error
-    emblem-remove
-    emblem-warning
-    folder
-    folder-download
-    folder-open
+    color-profile-symbolic
+    dialog-cancel-symbolic
+    dialog-ok-symbolic
+    dialog-ok-apply-symbolic
+    dialog-warning-symbolic
+    document-edit-symbolic
+    document-open-symbolic
+    document-open-remote-symbolic
+    download-symbolic
+    edit-copy-symbolic
+    edit-clear-symbolic
+    edit-cut-symbolic
+    edit-delete-symbolic
+    edit-paste-symbolic
+    edit-redo-symbolic
+    edit-select-symbolic
+    edit-undo-symbolic
+    emblem-checked-symbolic
+    emblem-error-symbolic
+    emblem-remove-symbolic
+    emblem-warning-symbolic
+    folder-symbolic
+    folder-download-symbolic
     folder-open-symbolic
-    folder-sync
-    go-down
-    go-up
-    help-about
-    help-contents
+    folder-sync-symbolic
+    go-down-symbolic
+    go-up-symbolic
+    help-about-symbolic
+    help-contents-symbolic
     internet-web-browser
-    list-add
-    list-remove
-    media-playback-pause
-    media-playback-start
-    music-playlist
-    network-connect
-    network-disconnect
-    network-server
+    list-add-symbolic
+    list-remove-symbolic
+    media-playback-pause-symbolic
+    media-playback-start-symbolic
+    music-playlist-symbolic
+    network-connect-symbolic
+    network-disconnect-symbolic
+    network-server-symbolic
     preferences-desktop
     preferences-desktop-icons
     preferences-desktop-locale
     preferences-desktop-notification
     preferences-system-startup
-    preferences-system-startup
     preferences-system-services
     preferences-other
-    process-stop
-    question
+    process-stop-symbolic
+    question-symbolic
     qtcreator
-    settings-configure
+    settings-configure-symbolic
     system-run
-    system-search
-    system-file-manager
-    system-software-update-symbolic
-    text-x-generic
+    system-search-symbolic
+    system-file-manager-symbolic
+    system-software-update
+    text-x-generic-symbolic
     quickwizard
-    view-filter
-    item
-    view-refresh
-    window-close
-    window-pin)
+    view-filter-symbolic
+    item-symbolic
+    view-refresh-symbolic
+    window-close-symbolic
+    window-pin-symbolic)
 
 # configure optional features
 option(
@@ -132,13 +130,7 @@ find_package(${PACKAGE_NAMESPACE_PREFIX}c++utilities${CONFIGURATION_PACKAGE_SUFF
 use_cpp_utilities()
 
 # find qtutilities
-set(QT_UTILITIES_REQUIRED_VERSION 6.15.0)
-if (ANDROID)
-    set(QT_UTILITIES_REQUIRED_VERSION 6.16.0)
-endif ()
-if (SETUP_TOOLS)
-    set(QT_UTILITIES_REQUIRED_VERSION 6.18.0)
-endif ()
+set(QT_UTILITIES_REQUIRED_VERSION 6.23.0)
 find_package(${PACKAGE_NAMESPACE_PREFIX}qtutilities${CONFIGURATION_PACKAGE_SUFFIX_QTUTILITIES}
              ${QT_UTILITIES_REQUIRED_VERSION} REQUIRED)
 use_qt_utilities()
@@ -223,7 +215,7 @@ if (SETUP_TOOLS)
     if (NOT USE_LIBSYNCTHING)
         use_crypto()
     endif ()
-    list(APPEND REQUIRED_ICONS install info)
+    list(APPEND REQUIRED_ICONS install-symbolic info-symbolic)
     list(APPEND META_PRIVATE_COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_SETUP_TOOLS_ENABLED)
 endif ()
 

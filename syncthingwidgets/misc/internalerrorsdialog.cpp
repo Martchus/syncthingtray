@@ -53,7 +53,7 @@ InternalErrorsDialog::InternalErrorsDialog()
     if (!s_internalErrors.empty()) {
         auto *const clearButton = new QPushButton(this);
         clearButton->setText(tr("Clear errors"));
-        clearButton->setIcon(QIcon::fromTheme(QStringLiteral("edit-clear")));
+        clearButton->setIcon(QIcon::fromTheme(QStringLiteral("edit-clear-symbolic")));
         buttonLayout->setContentsMargins(0, 0, 0, 0);
         buttonLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
         buttonLayout->addWidget(clearButton);

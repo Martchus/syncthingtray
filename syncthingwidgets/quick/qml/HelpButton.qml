@@ -9,7 +9,7 @@ IconOnlyButton {
     visible: helpButton.desc.length > 0 || modelData.helpUrl?.length > 0 || (configCategory.length > 0 && !Array.isArray(configObject))
     text: qsTr("Open help")
     icon.source: QuickUI.faUrlBase + "question"
-    icon.name: Utils.fallbackIconName("view-refresh")
+    icon.name: Utils.fallbackIconName("help-contents-symbolic")
     onClicked: helpButton.desc.length > 0 ? helpDlg.open() : helpButton.openSyncthingDocs()
 
     CustomDialog {

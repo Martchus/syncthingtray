@@ -42,7 +42,7 @@ DirectoryErrorsDialog::DirectoryErrorsDialog(const Data::SyncthingConnection &co
     // add a button for removing all non-empty directories
     m_rmNonEmptyDirsButton = new QPushButton(this);
     m_rmNonEmptyDirsButton->setText(tr("Remove non-empty directories"));
-    m_rmNonEmptyDirsButton->setIcon(QIcon::fromTheme(QStringLiteral("remove")));
+    m_rmNonEmptyDirsButton->setIcon(QIcon::fromTheme(QStringLiteral("list-remove-symbolic")));
     buttonLayout->setContentsMargins(0, 0, 0, 0);
     buttonLayout->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
     buttonLayout->addWidget(m_rmNonEmptyDirsButton);

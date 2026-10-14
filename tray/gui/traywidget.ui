@@ -357,7 +357,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</string>
          <string>New notifications</string>
         </property>
         <property name="icon">
-         <iconset theme="dialog-warning"/>
+         <iconset theme="dialog-warning-symbolic"/>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -511,7 +511,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</string>
   </layout>
   <action name="actionShowNotifications">
    <property name="icon">
-    <iconset theme="text-x-generic" resource="../../syncthingmodel/resources/syncthingmodelicons.qrc">
+    <iconset theme="text-x-generic-symbolic" resource="../../syncthingmodel/resources/syncthingmodelicons.qrc">
      <normaloff>:/icons/hicolor/scalable/mimetypes/text-x-generic.svg</normaloff>:/icons/hicolor/scalable/mimetypes/text-x-generic.svg</iconset>
    </property>
    <property name="text">
@@ -520,7 +520,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</string>
   </action>
   <action name="actionDismissNotifications">
    <property name="icon">
-    <iconset theme="window-close">
+    <iconset theme="window-close-symbolic">
      <disabledoff>:/icons/hicolor/scalable/actions/window-close.svg</disabledoff>
     </iconset>
    </property>

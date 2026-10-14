@@ -110,26 +110,26 @@ Pane {
                     visible: tabBar.currentIndex === foldersButton.tabIndex
                     text: qsTr("Add folder")
                     icon.source: QuickUI.faUrlBase + "plus"
-                    icon.name: Utils.fallbackIconName("list-add")
+                    icon.name: Utils.fallbackIconName("list-add-symbolic")
                     onClicked: QuickUI.editDir("", "", null)
                 }
                 IconOnlyButton {
                     visible: tabBar.currentIndex === devsButton.tabIndex
                     text: qsTr("Add device")
                     icon.source: QuickUI.faUrlBase + "plus"
-                    icon.name: Utils.fallbackIconName("list-add")
+                    icon.name: Utils.fallbackIconName("list-add-symbolic")
                     onClicked: QuickUI.editDev("", "", null)
                 }
                 IconOnlyButton {
                     text: qsTr("Rescan all")
                     icon.source: QuickUI.faUrlBase + "refresh"
-                    icon.name: Utils.fallbackIconName("view-refresh")
+                    icon.name: Utils.fallbackIconName("view-refresh-symbolic")
                     onClicked: SyncthingData.connection.rescanAllDirs()
                 }
                 IconOnlyButton {
                     text: qsTr("Show ID")
                     icon.source: QuickUI.faUrlBase + "qrcode"
-                    icon.name: Utils.fallbackIconName("view-barcode-qr")
+                    icon.name: Utils.fallbackIconName("view-barcode-qr-symbolic")
                     onClicked: TrayWidget.showOwnDeviceId()
                 }
                 IconOnlyButton {
@@ -141,7 +141,7 @@ Pane {
                 IconOnlyButton {
                     text: qsTr("Filter")
                     icon.source: QuickUI.faUrlBase + "search"
-                    icon.name: Utils.fallbackIconName("search")
+                    icon.name: Utils.fallbackIconName("system-search-symbolic")
                     onClicked: searchField.toggle()
                 }
             }

@@ -130,12 +130,12 @@ ColumnLayout {
 
                 PlasmaExtras.MenuItem {
                     text: qsTr("Copy name")
-                    icon: "edit-copy"
+                    icon: "edit-copy-symbolic"
                     onClicked: deviceView.copyCurrentItemData("devName")
                 }
                 PlasmaExtras.MenuItem {
                     text: qsTr("Copy ID")
-                    icon: "edit-copy"
+                    icon: "edit-copy-symbolic"
                     onClicked: deviceView.copyCurrentItemData("devID")
                 }
                 PlasmaExtras.MenuItem {
@@ -144,24 +144,24 @@ ColumnLayout {
                 PlasmaExtras.MenuItem {
                     id: resumePauseItem
                     text: qsTr("Pause")
-                    icon: "media-playback-pause"
+                    icon: "media-playback-pause-symbolic"
                     onClicked: deviceView.clickCurrentItemButton(
                                    "resumePauseButton")
                 }
                 PlasmaExtras.MenuItem {
                     text: qsTr("Edit")
-                    icon: "document-edit"
+                    icon: "document-edit-symbolic"
                     onClicked: plasmoid.quickUI.editDev(contextMenu.devId, contextMenu.devName, null)
                 }
                 PlasmaExtras.MenuItem {
                     id: showOutOfSyncItems
                     text: qsTr("Out of Sync items")
-                    icon: "item"
+                    icon: "item-symbolic"
                     onClicked: plasmoid.quickUI.showOutOfSyncDirs(contextMenu.devId, contextMenu.devName, contextMenu.devIndex, deviceView.model, null)
                 }
                 PlasmaExtras.MenuItem {
                     text: qsTr("Advanced config")
-                    icon: "settings-configure"
+                    icon: "settings-configure-symbolic"
                     onClicked: plasmoid.quickUI.editDev(contextMenu.devId, contextMenu.devName, null, true)
                 }
             }

@@ -54,24 +54,24 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
                 tr("Open Syncthing")),
         &QAction::triggered, &widget, &TrayWidget::showWebUI);
     connect(m_contextMenu.addAction(
-                QIcon::fromTheme(QStringLiteral("preferences-other"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))),
+                QIcon::fromTheme(QStringLiteral("preferences-other-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))),
                 tr("Settings")),
         &QAction::triggered, &widget, &TrayWidget::showSettingsDialog);
     connect(m_contextMenu.addAction(
-                QIcon::fromTheme(QStringLiteral("folder-sync"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/folder-sync.svg"))),
+                QIcon::fromTheme(QStringLiteral("folder-sync-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/folder-sync.svg"))),
                 tr("Rescan all")),
         &QAction::triggered, connection, &SyncthingConnection::rescanAllDirs);
     connect(m_contextMenu.addAction(
-                QIcon::fromTheme(QStringLiteral("text-x-generic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/mimetypes/text-x-generic.svg"))),
+                QIcon::fromTheme(QStringLiteral("text-x-generic-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/mimetypes/text-x-generic.svg"))),
                 tr("Log")),
         &QAction::triggered, &widget, &TrayWidget::showLog);
     m_errorsAction = m_contextMenu.addAction(
-        QIcon::fromTheme(QStringLiteral("emblem-error"), QIcon(QStringLiteral(":/icons/hicolor/scalable/emblems/8/emblem-error.svg"))),
+        QIcon::fromTheme(QStringLiteral("emblem-error-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/emblems/8/emblem-error.svg"))),
         tr("Show internal errors"));
     m_errorsAction->setVisible(false);
     connect(m_errorsAction, &QAction::triggered, this, &TrayIcon::showInternalErrorsDialog);
     auto *const notificationsAction = m_contextMenu.addAction(
-        QIcon::fromTheme(QStringLiteral("emblem-warning"), QIcon(QStringLiteral(":/icons/hicolor/scalable/emblems/8/emblem-warning.svg"))),
+        QIcon::fromTheme(QStringLiteral("emblem-warning-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/emblems/8/emblem-warning.svg"))),
         tr("Show notifications/errors"));
     notificationsAction->setVisible(connection->hasErrors());
     connect(connection, &SyncthingConnection::newErrors, notificationsAction,
@@ -79,11 +79,11 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
     connect(notificationsAction, &QAction::triggered, &widget, &TrayWidget::showNotifications);
     m_contextMenu.addMenu(trayMenu().widget().connectionsMenu());
     connect(m_contextMenu.addAction(
-                QIcon::fromTheme(QStringLiteral("help-about"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/help-about.svg"))), tr("About")),
+                QIcon::fromTheme(QStringLiteral("help-about-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/help-about.svg"))), tr("About")),
         &QAction::triggered, &widget, &TrayWidget::showAboutDialog);
     m_contextMenu.addSeparator();
     connect(m_contextMenu.addAction(
-                QIcon::fromTheme(QStringLiteral("window-close"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/window-close.svg"))),
+                QIcon::fromTheme(QStringLiteral("window-close-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/window-close.svg"))),
                 tr("Close")),
         &QAction::triggered, this, &TrayIcon::deleteLater);
     setContextMenu(&m_contextMenu);

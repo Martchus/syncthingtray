@@ -110,12 +110,12 @@ Item {
                 id: contextMenu
                 PlasmaComponents.MenuItem {
                     text: qsTr("Open item")
-                    icon: "document-open"
+                    icon: "document-open-symbolic"
                     onClicked: recentChangesView.currentItem.openPath()
                 }
                 PlasmaComponents.MenuItem {
                     text: qsTr("Copy path")
-                    icon: "edit-copy"
+                    icon: "edit-copy-symbolic"
                     onClicked: recentChangesView.currentItem.copyPath()
                 }
                 PlasmaComponents.MenuItem {

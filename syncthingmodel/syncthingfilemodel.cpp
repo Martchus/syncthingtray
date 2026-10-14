@@ -506,15 +506,15 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
         auto res = QVariantList();
         res.reserve(3);
         if (item->type == SyncthingItemType::Directory) {
-            res << QIcon::fromTheme(QStringLiteral("view-refresh"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg")));
+            res << QIcon::fromTheme(QStringLiteral("view-refresh-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg")));
         }
-        res << QIcon::fromTheme(QStringLiteral("edit-select"));
+        res << QIcon::fromTheme(QStringLiteral("edit-select-symbolic"));
         if (m_recursiveSelectionEnabled) {
             res << res.back();
         }
         if (!m_localPath.isEmpty() && item->isFilesystemItem()) {
             res << QIcon::fromTheme(QStringLiteral("folder-open-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/folder-open.svg")));
-            res << QIcon::fromTheme(QStringLiteral("edit-copy"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/edit-copy.svg")));
+            res << QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/places/edit-copy.svg")));
         }
         return res;
     }
@@ -784,14 +784,14 @@ QList<QAction *> SyncthingFileModel::selectionActions()
     res.reserve(9);
     if (!m_selectionMode) {
         auto *const startSelectionAction = new QAction(tr("Select items to sync/ignore"), this);
-        startSelectionAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-select")));
+        startSelectionAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-select-symbolic")));
         startSelectionAction->setData(QStringLiteral("primary:") + tr("Select"));
         connect(startSelectionAction, &QAction::triggered, this, [this] { setSelectionModeEnabled(true); });
         res << startSelectionAction;
 
         if (!m_stagedChanges.isEmpty() || !m_stagedLocalFileDeletions.isEmpty()) {
             auto *const discardAction = new QAction(tr("Discard staged changes"), this);
-            discardAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-undo")));
+            discardAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-undo-symbolic")));
             connect(discardAction, &QAction::triggered, this, [this] {
                 m_stagedChanges.clear();
                 m_stagedLocalFileDeletions.clear();
@@ -801,7 +801,7 @@ QList<QAction *> SyncthingFileModel::selectionActions()
         }
     } else {
         auto *const discardAction = new QAction(tr("Uncheck all and discard staged changes"), this);
-        discardAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-undo")));
+        discardAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-undo-symbolic")));
         discardAction->setData(QStringLiteral("primary:") + tr("Discard"));
         connect(discardAction, &QAction::triggered, this, [this] {
             if (const auto rootIndex = index(0, 0); rootIndex.isValid()) {
@@ -815,21 +815,21 @@ QList<QAction *> SyncthingFileModel::selectionActions()
         res << discardAction;
 
         auto *const ignoreSelectedAction = new QAction(tr("Ignore checked items (and their children)"), this);
-        ignoreSelectedAction->setIcon(QIcon::fromTheme(QStringLiteral("list-remove")));
+        ignoreSelectedAction->setIcon(QIcon::fromTheme(QStringLiteral("list-remove-symbolic")));
         ignoreSelectedAction->setData(QStringLiteral("ignore"));
         connect(ignoreSelectedAction, &QAction::triggered, this, [this]() { ignoreSelectedItems(); });
         res << ignoreSelectedAction;
 
         if (!m_localPath.isEmpty()) {
             auto *const ignoreAndDeleteSelectedAction = new QAction(tr("Ignore and locally delete checked items (and their children)"), this);
-            ignoreAndDeleteSelectedAction->setIcon(QIcon::fromTheme(QStringLiteral("list-remove")));
+            ignoreAndDeleteSelectedAction->setIcon(QIcon::fromTheme(QStringLiteral("list-remove-symbolic")));
             ignoreAndDeleteSelectedAction->setData(QStringLiteral("ignore"));
             connect(ignoreAndDeleteSelectedAction, &QAction::triggered, this, [this]() { ignoreSelectedItems(true, true); });
             res << ignoreAndDeleteSelectedAction;
         }
 
         auto *const includeSelectedAction = new QAction(tr("Include checked items (and their children)"), this);
-        includeSelectedAction->setIcon(QIcon::fromTheme(QStringLiteral("list-add")));
+        includeSelectedAction->setIcon(QIcon::fromTheme(QStringLiteral("list-add-symbolic")));
         includeSelectedAction->setData(QStringLiteral("include"));
         connect(includeSelectedAction, &QAction::triggered, this, [this]() { ignoreSelectedItems(false); });
         res << includeSelectedAction;
@@ -837,7 +837,7 @@ QList<QAction *> SyncthingFileModel::selectionActions()
 
     auto *const ignoreByDefaultAction
         = new QAction(m_isIgnoringAllByDefault ? tr("Include all items by default") : tr("Ignore all items by default"), this);
-    ignoreByDefaultAction->setIcon(QIcon::fromTheme(QStringLiteral("question")));
+    ignoreByDefaultAction->setIcon(QIcon::fromTheme(QStringLiteral("question-symbolic")));
     ignoreByDefaultAction->setData(m_isIgnoringAllByDefault ? QStringLiteral("include") : QStringLiteral("ignore"));
     connect(ignoreByDefaultAction, &QAction::triggered, this, [this, isIgnoringAllByDefault = m_isIgnoringAllByDefault]() {
         auto &lastLine = m_stagedChanges[m_presentIgnorePatterns.size() - 1];
@@ -868,7 +868,7 @@ QList<QAction *> SyncthingFileModel::selectionActions()
     if (m_selectionMode) {
         auto *const removeIgnorePatternsAction
             = new QAction(tr("Remove ignore patterns matching checked items (may affect other items as well)"), this);
-        removeIgnorePatternsAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-delete")));
+        removeIgnorePatternsAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-delete-symbolic")));
         connect(removeIgnorePatternsAction, &QAction::triggered, this, [this]() {
             forEachItem(m_root.get(), [this](SyncthingItem *item) {
                 if (item->checked != Qt::Checked) {
@@ -896,7 +896,7 @@ QList<QAction *> SyncthingFileModel::selectionActions()
 
     if (!m_stagedChanges.isEmpty() || !m_stagedLocalFileDeletions.isEmpty()) {
         auto *const applyStagedChangesAction = new RejectableAction(tr("Review and apply staged changes"), this);
-        applyStagedChangesAction->setIcon(QIcon::fromTheme(QStringLiteral("dialog-ok-apply")));
+        applyStagedChangesAction->setIcon(QIcon::fromTheme(QStringLiteral("dialog-ok-apply-symbolic")));
         applyStagedChangesAction->setData(QStringLiteral("primary:") + tr("Apply"));
         connect(applyStagedChangesAction, &QAction::triggered, this, [this, action = applyStagedChangesAction]() mutable {
             // allow user to review changes before applying them

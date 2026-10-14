@@ -120,12 +120,12 @@ Item {
                 PlasmaExtras.MenuItem {
                     id: openItem
                     text: qsTr("Open item")
-                    icon: "document-open"
+                    icon: "document-open-symbolic"
                     onClicked: recentChangesView.currentItem.openPath()
                 }
                 PlasmaExtras.MenuItem {
                     text: qsTr("Copy path")
-                    icon: "edit-copy"
+                    icon: "edit-copy-symbolic"
                     onClicked: recentChangesView.currentItem.copyPath()
                 }
                 PlasmaExtras.MenuItem {

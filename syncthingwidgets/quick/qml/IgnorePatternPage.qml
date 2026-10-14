@@ -17,13 +17,13 @@ Page {
         Action {
             text: qsTr("Help")
             icon.source: QuickUI.faUrlBase + "question"
-            icon.name: "help-contents"
+            icon.name: "help-contents-symbolic"
             onTriggered: helpDialog.visible = true
         },
         Action {
             text: qsTr("Save")
             icon.source: QuickUI.faUrlBase + "floppy-o"
-            icon.name: "document-save"
+            icon.name: "document-save-symbolic"
             onTriggered: {
                 textArea.enabled = false;
                 SyncthingModels.saveIgnorePatterns(page.dirId, textArea.text, (error) => {
@@ -108,7 +108,7 @@ Page {
         footer: DialogButtonBox {
             Button {
                 text: qsTr("Full documentation")
-                icon.name: Utils.kde ? "help-contents" : ""
+                icon.name: Utils.kde ? "help-contents-symbolic" : ""
                 flat: Utils.flatDialogButtons
                 onClicked: QuickUI.requestOpeningUrl("https://docs.syncthing.net/users/ignoring")
                 DialogButtonBox.buttonRole: DialogButtonBox.HelpRole
