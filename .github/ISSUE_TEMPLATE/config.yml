@@ -3,6 +3,9 @@ contact_links:
   - name: Issue with Syncthing itself
     url: https://github.com/syncthing/syncthing/issues
     about: Please file general issues with Syncthing on their issue tracker.
+  - name: Issue with packaging provided by Arch Linux
+    url: https://gitlab.archlinux.org/archlinux/packaging/packages/syncthingtray/-/issues/new
+    about: Please file issues with packages provided by Arch Linux maintainers on their issue tracker.
   - name: I need help / I have a question
     url: https://github.com/Martchus/syncthingtray/discussions
     about: Ask questions, get support, and discuss with other community members.
