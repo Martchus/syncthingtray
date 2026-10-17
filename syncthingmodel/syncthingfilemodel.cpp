@@ -506,7 +506,8 @@ QVariant SyncthingFileModel::data(const QModelIndex &index, int role) const
         auto res = QVariantList();
         res.reserve(3);
         if (item->type == SyncthingItemType::Directory) {
-            res << QIcon::fromTheme(QStringLiteral("view-refresh-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg")));
+            res << QIcon::fromTheme(
+                QStringLiteral("view-refresh-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg")));
         }
         res << QIcon::fromTheme(QStringLiteral("edit-select-symbolic"));
         if (m_recursiveSelectionEnabled) {

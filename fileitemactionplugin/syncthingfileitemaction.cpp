@@ -278,7 +278,8 @@ QList<QAction *> SyncthingFileItemAction::createActions(const KFileItemListPrope
     }
 
     // add config items
-    QAction *const configFileAction = new QAction(QIcon::fromTheme(QStringLiteral("settings-configure-symbolic")), tr("Select Syncthing config ..."), parent);
+    QAction *const configFileAction
+        = new QAction(QIcon::fromTheme(QStringLiteral("settings-configure-symbolic")), tr("Select Syncthing config ..."), parent);
     connect(configFileAction, &QAction::triggered, &data, &SyncthingFileItemActionStaticData::selectSyncthingConfig);
     actions << configFileAction;
 

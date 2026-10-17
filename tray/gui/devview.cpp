@@ -61,16 +61,19 @@ void DevView::showContextMenu(const QPoint &position)
     }
     QMenu menu(this);
     if (selectedIndex.parent().isValid()) {
-        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
+        connect(menu.addAction(
+                    QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy value")),
             &QAction::triggered,
             copyToClipboard(selectedRow.model->data(selectedRow.model->index(selectedIndex.row(), 1, selectedIndex.parent())).toString()));
     } else {
         const auto *const dev = selectedRow.data;
-        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
+        connect(menu.addAction(
+                    QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy name")),
             &QAction::triggered, copyToClipboard(dev->displayName()));
-        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
+        connect(menu.addAction(
+                    QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy ID")),
             &QAction::triggered, copyToClipboard(dev->id));
         menu.addSeparator();

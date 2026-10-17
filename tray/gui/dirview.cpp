@@ -73,21 +73,24 @@ void DirView::showContextMenu(const QPoint &position)
     }
     QMenu menu(this);
     if (selectedIndex.parent().isValid()) {
-        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
+        connect(menu.addAction(
+                    QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy value")),
             &QAction::triggered,
             copyToClipboard(selectedRow.model->data(selectedRow.model->index(selectedIndex.row(), 1, selectedIndex.parent())).toString()));
     } else {
         const auto *const dir = selectedRow.data;
-        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
+        connect(menu.addAction(
+                    QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy label/ID")),
             &QAction::triggered, copyToClipboard(dir->displayName()));
-        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
+        connect(menu.addAction(
+                    QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy path")),
             &QAction::triggered, copyToClipboard(dir->path));
         menu.addSeparator();
-        connect(menu.addAction(
-                    QIcon::fromTheme(QStringLiteral("view-refresh-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))),
+        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("view-refresh-symbolic"),
+                                   QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))),
                     tr("Rescan")),
             &QAction::triggered, triggerActionForSelectedRow(this, &DirView::scanDir));
         if (dir->paused) {

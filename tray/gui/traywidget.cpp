@@ -240,7 +240,8 @@ TrayWidget::TrayWidget(TrayMenu *parent)
 #ifdef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
     auto *quitButton = new QPushButton(m_cornerFrame);
     quitButton->setToolTip(tr("Quit Syncthing Tray"));
-    quitButton->setIcon(QIcon::fromTheme(QStringLiteral("window-close-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/window-close.svg"))));
+    quitButton->setIcon(
+        QIcon::fromTheme(QStringLiteral("window-close-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/window-close.svg"))));
     quitButton->setFlat(true);
     connect(quitButton, &QPushButton::clicked, this, &TrayWidget::quitTray);
     cornerFrameLayout->addWidget(quitButton);
@@ -951,13 +952,14 @@ void TrayWidget::showRecentChangesContextMenu(const QPoint &position)
         if (const auto fullPath = m_data.connection()->fullPath(
                 index.data(SyncthingRecentChangesModel::DirectoryId).toString(), index.data(SyncthingRecentChangesModel::Path).toString());
             !fullPath.isEmpty()) {
-            connect(menu.addAction(QIcon::fromTheme(
-                                       QStringLiteral("document-open-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/document-open.svg"))),
+            connect(menu.addAction(QIcon::fromTheme(QStringLiteral("document-open-symbolic"),
+                                       QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/document-open.svg"))),
                         tr("Open item")),
                 &QAction::triggered, this, std::bind(&openLocalFileOrDir, fullPath));
         }
     }
-    connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
+    connect(menu.addAction(
+                QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                 tr("Copy path")),
         &QAction::triggered, this, copyRole(SyncthingRecentChangesModel::Path));
     connect(menu.addAction(QIcon::fromTheme(QStringLiteral("network-server-symbolic"),

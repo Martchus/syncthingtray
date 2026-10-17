@@ -63,12 +63,14 @@ void DownloadView::showContextMenu(const QPoint &position)
     }
     QMenu menu(this);
     if (selectedIndex.parent().isValid()) {
-        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
+        connect(menu.addAction(
+                    QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy value")),
             &QAction::triggered, copyToClipboard(model()->data(model()->index(selectedIndex.row(), 1, selectedIndex.parent())).toString()));
     } else {
         const auto [dir, progress] = selectedRow.data;
-        connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
+        connect(menu.addAction(
+                    QIcon::fromTheme(QStringLiteral("edit-copy-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/edit-copy.svg"))),
                     tr("Copy label/ID")),
             &QAction::triggered, copyToClipboard(dir->displayName()));
         menu.addSeparator();

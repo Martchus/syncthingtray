@@ -442,7 +442,8 @@ QDialog *errorNotificationsDialog(Data::SyncthingConnection &connection, QWidget
             return;
         }
         auto menu = QMenu(view);
-        QObject::connect(menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy-symbolic")), QCoreApplication::translate("QtGui::OtherDialogs", "Copy")),
+        QObject::connect(
+            menu.addAction(QIcon::fromTheme(QStringLiteral("edit-copy-symbolic")), QCoreApplication::translate("QtGui::OtherDialogs", "Copy")),
             &QAction::triggered, &menu, [text = std::move(text)] {
                 if (auto *const clipboard = QGuiApplication::clipboard()) {
                     clipboard->setText(text);
