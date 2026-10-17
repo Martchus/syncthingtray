@@ -511,8 +511,8 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</string>
   </layout>
   <action name="actionShowNotifications">
    <property name="icon">
-    <iconset theme="text-x-generic-symbolic" resource="../../syncthingmodel/resources/syncthingmodelicons.qrc">
-     <normaloff>:/icons/hicolor/scalable/mimetypes/text-x-generic.svg</normaloff>:/icons/hicolor/scalable/mimetypes/text-x-generic.svg</iconset>
+    <iconset theme="utilities-terminal-symbolic" resource="../../syncthingmodel/resources/syncthingmodelicons.qrc">
+     <normaloff>:/icons/hicolor/scalable/apps/utilities-terminal-symbolic.svg</normaloff>:/icons/hicolor/scalable/mimetypes/text-x-generic.svg</iconset>
    </property>
    <property name="text">
     <string>Show</string>

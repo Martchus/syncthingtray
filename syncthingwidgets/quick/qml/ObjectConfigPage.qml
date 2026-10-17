@@ -160,14 +160,14 @@ Page {
             text: qsTr("Help")
             enabled: objectConfigPage.helpUrl.length > 0
             icon.source: QuickUI.faUrlBase + "question"
-            icon.name: "help-contents"
+            icon.name: "help-contents-symbolic"
             onTriggered: QuickUI.requestOpeningUrl(objectConfigPage.helpUrl)
         },
         Action {
             text: qsTr("Add")
             enabled: objectConfigPage.canAdd
             icon.source: QuickUI.faUrlBase + "plus"
-            icon.name: "list-add"
+            icon.name: "list-add-symbolic"
             onTriggered: objectConfigPage.showNewValueDialog()
         }
     ]

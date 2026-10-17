@@ -23,13 +23,13 @@ IconOnlyButton {
         footer: DialogButtonBox {
             Button {
                 text: qsTr("Close")
-                icon.name: Utils.kde ? "dialog-cancel" : ""
+                icon.name: Utils.kde ? "dialog-cancel-symbolic" : ""
                 flat: Utils.flatDialogButtons
                 DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
             }
             Button {
                 text: qsTr("Details")
-                icon.name: Utils.kde ? "help-contents" : ""
+                icon.name: Utils.kde ? "help-contents-symbolic" : ""
                 flat: Utils.flatDialogButtons
                 enabled: helpButton.url.toString().length > 0
                 DialogButtonBox.buttonRole: DialogButtonBox.HelpRole

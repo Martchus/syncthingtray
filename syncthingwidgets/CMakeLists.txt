@@ -228,6 +228,7 @@ set(REQUIRED_ICONS
     go-up-symbolic
     quickwizard-symbolic
     help-contents-symbolic
+    utilities-terminal-symbolic
     question-symbolic)
 
 # configure test files

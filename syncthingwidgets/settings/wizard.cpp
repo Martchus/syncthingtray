@@ -508,7 +508,7 @@ WelcomeWizardPage::WelcomeWizardPage(QWidget *parent)
     showDocsCommand->setText(tr("Show Syncthing's documentation"));
     showDocsCommand->setDescription(tr("It contains general information about configuring Syncthing."));
     showDocsCommand->setIcon(
-        QIcon::fromTheme(QStringLiteral("help-contents"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-help.svg"))));
+        QIcon::fromTheme(QStringLiteral("help-contents-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-help.svg"))));
     connect(showDocsCommand, &QCommandLinkButton::clicked, this, [] { QDesktopServices::openUrl(QStringLiteral("https://docs.syncthing.net/")); });
 
     auto *const showReadmeCommand = new QCommandLinkButton(this);
