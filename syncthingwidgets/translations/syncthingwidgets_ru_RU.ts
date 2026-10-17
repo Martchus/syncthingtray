@@ -5632,17 +5632,17 @@
         <translation>Уведомления/ошибки</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="445"/>
+        <location filename="../misc/otherdialogs.cpp" line="446"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="457"/>
+        <location filename="../misc/otherdialogs.cpp" line="458"/>
         <source>Selected notification:</source>
         <translation>Выбранное уведомление:</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="481"/>
+        <location filename="../misc/otherdialogs.cpp" line="482"/>
         <source>Clear all notifications</source>
         <translation>Очистить все уведомления</translation>
     </message>

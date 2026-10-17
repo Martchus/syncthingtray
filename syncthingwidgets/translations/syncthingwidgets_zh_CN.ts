@@ -5281,17 +5281,17 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation>通知/错误</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="445"/>
+        <location filename="../misc/otherdialogs.cpp" line="446"/>
         <source>Copy</source>
         <translation>复制</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="457"/>
+        <location filename="../misc/otherdialogs.cpp" line="458"/>
         <source>Selected notification:</source>
         <translation>选定的通知：</translation>
     </message>
     <message>
-        <location filename="../misc/otherdialogs.cpp" line="481"/>
+        <location filename="../misc/otherdialogs.cpp" line="482"/>
         <source>Clear all notifications</source>
         <translation>清除所有通知</translation>
     </message>

@@ -595,47 +595,47 @@
         <translation>Im lokalen Dateibrowser öffnen</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="786"/>
+        <location filename="../syncthingfilemodel.cpp" line="787"/>
         <source>Select items to sync/ignore</source>
         <translation>Elemente zum Synchronisieren/Ignorieren auswählen</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="788"/>
+        <location filename="../syncthingfilemodel.cpp" line="789"/>
         <source>Select</source>
         <translation>Auswahl</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="793"/>
+        <location filename="../syncthingfilemodel.cpp" line="794"/>
         <source>Discard staged changes</source>
         <translation>Vorgemerkte Änderungen verwerfen</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="803"/>
+        <location filename="../syncthingfilemodel.cpp" line="804"/>
         <source>Uncheck all and discard staged changes</source>
         <translation>Vorgemerkte Änderungen und Auswahl verwerfen</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="805"/>
+        <location filename="../syncthingfilemodel.cpp" line="806"/>
         <source>Discard</source>
         <translation>Verwerfen</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="817"/>
+        <location filename="../syncthingfilemodel.cpp" line="818"/>
         <source>Ignore checked items (and their children)</source>
         <translation>Ausgewählte Elemente ignorieren (einschließlich untergeordneter Elemente)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="824"/>
+        <location filename="../syncthingfilemodel.cpp" line="825"/>
         <source>Ignore and locally delete checked items (and their children)</source>
         <translation>Ausgewählte Elemente ignorieren und lokal löschen (einschließlich untergeordneter Elemente)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="831"/>
+        <location filename="../syncthingfilemodel.cpp" line="832"/>
         <source>Include checked items (and their children)</source>
         <translation>Ausgewählte Elemente synchronisieren (einschließlich untergeordneter Elemente)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="870"/>
+        <location filename="../syncthingfilemodel.cpp" line="871"/>
         <source>Remove ignore patterns matching checked items (may affect other items as well)</source>
         <translation>Lösche Ignoriermuster die mit ausgewählten Elementen übereinstimmen (kann auch andere Elemente betreffen)</translation>
     </message>
@@ -652,12 +652,12 @@
         <translation type="vanished">Ausgewählte Elemente synchronisieren (und untergeordnete Elemente)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="839"/>
+        <location filename="../syncthingfilemodel.cpp" line="840"/>
         <source>Include all items by default</source>
         <translation>Alle Elemente standardmäßig synchronisieren</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="839"/>
+        <location filename="../syncthingfilemodel.cpp" line="840"/>
         <source>Ignore all items by default</source>
         <translation>Alle Elemente standardmäßig ignorieren</translation>
     </message>
@@ -666,46 +666,46 @@
         <translation type="vanished">Lösche Ignoriermuster die mit ausgewählten Elementen übereinstimmen (kann auch andere Elemente betreffen)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="898"/>
+        <location filename="../syncthingfilemodel.cpp" line="899"/>
         <source>Review and apply staged changes</source>
         <translation>Vorgemerkte Änderungen überprüfen und anwenden</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="900"/>
+        <location filename="../syncthingfilemodel.cpp" line="901"/>
         <source>Apply</source>
         <translation>Anwenden</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="908"/>
+        <location filename="../syncthingfilemodel.cpp" line="909"/>
         <source>Do you want to apply the following changes?</source>
         <translation>Sollen die folgenden Änderungen angewandt werden?</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="916"/>
+        <location filename="../syncthingfilemodel.cpp" line="917"/>
         <source>Cannot apply ignore patterns while a previous request for ignore patterns is still pending.</source>
         <translation>Ignoriermuster können nicht gespeichert werden, da noch eine vorherige Abfrage in Gange ist.</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="924"/>
+        <location filename="../syncthingfilemodel.cpp" line="925"/>
         <source>Unable to change ignore patterns:
 %1</source>
         <translation>Kann Ignoriermuster nicht speichern:
 %1</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="1005"/>
+        <location filename="../syncthingfilemodel.cpp" line="1006"/>
         <source>Ignore patterns have been changed.</source>
         <translation>Ignoriermuster wurden gespeichert.</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="1008"/>
+        <location filename="../syncthingfilemodel.cpp" line="1009"/>
         <source>Ignore patterns have been changed but the following local files could not be deleted:
 </source>
         <translation>Ignoriermuster wurden gespeichert, aber die folgenden lokalen Dateien konnten nicht gelöscht werden:
 </translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="1178"/>
+        <location filename="../syncthingfilemodel.cpp" line="1179"/>
         <source>Cannot query ignore patterns while a previous request for ignore patterns is still pending.</source>
         <translation>Ignoriermuster können nicht abgefragt werden, da noch eine vorherige Abfrage in Gange ist.</translation>
     </message>

@@ -417,101 +417,101 @@
         <translation>Parcourir localement</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="786"/>
+        <location filename="../syncthingfilemodel.cpp" line="787"/>
         <source>Select items to sync/ignore</source>
         <translation>Sélectionner les éléments à synchroniser/ignorer</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="788"/>
+        <location filename="../syncthingfilemodel.cpp" line="789"/>
         <source>Select</source>
         <translation>Sélectionner</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="793"/>
+        <location filename="../syncthingfilemodel.cpp" line="794"/>
         <source>Discard staged changes</source>
         <translation>Abandonner les modifications en attente</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="803"/>
+        <location filename="../syncthingfilemodel.cpp" line="804"/>
         <source>Uncheck all and discard staged changes</source>
         <translation>Tout décocher et abandonner les modifications</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="805"/>
+        <location filename="../syncthingfilemodel.cpp" line="806"/>
         <source>Discard</source>
         <translation>Abandonner</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="817"/>
+        <location filename="../syncthingfilemodel.cpp" line="818"/>
         <source>Ignore checked items (and their children)</source>
         <translation>Ignorer les éléments cochés (et leurs enfants)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="831"/>
+        <location filename="../syncthingfilemodel.cpp" line="832"/>
         <source>Include checked items (and their children)</source>
         <translation>Inclure les éléments cochés (et leurs enfants)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="870"/>
+        <location filename="../syncthingfilemodel.cpp" line="871"/>
         <source>Remove ignore patterns matching checked items (may affect other items as well)</source>
         <translation>Supprimer les motifs d&apos;exclusion correspondant aux éléments cochés</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="839"/>
+        <location filename="../syncthingfilemodel.cpp" line="840"/>
         <source>Include all items by default</source>
         <translation>Inclure tous les éléments par défaut</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="824"/>
+        <location filename="../syncthingfilemodel.cpp" line="825"/>
         <source>Ignore and locally delete checked items (and their children)</source>
         <translation>Ignorer et supprimer localement les éléments cochés</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="839"/>
+        <location filename="../syncthingfilemodel.cpp" line="840"/>
         <source>Ignore all items by default</source>
         <translation>Ignorer tous les éléments par défaut</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="898"/>
+        <location filename="../syncthingfilemodel.cpp" line="899"/>
         <source>Review and apply staged changes</source>
         <translation>Réviser et appliquer les modifications</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="900"/>
+        <location filename="../syncthingfilemodel.cpp" line="901"/>
         <source>Apply</source>
         <translation>Appliquer</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="908"/>
+        <location filename="../syncthingfilemodel.cpp" line="909"/>
         <source>Do you want to apply the following changes?</source>
         <translation>Voulez-vous appliquer les modifications suivantes ?</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="916"/>
+        <location filename="../syncthingfilemodel.cpp" line="917"/>
         <source>Cannot apply ignore patterns while a previous request for ignore patterns is still pending.</source>
         <translation>Impossible d&apos;appliquer les motifs tant qu&apos;une requête précédente est en cours.</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="924"/>
+        <location filename="../syncthingfilemodel.cpp" line="925"/>
         <source>Unable to change ignore patterns:
 %1</source>
         <translation>Impossible de modifier les motifs d&apos;exclusion :
 %1</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="1005"/>
+        <location filename="../syncthingfilemodel.cpp" line="1006"/>
         <source>Ignore patterns have been changed.</source>
         <translation>Les motifs d&apos;exclusion ont été modifiés.</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="1008"/>
+        <location filename="../syncthingfilemodel.cpp" line="1009"/>
         <source>Ignore patterns have been changed but the following local files could not be deleted:
 </source>
         <translation>Les motifs ont été modifiés mais les fichiers locaux suivants n&apos;ont pu être supprimés :
 </translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="1178"/>
+        <location filename="../syncthingfilemodel.cpp" line="1179"/>
         <source>Cannot query ignore patterns while a previous request for ignore patterns is still pending.</source>
         <translation>Impossible d&apos;interroger les motifs tant qu&apos;une requête précédente est en cours.</translation>
     </message>

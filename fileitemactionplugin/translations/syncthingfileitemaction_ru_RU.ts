@@ -51,7 +51,7 @@
 <context>
     <name>SyncthingFileItemAction</name>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="286"/>
+        <location filename="../syncthingfileitemaction.cpp" line="287"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
@@ -115,7 +115,7 @@
         <translation>Не общий каталог</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="281"/>
+        <location filename="../syncthingfileitemaction.cpp" line="282"/>
         <source>Select Syncthing config ...</source>
         <translation>Выберите конфигурацию синхронизации...</translation>
     </message>

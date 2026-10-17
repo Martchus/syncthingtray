@@ -441,100 +441,100 @@
         <translation>Просмотр локально</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="786"/>
+        <location filename="../syncthingfilemodel.cpp" line="787"/>
         <source>Select items to sync/ignore</source>
         <translation>Выберите элементы для синхронизации/игнорирования</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="788"/>
+        <location filename="../syncthingfilemodel.cpp" line="789"/>
         <source>Select</source>
         <translation>Выбирать</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="793"/>
+        <location filename="../syncthingfilemodel.cpp" line="794"/>
         <source>Discard staged changes</source>
         <translation>Отменить запланированные изменения</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="803"/>
+        <location filename="../syncthingfilemodel.cpp" line="804"/>
         <source>Uncheck all and discard staged changes</source>
         <translation>Снимите все отметки и отмените подготовленные изменения</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="805"/>
+        <location filename="../syncthingfilemodel.cpp" line="806"/>
         <source>Discard</source>
         <translation>Отказаться</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="817"/>
+        <location filename="../syncthingfilemodel.cpp" line="818"/>
         <source>Ignore checked items (and their children)</source>
         <translation>Игнорировать отмеченные элементы (и их дочерние элементы)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="831"/>
+        <location filename="../syncthingfilemodel.cpp" line="832"/>
         <source>Include checked items (and their children)</source>
         <translation>Включить отмеченные элементы (и их дочерние элементы)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="870"/>
+        <location filename="../syncthingfilemodel.cpp" line="871"/>
         <source>Remove ignore patterns matching checked items (may affect other items as well)</source>
         <translation>Удалить шаблоны игнорирования, соответствующие отмеченным элементам (может повлиять и на другие элементы)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="839"/>
+        <location filename="../syncthingfilemodel.cpp" line="840"/>
         <source>Include all items by default</source>
         <translation>Включить все элементы по умолчанию</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="824"/>
+        <location filename="../syncthingfilemodel.cpp" line="825"/>
         <source>Ignore and locally delete checked items (and their children)</source>
         <translation>Игнорировать и локально удалять отмеченные элементы (и их дочерние элементы)</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="839"/>
+        <location filename="../syncthingfilemodel.cpp" line="840"/>
         <source>Ignore all items by default</source>
         <translation>Игнорировать все элементы по умолчанию</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="898"/>
+        <location filename="../syncthingfilemodel.cpp" line="899"/>
         <source>Review and apply staged changes</source>
         <translation>Просмотр и применение поэтапных изменений</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="900"/>
+        <location filename="../syncthingfilemodel.cpp" line="901"/>
         <source>Apply</source>
         <translation>Применить</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="908"/>
+        <location filename="../syncthingfilemodel.cpp" line="909"/>
         <source>Do you want to apply the following changes?</source>
         <translation>Хотите ли вы применить следующие изменения?</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="916"/>
+        <location filename="../syncthingfilemodel.cpp" line="917"/>
         <source>Cannot apply ignore patterns while a previous request for ignore patterns is still pending.</source>
         <translation>Невозможно применить шаблоны игнорирования, пока предыдущий запрос на шаблоны игнорирования все еще находится на рассмотрении.</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="924"/>
+        <location filename="../syncthingfilemodel.cpp" line="925"/>
         <source>Unable to change ignore patterns:
 %1</source>
         <translation>Невозможно изменить шаблоны игнорирования: %1</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="1005"/>
+        <location filename="../syncthingfilemodel.cpp" line="1006"/>
         <source>Ignore patterns have been changed.</source>
         <translation>Изменены шаблоны игнорирования.</translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="1008"/>
+        <location filename="../syncthingfilemodel.cpp" line="1009"/>
         <source>Ignore patterns have been changed but the following local files could not be deleted:
 </source>
         <translation>Шаблоны игнорирования были изменены, но следующие локальные файлы не удалось удалить:
 </translation>
     </message>
     <message>
-        <location filename="../syncthingfilemodel.cpp" line="1178"/>
+        <location filename="../syncthingfilemodel.cpp" line="1179"/>
         <source>Cannot query ignore patterns while a previous request for ignore patterns is still pending.</source>
         <translation>Невозможно запросить шаблоны игнорирования, пока предыдущий запрос на шаблоны игнорирования все еще находится на рассмотрении.</translation>
     </message>

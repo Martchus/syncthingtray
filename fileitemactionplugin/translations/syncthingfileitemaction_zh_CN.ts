@@ -112,12 +112,12 @@
         <translation type="vanished">使用明亮的自定义颜色</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="281"/>
+        <location filename="../syncthingfileitemaction.cpp" line="282"/>
         <source>Select Syncthing config ...</source>
         <translation>选择 Syncthing 配置 ...</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="286"/>
+        <location filename="../syncthingfileitemaction.cpp" line="287"/>
         <source>About</source>
         <translation>关于</translation>
     </message>

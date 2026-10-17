@@ -113,12 +113,12 @@
         <translation type="vanished">Helle Farben verwenden</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="281"/>
+        <location filename="../syncthingfileitemaction.cpp" line="282"/>
         <source>Select Syncthing config ...</source>
         <translation>Syncthing-Konfiguration wählen ...</translation>
     </message>
     <message>
-        <location filename="../syncthingfileitemaction.cpp" line="286"/>
+        <location filename="../syncthingfileitemaction.cpp" line="287"/>
         <source>About</source>
         <translation>Über</translation>
     </message>
