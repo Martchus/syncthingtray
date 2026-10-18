@@ -102,7 +102,6 @@ set(REQUIRED_ICONS
     preferences-other
     process-stop-symbolic
     question-symbolic
-    qtcreator
     settings-configure-symbolic
     system-run
     system-search-symbolic
