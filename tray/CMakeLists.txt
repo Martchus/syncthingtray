@@ -110,6 +110,7 @@ set(REQUIRED_ICONS
     quickwizard
     view-filter-symbolic
     item-symbolic
+    utilities-terminal-symbolic
     view-refresh-symbolic
     window-close-symbolic
     window-pin-symbolic)
