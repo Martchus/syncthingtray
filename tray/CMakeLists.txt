@@ -64,14 +64,24 @@ set(REQUIRED_ICONS
     document-open-symbolic
     document-open-remote-symbolic
     download-symbolic
+    edit-copy
+    edit-clear
+    edit-cut
+    edit-delete
+    edit-paste
+    edit-redo
+    edit-undo
+    edit-select
+    edit-select-all
     edit-copy-symbolic
     edit-clear-symbolic
     edit-cut-symbolic
     edit-delete-symbolic
     edit-paste-symbolic
     edit-redo-symbolic
-    edit-select-symbolic
     edit-undo-symbolic
+    edit-select-symbolic
+    edit-select-all-symbolic
     emblem-checked-symbolic
     emblem-error-symbolic
     emblem-remove-symbolic
