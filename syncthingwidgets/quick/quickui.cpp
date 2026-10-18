@@ -625,7 +625,7 @@ void QuickUI::showMenu(QObject *menu, QQuickItem *parent, qreal x, qreal y, cons
                     { QStringLiteral("folder-open.fa"), QStringLiteral("document-open-symbolic") },
                     { QStringLiteral("folder-open-o.fa"), QStringLiteral("document-open-remote-symbolic") },
                     { QStringLiteral("cogs.fa"), QStringLiteral("settings-configure-symbolic") },
-                    { QStringLiteral("music.fa"), QStringLiteral("music-playlist-symbolic") },
+                    { QStringLiteral("music.fa"), QStringLiteral("view-media-playlist-symbolic") },
                     { QStringLiteral("sitemap.fa"), QStringLiteral("network-server-symbolic") },
                     { QStringLiteral("files-o.fa"), QStringLiteral("edit-copy-symbolic") },
                     { QStringLiteral("clipboard.fa"), QStringLiteral("edit-paste-symbolic") },

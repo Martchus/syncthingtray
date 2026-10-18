@@ -89,7 +89,7 @@ set(REQUIRED_ICONS
     list-remove-symbolic
     media-playback-pause-symbolic
     media-playback-start-symbolic
-    music-playlist-symbolic
+    view-media-playlist-symbolic
     network-connect-symbolic
     network-disconnect-symbolic
     network-server-symbolic
