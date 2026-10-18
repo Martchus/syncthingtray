@@ -57,16 +57,16 @@ Item {
         plasmoid.nativeInterface.initEngine(this)
         plasmoid.removeAction("configure")
         plasmoid.setAction("showWebUI", qsTr("Open Syncthing"), "syncthing")
-        plasmoid.setAction("configure", qsTr("Settings"), "configure")
+        plasmoid.setAction("configure", qsTr("Settings"), "configure-symbolic")
         plasmoid.setAction("rescanAllDirs", qsTr("Rescan all folders"),
-                           "folder-sync")
+                           "folder-sync-symbolic")
         plasmoid.setAction("showOwnId", qsTr("Show own device ID"),
-                           "view-barcode-qr")
+                           "view-barcode-qr-symbolic")
         plasmoid.setAction("restartSyncthing", qsTr("Restart Syncthing"),
-                           "system-reboot")
-        plasmoid.setAction("showLog", qsTr("Log"), "text-x-generic")
-        plasmoid.setAction("showErrors", qsTr("Internal errors"), "data-error")
+                           "system-reboot-symbolic")
+        plasmoid.setAction("showLog", qsTr("Log"), "utilities-terminal-symbolic")
+        plasmoid.setAction("showErrors", qsTr("Internal errors"), "data-error-symbolic")
         plasmoid.action("showErrors").visible = Qt.binding(() => { return plasmoid.nativeInterface.hasInternalErrors })
-        plasmoid.setAction("showAboutDialog", qsTr("About"), "help-about")
+        plasmoid.setAction("showAboutDialog", qsTr("About"), "help-about-symbolic")
     }
 }

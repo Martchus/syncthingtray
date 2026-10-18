@@ -37,38 +37,38 @@ PlasmoidItem {
     Plasmoid.contextualActions: [
         PlasmaCore.Action {
             text: qsTr("Open Syncthing")
-            icon.name: "syncthing"
+            icon.icon: Plasmoid.syncthingIcon
             onTriggered: Plasmoid.showWebUI()
         },
         PlasmaCore.Action {
             text: qsTr("Rescan all folders")
-            icon.name: "folder-sync"
+            icon.name: "folder-sync-symbolic"
             onTriggered: Plasmoid.data.connection.rescanAllDirs()
         },
         PlasmaCore.Action {
             text: qsTr("Show own device ID")
-            icon.name: "view-barcode-qr"
+            icon.name: "view-barcode-qr-symbolic"
             onTriggered: Plasmoid.showOwnDeviceId()
         },
         PlasmaCore.Action {
             text: qsTr("Restart Syncthing")
-            icon.name: "system-reboot"
+            icon.name: "system-reboot-symbolic"
             onTriggered: Plasmoid.data.connection.restart()
         },
         PlasmaCore.Action {
             text: qsTr("Log")
-            icon.name: "text-x-generic"
+            icon.name: "utilities-terminal-symbolic"
             onTriggered: Plasmoid.showLog()
         },
         PlasmaCore.Action {
             text: qsTr("Internal errors")
-            icon.name: "data-error"
+            icon.name: "data-error-symbolic"
             onTriggered: Plasmoid.showInternalErrorsDialog()
             visible: Plasmoid.hasInternalErrors
         },
         PlasmaCore.Action {
             text: qsTr("About")
-            icon.name: "help-about"
+            icon.name: "help-about-symbolic"
             onTriggered: Plasmoid.showAboutDialog()
         }
     ]

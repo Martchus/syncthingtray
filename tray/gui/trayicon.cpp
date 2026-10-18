@@ -49,10 +49,8 @@ TrayIcon::TrayIcon(const QString &connectionConfig, QObject *parent)
 
     // set context menu
 #ifndef SYNCTHINGTRAY_UNIFY_TRAY_MENUS
-    connect(m_contextMenu.addAction(
-                QIcon::fromTheme(QStringLiteral("syncthing"), QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg"))),
-                tr("Open Syncthing")),
-        &QAction::triggered, &widget, &TrayWidget::showWebUI);
+    connect(
+        m_contextMenu.addAction(QIcon(QStringLiteral("syncthing.fa")), tr("Open Syncthing")), &QAction::triggered, &widget, &TrayWidget::showWebUI);
     connect(m_contextMenu.addAction(QIcon::fromTheme(QStringLiteral("preferences-other-symbolic"),
                                         QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/preferences-other.svg"))),
                 tr("Settings")),

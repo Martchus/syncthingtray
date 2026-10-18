@@ -151,6 +151,11 @@ SyncthingApplet *Plasmoid::SyncthingApplet::create(QQmlEngine *qmlEngine, QJSEng
 }
 #endif
 
+QIcon SyncthingApplet::syncthingIcon() const
+{
+    return QIcon(QStringLiteral("syncthing.fa"));
+}
+
 void showErrorIfSet(const QString &errorMessage)
 {
     if (errorMessage.isEmpty()) {
