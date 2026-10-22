@@ -25,6 +25,16 @@ else ()
     find_package(${KF_PACKAGE_PREFIX}Plasma REQUIRED)
 endif ()
 
+# configure whether to build plasmoid with QML module
+set(PLASMOID_AS_QML_MODULE_DEFAULT OFF)
+if (KF_MAJOR_VERSION GREATER_EQUAL 6)
+    #include(ECMQmlModule)
+    #if (COMMAND ecm_add_qml_module AND COMMAND ecm_target_qml_sources)
+        set(PLASMOID_AS_QML_MODULE_DEFAULT ON)
+    #endif ()
+endif ()
+option(PLASMOID_AS_QML_MODULE "whether to build QML files of Plasmoid into QML module" ${PLASMOID_AS_QML_MODULE_DEFAULT})
+
 # define list of QML files; there is a distinct directory for each major Plasma version
 set(PLASMOID_FILE_NAMES
     CompactRepresentation.qml
@@ -67,10 +77,14 @@ list(APPEND CMAKE_MODULE_PATH ${CPP_UTILITIES_MODULE_DIRS})
 # prepare plasmoid package/configuration
 set(PLASMOID_PACKAGE_DIR "${CMAKE_CURRENT_BINARY_DIR}/package")
 file(MAKE_DIRECTORY "${PLASMOID_PACKAGE_DIR}")
-if (KF_MAJOR_VERSION LESS 6)
-    set(PLASMOID_CONFIG_TARGET_FILE "${PLASMOID_PACKAGE_DIR}/metadata.desktop")
+if (PLASMOID_AS_QML_MODULE)
+    set(PLASMOID_CONFIG_TARGET_FILE "${CMAKE_CURRENT_BINARY_DIR}/metadata.json")
 else ()
-    set(PLASMOID_CONFIG_TARGET_FILE "${PLASMOID_PACKAGE_DIR}/metadata.json")
+    if (KF_MAJOR_VERSION LESS 6)
+        set(PLASMOID_CONFIG_TARGET_FILE "${PLASMOID_PACKAGE_DIR}/metadata.desktop")
+    else ()
+        set(PLASMOID_CONFIG_TARGET_FILE "${PLASMOID_PACKAGE_DIR}/metadata.json")
+    endif ()
 endif ()
 
 # make plugin library
@@ -78,22 +92,49 @@ add_subdirectory(lib)
 
 # make plasmoid configuration
 include(TemplateFinder)
-if (KF_MAJOR_VERSION LESS 6)
-    find_template_file("metadata.desktop" "${META_PROJECT_NAME}" PLASMOID_CONFIG_TEMPLATE_FILE)
+if (PLASMOID_AS_QML_MODULE)
+    find_template_file("metadata-qml-module.json" "${META_PROJECT_NAME}" PLASMOID_CONFIG_TEMPLATE_FILE)
 else ()
-    find_template_file("metadata.json" "${META_PROJECT_NAME}" PLASMOID_CONFIG_TEMPLATE_FILE)
+    if (KF_MAJOR_VERSION LESS 6)
+        find_template_file("metadata.desktop" "${META_PROJECT_NAME}" PLASMOID_CONFIG_TEMPLATE_FILE)
+    else ()
+        find_template_file("metadata.json" "${META_PROJECT_NAME}" PLASMOID_CONFIG_TEMPLATE_FILE)
+    endif ()
 endif ()
 get_filename_component(PLASMOID_CONFIG_TARGET_FILE_ABSOLUTE_PATH "${PLASMOID_CONFIG_TARGET_FILE}" REALPATH BASE_DIR "${CMAKE_BINARY_DIR}")
 configure_file("${PLASMOID_CONFIG_TEMPLATE_FILE}" "${PLASMOID_CONFIG_TARGET_FILE}")
 
-# copy plasmoid package folder plus metadata file into build directory and install it from there
-foreach (PLASMOID_FILE ${PLASMOID_FILES})
-    get_filename_component(PLASMOID_FILE_DIR "${PLASMOID_FILE}" DIRECTORY)
-    string(REGEX REPLACE "package[0-9]+" "package" PLASMOID_FILE_DIR "${PLASMOID_FILE_DIR}")
-    file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/${PLASMOID_FILE_DIR}")
-    file(COPY "${PLASMOID_FILE}" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/${PLASMOID_FILE_DIR}")
-endforeach ()
-plasma_install_package("${PLASMOID_PACKAGE_DIR}" "${META_ID}")
+if (PLASMOID_AS_QML_MODULE)
+    #set(CMAKE_AUTOMOC ON)
+    #set(CMAKE_AUTORCC ON)
+    #set_target_properties(${id} PROPERTIES PREFIX "")
+    #if (NOT QUICK_GUI)
+    #ecm_add_qml_module("${META_TARGET_NAME}" URI "plasma.applet.${META_ID}" QT_NO_PLUGIN)
+    #endif ()
+    #qt_add_qml_module(
+    #    ${META_TARGET_NAME}
+    #    URI
+    #    "plasma.applet.${META_ID}"
+    #    VERSION
+    #    1.0
+    #    QML_FILES
+    #    ${PLASMOID_FILES}
+    #    RESOURCE_PREFIX
+    #    "/qt/qml/"
+    #    NO_PLUGIN)
+    #ecm_target_qml_sources("${META_TARGET_NAME}" SOURCES ${PLASMOID_FILES})
+    target_compile_definitions("${META_TARGET_NAME}" PRIVATE PLASMOID_AS_QML_MODULE)
+else ()
+    # copy plasmoid package folder plus metadata file into build directory and install it from there
+    foreach (PLASMOID_FILE ${PLASMOID_FILES})
+        get_filename_component(PLASMOID_FILE_DIR "${PLASMOID_FILE}" DIRECTORY)
+        string(REGEX REPLACE "package[0-9]+" "package" PLASMOID_FILE_DIR "${PLASMOID_FILE_DIR}")
+        file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/${PLASMOID_FILE_DIR}")
+        file(COPY "${PLASMOID_FILE}" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/${PLASMOID_FILE_DIR}")
+    endforeach ()
+
+    plasma_install_package("${PLASMOID_PACKAGE_DIR}" "${META_ID}")
+endif ()
 
 # add target to ease testing the plasmoid - using files from source directory directly instead of
 # copy in build directory so one does not need to run CMake again to apply changes (see testing.md)

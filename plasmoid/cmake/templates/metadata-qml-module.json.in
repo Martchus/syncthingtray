@@ -1,0 +1,20 @@
+{
+    "KPlugin": {
+        "Authors": [{"Name": "@META_APP_AUTHOR@"}],
+        "BugReportUrl": "@META_APP_BUGTRACKER_URL@",
+        "Category": "Utilities",
+        "Description": "@META_APP_DESCRIPTION@",
+        "EnabledByDefault": false,
+        "FormFactors": ["desktop"],
+        "Icon": "@META_TARGET_PREFIX@syncthingtray@META_TARGET_SUFFIX@",
+        "License": "@META_PROJECT_LICENSE@",
+        "Name": "Syncthing",
+        "Version": "@META_APP_VERSION@",
+        "Website": "@META_APP_URL@"
+    },
+    "X-KDE-Keywords": "syncthing,sync",
+    "X-Plasma-API": "declarativeappletscript",
+    "X-Plasma-API-Minimum-Version": "6.0",
+    "X-Plasma-NotificationAreaCategory": "SystemServices",
+    "X-Plasma-MainScript": "ui/main.qml"
+}

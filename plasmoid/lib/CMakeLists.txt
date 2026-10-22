@@ -3,8 +3,13 @@ set(HEADER_FILES syncthingapplet.h settingsdialog.h)
 set(SRC_FILES syncthingapplet.cpp settingsdialog.cpp)
 set(WIDGETS_UI_FILES appearanceoptionpage.ui)
 set(META_QUICK_GUI_OPTIONAL ON)
+set(QML_MODULE_FILES)
 foreach (PLASMOID_FILE ${PLASMOID_FILES})
-    list(APPEND QML_SRC_FILES "../${PLASMOID_FILE}")
+    if (PLASMOID_AS_QML_MODULE)
+        list(APPEND QML_MODULE_FILES "../${PLASMOID_FILE}")
+    else ()
+        list(APPEND QML_SRC_FILES "../${PLASMOID_FILE}")
+    endif ()
     set_source_files_properties("../${PLASMOID_FILE}" PROPERTIES HEADER_FILE_ONLY TRUE)
 endforeach ()
 foreach (PLASMOID_FILE ${PLASMOID_EXCLUDED_FILES})
@@ -94,17 +99,17 @@ endif ()
 add_appstream_file()
 
 # configure Qt Quick GUI
-if (QUICK_GUI)
+if (QUICK_GUI OR PLASMOID_AS_QML_MODULE)
     # add Qml module to expose SyncthingApplet as singleton in consistency with tray/CMakeLists.txt
     qt_policy(SET QTP0004 NEW)
     qt_add_qml_module(
         ${META_TARGET_NAME}
         URI
-        "Tray"
+        "plasma.applet.${META_ID}"
         VERSION
         1.0
-        RESOURCE_PREFIX
-        "/qt/qml/"
+        QML_FILES
+        ${QML_MODULE_FILES}
         NO_PLUGIN)
     set_property(
         SOURCE "${CMAKE_CURRENT_BINARY_DIR}/${META_TARGET_NAME}_qmltyperegistrations.cpp"
