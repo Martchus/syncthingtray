@@ -11,6 +11,13 @@ AdvancedConfigPage {
     isEntry: (folder) => folder.id === dirId
     configCategory: "config-option-folder"
     componentName: "AdvancedDirConfigPage.qml"
+    specialEntries: [ // have most important fields on top and allow selecting path via folder picker
+        {key: "id", label: "ID"},
+        {key: "label", label: "Label"},
+        {key: "group", label: "Group"},
+        {key: "paused", label: "Paused"},
+        {key: "path", type: "folderpath", label: "Path"},
+    ]
     extraActions: [
         Action {
             text: qsTr("Ignore patterns")
