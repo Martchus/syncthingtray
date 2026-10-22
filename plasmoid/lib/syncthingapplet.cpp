@@ -247,7 +247,7 @@ void SyncthingApplet::initEngine(QObject *object)
         connect(engine, &QObject::destroyed, this, &SyncthingApplet::handleEngineDestroyed);
     }
 
-#if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
     if (auto &settings = Settings::values(); !m_quickUI) {
         // use separate engine for showing regular Qt Quick UI as part of the Plasmoid so each instance of the Plasmoid can have its own regular Qt Quick UI with its own data/models
         // notes: - Within this separate engine, this SyncthingApplet instance is exposed as TrayWidget singleton so QML code from the `syncthingwidgets` library can access it in
@@ -262,6 +262,12 @@ void SyncthingApplet::initEngine(QObject *object)
         dataObjectToProperty(&m_quickUI->engine, &m_models);
         dataObjectToProperty(&m_quickUI->engine, &quickUI.ui);
         dataObjectToProperty(&m_quickUI->engine, this);
+#ifdef PLASMOID_AS_QML_MODULE
+        // make sure we can import SyncthingApplet as TrayWidget via the module Tray
+        // note: The Plasmoid module URI needs to be "plasma.applet.${META_ID}" as specified via `qt_add_qml_module`. The TrayWidget needs to be exposed via "Tray" for consistency
+        //       with how it is imported by the regular UI, though. As `qt_add_qml_module` only supports specifying one URI, we need to do the registration manually here.
+        qmlRegisterSingletonType<SyncthingApplet>("Tray", 1, 0, "TrayWidget", &SyncthingApplet::create);
+#endif
         connect(&m_quickUI->ui, &QuickUI::changesWindowVisibleChanged, this, &SyncthingApplet::handleChangesWindowVisibleChanged);
         connect(&m_quickUI->ui, &QuickUI::openingUrlRequested, &m_models, [this](const QUrl &url) { m_models.openUrlExternally(url); });
         emit quickUIChanged();
@@ -814,12 +820,19 @@ void SyncthingApplet::handleSystemdStatusChanged()
 
 } // namespace Plasmoid
 
+#ifdef PLASMOID_AS_QML_MODULE
+#include <KPluginFactory>
+namespace Plasmoid {
+K_PLUGIN_CLASS_WITH_JSON(SyncthingApplet, "metadata.json")
+}
+#else
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 namespace Plasmoid {
 K_PLUGIN_CLASS(SyncthingApplet)
 }
 #else
 K_EXPORT_PLASMA_APPLET_WITH_JSON(syncthing, Plasmoid::SyncthingApplet, "metadata.json")
+#endif
 #endif
 
 #include "syncthingapplet.moc"

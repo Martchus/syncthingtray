@@ -20,6 +20,13 @@ package_dir=$script_dir/../$2
 meta_data_file=$1
 plasmoid_id=$(cat "$meta_data_file" | jq -r .KPlugin.Id)
 echo "Plasmoid ID: $plasmoid_id"
+
+if ! jq -e '.KPackageStructure' "$meta_data_file" > /dev/null 2>&1; then
+    echo "Plasmoid is built as QML module; ensuring no stale package shadows it in $HOME/.local/share/plasma/plasmoids/$plasmoid_id"
+    rm -rf "$HOME/.local/share/plasma/plasmoids/$plasmoid_id"
+    exit 0
+fi
+
 cp -v --target-directory="$package_dir" "$meta_data_file"
 
 # specify the package type when using kpackagetool

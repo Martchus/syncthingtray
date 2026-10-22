@@ -3,8 +3,14 @@ set(HEADER_FILES syncthingapplet.h settingsdialog.h)
 set(SRC_FILES syncthingapplet.cpp settingsdialog.cpp)
 set(WIDGETS_UI_FILES appearanceoptionpage.ui)
 set(META_QUICK_GUI_OPTIONAL ON)
+set(QML_MODULE_FILES)
 foreach (PLASMOID_FILE ${PLASMOID_FILES})
     list(APPEND QML_SRC_FILES "../${PLASMOID_FILE}")
+    if (PLASMOID_AS_QML_MODULE)
+        list(APPEND QML_MODULE_FILES "../${PLASMOID_FILE}")
+        get_filename_component(PLASMOID_FILE_NAME "${PLASMOID_FILE}" NAME)
+        set_source_files_properties("../${PLASMOID_FILE}" PROPERTIES QT_RESOURCE_ALIAS "${PLASMOID_FILE_NAME}")
+    endif ()
     set_source_files_properties("../${PLASMOID_FILE}" PROPERTIES HEADER_FILE_ONLY TRUE)
 endforeach ()
 foreach (PLASMOID_FILE ${PLASMOID_EXCLUDED_FILES})
@@ -73,7 +79,9 @@ set(META_APP_VERSION
     "${META_APP_VERSION}"
     PARENT_SCOPE)
 set(META_ID
-    "martchus.${META_TARGET_NAME}"
+    "martchus.${META_TARGET_NAME}")
+set(META_ID
+    "${META_ID}"
     PARENT_SCOPE)
 set(META_PROJECT_LICENSE
     "${META_PROJECT_LICENSE}"
@@ -94,7 +102,26 @@ endif ()
 add_appstream_file()
 
 # configure Qt Quick GUI
-if (QUICK_GUI)
+if (PLASMOID_AS_QML_MODULE)
+    # add Qml module to expose QML files of Plasmoid and C++ plugin
+    qt_policy(SET QTP0004 NEW)
+    qt_add_qml_module(
+        ${META_TARGET_NAME}
+        URI
+        "plasma.applet.${META_ID}"
+        VERSION
+        1.0
+        RESOURCE_PREFIX
+        "/qt/qml/"
+        QML_FILES
+        ${QML_MODULE_FILES}
+        NO_PLUGIN)
+    set_property(
+        SOURCE "${CMAKE_CURRENT_BINARY_DIR}/${META_TARGET_NAME}_qmltyperegistrations.cpp"
+        APPEND
+        PROPERTY INCLUDE_DIRECTORIES "${CMAKE_CURRENT_SOURCE_DIR}")
+    target_include_directories(${META_TARGET_NAME} PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+elseif (QUICK_GUI)
     # add Qml module to expose SyncthingApplet as singleton in consistency with tray/CMakeLists.txt
     qt_policy(SET QTP0004 NEW)
     qt_add_qml_module(
