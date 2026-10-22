@@ -2383,7 +2383,7 @@
     <message>
         <location filename="../quick/qml/DirsPage.qml" line="42"/>
         <source>Rescan all</source>
-        <translation>All scannen</translation>
+        <translation>Alle scannen</translation>
     </message>
 </context>
 <context>
