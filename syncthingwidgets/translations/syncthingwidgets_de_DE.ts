@@ -103,7 +103,7 @@
         <translation>Ordner</translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedDirConfigPage.qml" line="16"/>
+        <location filename="../quick/qml/AdvancedDirConfigPage.qml" line="23"/>
         <source>Ignore patterns</source>
         <translation>Ignoriermuster</translation>
     </message>

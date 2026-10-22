@@ -98,82 +98,82 @@
 <context>
     <name>QtGui::TrayIcon</name>
     <message>
-        <location filename="../gui/trayicon.cpp" line="58"/>
+        <location filename="../gui/trayicon.cpp" line="56"/>
         <source>Settings</source>
         <translation>Nastavení</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="62"/>
+        <location filename="../gui/trayicon.cpp" line="60"/>
         <source>Rescan all</source>
         <translation>Znovu vše proskenovat</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="70"/>
+        <location filename="../gui/trayicon.cpp" line="68"/>
         <source>Show internal errors</source>
         <translation>Zobrazit vnitřní chyby</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="75"/>
+        <location filename="../gui/trayicon.cpp" line="73"/>
         <source>Show notifications/errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="83"/>
+        <location filename="../gui/trayicon.cpp" line="81"/>
         <source>About</source>
         <translation>O Syncthing Tray</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="88"/>
+        <location filename="../gui/trayicon.cpp" line="86"/>
         <source>Close</source>
         <translation>Zavřít</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="215"/>
+        <location filename="../gui/trayicon.cpp" line="213"/>
         <source>Error</source>
         <translation>Chyba</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="235"/>
+        <location filename="../gui/trayicon.cpp" line="233"/>
         <source>Launcher error</source>
         <translation>Chyba spouštěče</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="251"/>
+        <location filename="../gui/trayicon.cpp" line="249"/>
         <source>Syncthing notification - click to dismiss</source>
         <translation>Oznámení ze Syncthing – kliknutím zahodíte</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="286"/>
+        <location filename="../gui/trayicon.cpp" line="284"/>
         <source>Syncthing device wants to connect - click for web UI</source>
         <translation>Syncthing zařízení se chce připojit – klikněte pro webové rozhraní</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="303"/>
+        <location filename="../gui/trayicon.cpp" line="301"/>
         <source>New Syncthing folder - click for web UI</source>
         <translation>Nový Syncthing adresář – klikněte pro webové rozhraní</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="318"/>
+        <location filename="../gui/trayicon.cpp" line="316"/>
         <source>New version - click to open updater</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="318"/>
+        <location filename="../gui/trayicon.cpp" line="316"/>
         <source>Version %1 is available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="176"/>
+        <location filename="../gui/trayicon.cpp" line="174"/>
         <source>Disconnected from Syncthing</source>
         <translation>Odpojeno od Syncthing</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="54"/>
+        <location filename="../gui/trayicon.cpp" line="53"/>
         <source>Open Syncthing</source>
         <translation>Otevřít Syncthing</translation>
     </message>
     <message>
-        <location filename="../gui/trayicon.cpp" line="66"/>
+        <location filename="../gui/trayicon.cpp" line="64"/>
         <source>Log</source>
         <translation>Záznam událostí</translation>
     </message>

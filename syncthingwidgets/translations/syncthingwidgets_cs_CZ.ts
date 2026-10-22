@@ -99,7 +99,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/AdvancedDirConfigPage.qml" line="16"/>
+        <location filename="../quick/qml/AdvancedDirConfigPage.qml" line="23"/>
         <source>Ignore patterns</source>
         <translation type="unfinished"></translation>
     </message>
