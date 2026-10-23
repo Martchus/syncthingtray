@@ -114,6 +114,7 @@ set(REQUIRED_ICONS
     question-symbolic
     settings-configure-symbolic
     system-run
+    system-search
     system-search-symbolic
     system-file-manager-symbolic
     text-x-generic-symbolic
