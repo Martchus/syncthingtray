@@ -867,26 +867,29 @@ bool RuntimeCondition::setBatteryPercentage(int percentage)
     return false;
 }
 
-QString RuntimeCondition::stopStatusMessage() const
+QString RuntimeCondition::stopStatusMessage(bool onlyPaused) const
 {
-    return stopStatusMessage(m_enabledConditions);
+    return stopStatusMessage(m_enabledConditions, onlyPaused);
 }
 
-QString RuntimeCondition::stopStatusMessage(Conditions conditions) const
+QString RuntimeCondition::stopStatusMessage(Conditions conditions, bool onlyPaused) const
 {
     if (conditions && Conditions::Metered && m_metered.value_or(false)) {
-        return tr("Syncthing is temporarily stopped due to metered connection");
+        return onlyPaused ? tr("Syncthing is temporarily paused due to metered connection")
+                          : tr("Syncthing is temporarily stopped due to metered connection");
     } else if (conditions && Conditions::BatterySaving && m_batterySaving.value_or(false)) {
-        return tr("Syncthing is temporarily stopped due to battery saving mode");
+        return onlyPaused ? tr("Syncthing is temporarily paused due to battery saving mode")
+                          : tr("Syncthing is temporarily stopped due to battery saving mode");
     } else if (conditions && Conditions::OnBattery && isOnBattery().value_or(false)
         && (batteryLevel().value_or(100) < m_batteryPercentage || m_batteryPercentage == 100)) {
         if (m_batteryPercentage == 100) {
-            return tr("Syncthing is temporarily stopped due to running on battery");
+            return onlyPaused ? tr("Syncthing is temporarily paused due to running on battery")
+                              : tr("Syncthing is temporarily stopped due to running on battery");
         } else {
-            return tr("Syncthing is temporarily stopped due to low battery");
+            return onlyPaused ? tr("Syncthing is temporarily paused due to low battery") : tr("Syncthing is temporarily stopped due to low battery");
         }
     } else if (conditions && Conditions::ForceSuspend) {
-        return tr("Syncthing is temporarily stopped manually");
+        return onlyPaused ? tr("Syncthing is temporarily paused manually") : tr("Syncthing is temporarily stopped manually");
     }
     return QString();
 }

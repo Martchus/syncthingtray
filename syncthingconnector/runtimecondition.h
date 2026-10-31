@@ -157,13 +157,15 @@ public:
 
     /*!
      * \brief Returns a short translated status message about why Syncthing is temporarily stopped, or empty string.
+     * \remarks If \a onlyPaused it true, it will return the same message but for Syncthing being paused.
      */
-    QString stopStatusMessage() const;
+    QString stopStatusMessage(bool onlyPaused = false) const;
 
     /*!
      * \brief Returns a short translated status message about why Syncthing is temporarily stopped for the specified \a conditions, or empty string.
+     * \remarks If \a onlyPaused it true, it will return the same message but for Syncthing being paused.
      */
-    QString stopStatusMessage(Conditions conditions) const;
+    QString stopStatusMessage(Conditions conditions, bool onlyPaused = false) const;
 
     /*!
      * \brief Returns the currently enabled conditions.

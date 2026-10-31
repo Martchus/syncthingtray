@@ -119,6 +119,7 @@ AppService::AppService(bool insecure, QObject *parent)
     connect(m_data.connection(), &SyncthingConnection::devStatusChanged, this, &AppService::handleChangedDevices);
     connect(m_data.connection(), &SyncthingConnection::newErrors, this, &AppService::handleNewErrors);
     connect(m_data.connection()->runtimeCondition(), &RuntimeCondition::enabledConditionsChanged, this, &AppService::invalidateStatus);
+    connect(m_data.connection()->runtimeCondition(), &RuntimeCondition::supposedToRunChanged, this, &AppService::invalidateStatus);
 
     m_launcher.setEmittingOutput(true);
     connect(&m_launcher, &SyncthingLauncher::outputAvailable, this, &AppService::gatherLogsFromBytes);
@@ -561,7 +562,12 @@ QJniObject &AppService::makeAndroidIcon(const QIcon &icon)
 void AppService::updateAndroidNotification()
 {
     const auto &statusInfo = *m_data.statusInfo();
-    const auto title = QJniObject::fromString(m_data.connection()->isConnected() ? statusInfo.statusText() : status());
+    const auto paused = m_data.connection()->isConnected();
+    const auto pauseStatusMessage = paused
+        ? m_data.connection()->runtimeCondition()->stopStatusMessage(true)
+        : QString();
+    const auto title = QJniObject::fromString(
+        !pauseStatusMessage.isEmpty() ? pauseStatusMessage : (paused ? statusInfo.statusText() : status()));
     const auto text = QJniObject::fromString(statusInfo.additionalStatusText());
     static const auto subText = QJniObject::fromString(QString());
 #ifdef SYNCTHINGTRAY_SERVICE_WITH_ICON_RENDERING
@@ -570,7 +576,7 @@ void AppService::updateAndroidNotification()
     static const auto icon = QJniObject();
 #endif
     const auto isForceSuspend = m_data.connection()->runtimeCondition()->enabledConditions() && Data::RuntimeCondition::Conditions::ForceSuspend;
-    const auto pauseResumeState = jint(isForceSuspend ? 2 : (m_data.connection()->isConnected() ? 1 : 0));
+    const auto pauseResumeState = jint(isForceSuspend ? 2 : (paused ? 1 : 0));
     QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateNotification",
         "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;I)V", title.object(), text.object(), subText.object(),
         icon.object(), pauseResumeState);
