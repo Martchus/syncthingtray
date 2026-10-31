@@ -41,11 +41,18 @@ public class SyncthingService extends QtService {
     private static SyncthingService s_instance = null;
 
     // fields for managing notifications
+    public static final int PAUSE_RESUME_STATE_NONE = 0;
+    public static final int PAUSE_RESUME_STATE_PAUSE = 1;
+    public static final int PAUSE_RESUME_STATE_RESUME = 2;
     private static final int s_notificationID = 1;
     private static final int s_activityIntentRequestCode = 1;
-    private static final int s_serviceIntentRequestCode = 1;
+    private static final int s_shutdownIntentRequestCode = 1;
+    private static final int s_pauseIntentRequestCode = 2;
+    private static final int s_resumeIntentRequestCode = 3;
     private Intent m_notificationContentIntent;
     private Intent m_shutdownIntent;
+    private Intent m_pauseIntent;
+    private Intent m_resumeIntent;
     private NotificationManager m_notificationManager;
     private NotificationChannel m_notificationChannel;
     private NotificationChannel m_extraNotificationChannel;
@@ -56,6 +63,7 @@ public class SyncthingService extends QtService {
     private static String s_notificationText = "";
     private static String s_notificationSubText = "";
     private static Bitmap s_notificationIcon = null;
+    private static int s_notificationPauseResumeState = PAUSE_RESUME_STATE_NONE;
 
     // fields to communicate with activity
     private final CopyOnWriteArrayList<Messenger> m_clients = new CopyOnWriteArrayList<Messenger>();
@@ -250,6 +258,10 @@ public class SyncthingService extends QtService {
         m_notificationContentIntent.putExtra("notification", true);
         m_shutdownIntent = new Intent(this, SyncthingService.class);
         m_shutdownIntent.setAction("shutdown");
+        m_pauseIntent = new Intent(this, SyncthingService.class);
+        m_pauseIntent.setAction("pause");
+        m_resumeIntent = new Intent(this, SyncthingService.class);
+        m_resumeIntent.setAction("resume");
 
         m_notificationBuilder
             .setContentTitle(s_notificationTitle)
@@ -260,12 +272,12 @@ public class SyncthingService extends QtService {
             .setOngoing(true)
             .setOnlyAlertOnce(true)
             .setContentIntent(PendingIntent.getActivity(this, s_activityIntentRequestCode, m_notificationContentIntent, PendingIntent.FLAG_IMMUTABLE))
-            .addAction((new Notification.Action.Builder(null, getString(R.string.shutdown), PendingIntent.getService(this, s_serviceIntentRequestCode, m_shutdownIntent, PendingIntent.FLAG_IMMUTABLE)).build()))
             .setPriority(Notification.PRIORITY_DEFAULT)
             .setDefaults(Notification.DEFAULT_SOUND)
             .setCategory(Notification.CATEGORY_SERVICE)
             .setGroup(TAG)
             .setAutoCancel(false);
+        updateNotificationActions(s_notificationPauseResumeState);
         m_extraNotificationBuilder
             .setSmallIcon(R.drawable.ic_stat_notify)
             .setColor(0xff169ad1)
@@ -282,12 +294,30 @@ public class SyncthingService extends QtService {
         }
     }
 
+    private void updateNotificationActions(int pauseResumeState) {
+        if (m_notificationBuilder == null) {
+            return;
+        }
+        ArrayList<Notification.Action> actions = new ArrayList<>();
+        if (pauseResumeState == PAUSE_RESUME_STATE_PAUSE) {
+            actions.add(new Notification.Action.Builder(null, getString(R.string.pause),
+                PendingIntent.getService(this, s_pauseIntentRequestCode, m_pauseIntent, PendingIntent.FLAG_IMMUTABLE)).build());
+        } else if (pauseResumeState == PAUSE_RESUME_STATE_RESUME) {
+            actions.add(new Notification.Action.Builder(null, getString(R.string.resume),
+                PendingIntent.getService(this, s_resumeIntentRequestCode, m_resumeIntent, PendingIntent.FLAG_IMMUTABLE)).build());
+        }
+        actions.add(new Notification.Action.Builder(null, getString(R.string.shutdown),
+            PendingIntent.getService(this, s_shutdownIntentRequestCode, m_shutdownIntent, PendingIntent.FLAG_IMMUTABLE)).build());
+        m_notificationBuilder.setActions(actions.toArray(new Notification.Action[0]));
+    }
+
     public static boolean areNotificationsEnabled() {
         return s_instance != null && s_instance.m_notificationManager.areNotificationsEnabled();
     }
 
-    public static void updateNotification(String title, String text, String subText, Bitmap bitmapIcon) {
-        if (s_notificationTitle.equals(title) && s_notificationText.equals(text) && s_notificationSubText.equals(subText)) {
+    public static void updateNotification(String title, String text, String subText, Bitmap bitmapIcon, int pauseResumeState) {
+        if (s_notificationTitle.equals(title) && s_notificationText.equals(text) && s_notificationSubText.equals(subText)
+                && s_notificationPauseResumeState == pauseResumeState) {
             return;
         }
         if (title != null) {
@@ -302,6 +332,8 @@ public class SyncthingService extends QtService {
         if (bitmapIcon != null) {
             s_notificationIcon = bitmapIcon;
         }
+        boolean actionsChanged = s_notificationPauseResumeState != pauseResumeState;
+        s_notificationPauseResumeState = pauseResumeState;
         if (s_instance == null) {
             return;
         }
@@ -311,6 +343,9 @@ public class SyncthingService extends QtService {
             // update only large icon (not calling setSmallIcon(icon)) because Android doesn't render the badge correctly on the small icon
             Icon icon = Icon.createWithBitmap(s_notificationIcon);
             s_instance.m_notificationBuilder.setLargeIcon(icon);
+        }
+        if (actionsChanged) {
+            s_instance.updateNotificationActions(s_notificationPauseResumeState);
         }
         s_instance.m_notification = s_instance.m_notificationBuilder.build();
         s_instance.showForegroundNotification();
@@ -405,6 +440,18 @@ public class SyncthingService extends QtService {
             sendMessageToClients(MSG_FINISH_CLIENT, 0, 0, "");
             stopForeground(Service.STOP_FOREGROUND_REMOVE);
             stopSelf();
+        } else if (intent != null && "pause".equals(intent.getAction())) {
+            try {
+                pauseSyncthing(true);
+            } catch (java.lang.UnsatisfiedLinkError e) {
+                Log.i(TAG, "Unable to pause Syncthing, backend not started yet");
+            }
+        } else if (intent != null && "resume".equals(intent.getAction())) {
+            try {
+                pauseSyncthing(false);
+            } catch (java.lang.UnsatisfiedLinkError e) {
+                Log.i(TAG, "Unable to resume Syncthing, backend not started yet");
+            }
         } else {
             try {
                 broadcastLauncherStatus();
@@ -483,6 +530,7 @@ public class SyncthingService extends QtService {
     }
 
     private static native void stopLibSyncthing();
+    private static native void pauseSyncthing(boolean pause);
     private static native void broadcastLauncherStatus();
     private static native void handleMessageFromActivity(int what, int arg1, int arg2, String str);
     private static native void handlePowerSaveModeChanged(boolean powerSaveMode);

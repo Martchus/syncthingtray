@@ -61,6 +61,7 @@ public:
     Q_INVOKABLE void stopLibSyncthing();
     Q_INVOKABLE void restartSyncthing();
     Q_INVOKABLE void shutdownSyncthing();
+    Q_INVOKABLE void pauseSyncthing(bool pause);
     Q_INVOKABLE void clearLog();
     Q_INVOKABLE void replayLog();
     Q_INVOKABLE void replayLogString(const QString &log);

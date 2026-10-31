@@ -118,6 +118,7 @@ AppService::AppService(bool insecure, QObject *parent)
     connect(m_data.connection(), &SyncthingConnection::hasOutOfSyncDirsChanged, this, &AppService::invalidateStatus);
     connect(m_data.connection(), &SyncthingConnection::devStatusChanged, this, &AppService::handleChangedDevices);
     connect(m_data.connection(), &SyncthingConnection::newErrors, this, &AppService::handleNewErrors);
+    connect(m_data.connection()->runtimeCondition(), &RuntimeCondition::enabledConditionsChanged, this, &AppService::invalidateStatus);
 
     m_launcher.setEmittingOutput(true);
     connect(&m_launcher, &SyncthingLauncher::outputAvailable, this, &AppService::gatherLogsFromBytes);
@@ -301,6 +302,11 @@ void AppService::shutdownSyncthing()
 {
     m_launcher.setManuallyStopped(true);
     m_data.connection()->shutdown();
+}
+
+void AppService::pauseSyncthing(bool pause)
+{
+    m_data.connection()->runtimeCondition()->modEnabledConditions(Data::RuntimeCondition::Conditions::ForceSuspend, pause);
 }
 
 void AppService::clearLog()
@@ -563,9 +569,11 @@ void AppService::updateAndroidNotification()
 #else
     static const auto icon = QJniObject();
 #endif
+    const auto isForceSuspend = m_data.connection()->runtimeCondition()->enabledConditions() && Data::RuntimeCondition::Conditions::ForceSuspend;
+    const auto pauseResumeState = jint(isForceSuspend ? 2 : (m_data.connection()->isConnected() ? 1 : 0));
     QJniObject::callStaticMethod<void>("io/github/martchus/syncthingtray/SyncthingService", "updateNotification",
-        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;)V", title.object(), text.object(), subText.object(),
-        icon.object());
+        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Landroid/graphics/Bitmap;I)V", title.object(), text.object(), subText.object(),
+        icon.object(), pauseResumeState);
 }
 
 void AppService::updateExtraAndroidNotification(
