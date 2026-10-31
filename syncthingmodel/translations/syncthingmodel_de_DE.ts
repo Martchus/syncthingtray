@@ -55,12 +55,12 @@
         <location filename="../syncthingdevicemodel.cpp" line="98"/>
         <location filename="../syncthingdevicemodel.cpp" line="134"/>
         <source>ID</source>
-        <translation></translation>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="100"/>
         <source>Status</source>
-        <translation></translation>
+        <translation>Status</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="136"/>
@@ -120,7 +120,7 @@
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="154"/>
         <source>Version</source>
-        <translation></translation>
+        <translation>Version</translation>
     </message>
     <message numerus="yes">
         <location filename="../syncthingdevicemodel.cpp" line="169"/>
@@ -227,12 +227,12 @@
         <location filename="../syncthingdirectorymodel.cpp" line="107"/>
         <location filename="../syncthingdirectorymodel.cpp" line="139"/>
         <source>ID</source>
-        <translation></translation>
+        <translation>ID</translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="109"/>
         <source>Status</source>
-        <translation></translation>
+        <translation>Status</translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="141"/>
@@ -502,7 +502,7 @@
     <message>
         <location filename="../syncthingfilemodel.cpp" line="323"/>
         <source>Name</source>
-        <translation></translation>
+        <translation>Name</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="325"/>
@@ -735,12 +735,12 @@
     <message>
         <location filename="../syncthingrecentchangesmodel.cpp" line="117"/>
         <source>Locally</source>
-        <translation></translation>
+        <translation>Lokal</translation>
     </message>
     <message>
         <location filename="../syncthingrecentchangesmodel.cpp" line="117"/>
         <source>Remotely</source>
-        <translation></translation>
+        <translation>Entfernt</translation>
     </message>
 </context>
 <context>

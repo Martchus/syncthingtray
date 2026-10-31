@@ -6,52 +6,52 @@
     <message>
         <location filename="../runtimecondition.cpp" line="743"/>
         <source>Network connection is metered</source>
-        <translation type="unfinished"></translation>
+        <translation>Síťové připojení je měřené</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="743"/>
         <source>Network connection is not metered</source>
-        <translation type="unfinished"></translation>
+        <translation>Síťové připojení není měřené</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="745"/>
         <source>State of network connection cannot be determined</source>
-        <translation type="unfinished"></translation>
+        <translation>Stav síťového připojení nelze zjistit</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="777"/>
         <source>Battery saving mode is enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Režim úspory baterie je povolen</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="777"/>
         <source>Battery saving mode is disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Režim úspory baterie je zakázán</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="779"/>
         <source>State of battery saving mode cannot be determined</source>
-        <translation type="unfinished"></translation>
+        <translation>Stav režimu úspory baterie nelze zjistit</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="813"/>
         <source>Running on battery (%1%)</source>
-        <translation type="unfinished"></translation>
+        <translation>Provoz na baterii (%1 %)</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="815"/>
         <source>Running on battery</source>
-        <translation type="unfinished"></translation>
+        <translation>Provoz na baterii</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="818"/>
         <source>Power supply connected</source>
-        <translation type="unfinished"></translation>
+        <translation>Napájení připojeno</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="821"/>
         <source>Battery status cannot be determined</source>
-        <translation type="unfinished"></translation>
+        <translation>Stav baterie nelze zjistit</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="879"/>
@@ -139,17 +139,17 @@
     <message>
         <location filename="../syncthingconnection.cpp" line="183"/>
         <source>connected, remote not in sync</source>
-        <translation type="unfinished"></translation>
+        <translation>připojeno, vzdálené zařízení není synchronizováno</translation>
     </message>
     <message>
         <location filename="../syncthingconnection.cpp" line="185"/>
         <source>connected, but all remote devices disconnected</source>
-        <translation type="unfinished"></translation>
+        <translation>připojeno, ale všechna vzdálená zařízení jsou odpojena</translation>
     </message>
     <message>
         <location filename="../syncthingconnection.cpp" line="1007"/>
         <source>Unable to parse timestamp &quot;%1&quot; (%2): %3</source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze analyzovat časové razítko &quot;%1&quot; (%2): %3</translation>
     </message>
     <message>
         <source>connected, out of sync</source>
@@ -314,12 +314,12 @@
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="835"/>
         <source>Unable to suspend Syncthing: </source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze pozastavit Syncthing: </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="835"/>
         <source>Unable to resume Syncthing: </source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze obnovit Syncthing: </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1455"/>
@@ -359,43 +359,43 @@
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1837"/>
         <source>Unable to request directory override: </source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze vyžádat přepsání adresáře: </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1886"/>
         <source>Unable to request directory revert: </source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze vyžádat vrácení adresáře: </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="2077"/>
         <source>Unable to parse JSON response: </source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze analyzovat odpověď JSON: </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="2090"/>
         <source>Unable to request: </source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze vyžádat: </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="2115"/>
         <source>Unable to parse response for browsing &quot;%1&quot;: </source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze analyzovat odpověď pro procházení &quot;%1&quot;: </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="2129"/>
         <source>Unable to browse &quot;%1&quot;: </source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze procházet &quot;%1&quot;: </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="2153"/>
         <location filename="../syncthingconnection_requests.cpp" line="2177"/>
         <source>Unable to query ignore patterns of &quot;%1&quot;: </source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze zjistit vzory ignorování pro &quot;%1&quot;: </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="2203"/>
         <source>Unable to change ignore patterns of &quot;%1&quot;: </source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze změnit vzory ignorování pro &quot;%1&quot;: </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="3139"/>
@@ -415,12 +415,12 @@
     <message>
         <location filename="../syncthingconnection.h" line="797"/>
         <source>connecting</source>
-        <translation type="unfinished"></translation>
+        <translation>připojování</translation>
     </message>
     <message>
         <location filename="../syncthingconnection.h" line="799"/>
         <source>, re-connect attempt every %1 ms</source>
-        <translation type="unfinished"></translation>
+        <translation>, pokus o opětovné připojení každých %1 ms</translation>
     </message>
 </context>
 <context>
@@ -463,7 +463,7 @@
     <message>
         <location filename="../syncthingnotifier.cpp" line="119"/>
         <source>Syncthing crashed</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing havaroval</translation>
     </message>
     <message>
         <source>Syncthing crashed with exit code %1</source>
@@ -480,32 +480,32 @@
     <message>
         <location filename="../syncthingprocess.cpp" line="253"/>
         <source>failed to start (e.g. executable does not exist or not permission error)</source>
-        <translation type="unfinished"></translation>
+        <translation>spuštění se nezdařilo (např. spustitelný soubor neexistuje nebo chybí oprávnění)</translation>
     </message>
     <message>
         <location filename="../syncthingprocess.cpp" line="255"/>
         <source>process crashed</source>
-        <translation type="unfinished"></translation>
+        <translation>proces havaroval</translation>
     </message>
     <message>
         <location filename="../syncthingprocess.cpp" line="257"/>
         <source>timeout error</source>
-        <translation type="unfinished"></translation>
+        <translation>chyba vypršení časového limitu</translation>
     </message>
     <message>
         <location filename="../syncthingprocess.cpp" line="259"/>
         <source>read error</source>
-        <translation type="unfinished"></translation>
+        <translation>chyba čtení</translation>
     </message>
     <message>
         <location filename="../syncthingprocess.cpp" line="261"/>
         <source>write error</source>
-        <translation type="unfinished"></translation>
+        <translation>chyba zápisu</translation>
     </message>
     <message>
         <location filename="../syncthingprocess.cpp" line="263"/>
         <source>unknown process error</source>
-        <translation type="unfinished"></translation>
+        <translation>neznámá chyba procesu</translation>
     </message>
 </context>
 <context>
@@ -513,12 +513,12 @@
     <message>
         <location filename="../syncthingservice.cpp" line="325"/>
         <source>user unit &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>uživatelská jednotka &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../syncthingservice.cpp" line="327"/>
         <source>system unit &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>systémová jednotka &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../syncthingservice.cpp" line="388"/>
@@ -543,7 +543,7 @@
     <message>
         <location filename="../syncthingservice.cpp" line="417"/>
         <source>reload all unit files</source>
-        <translation type="unfinished"></translation>
+        <translation>znovu načíst všechny soubory jednotek</translation>
     </message>
 </context>
 <context>
@@ -635,12 +635,12 @@
     <message>
         <location filename="../syncthingdev.cpp" line="36"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation>Pozastaveno</translation>
     </message>
     <message>
         <location filename="../syncthingdev.cpp" line="39"/>
         <source>Syncing (%1 %, %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Synchronizace (%1 %, %2)</translation>
     </message>
 </context>
 <context>
@@ -676,37 +676,37 @@
     <message>
         <location filename="../syncthingdev.cpp" line="15"/>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Neznámý</translation>
     </message>
     <message>
         <location filename="../syncthingdev.cpp" line="17"/>
         <source>Disconnected</source>
-        <translation type="unfinished"></translation>
+        <translation>Odpojeno</translation>
     </message>
     <message>
         <location filename="../syncthingdev.cpp" line="19"/>
         <source>This Device</source>
-        <translation type="unfinished"></translation>
+        <translation>Toto zařízení</translation>
     </message>
     <message>
         <location filename="../syncthingdev.cpp" line="21"/>
         <source>Idle</source>
-        <translation type="unfinished"></translation>
+        <translation>Nečinný</translation>
     </message>
     <message>
         <location filename="../syncthingdev.cpp" line="23"/>
         <source>Syncing</source>
-        <translation type="unfinished"></translation>
+        <translation>Synchronizace</translation>
     </message>
     <message>
         <location filename="../syncthingdev.cpp" line="25"/>
         <source>Out of Sync</source>
-        <translation type="unfinished"></translation>
+        <translation>Není synchronizováno</translation>
     </message>
     <message>
         <location filename="../syncthingdev.cpp" line="27"/>
         <source>Rejected</source>
-        <translation type="unfinished"></translation>
+        <translation>Odmítnuto</translation>
     </message>
 </context>
 <context>
@@ -722,87 +722,87 @@
     <message>
         <location filename="../syncthingdir.cpp" line="201"/>
         <source>Paused</source>
-        <translation type="unfinished"></translation>
+        <translation>Pozastaveno</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="204"/>
         <source>Unshared</source>
-        <translation type="unfinished"></translation>
+        <translation>Nesdíleno</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="18"/>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Neznámý</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="216"/>
         <source>Local Additions</source>
-        <translation type="unfinished"></translation>
+        <translation>Místní přírůstky</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="218"/>
         <source>Unexpected Items</source>
-        <translation type="unfinished"></translation>
+        <translation>Neočekávané položky</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="20"/>
         <source>Up to Date</source>
-        <translation type="unfinished"></translation>
+        <translation>Aktuální</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="22"/>
         <source>Waiting to Scan</source>
-        <translation type="unfinished"></translation>
+        <translation>Čeká na prohledání</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="226"/>
         <source>Scanning (%1 %, %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Prohledávání (%1 %, %2)</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="230"/>
         <source>Scanning (%1 %)</source>
-        <translation type="unfinished"></translation>
+        <translation>Prohledávání (%1 %)</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="235"/>
         <source>Syncing (%1 %, %2)</source>
-        <translation type="unfinished"></translation>
+        <translation>Synchronizace (%1 %, %2)</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="24"/>
         <source>Scanning</source>
-        <translation type="unfinished"></translation>
+        <translation>Prohledávání</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="26"/>
         <source>Waiting to Sync</source>
-        <translation type="unfinished"></translation>
+        <translation>Čeká na synchronizaci</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="28"/>
         <source>Preparing to Sync</source>
-        <translation type="unfinished"></translation>
+        <translation>Příprava na synchronizaci</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="30"/>
         <source>Syncing</source>
-        <translation type="unfinished"></translation>
+        <translation>Synchronizace</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="32"/>
         <source>Cleaning Versions</source>
-        <translation type="unfinished"></translation>
+        <translation>Čištění verzí</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="34"/>
         <source>Waiting to Clean</source>
-        <translation type="unfinished"></translation>
+        <translation>Čeká na vyčištění</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="36"/>
         <source>Out of Sync</source>
-        <translation type="unfinished"></translation>
+        <translation>Není synchronizováno</translation>
     </message>
 </context>
 <context>
@@ -837,7 +837,7 @@
     <message>
         <location filename="../syncthingdir.cpp" line="45"/>
         <source>Unknown</source>
-        <translation type="unfinished"></translation>
+        <translation>Neznámý</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="47"/>
@@ -847,17 +847,17 @@
     <message>
         <location filename="../syncthingdir.cpp" line="49"/>
         <source>Send Only</source>
-        <translation type="unfinished"></translation>
+        <translation>Pouze odesílání</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="51"/>
         <source>Receive Only</source>
-        <translation type="unfinished"></translation>
+        <translation>Pouze příjem</translation>
     </message>
     <message>
         <location filename="../syncthingdir.cpp" line="53"/>
         <source>Receive Encrypted</source>
-        <translation type="unfinished"></translation>
+        <translation>Příjem šifrovaně</translation>
     </message>
     <message>
         <source>Send only</source>

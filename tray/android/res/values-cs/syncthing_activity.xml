@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="unable_to_send_message_to_background_service">Zprávu nelze odeslat službě na pozadí: %s</string>
+    <string name="unable_to_request_storage_permission">Nelze požádat o oprávnění k přístupu k úložišti.</string>
+    <string name="unable_to_request_notification_permission">Nelze požádat o oprávnění k oznámením.</string>
+    <string name="unable_to_request_local_network_permission">Nelze požádat o oprávnění k místní síti.</string>
+    <string name="rescan_of_s_completed">Opakované skenování %s dokončeno</string>
+    <string name="triggered_rescan_of_s">Spuštěno opakované skenování %s</string>
+</resources>

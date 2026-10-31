@@ -6,52 +6,52 @@
     <message>
         <location filename="../runtimecondition.cpp" line="743"/>
         <source>Network connection is metered</source>
-        <translation type="unfinished"></translation>
+        <translation>网络连接按流量计费</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="743"/>
         <source>Network connection is not metered</source>
-        <translation type="unfinished"></translation>
+        <translation>网络连接非按流量计费</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="745"/>
         <source>State of network connection cannot be determined</source>
-        <translation type="unfinished"></translation>
+        <translation>无法确定网络连接状态</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="777"/>
         <source>Battery saving mode is enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>省电模式已启用</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="777"/>
         <source>Battery saving mode is disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>省电模式已禁用</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="779"/>
         <source>State of battery saving mode cannot be determined</source>
-        <translation type="unfinished"></translation>
+        <translation>无法确定省电模式状态</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="813"/>
         <source>Running on battery (%1%)</source>
-        <translation type="unfinished"></translation>
+        <translation>正在使用电池供电（%1%）</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="815"/>
         <source>Running on battery</source>
-        <translation type="unfinished"></translation>
+        <translation>正在使用电池供电</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="818"/>
         <source>Power supply connected</source>
-        <translation type="unfinished"></translation>
+        <translation>已连接电源</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="821"/>
         <source>Battery status cannot be determined</source>
-        <translation type="unfinished"></translation>
+        <translation>无法确定电池状态</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="879"/>
@@ -149,12 +149,12 @@
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="835"/>
         <source>Unable to suspend Syncthing: </source>
-        <translation type="unfinished"></translation>
+        <translation>无法挂起 Syncthing：</translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="835"/>
         <source>Unable to resume Syncthing: </source>
-        <translation type="unfinished"></translation>
+        <translation>无法恢复 Syncthing：</translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="872"/>
@@ -505,12 +505,12 @@
     <message>
         <location filename="../syncthingservice.cpp" line="325"/>
         <source>user unit &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>用户单元 &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../syncthingservice.cpp" line="327"/>
         <source>system unit &quot;%1&quot;</source>
-        <translation type="unfinished"></translation>
+        <translation>系统单元 &quot;%1&quot;</translation>
     </message>
     <message>
         <location filename="../syncthingservice.cpp" line="388"/>

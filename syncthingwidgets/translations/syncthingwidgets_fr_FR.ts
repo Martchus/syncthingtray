@@ -1021,12 +1021,12 @@
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="647"/>
         <source>Save support bundle</source>
-        <translation type="unfinished">Enregistrer le bundle de support</translation>
+        <translation>Enregistrer le pack d&apos;assistance</translation>
     </message>
     <message>
         <location filename="../quick/qml/DesktopWindow.qml" line="648"/>
         <source>Zip archives (*.zip)</source>
-        <translation type="unfinished"></translation>
+        <translation>Archives Zip (*.zip)</translation>
     </message>
 </context>
 <context>
@@ -2939,7 +2939,7 @@
     <message>
         <location filename="../quick/app.cpp" line="836"/>
         <source>Flush triggered</source>
-        <translation type="unfinished"></translation>
+        <translation>Vidage déclenché</translation>
     </message>
     <message>
         <location filename="../quick/app.cpp" line="859"/>
@@ -3279,7 +3279,7 @@
     <message>
         <location filename="../quick/appservice.cpp" line="362"/>
         <source>Unable to flush log file: %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Impossible de vider le fichier journal : %1</translation>
     </message>
     <message>
         <location filename="../quick/appservice.cpp" line="379"/>
@@ -4366,7 +4366,7 @@
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="35"/>
         <source>Syncthing Tray&apos;s own dashboard</source>
-        <translation type="unfinished"></translation>
+        <translation>Tableau de bord propre à Syncthing Tray</translation>
     </message>
     <message>
         <location filename="../settings/generalwebviewoptionpage.ui" line="42"/>
@@ -5908,7 +5908,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="64"/>
         <source>Save support bundle</source>
-        <translation>Enregistrer le bundle de support</translation>
+        <translation>Enregistrer le pack d&apos;assistance</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="140"/>
@@ -6185,12 +6185,12 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="212"/>
         <source>Start on boot</source>
-        <translation type="unfinished"></translation>
+        <translation>Démarrer au démarrage</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="212"/>
         <source>Start the Syncthing service automatically when the device boots</source>
-        <translation type="unfinished"></translation>
+        <translation>Démarrer automatiquement le service Syncthing au démarrage de l&apos;appareil</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="214"/>
@@ -6215,7 +6215,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="15"/>
         <source>%1 - changes not saved yet</source>
-        <translation type="unfinished">%1 - modifications non enregistrées</translation>
+        <translation>%1 - modifications non enregistrées</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="224"/>
@@ -6240,12 +6240,12 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="227"/>
         <source>Flush persistent logs</source>
-        <translation type="unfinished"></translation>
+        <translation>Vider les journaux persistants</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="227"/>
         <source>Flush persistent log file immediately</source>
-        <translation type="unfinished"></translation>
+        <translation>Vider immédiatement le fichier journal persistant</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="228"/>
@@ -6351,7 +6351,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="258"/>
         <source>Discard changes</source>
-        <translation type="unfinished">Annuler les modifications</translation>
+        <translation>Annuler les modifications</translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="268"/>
@@ -6384,7 +6384,7 @@ Cette boîte de dialogue se ferme automatiquement lorsque le processus se termin
     <message>
         <location filename="../quick/qml/StartPage.qml" line="43"/>
         <source>Request local network permission</source>
-        <translation type="unfinished"></translation>
+        <translation>Demander l&apos;autorisation pour le réseau local</translation>
     </message>
     <message>
         <location filename="../quick/qml/StartPage.qml" line="60"/>

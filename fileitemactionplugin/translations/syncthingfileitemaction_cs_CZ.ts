@@ -106,7 +106,7 @@
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="247"/>
         <source>Not a shared directory</source>
-        <translation type="unfinished"></translation>
+        <translation>Není sdíleným adresářem</translation>
     </message>
     <message>
         <location filename="../syncthingfileitemaction.cpp" line="282"/>

@@ -41,27 +41,27 @@
     <message>
         <location filename="../package6/contents/ui/DevicesPage.qml" line="14"/>
         <source>device</source>
-        <translation type="unfinished"></translation>
+        <translation>设备</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/DevicesPage.qml" line="22"/>
         <source>Filter devices</source>
-        <translation type="unfinished"></translation>
+        <translation>过滤设备</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/DevicesPage.qml" line="152"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/DevicesPage.qml" line="158"/>
         <source>Out of Sync items</source>
-        <translation type="unfinished"></translation>
+        <translation>未同步项目</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/DevicesPage.qml" line="163"/>
         <source>Advanced config</source>
-        <translation type="unfinished"></translation>
+        <translation>高级配置</translation>
     </message>
 </context>
 <context>
@@ -124,17 +124,17 @@
     <message>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="14"/>
         <source>folder</source>
-        <translation type="unfinished"></translation>
+        <translation>文件夹</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="191"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>编辑</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="198"/>
         <source>Out of Sync items</source>
-        <translation type="unfinished"></translation>
+        <translation>未同步项目</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="212"/>
@@ -149,7 +149,7 @@
     <message>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="225"/>
         <source>Advanced config</source>
-        <translation type="unfinished"></translation>
+        <translation>高级配置</translation>
     </message>
 </context>
 <context>
@@ -278,7 +278,7 @@
     <message>
         <location filename="../package6/contents/ui/FullRepresentation.qml" line="142"/>
         <source>Add %1</source>
-        <translation type="unfinished"></translation>
+        <translation>添加 %1</translation>
     </message>
 </context>
 <context>
@@ -327,7 +327,7 @@
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="145"/>
         <source>Syncthing icons</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing 图标</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="154"/>
@@ -342,27 +342,27 @@
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="202"/>
         <source>Folders</source>
-        <translation type="unfinished">文件夹</translation>
+        <translation>文件夹</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="207"/>
         <source>Devices</source>
-        <translation type="unfinished">设备</translation>
+        <translation>设备</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="217"/>
         <source>Recent changes</source>
-        <translation type="unfinished"></translation>
+        <translation>最近更改</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="222"/>
         <source>Last</source>
-        <translation type="unfinished"></translation>
+        <translation>最后</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="230"/>
         <source>Default tab</source>
-        <translation type="unfinished"></translation>
+        <translation>默认标签页</translation>
     </message>
     <message>
         <source>Note that the size is ignored when the Plasmoid is displayed on the desktop or in full screen mode. When displayed as entry of the system tray Plasmoid the size can not be changed (setting a high value just leads to the contents being clipped).</source>

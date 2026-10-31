@@ -100,12 +100,12 @@
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="191"/>
         <source>never</source>
-        <translation type="unfinished"></translation>
+        <translation>从不</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="216"/>
         <source>unknown</source>
-        <translation type="unfinished">未知</translation>
+        <translation>未知</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="138"/>
@@ -696,7 +696,7 @@
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="50"/>
         <source>Unread notification present</source>
-        <translation></translation>
+        <translation>存在未读通知</translation>
     </message>
 </context>
 </TS>

@@ -41,27 +41,27 @@
     <message>
         <location filename="../package6/contents/ui/DevicesPage.qml" line="14"/>
         <source>device</source>
-        <translation type="unfinished"></translation>
+        <translation>устройство</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/DevicesPage.qml" line="22"/>
         <source>Filter devices</source>
-        <translation type="unfinished"></translation>
+        <translation>Фильтр устройств</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/DevicesPage.qml" line="152"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактировать</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/DevicesPage.qml" line="158"/>
         <source>Out of Sync items</source>
-        <translation type="unfinished"></translation>
+        <translation>Несинхронизированные элементы</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/DevicesPage.qml" line="163"/>
         <source>Advanced config</source>
-        <translation type="unfinished"></translation>
+        <translation>Расширенные настройки</translation>
     </message>
 </context>
 <context>
@@ -124,17 +124,17 @@
     <message>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="14"/>
         <source>folder</source>
-        <translation type="unfinished"></translation>
+        <translation>папка</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="191"/>
         <source>Edit</source>
-        <translation type="unfinished"></translation>
+        <translation>Редактировать</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="198"/>
         <source>Out of Sync items</source>
-        <translation type="unfinished"></translation>
+        <translation>Несинхронизированные элементы</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="212"/>
@@ -149,7 +149,7 @@
     <message>
         <location filename="../package6/contents/ui/DirectoriesPage.qml" line="225"/>
         <source>Advanced config</source>
-        <translation type="unfinished"></translation>
+        <translation>Расширенные настройки</translation>
     </message>
 </context>
 <context>
@@ -230,7 +230,7 @@
     <message>
         <location filename="../package6/contents/ui/FullRepresentation.qml" line="142"/>
         <source>Add %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Добавить %1</translation>
     </message>
 </context>
 <context>
@@ -269,7 +269,7 @@
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="145"/>
         <source>Syncthing icons</source>
-        <translation type="unfinished"></translation>
+        <translation>Значки Syncthing</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="175"/>
@@ -279,27 +279,27 @@
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="202"/>
         <source>Folders</source>
-        <translation type="unfinished">Папки</translation>
+        <translation>Папки</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="207"/>
         <source>Devices</source>
-        <translation type="unfinished">Устройства</translation>
+        <translation>Устройства</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="217"/>
         <source>Recent changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Недавние изменения</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="222"/>
         <source>Last</source>
-        <translation type="unfinished"></translation>
+        <translation>Последнее</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="230"/>
         <source>Default tab</source>
-        <translation type="unfinished"></translation>
+        <translation>Вкладка по умолчанию</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="119"/>

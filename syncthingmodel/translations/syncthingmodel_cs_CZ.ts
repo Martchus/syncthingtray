@@ -41,7 +41,7 @@
     <message>
         <location filename="../syncthingicons.cpp" line="269"/>
         <source>No remote device connected</source>
-        <translation type="unfinished"></translation>
+        <translation>Není připojeno žádné vzdálené zařízení</translation>
     </message>
     <message>
         <location filename="../syncthingicons.cpp" line="270"/>
@@ -65,7 +65,7 @@
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="136"/>
         <source>Out of Sync items</source>
-        <translation type="unfinished"></translation>
+        <translation>Nesynchronizované položky</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="142"/>
@@ -75,7 +75,7 @@
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="144"/>
         <source>Connection type</source>
-        <translation type="unfinished"></translation>
+        <translation>Typ připojení</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="146"/>
@@ -100,12 +100,12 @@
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="191"/>
         <source>never</source>
-        <translation type="unfinished"></translation>
+        <translation>nikdy</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="216"/>
         <source>unknown</source>
-        <translation type="unfinished">neznámé</translation>
+        <translation>neznámý</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="138"/>
@@ -125,21 +125,21 @@
     <message numerus="yes">
         <location filename="../syncthingdevicemodel.cpp" line="169"/>
         <source>%1 item(s), ~ %2</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 položka, ~ %2</numerusform>
+            <numerusform>%1 položky, ~ %2</numerusform>
+            <numerusform>%1 položek, ~ %2</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="186"/>
         <source>local</source>
-        <translation type="unfinished"></translation>
+        <translation>místní</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="186"/>
         <source>remote</source>
-        <translation type="unfinished"></translation>
+        <translation>vzdálený</translation>
     </message>
     <message>
         <source>unknown or this device</source>
@@ -210,7 +210,7 @@
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="141"/>
         <source>Path</source>
-        <translation>Popis umístění</translation>
+        <translation>Cesta</translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="151"/>
@@ -230,49 +230,49 @@
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="157"/>
         <source>Out of Sync items</source>
-        <translation type="unfinished"></translation>
+        <translation>Nesynchronizované položky</translation>
     </message>
     <message numerus="yes">
         <location filename="../syncthingdirectorymodel.cpp" line="197"/>
         <source>%1 item(s), ~ %2</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 položka, ~ %2</numerusform>
+            <numerusform>%1 položky, ~ %2</numerusform>
+            <numerusform>%1 položek, ~ %2</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../syncthingdirectorymodel.cpp" line="208"/>
         <source>%1 item(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 položka</numerusform>
+            <numerusform>%1 položky</numerusform>
+            <numerusform>%1 položek</numerusform>
         </translation>
     </message>
     <message numerus="yes">
         <location filename="../syncthingdirectorymodel.cpp" line="210"/>
         <source>%1 and %2 item(s)</source>
-        <translation type="unfinished">
-            <numerusform></numerusform>
-            <numerusform></numerusform>
-            <numerusform></numerusform>
+        <translation>
+            <numerusform>%1 a %2 položka</numerusform>
+            <numerusform>%1 a %2 položky</numerusform>
+            <numerusform>%1 a %2 položek</numerusform>
         </translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="407"/>
         <source>Override remote changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Přepsat vzdálené změny</translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="410"/>
         <source>Revert local changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Vrátit místní změny</translation>
     </message>
     <message>
         <location filename="../syncthingdirectorymodel.cpp" line="424"/>
         <source>On SD card</source>
-        <translation type="unfinished"></translation>
+        <translation>Na SD kartě</translation>
     </message>
     <message>
         <source>Errors</source>
@@ -287,7 +287,7 @@
         <location filename="../syncthingdirectorymodel.cpp" line="189"/>
         <location filename="../syncthingdirectorymodel.cpp" line="192"/>
         <source>unknown</source>
-        <translation>neznámé</translation>
+        <translation>neznámý</translation>
     </message>
     <message numerus="yes">
         <source>%1 and %2 item(s) out of sync</source>
@@ -411,12 +411,12 @@
     <message>
         <location filename="../syncthingerrormodel.cpp" line="62"/>
         <source>Message</source>
-        <translation type="unfinished"></translation>
+        <translation>Zpráva</translation>
     </message>
     <message>
         <location filename="../syncthingerrormodel.cpp" line="64"/>
         <source>Time</source>
-        <translation type="unfinished"></translation>
+        <translation>Čas</translation>
     </message>
 </context>
 <context>
@@ -424,194 +424,196 @@
     <message>
         <location filename="../syncthingfilemodel.cpp" line="323"/>
         <source>Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Název</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="325"/>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Velikost</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="327"/>
         <source>Last modified</source>
-        <translation type="unfinished"></translation>
+        <translation>Naposledy změněno</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="329"/>
         <source>Ignore pattern</source>
-        <translation type="unfinished"></translation>
+        <translation>Vzor ignorování</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="377"/>
         <source>%1 elements</source>
-        <translation type="unfinished"></translation>
+        <translation>%1 prvků</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="232"/>
         <source>Exists locally and globally</source>
-        <translation type="unfinished"></translation>
+        <translation>Existuje místně i globálně</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="234"/>
         <source>Exists only globally</source>
-        <translation type="unfinished"></translation>
+        <translation>Existuje pouze globálně</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="236"/>
         <source>Exists only locally</source>
-        <translation type="unfinished"></translation>
+        <translation>Existuje pouze místně</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="238"/>
         <source>Exists globally and perhaps locally</source>
-        <translation type="unfinished"></translation>
+        <translation>Existuje globálně a možná místně</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="240"/>
         <source>Exists locally and perhaps globally</source>
-        <translation type="unfinished"></translation>
+        <translation>Existuje místně a možná globálně</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="242"/>
         <source>Does not exist</source>
-        <translation type="unfinished"></translation>
+        <translation>Neexistuje</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="494"/>
         <source>Refresh</source>
-        <translation type="unfinished"></translation>
+        <translation>Obnovit</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="497"/>
         <source>Deselect recursively</source>
-        <translation type="unfinished"></translation>
+        <translation>Zrušit výběr rekurzivně</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="497"/>
         <source>Select recursively</source>
-        <translation type="unfinished"></translation>
+        <translation>Vybrat rekurzivně</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="499"/>
         <source>Deselect single item</source>
-        <translation type="unfinished"></translation>
+        <translation>Zrušit výběr jednotlivé položky</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="499"/>
         <source>Select single item</source>
-        <translation type="unfinished"></translation>
+        <translation>Vybrat jednotlivou položku</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="501"/>
         <source>Open local version</source>
-        <translation type="unfinished"></translation>
+        <translation>Otevřít místní verzi</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="501"/>
         <source>Copy local path</source>
-        <translation type="unfinished"></translation>
+        <translation>Zkopírovat místní cestu</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="501"/>
         <source>Browse locally</source>
-        <translation type="unfinished"></translation>
+        <translation>Procházet místně</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="787"/>
         <source>Select items to sync/ignore</source>
-        <translation type="unfinished"></translation>
+        <translation>Vybrat položky k synchronizaci/ignorování</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="789"/>
         <source>Select</source>
-        <translation type="unfinished"></translation>
+        <translation>Vybrat</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="794"/>
         <source>Discard staged changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Zahodit připravené změny</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="804"/>
         <source>Uncheck all and discard staged changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Odznačit vše a zahodit připravené změny</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="806"/>
         <source>Discard</source>
-        <translation type="unfinished"></translation>
+        <translation>Zahodit</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="818"/>
         <source>Ignore checked items (and their children)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorovat zaškrtnuté položky (a jejich potomky)</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="832"/>
         <source>Include checked items (and their children)</source>
-        <translation type="unfinished"></translation>
+        <translation>Zahrnout zaškrtnuté položky (a jejich potomky)</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="871"/>
         <source>Remove ignore patterns matching checked items (may affect other items as well)</source>
-        <translation type="unfinished"></translation>
+        <translation>Odebrat vzory ignorování odpovídající zaškrtnutým položkám (může ovlivnit i další položky)</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="840"/>
         <source>Include all items by default</source>
-        <translation type="unfinished"></translation>
+        <translation>Ve výchozím nastavení zahrnout všechny položky</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="825"/>
         <source>Ignore and locally delete checked items (and their children)</source>
-        <translation type="unfinished"></translation>
+        <translation>Ignorovat a místně smazat zaškrtnuté položky (a jejich potomky)</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="840"/>
         <source>Ignore all items by default</source>
-        <translation type="unfinished"></translation>
+        <translation>Ve výchozím nastavení ignorovat všechny položky</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="899"/>
         <source>Review and apply staged changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Zkontrolovat a použít připravené změny</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="901"/>
         <source>Apply</source>
-        <translation type="unfinished"></translation>
+        <translation>Použít</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="909"/>
         <source>Do you want to apply the following changes?</source>
-        <translation type="unfinished"></translation>
+        <translation>Chcete použít následující změny?</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="917"/>
         <source>Cannot apply ignore patterns while a previous request for ignore patterns is still pending.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze použít vzory ignorování, dokud předchozí požadavek na vzory ignorování stále probíhá.</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="925"/>
         <source>Unable to change ignore patterns:
 %1</source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze změnit vzory ignorování:
+%1</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="1006"/>
         <source>Ignore patterns have been changed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Vzory ignorování byly změněny.</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="1009"/>
         <source>Ignore patterns have been changed but the following local files could not be deleted:
 </source>
-        <translation type="unfinished"></translation>
+        <translation>Vzory ignorování byly změněny, ale následující místní soubory se nepodařilo smazat:
+</translation>
     </message>
     <message>
         <location filename="../syncthingfilemodel.cpp" line="1179"/>
         <source>Cannot query ignore patterns while a previous request for ignore patterns is still pending.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze zjistit vzory ignorování, dokud předchozí požadavek na vzory ignorování stále probíhá.</translation>
     </message>
 </context>
 <context>
@@ -619,32 +621,32 @@
     <message>
         <location filename="../syncthingrecentchangesmodel.cpp" line="69"/>
         <source>Action</source>
-        <translation type="unfinished"></translation>
+        <translation>Akce</translation>
     </message>
     <message>
         <location filename="../syncthingrecentchangesmodel.cpp" line="71"/>
         <source>Device</source>
-        <translation type="unfinished"></translation>
+        <translation>Zařízení</translation>
     </message>
     <message>
         <location filename="../syncthingrecentchangesmodel.cpp" line="73"/>
         <source>Folder</source>
-        <translation type="unfinished"></translation>
+        <translation>Složka</translation>
     </message>
     <message>
         <location filename="../syncthingrecentchangesmodel.cpp" line="75"/>
         <source>Path</source>
-        <translation type="unfinished">Popis umístění</translation>
+        <translation>Cesta</translation>
     </message>
     <message>
         <location filename="../syncthingrecentchangesmodel.cpp" line="117"/>
         <source>Locally</source>
-        <translation type="unfinished"></translation>
+        <translation>Místně</translation>
     </message>
     <message>
         <location filename="../syncthingrecentchangesmodel.cpp" line="117"/>
         <source>Remotely</source>
-        <translation type="unfinished"></translation>
+        <translation>Vzdáleně</translation>
     </message>
 </context>
 <context>
@@ -652,37 +654,37 @@
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="38"/>
         <source>Local dir is scanning</source>
-        <translation type="unfinished"></translation>
+        <translation>Místní adresář se prohledává</translation>
     </message>
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="40"/>
         <source>Local dir is synchronizing</source>
-        <translation type="unfinished"></translation>
+        <translation>Místní adresář se synchronizuje</translation>
     </message>
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="42"/>
         <source>Remote dir has outstanding progress</source>
-        <translation type="unfinished"></translation>
+        <translation>Vzdálený adresář má nevyřízený postup</translation>
     </message>
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="44"/>
         <source>No remote device connected</source>
-        <translation type="unfinished"></translation>
+        <translation>Není připojeno žádné vzdálené zařízení</translation>
     </message>
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="46"/>
         <source>A device is paused</source>
-        <translation type="unfinished"></translation>
+        <translation>Zařízení je pozastaveno</translation>
     </message>
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="48"/>
         <source>Local dir is out of sync</source>
-        <translation type="unfinished"></translation>
+        <translation>Místní adresář není synchronizován</translation>
     </message>
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="50"/>
         <source>Unread notification present</source>
-        <translation type="unfinished"></translation>
+        <translation>K dispozici je nepřečtené oznámení</translation>
     </message>
 </context>
 </TS>

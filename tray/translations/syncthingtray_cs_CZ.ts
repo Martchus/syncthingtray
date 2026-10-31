@@ -21,7 +21,7 @@
     <message>
         <location filename="../gui/devview.cpp" line="83"/>
         <source>Resume</source>
-        <translation type="unfinished"></translation>
+        <translation>Obnovit</translation>
     </message>
     <message>
         <location filename="../gui/devview.cpp" line="88"/>
@@ -44,17 +44,17 @@
     <message>
         <location filename="../gui/dirview.cpp" line="89"/>
         <source>Copy path</source>
-        <translation>Zkopírovat popis umístění</translation>
+        <translation>Zkopírovat cestu</translation>
     </message>
     <message>
         <location filename="../gui/dirview.cpp" line="94"/>
         <source>Rescan</source>
-        <translation type="unfinished"></translation>
+        <translation>Znovu prohledat</translation>
     </message>
     <message>
         <location filename="../gui/dirview.cpp" line="99"/>
         <source>Resume</source>
-        <translation type="unfinished"></translation>
+        <translation>Obnovit</translation>
     </message>
     <message>
         <location filename="../gui/dirview.cpp" line="104"/>
@@ -64,17 +64,17 @@
     <message>
         <location filename="../gui/dirview.cpp" line="109"/>
         <source>Open in file browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Otevřít ve správci souborů</translation>
     </message>
     <message>
         <location filename="../gui/dirview.cpp" line="113"/>
         <source>Browse remote files</source>
-        <translation type="unfinished"></translation>
+        <translation>Procházet vzdálené soubory</translation>
     </message>
     <message>
         <location filename="../gui/dirview.cpp" line="115"/>
         <source>Show/edit ignore patterns</source>
-        <translation type="unfinished"></translation>
+        <translation>Zobrazit/upravit vzory ignorování</translation>
     </message>
 </context>
 <context>
@@ -92,7 +92,7 @@
     <message>
         <location filename="../gui/downloadview.cpp" line="79"/>
         <source>Open in file browser</source>
-        <translation type="unfinished"></translation>
+        <translation>Otevřít ve správci souborů</translation>
     </message>
 </context>
 <context>
@@ -115,7 +115,7 @@
     <message>
         <location filename="../gui/trayicon.cpp" line="73"/>
         <source>Show notifications/errors</source>
-        <translation type="unfinished"></translation>
+        <translation>Zobrazit oznámení/chyby</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="81"/>
@@ -155,12 +155,12 @@
     <message>
         <location filename="../gui/trayicon.cpp" line="316"/>
         <source>New version - click to open updater</source>
-        <translation type="unfinished"></translation>
+        <translation>Nová verze – kliknutím otevřete aktualizátor</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="316"/>
         <source>Version %1 is available</source>
-        <translation type="unfinished"></translation>
+        <translation>Verze %1 je k dispozici</translation>
     </message>
     <message>
         <location filename="../gui/trayicon.cpp" line="174"/>
@@ -293,7 +293,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</source>
     <message>
         <location filename="../gui/traywidget.ui" line="453"/>
         <source>Recent changes</source>
-        <translation type="unfinished"></translation>
+        <translation>Nedávné změny</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="518"/>
@@ -348,12 +348,12 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</source>
     <message>
         <location filename="../gui/traywidget.cpp" line="634"/>
         <source>Connecting …</source>
-        <translation type="unfinished"></translation>
+        <translation>Připojování …</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="635"/>
         <source>Establishing connection to Syncthing …</source>
-        <translation type="unfinished"></translation>
+        <translation>Navazování spojení se Syncthing …</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="640"/>
@@ -363,12 +363,12 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</source>
     <message>
         <location filename="../gui/traywidget.cpp" line="645"/>
         <source>Unable to establish connection to Syncthing.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nelze navázat spojení se Syncthing.</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="653"/>
         <source>Syncthing is force-paused, click to resume</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing je nuceně pozastaven, kliknutím obnovíte</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="657"/>
@@ -378,7 +378,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</source>
     <message>
         <location filename="../gui/traywidget.cpp" line="658"/>
         <source>Syncthing is running, click to pause all devices, discovery and relaying</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing běží, kliknutím pozastavíte všechna zařízení, zjišťování a přenos</translation>
     </message>
     <message>
         <source>Syncthing is running, click to pause all devices</source>
@@ -411,22 +411,22 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</source>
     <message>
         <location filename="../gui/traywidget.cpp" line="957"/>
         <source>Open item</source>
-        <translation type="unfinished"></translation>
+        <translation>Otevřít položku</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="963"/>
         <source>Copy path</source>
-        <translation type="unfinished">Zkopírovat popis umístění</translation>
+        <translation>Zkopírovat cestu</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="967"/>
         <source>Copy device ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Zkopírovat ID zařízení</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="970"/>
         <source>Copy folder ID</source>
-        <translation type="unfinished"></translation>
+        <translation>Zkopírovat ID složky</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="1116"/>
@@ -460,7 +460,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</source>
     <message>
         <location filename="../application/main.cpp" line="512"/>
         <source>&lt;p&gt;This can have different causes:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Data corruption occurred during the download/extraction. In this case cancelling and retrying the update will help.&lt;/li&gt;&lt;li&gt;The signing key or updating mechanism in general has changed. In this case an according release note will be present on &lt;a href=&quot;https://martchus.github.io/syncthingtray/#downloads-section&quot;&gt;the website&lt;/a&gt; and &lt;a href=&quot;https://github.com/Martchus/syncthingtray/releases&quot;&gt;GitHub&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;A bug in the newly introduced updater, see &lt;a href=&quot;https://github.com/Martchus/syncthingtray/issues&quot;&gt;issues on GitHub&lt;/a&gt; for potential bug reports.&lt;/li&gt;&lt;li&gt;Someone tries to distribute manipulated executables of Syncthing Tray.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;It is recommend to cancel the update and retry or cross-check the cause if the issue persists. If you ignore this error you &lt;i&gt;may&lt;/i&gt; install a corrupted/manipulated executable.&lt;/p&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;p&gt;To může mít různé příčiny:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Během stahování/rozbalování došlo k poškození dat. V tomto případě pomůže zrušení a opakování aktualizace.&lt;/li&gt;&lt;li&gt;Podpisový klíč nebo mechanismus aktualizace se celkově změnil. V takovém případě bude příslušná poznámka k vydání uvedena na &lt;a href=&quot;https://martchus.github.io/syncthingtray/#downloads-section&quot;&gt;webových stránkách&lt;/a&gt; a na &lt;a href=&quot;https://github.com/Martchus/syncthingtray/releases&quot;&gt;GitHubu&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;Chyba v nově představeném aktualizátoru, viz &lt;a href=&quot;https://github.com/Martchus/syncthingtray/issues&quot;&gt;hlášení problémů na GitHubu&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;Někdo se pokouší distribuovat manipulované spustitelné soubory aplikace Syncthing Tray.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Doporučuje se zrušit aktualizaci a zkusit to znovu nebo ověřit příčinu, pokud problém přetrvává. Pokud tuto chybu ignorujete, &lt;i&gt;můžete&lt;/i&gt; nainstalovat poškozený/manipulovaný spustitelný soubor.&lt;/p&gt;</translation>
     </message>
     <message>
         <source>You must configure how to connect to Syncthing when using Syncthing Tray the first time.</source>

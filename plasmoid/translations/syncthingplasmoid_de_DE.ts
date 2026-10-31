@@ -257,7 +257,7 @@
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="53"/>
         <location filename="../package6/contents/ui/FullRepresentation.qml" line="75"/>
         <source>Downloads</source>
-        <translation></translation>
+        <translation>Downloads</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="47"/>
@@ -323,7 +323,7 @@
         <location filename="../lib/appearanceoptionpage.ui" line="131"/>
         <location filename="../lib/appearanceoptionpage.ui" line="212"/>
         <source>Downloads</source>
-        <translation></translation>
+        <translation>Downloads</translation>
     </message>
     <message>
         <location filename="../lib/appearanceoptionpage.ui" line="217"/>
@@ -397,7 +397,7 @@
     <message>
         <location filename="../lib/settingsdialog.cpp" line="145"/>
         <source>Plasmoid</source>
-        <translation></translation>
+        <translation>Plasmoid</translation>
     </message>
     <message>
         <location filename="../lib/settingsdialog.cpp" line="155"/>
@@ -416,7 +416,7 @@
     <message>
         <location filename="../lib/settingsdialog.cpp" line="165"/>
         <source>Extras</source>
-        <translation></translation>
+        <translation>Extras</translation>
     </message>
 </context>
 <context>

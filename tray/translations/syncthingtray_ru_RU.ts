@@ -595,7 +595,7 @@
     <message>
         <location filename="../gui/traywidget.ui" line="6"/>
         <source>Syncthing Tray</source>
-        <translation></translation>
+        <translation>Syncthing Tray</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="99"/>
@@ -780,7 +780,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</source>
     <message>
         <location filename="../gui/traywidget.cpp" line="653"/>
         <source>Syncthing is force-paused, click to resume</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing принудительно приостановлен, нажмите для возобновления</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="657"/>
@@ -790,7 +790,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</source>
     <message>
         <location filename="../gui/traywidget.cpp" line="658"/>
         <source>Syncthing is running, click to pause all devices, discovery and relaying</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing работает, нажмите для приостановки всех устройств, обнаружения и ретрансляции</translation>
     </message>
     <message>
         <source>Syncthing is running, click to pause all devices</source>

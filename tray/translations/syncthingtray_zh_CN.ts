@@ -796,7 +796,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</source>
     <message>
         <location filename="../gui/traywidget.cpp" line="653"/>
         <source>Syncthing is force-paused, click to resume</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing 已强制暂停，点击以恢复</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.cpp" line="657"/>
@@ -806,7 +806,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</source>
     <message>
         <location filename="../gui/traywidget.cpp" line="658"/>
         <source>Syncthing is running, click to pause all devices, discovery and relaying</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing 正在运行，点击以暂停所有设备、发现与中继</translation>
     </message>
     <message>
         <source>Syncthing is running, click to pause all devices</source>

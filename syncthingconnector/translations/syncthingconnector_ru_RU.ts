@@ -6,52 +6,52 @@
     <message>
         <location filename="../runtimecondition.cpp" line="743"/>
         <source>Network connection is metered</source>
-        <translation type="unfinished"></translation>
+        <translation>Лимитное сетевое подключение</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="743"/>
         <source>Network connection is not metered</source>
-        <translation type="unfinished"></translation>
+        <translation>Нелимитное сетевое подключение</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="745"/>
         <source>State of network connection cannot be determined</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось определить состояние сетевого подключения</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="777"/>
         <source>Battery saving mode is enabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Режим экономии энергии включен</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="777"/>
         <source>Battery saving mode is disabled</source>
-        <translation type="unfinished"></translation>
+        <translation>Режим экономии энергии выключен</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="779"/>
         <source>State of battery saving mode cannot be determined</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось определить состояние режима экономии энергии</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="813"/>
         <source>Running on battery (%1%)</source>
-        <translation type="unfinished"></translation>
+        <translation>Работа от батареи (%1%)</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="815"/>
         <source>Running on battery</source>
-        <translation type="unfinished"></translation>
+        <translation>Работа от батареи</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="818"/>
         <source>Power supply connected</source>
-        <translation type="unfinished"></translation>
+        <translation>Питание подключено</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="821"/>
         <source>Battery status cannot be determined</source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось определить состояние батареи</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="879"/>
@@ -305,12 +305,12 @@
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="835"/>
         <source>Unable to suspend Syncthing: </source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось приостановить Syncthing: </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="835"/>
         <source>Unable to resume Syncthing: </source>
-        <translation type="unfinished"></translation>
+        <translation>Не удалось возобновить Syncthing: </translation>
     </message>
     <message>
         <location filename="../syncthingconnection_requests.cpp" line="1455"/>

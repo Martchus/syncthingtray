@@ -181,7 +181,7 @@
     <message>
         <location filename="../syncthingmenuaction.cpp" line="69"/>
         <source>Syncthing</source>
-        <translation></translation>
+        <translation>Syncthing</translation>
     </message>
     <message>
         <location filename="../syncthingmenuaction.cpp" line="80"/>

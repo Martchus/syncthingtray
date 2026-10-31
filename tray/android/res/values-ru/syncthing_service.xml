@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="shutdown">Завершить работу</string>
+    <string name="pause">Приостановить</string>
+    <string name="resume">Возобновить</string>
+    <string name="unable_restart_foreground_service">Не удалось перезапустить службу переднего плана для работы Syncthing в фоновом режиме. Нажмите, чтобы снова запустить приложение Syncthing.</string>
+    <string name="initializing">Инициализация …</string>
+</resources>

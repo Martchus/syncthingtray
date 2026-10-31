@@ -100,7 +100,7 @@
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="191"/>
         <source>never</source>
-        <translation type="unfinished"></translation>
+        <translation>никогда</translation>
     </message>
     <message>
         <location filename="../syncthingdevicemodel.cpp" line="216"/>
@@ -607,7 +607,7 @@
     <message>
         <location filename="../syncthingstatuscomputionmodel.cpp" line="50"/>
         <source>Unread notification present</source>
-        <translation>Присутствует непрочитанное уведомление</translation>
+        <translation>Присутствуют непрочитанные уведомления</translation>
     </message>
 </context>
 </TS>
