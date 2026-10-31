@@ -54,29 +54,54 @@
         <translation>Impossible de déterminer l&apos;état de la batterie</translation>
     </message>
     <message>
-        <location filename="../runtimecondition.cpp" line="878"/>
+        <location filename="../runtimecondition.cpp" line="879"/>
         <source>Syncthing is temporarily stopped due to metered connection</source>
         <translation>Syncthing est temporairement arrêté en raison d&apos;une connexion mesurée</translation>
     </message>
     <message>
-        <location filename="../runtimecondition.cpp" line="880"/>
+        <location filename="../runtimecondition.cpp" line="878"/>
+        <source>Syncthing is temporarily paused due to metered connection</source>
+        <translation>Syncthing est temporairement mis en pause en raison d&apos;une connexion mesurée</translation>
+    </message>
+    <message>
+        <location filename="../runtimecondition.cpp" line="882"/>
         <source>Syncthing is temporarily stopped due to battery saving mode</source>
         <translation>Syncthing est temporairement arrêté en raison du mode d&apos;économie de batterie</translation>
     </message>
     <message>
-        <location filename="../runtimecondition.cpp" line="884"/>
+        <location filename="../runtimecondition.cpp" line="881"/>
+        <source>Syncthing is temporarily paused due to battery saving mode</source>
+        <translation>Syncthing est temporairement mis en pause en raison du mode d&apos;économie de batterie</translation>
+    </message>
+    <message>
+        <location filename="../runtimecondition.cpp" line="887"/>
         <source>Syncthing is temporarily stopped due to running on battery</source>
         <translation>Syncthing est temporairement arrêté car le système fonctionne sur batterie</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="886"/>
+        <source>Syncthing is temporarily paused due to running on battery</source>
+        <translation>Syncthing est temporairement mis en pause car le système fonctionne sur batterie</translation>
+    </message>
+    <message>
+        <location filename="../runtimecondition.cpp" line="889"/>
         <source>Syncthing is temporarily stopped due to low battery</source>
         <translation>Syncthing est temporairement arrêté en raison d&apos;une batterie faible</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="889"/>
+        <source>Syncthing is temporarily paused due to low battery</source>
+        <translation>Syncthing est temporairement mis en pause en raison d&apos;une batterie faible</translation>
+    </message>
+    <message>
+        <location filename="../runtimecondition.cpp" line="892"/>
         <source>Syncthing is temporarily stopped manually</source>
         <translation>Syncthing est temporairement arrêté manuellement</translation>
+    </message>
+    <message>
+        <location filename="../runtimecondition.cpp" line="892"/>
+        <source>Syncthing is temporarily paused manually</source>
+        <translation>Syncthing est temporairement mis en pause manuellement</translation>
     </message>
 </context>
 <context>

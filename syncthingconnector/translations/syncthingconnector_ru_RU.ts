@@ -54,29 +54,54 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../runtimecondition.cpp" line="878"/>
+        <location filename="../runtimecondition.cpp" line="879"/>
         <source>Syncthing is temporarily stopped due to metered connection</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing временно остановлен из-за лимитного подключения</translation>
     </message>
     <message>
-        <location filename="../runtimecondition.cpp" line="880"/>
+        <location filename="../runtimecondition.cpp" line="878"/>
+        <source>Syncthing is temporarily paused due to metered connection</source>
+        <translation>Syncthing временно приостановлен из-за лимитного подключения</translation>
+    </message>
+    <message>
+        <location filename="../runtimecondition.cpp" line="882"/>
         <source>Syncthing is temporarily stopped due to battery saving mode</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing временно остановлен из-за режима экономии энергии</translation>
     </message>
     <message>
-        <location filename="../runtimecondition.cpp" line="884"/>
+        <location filename="../runtimecondition.cpp" line="881"/>
+        <source>Syncthing is temporarily paused due to battery saving mode</source>
+        <translation>Syncthing временно приостановлен из-за режима экономии энергии</translation>
+    </message>
+    <message>
+        <location filename="../runtimecondition.cpp" line="887"/>
         <source>Syncthing is temporarily stopped due to running on battery</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing временно остановлен при работе от батареи</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="886"/>
-        <source>Syncthing is temporarily stopped due to low battery</source>
-        <translation type="unfinished"></translation>
+        <source>Syncthing is temporarily paused due to running on battery</source>
+        <translation>Syncthing временно приостановлен при работе от батареи</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="889"/>
+        <source>Syncthing is temporarily stopped due to low battery</source>
+        <translation>Syncthing временно остановлен из-за низкого заряда батареи</translation>
+    </message>
+    <message>
+        <location filename="../runtimecondition.cpp" line="889"/>
+        <source>Syncthing is temporarily paused due to low battery</source>
+        <translation>Syncthing временно приостановлен из-за низкого заряда батареи</translation>
+    </message>
+    <message>
+        <location filename="../runtimecondition.cpp" line="892"/>
         <source>Syncthing is temporarily stopped manually</source>
-        <translation type="unfinished"></translation>
+        <translation>Syncthing временно остановлен вручную</translation>
+    </message>
+    <message>
+        <location filename="../runtimecondition.cpp" line="892"/>
+        <source>Syncthing is temporarily paused manually</source>
+        <translation>Syncthing временно приостановлен вручную</translation>
     </message>
 </context>
 <context>

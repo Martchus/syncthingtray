@@ -54,28 +54,53 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../runtimecondition.cpp" line="878"/>
+        <location filename="../runtimecondition.cpp" line="879"/>
         <source>Syncthing is temporarily stopped due to metered connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../runtimecondition.cpp" line="880"/>
+        <location filename="../runtimecondition.cpp" line="878"/>
+        <source>Syncthing is temporarily paused due to metered connection</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../runtimecondition.cpp" line="882"/>
         <source>Syncthing is temporarily stopped due to battery saving mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../runtimecondition.cpp" line="884"/>
+        <location filename="../runtimecondition.cpp" line="881"/>
+        <source>Syncthing is temporarily paused due to battery saving mode</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../runtimecondition.cpp" line="887"/>
         <source>Syncthing is temporarily stopped due to running on battery</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="886"/>
+        <source>Syncthing is temporarily paused due to running on battery</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../runtimecondition.cpp" line="889"/>
         <source>Syncthing is temporarily stopped due to low battery</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="889"/>
+        <source>Syncthing is temporarily paused due to low battery</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../runtimecondition.cpp" line="892"/>
         <source>Syncthing is temporarily stopped manually</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../runtimecondition.cpp" line="892"/>
+        <source>Syncthing is temporarily paused manually</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
