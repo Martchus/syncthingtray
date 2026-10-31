@@ -436,17 +436,18 @@ public class SyncthingService extends QtService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        if (intent != null && "shutdown".equals(intent.getAction())) {
+        String action = intent != null ? intent.getAction() : "";
+        if ("shutdown".equals(action)) {
             sendMessageToClients(MSG_FINISH_CLIENT, 0, 0, "");
             stopForeground(Service.STOP_FOREGROUND_REMOVE);
             stopSelf();
-        } else if (intent != null && "pause".equals(intent.getAction())) {
+        } else if ("pause".equals(action)) {
             try {
                 pauseSyncthing(true);
             } catch (java.lang.UnsatisfiedLinkError e) {
                 Log.i(TAG, "Unable to pause Syncthing, backend not started yet");
             }
-        } else if (intent != null && "resume".equals(intent.getAction())) {
+        } else if ("resume".equals(action)) {
             try {
                 pauseSyncthing(false);
             } catch (java.lang.UnsatisfiedLinkError e) {
