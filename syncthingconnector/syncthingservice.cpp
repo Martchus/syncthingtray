@@ -468,12 +468,12 @@ void SyncthingService::openLogs() const
     }
 
     auto journalctlArgs = QStringList();
-    journalctlArgs.reserve(5);
+    journalctlArgs.reserve(6);
     if (m_scope == ServiceScope::User) {
         journalctlArgs << QStringLiteral("--user");
     }
     journalctlArgs << QStringLiteral("-u") << m_unitName;
-    journalctlArgs << QStringLiteral("-e");
+    journalctlArgs << QStringLiteral("--follow") << QStringLiteral("--no-tail");
     if (isRunning() && !m_activeSince.isNull()) {
         journalctlArgs << QStringLiteral("--since") << QStringLiteral("@%1").arg(m_activeSince.toTimeStamp());
     }
