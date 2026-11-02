@@ -35,7 +35,7 @@ struct ManagerDBusUnitFileChange {
 QDBusArgument &operator<<(QDBusArgument &argument, const ManagerDBusUnitFileChange &unitFileChange);
 const QDBusArgument &operator>>(const QDBusArgument &argument, ManagerDBusUnitFileChange &unitFileChange);
 
-typedef QList<ManagerDBusUnitFileChange> ManagerDBusUnitFileChangeList;
+using ManagerDBusUnitFileChangeList = QList<ManagerDBusUnitFileChange>;
 
 enum class ServiceScope { System, User };
 
