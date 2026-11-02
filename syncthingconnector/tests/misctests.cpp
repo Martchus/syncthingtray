@@ -36,7 +36,7 @@ class MiscTests : public TestFixture {
     CPPUNIT_TEST(testParsingConfigWithDetails);
     CPPUNIT_TEST(testSplittingArguments);
     CPPUNIT_TEST(testUtils);
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     CPPUNIT_TEST(testService);
 #endif
     CPPUNIT_TEST(testConnectionSettingsAndLoadingSelfSignedCert);
@@ -54,7 +54,7 @@ public:
     void testParsingConfigWithDetails();
     void testSplittingArguments();
     void testUtils();
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     void testService();
 #endif
 #ifndef QT_NO_SSL
@@ -227,7 +227,7 @@ void MiscTests::testUtils()
     CPPUNIT_ASSERT_EQUAL(QStringLiteral("/home/foo"), substituteTilde(QStringLiteral("~"), QStringLiteral("/home/foo"), QStringLiteral("\\")));
 }
 
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
 /*!
  * \brief Tests SyncthingService class, but only error cases with a non-existent service so far.
  */

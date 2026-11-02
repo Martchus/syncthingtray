@@ -131,6 +131,29 @@ else ()
     message(STATUS "systemd support disabled")
 endif ()
 
+# configure support for controlling Syncthing via Windows service
+if (WIN32)
+    set(ENABLE_WINDOWS_SERVICE_SUPPORT_BY_DEFAULT ON)
+else ()
+    set(ENABLE_WINDOWS_SERVICE_SUPPORT_BY_DEFAULT OFF)
+endif ()
+option(WINDOWS_SERVICE_SUPPORT "enables support for controlling Syncthing Windows service"
+       ${ENABLE_WINDOWS_SERVICE_SUPPORT_BY_DEFAULT})
+if (WINDOWS_SERVICE_SUPPORT)
+    list(APPEND META_PUBLIC_COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_SUPPORT_WINDOWS_SERVICE)
+    message(STATUS "Windows service support enabled")
+else ()
+    message(STATUS "Windows service support disabled")
+endif ()
+
+if (SYSTEMD_SUPPORT OR WINDOWS_SERVICE_SUPPORT)
+    list(APPEND META_PUBLIC_COMPILE_DEFINITIONS ${META_PROJECT_VARNAME_UPPER}_SUPPORT_SERVICE)
+endif ()
+
+if (WIN32 AND WINDOWS_SERVICE_SUPPORT)
+    list(APPEND PRIVATE_LIBRARIES advapi32 shell32)
+endif ()
+
 # configure support for D-Bus-based power/battery monitoring
 if (UNIX
     AND NOT APPLE

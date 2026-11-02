@@ -51,7 +51,7 @@ public:
     QStringList connectionErrors;
     Data::SyncthingConfig config;
     Data::SyncthingConnection connection;
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     Data::SyncthingService userService = Data::SyncthingService(Data::ServiceScope::User);
     Data::SyncthingService systemService = Data::SyncthingService(Data::ServiceScope::System);
 #endif

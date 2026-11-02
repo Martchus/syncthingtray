@@ -18,7 +18,7 @@
 
 #include <syncthingmodel/syncthingicons.h>
 
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
 #include <syncthingconnector/syncthingservice.h>
 #endif
 #include <syncthingconnector/runtimecondition.h>
@@ -281,7 +281,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
         connect(launcher, &SyncthingLauncher::runningChanged, this, &TrayWidget::handleLauncherStatusChanged);
         connect(launcher, &SyncthingLauncher::guiUrlChanged, this, &TrayWidget::handleLauncherGuiAddressChanged);
     }
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     if (const auto *const service = SyncthingService::mainInstance()) {
         connect(service, &SyncthingService::serviceManagerAvailableChanged, this, &TrayWidget::handleSystemdStatusChanged);
         connect(service, &SyncthingService::stateChanged, this, &TrayWidget::handleSystemdStatusChanged);
@@ -370,7 +370,7 @@ Data::SyncthingLauncher *TrayWidget::launcher() const
 
 Data::SyncthingService *TrayWidget::service() const
 {
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     return Data::SyncthingService::mainInstance();
 #else
     return nullptr;
@@ -712,7 +712,7 @@ void TrayWidget::applySettings(const QString &connectionConfig)
     settings.apply(*m_data.notifier());
 
     // apply systemd and launcher settings enforcing a reconnect if required and possible
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     const auto systemdStatus = applySystemdSettings(reconnectRequired);
     const auto launcherStatus = applyLauncherSettings(reconnectRequired, systemdStatus.consideredForReconnect, systemdStatus.showStartStopButton);
     const auto showStartStopButton = systemdStatus.showStartStopButton || launcherStatus.showStartStopButton;
@@ -1030,7 +1030,7 @@ void TrayWidget::updateIconAndTooltip()
 void TrayWidget::toggleRunning()
 {
     switch (m_startStopButtonTarget) {
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     case StartStopButtonTarget::Service:
         if (auto *const service = SyncthingService::mainInstance()) {
             service->toggleRunning();
@@ -1054,7 +1054,7 @@ void TrayWidget::toggleRunning()
 QObject *TrayWidget::startStopButtonTarget()
 {
     switch (m_startStopButtonTarget) {
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     case StartStopButtonTarget::Service:
         if (auto *const service = SyncthingService::mainInstance()) {
             return service;
@@ -1074,7 +1074,7 @@ QObject *TrayWidget::startStopButtonTarget()
 
 Settings::Launcher::LauncherStatus TrayWidget::handleLauncherStatusChanged()
 {
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     const auto systemdStatus = Settings::values().systemd.status(*m_data.connection());
     const auto launcherStatus = applyLauncherSettings(false, systemdStatus.consideredForReconnect, systemdStatus.showStartStopButton);
     const auto showStartStopButton = systemdStatus.showStartStopButton || launcherStatus.showStartStopButton;
@@ -1092,7 +1092,7 @@ Settings::Launcher::LauncherStatus TrayWidget::handleLauncherStatusChanged()
 Settings::Launcher::LauncherStatus TrayWidget::handleLauncherGuiAddressChanged(const QUrl &guiAddress)
 {
     Q_UNUSED(guiAddress)
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     return applyLauncherSettings(false, Settings::values().systemd.considerForReconnect, true);
 #else
     return applyLauncherSettings(false);
@@ -1124,7 +1124,7 @@ Settings::Launcher::LauncherStatus TrayWidget::applyLauncherSettings(bool reconn
     return launcherStatus;
 }
 
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
 Settings::Systemd::ServiceStatus TrayWidget::handleSystemdStatusChanged()
 {
     const auto systemdStatus = applySystemdSettings();
@@ -1193,7 +1193,7 @@ void TrayWidget::handleConnectionSelected(QAction *connectionAction)
             = (index == 0) ? &Settings::values().connection.primary : &Settings::values().connection.secondary[static_cast<size_t>(index - 1)];
         m_ui->connectionsPushButton->setText(m_selectedConnection->label);
         m_data.connection()->reconnect(*m_selectedConnection);
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
         handleSystemdStatusChanged();
 #endif
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW

@@ -138,7 +138,7 @@ void WizardTests::testConfiguringLauncher()
     // note: Should be unset as we're selecting to use an external binary.
     auto &settings = Settings::values();
     settings.launcher.useLibSyncthing = true;
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     settings.systemd.considerForReconnect = true;
     settings.systemd.showButton = true;
 #endif
@@ -188,7 +188,7 @@ void WizardTests::testConfiguringLauncher()
     if (setupDetection.launcherExitCode.has_value()) {
         qDebug() << "launcher exit code: " << setupDetection.launcherExitCode.value();
     }
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     qDebug() << "user service state: " << setupDetection.userService.unitFileState();
     qDebug() << "system service state: " << setupDetection.systemService.unitFileState();
 #endif
@@ -328,7 +328,7 @@ void WizardTests::testConfiguringLauncher()
     QVERIFY(!settings.launcher.syncthingPath.isEmpty());
     QVERIFY(!settings.launcher.syncthingArgs.isEmpty());
     QVERIFY(!settings.launcher.useLibSyncthing);
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     QVERIFY(!settings.systemd.considerForReconnect);
     QVERIFY(!settings.systemd.showButton);
 #endif

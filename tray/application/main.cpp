@@ -32,7 +32,7 @@
 #include <syncthingmodel/syncthingicons.h>
 
 #include <syncthingconnector/syncthingprocess.h>
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
 #include <syncthingconnector/syncthingservice.h>
 #endif
 
@@ -107,8 +107,8 @@ ENABLE_QT_RESOURCES_OF_STATIC_DEPENDENCIES
 
 #ifdef GUI_QTWIDGETS
 
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-static void handleSystemdServiceError(const QString &context, const QString &name, const QString &message)
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
+static void handleServiceError(const QString &context, const QString &name, const QString &message)
 {
     auto *const msgBox = new QMessageBox;
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
@@ -116,6 +116,134 @@ static void handleSystemdServiceError(const QString &context, const QString &nam
     msgBox->setText(QCoreApplication::translate("main", "Unable to ") + context);
     msgBox->setInformativeText(name % QStringLiteral(":\n") % message);
     msgBox->show();
+}
+#endif
+
+#if defined(Q_OS_WIN) && defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+#include <iostream>
+#include <windows.h>
+#include <winsvc.h>
+
+static auto s_serviceStatus = SERVICE_STATUS{};
+static auto s_serviceStatusHandle = SERVICE_STATUS_HANDLE(nullptr);
+static auto s_syncthingServiceArgs = std::vector<const char *>();
+
+static void WINAPI serviceCtrlHandler(DWORD control)
+{
+    switch (control) {
+    case SERVICE_CONTROL_STOP:
+    case SERVICE_CONTROL_SHUTDOWN:
+        s_serviceStatus.dwCurrentState = SERVICE_STOP_PENDING;
+        s_serviceStatus.dwWaitHint = 10000;
+        SetServiceStatus(s_serviceStatusHandle, &s_serviceStatus);
+#ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
+        LibSyncthing::stopSyncthing();
+#endif
+        break;
+    default:
+        break;
+    }
+}
+
+static void WINAPI serviceMain(DWORD argc, LPWSTR *argv)
+{
+    Q_UNUSED(argc)
+    Q_UNUSED(argv)
+    s_serviceStatusHandle = RegisterServiceCtrlHandlerW(L"syncthing", serviceCtrlHandler);
+    if (!s_serviceStatusHandle) {
+        return;
+    }
+    s_serviceStatus.dwServiceType = SERVICE_WIN32_OWN_PROCESS;
+    s_serviceStatus.dwCurrentState = SERVICE_START_PENDING;
+    s_serviceStatus.dwControlsAccepted = SERVICE_ACCEPT_STOP | SERVICE_ACCEPT_SHUTDOWN;
+    s_serviceStatus.dwWin32ExitCode = NO_ERROR;
+    s_serviceStatus.dwServiceSpecificExitCode = 0;
+    s_serviceStatus.dwCheckPoint = 0;
+    s_serviceStatus.dwWaitHint = 10000;
+    SetServiceStatus(s_serviceStatusHandle, &s_serviceStatus);
+
+    s_serviceStatus.dwCurrentState = SERVICE_RUNNING;
+    s_serviceStatus.dwCheckPoint = 0;
+    s_serviceStatus.dwWaitHint = 0;
+    SetServiceStatus(s_serviceStatusHandle, &s_serviceStatus);
+
+    auto exitCode = int(0);
+#ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
+    exitCode = static_cast<int>(LibSyncthing::runCommand(s_syncthingServiceArgs));
+#endif
+
+    s_serviceStatus.dwCurrentState = SERVICE_STOPPED;
+    s_serviceStatus.dwWin32ExitCode = static_cast<DWORD>(exitCode);
+    SetServiceStatus(s_serviceStatusHandle, &s_serviceStatus);
+}
+
+static int runAsWindowsService(const std::vector<const char *> &args)
+{
+    s_syncthingServiceArgs = args;
+    SERVICE_TABLE_ENTRYW serviceTable[] = { { const_cast<LPWSTR>(L""), serviceMain }, { nullptr, nullptr } };
+    if (!StartServiceCtrlDispatcherW(serviceTable)) {
+        return static_cast<int>(GetLastError());
+    }
+    return 0;
+}
+
+static int handleInstallService(const QString &serviceName)
+{
+    const auto scm = OpenSCManagerW(nullptr, nullptr, SC_MANAGER_CREATE_SERVICE);
+    if (!scm) {
+        std::wcerr << L"Failed to open service manager: " << GetLastError() << std::endl;
+        return 1;
+    }
+    const auto appPath = QCoreApplication::applicationFilePath();
+    const auto binaryPath = QStringLiteral("\"%1\" syncthing --as-service serve --no-browser --no-restart").arg(appPath);
+    const auto displayName = QStringLiteral("Syncthing Service");
+    const auto service = CreateServiceW(scm, reinterpret_cast<LPCWSTR>(serviceName.utf16()), reinterpret_cast<LPCWSTR>(displayName.utf16()),
+        SERVICE_ALL_ACCESS, SERVICE_WIN32_OWN_PROCESS, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL, reinterpret_cast<LPCWSTR>(binaryPath.utf16()),
+        nullptr, nullptr, nullptr, nullptr, nullptr);
+    if (!service) {
+        const auto err = GetLastError();
+        CloseServiceHandle(scm);
+        std::wcerr << L"Failed to create service: " << err << std::endl;
+        return 1;
+    }
+    const auto description = QStringLiteral("Syncthing securely synchronizes files between two or more computers in real time.");
+    auto sd = SERVICE_DESCRIPTIONW{};
+    sd.lpDescription = const_cast<LPWSTR>(reinterpret_cast<LPCWSTR>(description.utf16()));
+    ChangeServiceConfig2W(service, SERVICE_CONFIG_DESCRIPTION, &sd);
+
+    CloseServiceHandle(service);
+    CloseServiceHandle(scm);
+    std::wcout << L"Service \"" << reinterpret_cast<LPCWSTR>(serviceName.utf16()) << L"\" installed successfully." << std::endl;
+    return 0;
+}
+
+static int handleUninstallService(const QString &serviceName)
+{
+    const auto scm = OpenSCManagerW(nullptr, nullptr, SC_MANAGER_CONNECT);
+    if (!scm) {
+        std::wcerr << L"Failed to open service manager: " << GetLastError() << std::endl;
+        return 1;
+    }
+    const auto service = OpenServiceW(scm, reinterpret_cast<LPCWSTR>(serviceName.utf16()), DELETE | SERVICE_STOP | SERVICE_QUERY_STATUS);
+    if (!service) {
+        const auto err = GetLastError();
+        CloseServiceHandle(scm);
+        std::wcerr << L"Failed to open service: " << err << std::endl;
+        return 1;
+    }
+    auto status = SERVICE_STATUS{};
+    ControlService(service, SERVICE_CONTROL_STOP, &status);
+    if (!DeleteService(service)) {
+        const auto err = GetLastError();
+        CloseServiceHandle(service);
+        CloseServiceHandle(scm);
+        std::wcerr << L"Failed to delete service: " << err << std::endl;
+        return 1;
+    }
+    CloseServiceHandle(service);
+    CloseServiceHandle(scm);
+    std::wcout << L"Service \"" << reinterpret_cast<LPCWSTR>(serviceName.utf16()) << L"\" deleted successfully." << std::endl;
+    return 0;
 }
 #endif
 
@@ -284,11 +412,51 @@ static int runApplication(int argc, const char *const *argv)
     cliArg.setSubArguments({ &cliHelp });
     auto syncthingArg = OperationArgument("syncthing", '\0', "runs Syncthing");
     auto syncthingHelp = ConfigValueArgument("help", 'h', "lists Syncthing's top-level commands");
+#if defined(Q_OS_WIN) && defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    auto asServiceHelp = ConfigValueArgument("as-service", '\0', "runs Syncthing as a Windows service");
+#endif
     syncthingArg.setRequiredValueCount(Argument::varValueCount);
     syncthingArg.setFlags(Argument::Flags::Greedy, true);
     syncthingArg.setValueCompletionBehavior(ValueCompletionBehavior::PreDefinedValues | ValueCompletionBehavior::InvokeCallback);
-    syncthingArg.setCallback([](const ArgumentOccurrence &occurrence) { std::exit(static_cast<int>(LibSyncthing::runCommand(occurrence.values))); });
+    syncthingArg.setCallback([](const ArgumentOccurrence &occurrence) {
+        auto values = occurrence.values;
+#if defined(Q_OS_WIN) && defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+        auto asService = false;
+        if (const auto it = std::find_if(values.begin(), values.end(), [](const char *arg) { return std::strcmp(arg, "--as-service") == 0; });
+            it != values.end()) {
+            asService = true;
+            values.erase(it);
+        } else if (qEnvironmentVariableIsSet("SYNCTHINGTRAY_AS_SERVICE")) {
+            asService = true;
+        }
+        if (asService) {
+            std::exit(runAsWindowsService(values));
+        }
+#endif
+        std::exit(static_cast<int>(LibSyncthing::runCommand(values)));
+    });
+#if defined(Q_OS_WIN) && defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    syncthingArg.setSubArguments({ &syncthingHelp, &asServiceHelp });
+#else
     syncthingArg.setSubArguments({ &syncthingHelp });
+#endif
+#endif
+#if defined(Q_OS_WIN) && defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    auto installServiceArg = OperationArgument("install-service", '\0', "installs Syncthing as a Windows service");
+    auto uninstallServiceArg = OperationArgument("uninstall-service", '\0', "uninstalls Syncthing Windows service");
+    auto serviceNameVal = QString();
+    auto serviceNameArg = ConfigValueArgument("name", 'n', "service name (default: \"syncthing\")");
+    serviceNameArg.setValueTarget(&serviceNameVal);
+    installServiceArg.setSubArguments({ &serviceNameArg });
+    uninstallServiceArg.setSubArguments({ &serviceNameArg });
+    installServiceArg.setCallback([&serviceNameVal] {
+        const auto name = serviceNameVal.trimmed().isEmpty() ? QStringLiteral("syncthing") : serviceNameVal.trimmed();
+        std::exit(handleInstallService(name));
+    });
+    uninstallServiceArg.setCallback([&serviceNameVal] {
+        const auto name = serviceNameVal.trimmed().isEmpty() ? QStringLiteral("syncthing") : serviceNameVal.trimmed();
+        std::exit(handleUninstallService(name));
+    });
 #endif
 #ifdef Q_OS_ANDROID
     auto serviceArg = OperationArgument("service", '\0', "runs service");
@@ -303,6 +471,9 @@ static int runApplication(int argc, const char *const *argv)
 #endif
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
         &cliArg, &syncthingArg,
+#endif
+#if defined(Q_OS_WIN) && defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+        &installServiceArg, &uninstallServiceArg,
 #endif
 #ifdef Q_OS_ANDROID
         &serviceArg,
@@ -482,11 +653,11 @@ static int runApplication(int argc, const char *const *argv)
         }
         auto launcher = SyncthingLauncher();
         SyncthingLauncher::setMainInstance(&launcher);
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
         auto service = SyncthingService();
         SyncthingService::setMainInstance(&service);
         settings.systemd.setupService(service);
-        QObject::connect(&service, &SyncthingService::errorOccurred, &handleSystemdServiceError);
+        QObject::connect(&service, &SyncthingService::errorOccurred, &handleServiceError);
 #endif
         if (settings.icons.preferIconsFromTheme) {
             Data::setForkAwesomeThemeOverrides();

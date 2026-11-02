@@ -1,8 +1,9 @@
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
 
 #include "./syncthingservice.h"
 #include "./utils.h"
 
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
 #include "loginmanagerinterface.h"
 #include "managerinterface.h"
 #include "propertiesinterface.h"
@@ -22,24 +23,40 @@
 #include <array>
 #include <functional>
 
+#elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+#include <QCoreApplication>
+#include <QProcess>
+#include <QTimer>
+
+#include <windows.h>
+
+#include <shellapi.h>
+#include <winsvc.h>
+
+#include <vector>
+#endif
+
 using namespace std;
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
 using namespace std::placeholders;
+#endif
 using namespace CppUtilities;
 
 namespace Data {
 
 /*!
  * \class SyncthingService
- * \brief The SyncthingService class controls and monitors a Syncthing as systemd user service.
- * \remarks Internally systemd's D-Bus interface is used. So the service "org.freedesktop.systemd1" must
- *          be running on the user-session D-Bus.
- *
- * This class is actually not Syncthing-specific. It could be used to control and monitor any systemd
- * user service.
+ * \brief The SyncthingService class controls and monitors Syncthing as a system service.
+ * \remarks
+ * - This class supports systemd and the Windows service management.
+ * - The systemd implementation uses systemd's D-Bus interface. So the service "org.freedesktop.systemd1"
+ *   must be running on the system or user-session D-Bus. The documentation contains a section about
+ *   troubleshooting the required setup.
  */
 
 /// \cond
 
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
 QDBusArgument &operator<<(QDBusArgument &argument, const ManagerDBusUnitFileChange &unitFileChange)
 {
     argument.beginStructure();
@@ -60,30 +77,54 @@ constexpr DateTime dateTimeFromSystemdTimeStamp(qulonglong timeStamp)
 {
     return DateTime(DateTime::unixEpochStart().totalTicks() + timeStamp * 10);
 }
+#endif
 
 SyncthingService *SyncthingService::s_mainInstance = nullptr;
-OrgFreedesktopSystemd1ManagerInterface *SyncthingService::s_systemdUserInterface = nullptr;
-OrgFreedesktopSystemd1ManagerInterface *SyncthingService::s_systemdSystemInterface = nullptr;
-OrgFreedesktopLogin1ManagerInterface *SyncthingService::s_loginManager = nullptr;
 DateTime SyncthingService::s_lastWakeUp = DateTime();
 bool SyncthingService::s_fallingAsleep = false;
 
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
+OrgFreedesktopSystemd1ManagerInterface *SyncthingService::s_systemdUserInterface = nullptr;
+OrgFreedesktopSystemd1ManagerInterface *SyncthingService::s_systemdSystemInterface = nullptr;
+OrgFreedesktopLogin1ManagerInterface *SyncthingService::s_loginManager = nullptr;
+#endif
+
 /// \endcond
+
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+static QString windowsErrorString(DWORD errorCode)
+{
+    LPWSTR buffer = nullptr;
+    const auto size = FormatMessageW(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS, nullptr, errorCode,
+        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), reinterpret_cast<LPWSTR>(&buffer), 0, nullptr);
+    if (size == 0 || !buffer) {
+        return QStringLiteral("Error code %1").arg(errorCode);
+    }
+    const auto str = QString::fromWCharArray(buffer, static_cast<qsizetype>(size)).trimmed();
+    LocalFree(buffer);
+    return str;
+}
+#endif
 
 /*!
  * \brief Creates a new SyncthingService instance.
  */
 SyncthingService::SyncthingService(ServiceScope scope, QObject *parent)
     : QObject(parent)
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
     , m_unit(nullptr)
     , m_service(nullptr)
     , m_properties(nullptr)
     , m_currentSystemdInterface(nullptr)
+#elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    , m_pollTimer(nullptr)
+#endif
     , m_scope(scope)
     , m_manuallyStopped(false)
     , m_stoppedDueToRuntimeCond(false)
     , m_unitAvailable(false)
 {
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
     setupFreedesktopLoginInterface();
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
@@ -110,6 +151,14 @@ SyncthingService::SyncthingService(ServiceScope scope, QObject *parent)
             QStringList());
     });
 #endif
+#elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    m_unitName = QStringLiteral("syncthing");
+    m_pollTimer = new QTimer(this);
+    m_pollTimer->setInterval(2000);
+    connect(m_pollTimer, &QTimer::timeout, this, &SyncthingService::queryServiceStatus);
+    queryServiceStatus();
+    m_pollTimer->start();
+#endif
 
     connect(&m_runtimeCondition, &RuntimeCondition::supposedToRunChanged, this, [this](bool supposedToRun) {
         if (!supposedToRun) {
@@ -120,6 +169,9 @@ SyncthingService::SyncthingService(ServiceScope scope, QObject *parent)
     });
 }
 
+SyncthingService::~SyncthingService() = default;
+
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
 /*!
  * \brief Initializes m_currentSystemdInterface and its connection and service watcher for the current m_scope.
  */
@@ -227,7 +279,7 @@ bool SyncthingService::concludeAsyncCall(QDBusPendingCallWatcher *watcher, bool 
 /*!
  * \brief Unties the current instance from its current systemd interface.
  */
-void Data::SyncthingService::clearSystemdInterface()
+void SyncthingService::clearSystemdInterface()
 {
     m_pendingCalls.clear();
     if (m_currentSystemdInterface) {
@@ -256,7 +308,7 @@ void SyncthingService::clearUnitData()
 /*!
  * \brief Queries m_unit from m_currentSystemdInterface.
  */
-void Data::SyncthingService::queryUnitFromSystemdInterface()
+void SyncthingService::queryUnitFromSystemdInterface()
 {
     clearUnitData();
     setProperties(false, QString(), QString(), QString(), QString());
@@ -271,6 +323,181 @@ void Data::SyncthingService::queryUnitFromSystemdInterface()
     makeAsyncCall(m_currentSystemdInterface->GetUnit(m_unitName), &SyncthingService::handleUnitGet);
 #endif
 }
+#endif
+
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+void SyncthingService::queryServiceStatus()
+{
+    const auto scm = OpenSCManagerW(nullptr, nullptr, SC_MANAGER_CONNECT);
+    if (!scm) {
+        if (m_unitAvailable) {
+            m_unitAvailable = false;
+            emit unitAvailableChanged(false);
+        }
+        return;
+    }
+    const auto service = OpenServiceW(scm, reinterpret_cast<LPCWSTR>(m_unitName.utf16()), SERVICE_QUERY_STATUS | SERVICE_QUERY_CONFIG);
+    if (!service) {
+        CloseServiceHandle(scm);
+        if (m_unitAvailable) {
+            m_unitAvailable = false;
+            m_activeState.clear();
+            m_subState.clear();
+            m_activeSince = DateTime();
+            m_description.clear();
+            m_unitFileState.clear();
+            emit unitAvailableChanged(false);
+            emit activeStateChanged(m_activeState);
+            emit subStateChanged(m_subState);
+            emit stateChanged(m_activeState, m_subState, m_activeSince);
+            emit runningChanged(false);
+            emit descriptionChanged(m_description);
+            emit unitFileStateChanged(m_unitFileState);
+            emit enabledChanged(false);
+        }
+        return;
+    }
+
+    if (!m_unitAvailable) {
+        m_unitAvailable = true;
+        emit unitAvailableChanged(true);
+        queryServiceConfig();
+    }
+
+    auto ssp = SERVICE_STATUS_PROCESS{};
+    auto bytesNeeded = DWORD(0);
+    if (QueryServiceStatusEx(service, SC_STATUS_PROCESS_INFO, reinterpret_cast<LPBYTE>(&ssp), sizeof(ssp), &bytesNeeded)) {
+        auto newActiveState = QString();
+        auto newSubState = QString();
+        auto newActiveSince = DateTime();
+        const auto wasRunning = isRunning();
+
+        switch (ssp.dwCurrentState) {
+        case SERVICE_RUNNING:
+            newActiveState = QStringLiteral("active");
+            newSubState = QStringLiteral("running");
+            if (ssp.dwProcessId > 0) {
+                if (const auto process = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, FALSE, ssp.dwProcessId)) {
+                    auto creationTime = FILETIME{};
+                    auto exitTime = FILETIME{};
+                    auto kernelTime = FILETIME{};
+                    auto userTime = FILETIME{};
+                    if (GetProcessTimes(process, &creationTime, &exitTime, &kernelTime, &userTime)) {
+                        auto uli = ULARGE_INTEGER{};
+                        uli.LowPart = creationTime.dwLowDateTime;
+                        uli.HighPart = creationTime.dwHighDateTime;
+                        constexpr auto epochDiff = 116444736000000000ULL;
+                        if (uli.QuadPart >= epochDiff) {
+                            const auto unixTimeSec = static_cast<time_t>((uli.QuadPart - epochDiff) / 10000000ULL);
+                            newActiveSince = DateTime::fromTimeStampGmt(unixTimeSec);
+                        }
+                    }
+                    CloseHandle(process);
+                }
+            }
+            break;
+        case SERVICE_STOPPED:
+            newActiveState = QStringLiteral("inactive");
+            newSubState = QStringLiteral("stopped");
+            break;
+        case SERVICE_START_PENDING:
+            newActiveState = QStringLiteral("activating");
+            newSubState = QStringLiteral("starting");
+            break;
+        case SERVICE_STOP_PENDING:
+            newActiveState = QStringLiteral("deactivating");
+            newSubState = QStringLiteral("stopping");
+            break;
+        case SERVICE_PAUSED:
+            newActiveState = QStringLiteral("active");
+            newSubState = QStringLiteral("paused");
+            break;
+        default:
+            newActiveState = QStringLiteral("unknown");
+            newSubState = QStringLiteral("unknown");
+            break;
+        }
+
+        const auto stateChanged = (m_activeState != newActiveState) || (m_subState != newSubState) || (m_activeSince != newActiveSince);
+        m_activeState = newActiveState;
+        m_subState = newSubState;
+        m_activeSince = newActiveSince;
+        if (stateChanged) {
+            emit this->stateChanged(m_activeState, m_subState, m_activeSince);
+            emit activeStateChanged(m_activeState);
+            emit subStateChanged(m_subState);
+        }
+        if (wasRunning != isRunning()) {
+            emit runningChanged(isRunning());
+        }
+    }
+
+    CloseServiceHandle(service);
+    CloseServiceHandle(scm);
+}
+
+void SyncthingService::queryServiceConfig()
+{
+    const auto scm = OpenSCManagerW(nullptr, nullptr, SC_MANAGER_CONNECT);
+    if (!scm) {
+        return;
+    }
+    const auto service = OpenServiceW(scm, reinterpret_cast<LPCWSTR>(m_unitName.utf16()), SERVICE_QUERY_CONFIG);
+    if (!service) {
+        CloseServiceHandle(scm);
+        return;
+    }
+
+    auto bytesNeeded = DWORD(0);
+    QueryServiceConfigW(service, nullptr, 0, &bytesNeeded);
+    if (bytesNeeded > 0) {
+        auto buffer = std::vector<BYTE>(bytesNeeded);
+        auto *const config = reinterpret_cast<QUERY_SERVICE_CONFIGW *>(buffer.data());
+        if (QueryServiceConfigW(service, config, bytesNeeded, &bytesNeeded)) {
+            auto newUnitFileState = QString();
+            switch (config->dwStartType) {
+            case SERVICE_AUTO_START:
+                newUnitFileState = QStringLiteral("enabled");
+                break;
+            case SERVICE_DEMAND_START:
+                newUnitFileState = QStringLiteral("manual");
+                break;
+            case SERVICE_DISABLED:
+                newUnitFileState = QStringLiteral("disabled");
+                break;
+            default:
+                newUnitFileState = QStringLiteral("unknown");
+                break;
+            }
+            const auto wasEnabled = isEnabled();
+            if (m_unitFileState != newUnitFileState) {
+                m_unitFileState = newUnitFileState;
+                emit unitFileStateChanged(m_unitFileState);
+            }
+            if (wasEnabled != isEnabled()) {
+                emit enabledChanged(isEnabled());
+            }
+        }
+    }
+
+    bytesNeeded = 0;
+    QueryServiceConfig2W(service, SERVICE_CONFIG_DESCRIPTION, nullptr, 0, &bytesNeeded);
+    if (bytesNeeded > 0) {
+        auto buffer = std::vector<BYTE>(bytesNeeded);
+        if (QueryServiceConfig2W(service, SERVICE_CONFIG_DESCRIPTION, buffer.data(), bytesNeeded, &bytesNeeded)) {
+            const auto *const desc = reinterpret_cast<SERVICE_DESCRIPTIONW *>(buffer.data());
+            const auto newDescription = (desc && desc->lpDescription) ? QString::fromWCharArray(desc->lpDescription) : QString();
+            if (m_description != newDescription) {
+                m_description = newDescription;
+                emit descriptionChanged(m_description);
+            }
+        }
+    }
+
+    CloseServiceHandle(service);
+    CloseServiceHandle(scm);
+}
+#endif
 
 /*!
  * \brief Sets the \a unitName of the systemd user service to be controlled/monitored, e.g. "syncthing.service".
@@ -282,9 +509,13 @@ void SyncthingService::setUnitName(const QString &unitName)
     }
     m_unitName = unitName;
 
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
     if (!m_unitName.isEmpty()) {
         queryUnitFromSystemdInterface();
     }
+#elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    queryServiceStatus();
+#endif
     emit unitNameChanged(unitName);
 }
 
@@ -298,6 +529,7 @@ void SyncthingService::setScopeAndUnitName(ServiceScope scope, const QString &un
     if (!scopeChanged && !unitNameChanged) {
         return;
     }
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
     if (scopeChanged) {
         m_scope = scope;
         clearSystemdInterface();
@@ -308,6 +540,11 @@ void SyncthingService::setScopeAndUnitName(ServiceScope scope, const QString &un
     if (!unitName.isEmpty()) {
         queryUnitFromSystemdInterface();
     }
+#elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    m_scope = scope;
+    m_unitName = unitName;
+    queryServiceStatus();
+#endif
     if (scopeChanged) {
         emit this->scopeChanged(scope);
     }
@@ -324,11 +561,15 @@ void SyncthingService::setScopeAndUnitName(ServiceScope scope, const QString &un
  */
 QString SyncthingService::displayName() const
 {
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    return tr("service \"%1\"").arg(unitName());
+#else
     if (isUserScope()) {
         return tr("user unit \"%1\"").arg(unitName());
     } else {
         return tr("system unit \"%1\"").arg(unitName());
     }
+#endif
 }
 
 /*!
@@ -338,10 +579,18 @@ QString SyncthingService::displayName() const
  */
 bool SyncthingService::isServiceManagerAvailable() const
 {
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
 #ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
     return m_currentSystemdInterface && m_currentSystemdInterface->isValid();
 #else
     return true;
+#endif
+#elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    if (const auto scm = OpenSCManagerW(nullptr, nullptr, SC_MANAGER_CONNECT)) {
+        CloseServiceHandle(scm);
+        return true;
+    }
+    return false;
 #endif
 }
 
@@ -354,10 +603,14 @@ bool SyncthingService::isServiceManagerAvailable() const
  */
 bool SyncthingService::isUnitAvailable() const
 {
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
 #ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
-    return m_unit && m_unit->isValid();
+    return m_unitAvailable || (m_unit && m_unit->isValid());
 #else
     return true;
+#endif
+#elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    return m_unitAvailable;
 #endif
 }
 
@@ -370,8 +623,12 @@ void SyncthingService::setScope(ServiceScope scope)
         return;
     }
     m_scope = scope;
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
     clearSystemdInterface();
     queryUnitFromSystemdInterface();
+#elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    queryServiceStatus();
+#endif
     emit scopeChanged(scope);
 }
 
@@ -380,6 +637,7 @@ void SyncthingService::setScope(ServiceScope scope)
  */
 void SyncthingService::setRunning(bool running)
 {
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
 #ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
     m_manuallyStopped = !running;
     m_stoppedDueToRuntimeCond = false;
@@ -393,6 +651,42 @@ void SyncthingService::setRunning(bool running)
         registerErrorHandler(m_currentSystemdInterface->StopUnit(m_unitName, QStringLiteral("replace")), QT_TR_NOOP_UTF8("stop unit"));
     }
 #endif
+#elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    m_manuallyStopped = !running;
+    m_stoppedDueToRuntimeCond = false;
+    const auto scm = OpenSCManagerW(nullptr, nullptr, SC_MANAGER_CONNECT);
+    if (!scm) {
+        emit errorOccurred(tr("open service manager"), tr("Windows Service Error"), windowsErrorString(GetLastError()));
+        return;
+    }
+    const auto desiredAccess = DWORD(running ? (SERVICE_START | SERVICE_QUERY_STATUS) : (SERVICE_STOP | SERVICE_QUERY_STATUS));
+    const auto service = OpenServiceW(scm, reinterpret_cast<LPCWSTR>(m_unitName.utf16()), desiredAccess);
+    if (!service) {
+        const auto err = GetLastError();
+        CloseServiceHandle(scm);
+        emit errorOccurred(running ? tr("start service") : tr("stop service"), tr("Windows Service Error"), windowsErrorString(err));
+        return;
+    }
+    if (running) {
+        if (!StartServiceW(service, 0, nullptr)) {
+            const auto err = GetLastError();
+            if (err != ERROR_SERVICE_ALREADY_RUNNING) {
+                emit errorOccurred(tr("start service"), tr("Windows Service Error"), windowsErrorString(err));
+            }
+        }
+    } else {
+        auto status = SERVICE_STATUS{};
+        if (!ControlService(service, SERVICE_CONTROL_STOP, &status)) {
+            const auto err = GetLastError();
+            if (err != ERROR_SERVICE_NOT_ACTIVE) {
+                emit errorOccurred(tr("stop service"), tr("Windows Service Error"), windowsErrorString(err));
+            }
+        }
+    }
+    CloseServiceHandle(service);
+    CloseServiceHandle(scm);
+    queryServiceStatus();
+#endif
 }
 
 /*!
@@ -400,6 +694,7 @@ void SyncthingService::setRunning(bool running)
  */
 void SyncthingService::setEnabled(bool enabled)
 {
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
 #ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
     if (!m_currentSystemdInterface) {
         setupSystemdInterface();
@@ -410,6 +705,28 @@ void SyncthingService::setEnabled(bool enabled)
         registerErrorHandler(m_currentSystemdInterface->DisableUnitFiles(QStringList(m_unitName), false), QT_TR_NOOP_UTF8("disable unit"), true);
     }
 #endif
+#elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    const auto scm = OpenSCManagerW(nullptr, nullptr, SC_MANAGER_CONNECT);
+    if (!scm) {
+        emit errorOccurred(tr("open service manager"), tr("Windows Service Error"), windowsErrorString(GetLastError()));
+        return;
+    }
+    const auto service = OpenServiceW(scm, reinterpret_cast<LPCWSTR>(m_unitName.utf16()), SERVICE_CHANGE_CONFIG);
+    if (!service) {
+        const auto err = GetLastError();
+        CloseServiceHandle(scm);
+        emit errorOccurred(enabled ? tr("enable service") : tr("disable service"), tr("Windows Service Error"), windowsErrorString(err));
+        return;
+    }
+    const auto startType = DWORD(enabled ? SERVICE_AUTO_START : SERVICE_DEMAND_START);
+    if (!ChangeServiceConfigW(
+            service, SERVICE_NO_CHANGE, startType, SERVICE_NO_CHANGE, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr)) {
+        emit errorOccurred(enabled ? tr("enable service") : tr("disable service"), tr("Windows Service Error"), windowsErrorString(GetLastError()));
+    }
+    CloseServiceHandle(service);
+    CloseServiceHandle(scm);
+    queryServiceConfig();
+#endif
 }
 
 /*!
@@ -417,9 +734,15 @@ void SyncthingService::setEnabled(bool enabled)
  */
 void SyncthingService::reloadAllUnitFiles()
 {
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
     registerErrorHandler(m_currentSystemdInterface->Reload(), QT_TR_NOOP_UTF8("reload all unit files"), false, false);
+#elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    queryServiceStatus();
+    queryServiceConfig();
+#endif
 }
 
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
 namespace {
 
 enum class TerminalArgFormat {
@@ -449,12 +772,14 @@ constexpr auto terminalSpecs = std::array<TerminalSpec, 12>{
 };
 
 } // namespace
+#endif
 
 /*!
  * \brief Opens the logs.
  */
 void SyncthingService::openLogs() const
 {
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
     if (m_unitName.trimmed().isEmpty()) {
         emit const_cast<SyncthingService *>(this)->errorOccurred(tr("open logs"), tr("Invalid configuration"), tr("No unit name configured."));
         return;
@@ -531,8 +856,78 @@ void SyncthingService::openLogs() const
         emit const_cast<SyncthingService *>(this)->errorOccurred(
             tr("open logs"), tr("Launch failed"), tr("Unable to launch terminal \"%1\".").arg(terminalPath));
     }
+#elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    if (!QProcess::startDetached(QStringLiteral("cmd.exe"), { QStringLiteral("/c"), QStringLiteral("start"), QStringLiteral("services.msc") })) {
+        emit const_cast<SyncthingService *>(this)->errorOccurred(tr("open logs"), tr("Launch failed"), tr("Unable to launch \"services.msc\"."));
+    }
+#endif
 }
 
+void SyncthingService::installService()
+{
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    const auto appPath = QCoreApplication::applicationFilePath();
+    const auto params = QStringLiteral("install-service --name \"%1\"").arg(m_unitName);
+    auto sei = SHELLEXECUTEINFOW{};
+    sei.cbSize = sizeof(sei);
+    sei.lpVerb = L"runas";
+    sei.lpFile = reinterpret_cast<LPCWSTR>(appPath.utf16());
+    sei.lpParameters = reinterpret_cast<LPCWSTR>(params.utf16());
+    sei.nShow = SW_SHOWNORMAL;
+    sei.fMask = SEE_MASK_NOCLOSEPROCESS;
+    if (!ShellExecuteExW(&sei)) {
+        const auto err = GetLastError();
+        if (err != ERROR_CANCELLED) {
+            emit errorOccurred(tr("install service"), tr("UAC Elevation Failed"), windowsErrorString(err));
+        }
+        return;
+    }
+    if (sei.hProcess) {
+        WaitForSingleObject(sei.hProcess, INFINITE);
+        auto exitCode = DWORD(0);
+        GetExitCodeProcess(sei.hProcess, &exitCode);
+        CloseHandle(sei.hProcess);
+        if (exitCode != 0) {
+            emit errorOccurred(tr("install service"), tr("Installation Failed"), tr("Process exited with code %1").arg(exitCode));
+        }
+    }
+    queryServiceStatus();
+#endif
+}
+
+void SyncthingService::uninstallService()
+{
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    const auto appPath = QCoreApplication::applicationFilePath();
+    const auto params = QStringLiteral("uninstall-service --name \"%1\"").arg(m_unitName);
+    auto sei = SHELLEXECUTEINFOW{};
+    sei.cbSize = sizeof(sei);
+    sei.lpVerb = L"runas";
+    sei.lpFile = reinterpret_cast<LPCWSTR>(appPath.utf16());
+    sei.lpParameters = reinterpret_cast<LPCWSTR>(params.utf16());
+    sei.nShow = SW_SHOWNORMAL;
+    sei.fMask = SEE_MASK_NOCLOSEPROCESS;
+    if (!ShellExecuteExW(&sei)) {
+        const auto err = GetLastError();
+        if (err != ERROR_CANCELLED) {
+            emit errorOccurred(tr("uninstall service"), tr("UAC Elevation Failed"), windowsErrorString(err));
+        }
+        return;
+    }
+    if (sei.hProcess) {
+        WaitForSingleObject(sei.hProcess, INFINITE);
+        auto exitCode = DWORD(0);
+        GetExitCodeProcess(sei.hProcess, &exitCode);
+        CloseHandle(sei.hProcess);
+        if (exitCode != 0) {
+            emit errorOccurred(tr("uninstall service"), tr("Uninstallation Failed"), tr("Process exited with code %1").arg(exitCode));
+        }
+    }
+    queryServiceStatus();
+#endif
+}
+
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
 /*!
  * \brief Handles when a new unit is added to react if it matches the name of the unit we're monitoring.
  */
@@ -715,17 +1110,6 @@ bool SyncthingService::handlePropertyChanged(
 }
 
 /*!
- * \brief Internal helper to stop the service when the runtime conditions are no longer met.
- */
-void SyncthingService::stopDueToRuntimeCond()
-{
-    if (isRunning()) {
-        setRunning(false);
-    }
-    m_stoppedDueToRuntimeCond = true;
-}
-
-/*!
  * \brief Sets the current unit data.
  */
 void SyncthingService::setUnit(const QDBusObjectPath &objectPath)
@@ -808,6 +1192,18 @@ void SyncthingService::setProperties(
     if (m_description != description) {
         emit descriptionChanged(m_description = description);
     }
+}
+#endif
+
+/*!
+ * \brief Internal helper to stop the service when the runtime conditions are no longer met.
+ */
+void SyncthingService::stopDueToRuntimeCond()
+{
+    if (isRunning()) {
+        setRunning(false);
+    }
+    m_stoppedDueToRuntimeCond = true;
 }
 
 } // namespace Data

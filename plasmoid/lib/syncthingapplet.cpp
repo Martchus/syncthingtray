@@ -124,7 +124,7 @@ SyncthingApplet::SyncthingApplet(QObject *parent, const QVariantList &data)
     // configure connection
     m_data.connection()->setInsecure(Settings::values().connection.insecure);
 
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     m_data.notifier()->setService(&m_service);
 #endif
 }
@@ -140,7 +140,7 @@ SyncthingApplet::~SyncthingApplet()
     delete m_webViewDlg;
 #endif
     config().writeEntry("lastTab", m_lastTab);
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     SyncthingService::setMainInstance(nullptr);
 #endif
 }
@@ -212,7 +212,7 @@ void SyncthingApplet::init()
 
     // initialize systemd service support
     auto &settings = Settings::values();
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     SyncthingService::setMainInstance(&m_service);
     settings.systemd.setupService(m_service);
     connect(&m_service, &SyncthingService::serviceManagerAvailableChanged, this, &SyncthingApplet::handleSystemdStatusChanged);
@@ -360,7 +360,7 @@ void SyncthingApplet::setCurrentConnectionConfigIndex(int index)
     }
 
     // apply systemd settings, reconnect if required and possible
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     const auto systemdConsideredForReconnect
         = settings.systemd.apply(*m_data.connection(), currentConnectionConfig(), reconnectRequired).consideredForReconnect;
 #else
@@ -375,7 +375,7 @@ void SyncthingApplet::setCurrentConnectionConfigIndex(int index)
 
 bool SyncthingApplet::isStartStopEnabled() const
 {
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     return Settings::values().systemd.showButton;
 #else
     return false;
@@ -794,7 +794,7 @@ void SyncthingApplet::applySettings(int changeConnectionIndex)
     emit settingsChanged();
 }
 
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
 void SyncthingApplet::handleSystemdStatusChanged()
 {
     Settings::values().systemd.apply(*m_data.connection(), currentConnectionConfig());

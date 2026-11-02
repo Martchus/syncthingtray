@@ -57,7 +57,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingNotifier : public QObject {
     Q_PROPERTY(SyncthingHighLevelNotification enabledNotifications READ enabledNotifications WRITE setEnabledNotifications)
     Q_PROPERTY(SyncthingStartupIntegration consideredIntegrations READ consideredIntegrations WRITE setConsideredIntegrations)
     Q_PROPERTY(bool ignoreInavailabilityAfterStart READ ignoreInavailabilityAfterStart WRITE setIgnoreInavailabilityAfterStart)
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     Q_PROPERTY(const SyncthingService *service READ service WRITE setService)
 #endif
     Q_PROPERTY(const SyncthingProcess *process READ process WRITE setProcess)
@@ -69,7 +69,7 @@ public:
     SyncthingHighLevelNotification enabledNotifications() const;
     SyncthingStartupIntegration consideredIntegrations() const;
     unsigned int ignoreInavailabilityAfterStart() const;
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     const SyncthingService *service() const;
 #endif
     const SyncthingProcess *process() const;
@@ -78,7 +78,7 @@ public Q_SLOTS:
     void setEnabledNotifications(Data::SyncthingHighLevelNotification enabledNotifications);
     void setConsideredIntegrations(Data::SyncthingStartupIntegration consideredIntegrations);
     void setIgnoreInavailabilityAfterStart(unsigned int seconds);
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     void setService(const Data::SyncthingService *service);
 #endif
     void setProcess(const Data::SyncthingProcess *process);
@@ -114,7 +114,7 @@ private:
     const QString &log(const QString &message);
 
     const SyncthingConnection &m_connection;
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     const SyncthingService *m_service;
 #endif
     const SyncthingProcess *m_process;
@@ -182,7 +182,7 @@ inline void SyncthingNotifier::setIgnoreInavailabilityAfterStart(unsigned int se
     m_ignoreInavailabilityAfterStart = seconds;
 }
 
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
 /*!
  * \brief Returns the SyncthingService to be taken into account. Might be nullptr.
  */

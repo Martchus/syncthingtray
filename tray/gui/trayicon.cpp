@@ -9,7 +9,7 @@
 #include <syncthingmodel/syncthingicons.h>
 
 #include <syncthingconnector/syncthingconnection.h>
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
 #include <syncthingconnector/syncthingservice.h>
 #endif
 #include <syncthingconnector/utils.h>
@@ -20,7 +20,7 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QStringBuilder>
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
 #include <QNetworkReply>
 #endif
 

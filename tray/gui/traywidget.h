@@ -73,7 +73,7 @@ class TrayWidget : public QWidget {
 #endif
     Q_PROPERTY(TrayMenu *menu READ menu CONSTANT)
     Q_PROPERTY(Data::SyncthingLauncher *launcher READ launcher CONSTANT)
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     Q_PROPERTY(Data::SyncthingService *service READ service CONSTANT)
 #endif
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
@@ -167,7 +167,7 @@ private Q_SLOTS:
     Settings::Launcher::LauncherStatus handleLauncherGuiAddressChanged(const QUrl &guiAddress);
     Settings::Launcher::LauncherStatus applyLauncherSettings(
         bool reconnectRequired = false, bool skipApplyingToConnection = false, bool skipStartStopButton = false);
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     Settings::Systemd::ServiceStatus handleSystemdStatusChanged();
     Settings::Systemd::ServiceStatus applySystemdSettings(bool reconnectRequired = false);
 #endif

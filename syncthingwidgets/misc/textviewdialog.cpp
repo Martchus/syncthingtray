@@ -66,7 +66,7 @@ TextViewDialog *TextViewDialog::forLogEntries(SyncthingConnection &connection, Q
     auto *const helpLabel = new QLabel(dlg);
     auto helpText = tr("Press F5 to reload.");
     if (connection.isLocal()) {
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
         if (auto *const service = SyncthingService::mainInstance(); service->isUnitAvailable()) {
             helpText += tr(" Open <a href=\"openServiceLog\">continuous log</a> of %1.").arg(service->displayName());
             QObject::connect(helpLabel, &QLabel::linkActivated, service, [service](const QString &link) {
