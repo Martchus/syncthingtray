@@ -482,10 +482,8 @@ void SyncthingService::openLogs() const
     auto format = TerminalArgFormat::DashE;
     auto terminalArgs = QStringList();
 
-    const auto terminalEnv = qEnvironmentVariable("TERMINAL");
-    if (!terminalEnv.isEmpty()) {
-        const auto tokens = SyncthingProcess::splitArguments(terminalEnv);
-        if (!tokens.isEmpty()) {
+    if (const auto terminalEnv = qEnvironmentVariable("TERMINAL"); !terminalEnv.isEmpty()) {
+        if (const auto tokens = SyncthingProcess::splitArguments(terminalEnv); !tokens.isEmpty()) {
             const auto candidate = tokens.first();
             terminalPath = QStandardPaths::findExecutable(candidate);
             if (terminalPath.isEmpty()) {
@@ -503,8 +501,7 @@ void SyncthingService::openLogs() const
 
     if (terminalPath.isEmpty()) {
         for (const auto &spec : terminalSpecs) {
-            const auto candidatePath = QStandardPaths::findExecutable(QString::fromLatin1(spec.binaryName));
-            if (!candidatePath.isEmpty()) {
+            if (const auto candidatePath = QStandardPaths::findExecutable(QString::fromLatin1(spec.binaryName)); !candidatePath.isEmpty()) {
                 terminalPath = candidatePath;
                 format = spec.format;
                 break;
