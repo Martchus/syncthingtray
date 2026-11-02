@@ -78,8 +78,7 @@ set(META_TARGET_SUFFIX
 set(META_APP_VERSION
     "${META_APP_VERSION}"
     PARENT_SCOPE)
-set(META_ID
-    "martchus.${META_TARGET_NAME}")
+set(META_ID "martchus.${META_TARGET_NAME}")
 set(META_ID
     "${META_ID}"
     PARENT_SCOPE)
