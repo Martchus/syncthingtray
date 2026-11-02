@@ -68,7 +68,7 @@ Item {
                                 icon.source: plasmoid.faUrl + "folder"
                                 tooltip: qsTr("Open in file browser")
                                 enabled: path !== undefined
-                                onClicked: Qt.openUrlExternally(path)
+                                onClicked: plasmoid.models.openPath(path)
                             }
                         }
                     }
@@ -120,7 +120,7 @@ Item {
                                 TinyButton {
                                     icon.source: plasmoid.faUrl + "folder"
                                     tooltip: qsTr("Open in file browser")
-                                    onClicked: Qt.openUrlExternally(path + "/..")
+                                    onClicked: plasmoid.models.openPath(path + "/..")
                                 }
                             }
                         }

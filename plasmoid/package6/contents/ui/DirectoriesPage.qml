@@ -115,7 +115,7 @@ ColumnLayout {
                                 id: openButton
                                 icon.source: plasmoid.faUrl + "folder"
                                 tooltip: qsTr("Open in file browser")
-                                onClicked: Qt.openUrlExternally(plasmoid.data.connection.substituteTilde(path))
+                                onClicked: plasmoid.models.openPath(dirId, "")
                             }
                         }
                     }

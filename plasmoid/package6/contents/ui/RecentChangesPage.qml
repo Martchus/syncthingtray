@@ -97,7 +97,7 @@ Item {
 
                 readonly property string fileAction: action
                 function openPath() {
-                    plasmoid.openLocalFileOrDir(directoryId, path)
+                    plasmoid.models.openPath(directoryId, path)
                 }
                 function copyPath() {
                     plasmoid.copyToClipboard(directoryId, path)

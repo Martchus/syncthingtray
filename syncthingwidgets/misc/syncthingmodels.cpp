@@ -110,6 +110,26 @@ QString SyncthingModels::formatDataSize(quint64 size) const
     return QString::fromStdString(CppUtilities::dataSizeToString(size));
 }
 
+bool SyncthingModels::openPath(const QString &path)
+{
+    if (QtUtilities::openLocalFileOrDir(path)) {
+        return true;
+    }
+    emit error(tr("Unable to open \"%1\"").arg(path));
+    return false;
+}
+
+bool SyncthingModels::openPath(const QString &dirId, const QString &relativePath)
+{
+    const auto fullPath = m_connection.fullPath(dirId, relativePath);
+    if (fullPath.isEmpty()) {
+        emit error(tr("Unable to open \"%1\"").arg(relativePath));
+    } else if (openPath(fullPath)) {
+        return true;
+    }
+    return false;
+}
+
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
 SyncthingModels *SyncthingModels::create(QQmlEngine *qmlEngine, QJSEngine *engine)
 {
@@ -140,26 +160,6 @@ QStringList SyncthingModels::externalStoragePaths() const
     }
 #endif
     return paths;
-}
-
-bool SyncthingModels::openPath(const QString &path)
-{
-    if (QtUtilities::openLocalFileOrDir(path)) {
-        return true;
-    }
-    emit error(tr("Unable to open \"%1\"").arg(path));
-    return false;
-}
-
-bool SyncthingModels::openPath(const QString &dirId, const QString &relativePath)
-{
-    const auto fullPath = m_connection.fullPath(dirId, relativePath);
-    if (fullPath.isEmpty()) {
-        emit error(tr("Unable to open \"%1\"").arg(relativePath));
-    } else if (openPath(fullPath)) {
-        return true;
-    }
-    return false;
 }
 
 bool SyncthingModels::openSyncthingConfigFile()

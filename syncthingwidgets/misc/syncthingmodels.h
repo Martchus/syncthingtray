@@ -109,14 +109,14 @@ public:
     // functions used by different UIs
     Q_INVOKABLE QString formatDataSize(quint64 size) const;
     Q_INVOKABLE void setBrightColors(bool brightColors);
+    Q_INVOKABLE bool openPath(const QString &path);
+    Q_INVOKABLE bool openPath(const QString &dirId, const QString &relativePath);
 
     // functions only used by mobile UI
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
     Q_INVOKABLE QString externalFilesDir() const;
     Q_INVOKABLE QStringList externalStoragePaths() const;
     Q_INVOKABLE bool openUrlExternally(const QUrl &url, bool viaQt = false);
-    Q_INVOKABLE bool openPath(const QString &path);
-    Q_INVOKABLE bool openPath(const QString &dirId, const QString &relativePath);
     Q_INVOKABLE bool openSyncthingConfigFile();
     Q_INVOKABLE bool scanPath(const QString &path);
     Q_INVOKABLE bool copyText(const QString &text);
@@ -150,9 +150,9 @@ public:
 #endif
 
 Q_SIGNALS:
-#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
     void info(const QString &infoMessage, const QString &details = QString());
     void error(const QString &errorMessage, const QString &details = QString());
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
     void hapticFeedbackRequested();
     void savingConfigChanged(bool isSavingConfig);
 #endif

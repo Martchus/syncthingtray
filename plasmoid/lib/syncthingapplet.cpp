@@ -55,6 +55,7 @@
 #include <QQmlEngine>
 #include <QStringBuilder>
 
+#include <functional>
 #include <iostream>
 
 using namespace std;
@@ -156,17 +157,19 @@ QIcon SyncthingApplet::syncthingIcon() const
     return QIcon(QStringLiteral("syncthing.fa"));
 }
 
-void showErrorIfSet(const QString &errorMessage)
+static void showMessageBox(QMessageBox::Icon icon, const QString &message, const QString &details = QString())
 {
-    if (errorMessage.isEmpty()) {
-        return;
+    auto messageBox = new QMessageBox(icon, QStringLiteral(APP_NAME), message);
+    messageBox->setAttribute(Qt::WA_DeleteOnClose, true);
+    messageBox->setDetailedText(details);
+    messageBox->show();
+}
+
+static void showErrorIfSet(const QString &errorMessage)
+{
+    if (!errorMessage.isEmpty()) {
+        showMessageBox(QMessageBox::Critical, errorMessage);
     }
-    auto msgBox = new QMessageBox();
-    msgBox->setWindowTitle(QStringLiteral(APP_NAME));
-    msgBox->setAttribute(Qt::WA_DeleteOnClose, true);
-    msgBox->setText(errorMessage);
-    msgBox->setIcon(QMessageBox::Critical);
-    msgBox->show();
 }
 
 void SyncthingApplet::init()
@@ -203,6 +206,8 @@ void SyncthingApplet::init()
     connect(&m_dbusNotifier, &DBusStatusNotifier::webUiRequested, this, &SyncthingApplet::showWebUI);
     connect(&m_iconManager, &IconManager::statusIconsChanged, this, &SyncthingApplet::connectionStatusChanged);
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &SyncthingApplet::handleThemeChanged);
+    connect(&m_models, &SyncthingModels::error, this, std::bind(&showMessageBox, QMessageBox::Warning, std::placeholders::_1, std::placeholders::_2));
+    connect(&m_models, &SyncthingModels::info, this, std::bind(&showMessageBox, QMessageBox::Information, std::placeholders::_1, std::placeholders::_2));
 
     // initialize systemd service support
     auto &settings = Settings::values();
@@ -635,15 +640,6 @@ void SyncthingApplet::copyToClipboard(const QString &dirId, const QString &relat
         QGuiApplication::clipboard()->setText(fullPath);
     } else {
         QGuiApplication::clipboard()->setText(relativePath);
-    }
-}
-
-void SyncthingApplet::openLocalFileOrDir(const QString &dirId, const QString &relativePath)
-{
-    if (const auto fullPath = m_data.connection()->fullPath(dirId, relativePath); !fullPath.isEmpty()) {
-        QtUtilities::openLocalFileOrDir(fullPath);
-    } else {
-        QMessageBox::warning(nullptr, QStringLiteral(APP_NAME), tr("Associated directory does not exist."));
     }
 }
 

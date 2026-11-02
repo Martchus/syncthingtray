@@ -93,7 +93,7 @@ Item {
                 }
 
                 function openPath() {
-                    plasmoid.nativeInterface.openLocalFileOrDir(directoryId, path)
+                    plasmoid.models.openPath(directoryId, path)
                 }
                 function copyPath() {
                     plasmoid.nativeInterface.copyToClipboard(directoryId, path)
