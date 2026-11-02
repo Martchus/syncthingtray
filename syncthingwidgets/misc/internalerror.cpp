@@ -18,7 +18,7 @@ namespace QtGui {
  * \brief Returns whether to ignore inavailability after start or standby-wakeup.
  */
 static bool ignoreInavailabilityAfterStart(unsigned int ignoreInavailabilityAfterStartSec, const SyncthingLauncher *launcher,
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     const SyncthingService *service,
 #endif
     const QString &message, int networkError)
@@ -46,7 +46,7 @@ static bool ignoreInavailabilityAfterStart(unsigned int ignoreInavailabilityAfte
 
     // ignore inavailable shorty after the start
     if ((launcher && launcher->isRunning())
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
         && ((service && service->isServiceManagerAvailable()
                 && !service->isActiveWithoutSleepFor(launcher->activeSince(), ignoreInavailabilityAfterStartSec))
             || !launcher->isActiveWithoutSleepFor(ignoreInavailabilityAfterStartSec))
@@ -56,7 +56,7 @@ static bool ignoreInavailabilityAfterStart(unsigned int ignoreInavailabilityAfte
     ) {
         return true;
     }
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     if (service && !service->isActiveWithoutSleepFor(ignoreInavailabilityAfterStartSec)) {
         return true;
     }
@@ -100,7 +100,7 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
 
     // decide based on global user settings what to consider
     const auto considerLauncherForReconnect = useGlobalSettings ? settings.launcher.considerForReconnect : considerForReconnectDefault;
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     const auto considerServiceForReconnect = useGlobalSettings ? settings.systemd.considerForReconnect : considerForReconnectDefault;
 #endif
     const auto ignoreInavailabilityAfterStartSec
@@ -110,7 +110,7 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
     // use always the default settings when not building with Qt Widgets GUI at all
     Q_UNUSED(useGlobalSettings)
     constexpr auto considerLauncherForReconnect = considerForReconnectDefault;
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     constexpr auto considerServiceForReconnect = considerForReconnectDefault;
 #endif
     constexpr auto ignoreInavailabilityAfterStartSec = ignoreInavailabilityAfterStartSecDefault;
@@ -127,7 +127,7 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
     if (considerLauncherForReconnect && remoteHostClosed && launcher && launcher->isManuallyStopped()) {
         return false;
     }
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     const auto *const service = SyncthingService::mainInstance();
     if (considerServiceForReconnect && remoteHostClosed && service && service->isManuallyStopped()) {
         return false;
@@ -135,7 +135,7 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
 #endif
 
     return !ignoreInavailabilityAfterStart(ignoreInavailabilityAfterStartSec, launcher,
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
         service,
 #endif
         message, networkError);

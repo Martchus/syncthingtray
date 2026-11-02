@@ -10,7 +10,7 @@
 #include <syncthingconnector/syncthingnotifier.h>
 #include <syncthingconnector/syncthingprocess.h>
 #include <syncthingconnector/utils.h>
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
 #include <syncthingconnector/syncthingservice.h>
 #endif
 
@@ -439,7 +439,7 @@ bool restore()
         settings.endGroup();
     }
     settings.endGroup();
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     auto &systemd = v.systemd;
     systemd.syncthingUnit = settings.value(QStringLiteral("syncthingUnit"), systemd.syncthingUnit).toString();
     systemd.systemUnit = settings.value(QStringLiteral("systemUnit"), systemd.systemUnit).toBool();
@@ -592,7 +592,7 @@ bool save()
         settings.endGroup();
     }
     settings.endGroup();
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     const auto &systemd = v.systemd;
     settings.setValue(QStringLiteral("syncthingUnit"), systemd.syncthingUnit);
     settings.setValue(QStringLiteral("systemUnit"), systemd.systemUnit);
@@ -652,7 +652,7 @@ void Settings::apply(SyncthingNotifier &notifier) const
     if (launcher.considerForReconnect) {
         integrations |= SyncthingStartupIntegration::Process;
     }
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     if (systemd.considerForReconnect) {
         integrations |= SyncthingStartupIntegration::Service;
     }
@@ -662,7 +662,7 @@ void Settings::apply(SyncthingNotifier &notifier) const
     notifier.setIgnoreInavailabilityAfterStart(ignoreInavailabilityAfterStart);
 }
 
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
 RuntimeCondition::Conditions Systemd::runtimeConditions() const
 {
     return ::Settings::runtimeConditions(*this);

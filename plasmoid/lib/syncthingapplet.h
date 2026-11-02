@@ -68,7 +68,7 @@ class SyncthingApplet : public Plasma::Applet {
 #if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
     Q_PROPERTY(QtGui::QuickUI *quickUI READ quickUI NOTIFY quickUIChanged)
 #endif
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     Q_PROPERTY(Data::SyncthingService *service READ service CONSTANT)
 #endif
     Q_PROPERTY(QIcon syncthingIcon READ syncthingIcon CONSTANT)
@@ -84,7 +84,7 @@ class SyncthingApplet : public Plasma::Applet {
             currentConnectionConfigIndexChanged)
     Q_PROPERTY(int defaultTab READ defaultTab CONSTANT)
     Q_PROPERTY(bool startStopEnabled READ isStartStopEnabled NOTIFY settingsChanged)
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     Q_PROPERTY(QObject *startStopButtonTarget READ service CONSTANT)
 #endif
     Q_PROPERTY(bool hasInternalErrors READ hasInternalErrors NOTIFY hasInternalErrorsChanged)
@@ -116,7 +116,7 @@ public:
 #if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
     QtGui::QuickUI *quickUI() const;
 #endif
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     Data::SyncthingService *service() const;
 #endif
     QIcon syncthingIcon() const;
@@ -210,7 +210,7 @@ private Q_SLOTS:
     void handleNotificationsDialogDeleted();
     void handleNewNotification(CppUtilities::DateTime when, const QString &msg);
     void handleSystemdServiceError(const QString &context, const QString &name, const QString &message);
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     void handleSystemdStatusChanged();
 #endif
     void handleEngineDestroyed();
@@ -235,7 +235,7 @@ private:
 #if defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
     std::optional<QtGui::QuickGuiEngine> m_quickUI;
 #endif
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     Data::SyncthingService m_service;
 #endif
     Data::SyncthingDownloadModel m_downloadModel;
@@ -286,7 +286,7 @@ inline QtGui::QuickUI *SyncthingApplet::quickUI() const
 }
 #endif
 
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
 inline Data::SyncthingService *SyncthingApplet::service() const
 {
     return const_cast<Data::SyncthingService *>(&m_service);
@@ -373,7 +373,7 @@ inline QString SyncthingApplet::faUrl()
 
 inline void SyncthingApplet::toggleRunning()
 {
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     return m_service.toggleRunning();
 #endif
 }

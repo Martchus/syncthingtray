@@ -131,9 +131,13 @@ struct SYNCTHINGWIDGETS_EXPORT Launcher {
     LauncherStatus status(Data::SyncthingConnection &connection) const;
 };
 
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
 struct SYNCTHINGWIDGETS_EXPORT Systemd {
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE
+    QString syncthingUnit = QStringLiteral("syncthing");
+#else
     QString syncthingUnit = QStringLiteral("syncthing.service");
+#endif
     bool systemUnit = false;
     bool showButton = false;
     bool considerForReconnect = false;
@@ -191,7 +195,7 @@ struct SYNCTHINGWIDGETS_EXPORT Settings {
         bool usePaletteForTray = false;
     } icons;
     Launcher launcher;
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     Systemd systemd;
 #endif
     WebView webView;

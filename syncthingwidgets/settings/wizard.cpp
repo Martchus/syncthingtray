@@ -46,7 +46,7 @@ namespace QtGui {
 
 constexpr int syncthingPollTimeout = 60 * 1000;
 constexpr int syncthingPollInterval = 2000;
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
 constexpr int systemdPollTimeout = 10 * 1000;
 #endif
 
@@ -168,14 +168,14 @@ bool Wizard::changeSettings()
 #endif
         break;
     case MainConfiguration::SystemdUserUnit:
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
         // configure systemd integration for user unit
         settings.systemd.syncthingUnit = detection.userService.unitName();
         settings.systemd.systemUnit = false;
 #endif
         break;
     case MainConfiguration::SystemdSystemUnit:
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
         // configure systemd integration for system unit
         settings.systemd.syncthingUnit = detection.systemService.unitName();
         settings.systemd.systemUnit = true;
@@ -188,7 +188,7 @@ bool Wizard::changeSettings()
         settings.launcher.considerForReconnect = settings.launcher.showButton = settings.launcher.autostartEnabled
             = (mainConfig() == MainConfiguration::LauncherExternal || mainConfig() == MainConfiguration::LauncherBuiltIn);
     }
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     settings.systemd.considerForReconnect = settings.systemd.showButton = extraConfig() && ExtraConfiguration::SystemdIntegration;
 #endif
 
@@ -222,7 +222,7 @@ bool Wizard::changeSettings()
         break;
     case MainConfiguration::SystemdUserUnit:
     case MainConfiguration::SystemdSystemUnit:
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
         if (auto *const service = Data::SyncthingService::mainInstance()) {
             settings.systemd.setupService(*service);
             service->start();
@@ -297,7 +297,7 @@ void Wizard::showDetailsFromSetupDetection()
 
     // add systemd service info
     addParagraph(tr("Systemd:"));
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     infoItems << tr("State of user unit file \"%1\": ").arg(detection.userService.unitName()) + detection.userService.unitFileState();
     infoItems << tr("State of system unit file \"%1\": ").arg(detection.systemService.unitName()) + detection.systemService.unitFileState();
     addList(infoItems);
@@ -370,7 +370,7 @@ void Wizard::pollForSyncthingConfig()
         break;
     case MainConfiguration::SystemdUserUnit:
     case MainConfiguration::SystemdSystemUnit:
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
         if (m_elapsedPollTime < systemdPollTimeout) {
             break; // don't consider the systemd unit status immediately; also give it a short time to adjust
         }
@@ -419,7 +419,7 @@ QString Wizard::hintAboutSyncthingLog() const
         break;
     case MainConfiguration::SystemdUserUnit:
     case MainConfiguration::SystemdSystemUnit:
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
         res += tr(" It is normally written to the system journal (and can be accessed via e.g. journalctl).");
 #endif
         break;
@@ -653,7 +653,7 @@ MainConfigWizardPage::MainConfigWizardPage(QWidget *parent)
     setSubTitle(tr("Something when wrong when checking the Syncthing setup."));
     setButtonText(QWizard::CustomButton1, tr("Show details from setup detection"));
     m_ui->setupUi(this);
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     m_cfgSystemdUserUnitText = m_ui->cfgSystemdUserUnitRadioButton->text();
     m_cfgSystemdSystemUnitText = m_ui->cfgSystemdSystemUnitRadioButton->text();
 #endif
@@ -694,7 +694,7 @@ void MainConfigWizardPage::initializePage()
 
     // offer enabling Systemd integration if at least one unit is available
     auto const &detection = wizard->setupDetection();
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     if (detection.userService.isUnitAvailable() || detection.systemService.isUnitAvailable()) {
         m_ui->enableSystemdIntegrationCheckBox->show();
         m_ui->enableSystemdIntegrationCheckBox->setChecked(true);
@@ -715,7 +715,7 @@ void MainConfigWizardPage::initializePage()
         launchOptions.reserve(2);
 
         // enable options to launch Syncthing via Systemd if Systemd units have been found
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
         const auto canLaunchViaUserUnit = detection.userService.canEnableOrStart();
         const auto canLaunchViaSystemUnit = detection.systemService.canEnableOrStart();
         const auto userUnitRunning = detection.userService.isRunning();
@@ -791,7 +791,7 @@ void MainConfigWizardPage::initializePage()
         }
     }
 
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     if (detection.userService.isRunningOrEnabled() && detection.systemService.isRunningOrEnabled()) {
         warnings << QStringLiteral("<li>")
                 % tr("The systemd %1 and %2 have both be detected as enabled/running. This is probably a misconfiguration.")
@@ -847,7 +847,7 @@ void MainConfigWizardPage::handleSelectionChanged()
     }
 
     // enable/disable option for Systemd integration
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     const auto &detection = wizard->setupDetection();
     if (!m_ui->cfgCurrentlyRunningRadioButton->isHidden()) {
         const auto &systemdSettings = Settings::values().systemd;
@@ -1028,7 +1028,7 @@ void ApplyWizardPage::initializePage()
         break;
     case MainConfiguration::SystemdUserUnit:
     case MainConfiguration::SystemdSystemUnit:
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
         mainConfig = tr("Start Syncthing by enabling and starting its systemd unit");
         extraInfo = wizard->mainConfig() == MainConfiguration::SystemdUserUnit
             ? tr("Using user unit \"%1\"").arg(detection.userService.unitName())
@@ -1040,7 +1040,7 @@ void ApplyWizardPage::initializePage()
         makeNestedListItem(mainConfig, extraInfo);
     }
     addListItem(mainConfig);
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     logFeature(tr("systemd integration"), wizard->extraConfig() && ExtraConfiguration::SystemdIntegration,
         currentSettings.systemd.showButton && currentSettings.systemd.considerForReconnect);
 #endif

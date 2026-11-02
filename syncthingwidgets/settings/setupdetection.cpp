@@ -16,15 +16,22 @@ namespace QtGui {
 SetupDetection::SetupDetection(QObject *parent)
     : QObject(parent)
 {
-    // assume default service names
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE
+    const auto defaultUserUnit = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_SERVICE", QStringLiteral("syncthing"));
+#else
     const auto defaultUserUnit = qEnvironmentVariable(PROJECT_VARNAME_UPPER "_SYSTEMD_USER_UNIT", QStringLiteral("syncthing.service"));
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#endif
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     userService.setUnitName(defaultUserUnit);
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     systemService.setUnitName(QStringLiteral("syncthing@") %
 #ifdef PLATFORM_HAS_GETLOGIN
         QString::fromLocal8Bit(getlogin()) %
 #endif
         QStringLiteral(".service"));
+#else
+    systemService.setUnitName(defaultUserUnit);
+#endif
 #endif
 
     // recognize env variable SYNCTHING_PATH like the testsuite does
@@ -45,7 +52,7 @@ SetupDetection::SetupDetection(QObject *parent)
     // connect signals & slots
     connect(&connection, &Data::SyncthingConnection::error, this, &SetupDetection::handleConnectionError);
     connect(&connection, &Data::SyncthingConnection::statusChanged, this, &SetupDetection::checkDone);
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     connect(&userService, &Data::SyncthingService::unitFileStateChanged, this, &SetupDetection::checkDone);
     connect(&systemService, &Data::SyncthingService::unitFileStateChanged, this, &SetupDetection::checkDone);
 #endif
@@ -91,7 +98,7 @@ bool SetupDetection::isDone() const
 {
     return timedOut
         || (!connection.isConnecting() && (launcherExitCode.has_value() || launcherError.has_value())
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
             && !userService.unitFileState().isEmpty() && !systemService.unitFileState().isEmpty()
 #endif
         );

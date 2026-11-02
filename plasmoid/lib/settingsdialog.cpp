@@ -157,14 +157,14 @@ SettingsDialog::SettingsDialog(Plasmoid::SyncthingApplet &applet)
     };
     setWindowTitle();
     connect(this, &QtUtilities::SettingsDialog::retranslationRequired, this, std::move(setWindowTitle));
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     auto *const systemdPage = new SystemdOptionPage;
 #endif
 
     category = new OptionCategory;
     translateCategory(category, [] { return QCoreApplication::translate("Plasmoid::SettingsDialog", "Extras"); });
     category->assignPages({ generalWebViewPage, builtinWebViewPage
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
         ,
         systemdPage
 #endif

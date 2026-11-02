@@ -1,4 +1,4 @@
-#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD) && !defined(DATA_SYNCTHINGSERVICE_H)
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE) && !defined(DATA_SYNCTHINGSERVICE_H)
 #define DATA_SYNCTHINGSERVICE_H
 
 #include "./runtimecondition.h"
@@ -12,6 +12,7 @@
 #include <optional>
 #include <unordered_set>
 
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 QT_FORWARD_DECLARE_CLASS(QDBusServiceWatcher)
 QT_FORWARD_DECLARE_CLASS(QDBusArgument)
 QT_FORWARD_DECLARE_CLASS(QDBusObjectPath)
@@ -23,9 +24,13 @@ class OrgFreedesktopSystemd1UnitInterface;
 class OrgFreedesktopSystemd1ServiceInterface;
 class OrgFreedesktopDBusPropertiesInterface;
 class OrgFreedesktopLogin1ManagerInterface;
+#elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+QT_FORWARD_DECLARE_CLASS(QTimer)
+#endif
 
 namespace Data {
 
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
 struct ManagerDBusUnitFileChange {
     QString type;
     QString path;
@@ -36,6 +41,11 @@ QDBusArgument &operator<<(QDBusArgument &argument, const ManagerDBusUnitFileChan
 const QDBusArgument &operator>>(const QDBusArgument &argument, ManagerDBusUnitFileChange &unitFileChange);
 
 using ManagerDBusUnitFileChangeList = QList<ManagerDBusUnitFileChange>;
+#elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+LIB_SYNCTHING_CONNECTOR_EXPORT int runAsWindowsService(std::function<int(void)> &&serviceRoutine, std::function<void(void)> &&stopRoutine);
+LIB_SYNCTHING_CONNECTOR_EXPORT int handleInstallService(const QString &serviceName);
+LIB_SYNCTHING_CONNECTOR_EXPORT int handleUninstallService(const QString &serviceName);
+#endif
 
 enum class ServiceScope { System, User };
 
@@ -55,9 +65,12 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingService : public QObject {
     Q_PROPERTY(ServiceScope scope READ scope WRITE setScope NOTIFY scopeChanged)
     Q_PROPERTY(bool userScope READ isUserScope NOTIFY scopeChanged)
     Q_PROPERTY(Data::RuntimeCondition *runtimeCondition READ runtimeCondition CONSTANT)
+    Q_PROPERTY(QString serviceManagerName READ serviceManagerName CONSTANT)
+    Q_PROPERTY(bool canInstallService READ canInstallService CONSTANT)
 
 public:
     explicit SyncthingService(ServiceScope scope = ServiceScope::User, QObject *parent = nullptr);
+    ~SyncthingService() override;
 
     const QString &unitName() const;
     bool isServiceManagerAvailable() const;
@@ -82,6 +95,8 @@ public:
     void setScopeAndUnitName(ServiceScope scope, const QString &unitName);
     bool isUserScope() const;
     QString displayName() const;
+    QString serviceManagerName() const;
+    bool canInstallService() const;
     RuntimeCondition *runtimeCondition();
     const RuntimeCondition *runtimeCondition() const;
     static SyncthingService *mainInstance();
@@ -98,6 +113,8 @@ public Q_SLOTS:
     void disable();
     void reloadAllUnitFiles();
     void openLogs() const;
+    void installService();
+    void uninstallService();
 
 Q_SIGNALS:
     void unitNameChanged(const QString &unitName);
@@ -113,6 +130,7 @@ Q_SIGNALS:
     void errorOccurred(const QString &context, const QString &name, const QString &message);
     void scopeChanged(Data::ServiceScope scope);
 
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 private Q_SLOTS:
     void handleUnitAdded(const QString &unitName, const QDBusObjectPath &unitPath);
     void handleUnitRemoved(const QString &unitName, const QDBusObjectPath &unitPath);
@@ -140,26 +158,35 @@ private:
         const QVariantMap &changedProperties, const QStringList &invalidatedProperties);
     bool handlePropertyChanged(CppUtilities::DateTime &variable, const QString &propertyName, const QVariantMap &changedProperties,
         const QStringList &invalidatedProperties);
-    void stopDueToRuntimeCond();
 
     static OrgFreedesktopSystemd1ManagerInterface *s_systemdUserInterface;
     static OrgFreedesktopSystemd1ManagerInterface *s_systemdSystemInterface;
     static OrgFreedesktopLogin1ManagerInterface *s_loginManager;
-    static bool s_fallingAsleep;
-    static CppUtilities::DateTime s_lastWakeUp;
-    static SyncthingService *s_mainInstance;
-    QString m_unitName;
     QDBusServiceWatcher *m_serviceWatcher;
     OrgFreedesktopSystemd1UnitInterface *m_unit;
     OrgFreedesktopSystemd1ServiceInterface *m_service;
     OrgFreedesktopDBusPropertiesInterface *m_properties;
+    OrgFreedesktopSystemd1ManagerInterface *m_currentSystemdInterface;
+    std::unordered_set<QDBusPendingCallWatcher *> m_pendingCalls;
+#elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+private Q_SLOTS:
+    void queryServiceStatus();
+    void queryServiceConfig();
+
+private:
+    QTimer *m_pollTimer;
+#endif
+    void stopDueToRuntimeCond();
+
+    static bool s_fallingAsleep;
+    static CppUtilities::DateTime s_lastWakeUp;
+    static SyncthingService *s_mainInstance;
+    QString m_unitName;
     QString m_description;
     QString m_activeState;
     QString m_subState;
     QString m_unitFileState;
     CppUtilities::DateTime m_activeSince;
-    OrgFreedesktopSystemd1ManagerInterface *m_currentSystemdInterface;
-    std::unordered_set<QDBusPendingCallWatcher *> m_pendingCalls;
     ServiceScope m_scope;
     bool m_manuallyStopped;
     bool m_stoppedDueToRuntimeCond;
@@ -372,6 +399,30 @@ inline const RuntimeCondition *SyncthingService::runtimeCondition() const
 }
 
 /*!
+ * \brief Returns the name of the service manager ("systemd" or "Windows").
+ */
+inline QString SyncthingService::serviceManagerName() const
+{
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE
+    return QStringLiteral("Windows");
+#else
+    return QStringLiteral("systemd");
+#endif
+}
+
+/*!
+ * \brief Returns whether the service can be installed by this class.
+ */
+inline bool SyncthingService::canInstallService() const
+{
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE
+    return true;
+#else
+    return false;
+#endif
+}
+
+/*!
  * \brief Returns the SyncthingService instance which has previously been assigned via SyncthingService::setMainInstance().
  */
 inline SyncthingService *SyncthingService::mainInstance()
@@ -389,7 +440,9 @@ inline void SyncthingService::setMainInstance(SyncthingService *mainInstance)
 
 } // namespace Data
 
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 Q_DECLARE_METATYPE(Data::ManagerDBusUnitFileChange)
 Q_DECLARE_METATYPE(Data::ManagerDBusUnitFileChangeList)
+#endif
 
-#endif // defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD) && !defined(DATA_SYNCTHINGSERVICE_H)
+#endif // defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE) && !defined(DATA_SYNCTHINGSERVICE_H)

@@ -32,7 +32,7 @@
 #include <syncthingmodel/syncthingicons.h>
 
 #include <syncthingconnector/syncthingprocess.h>
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
 #include <syncthingconnector/syncthingservice.h>
 #endif
 
@@ -107,8 +107,8 @@ ENABLE_QT_RESOURCES_OF_STATIC_DEPENDENCIES
 
 #ifdef GUI_QTWIDGETS
 
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-static void handleSystemdServiceError(const QString &context, const QString &name, const QString &message)
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
+static void handleServiceError(const QString &context, const QString &name, const QString &message)
 {
     auto *const msgBox = new QMessageBox;
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
@@ -228,6 +228,13 @@ static void shutdownSyncthingTray()
 
 #endif
 
+#if defined(Q_OS_WIN) && defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+static QString serviceNameFromArg(ConfigValueArgument &arg)
+{
+    return QString::fromUtf8(arg.firstValueOr("syncthing")).trimmed();
+}
+#endif
+
 static int runApplication(int argc, const char *const *argv)
 {
     // setup argument parser
@@ -284,11 +291,57 @@ static int runApplication(int argc, const char *const *argv)
     cliArg.setSubArguments({ &cliHelp });
     auto syncthingArg = OperationArgument("syncthing", '\0', "runs Syncthing");
     auto syncthingHelp = ConfigValueArgument("help", 'h', "lists Syncthing's top-level commands");
+#if defined(Q_OS_WIN) && defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    auto asServiceHelp = ConfigValueArgument("as-service", '\0', "runs Syncthing as a Windows service");
+#endif
     syncthingArg.setRequiredValueCount(Argument::varValueCount);
     syncthingArg.setFlags(Argument::Flags::Greedy, true);
     syncthingArg.setValueCompletionBehavior(ValueCompletionBehavior::PreDefinedValues | ValueCompletionBehavior::InvokeCallback);
-    syncthingArg.setCallback([](const ArgumentOccurrence &occurrence) { std::exit(static_cast<int>(LibSyncthing::runCommand(occurrence.values))); });
+    syncthingArg.setCallback([](const ArgumentOccurrence &occurrence) {
+        auto values = occurrence.values;
+#if defined(Q_OS_WIN) && defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+        auto asService = false;
+        if (const auto it = std::find_if(values.begin(), values.end(), [](const char *arg) { return std::strcmp(arg, "--as-service") == 0; });
+            it != values.end()) {
+            asService = true;
+            values.erase(it);
+        } else if (qEnvironmentVariableIsSet("SYNCTHINGTRAY_AS_SERVICE")) {
+            asService = true;
+        }
+        if (asService) {
+            std::exit(runAsWindowsService(
+                [values] {
+#ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
+                    return static_cast<int>(LibSyncthing::runCommand(values));
+#endif
+                },
+                [] {
+#ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
+                    LibSyncthing::stopSyncthing();
+#endif
+                }));
+        }
+#endif
+        std::exit(static_cast<int>(LibSyncthing::runCommand(values)));
+    });
+#if defined(Q_OS_WIN) && defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    syncthingArg.setSubArguments({ &syncthingHelp, &asServiceHelp });
+#else
     syncthingArg.setSubArguments({ &syncthingHelp });
+#endif
+#endif
+#if defined(Q_OS_WIN) && defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    auto installServiceArg = OperationArgument("install-service", '\0', "installs Syncthing as a Windows service");
+    auto uninstallServiceArg = OperationArgument("uninstall-service", '\0', "uninstalls Syncthing Windows service");
+    auto serviceNameArg = ConfigValueArgument("name", '\0', "service name (default: \"syncthing\")", { "name" });
+    installServiceArg.setSubArguments({ &serviceNameArg });
+    uninstallServiceArg.setSubArguments({ &serviceNameArg });
+    installServiceArg.setCallback([argc, argv, &serviceNameArg](const ArgumentOccurrence &) mutable {
+        auto app = QCoreApplication(argc, const_cast<char **>(argv));
+        std::exit(handleInstallService(serviceNameFromArg(serviceNameArg)));
+    });
+    uninstallServiceArg.setCallback(
+        [&serviceNameArg](const ArgumentOccurrence &) { std::exit(handleUninstallService(serviceNameFromArg(serviceNameArg))); });
 #endif
 #ifdef Q_OS_ANDROID
     auto serviceArg = OperationArgument("service", '\0', "runs service");
@@ -303,6 +356,9 @@ static int runApplication(int argc, const char *const *argv)
 #endif
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
         &cliArg, &syncthingArg,
+#endif
+#if defined(Q_OS_WIN) && defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+        &installServiceArg, &uninstallServiceArg,
 #endif
 #ifdef Q_OS_ANDROID
         &serviceArg,
@@ -482,11 +538,11 @@ static int runApplication(int argc, const char *const *argv)
         }
         auto launcher = SyncthingLauncher();
         SyncthingLauncher::setMainInstance(&launcher);
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
         auto service = SyncthingService();
         SyncthingService::setMainInstance(&service);
         settings.systemd.setupService(service);
-        QObject::connect(&service, &SyncthingService::errorOccurred, &handleSystemdServiceError);
+        QObject::connect(&service, &SyncthingService::errorOccurred, &handleServiceError);
 #endif
         if (settings.icons.preferIconsFromTheme) {
             Data::setForkAwesomeThemeOverrides();
