@@ -47,7 +47,7 @@ static bool ignoreInavailabilityAfterStart(unsigned int ignoreInavailabilityAfte
     // ignore inavailable shorty after the start
     if ((launcher && launcher->isRunning())
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-        && ((service && service->isSystemdAvailable()
+        && ((service && service->isServiceManagerAvailable()
                 && !service->isActiveWithoutSleepFor(launcher->activeSince(), ignoreInavailabilityAfterStartSec))
             || !launcher->isActiveWithoutSleepFor(ignoreInavailabilityAfterStartSec))
 #else

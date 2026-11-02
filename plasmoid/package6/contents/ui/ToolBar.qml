@@ -111,7 +111,7 @@ RowLayout {
             }
             // show start/stop button only when the configured unit is available
             const service = plasmoid.service
-            if (!service || !service.systemdAvailable) {
+            if (!service || !service.serviceManagerAvailable) {
                 return "irrelevant"
             }
             return service.running ? "running" : "stopped"

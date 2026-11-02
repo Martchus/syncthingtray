@@ -152,7 +152,7 @@ bool SyncthingNotifier::isDisconnectRelevant() const
     if (m_ignoreInavailabilityAfterStart) {
         if (((m_consideredIntegrations && SyncthingStartupIntegration::Process) && m_process && m_process->isRunning())
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-            && (((m_consideredIntegrations && SyncthingStartupIntegration::Service) && m_service && m_service->isSystemdAvailable()
+            && (((m_consideredIntegrations && SyncthingStartupIntegration::Service) && m_service && m_service->isServiceManagerAvailable()
                     && !m_service->isActiveWithoutSleepFor(m_process->activeSince(), m_ignoreInavailabilityAfterStart))
                 || !m_process->isActiveWithoutSleepFor(m_ignoreInavailabilityAfterStart))
 #else

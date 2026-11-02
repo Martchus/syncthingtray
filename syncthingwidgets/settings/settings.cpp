@@ -675,7 +675,7 @@ void Systemd::setupService(SyncthingService &service) const
 {
     service.runtimeCondition()->setBatteryPercentage(stopOnBatteryMinPercentage);
     service.runtimeCondition()->setEnabledConditions(runtimeConditions());
-    service.setScopeAndUnitName(systemUnit ? SystemdScope::System : SystemdScope::User, syncthingUnit);
+    service.setScopeAndUnitName(systemUnit ? ServiceScope::System : ServiceScope::User, syncthingUnit);
 }
 
 /*!
@@ -693,7 +693,7 @@ Systemd::ServiceStatus Systemd::apply(
     if (!service) {
         return ServiceStatus{};
     }
-    const auto isRelevant = service->isSystemdAvailable() && connection.isLocal();
+    const auto isRelevant = service->isServiceManagerAvailable() && connection.isLocal();
     const auto unitAvailable = service->isUnitAvailable();
     const auto isRunning = unitAvailable && service->isRunning();
     const auto consideredForReconnect = considerForReconnect && isRelevant;
@@ -711,7 +711,7 @@ Systemd::ServiceStatus Systemd::status(SyncthingConnection &connection) const
     if (!service) {
         return ServiceStatus{};
     }
-    const auto isRelevant = service->isSystemdAvailable() && connection.isLocal();
+    const auto isRelevant = service->isServiceManagerAvailable() && connection.isLocal();
     return ServiceStatus{ isRelevant, service->isRunning(), considerForReconnect && isRelevant, showButton && isRelevant, service->isUserScope() };
 }
 #endif

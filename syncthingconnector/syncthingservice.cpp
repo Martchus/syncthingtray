@@ -70,7 +70,7 @@ bool SyncthingService::s_fallingAsleep = false;
 /*!
  * \brief Creates a new SyncthingService instance.
  */
-SyncthingService::SyncthingService(SystemdScope scope, QObject *parent)
+SyncthingService::SyncthingService(ServiceScope scope, QObject *parent)
     : QObject(parent)
     , m_unit(nullptr)
     , m_service(nullptr)
@@ -126,7 +126,7 @@ void SyncthingService::setupSystemdInterface()
     clearSystemdInterface();
 
     // ensure the static systemd interface for the current scope is initialized
-    const auto isUserScope = m_scope == SystemdScope::User;
+    const auto isUserScope = m_scope == ServiceScope::User;
     OrgFreedesktopSystemd1ManagerInterface *&staticSystemdInterface = isUserScope ? s_systemdUserInterface : s_systemdSystemInterface;
     if (!staticSystemdInterface) {
         // register custom data types
@@ -209,7 +209,7 @@ bool SyncthingService::concludeAsyncCall(QDBusPendingCallWatcher *watcher, bool 
             connect(m_currentSystemdInterface, &OrgFreedesktopSystemd1ManagerInterface::UnitRemoved, this, &SyncthingService::handleUnitRemoved);
         }
         if (reload && !watcher->isError()) {
-            if (m_scope != SystemdScope::System) {
+            if (m_scope != ServiceScope::System) {
                 // reload unit files if reload flag was set (for enable/disable to make the change immediately apparent)
                 reloadAllUnitFiles();
             } else {
@@ -288,7 +288,7 @@ void SyncthingService::setUnitName(const QString &unitName)
 /*!
  * \brief Sets the \a scope and \a unitName (see scope() and unitName()).
  */
-void SyncthingService::setScopeAndUnitName(SystemdScope scope, const QString &unitName)
+void SyncthingService::setScopeAndUnitName(ServiceScope scope, const QString &unitName)
 {
     const auto scopeChanged = m_scope != scope;
     const auto unitNameChanged = m_unitName != unitName;
@@ -329,11 +329,11 @@ QString SyncthingService::displayName() const
 }
 
 /*!
- * \brief Returns whether systemd (and specifically its D-Bus interface for user services) is available.
- * \remarks The availability might not be instantly detected and may change at any time. Use the systemdAvailableChanged()
+ * \brief Returns whether a supported service manager (systemd and specifically its D-Bus interface for user services) is available.
+ * \remarks The availability might not be instantly detected and may change at any time. Use the serviceManagerAvailableChanged()
  *          to react to availability changes.
  */
-bool SyncthingService::isSystemdAvailable() const
+bool SyncthingService::isServiceManagerAvailable() const
 {
 #ifndef LIB_SYNCTHING_CONNECTOR_SERVICE_MOCKED
     return m_currentSystemdInterface && m_currentSystemdInterface->isValid();
@@ -361,7 +361,7 @@ bool SyncthingService::isUnitAvailable() const
 /*!
  * \brief Sets the scope the current instance is tuned to.
  */
-void SyncthingService::setScope(SystemdScope scope)
+void SyncthingService::setScope(ServiceScope scope)
 {
     if (m_scope == scope) {
         return;
@@ -542,7 +542,7 @@ void SyncthingService::handleError(const char *context, QDBusPendingCallWatcher 
 void SyncthingService::handleServiceRegisteredChanged(const QString &service)
 {
     if (m_currentSystemdInterface && service == m_currentSystemdInterface->service()) {
-        emit systemdAvailableChanged(m_currentSystemdInterface->isValid());
+        emit serviceManagerAvailableChanged(m_currentSystemdInterface->isValid());
     }
 }
 

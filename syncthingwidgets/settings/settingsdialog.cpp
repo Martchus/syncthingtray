@@ -1777,7 +1777,7 @@ void SystemdOptionPage::reset()
 
 void SystemdOptionPage::handleSystemUnitChanged()
 {
-    m_service->setScope(ui()->systemUnitCheckBox->isChecked() ? SystemdScope::System : SystemdScope::User);
+    m_service->setScope(ui()->systemUnitCheckBox->isChecked() ? ServiceScope::System : ServiceScope::User);
 }
 
 void SystemdOptionPage::handleDescriptionChanged(const QString &description)

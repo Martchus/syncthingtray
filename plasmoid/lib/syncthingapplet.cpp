@@ -209,7 +209,7 @@ void SyncthingApplet::init()
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     SyncthingService::setMainInstance(&m_service);
     settings.systemd.setupService(m_service);
-    connect(&m_service, &SyncthingService::systemdAvailableChanged, this, &SyncthingApplet::handleSystemdStatusChanged);
+    connect(&m_service, &SyncthingService::serviceManagerAvailableChanged, this, &SyncthingApplet::handleSystemdStatusChanged);
     connect(&m_service, &SyncthingService::stateChanged, this, &SyncthingApplet::handleSystemdStatusChanged);
     connect(&m_service, &SyncthingService::errorOccurred, this, &SyncthingApplet::handleSystemdServiceError);
 #endif

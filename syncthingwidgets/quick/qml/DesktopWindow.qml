@@ -191,7 +191,7 @@ ApplicationWindow {
                             }
                             // show start/stop button only when the configured unit is available
                             const target = TrayWidget.startStopButtonTarget
-                            if (!target || target.systemdAvailable === false) {
+                            if (!target || target.serviceManagerAvailable === false) {
                                 return "remote-only"
                             }
                             return target.running || target.starting ? "running" : "stopped"

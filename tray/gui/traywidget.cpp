@@ -283,7 +283,7 @@ TrayWidget::TrayWidget(TrayMenu *parent)
     }
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     if (const auto *const service = SyncthingService::mainInstance()) {
-        connect(service, &SyncthingService::systemdAvailableChanged, this, &TrayWidget::handleSystemdStatusChanged);
+        connect(service, &SyncthingService::serviceManagerAvailableChanged, this, &TrayWidget::handleSystemdStatusChanged);
         connect(service, &SyncthingService::stateChanged, this, &TrayWidget::handleSystemdStatusChanged);
     }
 #endif

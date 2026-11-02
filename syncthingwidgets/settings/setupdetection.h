@@ -52,8 +52,8 @@ public:
     Data::SyncthingConfig config;
     Data::SyncthingConnection connection;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
-    Data::SyncthingService userService = Data::SyncthingService(Data::SystemdScope::User);
-    Data::SyncthingService systemService = Data::SyncthingService(Data::SystemdScope::System);
+    Data::SyncthingService userService = Data::SyncthingService(Data::ServiceScope::User);
+    Data::SyncthingService systemService = Data::SyncthingService(Data::ServiceScope::System);
 #endif
     Settings::Launcher launcherSettings;
     QStringList additionalArgsToProbe;

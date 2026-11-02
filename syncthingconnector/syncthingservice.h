@@ -37,12 +37,12 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, ManagerDBusUnitFi
 
 typedef QList<ManagerDBusUnitFileChange> ManagerDBusUnitFileChangeList;
 
-enum class SystemdScope { System, User };
+enum class ServiceScope { System, User };
 
 class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingService : public QObject {
     Q_OBJECT
     Q_PROPERTY(QString unitName READ unitName WRITE setUnitName NOTIFY unitNameChanged)
-    Q_PROPERTY(bool systemdAvailable READ isSystemdAvailable NOTIFY systemdAvailableChanged)
+    Q_PROPERTY(bool serviceManagerAvailable READ isServiceManagerAvailable NOTIFY serviceManagerAvailableChanged)
     Q_PROPERTY(bool unitAvailable READ isUnitAvailable NOTIFY unitAvailableChanged)
     Q_PROPERTY(QString activeState READ activeState NOTIFY activeStateChanged)
     Q_PROPERTY(QString subState READ subState NOTIFY subStateChanged)
@@ -52,15 +52,15 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingService : public QObject {
     Q_PROPERTY(bool running READ isRunning WRITE setRunning NOTIFY runningChanged)
     Q_PROPERTY(bool enable READ isEnabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(bool manuallyStopped READ isManuallyStopped)
-    Q_PROPERTY(SystemdScope scope READ scope WRITE setScope NOTIFY scopeChanged)
+    Q_PROPERTY(ServiceScope scope READ scope WRITE setScope NOTIFY scopeChanged)
     Q_PROPERTY(bool userScope READ isUserScope NOTIFY scopeChanged)
     Q_PROPERTY(Data::RuntimeCondition *runtimeCondition READ runtimeCondition CONSTANT)
 
 public:
-    explicit SyncthingService(SystemdScope scope = SystemdScope::User, QObject *parent = nullptr);
+    explicit SyncthingService(ServiceScope scope = ServiceScope::User, QObject *parent = nullptr);
 
     const QString &unitName() const;
-    bool isSystemdAvailable() const;
+    bool isServiceManagerAvailable() const;
     bool isUnitAvailable() const;
     const QString &activeState() const;
     const QString &subState() const;
@@ -77,9 +77,9 @@ public:
     bool isDisabled() const;
     bool canEnableOrStart() const;
     bool isManuallyStopped() const;
-    SystemdScope scope() const;
-    void setScope(SystemdScope scope);
-    void setScopeAndUnitName(SystemdScope scope, const QString &unitName);
+    ServiceScope scope() const;
+    void setScope(ServiceScope scope);
+    void setScopeAndUnitName(ServiceScope scope, const QString &unitName);
     bool isUserScope() const;
     QString displayName() const;
     RuntimeCondition *runtimeCondition();
@@ -100,7 +100,7 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void unitNameChanged(const QString &unitName);
-    void systemdAvailableChanged(bool available);
+    void serviceManagerAvailableChanged(bool available);
     void unitAvailableChanged(bool available);
     void stateChanged(const QString &activeState, const QString &subState, CppUtilities::DateTime activeSince);
     void activeStateChanged(const QString &activeState);
@@ -110,7 +110,7 @@ Q_SIGNALS:
     void runningChanged(bool running);
     void enabledChanged(bool enable);
     void errorOccurred(const QString &context, const QString &name, const QString &message);
-    void scopeChanged(Data::SystemdScope scope);
+    void scopeChanged(Data::ServiceScope scope);
 
 private Q_SLOTS:
     void handleUnitAdded(const QString &unitName, const QDBusObjectPath &unitPath);
@@ -159,7 +159,7 @@ private:
     CppUtilities::DateTime m_activeSince;
     OrgFreedesktopSystemd1ManagerInterface *m_currentSystemdInterface;
     std::unordered_set<QDBusPendingCallWatcher *> m_pendingCalls;
-    SystemdScope m_scope;
+    ServiceScope m_scope;
     bool m_manuallyStopped;
     bool m_stoppedDueToRuntimeCond;
     bool m_unitAvailable;
@@ -288,17 +288,17 @@ inline bool SyncthingService::isManuallyStopped() const
 /*!
  * \brief Returns the scope the current instance is tuned to.
  */
-inline SystemdScope SyncthingService::scope() const
+inline ServiceScope SyncthingService::scope() const
 {
     return m_scope;
 }
 
 /*!
- * \brief Returns whether the scope is SystemdScope::User.
+ * \brief Returns whether the scope is ServiceScope::User.
  */
 inline bool SyncthingService::isUserScope() const
 {
-    return m_scope == SystemdScope::User;
+    return m_scope == ServiceScope::User;
 }
 
 /*!

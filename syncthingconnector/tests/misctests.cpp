@@ -234,7 +234,7 @@ void MiscTests::testUtils()
 void MiscTests::testService()
 {
     SyncthingService service;
-    service.isSystemdAvailable();
+    service.isServiceManagerAvailable();
     service.setUnitName(QStringLiteral("non-existent.service"));
     CPPUNIT_ASSERT(!service.isUnitAvailable());
     CPPUNIT_ASSERT_EQUAL(QString(), service.description());
