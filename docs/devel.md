@@ -189,36 +189,33 @@ itself is used instead of OpenSSL.)
 All KDE integrations are provided for KDE 5 and 6. The Qt version you have built Syncthing Tray against
 must match the KDE version you want to build the integrations for.
 
-If the Dolphin integration or the Plasmoid does not work, check whether the files for those components
-have been installed in the right directories.
-
-For instance, under Tumbleweed it looks like this for the Plasmoid:
-```
-/usr/lib64/qt5/plugins/plasma/applets/libsyncthingplasmoid.so
-/usr/share/kservices5/plasma-applet-martchus.syncthingplasmoid.desktop
-/usr/share/plasma/plasmoids/martchus.syncthingplasmoid/contents/ui/*.qml
-/usr/share/plasma/plasmoids/martchus.syncthingplasmoid/metadata.desktop
-/usr/share/plasma/plasmoids/martchus.syncthingplasmoid/metadata.json
-
-```
-
-The files for the Dolphin integration look like this under Tumbleweed:
-```
-/usr/lib64/qt5/plugins/libsyncthingfileitemaction.so
-/usr/share/kservices5/syncthingfileitemaction.desktop
-```
-
-These examples were for KDE 5. It looks a bit different for KDE 6. Check out my Arch Linux and
-openSUSE packaging for further examples.
-
-The directory where the `*.so` file needs to be installed to, seems to differ from distribution to
-distribution. The right directory for your distribution can be queried using qmake using, e.g.
-`qmake-qt5 -query QT_INSTALL_PLUGINS` or `qmake6 -query QT_INSTALL_PLUGINS` depending on the Qt
-version. In doubt, just look where other Qt plugins are stored.
-
-The build system is able to do that query automatically. In case this does not work, it is also
-possible to specify the directory manually, e.g. for Tumbleweed one would add
+If the Dolphin integration or the Plasmoid does not work, check whether the files for those components have been
+installed in the right directories. In modern versions of Dolphin/Plasma, only a single plugin file is expected to
+be installed anymore, though. The directory where this `*.so` file needs to be installed to, seems to differ from
+distribution to distribution. The right directory for your distribution can be queried using qmake using, e.g.
+`qmake-qt5 -query QT_INSTALL_PLUGINS` or `qmake6 -query QT_INSTALL_PLUGINS` depending on the Qt version. In doubt,
+just look where other Qt plugins are stored. The build system is able to do that query automatically. In case this
+does not work, it is also possible to specify the directory manually, e.g. for Tumbleweed one would add
 `-DQT_PLUGIN_DIR=/usr/lib64/qt6/plugins` to the CMake arguments.
+
+Here is a concrete example how the paths looks like for the Plasmoid on Tumbleweed:
+```
+/usr/lib64/qt6/plugins/plasma/applets/martchus.syncthingplasmoid-qt6.so
+/usr/share/plasma/plasmoids/martchus.syncthingplasmoid-qt6/contents/…
+/usr/share/plasma/plasmoids/martchus.syncthingplasmoid-qt6/metadata.json
+```
+
+The file `metadata.json` and files under `contents` and  are only expected to be present if the Plasmoid was built
+with `-DPLASMOID_AS_QML_MODULE:BOOL=OFF` for compatibility with older Plasma versions.
+
+And for the Dolphin integration, the path looks like this under Tumbleweed:
+```
+/usr/lib64/qt6/plugins/kf6/kfileitemaction/libsyncthingfileitemaction-qt6.so
+```
+
+Depending on the configuration prefix, the concrete paths will differ (e.g. development builds via CMake presets use
+`-devel` instead of `-qt6` for better distinction). When still building for KDE 5, the list of files will also look a
+bit different.
 
 ---
 
