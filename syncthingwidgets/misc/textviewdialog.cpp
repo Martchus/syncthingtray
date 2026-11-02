@@ -4,6 +4,7 @@
 
 #include <syncthingconnector/syncthingconnection.h>
 #include <syncthingconnector/syncthingdir.h>
+#include <syncthingconnector/syncthingservice.h>
 
 // use meta-data of syncthingtray application here
 #include "resources/../../tray/resources/config.h"
@@ -62,17 +63,29 @@ TextViewDialog::TextViewDialog(const QString &title, QWidget *parent)
 TextViewDialog *TextViewDialog::forLogEntries(SyncthingConnection &connection, QObject *gui)
 {
     auto *const dlg = new TextViewDialog(tr("Log"));
-    auto *const launcher = SyncthingLauncher::mainInstance();
     auto *const helpLabel = new QLabel(dlg);
     auto helpText = tr("Press F5 to reload.");
-    if (gui && launcher && launcher->isRunning() && connection.isLocal()) {
-        helpText += tr(" Check out <a href=\"openLauncherSettings\">launcher settings</a> for continuous log of local Syncthing instance.");
-        QObject::connect(helpLabel, &QLabel::linkActivated, gui, [gui](const QString &link) {
-            if (link == QLatin1String("openLauncherSettings")) {
-                QMetaObject::invokeMethod(gui, "showLauncherSettings");
-            }
-        });
+    if (connection.isLocal()) {
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
+        if (auto *const service = SyncthingService::mainInstance(); service->isUnitAvailable()) {
+            helpText += tr(" Open <a href=\"openServiceLog\">continuous log</a> of %1.").arg(service->displayName());
+            QObject::connect(helpLabel, &QLabel::linkActivated, service, [service](const QString &link) {
+                if (link == QLatin1String("openServiceLog")) {
+                    service->openLogs();
+                }
+            });
+        }
+#endif
+        if (auto *const launcher = SyncthingLauncher::mainInstance(); gui && launcher && launcher->isRunning()) {
+            helpText += tr(" Check out <a href=\"openLauncherSettings\">launcher settings</a> for continuous log of local Syncthing instance.");
+            QObject::connect(helpLabel, &QLabel::linkActivated, gui, [gui](const QString &link) {
+                if (link == QLatin1String("openLauncherSettings")) {
+                    QMetaObject::invokeMethod(gui, "showLauncherSettings");
+                }
+            });
+        }
     }
+
     helpLabel->setWordWrap(true);
     helpLabel->setText(helpText);
     QObject::connect(&connection, &SyncthingConnection::logAvailable, dlg, &TextViewDialog::showLogEntries);
