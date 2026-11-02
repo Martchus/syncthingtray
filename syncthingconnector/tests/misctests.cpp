@@ -242,6 +242,22 @@ void MiscTests::testService()
     CPPUNIT_ASSERT(!service.isEnabled());
     service.toggleRunning();
     service.setEnabled(true);
+
+    auto errorOccurredContext = QString();
+    auto errorOccurredName = QString();
+    auto errorOccurredMessage = QString();
+    const auto conn
+        = QObject::connect(&service, &SyncthingService::errorOccurred, [&](const QString &context, const QString &name, const QString &message) {
+              errorOccurredContext = context;
+              errorOccurredName = name;
+              errorOccurredMessage = message;
+          });
+    service.setUnitName(QString());
+    service.openLogs();
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("open logs"), errorOccurredContext);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("Invalid configuration"), errorOccurredName);
+    CPPUNIT_ASSERT_EQUAL(QStringLiteral("No unit name configured."), errorOccurredMessage);
+    QObject::disconnect(conn);
 }
 #endif
 

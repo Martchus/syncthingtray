@@ -16,7 +16,10 @@
 #include <QDBusPendingCallWatcher>
 #include <QDBusPendingReply>
 #include <QDBusServiceWatcher>
+#include <QProcess>
+#include <QStandardPaths>
 
+#include <array>
 #include <functional>
 
 using namespace std;
@@ -415,6 +418,122 @@ void SyncthingService::setEnabled(bool enabled)
 void SyncthingService::reloadAllUnitFiles()
 {
     registerErrorHandler(m_currentSystemdInterface->Reload(), QT_TR_NOOP_UTF8("reload all unit files"), false, false);
+}
+
+namespace {
+
+enum class TerminalArgFormat {
+    DashE,
+    DashDash,
+    Direct,
+};
+
+struct TerminalSpec {
+    const char *binaryName;
+    TerminalArgFormat format;
+};
+
+constexpr auto terminalSpecs = std::array<TerminalSpec, 12>{
+    TerminalSpec{ "xdg-terminal-exec", TerminalArgFormat::Direct },
+    TerminalSpec{ "konsole", TerminalArgFormat::DashE },
+    TerminalSpec{ "gnome-terminal", TerminalArgFormat::DashDash },
+    TerminalSpec{ "xfce4-terminal", TerminalArgFormat::DashDash },
+    TerminalSpec{ "mate-terminal", TerminalArgFormat::DashDash },
+    TerminalSpec{ "kitty", TerminalArgFormat::Direct },
+    TerminalSpec{ "foot", TerminalArgFormat::Direct },
+    TerminalSpec{ "alacritty", TerminalArgFormat::DashE },
+    TerminalSpec{ "x-terminal-emulator", TerminalArgFormat::DashE },
+    TerminalSpec{ "xterm", TerminalArgFormat::DashE },
+    TerminalSpec{ "urxvt", TerminalArgFormat::DashE },
+    TerminalSpec{ "terminator", TerminalArgFormat::DashE },
+};
+
+} // namespace
+
+/*!
+ * \brief Opens the logs.
+ */
+void SyncthingService::openLogs() const
+{
+    if (m_unitName.trimmed().isEmpty()) {
+        emit const_cast<SyncthingService *>(this)->errorOccurred(tr("open logs"), tr("Invalid configuration"), tr("No unit name configured."));
+        return;
+    }
+
+    const auto journalctlPath = QStandardPaths::findExecutable(QStringLiteral("journalctl"));
+    if (journalctlPath.isEmpty()) {
+        emit const_cast<SyncthingService *>(this)->errorOccurred(
+            tr("open logs"), tr("Command not found"), tr("The \"journalctl\" executable could not be found."));
+        return;
+    }
+
+    auto journalctlArgs = QStringList();
+    journalctlArgs.reserve(5);
+    if (m_scope == ServiceScope::User) {
+        journalctlArgs << QStringLiteral("--user");
+    }
+    journalctlArgs << QStringLiteral("-u") << m_unitName;
+    journalctlArgs << QStringLiteral("-e");
+    if (isRunning() && !m_activeSince.isNull()) {
+        journalctlArgs << QStringLiteral("--since") << QStringLiteral("@%1").arg(m_activeSince.toTimeStamp());
+    }
+
+    auto terminalPath = QString();
+    auto format = TerminalArgFormat::DashE;
+    auto terminalArgs = QStringList();
+
+    const auto terminalEnv = qEnvironmentVariable("TERMINAL");
+    if (!terminalEnv.isEmpty()) {
+        const auto tokens = SyncthingProcess::splitArguments(terminalEnv);
+        if (!tokens.isEmpty()) {
+            const auto candidate = tokens.first();
+            terminalPath = QStandardPaths::findExecutable(candidate);
+            if (terminalPath.isEmpty()) {
+                terminalPath = candidate;
+            }
+            terminalArgs = tokens.mid(1);
+            for (const auto &spec : terminalSpecs) {
+                if (terminalPath.endsWith(QLatin1String(spec.binaryName))) {
+                    format = spec.format;
+                    break;
+                }
+            }
+        }
+    }
+
+    if (terminalPath.isEmpty()) {
+        for (const auto &spec : terminalSpecs) {
+            const auto candidatePath = QStandardPaths::findExecutable(QString::fromLatin1(spec.binaryName));
+            if (!candidatePath.isEmpty()) {
+                terminalPath = candidatePath;
+                format = spec.format;
+                break;
+            }
+        }
+    }
+
+    if (terminalPath.isEmpty()) {
+        emit const_cast<SyncthingService *>(this)->errorOccurred(tr("open logs"), tr("Terminal not found"),
+            tr("No supported terminal application was found in PATH. Please set the TERMINAL environment variable."));
+        return;
+    }
+
+    switch (format) {
+    case TerminalArgFormat::DashE:
+        terminalArgs << QStringLiteral("-e") << journalctlPath << journalctlArgs;
+        break;
+    case TerminalArgFormat::DashDash:
+        terminalArgs << QStringLiteral("--") << journalctlPath << journalctlArgs;
+        break;
+    case TerminalArgFormat::Direct:
+        terminalArgs << journalctlPath << journalctlArgs;
+        break;
+    }
+
+    if (!QProcess::startDetached(terminalPath, terminalArgs)) {
+        emit const_cast<SyncthingService *>(this)->errorOccurred(
+            tr("open logs"), tr("Launch failed"), tr("Unable to launch terminal \"%1\".").arg(terminalPath));
+    }
 }
 
 /*!

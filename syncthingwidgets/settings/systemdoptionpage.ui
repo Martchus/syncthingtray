@@ -6,8 +6,7 @@
    <string>Systemd</string>
   </property>
   <property name="windowIcon">
-   <iconset theme="preferences-system-services">
-    </iconset>
+   <iconset theme="preferences-system-services"/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -32,71 +31,71 @@
      </property>
     </widget>
    </item>
-    <item>
-     <widget class="QCheckBox" name="stopOnMeteredCheckBox">
-      <property name="text">
-       <string>Stop automatically when network connection is metered</string>
-      </property>
-     </widget>
-    </item>
+   <item>
+    <widget class="QCheckBox" name="stopOnMeteredCheckBox">
+     <property name="text">
+      <string>Stop automatically when network connection is metered</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="stopOnBatterySavingCheckBox">
+     <property name="text">
+      <string>Stop automatically when battery saving mode is enabled</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="stopOnBatteryLayout">
      <item>
-      <widget class="QCheckBox" name="stopOnBatterySavingCheckBox">
+      <widget class="QCheckBox" name="stopOnBatteryCheckBox">
        <property name="text">
-        <string>Stop automatically when battery saving mode is enabled</string>
+        <string>Stop automatically when running on battery</string>
        </property>
       </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="stopOnBatteryLayout">
-       <item>
-        <widget class="QCheckBox" name="stopOnBatteryCheckBox">
-         <property name="text">
-          <string>Stop automatically when running on battery</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="stopOnBatteryMinPercentageLabel">
-         <property name="text">
-          <string>under percentage:</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QSpinBox" name="stopOnBatteryMinPercentageSpinBox">
-         <property name="suffix">
-          <string> %</string>
-         </property>
-         <property name="minimum">
-          <number>1</number>
-         </property>
-         <property name="maximum">
-          <number>100</number>
-         </property>
-         <property name="value">
-          <number>100</number>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <spacer name="stopOnBatterySpacer">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-      </layout>
+      <widget class="QLabel" name="stopOnBatteryMinPercentageLabel">
+       <property name="text">
+        <string>under percentage:</string>
+       </property>
+      </widget>
      </item>
+     <item>
+      <widget class="QSpinBox" name="stopOnBatteryMinPercentageSpinBox">
+       <property name="suffix">
+        <string> %</string>
+       </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>100</number>
+       </property>
+       <property name="value">
+        <number>100</number>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="stopOnBatterySpacer">
+       <property name="orientation">
+        <enum>Qt::Orientation::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
    <item>
     <widget class="Line" name="line">
      <property name="orientation">
-      <enum>Qt::Horizontal</enum>
+      <enum>Qt::Orientation::Horizontal</enum>
      </property>
     </widget>
    </item>
@@ -172,6 +171,38 @@
           </property>
          </widget>
         </item>
+        <item>
+         <spacer name="logsSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="openLogsPushButton">
+          <property name="minimumSize">
+           <size>
+            <width>150</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Open service logs in terminal via journalctl</string>
+          </property>
+          <property name="text">
+           <string>Open logs</string>
+          </property>
+          <property name="icon">
+           <iconset theme="utilities-terminal-symbolic"/>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
       <item row="3" column="0">
@@ -239,8 +270,7 @@
            <string>Start</string>
           </property>
           <property name="icon">
-           <iconset theme="system-run">
-            </iconset>
+           <iconset theme="system-run"/>
           </property>
          </widget>
         </item>
@@ -256,8 +286,7 @@
            <string>Stop</string>
           </property>
           <property name="icon">
-           <iconset theme="process-stop">
-            </iconset>
+           <iconset theme="process-stop"/>
           </property>
          </widget>
         </item>
@@ -328,8 +357,7 @@
            <string>Enable</string>
           </property>
           <property name="icon">
-           <iconset theme="emblem-checked">
-            </iconset>
+           <iconset theme="emblem-checked"/>
           </property>
          </widget>
         </item>
@@ -345,12 +373,14 @@
            <string>Disable</string>
           </property>
           <property name="icon">
-           <iconset theme="emblem-remove">
-            </iconset>
+           <iconset theme="emblem-remove"/>
           </property>
          </widget>
         </item>
        </layout>
+      </item>
+      <item row="5" column="1">
+       <layout class="QHBoxLayout" name="logsHorizontalLayout"/>
       </item>
      </layout>
     </widget>
@@ -358,7 +388,7 @@
    <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
@@ -380,8 +410,13 @@
  <tabstops>
   <tabstop>showButtonCheckBox</tabstop>
   <tabstop>considerForReconnectCheckBox</tabstop>
+  <tabstop>stopOnMeteredCheckBox</tabstop>
+  <tabstop>stopOnBatterySavingCheckBox</tabstop>
+  <tabstop>stopOnBatteryCheckBox</tabstop>
+  <tabstop>stopOnBatteryMinPercentageSpinBox</tabstop>
   <tabstop>syncthingUnitLineEdit</tabstop>
   <tabstop>systemUnitCheckBox</tabstop>
+  <tabstop>openLogsPushButton</tabstop>
   <tabstop>startPushButton</tabstop>
   <tabstop>stopPushButton</tabstop>
   <tabstop>enablePushButton</tabstop>

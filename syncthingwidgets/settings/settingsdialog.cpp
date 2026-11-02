@@ -1639,17 +1639,36 @@ QWidget *SystemdOptionPage::setupWidget()
     refreshAction->setIcon(
         QIcon::fromTheme(QStringLiteral("view-refresh-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))));
     ui()->syncthingUnitLineEdit->addCustomAction(refreshAction);
+    auto *const openLogsAction = new QAction(QCoreApplication::translate("QtGui::SystemdOptionPage", "Open logs"), widget);
+    openLogsAction->setIcon(QIcon::fromTheme(
+        QStringLiteral("utilities-terminal-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/utilities-terminal-symbolic.svg"))));
+    ui()->syncthingUnitLineEdit->addCustomAction(openLogsAction);
+    ui()->openLogsPushButton->setIcon(QIcon::fromTheme(
+        QStringLiteral("utilities-terminal-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/utilities-terminal-symbolic.svg"))));
     if (!m_service) {
         ui()->stopOnMeteredCheckBox->setHidden(true);
         ui()->stopOnBatterySavingCheckBox->setHidden(true);
+        ui()->openLogsPushButton->setEnabled(false);
+        openLogsAction->setEnabled(false);
+        refreshAction->setEnabled(false);
         return widget;
     }
     QObject::connect(refreshAction, &QAction::triggered, m_service, &SyncthingService::reloadAllUnitFiles);
+    QObject::connect(openLogsAction, &QAction::triggered, m_service, &SyncthingService::openLogs);
     QObject::connect(ui()->syncthingUnitLineEdit, &QLineEdit::textChanged, m_service, &SyncthingService::setUnitName);
     QObject::connect(ui()->startPushButton, &QPushButton::clicked, m_service, &SyncthingService::start);
     QObject::connect(ui()->stopPushButton, &QPushButton::clicked, m_service, &SyncthingService::stop);
     QObject::connect(ui()->enablePushButton, &QPushButton::clicked, m_service, &SyncthingService::enable);
     QObject::connect(ui()->disablePushButton, &QPushButton::clicked, m_service, &SyncthingService::disable);
+    QObject::connect(ui()->openLogsPushButton, &QPushButton::clicked, m_service, &SyncthingService::openLogs);
+
+    const auto updateOpenLogsEnabled = [this, openLogsAction] {
+        const auto hasUnit = m_service && !ui()->syncthingUnitLineEdit->text().trimmed().isEmpty();
+        ui()->openLogsPushButton->setEnabled(hasUnit);
+        openLogsAction->setEnabled(hasUnit);
+    };
+    updateOpenLogsEnabled();
+    QObject::connect(ui()->syncthingUnitLineEdit, &QLineEdit::textChanged, widget, updateOpenLogsEnabled);
     QObject::connect(ui()->stopOnMeteredCheckBox,
         &QCheckBox::
 #if (QT_VERSION >= QT_VERSION_CHECK(6, 7, 0))
