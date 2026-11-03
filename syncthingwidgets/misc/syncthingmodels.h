@@ -111,6 +111,8 @@ public:
     Q_INVOKABLE void setBrightColors(bool brightColors);
     Q_INVOKABLE bool openPath(const QString &path);
     Q_INVOKABLE bool openPath(const QString &dirId, const QString &relativePath);
+    Q_INVOKABLE bool copyText(const QString &text);
+    Q_INVOKABLE bool copyPath(const QString &dirId, const QString &relativePath);
 
     // functions only used by mobile UI
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
@@ -119,8 +121,6 @@ public:
     Q_INVOKABLE bool openUrlExternally(const QUrl &url, bool viaQt = false);
     Q_INVOKABLE bool openSyncthingConfigFile();
     Q_INVOKABLE bool scanPath(const QString &path);
-    Q_INVOKABLE bool copyText(const QString &text);
-    Q_INVOKABLE bool copyPath(const QString &dirId, const QString &relativePath);
     Q_INVOKABLE QString getClipboardText() const;
     Q_INVOKABLE bool loadDirErrors(const QString &dirId, const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool loadIgnorePatterns(const QString &dirId, const QJSValue &callback = QJSValue());

@@ -130,6 +130,33 @@ bool SyncthingModels::openPath(const QString &dirId, const QString &relativePath
     return false;
 }
 
+bool SyncthingModels::copyText(const QString &text)
+{
+    if (auto *const clipboard = QGuiApplication::clipboard()) {
+        clipboard->setText(text);
+#ifdef Q_OS_ANDROID
+        // do not emit info as Android will show a message about it automatically
+        emit hapticFeedbackRequested();
+#else
+        emit info(tr("Copied value"));
+#endif
+        return true;
+    }
+    emit info(tr("Unable to copy value"));
+    return false;
+}
+
+bool SyncthingModels::copyPath(const QString &dirId, const QString &relativePath)
+{
+    const auto fullPath = m_connection.fullPath(dirId, relativePath);
+    if (fullPath.isEmpty()) {
+        emit error(tr("Unable to copy \"%1\"").arg(relativePath));
+    } else if (copyText(fullPath)) {
+        return true;
+    }
+    return false;
+}
+
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK
 SyncthingModels *SyncthingModels::create(QQmlEngine *qmlEngine, QJSEngine *engine)
 {
@@ -186,33 +213,6 @@ bool SyncthingModels::scanPath(const QString &path)
     Q_UNUSED(path)
 #endif
     emit error(tr("Scanning is not supported."));
-    return false;
-}
-
-bool SyncthingModels::copyText(const QString &text)
-{
-    if (auto *const clipboard = QGuiApplication::clipboard()) {
-        clipboard->setText(text);
-#ifdef Q_OS_ANDROID
-        // do not emit info as Android will show a message about it automatically
-        emit hapticFeedbackRequested();
-#else
-        emit info(tr("Copied value"));
-#endif
-        return true;
-    }
-    emit info(tr("Unable to copy value"));
-    return false;
-}
-
-bool SyncthingModels::copyPath(const QString &dirId, const QString &relativePath)
-{
-    const auto fullPath = m_connection.fullPath(dirId, relativePath);
-    if (fullPath.isEmpty()) {
-        emit error(tr("Unable to copy \"%1\"").arg(relativePath));
-    } else if (copyText(fullPath)) {
-        return true;
-    }
     return false;
 }
 

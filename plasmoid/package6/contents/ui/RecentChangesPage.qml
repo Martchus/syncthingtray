@@ -100,13 +100,13 @@ Item {
                     plasmoid.models.openPath(directoryId, path)
                 }
                 function copyPath() {
-                    plasmoid.copyToClipboard(directoryId, path)
+                    plasmoid.models.copyPath(directoryId, path)
                 }
                 function copyDeviceId() {
-                    plasmoid.copyToClipboard(modifiedBy)
+                    plasmoid.models.copyText(modifiedBy)
                 }
                 function copyDirectoryId() {
-                    plasmoid.copyToClipboard(directoryId)
+                    plasmoid.models.copyText(directoryId)
                 }
             }
 

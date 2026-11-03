@@ -93,16 +93,16 @@ Item {
                 }
 
                 function openPath() {
-                    plasmoid.models.openPath(directoryId, path)
+                    plasmoid.nativeInterface.models.openPath(directoryId, path)
                 }
                 function copyPath() {
-                    plasmoid.nativeInterface.copyToClipboard(directoryId, path)
+                    plasmoid.nativeInterface.models.copyPath(directoryId, path)
                 }
                 function copyDeviceId() {
-                    plasmoid.nativeInterface.copyToClipboard(modifiedBy)
+                    plasmoid.nativeInterface.models.copyText(modifiedBy)
                 }
                 function copyDirectoryId() {
-                    plasmoid.nativeInterface.copyToClipboard(directoryId)
+                    plasmoid.nativeInterface.models.copyText(directoryId)
                 }
             }
 

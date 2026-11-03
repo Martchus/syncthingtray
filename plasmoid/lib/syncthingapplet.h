@@ -168,8 +168,6 @@ public Q_SLOTS:
     void showDirectoryErrors(const QString &dirId);
     bool showFileBrowser(const QString &dirId);
     void showIgnorePatterns(const QString &dirId);
-    void copyToClipboard(const QString &text);
-    void copyToClipboard(const QString &dirId, const QString &relativePath);
     void updateStatusIconAndTooltip();
     void toggleRunning();
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)

@@ -47,7 +47,7 @@ ListView {
         }
         var data = currentItem[fieldName]
         if (data) {
-            plasmoid.nativeInterface.copyToClipboard(data)
+            plasmoid.nativeInterface.models.copyText(data)
         }
     }
 

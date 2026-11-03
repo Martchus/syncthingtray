@@ -207,7 +207,8 @@ void SyncthingApplet::init()
     connect(&m_iconManager, &IconManager::statusIconsChanged, this, &SyncthingApplet::connectionStatusChanged);
     connect(&m_theme, &Plasma::Theme::themeChanged, this, &SyncthingApplet::handleThemeChanged);
     connect(&m_models, &SyncthingModels::error, this, std::bind(&showMessageBox, QMessageBox::Warning, std::placeholders::_1, std::placeholders::_2));
-    connect(&m_models, &SyncthingModels::info, this, std::bind(&showMessageBox, QMessageBox::Information, std::placeholders::_1, std::placeholders::_2));
+    // not connecting SyncthingModels::info as this would only show messages like "Copied value" which is probably not desirable here
+    //connect(&m_models, &SyncthingModels::info, this, std::bind(&showMessageBox, QMessageBox::Information, std::placeholders::_1, std::placeholders::_2));
 
     // initialize systemd service support
     auto &settings = Settings::values();
@@ -627,20 +628,6 @@ void SyncthingApplet::showCenteredDialog(QWidget *dlg)
     dlg->resize(600, 500);
     centerWidget(dlg);
     dlg->show();
-}
-
-void SyncthingApplet::copyToClipboard(const QString &text)
-{
-    QGuiApplication::clipboard()->setText(text);
-}
-
-void SyncthingApplet::copyToClipboard(const QString &dirId, const QString &relativePath)
-{
-    if (const auto fullPath = m_data.connection()->fullPath(dirId, relativePath); !fullPath.isEmpty()) {
-        QGuiApplication::clipboard()->setText(fullPath);
-    } else {
-        QGuiApplication::clipboard()->setText(relativePath);
-    }
 }
 
 /*!

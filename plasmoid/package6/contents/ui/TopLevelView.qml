@@ -53,7 +53,13 @@ ListView {
     }
 
     function copyCurrentItemData(fieldName) {
-        this.triggerNativeActionWithCurrentItemData("copyToClipboard", fieldName)
+        if (!currentItem) {
+            return
+        }
+        const data = currentItem[fieldName]
+        if (data) {
+            plasmoid.models.copyText(data)
+        }
     }
 
     function showContextMenu(item, x, y) {

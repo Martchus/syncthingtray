@@ -21,7 +21,7 @@ ListView {
             onClicked: {
                 const item = detailView.contextMenuItem
                 if (item) {
-                    plasmoid.copyToClipboard(item.detailValue)
+                    plasmoid.models.copyText(item.detailValue)
                 }
             }
         }
