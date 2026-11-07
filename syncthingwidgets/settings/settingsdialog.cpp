@@ -1630,6 +1630,7 @@ ServiceOptionPage::~ServiceOptionPage()
     QObject::disconnect(m_descChangedConn);
     QObject::disconnect(m_statusChangedConn);
     QObject::disconnect(m_enabledChangedConn);
+    QObject::disconnect(m_unitAvailableConn);
 }
 
 QWidget *ServiceOptionPage::setupWidget()
@@ -1740,6 +1741,8 @@ QWidget *ServiceOptionPage::setupWidget()
         = QObject::connect(m_service, &SyncthingService::stateChanged, bind(&ServiceOptionPage::handleStatusChanged, this, _1, _2, _3));
     m_enabledChangedConn
         = QObject::connect(m_service, &SyncthingService::unitFileStateChanged, bind(&ServiceOptionPage::handleEnabledChanged, this, _1));
+    m_unitAvailableConn
+        = QObject::connect(m_service, &SyncthingService::unitAvailableChanged, bind(&ServiceOptionPage::handleUnitAvailableChanged, this, _1));
     if (const auto *optionPageWidget = qobject_cast<OptionPageWidget *>(widget)) {
         QObject::connect(optionPageWidget, &OptionPageWidget::paletteChanged, std::bind(&ServiceOptionPage::updateColors, this));
     }
@@ -1864,6 +1867,16 @@ void ServiceOptionPage::handleEnabledChanged(const QString &unitFileState)
         unitFileState.isEmpty() ? QCoreApplication::translate("QtGui::ServiceOptionPage", "unknown") : unitFileState);
     ui()->enablePushButton->setVisible(unitAvailable && !isEnabled);
     ui()->disablePushButton->setVisible(unitAvailable && !unitFileState.isEmpty() && isEnabled);
+}
+
+void ServiceOptionPage::handleUnitAvailableChanged(bool)
+{
+    if (!m_service || !hasBeenShown()) {
+        return;
+    }
+    handleStatusChanged(m_service->activeState(), m_service->subState(), m_service->activeSince());
+    handleEnabledChanged(m_service->unitFileState());
+    handleDescriptionChanged(m_service->description());
 }
 
 bool ServiceOptionPage::updateRunningColor()

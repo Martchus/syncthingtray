@@ -174,6 +174,7 @@ void handleSystemUnitChanged();
 void handleDescriptionChanged(const QString &description);
 void handleStatusChanged(const QString &activeState, const QString &subState, CppUtilities::DateTime activeSince);
 void handleEnabledChanged(const QString &unitFileState);
+void handleUnitAvailableChanged(bool available);
 bool updateRunningColor();
 bool updateEnabledColor();
 void updateColors();
@@ -183,6 +184,7 @@ QMetaObject::Connection m_unitChangedConn;
 QMetaObject::Connection m_descChangedConn;
 QMetaObject::Connection m_statusChangedConn;
 QMetaObject::Connection m_enabledChangedConn;
+QMetaObject::Connection m_unitAvailableConn;
 END_DECLARE_OPTION_PAGE
 #endif
 
