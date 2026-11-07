@@ -95,6 +95,7 @@ static auto s_serviceStatus = SERVICE_STATUS{};
 static auto s_serviceStatusHandle = SERVICE_STATUS_HANDLE(nullptr);
 static auto s_serviceRoutine = std::function<int(void)>();
 static auto s_stopRoutine = std::function<void(void)>();
+static LPCWSTR s_serviceLogName = L"syncthing";
 
 /*!
  * \brief Logs the specified Windows \a errorCode.
@@ -128,6 +129,18 @@ static QString windowsErrorString(DWORD errorCode)
     return str;
 }
 
+static void reportWindowsServiceEvent(WORD type, DWORD eventId, const QString &message)
+{
+    const auto source = RegisterEventSourceW(nullptr, L"SyncthingTray");
+    if (!source) {
+        return;
+    }
+    const auto wideMessage = message.toStdWString();
+    auto *strings = wideMessage.c_str();
+    ReportEventW(source, type, 0, eventId, nullptr, 1, 0, &strings, nullptr);
+    DeregisterEventSource(source);
+}
+
 /*!
  * \brief Internally called to stop the service.
  */
@@ -153,10 +166,13 @@ static void WINAPI serviceCtrlHandler(DWORD control)
  */
 static void WINAPI serviceMain(DWORD argc, LPWSTR *argv)
 {
-    Q_UNUSED(argc)
-    Q_UNUSED(argv)
-    s_serviceStatusHandle = RegisterServiceCtrlHandlerW(L"syncthing", serviceCtrlHandler);
+    const auto serviceName = (argc >= 1 && argv && argv[0]) ? argv[0] : const_cast<LPWSTR>(L"syncthing");
+    s_serviceLogName = serviceName;
+    s_serviceStatusHandle = RegisterServiceCtrlHandlerW(serviceName, serviceCtrlHandler);
     if (!s_serviceStatusHandle) {
+        reportWindowsServiceEvent(EVENTLOG_ERROR_TYPE, 0,
+            QCoreApplication::translate("Data::SyncthingService", "Unable to register service control handler for \"%1\": %2")
+                .arg(QString::fromWCharArray(serviceName), windowsErrorString(GetLastError())));
         return;
     }
     s_serviceStatus.dwServiceType = SERVICE_WIN32_OWN_PROCESS;
@@ -172,8 +188,14 @@ static void WINAPI serviceMain(DWORD argc, LPWSTR *argv)
     s_serviceStatus.dwCheckPoint = 0;
     s_serviceStatus.dwWaitHint = 0;
     SetServiceStatus(s_serviceStatusHandle, &s_serviceStatus);
+    reportWindowsServiceEvent(EVENTLOG_INFORMATION_TYPE, 0,
+        QCoreApplication::translate("Data::SyncthingService", "Windows service \"%1\" started.").arg(QString::fromWCharArray(serviceName)));
 
     const auto exitCode = s_serviceRoutine ? s_serviceRoutine() : EXIT_FAILURE;
+    reportWindowsServiceEvent(exitCode == EXIT_SUCCESS ? EVENTLOG_INFORMATION_TYPE : EVENTLOG_WARNING_TYPE, 0,
+        QCoreApplication::translate("Data::SyncthingService", "Windows service \"%1\" stopped with exit code %2.")
+            .arg(QString::fromWCharArray(serviceName))
+            .arg(exitCode));
     s_serviceStatus.dwCurrentState = SERVICE_STOPPED;
     s_serviceStatus.dwWin32ExitCode = static_cast<DWORD>(exitCode);
     SetServiceStatus(s_serviceStatusHandle, &s_serviceStatus);
