@@ -1646,6 +1646,7 @@ QWidget *ServiceOptionPage::setupWidget()
     ui()->syncthingUnitLineEdit->addCustomAction(openLogsAction);
     ui()->openLogsPushButton->setIcon(QIcon::fromTheme(
         QStringLiteral("utilities-terminal-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/utilities-terminal-symbolic.svg"))));
+    ui()->openLogsPushButton->setToolTip(QCoreApplication::translate("QtGui::ServiceOptionPage", "Open service logs in terminal via journalctl"));
     ui()->installPushButton->setHidden(true);
     ui()->uninstallPushButton->setHidden(true);
     if (m_service && m_service->serviceManagerName() == QLatin1String("Windows")) {
@@ -1653,6 +1654,11 @@ QWidget *ServiceOptionPage::setupWidget()
         ui()->unitFileStateLabel->setText(QCoreApplication::translate("QtGui::ServiceOptionPage", "Startup type"));
         ui()->systemUnitCheckBox->setHidden(true);
         refreshAction->setText(QCoreApplication::translate("QtGui::ServiceOptionPage", "Refresh service status"));
+        openLogsAction->setText(QCoreApplication::translate("QtGui::ServiceOptionPage", "Open Services"));
+        ui()->openLogsPushButton->setText(QCoreApplication::translate("QtGui::ServiceOptionPage", "Open Services"));
+        ui()->openLogsPushButton->setToolTip(QCoreApplication::translate("QtGui::ServiceOptionPage", "Open the Windows Services management console"));
+        ui()->openLogsPushButton->setIcon(QIcon::fromTheme(
+            QStringLiteral("preferences-system-services"), QIcon(QStringLiteral(":/icons/hicolor/scalable/categories/preferences-system.svg"))));
         widget->setWindowTitle(QCoreApplication::translate("QtGui::ServiceOptionPage", "Windows service"));
     }
     if (!m_service) {
@@ -1821,7 +1827,7 @@ void ServiceOptionPage::handleSystemUnitChanged()
 void ServiceOptionPage::handleDescriptionChanged(const QString &description)
 {
     ui()->descriptionValueLabel->setText(description.isEmpty()
-            ? QCoreApplication::translate("QtGui::ServiceOptionPage", "specified unit is either inactive or doesn't exist")
+            ? QCoreApplication::translate("QtGui::ServiceOptionPage", "The specified service is unavailable or not installed")
             : description);
 }
 

@@ -17,16 +17,16 @@
       </font>
      </property>
      <property name="text">
-      <string>Show start/stop button on tray for local instance when systemd is available</string>
+      <string>Show start/stop button on tray for local instance when service integration is available</string>
      </property>
     </widget>
    </item>
    <item>
     <widget class="QCheckBox" name="considerForReconnectCheckBox">
      <property name="text">
-      <string>Consider systemd unit status for notifications and reconnect attempts concerning local instance
- • Don't reconnect when unit not active/running
- • Try to reconnect when unit becomes active/running
+      <string>Consider service status for notifications and reconnect attempts concerning local instance
+ • Don't reconnect when the service is not active/running
+ • Try to reconnect when the service becomes active/running
  • Suppress notification about disconnect when Syncthing has been stopped manually</string>
      </property>
     </widget>
@@ -100,7 +100,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QWidget" name="systemdFormWidget" native="true">
+    <widget class="QWidget" name="serviceFormWidget" native="true">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
        <horstretch>0</horstretch>
@@ -207,9 +207,6 @@
             <width>150</width>
             <height>0</height>
            </size>
-          </property>
-          <property name="toolTip">
-           <string>Open service logs in terminal via journalctl</string>
           </property>
           <property name="text">
            <string>Open logs</string>
