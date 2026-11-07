@@ -7,9 +7,9 @@
 #include <qtutilities/misc/desktoputils.h>
 
 #include <QClipboard>
-#include <QCoreApplication>
 #include <QDesktopServices>
 #include <QFile>
+#include <QGuiApplication>
 #include <QImage>
 #include <QNetworkReply>
 #include <QStringList>
