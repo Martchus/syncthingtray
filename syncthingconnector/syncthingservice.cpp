@@ -338,8 +338,8 @@ void SyncthingService::registerServiceNotify()
     if (!m_notifyScmHandle) {
         return;
     }
-    m_notifyServiceHandle = OpenServiceW(
-        static_cast<SC_HANDLE>(m_notifyScmHandle), reinterpret_cast<LPCWSTR>(m_unitName.utf16()), SERVICE_QUERY_STATUS);
+    m_notifyServiceHandle
+        = OpenServiceW(static_cast<SC_HANDLE>(m_notifyScmHandle), reinterpret_cast<LPCWSTR>(m_unitName.utf16()), SERVICE_QUERY_STATUS);
     if (!m_notifyServiceHandle) {
         CloseServiceHandle(static_cast<SC_HANDLE>(m_notifyScmHandle));
         m_notifyScmHandle = nullptr;
@@ -359,9 +359,9 @@ void SyncthingService::rearmServiceNotify()
     notify.dwVersion = SERVICE_NOTIFY_STATUS_CHANGE;
     notify.pfnNotifyCallback = serviceNotifyCallback;
     notify.pContext = new std::shared_ptr<NotifyState>(m_notifyState);
-    const auto res = NotifyServiceStatusChangeW(
-        static_cast<SC_HANDLE>(m_notifyServiceHandle), SERVICE_NOTIFY_RUNNING | SERVICE_NOTIFY_START_PENDING | SERVICE_NOTIFY_STOP_PENDING
-            | SERVICE_NOTIFY_STOPPED | SERVICE_NOTIFY_PAUSED | SERVICE_NOTIFY_PAUSE_PENDING | SERVICE_NOTIFY_CONTINUE_PENDING,
+    const auto res = NotifyServiceStatusChangeW(static_cast<SC_HANDLE>(m_notifyServiceHandle),
+        SERVICE_NOTIFY_RUNNING | SERVICE_NOTIFY_START_PENDING | SERVICE_NOTIFY_STOP_PENDING | SERVICE_NOTIFY_STOPPED | SERVICE_NOTIFY_PAUSED
+            | SERVICE_NOTIFY_PAUSE_PENDING | SERVICE_NOTIFY_CONTINUE_PENDING,
         &notify);
     if (res != ERROR_SUCCESS) {
         delete static_cast<std::shared_ptr<NotifyState> *>(notify.pContext);
@@ -462,8 +462,6 @@ SyncthingService::SyncthingService(ServiceScope scope, QObject *parent)
         }
     });
 }
-
-
 
 #if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
 /*!
