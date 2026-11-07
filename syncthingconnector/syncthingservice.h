@@ -25,7 +25,8 @@ class OrgFreedesktopSystemd1ServiceInterface;
 class OrgFreedesktopDBusPropertiesInterface;
 class OrgFreedesktopLogin1ManagerInterface;
 #elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
-QT_FORWARD_DECLARE_CLASS(QTimer)
+#include <memory>
+#include <mutex>
 #endif
 
 namespace Data {
@@ -169,12 +170,24 @@ private:
     OrgFreedesktopSystemd1ManagerInterface *m_currentSystemdInterface;
     std::unordered_set<QDBusPendingCallWatcher *> m_pendingCalls;
 #elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
-private Q_SLOTS:
+public Q_SLOTS:
     void queryServiceStatus();
+    void rearmServiceNotify();
+
+private Q_SLOTS:
     void queryServiceConfig();
 
+public:
+    struct NotifyState;
+
 private:
-    QTimer *m_pollTimer;
+    void registerServiceNotify();
+    void unregisterServiceNotify();
+
+    std::shared_ptr<NotifyState> m_notifyState;
+    void *m_notifyScmHandle;
+    void *m_notifyServiceHandle;
+    alignas(8) unsigned char m_serviceNotifyBuffer[sizeof(void *) * 16];
 #endif
     void stopDueToRuntimeCond();
 

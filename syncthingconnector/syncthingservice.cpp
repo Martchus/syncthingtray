@@ -25,8 +25,8 @@
 
 #elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
 #include <QCoreApplication>
+#include <QMetaObject>
 #include <QProcess>
-#include <QTimer>
 
 #include <windows.h>
 
@@ -294,6 +294,109 @@ int handleUninstallService(const QString &serviceName)
 
 /// \endcond
 
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+struct SyncthingService::NotifyState {
+    std::mutex mutex;
+    SyncthingService *service = nullptr;
+};
+
+namespace {
+void CALLBACK serviceNotifyCallback(PVOID pParameter)
+{
+    auto *const notify = static_cast<SERVICE_NOTIFYW *>(pParameter);
+    auto *const ctxPtr = static_cast<std::shared_ptr<SyncthingService::NotifyState> *>(notify->pContext);
+    if (!ctxPtr) {
+        return;
+    }
+    auto state = std::move(*ctxPtr);
+    delete ctxPtr;
+    notify->pContext = nullptr;
+
+    auto lock = std::unique_lock<std::mutex>(state->mutex);
+    auto *const service = state->service;
+    lock.unlock();
+    if (service) {
+        QMetaObject::invokeMethod(service, "queryServiceStatus", Qt::QueuedConnection);
+        QMetaObject::invokeMethod(service, "rearmServiceNotify", Qt::QueuedConnection);
+    }
+}
+} // namespace
+
+void SyncthingService::registerServiceNotify()
+{
+    unregisterServiceNotify();
+    if (m_unitName.isEmpty()) {
+        return;
+    }
+    if (!m_notifyState) {
+        m_notifyState = std::make_shared<NotifyState>();
+        auto lock = std::unique_lock<std::mutex>(m_notifyState->mutex);
+        m_notifyState->service = this;
+    }
+
+    m_notifyScmHandle = OpenSCManagerW(nullptr, nullptr, SC_MANAGER_CONNECT);
+    if (!m_notifyScmHandle) {
+        return;
+    }
+    m_notifyServiceHandle = OpenServiceW(
+        static_cast<SC_HANDLE>(m_notifyScmHandle), reinterpret_cast<LPCWSTR>(m_unitName.utf16()), SERVICE_QUERY_STATUS);
+    if (!m_notifyServiceHandle) {
+        CloseServiceHandle(static_cast<SC_HANDLE>(m_notifyScmHandle));
+        m_notifyScmHandle = nullptr;
+        return;
+    }
+    rearmServiceNotify();
+}
+
+void SyncthingService::rearmServiceNotify()
+{
+    if (!m_notifyServiceHandle || !m_notifyState) {
+        return;
+    }
+    static_assert(sizeof(SERVICE_NOTIFYW) <= sizeof(m_serviceNotifyBuffer), "SERVICE_NOTIFYW buffer too small");
+    auto &notify = *reinterpret_cast<SERVICE_NOTIFYW *>(m_serviceNotifyBuffer);
+    notify = SERVICE_NOTIFYW{};
+    notify.dwVersion = SERVICE_NOTIFY_STATUS_CHANGE;
+    notify.pfnNotifyCallback = serviceNotifyCallback;
+    notify.pContext = new std::shared_ptr<NotifyState>(m_notifyState);
+    const auto res = NotifyServiceStatusChangeW(
+        static_cast<SC_HANDLE>(m_notifyServiceHandle), SERVICE_NOTIFY_RUNNING | SERVICE_NOTIFY_START_PENDING | SERVICE_NOTIFY_STOP_PENDING
+            | SERVICE_NOTIFY_STOPPED | SERVICE_NOTIFY_PAUSED | SERVICE_NOTIFY_PAUSE_PENDING | SERVICE_NOTIFY_CONTINUE_PENDING,
+        &notify);
+    if (res != ERROR_SUCCESS) {
+        delete static_cast<std::shared_ptr<NotifyState> *>(notify.pContext);
+        notify.pContext = nullptr;
+    }
+}
+
+void SyncthingService::unregisterServiceNotify()
+{
+    auto &notify = *reinterpret_cast<SERVICE_NOTIFYW *>(m_serviceNotifyBuffer);
+    if (m_notifyServiceHandle) {
+        CloseServiceHandle(static_cast<SC_HANDLE>(m_notifyServiceHandle));
+        m_notifyServiceHandle = nullptr;
+    }
+    if (m_notifyScmHandle) {
+        CloseServiceHandle(static_cast<SC_HANDLE>(m_notifyScmHandle));
+        m_notifyScmHandle = nullptr;
+    }
+    // Closing the handle cancels any pending notification, so the callback
+    // will not run and cannot reclaim the context. Leave it to avoid races.
+    notify.pContext = nullptr;
+    notify = SERVICE_NOTIFYW{};
+}
+#endif
+
+SyncthingService::~SyncthingService()
+{
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    if (m_notifyState) {
+        auto lock = std::unique_lock<std::mutex>(m_notifyState->mutex);
+        m_notifyState->service = nullptr;
+    }
+#endif
+}
+
 /*!
  * \brief Creates a new SyncthingService instance.
  */
@@ -305,13 +408,19 @@ SyncthingService::SyncthingService(ServiceScope scope, QObject *parent)
     , m_properties(nullptr)
     , m_currentSystemdInterface(nullptr)
 #elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
-    , m_pollTimer(nullptr)
+    , m_notifyScmHandle(nullptr)
+    , m_notifyServiceHandle(nullptr)
 #endif
     , m_scope(scope)
     , m_manuallyStopped(false)
     , m_stoppedDueToRuntimeCond(false)
     , m_unitAvailable(false)
 {
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    for (auto &b : m_serviceNotifyBuffer) {
+        b = 0;
+    }
+#endif
 #if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
     setupFreedesktopLoginInterface();
 
@@ -341,11 +450,8 @@ SyncthingService::SyncthingService(ServiceScope scope, QObject *parent)
 #endif
 #elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
     m_unitName = QStringLiteral("syncthing");
-    m_pollTimer = new QTimer(this);
-    m_pollTimer->setInterval(2000);
-    connect(m_pollTimer, &QTimer::timeout, this, &SyncthingService::queryServiceStatus);
+    registerServiceNotify();
     queryServiceStatus();
-    m_pollTimer->start();
 #endif
 
     connect(&m_runtimeCondition, &RuntimeCondition::supposedToRunChanged, this, [this](bool supposedToRun) {
@@ -357,7 +463,7 @@ SyncthingService::SyncthingService(ServiceScope scope, QObject *parent)
     });
 }
 
-SyncthingService::~SyncthingService() = default;
+
 
 #if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
 /*!
@@ -702,6 +808,7 @@ void SyncthingService::setUnitName(const QString &unitName)
         queryUnitFromSystemdInterface();
     }
 #elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    registerServiceNotify();
     queryServiceStatus();
 #endif
     emit unitNameChanged(unitName);
