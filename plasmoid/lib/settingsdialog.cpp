@@ -158,7 +158,7 @@ SettingsDialog::SettingsDialog(Plasmoid::SyncthingApplet &applet)
     setWindowTitle();
     connect(this, &QtUtilities::SettingsDialog::retranslationRequired, this, std::move(setWindowTitle));
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-    auto *const systemdPage = new SystemdOptionPage;
+    auto *const servicePage = new ServiceOptionPage;
 #endif
 
     category = new OptionCategory;
@@ -166,7 +166,7 @@ SettingsDialog::SettingsDialog(Plasmoid::SyncthingApplet &applet)
     category->assignPages({ generalWebViewPage, builtinWebViewPage
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
         ,
-        systemdPage
+        servicePage
 #endif
     });
     category->setIcon(

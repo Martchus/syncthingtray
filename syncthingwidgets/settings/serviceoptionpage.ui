@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>QtGui::SystemdOptionPage</class>
- <widget class="QWidget" name="QtGui::SystemdOptionPage">
+ <class>QtGui::ServiceOptionPage</class>
+ <widget class="QWidget" name="QtGui::ServiceOptionPage">
   <property name="windowTitle">
-   <string>Systemd</string>
+   <string>Service</string>
   </property>
   <property name="windowIcon">
    <iconset theme="preferences-system-services"/>

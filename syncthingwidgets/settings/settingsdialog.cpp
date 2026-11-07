@@ -28,7 +28,7 @@
 #include "ui_launcheroptionpage.h"
 #include "ui_notificationsoptionpage.h"
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-#include "ui_systemdoptionpage.h"
+#include "ui_serviceoptionpage.h"
 #endif
 #include "ui_builtinwebviewoptionpage.h"
 #include "ui_generalwebviewoptionpage.h"
@@ -1616,15 +1616,15 @@ void LauncherOptionPage::restoreDefaultArguments()
     ui()->argumentsLineEdit->setText(defaults.syncthingArgs);
 }
 
-// SystemdOptionPage
+// ServiceOptionPage
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-SystemdOptionPage::SystemdOptionPage(QWidget *parentWidget)
-    : SystemdOptionPageBase(parentWidget)
+ServiceOptionPage::ServiceOptionPage(QWidget *parentWidget)
+    : ServiceOptionPageBase(parentWidget)
     , m_service(SyncthingService::mainInstance())
 {
 }
 
-SystemdOptionPage::~SystemdOptionPage()
+ServiceOptionPage::~ServiceOptionPage()
 {
     QObject::disconnect(m_unitChangedConn);
     QObject::disconnect(m_descChangedConn);
@@ -1632,14 +1632,14 @@ SystemdOptionPage::~SystemdOptionPage()
     QObject::disconnect(m_enabledChangedConn);
 }
 
-QWidget *SystemdOptionPage::setupWidget()
+QWidget *ServiceOptionPage::setupWidget()
 {
-    auto *const widget = SystemdOptionPageBase::setupWidget();
-    auto *const refreshAction = new QAction(QCoreApplication::translate("QtGui::SystemdOptionPage", "Reload all unit files"), widget);
+    auto *const widget = ServiceOptionPageBase::setupWidget();
+    auto *const refreshAction = new QAction(QCoreApplication::translate("QtGui::ServiceOptionPage", "Reload all unit files"), widget);
     refreshAction->setIcon(
         QIcon::fromTheme(QStringLiteral("view-refresh-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/actions/view-refresh.svg"))));
     ui()->syncthingUnitLineEdit->addCustomAction(refreshAction);
-    auto *const openLogsAction = new QAction(QCoreApplication::translate("QtGui::SystemdOptionPage", "Open logs"), widget);
+    auto *const openLogsAction = new QAction(QCoreApplication::translate("QtGui::ServiceOptionPage", "Open logs"), widget);
     openLogsAction->setIcon(QIcon::fromTheme(
         QStringLiteral("utilities-terminal-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/utilities-terminal-symbolic.svg"))));
     ui()->syncthingUnitLineEdit->addCustomAction(openLogsAction);
@@ -1648,11 +1648,11 @@ QWidget *SystemdOptionPage::setupWidget()
     ui()->installPushButton->setHidden(true);
     ui()->uninstallPushButton->setHidden(true);
     if (m_service && m_service->serviceManagerName() == QLatin1String("Windows")) {
-        ui()->syncthingUnitLabel->setText(QCoreApplication::translate("QtGui::SystemdOptionPage", "Syncthing service"));
-        ui()->unitFileStateLabel->setText(QCoreApplication::translate("QtGui::SystemdOptionPage", "Startup type"));
+        ui()->syncthingUnitLabel->setText(QCoreApplication::translate("QtGui::ServiceOptionPage", "Syncthing service"));
+        ui()->unitFileStateLabel->setText(QCoreApplication::translate("QtGui::ServiceOptionPage", "Startup type"));
         ui()->systemUnitCheckBox->setHidden(true);
-        refreshAction->setText(QCoreApplication::translate("QtGui::SystemdOptionPage", "Refresh service status"));
-        widget->setWindowTitle(QCoreApplication::translate("QtGui::SystemdOptionPage", "Windows service"));
+        refreshAction->setText(QCoreApplication::translate("QtGui::ServiceOptionPage", "Refresh service status"));
+        widget->setWindowTitle(QCoreApplication::translate("QtGui::ServiceOptionPage", "Windows service"));
     }
     if (!m_service) {
         ui()->stopOnMeteredCheckBox->setHidden(true);
@@ -1733,15 +1733,15 @@ QWidget *SystemdOptionPage::setupWidget()
     QObject::connect(ui()->stopOnBatteryCheckBox, &QCheckBox::toggled, ui()->stopOnBatteryMinPercentageSpinBox, &QSpinBox::setEnabled);
     QObject::connect(ui()->stopOnBatteryCheckBox, &QCheckBox::toggled, ui()->stopOnBatteryMinPercentageLabel, &QLabel::setEnabled);
     m_unitChangedConn
-        = QObject::connect(ui()->systemUnitCheckBox, &QCheckBox::clicked, m_service, bind(&SystemdOptionPage::handleSystemUnitChanged, this));
+        = QObject::connect(ui()->systemUnitCheckBox, &QCheckBox::clicked, m_service, bind(&ServiceOptionPage::handleSystemUnitChanged, this));
     m_descChangedConn
-        = QObject::connect(m_service, &SyncthingService::descriptionChanged, bind(&SystemdOptionPage::handleDescriptionChanged, this, _1));
+        = QObject::connect(m_service, &SyncthingService::descriptionChanged, bind(&ServiceOptionPage::handleDescriptionChanged, this, _1));
     m_statusChangedConn
-        = QObject::connect(m_service, &SyncthingService::stateChanged, bind(&SystemdOptionPage::handleStatusChanged, this, _1, _2, _3));
+        = QObject::connect(m_service, &SyncthingService::stateChanged, bind(&ServiceOptionPage::handleStatusChanged, this, _1, _2, _3));
     m_enabledChangedConn
-        = QObject::connect(m_service, &SyncthingService::unitFileStateChanged, bind(&SystemdOptionPage::handleEnabledChanged, this, _1));
+        = QObject::connect(m_service, &SyncthingService::unitFileStateChanged, bind(&ServiceOptionPage::handleEnabledChanged, this, _1));
     if (const auto *optionPageWidget = qobject_cast<OptionPageWidget *>(widget)) {
-        QObject::connect(optionPageWidget, &OptionPageWidget::paletteChanged, std::bind(&SystemdOptionPage::updateColors, this));
+        QObject::connect(optionPageWidget, &OptionPageWidget::paletteChanged, std::bind(&ServiceOptionPage::updateColors, this));
     }
     configureMeteredCheckbox(ui()->stopOnMeteredCheckBox, m_service->runtimeCondition()->isNetworkConnectionMetered());
     QObject::connect(m_service->runtimeCondition(), &RuntimeCondition::networkConnectionMeteredChanged,
@@ -1755,7 +1755,7 @@ QWidget *SystemdOptionPage::setupWidget()
     return widget;
 }
 
-bool SystemdOptionPage::apply()
+bool ServiceOptionPage::apply()
 {
     auto &settings = Settings::values();
     auto &systemdSettings = settings.systemd;
@@ -1770,13 +1770,13 @@ bool SystemdOptionPage::apply()
     systemdSettings.stopOnBatteryMinPercentage = ui()->stopOnBatteryMinPercentageSpinBox->value();
     auto result = true;
     if (systemdSettings.showButton && launcherSettings.showButton) {
-        errors().append(QCoreApplication::translate("QtGui::SystemdOptionPage",
+        errors().append(QCoreApplication::translate("QtGui::ServiceOptionPage",
             "It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd "
             "service precedes."));
         result = false;
     }
     if (systemdSettings.considerForReconnect && launcherSettings.considerForReconnect) {
-        errors().append(QCoreApplication::translate("QtGui::SystemdOptionPage",
+        errors().append(QCoreApplication::translate("QtGui::ServiceOptionPage",
             "It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service "
             "precedes."));
         result = false;
@@ -1784,7 +1784,7 @@ bool SystemdOptionPage::apply()
     return result;
 }
 
-void SystemdOptionPage::reset()
+void ServiceOptionPage::reset()
 {
     const auto &settings = Settings::values().systemd;
     ui()->syncthingUnitLineEdit->setText(settings.syncthingUnit);
@@ -1810,15 +1810,15 @@ void SystemdOptionPage::reset()
     handleEnabledChanged(m_service->unitFileState());
 }
 
-void SystemdOptionPage::handleSystemUnitChanged()
+void ServiceOptionPage::handleSystemUnitChanged()
 {
     m_service->setScope(ui()->systemUnitCheckBox->isChecked() ? ServiceScope::System : ServiceScope::User);
 }
 
-void SystemdOptionPage::handleDescriptionChanged(const QString &description)
+void ServiceOptionPage::handleDescriptionChanged(const QString &description)
 {
     ui()->descriptionValueLabel->setText(description.isEmpty()
-            ? QCoreApplication::translate("QtGui::SystemdOptionPage", "specified unit is either inactive or doesn't exist")
+            ? QCoreApplication::translate("QtGui::ServiceOptionPage", "specified unit is either inactive or doesn't exist")
             : description);
 }
 
@@ -1827,7 +1827,7 @@ static void setIndicatorColor(QWidget *indicator, const QColor &color)
     indicator->setStyleSheet(QStringLiteral("border-radius:8px;background-color:") + color.name());
 }
 
-void SystemdOptionPage::handleStatusChanged(const QString &activeState, const QString &subState, DateTime activeSince)
+void ServiceOptionPage::handleStatusChanged(const QString &activeState, const QString &subState, DateTime activeSince)
 {
     m_status.clear();
     if (!activeState.isEmpty()) {
@@ -1840,12 +1840,12 @@ void SystemdOptionPage::handleStatusChanged(const QString &activeState, const QS
     const bool isRunning = updateRunningColor();
     QString timeStamp;
     if (isRunning && !activeSince.isNull()) {
-        timeStamp = QLatin1Char('\n') % QCoreApplication::translate("QtGui::SystemdOptionPage", "since ")
+        timeStamp = QLatin1Char('\n') % QCoreApplication::translate("QtGui::ServiceOptionPage", "since ")
             % QString::fromUtf8(activeSince.toString(DateTimeOutputFormat::DateAndTime).data());
     }
 
     ui()->statusValueLabel->setText(
-        m_status.isEmpty() ? QCoreApplication::translate("QtGui::SystemdOptionPage", "unknown") : m_status.join(QStringLiteral(" - ")) + timeStamp);
+        m_status.isEmpty() ? QCoreApplication::translate("QtGui::ServiceOptionPage", "unknown") : m_status.join(QStringLiteral(" - ")) + timeStamp);
     const auto unitAvailable = m_service && m_service->isUnitAvailable();
     const auto canInstall = m_service && m_service->canInstallService();
     if (canInstall) {
@@ -1856,17 +1856,17 @@ void SystemdOptionPage::handleStatusChanged(const QString &activeState, const QS
     ui()->stopPushButton->setVisible(unitAvailable && !m_status.isEmpty() && isRunning);
 }
 
-void SystemdOptionPage::handleEnabledChanged(const QString &unitFileState)
+void ServiceOptionPage::handleEnabledChanged(const QString &unitFileState)
 {
     const auto isEnabled = updateEnabledColor();
     const auto unitAvailable = m_service && m_service->isUnitAvailable();
     ui()->unitFileStateValueLabel->setText(
-        unitFileState.isEmpty() ? QCoreApplication::translate("QtGui::SystemdOptionPage", "unknown") : unitFileState);
+        unitFileState.isEmpty() ? QCoreApplication::translate("QtGui::ServiceOptionPage", "unknown") : unitFileState);
     ui()->enablePushButton->setVisible(unitAvailable && !isEnabled);
     ui()->disablePushButton->setVisible(unitAvailable && !unitFileState.isEmpty() && isEnabled);
 }
 
-bool SystemdOptionPage::updateRunningColor()
+bool ServiceOptionPage::updateRunningColor()
 {
     const bool isRunning = m_service && m_service->isRunning();
     const auto brightColors = isPaletteDark(widget()->palette());
@@ -1875,7 +1875,7 @@ bool SystemdOptionPage::updateRunningColor()
     return isRunning;
 }
 
-bool SystemdOptionPage::updateEnabledColor()
+bool ServiceOptionPage::updateEnabledColor()
 {
     const auto isEnabled = m_service && m_service->isEnabled();
     const auto brightColors = isPaletteDark(widget()->palette());
@@ -1883,7 +1883,7 @@ bool SystemdOptionPage::updateEnabledColor()
     return isEnabled;
 }
 
-void SystemdOptionPage::updateColors()
+void ServiceOptionPage::updateColors()
 {
     updateRunningColor();
     updateEnabledColor();
@@ -2104,7 +2104,7 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
 #endif
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
         ,
-        new SystemdOptionPage
+        new ServiceOptionPage
 #endif
     });
     category->setIcon(QIcon::fromTheme(QStringLiteral("system-run"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/system-run.svg"))));
@@ -2190,7 +2190,7 @@ INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, IconsOptionPage)
 INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, AutostartOptionPage)
 INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, LauncherOptionPage)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, SystemdOptionPage)
+INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, ServiceOptionPage)
 #endif
 INSTANTIATE_UI_FILE_BASED_OPTION_PAGE_NS(QtGui, GeneralWebViewOptionPage)
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
