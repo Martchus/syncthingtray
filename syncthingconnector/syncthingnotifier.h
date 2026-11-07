@@ -65,23 +65,23 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingNotifier : public QObject {
 public:
     explicit SyncthingNotifier(const SyncthingConnection &connection, QObject *parent = nullptr);
 
-    const SyncthingConnection &connection() const;
-    SyncthingHighLevelNotification enabledNotifications() const;
-    SyncthingStartupIntegration consideredIntegrations() const;
-    unsigned int ignoreInavailabilityAfterStart() const;
+    inline const SyncthingConnection &connection() const;
+    inline SyncthingHighLevelNotification enabledNotifications() const;
+    inline SyncthingStartupIntegration consideredIntegrations() const;
+    inline unsigned int ignoreInavailabilityAfterStart() const;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-    const SyncthingService *service() const;
+    inline const SyncthingService *service() const;
 #endif
-    const SyncthingProcess *process() const;
+    inline const SyncthingProcess *process() const;
 
 public Q_SLOTS:
-    void setEnabledNotifications(Data::SyncthingHighLevelNotification enabledNotifications);
-    void setConsideredIntegrations(Data::SyncthingStartupIntegration consideredIntegrations);
-    void setIgnoreInavailabilityAfterStart(unsigned int seconds);
+    inline void setEnabledNotifications(Data::SyncthingHighLevelNotification enabledNotifications);
+    inline void setConsideredIntegrations(Data::SyncthingStartupIntegration consideredIntegrations);
+    inline void setIgnoreInavailabilityAfterStart(unsigned int seconds);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-    void setService(const Data::SyncthingService *service);
+    inline void setService(const Data::SyncthingService *service);
 #endif
-    void setProcess(const Data::SyncthingProcess *process);
+    inline void setProcess(const Data::SyncthingProcess *process);
 
 Q_SIGNALS:
     ///! \brief Emitted when the connection status changes. Also provides the previous status.

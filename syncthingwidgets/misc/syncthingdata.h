@@ -86,15 +86,15 @@ public:
 
     QString connectButtonState() const;
 
-    Q_INVOKABLE QString formatIncomingTraffic() const;
-    Q_INVOKABLE QString formatOutgoingTraffic() const;
+    inline Q_INVOKABLE QString formatIncomingTraffic() const;
+    inline Q_INVOKABLE QString formatOutgoingTraffic() const;
 
 Q_SIGNALS:
     void connectionStatusChanged();
 
 public Q_SLOTS:
-    void updateStatusInfo(const QString &configurationName = QString());
-    void updateDeviceInfo();
+    inline void updateStatusInfo(const QString &configurationName = QString());
+    inline void updateDeviceInfo();
 
 private:
     QNetworkAccessManager m_qnam;

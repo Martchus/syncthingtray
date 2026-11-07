@@ -142,19 +142,19 @@ constexpr int SyncthingStatistics::computeCompletionPercentage(quint64 globalByt
 }
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDir {
-    explicit SyncthingDir(const QString &id = QString(), const QString &label = QString(), const QString &path = QString());
+    inline explicit SyncthingDir(const QString &id = QString(), const QString &label = QString(), const QString &path = QString());
     bool assignStatus(const QString &statusStr, SyncthingEventId eventId, CppUtilities::DateTime time);
-    bool assignStatus(SyncthingDirStatus newStatus, SyncthingEventId eventId, CppUtilities::DateTime time);
+    inline bool assignStatus(SyncthingDirStatus newStatus, SyncthingEventId eventId, CppUtilities::DateTime time);
     bool assignScanProgress(int percentage, double rate, SyncthingEventId eventId, CppUtilities::DateTime time);
     bool assignDirType(const QString &dirType);
-    const QString &displayName() const;
+    inline const QString &displayName() const;
     QString statusString() const;
-    QString dirTypeString() const;
+    inline QString dirTypeString() const;
     QtUtilities::StringView pathWithoutTrailingSlash() const;
-    bool isLocallyUpToDate() const;
+    inline bool isLocallyUpToDate() const;
     bool areRemotesUpToDate() const;
-    bool isUnshared() const;
-    bool isOutOfSync() const;
+    inline bool isUnshared() const;
+    inline bool isOutOfSync() const;
     constexpr int computeCompletionPercentage() const;
 
     QString id;
@@ -261,14 +261,14 @@ struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingOverallDirStatistics {
     Q_PROPERTY(int completionPercentage READ computeCompletionPercentage)
 
 public:
-    explicit SyncthingOverallDirStatistics();
+    inline explicit SyncthingOverallDirStatistics();
     explicit SyncthingOverallDirStatistics(const std::vector<SyncthingDir> &directories);
 
     SyncthingStatistics local;
     SyncthingStatistics global;
     SyncthingStatistics needed;
 
-    bool isNull() const;
+    inline bool isNull() const;
     constexpr int computeCompletionPercentage() const;
 };
 

@@ -30,7 +30,7 @@ public:
     ~AppBase();
 
     // properties
-    SyncthingData *data();
+    inline SyncthingData *data();
     virtual const QString &status();
     virtual bool isSyncthingRunning() const = 0;
     virtual bool mayPauseDevicesDueToRuntimeConditions() const = 0;
@@ -51,7 +51,7 @@ protected Q_SLOTS:
 protected:
     static QString openSettingFile(QFile &settingsFile, const QString &path);
     static QString readSettingFile(QFile &settingsFile, QJsonObject &settings);
-    QString syncthingLogFilePath() const;
+    inline QString syncthingLogFilePath() const;
     bool openSettings();
     bool handleReconnectingToLaunched(const QUrl &url);
     virtual void invalidateStatus();

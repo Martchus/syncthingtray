@@ -33,7 +33,7 @@ public:
     SyncthingEventId requestedForEventId = 0;
     constexpr SyncthingCompletion &operator+=(const SyncthingCompletion &other);
     constexpr SyncthingCompletion &operator-=(const SyncthingCompletion &other);
-    Q_INVOKABLE void recomputePercentage();
+    inline Q_INVOKABLE void recomputePercentage();
 };
 
 constexpr bool SyncthingCompletion::Needed::isNull() const

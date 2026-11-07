@@ -23,9 +23,9 @@ class SYNCTHINGWIDGETS_EXPORT TextViewDialog : public QDialog {
 public:
     explicit TextViewDialog(const QString &title = QString(), QWidget *parent = nullptr);
 
-    QTextBrowser *browser();
-    QVBoxLayout *layout();
-    void setCloseHandler(std::function<bool(TextViewDialog *)> &&closeHandler);
+    inline QTextBrowser *browser();
+    inline QVBoxLayout *layout();
+    inline void setCloseHandler(std::function<bool(TextViewDialog *)> &&closeHandler);
     static TextViewDialog *forLogEntries(Data::SyncthingConnection &connection, QObject *gui = nullptr);
     static TextViewDialog *forLogEntries(const std::vector<Data::SyncthingLogEntry> &logEntries, const QString &title = QString());
 

@@ -104,5 +104,10 @@ foreach (TEST ${QT_TESTS})
         LIBRARIES
         "${QT_TEST_LIBRARIES}"
         FULL_TEST_NAME_OUT_VAR
-        FULL_TEST_NAME_${TEST})
+        FULL_TEST_NAME_${TEST}
+        FULL_TEST_TARGET_OUT_VAR
+        FULL_TEST_TARGET_${TEST})
+    if (QT_TEST_SRC_FILES_${TEST})
+        target_compile_definitions(${FULL_TEST_TARGET_${TEST}} PRIVATE ${META_PROJECT_VARNAME_UPPER}_STATIC)
+    endif ()
 endforeach ()

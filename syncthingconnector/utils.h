@@ -55,17 +55,17 @@ inline bool isLocal(const QUrl &url)
 }
 
 template <typename IntType = quint64, Traits::EnableIf<std::is_integral<IntType>> * = nullptr>
-inline LIB_SYNCTHING_CONNECTOR_EXPORT IntType jsonValueToInt(const QJsonValue &value, double defaultValue = 0.0)
+inline IntType jsonValueToInt(const QJsonValue &value, double defaultValue = 0.0)
 {
     return static_cast<IntType>(value.toDouble(defaultValue));
 }
 
-constexpr LIB_SYNCTHING_CONNECTOR_EXPORT int trQuandity(quint64 quandity)
+constexpr int trQuandity(quint64 quandity)
 {
     return quandity > std::numeric_limits<int>::max() ? std::numeric_limits<int>::max() : static_cast<int>(quandity);
 }
 
-template <class Objects, class Accessor> LIB_SYNCTHING_CONNECTOR_EXPORT QStringList things(const Objects &objects, Accessor accessor)
+template <class Objects, class Accessor> QStringList things(const Objects &objects, Accessor accessor)
 {
     QStringList things;
     things.reserve(static_cast<QStringList::size_type>(objects.size()));
@@ -75,12 +75,12 @@ template <class Objects, class Accessor> LIB_SYNCTHING_CONNECTOR_EXPORT QStringL
     return things;
 }
 
-template <class Objects> LIB_SYNCTHING_CONNECTOR_EXPORT QStringList ids(const Objects &objects)
+template <class Objects> QStringList ids(const Objects &objects)
 {
     return things(objects, [](const auto &object) { return Traits::dereferenceMaybe(object).id; });
 }
 
-template <class Objects> LIB_SYNCTHING_CONNECTOR_EXPORT QStringList displayNames(const Objects &objects)
+template <class Objects> QStringList displayNames(const Objects &objects)
 {
     return things(objects, [](const auto &object) { return Traits::dereferenceMaybe(object).displayName(); });
 }

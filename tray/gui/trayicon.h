@@ -29,7 +29,7 @@ class TrayIcon : public QSystemTrayIcon {
 
 public:
     explicit TrayIcon(const QString &connectionConfig = QString(), QObject *parent = nullptr);
-    TrayMenu &trayMenu();
+    inline TrayMenu &trayMenu();
 
 public Q_SLOTS:
     void showInternalError(const QString &errorMessage, Data::SyncthingErrorCategory category, int networkError, const QNetworkRequest &request,

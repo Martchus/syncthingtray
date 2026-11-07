@@ -15,7 +15,7 @@ class SyncthingProcess;
 namespace QtGui {
 
 struct ProcessWithConnection {
-    explicit ProcessWithConnection(Data::SyncthingProcess *process, Data::SyncthingConnection *connection = nullptr);
+    explicit inline ProcessWithConnection(Data::SyncthingProcess *process, Data::SyncthingConnection *connection = nullptr);
     Data::SyncthingProcess *const process;
     Data::SyncthingConnection *const connection;
 };

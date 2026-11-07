@@ -39,7 +39,7 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
     int rowCount(const QModelIndex &parent) const override;
     Q_INVOKABLE const SyncthingDev *devInfo(const QModelIndex &index) const;
-    Q_INVOKABLE const SyncthingDev *info(const QModelIndex &index) const;
+    Q_INVOKABLE inline const SyncthingDev *info(const QModelIndex &index) const;
 
 private Q_SLOTS:
     void devStatusChanged(const Data::SyncthingDev &, int index);

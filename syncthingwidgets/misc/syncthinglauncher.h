@@ -54,39 +54,39 @@ public:
     explicit SyncthingLauncher(QObject *parent = nullptr);
     ~SyncthingLauncher() override;
 
-    QFile &logFile();
-    bool isRunning() const;
-    bool isStarting() const;
+    inline QFile &logFile();
+    inline bool isRunning() const;
+    inline bool isStarting() const;
     void setRunning(bool running, const QString &program, const QStringList &arguments);
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     void setRunning(bool running, LibSyncthing::RuntimeOptions &&runtimeOptions);
 #endif
     QString runningStatus() const;
-    CppUtilities::DateTime activeSince() const;
-    bool isActiveFor(unsigned int atLeastSeconds) const;
-    bool isActiveWithoutSleepFor(unsigned int atLeastSeconds) const;
-    bool isManuallyStopped() const;
-    void setManuallyStopped(bool manuallyStopped);
-    void setManualStopHandler(std::function<bool(void)> &&handler);
-    bool isEmittingOutput() const;
+    inline CppUtilities::DateTime activeSince() const;
+    inline bool isActiveFor(unsigned int atLeastSeconds) const;
+    inline bool isActiveWithoutSleepFor(unsigned int atLeastSeconds) const;
+    inline bool isManuallyStopped() const;
+    inline void setManuallyStopped(bool manuallyStopped);
+    inline void setManualStopHandler(std::function<bool(void)> &&handler);
+    inline bool isEmittingOutput() const;
     void setEmittingOutput(bool emittingOutput);
-    QString errorString() const;
-    QUrl guiUrl() const;
+    inline QString errorString() const;
+    inline QUrl guiUrl() const;
     QVariantMap overallStatus() const;
-    SyncthingProcess *process();
-    const SyncthingProcess *process() const;
+    inline SyncthingProcess *process();
+    inline const SyncthingProcess *process() const;
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
-    LibSyncthing::LogLevel libSyncthingLogLevel() const;
-    QString libSyncthingLogLevelString() const;
+    inline LibSyncthing::LogLevel libSyncthingLogLevel() const;
+    inline QString libSyncthingLogLevelString() const;
     static QString libSyncthingLogLevelString(LibSyncthing::LogLevel logLevel);
-    void setLibSyncthingLogLevel(LibSyncthing::LogLevel logLevel);
+    inline void setLibSyncthingLogLevel(LibSyncthing::LogLevel logLevel);
     void setLibSyncthingLogLevel(const QString &logLevel, LibSyncthing::LogLevel fallbackLogLevel = LibSyncthing::LogLevel::Info);
 #endif
     static bool isLibSyncthingAvailable();
-    Data::RuntimeCondition *runtimeCondition();
-    const Data::RuntimeCondition *runtimeCondition() const;
-    static SyncthingLauncher *mainInstance();
-    static void setMainInstance(SyncthingLauncher *mainInstance);
+    inline Data::RuntimeCondition *runtimeCondition();
+    inline const Data::RuntimeCondition *runtimeCondition() const;
+    inline static SyncthingLauncher *mainInstance();
+    inline static void setMainInstance(SyncthingLauncher *mainInstance);
     static QString libSyncthingVersionInfo();
 #ifdef SYNCTHINGWIDGETS_USE_LIBSYNCTHING
     void launch(const LibSyncthing::RuntimeOptions &runtimeOptions);

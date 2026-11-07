@@ -38,15 +38,15 @@ public:
     ~Wizard() override;
 
     static Wizard *instance();
-    static bool hasInstance();
+    static inline bool hasInstance();
     SetupDetection &setupDetection();
-    MainConfiguration mainConfig() const;
-    ExtraConfiguration extraConfig() const;
-    bool autoStart() const;
-    bool keepExistingAutoStartEntry() const;
-    bool isConfigApplied() const;
-    const QString &configError() const;
-    Data::SyncthingConnection *appliedConnection();
+    inline MainConfiguration mainConfig() const;
+    inline ExtraConfiguration extraConfig() const;
+    inline bool autoStart() const;
+    inline bool keepExistingAutoStartEntry() const;
+    inline bool isConfigApplied() const;
+    inline const QString &configError() const;
+    inline Data::SyncthingConnection *appliedConnection();
 
 public Q_SLOTS:
     bool changeSettings();

@@ -58,17 +58,17 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingProcess : public SyncthingProcessB
 public:
     explicit SyncthingProcess(QObject *parent = nullptr);
     ~SyncthingProcess() override;
-    bool isRunning() const;
-    CppUtilities::DateTime activeSince() const;
-    bool isActiveFor(unsigned int atLeastSeconds) const;
-    static bool isActiveFor(CppUtilities::DateTime activeSince, unsigned int atLeastSeconds);
-    bool isActiveWithoutSleepFor(unsigned int atLeastSeconds) const;
-    bool isActiveWithoutSleepFor(CppUtilities::DateTime activeSince, unsigned int atLeastSeconds) const;
-    static bool isActiveWithoutSleepFor(
+    inline bool isRunning() const;
+    inline CppUtilities::DateTime activeSince() const;
+    inline bool isActiveFor(unsigned int atLeastSeconds) const;
+    inline static bool isActiveFor(CppUtilities::DateTime activeSince, unsigned int atLeastSeconds);
+    inline bool isActiveWithoutSleepFor(unsigned int atLeastSeconds) const;
+    inline bool isActiveWithoutSleepFor(CppUtilities::DateTime activeSince, unsigned int atLeastSeconds) const;
+    inline static bool isActiveWithoutSleepFor(
         CppUtilities::DateTime lastWakeUp, bool isFallingAsleep, CppUtilities::DateTime activeSince, unsigned int atLeastSeconds);
-    bool isManuallyStopped() const;
-    static SyncthingProcess *mainInstance();
-    static void setMainInstance(SyncthingProcess *mainInstance);
+    inline bool isManuallyStopped() const;
+    inline static SyncthingProcess *mainInstance();
+    inline static void setMainInstance(SyncthingProcess *mainInstance);
     static QStringList splitArguments(const QString &arguments);
     static QString genericErrorString(QProcess::ProcessError error);
     void reportError(QProcess::ProcessError error, const QString &errorString);
@@ -84,8 +84,8 @@ public:
     qint64 processId() const;
     QString program() const;
     QStringList arguments() const;
-    QProcess::ProcessChannelMode processChannelMode() const;
-    void setProcessChannelMode(QProcess::ProcessChannelMode mode);
+    inline QProcess::ProcessChannelMode processChannelMode() const;
+    inline void setProcessChannelMode(QProcess::ProcessChannelMode mode);
 #endif
 
 public Q_SLOTS:

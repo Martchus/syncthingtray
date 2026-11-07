@@ -47,8 +47,8 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
     int rowCount(const QModelIndex &parent) const override;
     Q_INVOKABLE const SyncthingDir *dirInfo(const QModelIndex &index) const;
-    Q_INVOKABLE const SyncthingDir *info(const QModelIndex &index) const;
-    const QStringList &sdCardPaths() const;
+    Q_INVOKABLE inline const SyncthingDir *info(const QModelIndex &index) const;
+    inline const QStringList &sdCardPaths() const;
     void setSdCardPaths(const QStringList &sdCardPaths);
 
 private Q_SLOTS:

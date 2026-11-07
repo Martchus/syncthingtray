@@ -45,7 +45,7 @@ public:
     bool setData(const QModelIndex &index, const QVariant &value, int role) override;
     int rowCount(const QModelIndex &parent) const override;
     int columnCount(const QModelIndex &parent) const override;
-    int maxRows() const;
+    inline int maxRows() const;
     void setMaxRows(int maxRows);
 
 private Q_SLOTS:

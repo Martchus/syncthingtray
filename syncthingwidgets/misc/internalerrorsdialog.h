@@ -14,8 +14,8 @@ class SYNCTHINGWIDGETS_EXPORT InternalErrorsDialog : public TextViewDialog {
     Q_OBJECT
 public:
     ~InternalErrorsDialog() override;
-    static InternalErrorsDialog *instance();
-    static bool hasInstance();
+    static inline InternalErrorsDialog *instance();
+    static inline bool hasInstance();
     static void addError(InternalError &&newError);
     static void addError(const QString &message = QString(), const QUrl &url = QUrl(), const QByteArray &response = QByteArray());
 
@@ -23,7 +23,7 @@ Q_SIGNALS:
     void errorsCleared();
 
 public Q_SLOTS:
-    static void showInstance();
+    static inline void showInstance();
     static void clearErrors();
 
 private Q_SLOTS:

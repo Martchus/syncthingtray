@@ -30,11 +30,11 @@ public:
     };
 
     explicit SyncthingModel(SyncthingConnection &connection, QObject *parent = nullptr);
-    Data::SyncthingConnection *connection();
-    const Data::SyncthingConnection *connection() const;
-    bool brightColors() const;
+    inline Data::SyncthingConnection *connection();
+    inline const Data::SyncthingConnection *connection() const;
+    inline bool brightColors() const;
     void setBrightColors(bool brightColors);
-    bool singleColumnMode() const;
+    inline bool singleColumnMode() const;
     void setSingleColumnMode(bool singleColumnModeEnabled);
     int columnCount(const QModelIndex &parent = QModelIndex()) const override;
 

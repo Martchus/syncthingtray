@@ -93,7 +93,7 @@ public:
     /*!
      * \brief Sets whether the current network connection is metered.
      */
-    bool setNetworkConnectionMetered(bool metered);
+    inline bool setNetworkConnectionMetered(bool metered);
 
     /*!
      * \brief Returns a short translated status message about the metered state of the connection.
@@ -170,7 +170,7 @@ public:
     /*!
      * \brief Returns the currently enabled conditions.
      */
-    Conditions enabledConditions() const;
+    inline Conditions enabledConditions() const;
 
     /*!
      * \brief Sets the currently enabled conditions.
@@ -180,7 +180,7 @@ public:
     /*!
      * \brief Modifies the specified \a conditionsToModify by enabling (if \a enable is true) or disabling them.
      */
-    bool modEnabledConditions(Conditions conditionsToModify, bool enable = true);
+    inline bool modEnabledConditions(Conditions conditionsToModify, bool enable = true);
 
 Q_SIGNALS:
     /*!

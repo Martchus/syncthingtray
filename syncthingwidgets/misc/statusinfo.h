@@ -21,12 +21,12 @@ class SYNCTHINGWIDGETS_EXPORT StatusInfo : public QObject {
 
 public:
     explicit StatusInfo(bool textOnly = false, bool clickToConnect = false, QObject *parent = nullptr);
-    explicit StatusInfo(const Data::SyncthingConnection &connection, const QString &configurationName = QString(), bool textOnly = false,
+    explicit inline StatusInfo(const Data::SyncthingConnection &connection, const QString &configurationName = QString(), bool textOnly = false,
         bool clickToConnect = true, QObject *parent = nullptr);
 
-    const QString &statusText() const;
-    const QString &additionalStatusText() const;
-    const QIcon &statusIcon() const;
+    inline const QString &statusText() const;
+    inline const QString &additionalStatusText() const;
+    inline const QIcon &statusIcon() const;
     void updateConnectionStatus(const Data::SyncthingConnection &connection, const QString &configurationName = QString());
     void updateConnectedDevices(const Data::SyncthingConnection &connection);
 

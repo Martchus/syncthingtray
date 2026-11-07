@@ -54,7 +54,7 @@ public:
 public Q_SLOTS:
     void applySettings(
         const Data::SyncthingConnectionSettings &connectionSettings, bool aboutToShow, Data::SyncthingConnection *connection = nullptr);
-    const Data::SyncthingConnectionSettings &connectionSettings() const;
+    inline const Data::SyncthingConnectionSettings &connectionSettings() const;
 #if defined(SYNCTHINGWIDGETS_USE_WEBKIT)
     bool isModalVisible() const;
 #endif

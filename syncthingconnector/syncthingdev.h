@@ -32,12 +32,12 @@ enum class SyncthingDevStatus {
 QString statusString(SyncthingDevStatus status);
 
 struct LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingDev {
-    explicit SyncthingDev(const QString &id = QString(), const QString &name = QString());
+    inline explicit SyncthingDev(const QString &id = QString(), const QString &name = QString());
     QString statusString() const;
-    bool isConnected() const;
-    SyncthingDevStatus computeConnectedStateAccordingToCompletion() const;
-    SyncthingDevStatus setConnectedStateAccordingToCompletion();
-    const QString &displayName() const;
+    inline bool isConnected() const;
+    inline SyncthingDevStatus computeConnectedStateAccordingToCompletion() const;
+    inline SyncthingDevStatus setConnectedStateAccordingToCompletion();
+    inline const QString &displayName() const;
 
     QString id;
     QString name;

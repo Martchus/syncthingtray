@@ -158,7 +158,7 @@ public:
     Q_INVOKABLE bool flushLogfile();
     Q_INVOKABLE bool openSyncthingConfigFile();
     Q_INVOKABLE bool openSyncthingLogFile();
-    Q_INVOKABLE QVariantList internalErrors() const;
+    inline Q_INVOKABLE QVariantList internalErrors() const;
     Q_INVOKABLE void clearInternalErrors();
     Q_INVOKABLE bool cleanSyncthingHomeDirectory(const QJSValue &callback = QJSValue());
     Q_INVOKABLE bool checkOngoingImportExport();

@@ -15,10 +15,10 @@ enum class SyncthingSortBehavior {
 class LIB_SYNCTHING_MODEL_EXPORT SyncthingSortFilterModel : public QSortFilterProxyModel {
     Q_OBJECT
 public:
-    explicit SyncthingSortFilterModel(QAbstractItemModel *sourceModel = nullptr, QObject *parent = nullptr);
+    explicit inline SyncthingSortFilterModel(QAbstractItemModel *sourceModel = nullptr, QObject *parent = nullptr);
 
-    SyncthingSortBehavior behavior() const;
-    void setBehavior(SyncthingSortBehavior behavior);
+    inline SyncthingSortBehavior behavior() const;
+    inline void setBehavior(SyncthingSortBehavior behavior);
 
     Q_INVOKABLE QString filterRegularExpressionPattern() const
     {

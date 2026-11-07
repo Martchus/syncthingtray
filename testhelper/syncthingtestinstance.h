@@ -23,16 +23,16 @@ class SYNCTHINGTESTHELPER_EXPORT SyncthingTestInstance {
 public:
     SyncthingTestInstance();
 
-    const QString &apiKey() const;
-    const QString &syncthingPort() const;
-    QCoreApplication &application();
-    const QTemporaryDir &dataDir() const;
-    Data::SyncthingProcess &syncthingProcess();
+    inline const QString &apiKey() const;
+    inline const QString &syncthingPort() const;
+    inline QCoreApplication &application();
+    inline const QTemporaryDir &dataDir() const;
+    inline Data::SyncthingProcess &syncthingProcess();
 
 public:
     void start();
     void stop();
-    bool isInterleavedOutputEnabled() const;
+    inline bool isInterleavedOutputEnabled() const;
     void setInterleavedOutputEnabled(bool interleavedOutputEnabled);
     void setInterleavedOutputEnabledFromEnv();
 

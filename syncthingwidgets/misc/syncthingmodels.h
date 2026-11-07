@@ -108,7 +108,7 @@ public:
 
     // functions used by different UIs
     Q_INVOKABLE QString formatDataSize(quint64 size) const;
-    Q_INVOKABLE void setBrightColors(bool brightColors);
+    Q_INVOKABLE inline void setBrightColors(bool brightColors);
     Q_INVOKABLE bool openPath(const QString &path);
     Q_INVOKABLE bool openPath(const QString &dirId, const QString &relativePath);
     Q_INVOKABLE bool copyText(const QString &text);

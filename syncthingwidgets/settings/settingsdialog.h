@@ -56,7 +56,7 @@ enum class GuiType {
     Plasmoid,
 };
 
-BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_CTOR(ConnectionOptionPage)
+BEGIN_DECLARE_EXPORTED_UI_FILE_BASED_OPTION_PAGE_CUSTOM_CTOR(SYNCTHINGWIDGETS_EXPORT, ConnectionOptionPage)
 public:
 ConnectionOptionPage(Data::SyncthingConnection *connection, QWidget *parentWidget = nullptr);
 void hideConnectionStatus();
@@ -82,7 +82,7 @@ Data::SyncthingStatusComputionModel *m_statusComputionModel;
 int m_currentIndex;
 END_DECLARE_OPTION_PAGE
 
-BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_CTOR(NotificationsOptionPage)
+BEGIN_DECLARE_EXPORTED_UI_FILE_BASED_OPTION_PAGE_CUSTOM_CTOR(SYNCTHINGWIDGETS_EXPORT, NotificationsOptionPage)
 public:
 NotificationsOptionPage(GuiType guiType = GuiType::TrayWidget, QWidget *parentWidget = nullptr);
 
@@ -91,7 +91,7 @@ DECLARE_SETUP_WIDGETS
 const GuiType m_guiType;
 END_DECLARE_OPTION_PAGE
 
-BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE(AppearanceOptionPage)
+BEGIN_DECLARE_EXPORTED_UI_FILE_BASED_OPTION_PAGE(SYNCTHINGWIDGETS_EXPORT, AppearanceOptionPage)
 public:
 void resetPositioningSettings();
 static int tabIndexToComboBoxIndex(int tabIndex);
@@ -99,7 +99,7 @@ static int comboBoxIndexToTabIndex(int comboBoxIndex);
 DECLARE_SETUP_WIDGETS
 END_DECLARE_OPTION_PAGE
 
-BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE_CUSTOM_CTOR(IconsOptionPage)
+BEGIN_DECLARE_EXPORTED_UI_FILE_BASED_OPTION_PAGE_CUSTOM_CTOR(SYNCTHINGWIDGETS_EXPORT, IconsOptionPage)
 public:
 enum class Context { Combined, UI, System };
 explicit IconsOptionPage(Context context = Context::Combined, QWidget *parentWidget = nullptr);
@@ -118,7 +118,7 @@ struct {
 } m_widgets[Data::StatusIconSettings::distinguishableColorCount];
 END_DECLARE_OPTION_PAGE
 
-BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE(AutostartOptionPage)
+BEGIN_DECLARE_EXPORTED_UI_FILE_BASED_OPTION_PAGE(SYNCTHINGWIDGETS_EXPORT, AutostartOptionPage)
 private:
 bool m_unsupported = false;
 DECLARE_SETUP_WIDGETS
@@ -130,7 +130,7 @@ SYNCTHINGWIDGETS_EXPORT bool isAutostartEnabled();
 SYNCTHINGWIDGETS_EXPORT bool setAutostartEnabled(bool enabled, bool force = false);
 
 BEGIN_DECLARE_TYPEDEF_UI_FILE_BASED_OPTION_PAGE(LauncherOptionPage)
-class QT_UTILITIES_EXPORT LauncherOptionPage : public QObject, public ::QtUtilities::UiFileBasedOptionPage<Ui::LauncherOptionPage> {
+class SYNCTHINGWIDGETS_EXPORT LauncherOptionPage : public QObject, public ::QtUtilities::UiFileBasedOptionPage<Ui::LauncherOptionPage> {
     Q_OBJECT
 
 public:
@@ -167,7 +167,7 @@ private:
 };
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE(ServiceOptionPage)
+BEGIN_DECLARE_EXPORTED_UI_FILE_BASED_OPTION_PAGE(SYNCTHINGWIDGETS_EXPORT, ServiceOptionPage)
 private:
 DECLARE_SETUP_WIDGETS
 void handleSystemUnitChanged();
@@ -188,7 +188,7 @@ QMetaObject::Connection m_unitAvailableConn;
 END_DECLARE_OPTION_PAGE
 #endif
 
-BEGIN_DECLARE_UI_FILE_BASED_OPTION_PAGE(GeneralWebViewOptionPage)
+BEGIN_DECLARE_EXPORTED_UI_FILE_BASED_OPTION_PAGE(SYNCTHINGWIDGETS_EXPORT, GeneralWebViewOptionPage)
 private:
 DECLARE_SETUP_WIDGETS
 void showCustomCommandPrompt();
@@ -196,9 +196,9 @@ QString m_customCommand;
 END_DECLARE_OPTION_PAGE
 
 #ifndef SYNCTHINGWIDGETS_NO_WEBVIEW
-DECLARE_UI_FILE_BASED_OPTION_PAGE(BuiltinWebViewOptionPage)
+DECLARE_EXPORTED_UI_FILE_BASED_OPTION_PAGE(SYNCTHINGWIDGETS_EXPORT, BuiltinWebViewOptionPage)
 #else
-DECLARE_OPTION_PAGE(BuiltinWebViewOptionPage)
+DECLARE_EXPORTED_OPTION_PAGE(SYNCTHINGWIDGETS_EXPORT, BuiltinWebViewOptionPage)
 #endif
 
 class SYNCTHINGWIDGETS_EXPORT SettingsDialog : public QtUtilities::SettingsDialog {

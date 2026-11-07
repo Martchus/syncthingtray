@@ -29,10 +29,10 @@ public:
     explicit TrayMenu(TrayIcon *trayIcon = nullptr, QWidget *parent = nullptr);
 
     QSize sizeHint() const override;
-    TrayWidget &widget();
-    const TrayWidget &widget() const;
-    TrayIcon *icon();
-    WindowType windowType() const;
+    inline TrayWidget &widget();
+    inline const TrayWidget &widget() const;
+    inline TrayIcon *icon();
+    inline WindowType windowType() const;
     void setWindowType(int windowType);
     void setWindowType(WindowType windowType);
 

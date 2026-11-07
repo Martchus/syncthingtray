@@ -90,18 +90,18 @@ public:
     static TrayWidget *create(QQmlEngine *, QJSEngine *engine);
 #endif
 
-    SyncthingData &data();
-    QMenu *connectionsMenu();
-    static const std::vector<TrayWidget *> &instances();
-    Data::SyncthingConnectionSettings *selectedConnection();
+    inline SyncthingData &data();
+    inline QMenu *connectionsMenu();
+    static inline const std::vector<TrayWidget *> &instances();
+    inline Data::SyncthingConnectionSettings *selectedConnection();
     SettingsDialog *settingsDialog();
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
     QuickGuiEngine &quickGui();
-    QQuickWidget *quickWidget();
+    inline QQuickWidget *quickWidget();
     bool isStartStopEnabled() const;
     QObject *startStopButtonTarget();
 #endif
-    TrayMenu *menu();
+    inline TrayMenu *menu();
     Data::SyncthingLauncher *launcher() const;
     Data::SyncthingService *service() const;
 

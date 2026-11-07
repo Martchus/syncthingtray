@@ -78,11 +78,11 @@ public:
     bool isUnitAvailable() const;
     const QString &activeState() const;
     const QString &subState() const;
-    CppUtilities::DateTime activeSince() const;
-    bool isActiveFor(unsigned int atLeastSeconds) const;
-    bool isActiveWithoutSleepFor(unsigned int atLeastSeconds) const;
-    static bool isActiveWithoutSleepFor(CppUtilities::DateTime activeSince, unsigned int atLeastSeconds);
-    static CppUtilities::DateTime lastWakeUp();
+    inline CppUtilities::DateTime activeSince() const;
+    inline bool isActiveFor(unsigned int atLeastSeconds) const;
+    inline bool isActiveWithoutSleepFor(unsigned int atLeastSeconds) const;
+    inline static bool isActiveWithoutSleepFor(CppUtilities::DateTime activeSince, unsigned int atLeastSeconds);
+    inline static CppUtilities::DateTime lastWakeUp();
     const QString &unitFileState() const;
     const QString &description() const;
     bool isRunning() const;
@@ -94,14 +94,14 @@ public:
     ServiceScope scope() const;
     void setScope(ServiceScope scope);
     void setScopeAndUnitName(ServiceScope scope, const QString &unitName);
-    bool isUserScope() const;
+    inline bool isUserScope() const;
     QString displayName() const;
-    QString serviceManagerName() const;
-    bool canInstallService() const;
-    RuntimeCondition *runtimeCondition();
-    const RuntimeCondition *runtimeCondition() const;
-    static SyncthingService *mainInstance();
-    static void setMainInstance(SyncthingService *mainInstance);
+    inline QString serviceManagerName() const;
+    inline bool canInstallService() const;
+    inline RuntimeCondition *runtimeCondition();
+    inline const RuntimeCondition *runtimeCondition() const;
+    inline static SyncthingService *mainInstance();
+    inline static void setMainInstance(SyncthingService *mainInstance);
 
 public Q_SLOTS:
     void setUnitName(const QString &unitName);
@@ -110,8 +110,8 @@ public Q_SLOTS:
     void stop();
     void toggleRunning();
     void setEnabled(bool enable);
-    void enable();
-    void disable();
+    inline void enable();
+    inline void disable();
     void reloadAllUnitFiles();
     void openLogs() const;
     void installService();

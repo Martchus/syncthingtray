@@ -14,7 +14,7 @@ class WebViewInterceptor : public QWebEngineUrlRequestInterceptor {
     Q_OBJECT
 
 public:
-    explicit WebViewInterceptor(const Data::SyncthingConnectionSettings &settings, QObject *parent = nullptr);
+    explicit inline WebViewInterceptor(const Data::SyncthingConnectionSettings &settings, QObject *parent = nullptr);
 
     virtual void interceptRequest(QWebEngineUrlRequestInfo &info) override;
 

@@ -31,8 +31,8 @@ public:
     int rowCount(const QModelIndex &parent) const override;
     Q_INVOKABLE const SyncthingDir *dirInfo(const QModelIndex &index) const;
     Q_INVOKABLE const SyncthingItemDownloadProgress *progressInfo(const QModelIndex &index) const;
-    Q_INVOKABLE QPair<const SyncthingDir *, const SyncthingItemDownloadProgress *> info(const QModelIndex &index) const;
-    unsigned int pendingDownloads() const;
+    Q_INVOKABLE inline QPair<const SyncthingDir *, const SyncthingItemDownloadProgress *> info(const QModelIndex &index) const;
+    inline unsigned int pendingDownloads() const;
 
 Q_SIGNALS:
     void pendingDownloadsChanged(unsigned int pendingDownloads);

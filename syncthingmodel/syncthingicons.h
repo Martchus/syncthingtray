@@ -171,15 +171,15 @@ public:
 
     void applySettings(const StatusIconSettings *statusIconSettings = nullptr, const StatusIconSettings *trayIconSettings = nullptr,
         bool usePaletteForStatus = false, bool usePaletteForTray = false);
-    const StatusIcons &statusIcons() const;
-    const StatusIcons &trayIcons() const;
-    QtForkAwesome::Renderer &forkAwesomeRenderer();
-    const ForkAwesomeIcons &commonForkAwesomeIcons() const;
+    inline const StatusIcons &statusIcons() const;
+    inline const StatusIcons &trayIcons() const;
+    inline QtForkAwesome::Renderer &forkAwesomeRenderer();
+    inline const ForkAwesomeIcons &commonForkAwesomeIcons() const;
     void renderForkAwesomeIcon(QtForkAwesome::Icon icon, QPainter *painter, const QRect &rect) const;
 
 public Q_SLOTS:
     void setPalette(const QPalette &palette);
-    void update();
+    inline void update();
 
 Q_SIGNALS:
     void statusIconsChanged(const Data::StatusIcons &newStatusIcons, const Data::StatusIcons &newTrayIcons);

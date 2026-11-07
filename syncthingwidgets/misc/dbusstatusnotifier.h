@@ -24,17 +24,17 @@ public:
     explicit DBusStatusNotifier(QObject *parent = nullptr);
 
 public Q_SLOTS:
-    void showDisconnect();
-    void hideDisconnect();
-    void showInternalError(const QtGui::InternalError &error);
-    void showLauncherError(const QString &errorMessage, const QString &additionalInfo);
-    void showSyncthingNotification(CppUtilities::DateTime when, const QString &message);
-    void showSyncComplete(const QString &message);
-    void showNewDev(const QString &devId, const QString &message);
-    void showNewDir(const QString &devId, const QString &dirId, const QString &dirLabel, const QString &message);
-    void showNewVersionAvailable(const QString &version, const QString &additionalInfo);
-    void showInfo(const QString &title, const QString &message);
-    void showError(const QString &title, const QString &message);
+    inline void showDisconnect();
+    inline void hideDisconnect();
+    inline void showInternalError(const QtGui::InternalError &error);
+    inline void showLauncherError(const QString &errorMessage, const QString &additionalInfo);
+    inline void showSyncthingNotification(CppUtilities::DateTime when, const QString &message);
+    inline void showSyncComplete(const QString &message);
+    inline void showNewDev(const QString &devId, const QString &message);
+    inline void showNewDir(const QString &devId, const QString &dirId, const QString &dirLabel, const QString &message);
+    inline void showNewVersionAvailable(const QString &version, const QString &additionalInfo);
+    inline void showInfo(const QString &title, const QString &message);
+    inline void showError(const QString &title, const QString &message);
     void setIcons(const Data::StatusIcons &statusIcons, const Data::StatusIcons &icons);
 
 Q_SIGNALS:

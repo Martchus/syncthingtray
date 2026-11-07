@@ -80,19 +80,19 @@ public:
     void fetchMore(const QModelIndex &parent) override;
     Q_INVOKABLE void triggerAction(const QString &action, const QModelIndex &index);
     Q_INVOKABLE QList<QAction *> selectionActions();
-    bool isSelectionModeEnabled() const;
+    inline bool isSelectionModeEnabled() const;
     void setSelectionModeEnabled(bool selectionModeEnabled);
     Q_INVOKABLE QString path(const QModelIndex &path) const;
-    bool hasIgnorePatterns() const;
-    bool hasStagedChanges() const;
-    const std::vector<SyncthingIgnorePattern> &presentIgnorePatterns() const;
+    inline bool hasIgnorePatterns() const;
+    inline bool hasStagedChanges() const;
+    inline const std::vector<SyncthingIgnorePattern> &presentIgnorePatterns() const;
     SyncthingIgnores computeNewIgnorePatterns() const;
     Q_INVOKABLE QString computeNewIgnorePatternsAsString() const;
     Q_INVOKABLE void editIgnorePatternsManually(const QString &ignorePatterns);
     Q_INVOKABLE void editLocalDeletions(const QSet<QString> &localDeletions);
     Q_INVOKABLE void editLocalDeletionsFromVariantList(const QVariantList &localDeletions);
-    bool isRecursiveSelectionEnabled() const;
-    void setRecursiveSelectionEnabled(bool recursiveSelectionEnabled);
+    inline bool isRecursiveSelectionEnabled() const;
+    inline void setRecursiveSelectionEnabled(bool recursiveSelectionEnabled);
 
 Q_SIGNALS:
     void fetchQueueEmpty();

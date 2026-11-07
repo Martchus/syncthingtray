@@ -25,11 +25,11 @@ struct SYNCTHINGWIDGETS_EXPORT InternalError {
     Q_PROPERTY(QString when READ whenToString CONSTANT)
 
 public:
-    explicit InternalError(const QString &message = QString(), const QUrl &url = QUrl(), const QByteArray &response = QByteArray());
+    explicit inline InternalError(const QString &message = QString(), const QUrl &url = QUrl(), const QByteArray &response = QByteArray());
 
     static bool isRelevant(const Data::SyncthingConnection &connection, Data::SyncthingErrorCategory category, const QString &message,
         int networkError, bool useGlobalSettings = true, bool isManuallyStopped = false);
-    QString whenToString() const;
+    inline QString whenToString() const;
 
     QString message;
     QUrl url;
