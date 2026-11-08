@@ -347,6 +347,138 @@ int handleUninstallService(const QString &serviceName)
     std::wcout << L"Service \"" << reinterpret_cast<LPCWSTR>(serviceName.utf16()) << L"\" deleted successfully." << std::endl;
     return EXIT_SUCCESS;
 }
+
+/*!
+ * \brief Enables or disables auto-start for a service with the specified name.
+ * \remarks Needs admin privileges.
+ */
+int handleEnableService(const QString &serviceName, bool enable)
+{
+    const auto scm = OpenSCManagerW(nullptr, nullptr, SC_MANAGER_CONNECT);
+    if (!scm) {
+        logLastWindowsError(L"Failed to open service manager: ", GetLastError());
+        return EXIT_FAILURE;
+    }
+    const auto service = OpenServiceW(scm, reinterpret_cast<LPCWSTR>(serviceName.utf16()), SERVICE_CHANGE_CONFIG);
+    if (!service) {
+        const auto err = GetLastError();
+        CloseServiceHandle(scm);
+        logLastWindowsError(L"Failed to open service: ", err);
+        return EXIT_FAILURE;
+    }
+    const auto startType = DWORD(enable ? SERVICE_AUTO_START : SERVICE_DEMAND_START);
+    if (!ChangeServiceConfigW(
+            service, SERVICE_NO_CHANGE, startType, SERVICE_NO_CHANGE, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr)) {
+        const auto err = GetLastError();
+        CloseServiceHandle(service);
+        CloseServiceHandle(scm);
+        logLastWindowsError(L"Failed to change service config: ", err);
+        return EXIT_FAILURE;
+    }
+    CloseServiceHandle(service);
+    CloseServiceHandle(scm);
+    std::wcout << L"Service \"" << reinterpret_cast<LPCWSTR>(serviceName.utf16()) << L"\" " << (enable ? L"enabled" : L"disabled")
+               << L" successfully.\n";
+    return EXIT_SUCCESS;
+}
+
+/*!
+ * \brief Starts a service with the specified name.
+ * \remarks Needs admin privileges.
+ */
+int handleStartService(const QString &serviceName)
+{
+    const auto scm = OpenSCManagerW(nullptr, nullptr, SC_MANAGER_CONNECT);
+    if (!scm) {
+        logLastWindowsError(L"Failed to open service manager: ", GetLastError());
+        return EXIT_FAILURE;
+    }
+    const auto service = OpenServiceW(scm, reinterpret_cast<LPCWSTR>(serviceName.utf16()), SERVICE_START | SERVICE_QUERY_STATUS);
+    if (!service) {
+        const auto err = GetLastError();
+        CloseServiceHandle(scm);
+        logLastWindowsError(L"Failed to open service: ", err);
+        return EXIT_FAILURE;
+    }
+    if (!StartServiceW(service, 0, nullptr)) {
+        const auto err = GetLastError();
+        if (err != ERROR_SERVICE_ALREADY_RUNNING) {
+            CloseServiceHandle(service);
+            CloseServiceHandle(scm);
+            logLastWindowsError(L"Failed to start service: ", err);
+            return EXIT_FAILURE;
+        }
+    }
+    CloseServiceHandle(service);
+    CloseServiceHandle(scm);
+    std::wcout << L"Service \"" << reinterpret_cast<LPCWSTR>(serviceName.utf16()) << L"\" started successfully.\n";
+    return EXIT_SUCCESS;
+}
+
+/*!
+ * \brief Stops a service with the specified name.
+ * \remarks Needs admin privileges.
+ */
+int handleStopService(const QString &serviceName)
+{
+    const auto scm = OpenSCManagerW(nullptr, nullptr, SC_MANAGER_CONNECT);
+    if (!scm) {
+        logLastWindowsError(L"Failed to open service manager: ", GetLastError());
+        return EXIT_FAILURE;
+    }
+    const auto service = OpenServiceW(scm, reinterpret_cast<LPCWSTR>(serviceName.utf16()), SERVICE_STOP | SERVICE_QUERY_STATUS);
+    if (!service) {
+        const auto err = GetLastError();
+        CloseServiceHandle(scm);
+        logLastWindowsError(L"Failed to open service: ", err);
+        return EXIT_FAILURE;
+    }
+    auto status = SERVICE_STATUS{};
+    if (!ControlService(service, SERVICE_CONTROL_STOP, &status)) {
+        const auto err = GetLastError();
+        if (err != ERROR_SERVICE_NOT_ACTIVE) {
+            CloseServiceHandle(service);
+            CloseServiceHandle(scm);
+            logLastWindowsError(L"Failed to stop service: ", err);
+            return EXIT_FAILURE;
+        }
+    }
+    CloseServiceHandle(service);
+    CloseServiceHandle(scm);
+    std::wcout << L"Service \"" << reinterpret_cast<LPCWSTR>(serviceName.utf16()) << L"\" stopped successfully.\n";
+    return EXIT_SUCCESS;
+}
+
+static bool executeElevated(const QString &operation, const QString &unitName, QString &errorMessage)
+{
+    const auto appPath = QCoreApplication::applicationFilePath();
+    const auto params = QStringLiteral("%1 --name \"%2\"").arg(operation, unitName);
+    auto sei = SHELLEXECUTEINFOW{};
+    sei.cbSize = sizeof(sei);
+    sei.lpVerb = L"runas";
+    sei.lpFile = reinterpret_cast<LPCWSTR>(appPath.utf16());
+    sei.lpParameters = reinterpret_cast<LPCWSTR>(params.utf16());
+    sei.nShow = SW_SHOWNORMAL;
+    sei.fMask = SEE_MASK_NOCLOSEPROCESS;
+    if (!ShellExecuteExW(&sei)) {
+        const auto err = GetLastError();
+        if (err != ERROR_CANCELLED) {
+            errorMessage = windowsErrorString(err);
+        }
+        return false;
+    }
+    if (sei.hProcess) {
+        WaitForSingleObject(sei.hProcess, INFINITE);
+        auto exitCode = DWORD(0);
+        GetExitCodeProcess(sei.hProcess, &exitCode);
+        CloseHandle(sei.hProcess);
+        if (exitCode != 0) {
+            errorMessage = QCoreApplication::translate("Data::SyncthingService", "Process exited with code %1").arg(exitCode);
+            return false;
+        }
+    }
+    return true;
+}
 #endif
 
 /// \endcond
@@ -1014,6 +1146,17 @@ void SyncthingService::setRunning(bool running)
     if (!service) {
         const auto err = GetLastError();
         CloseServiceHandle(scm);
+        if (err == ERROR_ACCESS_DENIED) {
+            auto errorMessage = QString();
+            if (!executeElevated(running ? QStringLiteral("start-service") : QStringLiteral("stop-service"), m_unitName, errorMessage)) {
+                if (!errorMessage.isEmpty()) {
+                    emit errorOccurred(running ? tr("start service") : tr("stop service"), tr("Operation Failed"), errorMessage);
+                }
+                return;
+            }
+            queryServiceStatus();
+            return;
+        }
         emit errorOccurred(running ? tr("start service") : tr("stop service"), tr("Windows Service Error"), windowsErrorString(err));
         return;
     }
@@ -1065,13 +1208,38 @@ void SyncthingService::setEnabled(bool enabled)
     if (!service) {
         const auto err = GetLastError();
         CloseServiceHandle(scm);
+        if (err == ERROR_ACCESS_DENIED) {
+            auto errorMessage = QString();
+            if (!executeElevated(enabled ? QStringLiteral("enable-service") : QStringLiteral("disable-service"), m_unitName, errorMessage)) {
+                if (!errorMessage.isEmpty()) {
+                    emit errorOccurred(enabled ? tr("enable service") : tr("disable service"), tr("Operation Failed"), errorMessage);
+                }
+                return;
+            }
+            queryServiceConfig();
+            return;
+        }
         emit errorOccurred(enabled ? tr("enable service") : tr("disable service"), tr("Windows Service Error"), windowsErrorString(err));
         return;
     }
     const auto startType = DWORD(enabled ? SERVICE_AUTO_START : SERVICE_DEMAND_START);
     if (!ChangeServiceConfigW(
             service, SERVICE_NO_CHANGE, startType, SERVICE_NO_CHANGE, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr)) {
-        emit errorOccurred(enabled ? tr("enable service") : tr("disable service"), tr("Windows Service Error"), windowsErrorString(GetLastError()));
+        const auto err = GetLastError();
+        if (err == ERROR_ACCESS_DENIED) {
+            CloseServiceHandle(service);
+            CloseServiceHandle(scm);
+            auto errorMessage = QString();
+            if (!executeElevated(enabled ? QStringLiteral("enable-service") : QStringLiteral("disable-service"), m_unitName, errorMessage)) {
+                if (!errorMessage.isEmpty()) {
+                    emit errorOccurred(enabled ? tr("enable service") : tr("disable service"), tr("Operation Failed"), errorMessage);
+                }
+                return;
+            }
+            queryServiceConfig();
+            return;
+        }
+        emit errorOccurred(enabled ? tr("enable service") : tr("disable service"), tr("Windows Service Error"), windowsErrorString(err));
     }
     CloseServiceHandle(service);
     CloseServiceHandle(scm);
@@ -1254,30 +1422,12 @@ void SyncthingService::installService()
 void SyncthingService::uninstallService()
 {
 #if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
-    const auto appPath = QCoreApplication::applicationFilePath();
-    const auto params = QStringLiteral("uninstall-service --name \"%1\"").arg(m_unitName);
-    auto sei = SHELLEXECUTEINFOW{};
-    sei.cbSize = sizeof(sei);
-    sei.lpVerb = L"runas";
-    sei.lpFile = reinterpret_cast<LPCWSTR>(appPath.utf16());
-    sei.lpParameters = reinterpret_cast<LPCWSTR>(params.utf16());
-    sei.nShow = SW_SHOWNORMAL;
-    sei.fMask = SEE_MASK_NOCLOSEPROCESS;
-    if (!ShellExecuteExW(&sei)) {
-        const auto err = GetLastError();
-        if (err != ERROR_CANCELLED) {
-            emit errorOccurred(tr("uninstall service"), tr("UAC Elevation Failed"), windowsErrorString(err));
+    auto errorMessage = QString();
+    if (!executeElevated(QStringLiteral("uninstall-service"), m_unitName, errorMessage)) {
+        if (!errorMessage.isEmpty()) {
+            emit errorOccurred(tr("uninstall service"), tr("Operation Failed"), errorMessage);
         }
         return;
-    }
-    if (sei.hProcess) {
-        WaitForSingleObject(sei.hProcess, INFINITE);
-        auto exitCode = DWORD(0);
-        GetExitCodeProcess(sei.hProcess, &exitCode);
-        CloseHandle(sei.hProcess);
-        if (exitCode != 0) {
-            emit errorOccurred(tr("uninstall service"), tr("Uninstallation Failed"), tr("Process exited with code %1").arg(exitCode));
-        }
     }
     queryServiceStatus();
 #endif

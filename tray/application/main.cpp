@@ -333,11 +333,19 @@ static int runApplication(int argc, const char *const *argv)
 #if defined(Q_OS_WIN) && defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
     auto installServiceArg = OperationArgument("install-service", '\0', "installs Syncthing as a Windows service");
     auto uninstallServiceArg = OperationArgument("uninstall-service", '\0', "uninstalls Syncthing Windows service");
+    auto enableServiceArg = OperationArgument("enable-service", '\0', "enables Syncthing Windows service auto-start");
+    auto disableServiceArg = OperationArgument("disable-service", '\0', "disables Syncthing Windows service auto-start");
+    auto startServiceArg = OperationArgument("start-service", '\0', "starts Syncthing Windows service");
+    auto stopServiceArg = OperationArgument("stop-service", '\0', "stops Syncthing Windows service");
     auto serviceNameArg = ConfigValueArgument("name", '\0', "service name (default: \"syncthing\")", { "name" });
     auto homeDirArg = ConfigValueArgument("home", '\0', "path to Syncthing configuration and data directory", { "path" });
     auto logFileArg = ConfigValueArgument("log-file", '\0', "path to Syncthing log file", { "path" });
     installServiceArg.setSubArguments({ &serviceNameArg, &homeDirArg, &logFileArg });
     uninstallServiceArg.setSubArguments({ &serviceNameArg });
+    enableServiceArg.setSubArguments({ &serviceNameArg });
+    disableServiceArg.setSubArguments({ &serviceNameArg });
+    startServiceArg.setSubArguments({ &serviceNameArg });
+    stopServiceArg.setSubArguments({ &serviceNameArg });
     installServiceArg.setCallback([argc, argv, &serviceNameArg, &homeDirArg, &logFileArg](const ArgumentOccurrence &) mutable {
         auto app = QCoreApplication(argc, const_cast<char **>(argv));
         const auto serviceName = serviceNameFromArg(serviceNameArg);
@@ -347,6 +355,14 @@ static int runApplication(int argc, const char *const *argv)
     });
     uninstallServiceArg.setCallback(
         [&serviceNameArg](const ArgumentOccurrence &) { std::exit(handleUninstallService(serviceNameFromArg(serviceNameArg))); });
+    enableServiceArg.setCallback(
+        [&serviceNameArg](const ArgumentOccurrence &) { std::exit(handleEnableService(serviceNameFromArg(serviceNameArg), true)); });
+    disableServiceArg.setCallback(
+        [&serviceNameArg](const ArgumentOccurrence &) { std::exit(handleEnableService(serviceNameFromArg(serviceNameArg), false)); });
+    startServiceArg.setCallback(
+        [&serviceNameArg](const ArgumentOccurrence &) { std::exit(handleStartService(serviceNameFromArg(serviceNameArg))); });
+    stopServiceArg.setCallback(
+        [&serviceNameArg](const ArgumentOccurrence &) { std::exit(handleStopService(serviceNameFromArg(serviceNameArg))); });
 #endif
 #ifdef Q_OS_ANDROID
     auto serviceArg = OperationArgument("service", '\0', "runs service");
@@ -363,7 +379,7 @@ static int runApplication(int argc, const char *const *argv)
         &cliArg, &syncthingArg,
 #endif
 #if defined(Q_OS_WIN) && defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
-        &installServiceArg, &uninstallServiceArg,
+        &installServiceArg, &uninstallServiceArg, &enableServiceArg, &disableServiceArg, &startServiceArg, &stopServiceArg,
 #endif
 #ifdef Q_OS_ANDROID
         &serviceArg,

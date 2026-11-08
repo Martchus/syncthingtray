@@ -47,6 +47,9 @@ LIB_SYNCTHING_CONNECTOR_EXPORT int runAsWindowsService(std::function<int(void)> 
 LIB_SYNCTHING_CONNECTOR_EXPORT int handleInstallService(
     const QString &serviceName, const QString &homeDir = QString(), const QString &logFile = QString());
 LIB_SYNCTHING_CONNECTOR_EXPORT int handleUninstallService(const QString &serviceName);
+LIB_SYNCTHING_CONNECTOR_EXPORT int handleEnableService(const QString &serviceName, bool enable);
+LIB_SYNCTHING_CONNECTOR_EXPORT int handleStartService(const QString &serviceName);
+LIB_SYNCTHING_CONNECTOR_EXPORT int handleStopService(const QString &serviceName);
 #endif
 
 enum class ServiceScope { System, User };
