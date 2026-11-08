@@ -39,7 +39,6 @@
 
 #include <sddl.h>
 #include <shellapi.h>
-#include <tlhelp32.h>
 #include <winsvc.h>
 
 #include <array>
@@ -152,28 +151,6 @@ static void reportWindowsServiceEvent(WORD type, DWORD eventId, const QString &m
     DeregisterEventSource(source);
 }
 
-static void stopChildProcesses()
-{
-    const auto currentPid = GetCurrentProcessId();
-    const auto snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-    if (snapshot == INVALID_HANDLE_VALUE) {
-        return;
-    }
-    auto pe = PROCESSENTRY32W{};
-    pe.dwSize = sizeof(pe);
-    if (Process32FirstW(snapshot, &pe)) {
-        do {
-            if (pe.th32ParentProcessID == currentPid) {
-                if (const auto childProcess = OpenProcess(PROCESS_TERMINATE, FALSE, pe.th32ProcessID)) {
-                    TerminateProcess(childProcess, 0);
-                    CloseHandle(childProcess);
-                }
-            }
-        } while (Process32NextW(snapshot, &pe));
-    }
-    CloseHandle(snapshot);
-}
-
 /*!
  * \brief Internally called to stop the service.
  */
@@ -185,10 +162,12 @@ static void WINAPI serviceCtrlHandler(DWORD control)
         s_serviceStatus.dwCurrentState = SERVICE_STOP_PENDING;
         s_serviceStatus.dwWaitHint = 10000;
         SetServiceStatus(s_serviceStatusHandle, &s_serviceStatus);
+        reportWindowsServiceEvent(EVENTLOG_INFORMATION_TYPE, 0,
+            QCoreApplication::translate("Data::SyncthingService", "Windows service \"%1\" stop requested.")
+                .arg(QString::fromWCharArray(s_serviceLogName)));
         if (s_stopRoutine) {
             s_stopRoutine();
         }
-        stopChildProcesses();
         break;
     default:
         break;

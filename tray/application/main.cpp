@@ -309,6 +309,8 @@ static int runApplication(int argc, const char *const *argv)
             asService = true;
         }
         if (asService && !qEnvironmentVariableIsSet("STMONITORED")) {
+            qputenv("STMONITORED", "yes");
+            qputenv("STNORESTART", "yes");
             std::exit(runAsWindowsService(
                 [values] {
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
