@@ -221,9 +221,14 @@ set(REQUIRED_ICONS
     preferences-system-startup
     preferences-system-services
     view-refresh-symbolic
+    system-software-install
+    emblem-checked
     emblem-checked-symbolic
-    network-connect-symbolic
+    emblem-remove
     emblem-remove-symbolic
+    emblem-warning
+    emblem-warning-symbolic
+    network-connect-symbolic
     go-down-symbolic
     go-up-symbolic
     quickwizard-symbolic

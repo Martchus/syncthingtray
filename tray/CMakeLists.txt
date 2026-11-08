@@ -82,9 +82,12 @@ set(REQUIRED_ICONS
     edit-undo-symbolic
     edit-select-symbolic
     edit-select-all-symbolic
+    emblem-checked
     emblem-checked-symbolic
     emblem-error-symbolic
+    emblem-remove
     emblem-remove-symbolic
+    emblem-warning
     emblem-warning-symbolic
     folder-symbolic
     folder-download-symbolic
@@ -117,6 +120,7 @@ set(REQUIRED_ICONS
     system-search
     system-search-symbolic
     system-file-manager-symbolic
+    system-software-install
     text-x-generic-symbolic
     quickwizard
     view-filter-symbolic
