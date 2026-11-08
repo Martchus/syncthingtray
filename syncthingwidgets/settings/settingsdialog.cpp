@@ -1704,11 +1704,11 @@ QWidget *ServiceOptionPage::setupWidget()
     QObject::connect(ui()->disablePushButton, &QPushButton::clicked, m_service, &SyncthingService::disable);
     QObject::connect(ui()->openLogsPushButton, &QPushButton::clicked, m_service, &SyncthingService::openLogs);
     QObject::connect(m_service, &SyncthingService::serviceInstalled, widget, [widget] {
-        QMessageBox::information(widget,
-            QCoreApplication::translate("QtGui::ServiceOptionPage", "Service installed"),
+        QMessageBox::information(widget, QCoreApplication::translate("QtGui::ServiceOptionPage", "Service installed"),
             QCoreApplication::translate("QtGui::ServiceOptionPage",
                 "<p>The Syncthing service has been installed successfully.</p>"
-                "<p><b>Security note:</b> By default, the service runs under the Local System account to access user folders without requiring a password. "
+                "<p><b>Security note:</b> By default, the service runs under the Local System account to access user folders without requiring a "
+                "password. "
                 "Since Syncthing is exposed to the network, for enhanced security you can configure the service to run under a specific user account "
                 "in the Windows Services management console (<em>Properties &rarr; Log On</em>).</p>"));
     });

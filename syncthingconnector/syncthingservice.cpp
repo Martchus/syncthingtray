@@ -3,6 +3,8 @@
 #include "./syncthingservice.h"
 #include "./utils.h"
 
+#include "resources/config.h"
+
 #if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
 #include "loginmanagerinterface.h"
 #include "managerinterface.h"
@@ -31,6 +33,7 @@
 #include <QFileInfo>
 #include <QMetaObject>
 #include <QProcess>
+#include <QThread>
 
 #include <windows.h>
 
@@ -39,6 +42,8 @@
 #include <tlhelp32.h>
 #include <winsvc.h>
 
+#include <array>
+#include <atomic>
 #include <iostream>
 #include <vector>
 #endif
@@ -311,7 +316,8 @@ int handleInstallService(const QString &serviceName, const QString &homeDir, con
     CloseServiceHandle(service);
     CloseServiceHandle(scm);
     std::wcout << L"Service \"" << reinterpret_cast<LPCWSTR>(serviceName.utf16()) << L"\" installed successfully.\n";
-    std::wcout << L"Security note: The service runs as LocalSystem by default. For enhanced security, you can configure it to run under a specific user account in the Services management console (services.msc).\n";
+    std::wcout << L"Security note: The service runs as LocalSystem by default. For enhanced security, you can configure it to run under a specific "
+                  L"user account in the Services management console (services.msc).\n";
     return EXIT_SUCCESS;
 }
 
@@ -485,105 +491,215 @@ static bool executeElevated(const QString &operation, const QString &unitName, Q
 /// \endcond
 
 #if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
-struct SyncthingService::NotifyState {
-    std::mutex mutex;
-    SyncthingService *service = nullptr;
+#ifndef ERROR_SERVICE_NOTIFY_CLIENT
+#define ERROR_SERVICE_NOTIFY_CLIENT 2020L
+#endif
+
+class SyncthingService::ServiceWatcherThread : public QThread {
+public:
+    explicit ServiceWatcherThread(SyncthingService *service, QString unitName, QObject *parent = nullptr)
+        : QThread(parent)
+        , m_service(service)
+        , m_unitName(std::move(unitName))
+    {
+    }
+
+    ~ServiceWatcherThread() override
+    {
+        stop();
+    }
+
+    void stop()
+    {
+        m_stopRequested.store(true, std::memory_order_release);
+        if (m_stopEvent) {
+            SetEvent(static_cast<HANDLE>(m_stopEvent));
+        }
+        wait();
+    }
+
+    void requestRearm()
+    {
+        if (m_wakeEvent) {
+            SetEvent(static_cast<HANDLE>(m_wakeEvent));
+        }
+    }
+
+protected:
+    void run() override
+    {
+        const auto stopEvent = CreateEventW(nullptr, TRUE, FALSE, nullptr);
+        const auto wakeEvent = CreateEventW(nullptr, FALSE, FALSE, nullptr);
+        const auto regEvent = CreateEventW(nullptr, FALSE, FALSE, nullptr);
+        m_stopEvent = stopEvent;
+        m_wakeEvent = wakeEvent;
+
+        auto ok = false;
+        const auto envInterval = qEnvironmentVariableIntValue(PROJECT_VARNAME_UPPER "_WINDOWS_SERVICE_POLL_INTERVAL", &ok);
+        const auto pollInterval = DWORD(ok && envInterval > 0 ? envInterval : 30000);
+
+        const auto scm = OpenSCManagerW(nullptr, nullptr, SC_MANAGER_CONNECT);
+        auto service = SC_HANDLE(nullptr);
+        if (scm && !m_unitName.isEmpty()) {
+            service = OpenServiceW(scm, reinterpret_cast<LPCWSTR>(m_unitName.utf16()), SERVICE_QUERY_STATUS);
+        }
+
+        auto regKey = HKEY(nullptr);
+        if (!m_unitName.isEmpty()) {
+            const auto subKey = QStringLiteral("SYSTEM\\CurrentControlSet\\Services\\") + m_unitName;
+            RegOpenKeyExW(HKEY_LOCAL_MACHINE, reinterpret_cast<LPCWSTR>(subKey.utf16()), 0, KEY_NOTIFY | KEY_READ, &regKey);
+        }
+
+        if (regKey && regEvent) {
+            RegNotifyChangeKeyValue(regKey, FALSE, REG_NOTIFY_CHANGE_LAST_SET, static_cast<HANDLE>(regEvent), TRUE);
+        }
+
+        struct NotifyContext {
+            ServiceWatcherThread *thread = nullptr;
+            bool armed = false;
+        };
+        auto ctx = NotifyContext{ this, false };
+
+        auto notify = SERVICE_NOTIFYW{};
+        notify.dwVersion = SERVICE_NOTIFY_STATUS_CHANGE;
+        notify.pContext = &ctx;
+        notify.pfnNotifyCallback = [](PVOID param) {
+            auto *const n = static_cast<SERVICE_NOTIFYW *>(param);
+            if (!n || !n->pContext) {
+                return;
+            }
+            auto *const context = static_cast<NotifyContext *>(n->pContext);
+            context->armed = false;
+            if (context->thread && context->thread->m_service) {
+                QMetaObject::invokeMethod(context->thread->m_service, "queryServiceStatus", Qt::QueuedConnection);
+            }
+        };
+
+        auto lastKnownState = DWORD(0);
+        while (!m_stopRequested.load(std::memory_order_acquire)) {
+            if (service && !ctx.armed) {
+                auto ssp = SERVICE_STATUS_PROCESS{};
+                auto bytesNeeded = DWORD(0);
+                auto isRunningState = false;
+                if (QueryServiceStatusEx(service, SC_STATUS_PROCESS_INFO, reinterpret_cast<LPBYTE>(&ssp), sizeof(ssp), &bytesNeeded)) {
+                    isRunningState = (ssp.dwCurrentState == SERVICE_RUNNING || ssp.dwCurrentState == SERVICE_START_PENDING);
+                    if (ssp.dwCurrentState != lastKnownState) {
+                        lastKnownState = ssp.dwCurrentState;
+                        if (m_service) {
+                            QMetaObject::invokeMethod(m_service, "queryServiceStatus", Qt::QueuedConnection);
+                        }
+                    }
+                }
+
+                const auto notifyMask = DWORD(isRunningState
+                    ? (SERVICE_NOTIFY_STOP_PENDING | SERVICE_NOTIFY_STOPPED | SERVICE_NOTIFY_PAUSED | SERVICE_NOTIFY_PAUSE_PENDING | SERVICE_NOTIFY_DELETED)
+                    : (SERVICE_NOTIFY_START_PENDING | SERVICE_NOTIFY_RUNNING | SERVICE_NOTIFY_DELETED));
+                const auto res = NotifyServiceStatusChangeW(service, notifyMask, &notify);
+                if (res == ERROR_SUCCESS) {
+                    ctx.armed = true;
+                } else if (res == ERROR_SERVICE_NOTIFY_CLIENT) {
+                    ctx.armed = false;
+                    if (m_service) {
+                        QMetaObject::invokeMethod(m_service, "queryServiceStatus", Qt::QueuedConnection);
+                    }
+                } else {
+                    ctx.armed = false;
+                }
+            } else if (!service && scm && !m_unitName.isEmpty()) {
+                service = OpenServiceW(scm, reinterpret_cast<LPCWSTR>(m_unitName.utf16()), SERVICE_QUERY_STATUS);
+                if (service && m_service) {
+                    QMetaObject::invokeMethod(m_service, "queryServiceStatus", Qt::QueuedConnection);
+                    QMetaObject::invokeMethod(m_service, "queryServiceConfig", Qt::QueuedConnection);
+                }
+            }
+
+            if (!regKey && !m_unitName.isEmpty()) {
+                const auto subKey = QStringLiteral("SYSTEM\\CurrentControlSet\\Services\\") + m_unitName;
+                if (RegOpenKeyExW(HKEY_LOCAL_MACHINE, reinterpret_cast<LPCWSTR>(subKey.utf16()), 0, KEY_NOTIFY | KEY_READ, &regKey)
+                    == ERROR_SUCCESS) {
+                    if (regEvent) {
+                        RegNotifyChangeKeyValue(regKey, FALSE, REG_NOTIFY_CHANGE_LAST_SET, static_cast<HANDLE>(regEvent), TRUE);
+                    }
+                }
+            }
+
+            auto waitHandles = std::array<HANDLE, 3>{ static_cast<HANDLE>(stopEvent), static_cast<HANDLE>(wakeEvent), static_cast<HANDLE>(regEvent) };
+            const auto handleCount = DWORD(regEvent ? 3 : 2);
+            const auto waitRes = WaitForMultipleObjectsEx(handleCount, waitHandles.data(), FALSE, pollInterval, TRUE);
+
+            if (waitRes == WAIT_OBJECT_0) {
+                break;
+            } else if (waitRes == WAIT_OBJECT_0 + 1) {
+                if (ctx.armed && service) {
+                    CloseServiceHandle(service);
+                    service = OpenServiceW(scm, reinterpret_cast<LPCWSTR>(m_unitName.utf16()), SERVICE_QUERY_STATUS);
+                    ctx.armed = false;
+                }
+            } else if (waitRes == WAIT_OBJECT_0 + 2) {
+                if (m_service) {
+                    QMetaObject::invokeMethod(m_service, "queryServiceConfig", Qt::QueuedConnection);
+                }
+                if (regKey && regEvent) {
+                    RegNotifyChangeKeyValue(regKey, FALSE, REG_NOTIFY_CHANGE_LAST_SET, static_cast<HANDLE>(regEvent), TRUE);
+                }
+            } else if (waitRes == WAIT_IO_COMPLETION) {
+                // APC callback executed and set ctx.armed = false
+            } else if (waitRes == WAIT_TIMEOUT) {
+                if (m_service) {
+                    QMetaObject::invokeMethod(m_service, "queryServiceStatus", Qt::QueuedConnection);
+                    QMetaObject::invokeMethod(m_service, "queryServiceConfig", Qt::QueuedConnection);
+                }
+            }
+        }
+
+        if (service) {
+            CloseServiceHandle(service);
+        }
+        if (scm) {
+            CloseServiceHandle(scm);
+        }
+        if (regKey) {
+            RegCloseKey(regKey);
+        }
+        CloseHandle(stopEvent);
+        CloseHandle(wakeEvent);
+        CloseHandle(regEvent);
+        m_stopEvent = nullptr;
+        m_wakeEvent = nullptr;
+    }
+
+private:
+    SyncthingService *m_service;
+    QString m_unitName;
+    std::atomic<bool> m_stopRequested{ false };
+    void *m_stopEvent = nullptr;
+    void *m_wakeEvent = nullptr;
 };
 
-namespace {
-void CALLBACK serviceNotifyCallback(PVOID pParameter)
+void SyncthingService::startServiceWatcher()
 {
-    auto *const notify = static_cast<SERVICE_NOTIFYW *>(pParameter);
-    auto *const ctxPtr = static_cast<std::shared_ptr<SyncthingService::NotifyState> *>(notify->pContext);
-    if (!ctxPtr) {
-        return;
-    }
-    auto state = std::move(*ctxPtr);
-    delete ctxPtr;
-    notify->pContext = nullptr;
-
-    auto lock = std::unique_lock<std::mutex>(state->mutex);
-    auto *const service = state->service;
-    lock.unlock();
-    if (service) {
-        QMetaObject::invokeMethod(service, "queryServiceStatus", Qt::QueuedConnection);
-        QMetaObject::invokeMethod(service, "rearmServiceNotify", Qt::QueuedConnection);
-    }
-}
-} // namespace
-
-void SyncthingService::registerServiceNotify()
-{
-    unregisterServiceNotify();
+    stopServiceWatcher();
     if (m_unitName.isEmpty()) {
         return;
     }
-    if (!m_notifyState) {
-        m_notifyState = std::make_shared<NotifyState>();
-        auto lock = std::unique_lock<std::mutex>(m_notifyState->mutex);
-        m_notifyState->service = this;
-    }
-
-    m_notifyScmHandle = OpenSCManagerW(nullptr, nullptr, SC_MANAGER_CONNECT);
-    if (!m_notifyScmHandle) {
-        return;
-    }
-    m_notifyServiceHandle
-        = OpenServiceW(static_cast<SC_HANDLE>(m_notifyScmHandle), reinterpret_cast<LPCWSTR>(m_unitName.utf16()), SERVICE_QUERY_STATUS);
-    if (!m_notifyServiceHandle) {
-        CloseServiceHandle(static_cast<SC_HANDLE>(m_notifyScmHandle));
-        m_notifyScmHandle = nullptr;
-        return;
-    }
-    rearmServiceNotify();
+    m_watcherThread = new ServiceWatcherThread(this, m_unitName, this);
+    m_watcherThread->start();
 }
 
-void SyncthingService::rearmServiceNotify()
+void SyncthingService::stopServiceWatcher()
 {
-    if (!m_notifyServiceHandle || !m_notifyState) {
-        return;
+    if (m_watcherThread) {
+        m_watcherThread->stop();
+        delete m_watcherThread;
+        m_watcherThread = nullptr;
     }
-    static_assert(sizeof(SERVICE_NOTIFYW) <= sizeof(m_serviceNotifyBuffer), "SERVICE_NOTIFYW buffer too small");
-    auto &notify = *reinterpret_cast<SERVICE_NOTIFYW *>(m_serviceNotifyBuffer);
-    notify = SERVICE_NOTIFYW{};
-    notify.dwVersion = SERVICE_NOTIFY_STATUS_CHANGE;
-    notify.pfnNotifyCallback = serviceNotifyCallback;
-    notify.pContext = new std::shared_ptr<NotifyState>(m_notifyState);
-    const auto res = NotifyServiceStatusChangeW(static_cast<SC_HANDLE>(m_notifyServiceHandle),
-        SERVICE_NOTIFY_RUNNING | SERVICE_NOTIFY_START_PENDING | SERVICE_NOTIFY_STOP_PENDING | SERVICE_NOTIFY_STOPPED | SERVICE_NOTIFY_PAUSED
-            | SERVICE_NOTIFY_PAUSE_PENDING | SERVICE_NOTIFY_CONTINUE_PENDING,
-        &notify);
-    if (res != ERROR_SUCCESS) {
-        delete static_cast<std::shared_ptr<NotifyState> *>(notify.pContext);
-        notify.pContext = nullptr;
-    }
-}
-
-void SyncthingService::unregisterServiceNotify()
-{
-    auto &notify = *reinterpret_cast<SERVICE_NOTIFYW *>(m_serviceNotifyBuffer);
-    if (m_notifyServiceHandle) {
-        CloseServiceHandle(static_cast<SC_HANDLE>(m_notifyServiceHandle));
-        m_notifyServiceHandle = nullptr;
-    }
-    if (m_notifyScmHandle) {
-        CloseServiceHandle(static_cast<SC_HANDLE>(m_notifyScmHandle));
-        m_notifyScmHandle = nullptr;
-    }
-    // Closing the handle cancels any pending notification, so the callback
-    // will not run and cannot reclaim the context. Leave it to avoid races.
-    notify.pContext = nullptr;
-    notify = SERVICE_NOTIFYW{};
 }
 #endif
 
 SyncthingService::~SyncthingService()
 {
 #if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
-    if (m_notifyState) {
-        auto lock = std::unique_lock<std::mutex>(m_notifyState->mutex);
-        m_notifyState->service = nullptr;
-    }
+    stopServiceWatcher();
 #endif
 }
 
@@ -598,19 +714,13 @@ SyncthingService::SyncthingService(ServiceScope scope, QObject *parent)
     , m_properties(nullptr)
     , m_currentSystemdInterface(nullptr)
 #elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
-    , m_notifyScmHandle(nullptr)
-    , m_notifyServiceHandle(nullptr)
+    , m_watcherThread(nullptr)
 #endif
     , m_scope(scope)
     , m_manuallyStopped(false)
     , m_stoppedDueToRuntimeCond(false)
     , m_unitAvailable(false)
 {
-#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
-    for (auto &b : m_serviceNotifyBuffer) {
-        b = 0;
-    }
-#endif
 #if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
     setupFreedesktopLoginInterface();
 
@@ -640,7 +750,7 @@ SyncthingService::SyncthingService(ServiceScope scope, QObject *parent)
 #endif
 #elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
     m_unitName = QStringLiteral("syncthing");
-    registerServiceNotify();
+    startServiceWatcher();
     queryServiceStatus();
 #endif
 
@@ -996,7 +1106,7 @@ void SyncthingService::setUnitName(const QString &unitName)
         queryUnitFromSystemdInterface();
     }
 #elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
-    registerServiceNotify();
+    startServiceWatcher();
     queryServiceStatus();
 #endif
     emit unitNameChanged(unitName);
@@ -1026,6 +1136,7 @@ void SyncthingService::setScopeAndUnitName(ServiceScope scope, const QString &un
 #elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
     m_scope = scope;
     m_unitName = unitName;
+    startServiceWatcher();
     queryServiceStatus();
 #endif
     if (scopeChanged) {
@@ -1156,6 +1267,9 @@ void SyncthingService::setRunning(bool running)
                 return;
             }
             queryServiceStatus();
+            if (m_watcherThread) {
+                m_watcherThread->requestRearm();
+            }
             return;
         }
         emit errorOccurred(running ? tr("start service") : tr("stop service"), tr("Windows Service Error"), windowsErrorString(err));
@@ -1180,6 +1294,9 @@ void SyncthingService::setRunning(bool running)
     CloseServiceHandle(service);
     CloseServiceHandle(scm);
     queryServiceStatus();
+    if (m_watcherThread) {
+        m_watcherThread->requestRearm();
+    }
 #endif
 }
 
@@ -1258,6 +1375,9 @@ void SyncthingService::reloadAllUnitFiles()
 #elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
     queryServiceStatus();
     queryServiceConfig();
+    if (m_watcherThread) {
+        m_watcherThread->requestRearm();
+    }
 #endif
 }
 

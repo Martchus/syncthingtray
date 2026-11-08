@@ -180,22 +180,13 @@ private:
 #elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
 public Q_SLOTS:
     void queryServiceStatus();
-    void rearmServiceNotify();
-
-private Q_SLOTS:
     void queryServiceConfig();
 
-public:
-    struct NotifyState;
-
 private:
-    void registerServiceNotify();
-    void unregisterServiceNotify();
-
-    std::shared_ptr<NotifyState> m_notifyState;
-    void *m_notifyScmHandle;
-    void *m_notifyServiceHandle;
-    alignas(8) unsigned char m_serviceNotifyBuffer[sizeof(void *) * 16];
+    class ServiceWatcherThread;
+    ServiceWatcherThread *m_watcherThread;
+    void startServiceWatcher();
+    void stopServiceWatcher();
 #endif
     void stopDueToRuntimeCond();
 
