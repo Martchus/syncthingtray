@@ -1297,12 +1297,12 @@ constexpr auto terminalSpecs = std::array<TerminalSpec, 12>{
  */
 void SyncthingService::openLogs() const
 {
-#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
     if (m_unitName.trimmed().isEmpty()) {
         emit const_cast<SyncthingService *>(this)->errorOccurred(tr("open logs"), tr("Invalid configuration"), tr("No unit name configured."));
         return;
     }
 
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
     const auto journalctlPath = QStandardPaths::findExecutable(QStringLiteral("journalctl"));
     if (journalctlPath.isEmpty()) {
         emit const_cast<SyncthingService *>(this)->errorOccurred(
