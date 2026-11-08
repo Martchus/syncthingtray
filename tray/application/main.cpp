@@ -359,10 +359,8 @@ static int runApplication(int argc, const char *const *argv)
         [&serviceNameArg](const ArgumentOccurrence &) { std::exit(handleEnableService(serviceNameFromArg(serviceNameArg), true)); });
     disableServiceArg.setCallback(
         [&serviceNameArg](const ArgumentOccurrence &) { std::exit(handleEnableService(serviceNameFromArg(serviceNameArg), false)); });
-    startServiceArg.setCallback(
-        [&serviceNameArg](const ArgumentOccurrence &) { std::exit(handleStartService(serviceNameFromArg(serviceNameArg))); });
-    stopServiceArg.setCallback(
-        [&serviceNameArg](const ArgumentOccurrence &) { std::exit(handleStopService(serviceNameFromArg(serviceNameArg))); });
+    startServiceArg.setCallback([&serviceNameArg](const ArgumentOccurrence &) { std::exit(handleStartService(serviceNameFromArg(serviceNameArg))); });
+    stopServiceArg.setCallback([&serviceNameArg](const ArgumentOccurrence &) { std::exit(handleStopService(serviceNameFromArg(serviceNameArg))); });
 #endif
 #ifdef Q_OS_ANDROID
     auto serviceArg = OperationArgument("service", '\0', "runs service");

@@ -311,6 +311,7 @@ int handleInstallService(const QString &serviceName, const QString &homeDir, con
     CloseServiceHandle(service);
     CloseServiceHandle(scm);
     std::wcout << L"Service \"" << reinterpret_cast<LPCWSTR>(serviceName.utf16()) << L"\" installed successfully.\n";
+    std::wcout << L"Security note: The service runs as LocalSystem by default. For enhanced security, you can configure it to run under a specific user account in the Services management console (services.msc).\n";
     return EXIT_SUCCESS;
 }
 
@@ -1473,6 +1474,8 @@ void SyncthingService::installService()
         CloseHandle(sei.hProcess);
         if (exitCode != 0) {
             emit errorOccurred(tr("install service"), tr("Installation Failed"), tr("Process exited with code %1").arg(exitCode));
+        } else {
+            emit serviceInstalled();
         }
     }
     queryServiceStatus();

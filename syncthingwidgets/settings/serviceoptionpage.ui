@@ -185,29 +185,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QPushButton" name="uninstallPushButton">
-          <property name="minimumSize">
-           <size>
-            <width>150</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Uninstall service</string>
-          </property>
-          <property name="icon">
-           <iconset theme="edit-delete"/>
-          </property>
-         </widget>
-        </item>
-        <item>
          <widget class="QPushButton" name="openLogsPushButton">
-          <property name="minimumSize">
-           <size>
-            <width>150</width>
-            <height>0</height>
-           </size>
-          </property>
           <property name="text">
            <string>Open logs</string>
           </property>
@@ -217,15 +195,9 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="openServiceManagerPushButton">
-          <property name="minimumSize">
-           <size>
-            <width>150</width>
-            <height>0</height>
-           </size>
-          </property>
+         <widget class="QPushButton" name="manageServicePushButton">
           <property name="text">
-           <string>Open Services</string>
+           <string>Service...</string>
           </property>
           <property name="icon">
            <iconset theme="preferences-system-services"/>
@@ -316,22 +288,6 @@
           </property>
           <property name="icon">
            <iconset theme="process-stop"/>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QPushButton" name="installPushButton">
-          <property name="minimumSize">
-           <size>
-            <width>150</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="text">
-           <string>Install service</string>
-          </property>
-          <property name="icon">
-           <iconset theme="system-software-install"/>
           </property>
          </widget>
         </item>
@@ -458,12 +414,10 @@
   <tabstop>stopOnBatteryMinPercentageSpinBox</tabstop>
   <tabstop>syncthingUnitLineEdit</tabstop>
   <tabstop>systemUnitCheckBox</tabstop>
-  <tabstop>uninstallPushButton</tabstop>
   <tabstop>openLogsPushButton</tabstop>
-  <tabstop>openServiceManagerPushButton</tabstop>
+  <tabstop>manageServicePushButton</tabstop>
   <tabstop>startPushButton</tabstop>
   <tabstop>stopPushButton</tabstop>
-  <tabstop>installPushButton</tabstop>
   <tabstop>enablePushButton</tabstop>
   <tabstop>disablePushButton</tabstop>
  </tabstops>

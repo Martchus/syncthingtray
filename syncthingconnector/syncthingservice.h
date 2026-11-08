@@ -137,6 +137,7 @@ Q_SIGNALS:
     void enabledChanged(bool enable);
     void errorOccurred(const QString &context, const QString &name, const QString &message);
     void scopeChanged(Data::ServiceScope scope);
+    void serviceInstalled();
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
 private Q_SLOTS:

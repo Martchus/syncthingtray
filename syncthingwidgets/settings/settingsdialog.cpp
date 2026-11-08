@@ -1621,6 +1621,9 @@ void LauncherOptionPage::restoreDefaultArguments()
 ServiceOptionPage::ServiceOptionPage(QWidget *parentWidget)
     : ServiceOptionPageBase(parentWidget)
     , m_service(SyncthingService::mainInstance())
+    , m_openServiceManagerAction(nullptr)
+    , m_installServiceAction(nullptr)
+    , m_uninstallServiceAction(nullptr)
 {
 }
 
@@ -1647,17 +1650,27 @@ QWidget *ServiceOptionPage::setupWidget()
     ui()->openLogsPushButton->setIcon(QIcon::fromTheme(
         QStringLiteral("utilities-terminal-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/utilities-terminal-symbolic.svg"))));
     ui()->openLogsPushButton->setToolTip(QCoreApplication::translate("QtGui::ServiceOptionPage", "Open service logs in terminal via journalctl"));
-    auto *const openServiceManagerAction = new QAction(QCoreApplication::translate("QtGui::ServiceOptionPage", "Open Services"), widget);
-    openServiceManagerAction->setIcon(QIcon::fromTheme(
-        QStringLiteral("preferences-system-services"), QIcon(QStringLiteral(":/icons/hicolor/scalable/categories/preferences-system.svg"))));
-    openServiceManagerAction->setToolTip(QCoreApplication::translate("QtGui::ServiceOptionPage", "Open the Windows Services management console"));
-    ui()->syncthingUnitLineEdit->addCustomAction(openServiceManagerAction);
-    ui()->openServiceManagerPushButton->setIcon(openServiceManagerAction->icon());
-    ui()->openServiceManagerPushButton->setToolTip(openServiceManagerAction->toolTip());
-    ui()->openServiceManagerPushButton->setHidden(true);
-    openServiceManagerAction->setVisible(false);
-    ui()->installPushButton->setHidden(true);
-    ui()->uninstallPushButton->setHidden(true);
+
+    auto *const serviceMenu = new QMenu(widget);
+    m_openServiceManagerAction = new QAction(QCoreApplication::translate("QtGui::ServiceOptionPage", "Open Windows Services console"), widget);
+    m_openServiceManagerAction->setIcon(QIcon::fromTheme(QStringLiteral("preferences-system-services")));
+    m_openServiceManagerAction->setToolTip(QCoreApplication::translate("QtGui::ServiceOptionPage", "Open the Windows Services management console"));
+    serviceMenu->addAction(m_openServiceManagerAction);
+
+    m_installServiceAction = new QAction(QCoreApplication::translate("QtGui::ServiceOptionPage", "Install service"), widget);
+    m_installServiceAction->setIcon(QIcon::fromTheme(QStringLiteral("system-software-install")));
+    serviceMenu->addAction(m_installServiceAction);
+
+    m_uninstallServiceAction = new QAction(QCoreApplication::translate("QtGui::ServiceOptionPage", "Uninstall service"), widget);
+    m_uninstallServiceAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-delete")));
+    serviceMenu->addAction(m_uninstallServiceAction);
+
+    ui()->manageServicePushButton->setMenu(serviceMenu);
+    ui()->manageServicePushButton->setHidden(true);
+    m_openServiceManagerAction->setVisible(false);
+    m_installServiceAction->setVisible(false);
+    m_uninstallServiceAction->setVisible(false);
+
     if (m_service && m_service->serviceManagerName() == QLatin1String("Windows")) {
         ui()->syncthingUnitLabel->setText(QCoreApplication::translate("QtGui::ServiceOptionPage", "Syncthing service"));
         ui()->unitFileStateLabel->setText(QCoreApplication::translate("QtGui::ServiceOptionPage", "Startup type"));
@@ -1665,8 +1678,8 @@ QWidget *ServiceOptionPage::setupWidget()
         refreshAction->setText(QCoreApplication::translate("QtGui::ServiceOptionPage", "Refresh service status"));
         ui()->openLogsPushButton->setToolTip(QCoreApplication::translate("QtGui::ServiceOptionPage", "Open the service log file"));
         openLogsAction->setToolTip(ui()->openLogsPushButton->toolTip());
-        ui()->openServiceManagerPushButton->setHidden(false);
-        openServiceManagerAction->setVisible(true);
+        ui()->manageServicePushButton->setHidden(false);
+        m_openServiceManagerAction->setVisible(true);
         widget->setWindowTitle(QCoreApplication::translate("QtGui::ServiceOptionPage", "Windows service"));
     }
     if (!m_service) {
@@ -1674,31 +1687,40 @@ QWidget *ServiceOptionPage::setupWidget()
         ui()->stopOnBatterySavingCheckBox->setHidden(true);
         ui()->openLogsPushButton->setEnabled(false);
         openLogsAction->setEnabled(false);
-        ui()->openServiceManagerPushButton->setEnabled(false);
-        openServiceManagerAction->setEnabled(false);
+        ui()->manageServicePushButton->setEnabled(false);
+        m_openServiceManagerAction->setEnabled(false);
         refreshAction->setEnabled(false);
         return widget;
     }
     QObject::connect(refreshAction, &QAction::triggered, m_service, &SyncthingService::reloadAllUnitFiles);
     QObject::connect(openLogsAction, &QAction::triggered, m_service, &SyncthingService::openLogs);
-    QObject::connect(openServiceManagerAction, &QAction::triggered, m_service, &SyncthingService::openServiceManager);
+    QObject::connect(m_openServiceManagerAction, &QAction::triggered, m_service, &SyncthingService::openServiceManager);
+    QObject::connect(m_installServiceAction, &QAction::triggered, m_service, &SyncthingService::installService);
+    QObject::connect(m_uninstallServiceAction, &QAction::triggered, m_service, &SyncthingService::uninstallService);
     QObject::connect(ui()->syncthingUnitLineEdit, &QLineEdit::textChanged, m_service, &SyncthingService::setUnitName);
     QObject::connect(ui()->startPushButton, &QPushButton::clicked, m_service, &SyncthingService::start);
     QObject::connect(ui()->stopPushButton, &QPushButton::clicked, m_service, &SyncthingService::stop);
     QObject::connect(ui()->enablePushButton, &QPushButton::clicked, m_service, &SyncthingService::enable);
     QObject::connect(ui()->disablePushButton, &QPushButton::clicked, m_service, &SyncthingService::disable);
     QObject::connect(ui()->openLogsPushButton, &QPushButton::clicked, m_service, &SyncthingService::openLogs);
-    QObject::connect(ui()->openServiceManagerPushButton, &QPushButton::clicked, m_service, &SyncthingService::openServiceManager);
-    QObject::connect(ui()->installPushButton, &QPushButton::clicked, m_service, &SyncthingService::installService);
-    QObject::connect(ui()->uninstallPushButton, &QPushButton::clicked, m_service, &SyncthingService::uninstallService);
+    QObject::connect(m_service, &SyncthingService::serviceInstalled, widget, [widget] {
+        QMessageBox::information(widget,
+            QCoreApplication::translate("QtGui::ServiceOptionPage", "Service installed"),
+            QCoreApplication::translate("QtGui::ServiceOptionPage",
+                "<p>The Syncthing service has been installed successfully.</p>"
+                "<p><b>Security note:</b> By default, the service runs under the Local System account to access user folders without requiring a password. "
+                "Since Syncthing is exposed to the network, for enhanced security you can configure the service to run under a specific user account "
+                "in the Windows Services management console (<em>Properties &rarr; Log On</em>).</p>"));
+    });
 
-    const auto updateOpenLogsEnabled = [this, openLogsAction, openServiceManagerAction] {
+    const auto updateOpenLogsEnabled = [this, openLogsAction] {
         const auto hasUnit = m_service && !ui()->syncthingUnitLineEdit->text().trimmed().isEmpty();
         ui()->openLogsPushButton->setEnabled(hasUnit);
         openLogsAction->setEnabled(hasUnit);
         const auto canOpenManager = m_service && m_service->canOpenServiceManager();
-        ui()->openServiceManagerPushButton->setEnabled(canOpenManager);
-        openServiceManagerAction->setEnabled(canOpenManager);
+        if (m_openServiceManagerAction) {
+            m_openServiceManagerAction->setEnabled(canOpenManager);
+        }
     };
     updateOpenLogsEnabled();
     QObject::connect(ui()->syncthingUnitLineEdit, &QLineEdit::textChanged, widget, updateOpenLogsEnabled);
@@ -1826,8 +1848,12 @@ void ServiceOptionPage::reset()
     }
     const auto unitAvailable = m_service->isUnitAvailable();
     if (m_service->canInstallService()) {
-        ui()->installPushButton->setVisible(!unitAvailable);
-        ui()->uninstallPushButton->setVisible(unitAvailable);
+        if (m_installServiceAction) {
+            m_installServiceAction->setVisible(!unitAvailable);
+        }
+        if (m_uninstallServiceAction) {
+            m_uninstallServiceAction->setVisible(unitAvailable);
+        }
     }
     handleDescriptionChanged(m_service->description());
     handleStatusChanged(m_service->activeState(), m_service->subState(), m_service->activeSince());
@@ -1873,8 +1899,12 @@ void ServiceOptionPage::handleStatusChanged(const QString &activeState, const QS
     const auto unitAvailable = m_service && m_service->isUnitAvailable();
     const auto canInstall = m_service && m_service->canInstallService();
     if (canInstall) {
-        ui()->installPushButton->setVisible(!unitAvailable);
-        ui()->uninstallPushButton->setVisible(unitAvailable);
+        if (m_installServiceAction) {
+            m_installServiceAction->setVisible(!unitAvailable);
+        }
+        if (m_uninstallServiceAction) {
+            m_uninstallServiceAction->setVisible(unitAvailable);
+        }
     }
     ui()->startPushButton->setVisible(unitAvailable && !isRunning);
     ui()->stopPushButton->setVisible(unitAvailable && !m_status.isEmpty() && isRunning);
