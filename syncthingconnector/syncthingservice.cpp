@@ -505,6 +505,11 @@ public:
     }
 
 protected:
+    /*!
+     * \brief Monitors the service state.
+     * \remarks Does not work yet reliably.
+     * \sa https://learn.microsoft.com/en-us/windows/win32/api/winsvc/nf-winsvc-notifyservicestatuschangew.
+     */
     void run() override
     {
         const auto stopEvent = CreateEventW(nullptr, TRUE, FALSE, nullptr);
@@ -570,6 +575,7 @@ protected:
                     }
                 }
 
+                // pass notify mask depending on the current state because NotifyServiceStatusChangeW() would return immediately if the mask contains the current state
                 const auto notifyMask = DWORD(isRunningState
                     ? (SERVICE_NOTIFY_STOP_PENDING | SERVICE_NOTIFY_STOPPED | SERVICE_NOTIFY_PAUSED | SERVICE_NOTIFY_PAUSE_PENDING | SERVICE_NOTIFY_DELETED)
                     : (SERVICE_NOTIFY_START_PENDING | SERVICE_NOTIFY_RUNNING | SERVICE_NOTIFY_DELETED));
