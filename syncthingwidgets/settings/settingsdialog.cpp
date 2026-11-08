@@ -1647,6 +1647,15 @@ QWidget *ServiceOptionPage::setupWidget()
     ui()->openLogsPushButton->setIcon(QIcon::fromTheme(
         QStringLiteral("utilities-terminal-symbolic"), QIcon(QStringLiteral(":/icons/hicolor/scalable/apps/utilities-terminal-symbolic.svg"))));
     ui()->openLogsPushButton->setToolTip(QCoreApplication::translate("QtGui::ServiceOptionPage", "Open service logs in terminal via journalctl"));
+    auto *const openServiceManagerAction = new QAction(QCoreApplication::translate("QtGui::ServiceOptionPage", "Open Services"), widget);
+    openServiceManagerAction->setIcon(QIcon::fromTheme(
+        QStringLiteral("preferences-system-services"), QIcon(QStringLiteral(":/icons/hicolor/scalable/categories/preferences-system.svg"))));
+    openServiceManagerAction->setToolTip(QCoreApplication::translate("QtGui::ServiceOptionPage", "Open the Windows Services management console"));
+    ui()->syncthingUnitLineEdit->addCustomAction(openServiceManagerAction);
+    ui()->openServiceManagerPushButton->setIcon(openServiceManagerAction->icon());
+    ui()->openServiceManagerPushButton->setToolTip(openServiceManagerAction->toolTip());
+    ui()->openServiceManagerPushButton->setHidden(true);
+    openServiceManagerAction->setVisible(false);
     ui()->installPushButton->setHidden(true);
     ui()->uninstallPushButton->setHidden(true);
     if (m_service && m_service->serviceManagerName() == QLatin1String("Windows")) {
@@ -1654,11 +1663,10 @@ QWidget *ServiceOptionPage::setupWidget()
         ui()->unitFileStateLabel->setText(QCoreApplication::translate("QtGui::ServiceOptionPage", "Startup type"));
         ui()->systemUnitCheckBox->setHidden(true);
         refreshAction->setText(QCoreApplication::translate("QtGui::ServiceOptionPage", "Refresh service status"));
-        openLogsAction->setText(QCoreApplication::translate("QtGui::ServiceOptionPage", "Open Services"));
-        ui()->openLogsPushButton->setText(QCoreApplication::translate("QtGui::ServiceOptionPage", "Open Services"));
-        ui()->openLogsPushButton->setToolTip(QCoreApplication::translate("QtGui::ServiceOptionPage", "Open the Windows Services management console"));
-        ui()->openLogsPushButton->setIcon(QIcon::fromTheme(
-            QStringLiteral("preferences-system-services"), QIcon(QStringLiteral(":/icons/hicolor/scalable/categories/preferences-system.svg"))));
+        ui()->openLogsPushButton->setToolTip(QCoreApplication::translate("QtGui::ServiceOptionPage", "Open the service log file"));
+        openLogsAction->setToolTip(ui()->openLogsPushButton->toolTip());
+        ui()->openServiceManagerPushButton->setHidden(false);
+        openServiceManagerAction->setVisible(true);
         widget->setWindowTitle(QCoreApplication::translate("QtGui::ServiceOptionPage", "Windows service"));
     }
     if (!m_service) {
@@ -1666,24 +1674,31 @@ QWidget *ServiceOptionPage::setupWidget()
         ui()->stopOnBatterySavingCheckBox->setHidden(true);
         ui()->openLogsPushButton->setEnabled(false);
         openLogsAction->setEnabled(false);
+        ui()->openServiceManagerPushButton->setEnabled(false);
+        openServiceManagerAction->setEnabled(false);
         refreshAction->setEnabled(false);
         return widget;
     }
     QObject::connect(refreshAction, &QAction::triggered, m_service, &SyncthingService::reloadAllUnitFiles);
     QObject::connect(openLogsAction, &QAction::triggered, m_service, &SyncthingService::openLogs);
+    QObject::connect(openServiceManagerAction, &QAction::triggered, m_service, &SyncthingService::openServiceManager);
     QObject::connect(ui()->syncthingUnitLineEdit, &QLineEdit::textChanged, m_service, &SyncthingService::setUnitName);
     QObject::connect(ui()->startPushButton, &QPushButton::clicked, m_service, &SyncthingService::start);
     QObject::connect(ui()->stopPushButton, &QPushButton::clicked, m_service, &SyncthingService::stop);
     QObject::connect(ui()->enablePushButton, &QPushButton::clicked, m_service, &SyncthingService::enable);
     QObject::connect(ui()->disablePushButton, &QPushButton::clicked, m_service, &SyncthingService::disable);
     QObject::connect(ui()->openLogsPushButton, &QPushButton::clicked, m_service, &SyncthingService::openLogs);
+    QObject::connect(ui()->openServiceManagerPushButton, &QPushButton::clicked, m_service, &SyncthingService::openServiceManager);
     QObject::connect(ui()->installPushButton, &QPushButton::clicked, m_service, &SyncthingService::installService);
     QObject::connect(ui()->uninstallPushButton, &QPushButton::clicked, m_service, &SyncthingService::uninstallService);
 
-    const auto updateOpenLogsEnabled = [this, openLogsAction] {
+    const auto updateOpenLogsEnabled = [this, openLogsAction, openServiceManagerAction] {
         const auto hasUnit = m_service && !ui()->syncthingUnitLineEdit->text().trimmed().isEmpty();
         ui()->openLogsPushButton->setEnabled(hasUnit);
         openLogsAction->setEnabled(hasUnit);
+        const auto canOpenManager = m_service && m_service->canOpenServiceManager();
+        ui()->openServiceManagerPushButton->setEnabled(canOpenManager);
+        openServiceManagerAction->setEnabled(canOpenManager);
     };
     updateOpenLogsEnabled();
     QObject::connect(ui()->syncthingUnitLineEdit, &QLineEdit::textChanged, widget, updateOpenLogsEnabled);

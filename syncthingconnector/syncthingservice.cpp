@@ -1375,8 +1375,68 @@ void SyncthingService::openLogs() const
             tr("open logs"), tr("Launch failed"), tr("Unable to launch terminal \"%1\".").arg(terminalPath));
     }
 #elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    auto logFilePath = QString();
+
+    // Try to query the service binary path from SCM to extract --log-file
+    const auto scm = OpenSCManagerW(nullptr, nullptr, SC_MANAGER_CONNECT);
+    if (scm) {
+        if (const auto service = OpenServiceW(scm, reinterpret_cast<LPCWSTR>(m_unitName.utf16()), SERVICE_QUERY_CONFIG)) {
+            auto bytesNeeded = DWORD(0);
+            QueryServiceConfigW(service, nullptr, 0, &bytesNeeded);
+            if (bytesNeeded > 0) {
+                auto buffer = std::vector<BYTE>(bytesNeeded);
+                auto *const config = reinterpret_cast<QUERY_SERVICE_CONFIGW *>(buffer.data());
+                if (QueryServiceConfigW(service, config, bytesNeeded, &bytesNeeded) && config->lpBinaryPathName) {
+                    const auto binPath = QString::fromWCharArray(config->lpBinaryPathName);
+                    const auto logFileIdx = binPath.indexOf(QStringLiteral("--log-file"));
+                    if (logFileIdx >= 0) {
+                        auto rest = binPath.mid(logFileIdx + 10).trimmed();
+                        if (rest.startsWith(QLatin1Char('='))) {
+                            rest = rest.mid(1).trimmed();
+                        }
+                        if (rest.startsWith(QLatin1Char('"'))) {
+                            const auto endQuote = rest.indexOf(QLatin1Char('"'), 1);
+                            if (endQuote > 1) {
+                                logFilePath = rest.mid(1, endQuote - 1);
+                            }
+                        } else {
+                            const auto space = rest.indexOf(QLatin1Char(' '));
+                            logFilePath = space >= 0 ? rest.left(space) : rest;
+                        }
+                    }
+                }
+            }
+            CloseServiceHandle(service);
+        }
+        CloseServiceHandle(scm);
+    }
+
+    if (logFilePath.isEmpty() || logFilePath == QLatin1String("default")) {
+        logFilePath = SyncthingConfig::locateConfigFile(QStringLiteral("syncthing.log"));
+    }
+
+    if (logFilePath.isEmpty() || !QFile::exists(logFilePath)) {
+        emit const_cast<SyncthingService *>(this)->errorOccurred(tr("open logs"), tr("Log file not found"),
+            tr("The log file \"%1\" could not be found.").arg(logFilePath.isEmpty() ? QStringLiteral("syncthing.log") : logFilePath));
+        return;
+    }
+
+    const auto res = ShellExecuteW(nullptr, L"open", reinterpret_cast<LPCWSTR>(logFilePath.utf16()), nullptr, nullptr, SW_SHOWNORMAL);
+    if (reinterpret_cast<INT_PTR>(res) <= 32) {
+        emit const_cast<SyncthingService *>(this)->errorOccurred(
+            tr("open logs"), tr("Launch failed"), tr("Unable to open log file \"%1\".").arg(logFilePath));
+    }
+#endif
+}
+
+/*!
+ * \brief Opens the system service manager.
+ */
+void SyncthingService::openServiceManager() const
+{
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
     if (!QProcess::startDetached(QStringLiteral("cmd.exe"), { QStringLiteral("/c"), QStringLiteral("start"), QStringLiteral("services.msc") })) {
-        emit const_cast<SyncthingService *>(this)->errorOccurred(tr("open logs"), tr("Launch failed"), tr("Unable to launch \"services.msc\"."));
+        emit const_cast<SyncthingService *>(this)->errorOccurred(tr("open services"), tr("Launch failed"), tr("Unable to launch \"services.msc\"."));
     }
 #endif
 }

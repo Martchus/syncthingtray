@@ -72,6 +72,7 @@ class LIB_SYNCTHING_CONNECTOR_EXPORT SyncthingService : public QObject {
     Q_PROPERTY(Data::RuntimeCondition *runtimeCondition READ runtimeCondition CONSTANT)
     Q_PROPERTY(QString serviceManagerName READ serviceManagerName CONSTANT)
     Q_PROPERTY(bool canInstallService READ canInstallService CONSTANT)
+    Q_PROPERTY(bool canOpenServiceManager READ canOpenServiceManager CONSTANT)
 
 public:
     explicit SyncthingService(ServiceScope scope = ServiceScope::User, QObject *parent = nullptr);
@@ -102,6 +103,7 @@ public:
     QString displayName() const;
     inline QString serviceManagerName() const;
     inline bool canInstallService() const;
+    inline bool canOpenServiceManager() const;
     inline RuntimeCondition *runtimeCondition();
     inline const RuntimeCondition *runtimeCondition() const;
     inline static SyncthingService *mainInstance();
@@ -118,6 +120,7 @@ public Q_SLOTS:
     inline void disable();
     void reloadAllUnitFiles();
     void openLogs() const;
+    void openServiceManager() const;
     void installService();
     void uninstallService();
 
@@ -431,6 +434,18 @@ inline QString SyncthingService::serviceManagerName() const
  * \brief Returns whether the service can be installed by this class.
  */
 inline bool SyncthingService::canInstallService() const
+{
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE
+    return true;
+#else
+    return false;
+#endif
+}
+
+/*!
+ * \brief Returns whether the service management console can be opened by this class.
+ */
+inline bool SyncthingService::canOpenServiceManager() const
 {
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE
     return true;
