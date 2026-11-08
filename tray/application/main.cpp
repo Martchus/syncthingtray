@@ -308,7 +308,7 @@ static int runApplication(int argc, const char *const *argv)
         } else if (qEnvironmentVariableIsSet("SYNCTHINGTRAY_AS_SERVICE")) {
             asService = true;
         }
-        if (asService) {
+        if (asService && !qEnvironmentVariableIsSet("STMONITORED")) {
             std::exit(runAsWindowsService(
                 [values] {
 #ifdef SYNCTHINGTRAY_USE_LIBSYNCTHING
@@ -334,11 +334,16 @@ static int runApplication(int argc, const char *const *argv)
     auto installServiceArg = OperationArgument("install-service", '\0', "installs Syncthing as a Windows service");
     auto uninstallServiceArg = OperationArgument("uninstall-service", '\0', "uninstalls Syncthing Windows service");
     auto serviceNameArg = ConfigValueArgument("name", '\0', "service name (default: \"syncthing\")", { "name" });
-    installServiceArg.setSubArguments({ &serviceNameArg });
+    auto homeDirArg = ConfigValueArgument("home", '\0', "path to Syncthing configuration and data directory", { "path" });
+    auto logFileArg = ConfigValueArgument("log-file", '\0', "path to Syncthing log file", { "path" });
+    installServiceArg.setSubArguments({ &serviceNameArg, &homeDirArg, &logFileArg });
     uninstallServiceArg.setSubArguments({ &serviceNameArg });
-    installServiceArg.setCallback([argc, argv, &serviceNameArg](const ArgumentOccurrence &) mutable {
+    installServiceArg.setCallback([argc, argv, &serviceNameArg, &homeDirArg, &logFileArg](const ArgumentOccurrence &) mutable {
         auto app = QCoreApplication(argc, const_cast<char **>(argv));
-        std::exit(handleInstallService(serviceNameFromArg(serviceNameArg)));
+        const auto serviceName = serviceNameFromArg(serviceNameArg);
+        const auto homeDir = QString(homeDirArg.isPresent() ? QString::fromLocal8Bit(homeDirArg.firstValue()) : QString());
+        const auto logFile = QString(logFileArg.isPresent() ? QString::fromLocal8Bit(logFileArg.firstValue()) : QString());
+        std::exit(handleInstallService(serviceName, homeDir, logFile));
     });
     uninstallServiceArg.setCallback(
         [&serviceNameArg](const ArgumentOccurrence &) { std::exit(handleUninstallService(serviceNameFromArg(serviceNameArg))); });

@@ -44,7 +44,8 @@ const QDBusArgument &operator>>(const QDBusArgument &argument, ManagerDBusUnitFi
 using ManagerDBusUnitFileChangeList = QList<ManagerDBusUnitFileChange>;
 #elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
 LIB_SYNCTHING_CONNECTOR_EXPORT int runAsWindowsService(std::function<int(void)> &&serviceRoutine, std::function<void(void)> &&stopRoutine);
-LIB_SYNCTHING_CONNECTOR_EXPORT int handleInstallService(const QString &serviceName);
+LIB_SYNCTHING_CONNECTOR_EXPORT int handleInstallService(
+    const QString &serviceName, const QString &homeDir = QString(), const QString &logFile = QString());
 LIB_SYNCTHING_CONNECTOR_EXPORT int handleUninstallService(const QString &serviceName);
 #endif
 

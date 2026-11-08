@@ -24,13 +24,19 @@
 #include <functional>
 
 #elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+#include "./syncthingconfig.h"
+
 #include <QCoreApplication>
+#include <QDir>
+#include <QFileInfo>
 #include <QMetaObject>
 #include <QProcess>
 
 #include <windows.h>
 
+#include <sddl.h>
 #include <shellapi.h>
+#include <tlhelp32.h>
 #include <winsvc.h>
 
 #include <iostream>
@@ -141,6 +147,28 @@ static void reportWindowsServiceEvent(WORD type, DWORD eventId, const QString &m
     DeregisterEventSource(source);
 }
 
+static void stopChildProcesses()
+{
+    const auto currentPid = GetCurrentProcessId();
+    const auto snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    if (snapshot == INVALID_HANDLE_VALUE) {
+        return;
+    }
+    auto pe = PROCESSENTRY32W{};
+    pe.dwSize = sizeof(pe);
+    if (Process32FirstW(snapshot, &pe)) {
+        do {
+            if (pe.th32ParentProcessID == currentPid) {
+                if (const auto childProcess = OpenProcess(PROCESS_TERMINATE, FALSE, pe.th32ProcessID)) {
+                    TerminateProcess(childProcess, 0);
+                    CloseHandle(childProcess);
+                }
+            }
+        } while (Process32NextW(snapshot, &pe));
+    }
+    CloseHandle(snapshot);
+}
+
 /*!
  * \brief Internally called to stop the service.
  */
@@ -155,6 +183,7 @@ static void WINAPI serviceCtrlHandler(DWORD control)
         if (s_stopRoutine) {
             s_stopRoutine();
         }
+        stopChildProcesses();
         break;
     default:
         break;
@@ -223,7 +252,7 @@ int runAsWindowsService(std::function<int(void)> &&serviceRoutine, std::function
  *   expected to provide the built-in Syncthing library.
  * - QCoreApplication needs to be instantiated before calling this function.
  */
-int handleInstallService(const QString &serviceName)
+int handleInstallService(const QString &serviceName, const QString &homeDir, const QString &logFile)
 {
     const auto scm = OpenSCManagerW(nullptr, nullptr, SC_MANAGER_CREATE_SERVICE);
     if (!scm) {
@@ -235,7 +264,26 @@ int handleInstallService(const QString &serviceName)
         std::wcerr << L"Unable to determine application path.\n";
         return EXIT_FAILURE;
     }
-    const auto binaryPath = QStringLiteral("\"%1\" syncthing --as-service serve --no-browser --no-restart").arg(appPath);
+    auto resolvedHome = homeDir;
+    if (resolvedHome.isEmpty()) {
+        const auto configFile = SyncthingConfig::locateConfigFile();
+        if (!configFile.isEmpty()) {
+            resolvedHome = QFileInfo(configFile).path();
+        }
+    }
+    auto resolvedLogFile = logFile;
+    if (resolvedLogFile.isEmpty() && !resolvedHome.isEmpty()) {
+        resolvedLogFile = resolvedHome + QStringLiteral("/syncthing.log");
+    }
+
+    auto binaryPath = QStringLiteral("\"%1\" syncthing --as-service serve --no-browser --no-restart").arg(appPath);
+    if (!resolvedHome.isEmpty()) {
+        binaryPath += QStringLiteral(" --home \"%1\"").arg(QDir::toNativeSeparators(resolvedHome));
+    }
+    if (!resolvedLogFile.isEmpty()) {
+        binaryPath += QStringLiteral(" --log-file \"%1\"").arg(QDir::toNativeSeparators(resolvedLogFile));
+    }
+
     const auto displayName = QStringLiteral("Syncthing Service");
     const auto service = CreateServiceW(scm, reinterpret_cast<LPCWSTR>(serviceName.utf16()), reinterpret_cast<LPCWSTR>(displayName.utf16()),
         SERVICE_ALL_ACCESS, SERVICE_WIN32_OWN_PROCESS, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL, reinterpret_cast<LPCWSTR>(binaryPath.utf16()),
@@ -246,10 +294,19 @@ int handleInstallService(const QString &serviceName)
         logLastWindowsError(L"Failed to create service: ", err);
         return EXIT_FAILURE;
     }
+
+    // Grant start/stop/status query permissions to Authenticated Users so standard users can start/stop without UAC elevation
+    const auto sdString = L"D:(A;;GA;;;BA)(A;;GA;;;SY)(A;;CCLCSWRPWPDTLORC;;;AU)";
+    auto sd = PSECURITY_DESCRIPTOR(nullptr);
+    if (ConvertStringSecurityDescriptorToSecurityDescriptorW(sdString, SDDL_REVISION_1, &sd, nullptr)) {
+        SetServiceObjectSecurity(service, DACL_SECURITY_INFORMATION, sd);
+        LocalFree(sd);
+    }
+
     const auto description = QStringLiteral("Syncthing securely synchronizes files between two or more computers in real time.");
-    auto sd = SERVICE_DESCRIPTIONW{};
-    sd.lpDescription = const_cast<LPWSTR>(reinterpret_cast<LPCWSTR>(description.utf16()));
-    ChangeServiceConfig2W(service, SERVICE_CONFIG_DESCRIPTION, &sd);
+    auto sdDesc = SERVICE_DESCRIPTIONW{};
+    sdDesc.lpDescription = const_cast<LPWSTR>(reinterpret_cast<LPCWSTR>(description.utf16()));
+    ChangeServiceConfig2W(service, SERVICE_CONFIG_DESCRIPTION, &sdDesc);
 
     CloseServiceHandle(service);
     CloseServiceHandle(scm);
@@ -1160,7 +1217,13 @@ void SyncthingService::installService()
 {
 #if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
     const auto appPath = QCoreApplication::applicationFilePath();
-    const auto params = QStringLiteral("install-service --name \"%1\"").arg(m_unitName);
+    auto params = QStringLiteral("install-service --name \"%1\"").arg(m_unitName);
+    const auto configFile = SyncthingConfig::locateConfigFile();
+    if (!configFile.isEmpty()) {
+        const auto homeDir = QFileInfo(configFile).path();
+        params += QStringLiteral(" --home \"%1\"").arg(QDir::toNativeSeparators(homeDir));
+        params += QStringLiteral(" --log-file \"%1\\syncthing.log\"").arg(QDir::toNativeSeparators(homeDir));
+    }
     auto sei = SHELLEXECUTEINFOW{};
     sei.cbSize = sizeof(sei);
     sei.lpVerb = L"runas";
