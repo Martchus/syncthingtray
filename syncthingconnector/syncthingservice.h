@@ -177,6 +177,7 @@ private:
     OrgFreedesktopDBusPropertiesInterface *m_properties;
     OrgFreedesktopSystemd1ManagerInterface *m_currentSystemdInterface;
     std::unordered_set<QDBusPendingCallWatcher *> m_pendingCalls;
+
 #elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
 public Q_SLOTS:
     void queryServiceStatus();

@@ -576,9 +576,9 @@ protected:
                 }
 
                 // pass notify mask depending on the current state because NotifyServiceStatusChangeW() would return immediately if the mask contains the current state
-                const auto notifyMask = DWORD(isRunningState
-                    ? (SERVICE_NOTIFY_STOP_PENDING | SERVICE_NOTIFY_STOPPED | SERVICE_NOTIFY_PAUSED | SERVICE_NOTIFY_PAUSE_PENDING | SERVICE_NOTIFY_DELETED)
-                    : (SERVICE_NOTIFY_START_PENDING | SERVICE_NOTIFY_RUNNING | SERVICE_NOTIFY_DELETED));
+                const auto notifyMask = DWORD(isRunningState ? (SERVICE_NOTIFY_STOP_PENDING | SERVICE_NOTIFY_STOPPED | SERVICE_NOTIFY_PAUSED
+                                                                   | SERVICE_NOTIFY_PAUSE_PENDING | SERVICE_NOTIFY_DELETED)
+                                                             : (SERVICE_NOTIFY_START_PENDING | SERVICE_NOTIFY_RUNNING | SERVICE_NOTIFY_DELETED));
                 const auto res = NotifyServiceStatusChangeW(service, notifyMask, &notify);
                 if (res == ERROR_SUCCESS) {
                     ctx.armed = true;
@@ -681,13 +681,6 @@ void SyncthingService::stopServiceWatcher()
 }
 #endif
 
-SyncthingService::~SyncthingService()
-{
-#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
-    stopServiceWatcher();
-#endif
-}
-
 /*!
  * \brief Creates a new SyncthingService instance.
  */
@@ -746,6 +739,13 @@ SyncthingService::SyncthingService(ServiceScope scope, QObject *parent)
             start();
         }
     });
+}
+
+SyncthingService::~SyncthingService()
+{
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    stopServiceWatcher();
+#endif
 }
 
 #if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
@@ -1301,6 +1301,7 @@ void SyncthingService::setEnabled(bool enabled)
         registerErrorHandler(m_currentSystemdInterface->DisableUnitFiles(QStringList(m_unitName), false), QT_TR_NOOP_UTF8("disable unit"), true);
     }
 #endif
+
 #elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
     const auto scm = OpenSCManagerW(nullptr, nullptr, SC_MANAGER_CONNECT);
     if (!scm) {
