@@ -1364,6 +1364,14 @@ QWidget *LauncherOptionPage::setupWidget()
     if (isSyncthing) {
         ui()->useBuiltInVersionCheckBox->setToolTip(SyncthingLauncher::libSyncthingVersionInfo());
     }
+    auto *const settingsWidget = ui()->settingsWidget;
+    auto *const expandButton = ui()->expandLogsPushButton;
+    connect(expandButton, &QPushButton::clicked, settingsWidget, [expandButton, settingsWidget] {
+        const auto expand = !settingsWidget->isHidden();
+        expandButton->setText(expand ? QCoreApplication::translate("QtGui::LauncherOptionPage", "Collapse")
+                                     : QCoreApplication::translate("QtGui::LauncherOptionPage", "Expand"));
+        settingsWidget->setHidden(expand);
+    });
 
     // setup process/launcher
     if (m_process) {

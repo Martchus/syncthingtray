@@ -40,7 +40,7 @@
       </sizepolicy>
      </property>
      <property name="orientation">
-      <enum>Qt::Vertical</enum>
+      <enum>Qt::Orientation::Vertical</enum>
      </property>
      <widget class="QWidget" name="settingsWidget" native="true">
       <property name="sizePolicy">
@@ -198,67 +198,67 @@
          </property>
         </widget>
        </item>
-        <item>
-         <widget class="QCheckBox" name="stopOnMeteredCheckBox">
-          <property name="text">
-           <string>Stop automatically when network connection is metered</string>
-          </property>
-         </widget>
-        </item>
+       <item>
+        <widget class="QCheckBox" name="stopOnMeteredCheckBox">
+         <property name="text">
+          <string>Stop automatically when network connection is metered</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="stopOnBatterySavingCheckBox">
+         <property name="text">
+          <string>Stop automatically when battery saving mode is enabled</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="stopOnBatteryLayout">
          <item>
-          <widget class="QCheckBox" name="stopOnBatterySavingCheckBox">
+          <widget class="QCheckBox" name="stopOnBatteryCheckBox">
            <property name="text">
-            <string>Stop automatically when battery saving mode is enabled</string>
+            <string>Stop automatically when running on battery</string>
            </property>
           </widget>
          </item>
          <item>
-          <layout class="QHBoxLayout" name="stopOnBatteryLayout">
-           <item>
-            <widget class="QCheckBox" name="stopOnBatteryCheckBox">
-             <property name="text">
-              <string>Stop automatically when running on battery</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="stopOnBatteryMinPercentageLabel">
-             <property name="text">
-              <string>under percentage:</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QSpinBox" name="stopOnBatteryMinPercentageSpinBox">
-             <property name="suffix">
-              <string> %</string>
-             </property>
-             <property name="minimum">
-              <number>1</number>
-             </property>
-             <property name="maximum">
-              <number>100</number>
-             </property>
-             <property name="value">
-              <number>100</number>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <spacer name="stopOnBatterySpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>40</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
+          <widget class="QLabel" name="stopOnBatteryMinPercentageLabel">
+           <property name="text">
+            <string>under percentage:</string>
+           </property>
+          </widget>
          </item>
+         <item>
+          <widget class="QSpinBox" name="stopOnBatteryMinPercentageSpinBox">
+           <property name="suffix">
+            <string> %</string>
+           </property>
+           <property name="minimum">
+            <number>1</number>
+           </property>
+           <property name="maximum">
+            <number>100</number>
+           </property>
+           <property name="value">
+            <number>100</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="stopOnBatterySpacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
        <item>
         <widget class="Line" name="line">
          <property name="sizePolicy">
@@ -268,7 +268,7 @@
           </sizepolicy>
          </property>
          <property name="orientation">
-          <enum>Qt::Horizontal</enum>
+          <enum>Qt::Orientation::Horizontal</enum>
          </property>
         </widget>
        </item>
@@ -293,6 +293,22 @@
            </property>
            <property name="text">
             <string>Syncthing log (interleaved stdout/stderr)</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="expandLogsPushButton">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="text">
+            <string>Expand</string>
+           </property>
+           <property name="icon">
+            <iconset theme="view-fullscreen"/>
            </property>
           </widget>
          </item>
