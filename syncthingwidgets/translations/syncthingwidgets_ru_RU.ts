@@ -3208,7 +3208,7 @@
         <translation>Не удалось определить, работает ли система от батареи.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2009"/>
+        <location filename="../settings/settingsdialog.cpp" line="2126"/>
         <source>Unable to restart via &quot;%1&quot;: %2</source>
         <translation>Невозможно перезапустить через «%1»: %2</translation>
     </message>
@@ -4374,7 +4374,7 @@
     <name>QtGui::BuiltinWebViewOptionPage</name>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="1951"/>
+        <location filename="../settings/settingsdialog.cpp" line="2068"/>
         <source>Built-in web view</source>
         <translation>Встроенный веб-просмотр</translation>
     </message>
@@ -4394,7 +4394,7 @@
         <translation>Сохранять веб-представление активным, когда оно в данный момент не отображается</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1953"/>
+        <location filename="../settings/settingsdialog.cpp" line="2070"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
         <translation>Syncthing Tray не поддерживает vieb-представление с использованием Qt WebKit или Qt WebEngine.</translation>
     </message>
@@ -4942,12 +4942,12 @@
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1927"/>
+        <location filename="../settings/settingsdialog.cpp" line="2044"/>
         <source>Custom command to launch Syncthing&apos;s UI - </source>
         <translation>Пользовательская команда для запуска пользовательского интерфейса Syncthing - </translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1928"/>
+        <location filename="../settings/settingsdialog.cpp" line="2045"/>
         <source>&lt;p&gt;Enter a custom command to launch Syncthing&apos;s UI. The expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; will be replaced with the Syncthing-URL.&lt;/p&gt;&lt;p&gt;Leave the command empty to use the auto-detection.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Введите пользовательскую команду для запуска пользовательского интерфейса Syncthing. Выражение &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; будет заменено на Syncthing-URL.&lt;/p&gt;&lt;p&gt;Оставьте команду пустой, чтобы использовать автоматическое определение.&lt;/p&gt;</translation>
     </message>
@@ -5249,22 +5249,28 @@
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="308"/>
+        <location filename="../settings/settingsdialog.cpp" line="1372"/>
+        <source>Expand</source>
+        <translation>Развернуть</translation>
+    </message>
+    <message>
+        <location filename="../settings/launcheroptionpage.ui" line="324"/>
         <source>Apply and launch now</source>
         <translation>Применить и запустить сейчас</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="325"/>
-        <location filename="../settings/settingsdialog.cpp" line="1478"/>
+        <location filename="../settings/launcheroptionpage.ui" line="341"/>
+        <location filename="../settings/settingsdialog.cpp" line="1486"/>
         <source>Stop launched instance</source>
         <translation>Остановить запущенный экземпляр</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="344"/>
+        <location filename="../settings/launcheroptionpage.ui" line="360"/>
         <source>No log messages available yet</source>
         <translation>Пока нет доступных сообщений журнала</translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="351"/>
+        <location filename="../settings/launcheroptionpage.ui" line="367"/>
         <source>Ensure latest log is visible</source>
         <translation>Убедитесь, что последний журнал виден</translation>
     </message>
@@ -5304,12 +5310,17 @@
         <translation>Показать релизы/загрузки Syncthing</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1513"/>
+        <location filename="../settings/settingsdialog.cpp" line="1371"/>
+        <source>Collapse</source>
+        <translation>Свернуть</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1521"/>
         <source>%1 exited with exit code %2</source>
         <translation>%1 завершен с кодом выхода %2</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1516"/>
+        <location filename="../settings/settingsdialog.cpp" line="1524"/>
         <source>%1 crashed with exit code %2</source>
         <translation>%1 вылетел с кодом выхода %2</translation>
     </message>
@@ -5338,12 +5349,12 @@
         <translation type="vanished">неизвестная ошибка процесса</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1549"/>
+        <location filename="../settings/settingsdialog.cpp" line="1557"/>
         <source>An error occurred when running %1: %2</source>
         <translation>Произошла ошибка при запуске %1: %2</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1602"/>
+        <location filename="../settings/settingsdialog.cpp" line="1610"/>
         <source>Kill launched instance</source>
         <translation>Убить запущенный экземпляр</translation>
     </message>
@@ -5677,39 +5688,243 @@
     </message>
 </context>
 <context>
+    <name>QtGui::ServiceOptionPage</name>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="6"/>
+        <source>Service</source>
+        <translation>Служба</translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="20"/>
+        <source>Show start/stop button on tray for local instance when service integration is available</source>
+        <translation>Показывать кнопку запуска/остановки в системном трее для локального экземпляра, когда доступна интеграция со службой</translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="27"/>
+        <source>Consider service status for notifications and reconnect attempts concerning local instance
+ • Don&apos;t reconnect when the service is not active/running
+ • Try to reconnect when the service becomes active/running
+ • Suppress notification about disconnect when Syncthing has been stopped manually</source>
+        <translation>Учитывать статус службы для уведомлений и попыток переподключения локального экземпляра
+ • Не переподключаться, если служба не активна/не запущена
+ • Пытаться переподключиться, когда служба становится активной/запущенной
+ • Подавлять уведомление о разрыве соединения, если Syncthing был остановлен вручную</translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="37"/>
+        <source>Stop automatically when network connection is metered</source>
+        <translation>Автоматически останавливается при тарификации сетевого подключения</translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="44"/>
+        <source>Stop automatically when battery saving mode is enabled</source>
+        <translation>Автоматически останавливать при включении режима экономии энергии</translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="53"/>
+        <source>Stop automatically when running on battery</source>
+        <translation>Автоматически останавливать при работе от батареи</translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="60"/>
+        <source>under percentage:</source>
+        <translation>при заряде ниже:</translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="67"/>
+        <source> %</source>
+        <translation> %</translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="132"/>
+        <source>Syncthing unit</source>
+        <translation>Синхронизирующий блок</translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="142"/>
+        <source>System unit</source>
+        <translation>Системный блок</translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="155"/>
+        <source>Description</source>
+        <translation>Описание</translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="176"/>
+        <location filename="../settings/serviceoptionpage.ui" line="263"/>
+        <location filename="../settings/serviceoptionpage.ui" line="353"/>
+        <location filename="../settings/settingsdialog.cpp" line="1909"/>
+        <location filename="../settings/settingsdialog.cpp" line="1929"/>
+        <source>unknown</source>
+        <translation>неизвестный</translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="186"/>
+        <source>Manage service</source>
+        <translation>Управление службой</translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="205"/>
+        <location filename="../settings/settingsdialog.cpp" line="1654"/>
+        <source>Open logs</source>
+        <translation>Открытые журналы</translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="223"/>
+        <source>Current status</source>
+        <translation>Текущий статус</translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="279"/>
+        <source>Start</source>
+        <translation>Старт</translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="295"/>
+        <source>Stop</source>
+        <translation>Стоп</translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="313"/>
+        <source>Unit file state</source>
+        <translation>Состояние файла блока</translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="369"/>
+        <source>Enable</source>
+        <translation>Включить</translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="385"/>
+        <source>Disable</source>
+        <translation>Отключить</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1650"/>
+        <source>Reload all unit files</source>
+        <translation>Перезагрузить все файлы модулей</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1660"/>
+        <source>Open service logs in terminal via journalctl</source>
+        <translation>Открыть журналы службы в терминале через journalctl</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1663"/>
+        <source>Open Windows Services console</source>
+        <translation>Открыть консоль служб Windows</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1665"/>
+        <source>Open the Windows Services management console</source>
+        <translation>Открыть консоль управления службами Windows</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1668"/>
+        <source>Install service</source>
+        <translation>Установить службу</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1672"/>
+        <source>Uninstall service</source>
+        <translation>Удалить службу</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1693"/>
+        <source>Systemd</source>
+        <translation>Systemd</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1695"/>
+        <source>Windows service</source>
+        <translation>Служба Windows</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1696"/>
+        <source>Syncthing service</source>
+        <translation>Служба Syncthing</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1697"/>
+        <source>Startup type</source>
+        <translation>Тип запуска</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1699"/>
+        <source>Refresh service status</source>
+        <translation>Обновить статус службы</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1700"/>
+        <source>Open the service log file</source>
+        <translation>Открыть файл журнала службы</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1718"/>
+        <source>Service installed</source>
+        <translation>Служба установлена</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1719"/>
+        <source>&lt;p&gt;The Syncthing service has been installed successfully.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Security note:&lt;/b&gt; By default, the service runs under the Local System account to access user folders without requiring a password. Since Syncthing is exposed to the network, for enhanced security you can configure the service to run under a specific user account in the Windows Services management console (&lt;em&gt;Properties &amp;rarr; Log On&lt;/em&gt;).&lt;/p&gt;</source>
+        <translation>&lt;p&gt;Служба Syncthing успешно установлена.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Примечание по безопасности:&lt;/b&gt; По умолчанию служба работает от имени локальной системы (Local System) для доступа к пользовательским папкам без запроса пароля. Поскольку Syncthing доступен в сети, для повышения безопасности вы можете настроить запуск службы от имени конкретного пользователя в консоли управления службами Windows (&lt;em&gt;Свойства &amp;rarr; Вход в систему&lt;/em&gt;).&lt;/p&gt;</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1830"/>
+        <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
+        <translation>Невозможно одновременно отобразить кнопку запуска/остановки для службы systemd и внутреннего лаунчера. Служба systemd предшествует.</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1836"/>
+        <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
+        <translation>Невозможно одновременно учитывать службу systemd и внутренний лаунчер для повторных подключений. Служба systemd предшествует.</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1882"/>
+        <source>The specified service is unavailable or not installed</source>
+        <translation>Указанная служба недоступна или не установлена</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1904"/>
+        <source>since </source>
+        <translation>с </translation>
+    </message>
+</context>
+<context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2041"/>
+        <location filename="../settings/settingsdialog.cpp" line="2158"/>
         <source>Tray</source>
         <translation>Трей</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2049"/>
+        <location filename="../settings/settingsdialog.cpp" line="2166"/>
         <source>Web view</source>
         <translation>Веб-просмотр</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2056"/>
+        <location filename="../settings/settingsdialog.cpp" line="2173"/>
         <source>Startup</source>
         <translation>Запуск</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2058"/>
+        <location filename="../settings/settingsdialog.cpp" line="2175"/>
         <source>additional tool</source>
         <translation>дополнительный инструмент</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2058"/>
+        <location filename="../settings/settingsdialog.cpp" line="2175"/>
         <source>Extra launcher</source>
         <translation>Дополнительный пусковой механизм</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2099"/>
+        <location filename="../settings/settingsdialog.cpp" line="2216"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2105"/>
+        <location filename="../settings/settingsdialog.cpp" line="2222"/>
         <source>Start wizard</source>
         <translation>Запустить мастер</translation>
     </message>
@@ -5869,33 +6084,33 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation>Инициирован возврат «%1»</translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="150"/>
-        <location filename="../misc/syncthingmodels.cpp" line="158"/>
+        <location filename="../misc/syncthingmodels.cpp" line="118"/>
+        <location filename="../misc/syncthingmodels.cpp" line="126"/>
         <source>Unable to open &quot;%1&quot;</source>
         <translation>Не удалось открыть &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="170"/>
+        <location filename="../misc/syncthingmodels.cpp" line="197"/>
         <source>Unable to find configuration file of local Syncthing instance under its default location.</source>
         <translation>Не удалось найти файл конфигурации локального экземпляра Syncthing в стандартном расположении.</translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="188"/>
+        <location filename="../misc/syncthingmodels.cpp" line="215"/>
         <source>Scanning is not supported.</source>
         <translation>Сканирование не поддерживается.</translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="200"/>
+        <location filename="../misc/syncthingmodels.cpp" line="141"/>
         <source>Copied value</source>
         <translation>Скопированное значение</translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="204"/>
+        <location filename="../misc/syncthingmodels.cpp" line="145"/>
         <source>Unable to copy value</source>
         <translation>Невозможно скопировать значение</translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="212"/>
+        <location filename="../misc/syncthingmodels.cpp" line="153"/>
         <source>Unable to copy &quot;%1&quot;</source>
         <translation>Не удалось скопировать «%1»</translation>
     </message>
@@ -5923,136 +6138,109 @@ This dialog closes automatically when the process finally terminates.</source>
 <context>
     <name>QtGui::SystemdOptionPage</name>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="6"/>
         <source>Systemd</source>
-        <translation>Systemd</translation>
+        <translation type="vanished">Systemd</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="21"/>
         <source>Show start/stop button on tray for local instance when systemd is available</source>
-        <translation>Показывать кнопку запуска/остановки на панели задач для локального экземпляра, когда systemd доступен</translation>
+        <translation type="vanished">Показывать кнопку запуска/остановки на панели задач для локального экземпляра, когда systemd доступен</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="28"/>
         <source>Consider systemd unit status for notifications and reconnect attempts concerning local instance
  • Don&apos;t reconnect when unit not active/running
  • Try to reconnect when unit becomes active/running
  • Suppress notification about disconnect when Syncthing has been stopped manually</source>
-        <translation>Рассмотрите статус юнита systemd для уведомлений и попыток повторного подключения, касающихся локального экземпляра.
+        <translation type="vanished">Рассмотрите статус юнита systemd для уведомлений и попыток повторного подключения, касающихся локального экземпляра.
  • Не переподключайтесь, когда юнит не активен/не запущен.
  • Попытайтесь переподключиться, когда юнит становится активным/запущенным.
  • Подавите уведомление об отключении, если Syncthing был остановлен вручную.</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="38"/>
         <source>Stop automatically when network connection is metered</source>
-        <translation>Автоматически останавливается при тарификации сетевого подключения</translation>
+        <translation type="vanished">Автоматически останавливается при тарификации сетевого подключения</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="45"/>
         <source>Stop automatically when battery saving mode is enabled</source>
-        <translation>Автоматически останавливать при включении режима экономии энергии</translation>
+        <translation type="vanished">Автоматически останавливать при включении режима экономии энергии</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="54"/>
         <source>Stop automatically when running on battery</source>
-        <translation>Автоматически останавливать при работе от батареи</translation>
+        <translation type="vanished">Автоматически останавливать при работе от батареи</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="61"/>
         <source>under percentage:</source>
-        <translation>при заряде ниже:</translation>
+        <translation type="vanished">при заряде ниже:</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="68"/>
         <source> %</source>
-        <translation> %</translation>
+        <translation type="vanished"> %</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="133"/>
         <source>Syncthing unit</source>
-        <translation>Синхронизирующий блок</translation>
+        <translation type="vanished">Синхронизирующий блок</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="156"/>
         <source>Description</source>
-        <translation>Описание</translation>
+        <translation type="vanished">Описание</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="171"/>
-        <location filename="../settings/systemdoptionpage.ui" line="226"/>
-        <location filename="../settings/systemdoptionpage.ui" line="315"/>
-        <location filename="../settings/settingsdialog.cpp" line="1813"/>
-        <location filename="../settings/settingsdialog.cpp" line="1822"/>
         <source>unknown</source>
-        <translation>неизвестный</translation>
+        <translation type="vanished">неизвестный</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="186"/>
         <source>Current status</source>
-        <translation>Текущий статус</translation>
+        <translation type="vanished">Текущий статус</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="239"/>
         <source>Start</source>
-        <translation>Старт</translation>
+        <translation type="vanished">Старт</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="256"/>
         <source>Stop</source>
-        <translation>Стоп</translation>
+        <translation type="vanished">Стоп</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="275"/>
         <source>Unit file state</source>
-        <translation>Состояние файла блока</translation>
+        <translation type="vanished">Состояние файла блока</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="328"/>
         <source>Enable</source>
-        <translation>Включено</translation>
+        <translation type="vanished">Включено</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="345"/>
         <source>Disable</source>
-        <translation>Выключено</translation>
+        <translation type="vanished">Выключено</translation>
     </message>
     <message>
-        <location filename="../settings/systemdoptionpage.ui" line="143"/>
         <source>System unit</source>
-        <translation>Системный блок</translation>
+        <translation type="vanished">Системный блок</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1638"/>
         <source>Reload all unit files</source>
-        <translation>Перезагрузить все файлы модулей</translation>
+        <translation type="vanished">Перезагрузить все файлы модулей</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1743"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
-        <translation>Невозможно одновременно отобразить кнопку запуска/остановки для службы systemd и внутреннего лаунчера. Служба systemd предшествует.</translation>
+        <translation type="vanished">Невозможно одновременно отобразить кнопку запуска/остановки для службы systemd и внутреннего лаунчера. Служба systemd предшествует.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1749"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
-        <translation>Невозможно одновременно учитывать службу systemd и внутренний лаунчер для повторных подключений. Служба systemd предшествует.</translation>
+        <translation type="vanished">Невозможно одновременно учитывать службу systemd и внутренний лаунчер для повторных подключений. Служба systemd предшествует.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1786"/>
         <source>specified unit is either inactive or doesn&apos;t exist</source>
-        <translation>указанный блок либо неактивен, либо не существует</translation>
+        <translation type="vanished">указанный блок либо неактивен, либо не существует</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1808"/>
         <source>since </source>
-        <translation>с </translation>
+        <translation type="vanished">с </translation>
     </message>
 </context>
 <context>
     <name>QtGui::TextViewDialog</name>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="64"/>
-        <location filename="../misc/textviewdialog.cpp" line="87"/>
+        <location filename="../misc/textviewdialog.cpp" line="65"/>
+        <location filename="../misc/textviewdialog.cpp" line="100"/>
         <source>Log</source>
         <translation>Журнал</translation>
     </message>
@@ -6062,7 +6250,12 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation>Нажмите F5 для перезагрузки.</translation>
     </message>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="69"/>
+        <location filename="../misc/textviewdialog.cpp" line="71"/>
+        <source> Open &lt;a href=&quot;openServiceLog&quot;&gt;continuous log&lt;/a&gt; of %1.</source>
+        <translation> Открыть &lt;a href=&quot;openServiceLog&quot;&gt;непрерывный журнал&lt;/a&gt; %1.</translation>
+    </message>
+    <message>
+        <location filename="../misc/textviewdialog.cpp" line="80"/>
         <source> Check out &lt;a href=&quot;openLauncherSettings&quot;&gt;launcher settings&lt;/a&gt; for continuous log of local Syncthing instance.</source>
         <translation>Проверьте &lt;a href=&quot;openLauncherSettings&quot;&gt;настройки запуска&lt;/a&gt; для непрерывного журнала локального экземпляра Syncthing.</translation>
     </message>

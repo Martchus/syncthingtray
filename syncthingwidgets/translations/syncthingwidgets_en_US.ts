@@ -2829,7 +2829,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2009"/>
+        <location filename="../settings/settingsdialog.cpp" line="2126"/>
         <source>Unable to restart via &quot;%1&quot;: %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3795,7 +3795,7 @@
     <name>QtGui::BuiltinWebViewOptionPage</name>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="1951"/>
+        <location filename="../settings/settingsdialog.cpp" line="2068"/>
         <source>Built-in web view</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3815,7 +3815,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1953"/>
+        <location filename="../settings/settingsdialog.cpp" line="2070"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4362,12 +4362,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1927"/>
+        <location filename="../settings/settingsdialog.cpp" line="2044"/>
         <source>Custom command to launch Syncthing&apos;s UI - </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1928"/>
+        <location filename="../settings/settingsdialog.cpp" line="2045"/>
         <source>&lt;p&gt;Enter a custom command to launch Syncthing&apos;s UI. The expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; will be replaced with the Syncthing-URL.&lt;/p&gt;&lt;p&gt;Leave the command empty to use the auto-detection.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4661,22 +4661,28 @@
     </message>
     <message>
         <location filename="../settings/launcheroptionpage.ui" line="308"/>
+        <location filename="../settings/settingsdialog.cpp" line="1372"/>
+        <source>Expand</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/launcheroptionpage.ui" line="324"/>
         <source>Apply and launch now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="325"/>
-        <location filename="../settings/settingsdialog.cpp" line="1478"/>
+        <location filename="../settings/launcheroptionpage.ui" line="341"/>
+        <location filename="../settings/settingsdialog.cpp" line="1486"/>
         <source>Stop launched instance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="344"/>
+        <location filename="../settings/launcheroptionpage.ui" line="360"/>
         <source>No log messages available yet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/launcheroptionpage.ui" line="351"/>
+        <location filename="../settings/launcheroptionpage.ui" line="367"/>
         <source>Ensure latest log is visible</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4716,22 +4722,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1513"/>
+        <location filename="../settings/settingsdialog.cpp" line="1371"/>
+        <source>Collapse</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1521"/>
         <source>%1 exited with exit code %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1516"/>
+        <location filename="../settings/settingsdialog.cpp" line="1524"/>
         <source>%1 crashed with exit code %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1549"/>
+        <location filename="../settings/settingsdialog.cpp" line="1557"/>
         <source>An error occurred when running %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1602"/>
+        <location filename="../settings/settingsdialog.cpp" line="1610"/>
         <source>Kill launched instance</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5065,39 +5076,240 @@
     </message>
 </context>
 <context>
+    <name>QtGui::ServiceOptionPage</name>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="6"/>
+        <source>Service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="20"/>
+        <source>Show start/stop button on tray for local instance when service integration is available</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="27"/>
+        <source>Consider service status for notifications and reconnect attempts concerning local instance
+ • Don&apos;t reconnect when the service is not active/running
+ • Try to reconnect when the service becomes active/running
+ • Suppress notification about disconnect when Syncthing has been stopped manually</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="37"/>
+        <source>Stop automatically when network connection is metered</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="44"/>
+        <source>Stop automatically when battery saving mode is enabled</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="53"/>
+        <source>Stop automatically when running on battery</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="60"/>
+        <source>under percentage:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="67"/>
+        <source> %</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="132"/>
+        <source>Syncthing unit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="142"/>
+        <source>System unit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="155"/>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="176"/>
+        <location filename="../settings/serviceoptionpage.ui" line="263"/>
+        <location filename="../settings/serviceoptionpage.ui" line="353"/>
+        <location filename="../settings/settingsdialog.cpp" line="1909"/>
+        <location filename="../settings/settingsdialog.cpp" line="1929"/>
+        <source>unknown</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="186"/>
+        <source>Manage service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="205"/>
+        <location filename="../settings/settingsdialog.cpp" line="1654"/>
+        <source>Open logs</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="223"/>
+        <source>Current status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="279"/>
+        <source>Start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="295"/>
+        <source>Stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="313"/>
+        <source>Unit file state</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="369"/>
+        <source>Enable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/serviceoptionpage.ui" line="385"/>
+        <source>Disable</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1650"/>
+        <source>Reload all unit files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1660"/>
+        <source>Open service logs in terminal via journalctl</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1663"/>
+        <source>Open Windows Services console</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1665"/>
+        <source>Open the Windows Services management console</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1668"/>
+        <source>Install service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1672"/>
+        <source>Uninstall service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1693"/>
+        <source>Systemd</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1695"/>
+        <source>Windows service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1696"/>
+        <source>Syncthing service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1697"/>
+        <source>Startup type</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1699"/>
+        <source>Refresh service status</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1700"/>
+        <source>Open the service log file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1718"/>
+        <source>Service installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1719"/>
+        <source>&lt;p&gt;The Syncthing service has been installed successfully.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Security note:&lt;/b&gt; By default, the service runs under the Local System account to access user folders without requiring a password. Since Syncthing is exposed to the network, for enhanced security you can configure the service to run under a specific user account in the Windows Services management console (&lt;em&gt;Properties &amp;rarr; Log On&lt;/em&gt;).&lt;/p&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1830"/>
+        <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1836"/>
+        <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1882"/>
+        <source>The specified service is unavailable or not installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1904"/>
+        <source>since </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2041"/>
+        <location filename="../settings/settingsdialog.cpp" line="2158"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2049"/>
+        <location filename="../settings/settingsdialog.cpp" line="2166"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2056"/>
+        <location filename="../settings/settingsdialog.cpp" line="2173"/>
         <source>Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2058"/>
+        <location filename="../settings/settingsdialog.cpp" line="2175"/>
         <source>additional tool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2058"/>
+        <location filename="../settings/settingsdialog.cpp" line="2175"/>
         <source>Extra launcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2099"/>
+        <location filename="../settings/settingsdialog.cpp" line="2216"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2105"/>
+        <location filename="../settings/settingsdialog.cpp" line="2222"/>
         <source>Start wizard</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5254,33 +5466,33 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="150"/>
-        <location filename="../misc/syncthingmodels.cpp" line="158"/>
+        <location filename="../misc/syncthingmodels.cpp" line="118"/>
+        <location filename="../misc/syncthingmodels.cpp" line="126"/>
         <source>Unable to open &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="170"/>
+        <location filename="../misc/syncthingmodels.cpp" line="197"/>
         <source>Unable to find configuration file of local Syncthing instance under its default location.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="188"/>
+        <location filename="../misc/syncthingmodels.cpp" line="215"/>
         <source>Scanning is not supported.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="200"/>
+        <location filename="../misc/syncthingmodels.cpp" line="141"/>
         <source>Copied value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="204"/>
+        <location filename="../misc/syncthingmodels.cpp" line="145"/>
         <source>Unable to copy value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="212"/>
+        <location filename="../misc/syncthingmodels.cpp" line="153"/>
         <source>Unable to copy &quot;%1&quot;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5306,135 +5518,10 @@ This dialog closes automatically when the process finally terminates.</source>
     </message>
 </context>
 <context>
-    <name>QtGui::SystemdOptionPage</name>
-    <message>
-        <location filename="../settings/systemdoptionpage.ui" line="6"/>
-        <source>Systemd</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/systemdoptionpage.ui" line="21"/>
-        <source>Show start/stop button on tray for local instance when systemd is available</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/systemdoptionpage.ui" line="28"/>
-        <source>Consider systemd unit status for notifications and reconnect attempts concerning local instance
- • Don&apos;t reconnect when unit not active/running
- • Try to reconnect when unit becomes active/running
- • Suppress notification about disconnect when Syncthing has been stopped manually</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/systemdoptionpage.ui" line="38"/>
-        <source>Stop automatically when network connection is metered</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/systemdoptionpage.ui" line="45"/>
-        <source>Stop automatically when battery saving mode is enabled</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/systemdoptionpage.ui" line="54"/>
-        <source>Stop automatically when running on battery</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/systemdoptionpage.ui" line="61"/>
-        <source>under percentage:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/systemdoptionpage.ui" line="68"/>
-        <source> %</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/systemdoptionpage.ui" line="133"/>
-        <source>Syncthing unit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/systemdoptionpage.ui" line="156"/>
-        <source>Description</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/systemdoptionpage.ui" line="171"/>
-        <location filename="../settings/systemdoptionpage.ui" line="226"/>
-        <location filename="../settings/systemdoptionpage.ui" line="315"/>
-        <location filename="../settings/settingsdialog.cpp" line="1813"/>
-        <location filename="../settings/settingsdialog.cpp" line="1822"/>
-        <source>unknown</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/systemdoptionpage.ui" line="186"/>
-        <source>Current status</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/systemdoptionpage.ui" line="239"/>
-        <source>Start</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/systemdoptionpage.ui" line="256"/>
-        <source>Stop</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/systemdoptionpage.ui" line="275"/>
-        <source>Unit file state</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/systemdoptionpage.ui" line="328"/>
-        <source>Enable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/systemdoptionpage.ui" line="345"/>
-        <source>Disable</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/systemdoptionpage.ui" line="143"/>
-        <source>System unit</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/settingsdialog.cpp" line="1638"/>
-        <source>Reload all unit files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/settingsdialog.cpp" line="1743"/>
-        <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/settingsdialog.cpp" line="1749"/>
-        <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/settingsdialog.cpp" line="1786"/>
-        <source>specified unit is either inactive or doesn&apos;t exist</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../settings/settingsdialog.cpp" line="1808"/>
-        <source>since </source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>QtGui::TextViewDialog</name>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="64"/>
-        <location filename="../misc/textviewdialog.cpp" line="87"/>
+        <location filename="../misc/textviewdialog.cpp" line="65"/>
+        <location filename="../misc/textviewdialog.cpp" line="100"/>
         <source>Log</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5444,7 +5531,12 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/textviewdialog.cpp" line="69"/>
+        <location filename="../misc/textviewdialog.cpp" line="71"/>
+        <source> Open &lt;a href=&quot;openServiceLog&quot;&gt;continuous log&lt;/a&gt; of %1.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/textviewdialog.cpp" line="80"/>
         <source> Check out &lt;a href=&quot;openLauncherSettings&quot;&gt;launcher settings&lt;/a&gt; for continuous log of local Syncthing instance.</source>
         <translation type="unfinished"></translation>
     </message>
