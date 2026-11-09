@@ -1671,17 +1671,6 @@ QWidget *ServiceOptionPage::setupWidget()
     m_installServiceAction->setVisible(false);
     m_uninstallServiceAction->setVisible(false);
 
-    if (m_service && m_service->serviceManagerName() == QLatin1String("Windows")) {
-        ui()->syncthingUnitLabel->setText(QCoreApplication::translate("QtGui::ServiceOptionPage", "Syncthing service"));
-        ui()->unitFileStateLabel->setText(QCoreApplication::translate("QtGui::ServiceOptionPage", "Startup type"));
-        ui()->systemUnitCheckBox->setHidden(true);
-        refreshAction->setText(QCoreApplication::translate("QtGui::ServiceOptionPage", "Refresh service status"));
-        ui()->openLogsPushButton->setToolTip(QCoreApplication::translate("QtGui::ServiceOptionPage", "Open the service log file"));
-        openLogsAction->setToolTip(ui()->openLogsPushButton->toolTip());
-        ui()->manageServicePushButton->setHidden(false);
-        m_openServiceManagerAction->setVisible(true);
-        widget->setWindowTitle(QCoreApplication::translate("QtGui::ServiceOptionPage", "Windows service"));
-    }
     if (!m_service) {
         ui()->stopOnMeteredCheckBox->setHidden(true);
         ui()->stopOnBatterySavingCheckBox->setHidden(true);
@@ -1692,6 +1681,20 @@ QWidget *ServiceOptionPage::setupWidget()
         refreshAction->setEnabled(false);
         return widget;
     }
+#if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD)
+    widget->setWindowTitle(QCoreApplication::translate("QtGui::ServiceOptionPage", "Systemd"));
+#elif defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
+    widget->setWindowTitle(QCoreApplication::translate("QtGui::ServiceOptionPage", "Windows service"));
+    ui()->syncthingUnitLabel->setText(QCoreApplication::translate("QtGui::ServiceOptionPage", "Syncthing service"));
+    ui()->unitFileStateLabel->setText(QCoreApplication::translate("QtGui::ServiceOptionPage", "Startup type"));
+    ui()->systemUnitCheckBox->setHidden(true);
+    refreshAction->setText(QCoreApplication::translate("QtGui::ServiceOptionPage", "Refresh service status"));
+    ui()->openLogsPushButton->setToolTip(QCoreApplication::translate("QtGui::ServiceOptionPage", "Open the service log file"));
+    openLogsAction->setToolTip(ui()->openLogsPushButton->toolTip());
+    ui()->manageServicePushButton->setHidden(false);
+    m_openServiceManagerAction->setVisible(true);
+#endif
+
     QObject::connect(refreshAction, &QAction::triggered, m_service, &SyncthingService::reloadAllUnitFiles);
     QObject::connect(openLogsAction, &QAction::triggered, m_service, &SyncthingService::openLogs);
     QObject::connect(m_openServiceManagerAction, &QAction::triggered, m_service, &SyncthingService::openServiceManager);
