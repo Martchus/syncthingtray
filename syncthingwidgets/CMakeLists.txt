@@ -221,6 +221,7 @@ set(REQUIRED_ICONS
     preferences-system-startup
     preferences-system-services
     view-refresh-symbolic
+    view-fullscreen
     system-software-install
     emblem-checked
     emblem-checked-symbolic

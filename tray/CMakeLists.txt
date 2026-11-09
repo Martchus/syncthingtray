@@ -127,6 +127,7 @@ set(REQUIRED_ICONS
     item-symbolic
     utilities-terminal-symbolic
     view-refresh-symbolic
+    view-fullscreen
     window-close-symbolic
     window-pin-symbolic)
 
