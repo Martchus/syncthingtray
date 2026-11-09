@@ -160,6 +160,12 @@
        <layout class="QHBoxLayout" name="descriptionHorizontalLayout">
         <item>
          <widget class="QLabel" name="descriptionValueLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="minimumSize">
            <size>
             <width>0</width>
@@ -169,38 +175,37 @@
           <property name="text">
            <string>unknown</string>
           </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="logsSpacer">
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QPushButton" name="openLogsPushButton">
-          <property name="text">
-           <string>Open logs</string>
-          </property>
-          <property name="icon">
-           <iconset theme="utilities-terminal-symbolic"/>
+          <property name="wordWrap">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="manageServicePushButton">
+          <property name="toolTip">
+           <string>Manage service</string>
+          </property>
           <property name="text">
-           <string>Service...</string>
+           <string/>
           </property>
           <property name="icon">
            <iconset theme="preferences-system-services"/>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="openLogsPushButton">
+          <property name="minimumSize">
+           <size>
+            <width>175</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Open logs</string>
+          </property>
+          <property name="icon">
+           <iconset theme="utilities-terminal-symbolic"/>
           </property>
          </widget>
         </item>
@@ -257,13 +262,16 @@
           <property name="text">
            <string>unknown</string>
           </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="startPushButton">
           <property name="minimumSize">
            <size>
-            <width>150</width>
+            <width>175</width>
             <height>0</height>
            </size>
           </property>
@@ -279,7 +287,7 @@
          <widget class="QPushButton" name="stopPushButton">
           <property name="minimumSize">
            <size>
-            <width>150</width>
+            <width>175</width>
             <height>0</height>
            </size>
           </property>
@@ -344,13 +352,16 @@
           <property name="text">
            <string>unknown</string>
           </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="enablePushButton">
           <property name="minimumSize">
            <size>
-            <width>150</width>
+            <width>175</width>
             <height>0</height>
            </size>
           </property>
@@ -366,7 +377,7 @@
          <widget class="QPushButton" name="disablePushButton">
           <property name="minimumSize">
            <size>
-            <width>150</width>
+            <width>175</width>
             <height>0</height>
            </size>
           </property>
@@ -394,7 +405,7 @@
        <height>40</height>
       </size>
      </property>
-     </spacer>
+    </spacer>
    </item>
   </layout>
  </widget>
@@ -414,8 +425,8 @@
   <tabstop>stopOnBatteryMinPercentageSpinBox</tabstop>
   <tabstop>syncthingUnitLineEdit</tabstop>
   <tabstop>systemUnitCheckBox</tabstop>
-  <tabstop>openLogsPushButton</tabstop>
   <tabstop>manageServicePushButton</tabstop>
+  <tabstop>openLogsPushButton</tabstop>
   <tabstop>startPushButton</tabstop>
   <tabstop>stopPushButton</tabstop>
   <tabstop>enablePushButton</tabstop>
