@@ -1,0 +1,49 @@
+diff --git a/tests/testutils.cpp b/tests/testutils.cpp
+index c66f3dd..0309a1e 100644
+--- a/tests/testutils.cpp
++++ b/tests/testutils.cpp
+@@ -531,6 +531,9 @@ static int execAppInternal(const char *appPath, const char *const *args, std::st
+                 if (retpoll == 0) {
+                     throw std::runtime_error("Poll timed out");
+                 }
++                if (retpoll < 0 && errno == EINTR) {
++                    continue;
++                }
+                 if (retpoll < 0) {
+                     throw std::runtime_error(argsToString("Poll failed: ", std::strerror(errno)));
+                 }
+@@ -538,6 +541,10 @@ static int execAppInternal(const char *appPath, const char *const *args, std::st
+                     const auto count = read(readCoutPipe, buffer, sizeof(buffer));
+                     if (count > 0) {
+                         output.append(buffer, static_cast<size_t>(count));
++                    } else if (count == 0) {
++                        // EOF; macOS reports POLLIN together with POLLHUP in this case
++                        close(readCoutPipe);
++                        fileDescriptorSet[0].fd = -1;
+                     }
+                 } else if (fileDescriptorSet[0].revents & POLLHUP) {
+                     close(readCoutPipe);
+@@ -547,6 +554,10 @@ static int execAppInternal(const char *appPath, const char *const *args, std::st
+                     const auto count = read(readCerrPipe, buffer, sizeof(buffer));
+                     if (count > 0) {
+                         errors.append(buffer, static_cast<size_t>(count));
++                    } else if (count == 0) {
++                        // EOF; macOS reports POLLIN together with POLLHUP in this case
++                        close(readCerrPipe);
++                        fileDescriptorSet[1].fd = -1;
+                     }
+                 } else if (fileDescriptorSet[1].revents & POLLHUP) {
+                     close(readCerrPipe);
+@@ -562,7 +573,11 @@ static int execAppInternal(const char *appPath, const char *const *args, std::st
+ 
+         // get return code
+         int childReturnCode;
+-        waitpid(child, &childReturnCode, 0);
++        while (waitpid(child, &childReturnCode, 0) == -1) {
++            if (errno != EINTR) {
++                throw std::runtime_error(argsToString("Unable to wait for child: ", std::strerror(errno)));
++            }
++        }
+         waitpid(-child, nullptr, 0);
+         return childReturnCode;
+     } else {
