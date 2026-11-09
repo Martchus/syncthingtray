@@ -1631,6 +1631,7 @@ ServiceOptionPage::ServiceOptionPage(QWidget *parentWidget)
     , m_service(SyncthingService::mainInstance())
     , m_openServiceManagerAction(nullptr)
     , m_installServiceAction(nullptr)
+    , m_installServiceCustomHomeAction(nullptr)
     , m_uninstallServiceAction(nullptr)
 {
 }
@@ -1668,6 +1669,9 @@ QWidget *ServiceOptionPage::setupWidget()
     m_installServiceAction = new QAction(QCoreApplication::translate("QtGui::ServiceOptionPage", "Install service"), widget);
     m_installServiceAction->setIcon(QIcon::fromTheme(QStringLiteral("system-software-install")));
     serviceMenu->addAction(m_installServiceAction);
+    m_installServiceCustomHomeAction = new QAction(QCoreApplication::translate("QtGui::ServiceOptionPage", "Install service, select home"), widget);
+    m_installServiceCustomHomeAction->setIcon(QIcon::fromTheme(QStringLiteral("system-software-install")));
+    serviceMenu->addAction(m_installServiceCustomHomeAction);
 
     m_uninstallServiceAction = new QAction(QCoreApplication::translate("QtGui::ServiceOptionPage", "Uninstall service"), widget);
     m_uninstallServiceAction->setIcon(QIcon::fromTheme(QStringLiteral("edit-delete")));
@@ -1677,6 +1681,7 @@ QWidget *ServiceOptionPage::setupWidget()
     ui()->manageServicePushButton->setHidden(true);
     m_openServiceManagerAction->setVisible(false);
     m_installServiceAction->setVisible(false);
+    m_installServiceCustomHomeAction->setVisible(false);
     m_uninstallServiceAction->setVisible(false);
 
     if (!m_service) {
@@ -1706,7 +1711,14 @@ QWidget *ServiceOptionPage::setupWidget()
     QObject::connect(refreshAction, &QAction::triggered, m_service, &SyncthingService::reloadAllUnitFiles);
     QObject::connect(openLogsAction, &QAction::triggered, m_service, &SyncthingService::openLogs);
     QObject::connect(m_openServiceManagerAction, &QAction::triggered, m_service, &SyncthingService::openServiceManager);
-    QObject::connect(m_installServiceAction, &QAction::triggered, m_service, &SyncthingService::installService);
+    QObject::connect(m_installServiceAction, &QAction::triggered, m_service, [service = m_service] { service->installService(); });
+    QObject::connect(m_installServiceCustomHomeAction, &QAction::triggered, m_service, [service = m_service] {
+        if (const auto dir = QFileDialog::getExistingDirectory(
+                nullptr, QCoreApplication::translate("QtGui::ServiceOptionPage", "Select home directory for Syncthing service"));
+            !dir.isEmpty()) {
+            service->installService(dir);
+        }
+    });
     QObject::connect(m_uninstallServiceAction, &QAction::triggered, m_service, &SyncthingService::uninstallService);
     QObject::connect(ui()->syncthingUnitLineEdit, &QLineEdit::textChanged, m_service, &SyncthingService::setUnitName);
     QObject::connect(ui()->startPushButton, &QPushButton::clicked, m_service, &SyncthingService::start);
@@ -1862,6 +1874,9 @@ void ServiceOptionPage::reset()
         if (m_installServiceAction) {
             m_installServiceAction->setVisible(!unitAvailable);
         }
+        if (m_installServiceCustomHomeAction) {
+            m_installServiceCustomHomeAction->setVisible(!unitAvailable);
+        }
         if (m_uninstallServiceAction) {
             m_uninstallServiceAction->setVisible(unitAvailable);
         }
@@ -1912,6 +1927,9 @@ void ServiceOptionPage::handleStatusChanged(const QString &activeState, const QS
     if (canInstall) {
         if (m_installServiceAction) {
             m_installServiceAction->setVisible(!unitAvailable);
+        }
+        if (m_installServiceCustomHomeAction) {
+            m_installServiceCustomHomeAction->setVisible(!unitAvailable);
         }
         if (m_uninstallServiceAction) {
             m_uninstallServiceAction->setVisible(unitAvailable);

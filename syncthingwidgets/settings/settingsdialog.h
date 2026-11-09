@@ -181,6 +181,7 @@ void updateColors();
 Data::SyncthingService *const m_service;
 QAction *m_openServiceManagerAction;
 QAction *m_installServiceAction;
+QAction *m_installServiceCustomHomeAction;
 QAction *m_uninstallServiceAction;
 QStringList m_status;
 QMetaObject::Connection m_unitChangedConn;

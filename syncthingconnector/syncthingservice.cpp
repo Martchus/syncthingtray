@@ -1548,16 +1548,21 @@ void SyncthingService::openServiceManager() const
 #endif
 }
 
-void SyncthingService::installService()
+void SyncthingService::installService(const QString &specifiedHomeDir)
 {
 #if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
     const auto appPath = QCoreApplication::applicationFilePath();
     auto params = QStringLiteral("install-service --name \"%1\"").arg(m_unitName);
-    const auto configFile = SyncthingConfig::locateConfigFile();
-    if (!configFile.isEmpty()) {
-        const auto homeDir = QFileInfo(configFile).path();
-        params += QStringLiteral(" --home \"%1\"").arg(QDir::toNativeSeparators(homeDir));
-        params += QStringLiteral(" --log-file \"%1\\syncthing.log\"").arg(QDir::toNativeSeparators(homeDir));
+    auto homeDir = specifiedHomeDir;
+    if (homeDir.isEmpty()) {
+        if (const auto configFile = SyncthingConfig::locateConfigFile(); !configFile.isEmpty()) {
+            homeDir = QFileInfo(configFile).path();
+        }
+    }
+    if (!homeDir.isEmpty()) {
+        const auto homeDirPath = QDir::toNativeSeparators(homeDir);
+        params += QStringLiteral(" --home \"%1\"").arg(homeDirPath);
+        params += QStringLiteral(" --log-file \"%1\\syncthing.log\"").arg(homeDirPath);
     }
     auto sei = SHELLEXECUTEINFOW{};
     sei.cbSize = sizeof(sei);

@@ -121,7 +121,7 @@ public Q_SLOTS:
     void reloadAllUnitFiles();
     void openLogs() const;
     void openServiceManager() const;
-    void installService();
+    void installService(const QString &homeDir = QString());
     void uninstallService();
 
 Q_SIGNALS:
