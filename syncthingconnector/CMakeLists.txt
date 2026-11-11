@@ -87,7 +87,7 @@ if (USE_BOOST_PROCESS)
         list(APPEND PRIVATE_LIBRARIES ws2_32) # needed by Boost.Asio
     endif ()
     if (MINGW)
-        # workaround https://github.com/boostorg/process/issues/96
+        # work around https://github.com/boostorg/process/issues/96
         set_property(
             SOURCE syncthingprocess.cpp
             APPEND

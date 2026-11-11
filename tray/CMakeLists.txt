@@ -413,7 +413,7 @@ if (ANDROID)
                 PROPERTY QT_ANDROID_EXTRA_LIBS "${SQLite3_LIBRARIES}")
         endif ()
 
-        # workaround https://github.com/golang/go/issues/70508
+        # work around https://github.com/golang/go/issues/70508
         set(ANDROID_SIGNAL_HANDLER_LIBRARY "androidsignalhandler")
         add_library("${ANDROID_SIGNAL_HANDLER_LIBRARY}" MODULE android/signalhandler.cpp)
         find_library(ANDROID_LOG_LIB log)

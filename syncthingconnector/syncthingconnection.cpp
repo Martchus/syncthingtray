@@ -1331,7 +1331,7 @@ void SyncthingConnection::emitError(const QString &message, const QJsonParseErro
  * already been called. Otherwise it returns `reply->readAll()`.
  *
  * This function also appends the trimmed response to \a errorString if it ends with "server replied: " to
- * workaround QTBUG-140126 (which is only fixed as of Qt 6.10.1). This Qt bug is reproducible with Qt 6.10.0 when
+ * work around QTBUG-140126 (which is only fixed as of Qt 6.10.1). This Qt bug is reproducible with Qt 6.10.0 when
  * calling `syncthingctl` with e.g. `--url https://0.0.0.0:8080`. Then Syncthing returns "Host check error" (if only
  * listening on the the loopback device) but Qt does not include this response into `reply->errorString()`.
  */

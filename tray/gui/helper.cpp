@@ -76,7 +76,7 @@ void BasicTreeView::mousePressEvent(QMouseEvent *event)
  * \brief Shows \a menu at the specified \a position for the specified \a view.
  * \remarks
  * - Maps \a position to the viewport of \a view for correct positioning for mouse events.
- * - The hack to map coordinates to top-level widget (to workaround behavior fixed by Qt commit
+ * - The hack to map coordinates to top-level widget (to work around behavior fixed by Qt commit
  *   d0b5adb3b28bf5b9d94ef46cecf402994e7c5b38) is no longer necessary as the code now uses mouse
  *   events directly (instead of the context menu event).
  */

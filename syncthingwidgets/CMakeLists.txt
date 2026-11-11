@@ -451,7 +451,7 @@ endif ()
 
 # add Qml module
 if (QUICK_GUI)
-    # workaround build errors due to implicit conversions in generated code
+    # work around build errors due to implicit conversions in generated code
     if (TREAT_WARNINGS_AS_ERRORS AND (CMAKE_CXX_COMPILER_ID MATCHES ".*Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU"))
         foreach (QML_FILE AdvancedDevConfigPage AdvancedDirConfigPage)
             set_source_files_properties(

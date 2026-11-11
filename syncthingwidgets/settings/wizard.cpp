@@ -76,7 +76,7 @@ Wizard::Wizard(QWidget *parent, Qt::WindowFlags flags)
     auto icon = QIcon(QString::fromUtf8(":/icons/hicolor/scalable/app/syncthingtray.svg"));
 #ifdef Q_OS_WINDOWS
     if (!fallbackToModernStyle) {
-        // workaround displaying issues with bigger icons when QWizard::AeroStyle is used
+        // work around displaying issues with bigger icons when QWizard::AeroStyle is used
         icon = icon.pixmap(16);
     }
 #endif

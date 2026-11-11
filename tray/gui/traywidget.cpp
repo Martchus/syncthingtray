@@ -356,8 +356,8 @@ SettingsDialog *TrayWidget::settingsDialog()
 
         // save settings to disk when applied
         // note: QCoreApplication::aboutToQuit() does not work reliably but terminating only at the
-        //       end of the session is a common use-case for the tray application. So workaround this
-        //       by simply saving the settings immediately.
+        //       end of the session is a common use-case for the tray application. So we work around this
+        //       by saving the settings immediately.
         connect(s_settingsDlg, &SettingsDialog::applied, this, &TrayWidget::saveSettings);
     }
     return s_settingsDlg;
