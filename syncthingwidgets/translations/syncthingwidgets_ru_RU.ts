@@ -3208,7 +3208,7 @@
         <translation>Не удалось определить, работает ли система от батареи.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2126"/>
+        <location filename="../settings/settingsdialog.cpp" line="2144"/>
         <source>Unable to restart via &quot;%1&quot;: %2</source>
         <translation>Невозможно перезапустить через «%1»: %2</translation>
     </message>
@@ -4374,7 +4374,7 @@
     <name>QtGui::BuiltinWebViewOptionPage</name>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="2068"/>
+        <location filename="../settings/settingsdialog.cpp" line="2086"/>
         <source>Built-in web view</source>
         <translation>Встроенный веб-просмотр</translation>
     </message>
@@ -4394,7 +4394,7 @@
         <translation>Сохранять веб-представление активным, когда оно в данный момент не отображается</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2070"/>
+        <location filename="../settings/settingsdialog.cpp" line="2088"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
         <translation>Syncthing Tray не поддерживает vieb-представление с использованием Qt WebKit или Qt WebEngine.</translation>
     </message>
@@ -4942,12 +4942,12 @@
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2044"/>
+        <location filename="../settings/settingsdialog.cpp" line="2062"/>
         <source>Custom command to launch Syncthing&apos;s UI - </source>
         <translation>Пользовательская команда для запуска пользовательского интерфейса Syncthing - </translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2045"/>
+        <location filename="../settings/settingsdialog.cpp" line="2063"/>
         <source>&lt;p&gt;Enter a custom command to launch Syncthing&apos;s UI. The expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; will be replaced with the Syncthing-URL.&lt;/p&gt;&lt;p&gt;Leave the command empty to use the auto-detection.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Введите пользовательскую команду для запуска пользовательского интерфейса Syncthing. Выражение &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; будет заменено на Syncthing-URL.&lt;/p&gt;&lt;p&gt;Оставьте команду пустой, чтобы использовать автоматическое определение.&lt;/p&gt;</translation>
     </message>
@@ -5754,8 +5754,8 @@
         <location filename="../settings/serviceoptionpage.ui" line="176"/>
         <location filename="../settings/serviceoptionpage.ui" line="263"/>
         <location filename="../settings/serviceoptionpage.ui" line="353"/>
-        <location filename="../settings/settingsdialog.cpp" line="1909"/>
-        <location filename="../settings/settingsdialog.cpp" line="1929"/>
+        <location filename="../settings/settingsdialog.cpp" line="1924"/>
+        <location filename="../settings/settingsdialog.cpp" line="1947"/>
         <source>unknown</source>
         <translation>неизвестный</translation>
     </message>
@@ -5766,7 +5766,7 @@
     </message>
     <message>
         <location filename="../settings/serviceoptionpage.ui" line="205"/>
-        <location filename="../settings/settingsdialog.cpp" line="1654"/>
+        <location filename="../settings/settingsdialog.cpp" line="1655"/>
         <source>Open logs</source>
         <translation>Открытые журналы</translation>
     </message>
@@ -5801,92 +5801,102 @@
         <translation>Отключить</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1650"/>
+        <location filename="../settings/settingsdialog.cpp" line="1651"/>
         <source>Reload all unit files</source>
         <translation>Перезагрузить все файлы модулей</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1660"/>
+        <location filename="../settings/settingsdialog.cpp" line="1661"/>
         <source>Open service logs in terminal via journalctl</source>
         <translation>Открыть журналы службы в терминале через journalctl</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1663"/>
+        <location filename="../settings/settingsdialog.cpp" line="1664"/>
         <source>Open Windows Services console</source>
         <translation>Открыть консоль служб Windows</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1665"/>
+        <location filename="../settings/settingsdialog.cpp" line="1666"/>
         <source>Open the Windows Services management console</source>
         <translation>Открыть консоль управления службами Windows</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1668"/>
+        <location filename="../settings/settingsdialog.cpp" line="1669"/>
         <source>Install service</source>
         <translation>Установить службу</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1672"/>
+        <source>Install service, select home</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1676"/>
         <source>Uninstall service</source>
         <translation>Удалить службу</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1693"/>
+        <location filename="../settings/settingsdialog.cpp" line="1698"/>
         <source>Systemd</source>
         <translation>Systemd</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1695"/>
+        <location filename="../settings/settingsdialog.cpp" line="1700"/>
         <source>Windows service</source>
         <translation>Служба Windows</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1696"/>
+        <location filename="../settings/settingsdialog.cpp" line="1701"/>
         <source>Syncthing service</source>
         <translation>Служба Syncthing</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1697"/>
+        <location filename="../settings/settingsdialog.cpp" line="1702"/>
         <source>Startup type</source>
         <translation>Тип запуска</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1699"/>
+        <location filename="../settings/settingsdialog.cpp" line="1704"/>
         <source>Refresh service status</source>
         <translation>Обновить статус службы</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1700"/>
+        <location filename="../settings/settingsdialog.cpp" line="1705"/>
         <source>Open the service log file</source>
         <translation>Открыть файл журнала службы</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1718"/>
+        <location filename="../settings/settingsdialog.cpp" line="1717"/>
+        <source>Select home directory for Syncthing service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1730"/>
         <source>Service installed</source>
         <translation>Служба установлена</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1719"/>
+        <location filename="../settings/settingsdialog.cpp" line="1731"/>
         <source>&lt;p&gt;The Syncthing service has been installed successfully.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Security note:&lt;/b&gt; By default, the service runs under the Local System account to access user folders without requiring a password. Since Syncthing is exposed to the network, for enhanced security you can configure the service to run under a specific user account in the Windows Services management console (&lt;em&gt;Properties &amp;rarr; Log On&lt;/em&gt;).&lt;/p&gt;</source>
         <translation>&lt;p&gt;Служба Syncthing успешно установлена.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Примечание по безопасности:&lt;/b&gt; По умолчанию служба работает от имени локальной системы (Local System) для доступа к пользовательским папкам без запроса пароля. Поскольку Syncthing доступен в сети, для повышения безопасности вы можете настроить запуск службы от имени конкретного пользователя в консоли управления службами Windows (&lt;em&gt;Свойства &amp;rarr; Вход в систему&lt;/em&gt;).&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1830"/>
+        <location filename="../settings/settingsdialog.cpp" line="1842"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation>Невозможно одновременно отобразить кнопку запуска/остановки для службы systemd и внутреннего лаунчера. Служба systemd предшествует.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1836"/>
+        <location filename="../settings/settingsdialog.cpp" line="1848"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation>Невозможно одновременно учитывать службу systemd и внутренний лаунчер для повторных подключений. Служба systemd предшествует.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1882"/>
+        <location filename="../settings/settingsdialog.cpp" line="1897"/>
         <source>The specified service is unavailable or not installed</source>
         <translation>Указанная служба недоступна или не установлена</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1904"/>
+        <location filename="../settings/settingsdialog.cpp" line="1919"/>
         <source>since </source>
         <translation>с </translation>
     </message>
@@ -5894,37 +5904,37 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2158"/>
+        <location filename="../settings/settingsdialog.cpp" line="2176"/>
         <source>Tray</source>
         <translation>Трей</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2166"/>
+        <location filename="../settings/settingsdialog.cpp" line="2184"/>
         <source>Web view</source>
         <translation>Веб-просмотр</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2173"/>
+        <location filename="../settings/settingsdialog.cpp" line="2191"/>
         <source>Startup</source>
         <translation>Запуск</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2175"/>
+        <location filename="../settings/settingsdialog.cpp" line="2193"/>
         <source>additional tool</source>
         <translation>дополнительный инструмент</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2175"/>
+        <location filename="../settings/settingsdialog.cpp" line="2193"/>
         <source>Extra launcher</source>
         <translation>Дополнительный пусковой механизм</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2216"/>
+        <location filename="../settings/settingsdialog.cpp" line="2234"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2222"/>
+        <location filename="../settings/settingsdialog.cpp" line="2240"/>
         <source>Start wizard</source>
         <translation>Запустить мастер</translation>
     </message>

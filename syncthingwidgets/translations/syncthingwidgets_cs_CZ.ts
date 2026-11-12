@@ -2829,7 +2829,7 @@
         <translation>Nelze zjistit, zda je systém napájen z baterie.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2126"/>
+        <location filename="../settings/settingsdialog.cpp" line="2144"/>
         <source>Unable to restart via &quot;%1&quot;: %2</source>
         <translation>Nelze restartovat přes &quot;%1&quot;: %2</translation>
     </message>
@@ -3799,7 +3799,7 @@
     <name>QtGui::BuiltinWebViewOptionPage</name>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="2068"/>
+        <location filename="../settings/settingsdialog.cpp" line="2086"/>
         <source>Built-in web view</source>
         <translation>Vestavěné webové zobrazení</translation>
     </message>
@@ -3819,7 +3819,7 @@
         <translation>Ponechat webové zobrazení spuštěné, i když není zobrazeno</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2070"/>
+        <location filename="../settings/settingsdialog.cpp" line="2088"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
         <translation>Syncthing Tray nebyl sestaven s podporou webového zobrazení pomocí Qt WebKit nebo Qt WebEngine.</translation>
     </message>
@@ -4367,12 +4367,12 @@
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2044"/>
+        <location filename="../settings/settingsdialog.cpp" line="2062"/>
         <source>Custom command to launch Syncthing&apos;s UI - </source>
         <translation>Vlastní příkaz pro spuštění rozhraní Syncthing - </translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2045"/>
+        <location filename="../settings/settingsdialog.cpp" line="2063"/>
         <source>&lt;p&gt;Enter a custom command to launch Syncthing&apos;s UI. The expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; will be replaced with the Syncthing-URL.&lt;/p&gt;&lt;p&gt;Leave the command empty to use the auto-detection.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Zadejte vlastní příkaz pro spuštění rozhraní Syncthing. Výraz &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; bude nahrazen URL adresou Syncthing.&lt;/p&gt;&lt;p&gt;Ponechte příkaz prázdný pro použití automatického rozpoznání.&lt;/p&gt;</translation>
     </message>
@@ -5151,8 +5151,8 @@
         <location filename="../settings/serviceoptionpage.ui" line="176"/>
         <location filename="../settings/serviceoptionpage.ui" line="263"/>
         <location filename="../settings/serviceoptionpage.ui" line="353"/>
-        <location filename="../settings/settingsdialog.cpp" line="1909"/>
-        <location filename="../settings/settingsdialog.cpp" line="1929"/>
+        <location filename="../settings/settingsdialog.cpp" line="1924"/>
+        <location filename="../settings/settingsdialog.cpp" line="1947"/>
         <source>unknown</source>
         <translation>neznámý</translation>
     </message>
@@ -5163,7 +5163,7 @@
     </message>
     <message>
         <location filename="../settings/serviceoptionpage.ui" line="205"/>
-        <location filename="../settings/settingsdialog.cpp" line="1654"/>
+        <location filename="../settings/settingsdialog.cpp" line="1655"/>
         <source>Open logs</source>
         <translation>Otevřít protokoly</translation>
     </message>
@@ -5198,92 +5198,102 @@
         <translation>Zakázat</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1650"/>
+        <location filename="../settings/settingsdialog.cpp" line="1651"/>
         <source>Reload all unit files</source>
         <translation>Znovu načíst všechny soubory jednotek</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1660"/>
+        <location filename="../settings/settingsdialog.cpp" line="1661"/>
         <source>Open service logs in terminal via journalctl</source>
         <translation>Otevřít protokoly služby v terminálu pomocí journalctl</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1663"/>
+        <location filename="../settings/settingsdialog.cpp" line="1664"/>
         <source>Open Windows Services console</source>
         <translation>Otevřít konzoli služeb Windows</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1665"/>
+        <location filename="../settings/settingsdialog.cpp" line="1666"/>
         <source>Open the Windows Services management console</source>
         <translation>Otevřít správu služeb Windows</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1668"/>
+        <location filename="../settings/settingsdialog.cpp" line="1669"/>
         <source>Install service</source>
         <translation>Nainstalovat službu</translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1672"/>
+        <source>Install service, select home</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1676"/>
         <source>Uninstall service</source>
         <translation>Odinstalovat službu</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1693"/>
+        <location filename="../settings/settingsdialog.cpp" line="1698"/>
         <source>Systemd</source>
         <translation>Systemd</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1695"/>
+        <location filename="../settings/settingsdialog.cpp" line="1700"/>
         <source>Windows service</source>
         <translation>Služba Windows</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1696"/>
+        <location filename="../settings/settingsdialog.cpp" line="1701"/>
         <source>Syncthing service</source>
         <translation>Služba Syncthing</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1697"/>
+        <location filename="../settings/settingsdialog.cpp" line="1702"/>
         <source>Startup type</source>
         <translation>Typ spuštění</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1699"/>
+        <location filename="../settings/settingsdialog.cpp" line="1704"/>
         <source>Refresh service status</source>
         <translation>Aktualizovat stav služby</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1700"/>
+        <location filename="../settings/settingsdialog.cpp" line="1705"/>
         <source>Open the service log file</source>
         <translation>Otevřít soubor protokolu služby</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1718"/>
+        <location filename="../settings/settingsdialog.cpp" line="1717"/>
+        <source>Select home directory for Syncthing service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1730"/>
         <source>Service installed</source>
         <translation>Služba nainstalována</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1719"/>
+        <location filename="../settings/settingsdialog.cpp" line="1731"/>
         <source>&lt;p&gt;The Syncthing service has been installed successfully.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Security note:&lt;/b&gt; By default, the service runs under the Local System account to access user folders without requiring a password. Since Syncthing is exposed to the network, for enhanced security you can configure the service to run under a specific user account in the Windows Services management console (&lt;em&gt;Properties &amp;rarr; Log On&lt;/em&gt;).&lt;/p&gt;</source>
         <translation>&lt;p&gt;Služba Syncthing byla úspěšně nainstalována.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Poznámka k zabezpečení:&lt;/b&gt; Ve výchozím nastavení služba běží pod účtem Local System, aby mohla přistupovat k uživatelským složkám bez vyžadování hesla. Protože je Syncthing vystaven síti, pro vyšší zabezpečení můžete službu nakonfigurovat tak, aby běžela pod konkrétním uživatelským účtem v konzole Správce služeb systému Windows (&lt;em&gt;Vlastnosti &amp;rarr; Přihlášení&lt;/em&gt;).&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1830"/>
+        <location filename="../settings/settingsdialog.cpp" line="1842"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation>Není možné zobrazit tlačítko spustit/zastavit pro službu systemd a interní spouštěč současně. Služba systemd má přednost.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1836"/>
+        <location filename="../settings/settingsdialog.cpp" line="1848"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation>Není možné zohlednit službu systemd a interní spouštěč pro opětovné připojení současně. Služba systemd má přednost.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1882"/>
+        <location filename="../settings/settingsdialog.cpp" line="1897"/>
         <source>The specified service is unavailable or not installed</source>
         <translation>Zadaná služba není k dispozici nebo není nainstalována</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1904"/>
+        <location filename="../settings/settingsdialog.cpp" line="1919"/>
         <source>since </source>
         <translation>od </translation>
     </message>
@@ -5291,37 +5301,37 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2158"/>
+        <location filename="../settings/settingsdialog.cpp" line="2176"/>
         <source>Tray</source>
         <translation>Oznamovací oblast</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2166"/>
+        <location filename="../settings/settingsdialog.cpp" line="2184"/>
         <source>Web view</source>
         <translation>Webové zobrazení</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2173"/>
+        <location filename="../settings/settingsdialog.cpp" line="2191"/>
         <source>Startup</source>
         <translation>Spouštění</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2175"/>
+        <location filename="../settings/settingsdialog.cpp" line="2193"/>
         <source>additional tool</source>
         <translation>další nástroj</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2175"/>
+        <location filename="../settings/settingsdialog.cpp" line="2193"/>
         <source>Extra launcher</source>
         <translation>Dodatečný spouštěč</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2216"/>
+        <location filename="../settings/settingsdialog.cpp" line="2234"/>
         <source>Settings</source>
         <translation>Nastavení</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2222"/>
+        <location filename="../settings/settingsdialog.cpp" line="2240"/>
         <source>Start wizard</source>
         <translation>Spustit průvodce</translation>
     </message>

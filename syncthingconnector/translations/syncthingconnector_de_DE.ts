@@ -76,32 +76,32 @@
     <message>
         <location filename="../runtimecondition.cpp" line="887"/>
         <source>Syncthing is temporarily stopped due to running on battery</source>
-        <translation>Syncthing ist vorübergehend gestoppt, da am Akku betrieben wird</translation>
+        <translation>Syncthing ist aufgrund des Akkubetriebs vorübergehend gestoppt</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="886"/>
         <source>Syncthing is temporarily paused due to running on battery</source>
-        <translation>Syncthing ist vorübergehend pausiert, da am Akku betrieben wird</translation>
+        <translation>Syncthing ist aufgrund des Akkubetriebs vorübergehend pausiert</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="889"/>
         <source>Syncthing is temporarily stopped due to low battery</source>
-        <translation>Syncthing ist vorübergehend gestoppt, da der Akkustand niedrig ist</translation>
+        <translation>Syncthing ist aufgrund des niedrigen Akkustands vorübergehend gestoppt</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="889"/>
         <source>Syncthing is temporarily paused due to low battery</source>
-        <translation>Syncthing ist vorübergehend pausiert, da der Akkustand niedrig ist</translation>
+        <translation>Syncthing ist aufgrund des niedrigen Akkustands vorübergehend pausiert</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="892"/>
         <source>Syncthing is temporarily stopped manually</source>
-        <translation>Syncthing ist manuell vorübergehend gestoppt</translation>
+        <translation>Syncthing ist vorübergehend manuell gestoppt</translation>
     </message>
     <message>
         <location filename="../runtimecondition.cpp" line="892"/>
         <source>Syncthing is temporarily paused manually</source>
-        <translation>Syncthing ist manuell vorübergehend pausiert</translation>
+        <translation>Syncthing ist vorübergehend manuell pausiert</translation>
     </message>
 </context>
 <context>
@@ -511,39 +511,223 @@
 <context>
     <name>Data::SyncthingService</name>
     <message>
-        <location filename="../syncthingservice.cpp" line="325"/>
+        <location filename="../syncthingservice.cpp" line="166"/>
+        <source>Windows service &quot;%1&quot; stop requested.</source>
+        <translation>Windows-Dienst &quot;%1&quot; wurde zum Stoppen angefordert.</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="187"/>
+        <source>Unable to register service control handler for &quot;%1&quot;: %2</source>
+        <translation>Dienststeuerungs-Handler für &quot;%1&quot; konnte nicht registriert werden: %2</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="205"/>
+        <source>Windows service &quot;%1&quot; started.</source>
+        <translation>Windows-Dienst &quot;%1&quot; wurde gestartet.</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="209"/>
+        <source>Windows service &quot;%1&quot; stopped with exit code %2.</source>
+        <translation>Windows-Dienst &quot;%1&quot; wurde mit dem Exit-Code %2 beendet.</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="462"/>
+        <location filename="../syncthingservice.cpp" line="1587"/>
+        <source>Process exited with code %1</source>
+        <translation>Prozess wurde mit dem Code %1 beendet.</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1144"/>
+        <source>service &quot;%1&quot;</source>
+        <translation>Dienst &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1147"/>
         <source>user unit &quot;%1&quot;</source>
         <translation>Benutzer-Unit &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="327"/>
+        <location filename="../syncthingservice.cpp" line="1149"/>
         <source>system unit &quot;%1&quot;</source>
         <translation>System-Unit &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="388"/>
+        <location filename="../syncthingservice.cpp" line="1228"/>
         <source>start unit</source>
         <translation>Starten der Unit</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="390"/>
+        <location filename="../syncthingservice.cpp" line="1230"/>
         <source>stop unit</source>
         <translation>Stoppen der Unit</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="405"/>
+        <location filename="../syncthingservice.cpp" line="1238"/>
+        <location filename="../syncthingservice.cpp" line="1308"/>
+        <source>open service manager</source>
+        <translation>Dienst-Manager öffnen</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1238"/>
+        <location filename="../syncthingservice.cpp" line="1260"/>
+        <location filename="../syncthingservice.cpp" line="1267"/>
+        <location filename="../syncthingservice.cpp" line="1275"/>
+        <location filename="../syncthingservice.cpp" line="1308"/>
+        <location filename="../syncthingservice.cpp" line="1326"/>
+        <location filename="../syncthingservice.cpp" line="1346"/>
+        <source>Windows Service Error</source>
+        <translation>Windows-Dienstfehler</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1250"/>
+        <location filename="../syncthingservice.cpp" line="1260"/>
+        <location filename="../syncthingservice.cpp" line="1267"/>
+        <source>start service</source>
+        <translation>Dienst starten</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1250"/>
+        <location filename="../syncthingservice.cpp" line="1260"/>
+        <location filename="../syncthingservice.cpp" line="1275"/>
+        <source>stop service</source>
+        <translation>Dienst stoppen</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1250"/>
+        <location filename="../syncthingservice.cpp" line="1319"/>
+        <location filename="../syncthingservice.cpp" line="1339"/>
+        <location filename="../syncthingservice.cpp" line="1604"/>
+        <source>Operation Failed</source>
+        <translation>Vorgang fehlgeschlagen</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1299"/>
         <source>enable unit</source>
         <translation>Aktivieren der Unit</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="407"/>
+        <location filename="../syncthingservice.cpp" line="1301"/>
         <source>disable unit</source>
         <translation>Deaktivieren der Unit</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="417"/>
+        <location filename="../syncthingservice.cpp" line="1319"/>
+        <location filename="../syncthingservice.cpp" line="1326"/>
+        <location filename="../syncthingservice.cpp" line="1339"/>
+        <location filename="../syncthingservice.cpp" line="1346"/>
+        <source>enable service</source>
+        <translation>Dienst aktivieren</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1319"/>
+        <location filename="../syncthingservice.cpp" line="1326"/>
+        <location filename="../syncthingservice.cpp" line="1339"/>
+        <location filename="../syncthingservice.cpp" line="1346"/>
+        <source>disable service</source>
+        <translation>Dienst deaktivieren</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1360"/>
         <source>reload all unit files</source>
         <translation>Aktualisieren aller Unit-Dateien</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1408"/>
+        <location filename="../syncthingservice.cpp" line="1416"/>
+        <location filename="../syncthingservice.cpp" line="1463"/>
+        <location filename="../syncthingservice.cpp" line="1482"/>
+        <location filename="../syncthingservice.cpp" line="1526"/>
+        <location filename="../syncthingservice.cpp" line="1534"/>
+        <source>open logs</source>
+        <translation>Protokolle öffnen</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1408"/>
+        <source>Invalid configuration</source>
+        <translation>Ungültige Konfiguration</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1408"/>
+        <source>No unit name configured.</source>
+        <translation>Kein Unit-Name konfiguriert.</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1416"/>
+        <source>Command not found</source>
+        <translation>Befehl nicht gefunden</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1416"/>
+        <source>The &quot;journalctl&quot; executable could not be found.</source>
+        <translation>Die ausführbare Datei &quot;journalctl&quot; konnte nicht gefunden werden.</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1463"/>
+        <source>Terminal not found</source>
+        <translation>Terminal nicht gefunden</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1464"/>
+        <source>No supported terminal application was found in PATH. Please set the TERMINAL environment variable.</source>
+        <translation>Es wurde keine unterstützte Terminalanwendung im PATH gefunden. Bitte legen Sie die Umgebungsvariable TERMINAL fest.</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1482"/>
+        <location filename="../syncthingservice.cpp" line="1534"/>
+        <location filename="../syncthingservice.cpp" line="1546"/>
+        <source>Launch failed</source>
+        <translation>Start fehlgeschlagen</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1482"/>
+        <source>Unable to launch terminal &quot;%1&quot;.</source>
+        <translation>Terminal &quot;%1&quot; konnte nicht gestartet werden.</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1526"/>
+        <source>Log file not found</source>
+        <translation>Protokolldatei nicht gefunden</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1527"/>
+        <source>The log file &quot;%1&quot; could not be found.</source>
+        <translation>Die Protokolldatei &quot;%1&quot; konnte nicht gefunden werden.</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1534"/>
+        <source>Unable to open log file &quot;%1&quot;.</source>
+        <translation>Protokolldatei &quot;%1&quot; konnte nicht geöffnet werden.</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1546"/>
+        <source>open services</source>
+        <translation>Dienste öffnen</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1546"/>
+        <source>Unable to launch &quot;services.msc&quot;.</source>
+        <translation>&quot;services.msc&quot; konnte nicht gestartet werden.</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1577"/>
+        <location filename="../syncthingservice.cpp" line="1587"/>
+        <source>install service</source>
+        <translation>Dienst installieren</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1577"/>
+        <source>UAC Elevation Failed</source>
+        <translation>UAC-Elevation fehlgeschlagen</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1587"/>
+        <source>Installation Failed</source>
+        <translation>Installation fehlgeschlagen</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1604"/>
+        <source>uninstall service</source>
+        <translation>Dienst deinstallieren</translation>
     </message>
 </context>
 <context>

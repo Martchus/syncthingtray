@@ -511,39 +511,223 @@
 <context>
     <name>Data::SyncthingService</name>
     <message>
-        <location filename="../syncthingservice.cpp" line="325"/>
+        <location filename="../syncthingservice.cpp" line="166"/>
+        <source>Windows service &quot;%1&quot; stop requested.</source>
+        <translation>Zastavení služby Windows &quot;%1&quot; bylo vyžádáno.</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="187"/>
+        <source>Unable to register service control handler for &quot;%1&quot;: %2</source>
+        <translation>Nelze zaregistrovat obslužnou rutinu ovládání služby pro &quot;%1&quot;: %2</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="205"/>
+        <source>Windows service &quot;%1&quot; started.</source>
+        <translation>Služba Windows &quot;%1&quot; byla spuštěna.</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="209"/>
+        <source>Windows service &quot;%1&quot; stopped with exit code %2.</source>
+        <translation>Služba Windows &quot;%1&quot; byla zastavena s kódem ukončení %2.</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="462"/>
+        <location filename="../syncthingservice.cpp" line="1587"/>
+        <source>Process exited with code %1</source>
+        <translation>Proces ukončen s kódem %1</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1144"/>
+        <source>service &quot;%1&quot;</source>
+        <translation>služba &quot;%1&quot;</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1147"/>
         <source>user unit &quot;%1&quot;</source>
         <translation>uživatelská jednotka &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="327"/>
+        <location filename="../syncthingservice.cpp" line="1149"/>
         <source>system unit &quot;%1&quot;</source>
         <translation>systémová jednotka &quot;%1&quot;</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="388"/>
+        <location filename="../syncthingservice.cpp" line="1228"/>
         <source>start unit</source>
         <translation>spustit jednotku</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="390"/>
+        <location filename="../syncthingservice.cpp" line="1230"/>
         <source>stop unit</source>
         <translation>zastavit jednotku</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="405"/>
+        <location filename="../syncthingservice.cpp" line="1238"/>
+        <location filename="../syncthingservice.cpp" line="1308"/>
+        <source>open service manager</source>
+        <translation>otevřít správce služeb</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1238"/>
+        <location filename="../syncthingservice.cpp" line="1260"/>
+        <location filename="../syncthingservice.cpp" line="1267"/>
+        <location filename="../syncthingservice.cpp" line="1275"/>
+        <location filename="../syncthingservice.cpp" line="1308"/>
+        <location filename="../syncthingservice.cpp" line="1326"/>
+        <location filename="../syncthingservice.cpp" line="1346"/>
+        <source>Windows Service Error</source>
+        <translation>Chyba služby Windows</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1250"/>
+        <location filename="../syncthingservice.cpp" line="1260"/>
+        <location filename="../syncthingservice.cpp" line="1267"/>
+        <source>start service</source>
+        <translation>spustit službu</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1250"/>
+        <location filename="../syncthingservice.cpp" line="1260"/>
+        <location filename="../syncthingservice.cpp" line="1275"/>
+        <source>stop service</source>
+        <translation>zastavit službu</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1250"/>
+        <location filename="../syncthingservice.cpp" line="1319"/>
+        <location filename="../syncthingservice.cpp" line="1339"/>
+        <location filename="../syncthingservice.cpp" line="1604"/>
+        <source>Operation Failed</source>
+        <translation>Operace selhala</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1299"/>
         <source>enable unit</source>
         <translation>zapnout jednotku</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="407"/>
+        <location filename="../syncthingservice.cpp" line="1301"/>
         <source>disable unit</source>
         <translation>vypnout jednotku</translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="417"/>
+        <location filename="../syncthingservice.cpp" line="1319"/>
+        <location filename="../syncthingservice.cpp" line="1326"/>
+        <location filename="../syncthingservice.cpp" line="1339"/>
+        <location filename="../syncthingservice.cpp" line="1346"/>
+        <source>enable service</source>
+        <translation>povolit službu</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1319"/>
+        <location filename="../syncthingservice.cpp" line="1326"/>
+        <location filename="../syncthingservice.cpp" line="1339"/>
+        <location filename="../syncthingservice.cpp" line="1346"/>
+        <source>disable service</source>
+        <translation>zakázat službu</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1360"/>
         <source>reload all unit files</source>
         <translation>znovu načíst všechny soubory jednotek</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1408"/>
+        <location filename="../syncthingservice.cpp" line="1416"/>
+        <location filename="../syncthingservice.cpp" line="1463"/>
+        <location filename="../syncthingservice.cpp" line="1482"/>
+        <location filename="../syncthingservice.cpp" line="1526"/>
+        <location filename="../syncthingservice.cpp" line="1534"/>
+        <source>open logs</source>
+        <translation>otevřít protokoly</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1408"/>
+        <source>Invalid configuration</source>
+        <translation>Neplatná konfigurace</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1408"/>
+        <source>No unit name configured.</source>
+        <translation>Není nakonfigurován název jednotky.</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1416"/>
+        <source>Command not found</source>
+        <translation>Příkaz nebyl nalezen</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1416"/>
+        <source>The &quot;journalctl&quot; executable could not be found.</source>
+        <translation>Spustitelný soubor &quot;journalctl&quot; nebyl nalezen.</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1463"/>
+        <source>Terminal not found</source>
+        <translation>Terminál nebyl nalezen</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1464"/>
+        <source>No supported terminal application was found in PATH. Please set the TERMINAL environment variable.</source>
+        <translation>V proměnné PATH nebyla nalezena žádná podporovaná terminálová aplikace. Nastavte prosím proměnnou prostředí TERMINAL.</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1482"/>
+        <location filename="../syncthingservice.cpp" line="1534"/>
+        <location filename="../syncthingservice.cpp" line="1546"/>
+        <source>Launch failed</source>
+        <translation>Spuštění selhalo</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1482"/>
+        <source>Unable to launch terminal &quot;%1&quot;.</source>
+        <translation>Nelze spustit terminál &quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1526"/>
+        <source>Log file not found</source>
+        <translation>Protokolový soubor nebyl nalezen</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1527"/>
+        <source>The log file &quot;%1&quot; could not be found.</source>
+        <translation>Protokolový soubor &quot;%1&quot; nebyl nalezen.</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1534"/>
+        <source>Unable to open log file &quot;%1&quot;.</source>
+        <translation>Nelze otevřít protokolový soubor &quot;%1&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1546"/>
+        <source>open services</source>
+        <translation>Otevřít služby</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1546"/>
+        <source>Unable to launch &quot;services.msc&quot;.</source>
+        <translation>Nelze spustit &quot;services.msc&quot;.</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1577"/>
+        <location filename="../syncthingservice.cpp" line="1587"/>
+        <source>install service</source>
+        <translation>Nainstalovat službu</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1577"/>
+        <source>UAC Elevation Failed</source>
+        <translation>Zvýšení oprávnění UAC selhalo</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1587"/>
+        <source>Installation Failed</source>
+        <translation>Instalace selhala</translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1604"/>
+        <source>uninstall service</source>
+        <translation>Odinstalovat službu</translation>
     </message>
 </context>
 <context>

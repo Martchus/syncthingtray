@@ -175,47 +175,47 @@
     <name>FullRepresentation</name>
     <message>
         <source>Connect</source>
-        <translation>Připojit</translation>
+        <translation type="vanished">Připojit</translation>
     </message>
     <message>
         <source>Resume</source>
-        <translation>Obnovit</translation>
+        <translation type="vanished">Obnovit</translation>
     </message>
     <message>
         <source>Pause</source>
-        <translation>Pozastavit</translation>
+        <translation type="vanished">Pozastavit</translation>
     </message>
     <message>
         <source>Stop</source>
-        <translation>Zastavit</translation>
+        <translation type="vanished">Zastavit</translation>
     </message>
     <message>
         <source>Start</source>
-        <translation>Spustit</translation>
+        <translation type="vanished">Spustit</translation>
     </message>
     <message>
         <source>Show new notifications</source>
-        <translation>Zobrazit nová oznámení</translation>
+        <translation type="vanished">Zobrazit nová oznámení</translation>
     </message>
     <message>
         <source>Show own device ID</source>
-        <translation>Zobrazit vlastní ID zařízení</translation>
+        <translation type="vanished">Zobrazit vlastní ID zařízení</translation>
     </message>
     <message>
         <source>Show Syncthing log</source>
-        <translation>Zobrazit protokol Syncthing</translation>
+        <translation type="vanished">Zobrazit protokol Syncthing</translation>
     </message>
     <message>
         <source>Rescan all folders</source>
-        <translation>Znovu prohledat všechny složky</translation>
+        <translation type="vanished">Znovu prohledat všechny složky</translation>
     </message>
     <message>
         <source>Settings</source>
-        <translation>Nastavení</translation>
+        <translation type="vanished">Nastavení</translation>
     </message>
     <message>
         <source>Open Syncthing</source>
-        <translation>Otevřít Syncthing</translation>
+        <translation type="vanished">Otevřít Syncthing</translation>
     </message>
     <message>
         <location filename="../package5/contents/ui/FullRepresentation.qml" line="35"/>
@@ -273,7 +273,7 @@
     </message>
     <message>
         <source>About Syncthing Tray</source>
-        <translation>O aplikaci Syncthing Tray</translation>
+        <translation type="vanished">O aplikaci Syncthing Tray</translation>
     </message>
     <message>
         <location filename="../package6/contents/ui/FullRepresentation.qml" line="142"/>
@@ -437,17 +437,16 @@
 <context>
     <name>Plasmoid::SyncthingApplet</name>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="550"/>
+        <location filename="../lib/syncthingapplet.cpp" line="562"/>
         <source>About</source>
         <translation>O Syncthing Plasmoid</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="640"/>
         <source>Associated directory does not exist.</source>
-        <translation>Přidružený adresář neexistuje.</translation>
+        <translation type="vanished">Přidružený adresář neexistuje.</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="666"/>
+        <location filename="../lib/syncthingapplet.cpp" line="655"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation>Nelze navázat spojení se Syncthing.</translation>
     </message>
@@ -456,7 +455,7 @@
         <translation type="vanished">Nová oznámení</translation>
     </message>
     <message>
-        <location filename="../lib/syncthingapplet.cpp" line="734"/>
+        <location filename="../lib/syncthingapplet.cpp" line="723"/>
         <source>D-Bus error - unable to </source>
         <translation>chyba D-Bus – nedaří </translation>
     </message>

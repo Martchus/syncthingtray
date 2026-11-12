@@ -2829,7 +2829,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2126"/>
+        <location filename="../settings/settingsdialog.cpp" line="2144"/>
         <source>Unable to restart via &quot;%1&quot;: %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3124,27 +3124,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../misc/syncthingmodels.cpp" line="393"/>
-        <source>Unable to open output file under &quot;%1&quot;: %2</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../misc/syncthingmodels.cpp" line="411"/>
-        <source>Unable to write bundle: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../misc/syncthingmodels.cpp" line="414"/>
-        <source>Unable to download bundle: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/app.cpp" line="1535"/>
-        <location filename="../misc/syncthingmodels.cpp" line="376"/>
-        <source>Support bundle saved</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../quick/app.cpp" line="1565"/>
         <source>Removed old database directory.</source>
         <translation type="unfinished"></translation>
@@ -3177,6 +3156,27 @@
     <message>
         <location filename="../quick/app.cpp" line="1612"/>
         <source>There was nothing to clean up.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/syncthingmodels.cpp" line="393"/>
+        <source>Unable to open output file under &quot;%1&quot;: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/syncthingmodels.cpp" line="411"/>
+        <source>Unable to write bundle: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../misc/syncthingmodels.cpp" line="414"/>
+        <source>Unable to download bundle: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/app.cpp" line="1535"/>
+        <location filename="../misc/syncthingmodels.cpp" line="376"/>
+        <source>Support bundle saved</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3795,7 +3795,7 @@
     <name>QtGui::BuiltinWebViewOptionPage</name>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="2068"/>
+        <location filename="../settings/settingsdialog.cpp" line="2086"/>
         <source>Built-in web view</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3815,7 +3815,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2070"/>
+        <location filename="../settings/settingsdialog.cpp" line="2088"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4362,12 +4362,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2044"/>
+        <location filename="../settings/settingsdialog.cpp" line="2062"/>
         <source>Custom command to launch Syncthing&apos;s UI - </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2045"/>
+        <location filename="../settings/settingsdialog.cpp" line="2063"/>
         <source>&lt;p&gt;Enter a custom command to launch Syncthing&apos;s UI. The expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; will be replaced with the Syncthing-URL.&lt;/p&gt;&lt;p&gt;Leave the command empty to use the auto-detection.&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5139,8 +5139,8 @@
         <location filename="../settings/serviceoptionpage.ui" line="176"/>
         <location filename="../settings/serviceoptionpage.ui" line="263"/>
         <location filename="../settings/serviceoptionpage.ui" line="353"/>
-        <location filename="../settings/settingsdialog.cpp" line="1909"/>
-        <location filename="../settings/settingsdialog.cpp" line="1929"/>
+        <location filename="../settings/settingsdialog.cpp" line="1924"/>
+        <location filename="../settings/settingsdialog.cpp" line="1947"/>
         <source>unknown</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5151,7 +5151,7 @@
     </message>
     <message>
         <location filename="../settings/serviceoptionpage.ui" line="205"/>
-        <location filename="../settings/settingsdialog.cpp" line="1654"/>
+        <location filename="../settings/settingsdialog.cpp" line="1655"/>
         <source>Open logs</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5186,92 +5186,102 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1650"/>
+        <location filename="../settings/settingsdialog.cpp" line="1651"/>
         <source>Reload all unit files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1660"/>
+        <location filename="../settings/settingsdialog.cpp" line="1661"/>
         <source>Open service logs in terminal via journalctl</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1663"/>
+        <location filename="../settings/settingsdialog.cpp" line="1664"/>
         <source>Open Windows Services console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1665"/>
+        <location filename="../settings/settingsdialog.cpp" line="1666"/>
         <source>Open the Windows Services management console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1668"/>
+        <location filename="../settings/settingsdialog.cpp" line="1669"/>
         <source>Install service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../settings/settingsdialog.cpp" line="1672"/>
+        <source>Install service, select home</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1676"/>
         <source>Uninstall service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1693"/>
+        <location filename="../settings/settingsdialog.cpp" line="1698"/>
         <source>Systemd</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1695"/>
+        <location filename="../settings/settingsdialog.cpp" line="1700"/>
         <source>Windows service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1696"/>
+        <location filename="../settings/settingsdialog.cpp" line="1701"/>
         <source>Syncthing service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1697"/>
+        <location filename="../settings/settingsdialog.cpp" line="1702"/>
         <source>Startup type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1699"/>
+        <location filename="../settings/settingsdialog.cpp" line="1704"/>
         <source>Refresh service status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1700"/>
+        <location filename="../settings/settingsdialog.cpp" line="1705"/>
         <source>Open the service log file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1718"/>
+        <location filename="../settings/settingsdialog.cpp" line="1717"/>
+        <source>Select home directory for Syncthing service</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1730"/>
         <source>Service installed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1719"/>
+        <location filename="../settings/settingsdialog.cpp" line="1731"/>
         <source>&lt;p&gt;The Syncthing service has been installed successfully.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Security note:&lt;/b&gt; By default, the service runs under the Local System account to access user folders without requiring a password. Since Syncthing is exposed to the network, for enhanced security you can configure the service to run under a specific user account in the Windows Services management console (&lt;em&gt;Properties &amp;rarr; Log On&lt;/em&gt;).&lt;/p&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1830"/>
+        <location filename="../settings/settingsdialog.cpp" line="1842"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1836"/>
+        <location filename="../settings/settingsdialog.cpp" line="1848"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1882"/>
+        <location filename="../settings/settingsdialog.cpp" line="1897"/>
         <source>The specified service is unavailable or not installed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1904"/>
+        <location filename="../settings/settingsdialog.cpp" line="1919"/>
         <source>since </source>
         <translation type="unfinished"></translation>
     </message>
@@ -5279,37 +5289,37 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2158"/>
+        <location filename="../settings/settingsdialog.cpp" line="2176"/>
         <source>Tray</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2166"/>
+        <location filename="../settings/settingsdialog.cpp" line="2184"/>
         <source>Web view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2173"/>
+        <location filename="../settings/settingsdialog.cpp" line="2191"/>
         <source>Startup</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2175"/>
+        <location filename="../settings/settingsdialog.cpp" line="2193"/>
         <source>additional tool</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2175"/>
+        <location filename="../settings/settingsdialog.cpp" line="2193"/>
         <source>Extra launcher</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2216"/>
+        <location filename="../settings/settingsdialog.cpp" line="2234"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2222"/>
+        <location filename="../settings/settingsdialog.cpp" line="2240"/>
         <source>Start wizard</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5883,18 +5893,13 @@ This dialog closes automatically when the process finally terminates.</source>
 <context>
     <name>SettingsPage</name>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="178"/>
-        <source>App settings</source>
+        <location filename="../quick/qml/SettingsPage.qml" line="15"/>
+        <source>%1 - changes not saved yet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="26"/>
         <source>Connection to Syncthing backend</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="15"/>
-        <source>%1 - changes not saved yet</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6008,6 +6013,11 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="140"/>
         <source>Do you really want to delete the persistent log file?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="178"/>
+        <source>App settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6227,23 +6237,13 @@ This dialog closes automatically when the process finally terminates.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="225"/>
-        <source>Write persistent log file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="225"/>
-        <source>Write a persistent log file into the app directory</source>
+        <location filename="../quick/qml/SettingsPage.qml" line="218"/>
+        <source>Log level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="218"/>
         <source>Logging</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../quick/qml/SettingsPage.qml" line="218"/>
-        <source>Log level</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -6274,6 +6274,16 @@ This dialog closes automatically when the process finally terminates.</source>
     <message>
         <location filename="../quick/qml/SettingsPage.qml" line="224"/>
         <source>Show Syncthing logs since app startup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="225"/>
+        <source>Write persistent log file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../quick/qml/SettingsPage.qml" line="225"/>
+        <source>Write a persistent log file into the app directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
