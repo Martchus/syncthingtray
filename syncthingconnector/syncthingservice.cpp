@@ -1590,6 +1590,8 @@ void SyncthingService::installService(const QString &specifiedHomeDir)
         }
     }
     queryServiceStatus();
+#else
+    Q_UNUSED(specifiedHomeDir)
 #endif
 }
 
