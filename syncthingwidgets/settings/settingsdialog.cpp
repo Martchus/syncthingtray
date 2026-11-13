@@ -1706,7 +1706,8 @@ QWidget *ServiceOptionPage::setupWidget()
     ui()->openLogsPushButton->setToolTip(QCoreApplication::translate("QtGui::ServiceOptionPage", "Open the service log file"));
     openLogsAction->setToolTip(ui()->openLogsPushButton->toolTip());
     ui()->manageServicePushButton->setHidden(false);
-    ui()->noticeLabel->setText(QCoreApplication::translate("QtGui::ServiceOptionPage", "Windows service support is still experimental and mainly intended for experienced users."));
+    ui()->noticeLabel->setText(QCoreApplication::translate(
+        "QtGui::ServiceOptionPage", "Windows service support is still experimental and mainly intended for experienced users."));
     m_openServiceManagerAction->setVisible(true);
 #endif
 
