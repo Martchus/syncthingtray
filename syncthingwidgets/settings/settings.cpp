@@ -440,16 +440,16 @@ bool restore()
     }
     settings.endGroup();
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-    auto &systemd = v.systemd;
-    systemd.syncthingUnit = settings.value(QStringLiteral("syncthingUnit"), systemd.syncthingUnit).toString();
-    systemd.systemUnit = settings.value(QStringLiteral("systemUnit"), systemd.systemUnit).toBool();
-    systemd.showButton = settings.value(QStringLiteral("showButton"), systemd.showButton).toBool();
-    systemd.considerForReconnect = settings.value(QStringLiteral("considerForReconnect"), systemd.considerForReconnect).toBool();
-    systemd.stopOnMeteredConnection = settings.value(QStringLiteral("stopServiceOnMetered"), systemd.stopOnMeteredConnection).toBool();
-    systemd.stopOnBatterySaving = settings.value(QStringLiteral("stopServiceOnBatterySaving"), systemd.stopOnBatterySaving).toBool();
-    systemd.stopOnBattery = settings.value(QStringLiteral("stopServiceOnBattery"), systemd.stopOnBattery).toBool();
-    systemd.stopOnBatteryMinPercentage
-        = settings.value(QStringLiteral("stopServiceOnBatteryMinPercentage"), systemd.stopOnBatteryMinPercentage).toInt();
+    auto &service = v.service;
+    service.syncthingUnit = settings.value(QStringLiteral("syncthingUnit"), service.syncthingUnit).toString();
+    service.systemUnit = settings.value(QStringLiteral("systemUnit"), service.systemUnit).toBool();
+    service.showButton = settings.value(QStringLiteral("showButton"), service.showButton).toBool();
+    service.considerForReconnect = settings.value(QStringLiteral("considerForReconnect"), service.considerForReconnect).toBool();
+    service.stopOnMeteredConnection = settings.value(QStringLiteral("stopServiceOnMetered"), service.stopOnMeteredConnection).toBool();
+    service.stopOnBatterySaving = settings.value(QStringLiteral("stopServiceOnBatterySaving"), service.stopOnBatterySaving).toBool();
+    service.stopOnBattery = settings.value(QStringLiteral("stopServiceOnBattery"), service.stopOnBattery).toBool();
+    service.stopOnBatteryMinPercentage
+        = settings.value(QStringLiteral("stopServiceOnBatteryMinPercentage"), service.stopOnBatteryMinPercentage).toInt();
 #endif
     settings.endGroup();
 
@@ -593,15 +593,15 @@ bool save()
     }
     settings.endGroup();
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-    const auto &systemd = v.systemd;
-    settings.setValue(QStringLiteral("syncthingUnit"), systemd.syncthingUnit);
-    settings.setValue(QStringLiteral("systemUnit"), systemd.systemUnit);
-    settings.setValue(QStringLiteral("showButton"), systemd.showButton);
-    settings.setValue(QStringLiteral("considerForReconnect"), systemd.considerForReconnect);
-    settings.setValue(QStringLiteral("stopServiceOnMetered"), systemd.stopOnMeteredConnection);
-    settings.setValue(QStringLiteral("stopServiceOnBatterySaving"), systemd.stopOnBatterySaving);
-    settings.setValue(QStringLiteral("stopServiceOnBattery"), systemd.stopOnBattery);
-    settings.setValue(QStringLiteral("stopServiceOnBatteryMinPercentage"), systemd.stopOnBatteryMinPercentage);
+    const auto &service = v.service;
+    settings.setValue(QStringLiteral("syncthingUnit"), service.syncthingUnit);
+    settings.setValue(QStringLiteral("systemUnit"), service.systemUnit);
+    settings.setValue(QStringLiteral("showButton"), service.showButton);
+    settings.setValue(QStringLiteral("considerForReconnect"), service.considerForReconnect);
+    settings.setValue(QStringLiteral("stopServiceOnMetered"), service.stopOnMeteredConnection);
+    settings.setValue(QStringLiteral("stopServiceOnBatterySaving"), service.stopOnBatterySaving);
+    settings.setValue(QStringLiteral("stopServiceOnBattery"), service.stopOnBattery);
+    settings.setValue(QStringLiteral("stopServiceOnBatteryMinPercentage"), service.stopOnBatteryMinPercentage);
 #endif
     settings.endGroup();
 
@@ -653,7 +653,7 @@ void Settings::apply(SyncthingNotifier &notifier) const
         integrations |= SyncthingStartupIntegration::Process;
     }
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-    if (systemd.considerForReconnect) {
+    if (service.considerForReconnect) {
         integrations |= SyncthingStartupIntegration::Service;
     }
 #endif
@@ -663,7 +663,7 @@ void Settings::apply(SyncthingNotifier &notifier) const
 }
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-RuntimeCondition::Conditions Systemd::runtimeConditions() const
+RuntimeCondition::Conditions Service::runtimeConditions() const
 {
     return ::Settings::runtimeConditions(*this);
 }
@@ -671,7 +671,7 @@ RuntimeCondition::Conditions Systemd::runtimeConditions() const
 /*!
  * \brief Sets the scope and unit name of the specified \a service according to the settings.
  */
-void Systemd::setupService(SyncthingService &service) const
+void Service::setupService(SyncthingService &service) const
 {
     service.runtimeCondition()->setBatteryPercentage(stopOnBatteryMinPercentage);
     service.runtimeCondition()->setEnabledConditions(runtimeConditions());
@@ -686,7 +686,7 @@ void Systemd::setupService(SyncthingService &service) const
  * - Currently this is only about the auto-reconnect interval and connecting instantly.
  * \returns Returns the service status with respect to the specified \a connection.
  */
-Systemd::ServiceStatus Systemd::apply(
+Service::ServiceStatus Service::apply(
     Data::SyncthingConnection &connection, const SyncthingConnectionSettings *currentConnectionSettings, bool reconnectRequired) const
 {
     auto *const service(SyncthingService::mainInstance());
@@ -705,7 +705,7 @@ Systemd::ServiceStatus Systemd::apply(
 /*!
  * \brief Returns the service status with respect to the specified \a connection.
  */
-Systemd::ServiceStatus Systemd::status(SyncthingConnection &connection) const
+Service::ServiceStatus Service::status(SyncthingConnection &connection) const
 {
     auto *const service(SyncthingService::mainInstance());
     if (!service) {

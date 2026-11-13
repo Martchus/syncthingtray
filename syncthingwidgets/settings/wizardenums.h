@@ -12,13 +12,13 @@ enum class MainConfiguration : quint64 {
     CurrentlyRunning,
     LauncherExternal,
     LauncherBuiltIn,
-    SystemdUserUnit,
-    SystemdSystemUnit,
+    ServiceUserUnit,
+    ServiceSystemUnit,
 };
 
 enum class ExtraConfiguration : quint64 {
     None,
-    SystemdIntegration = (1 << 0),
+    ServiceIntegration = (1 << 0),
 };
 
 } // namespace QtGui

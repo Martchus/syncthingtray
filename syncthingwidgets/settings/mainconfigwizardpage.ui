@@ -39,14 +39,14 @@
     </widget>
    </item>
    <item>
-    <widget class="QRadioButton" name="cfgSystemdUserUnitRadioButton">
+    <widget class="QRadioButton" name="cfgServiceUserUnitRadioButton">
      <property name="text">
       <string>Start Syncthing via systemd user-unit (enables and starts the unit %1)</string>
      </property>
     </widget>
    </item>
    <item>
-    <widget class="QRadioButton" name="cfgSystemdSystemUnitRadioButton">
+    <widget class="QRadioButton" name="cfgServiceSystemUnitRadioButton">
      <property name="text">
       <string>Start Syncthing via systemd system-unit (enables and starts the unit %1)</string>
      </property>
@@ -60,7 +60,7 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="enableSystemdIntegrationCheckBox">
+    <widget class="QCheckBox" name="enableServiceIntegrationCheckBox">
      <property name="text">
       <string>Enable systemd-integration</string>
      </property>

@@ -214,10 +214,10 @@ void SyncthingApplet::init()
     auto &settings = Settings::values();
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     SyncthingService::setMainInstance(&m_service);
-    settings.systemd.setupService(m_service);
-    connect(&m_service, &SyncthingService::serviceManagerAvailableChanged, this, &SyncthingApplet::handleSystemdStatusChanged);
-    connect(&m_service, &SyncthingService::stateChanged, this, &SyncthingApplet::handleSystemdStatusChanged);
-    connect(&m_service, &SyncthingService::errorOccurred, this, &SyncthingApplet::handleSystemdServiceError);
+    settings.service.setupService(m_service);
+    connect(&m_service, &SyncthingService::serviceManagerAvailableChanged, this, &SyncthingApplet::handleServiceStatusChanged);
+    connect(&m_service, &SyncthingService::stateChanged, this, &SyncthingApplet::handleServiceStatusChanged);
+    connect(&m_service, &SyncthingService::errorOccurred, this, &SyncthingApplet::handleServiceError);
 #endif
 
     // apply settings and connect according to settings
@@ -361,12 +361,12 @@ void SyncthingApplet::setCurrentConnectionConfigIndex(int index)
 
     // apply systemd settings, reconnect if required and possible
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-    const auto systemdConsideredForReconnect
-        = settings.systemd.apply(*m_data.connection(), currentConnectionConfig(), reconnectRequired).consideredForReconnect;
+    const auto serviceConsideredForReconnect
+        = settings.service.apply(*m_data.connection(), currentConnectionConfig(), reconnectRequired).consideredForReconnect;
 #else
-    const auto systemdConsideredForReconnect = false;
+    const auto serviceConsideredForReconnect = false;
 #endif
-    if (!systemdConsideredForReconnect && (reconnectRequired || !m_data.connection()->isConnected())) {
+    if (!serviceConsideredForReconnect && (reconnectRequired || !m_data.connection()->isConnected())) {
         m_data.connection()->reconnect();
     } else {
         concludeWizard();
@@ -376,7 +376,7 @@ void SyncthingApplet::setCurrentConnectionConfigIndex(int index)
 bool SyncthingApplet::isStartStopEnabled() const
 {
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-    return Settings::values().systemd.showButton;
+    return Settings::values().service.showButton;
 #else
     return false;
 #endif
@@ -718,7 +718,7 @@ void SyncthingApplet::handleNewNotification(DateTime when, const QString &msg)
     }
 }
 
-void SyncthingApplet::handleSystemdServiceError(const QString &context, const QString &name, const QString &message)
+void SyncthingApplet::handleServiceError(const QString &context, const QString &name, const QString &message)
 {
     handleInternalError(tr("D-Bus error - unable to ") % context % QChar('\n') % name % QChar(':') % message, SyncthingErrorCategory::SpecificRequest,
         QNetworkReply::NoError, QNetworkRequest(), QByteArray());
@@ -795,9 +795,9 @@ void SyncthingApplet::applySettings(int changeConnectionIndex)
 }
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-void SyncthingApplet::handleSystemdStatusChanged()
+void SyncthingApplet::handleServiceStatusChanged()
 {
-    Settings::values().systemd.apply(*m_data.connection(), currentConnectionConfig());
+    Settings::values().service.apply(*m_data.connection(), currentConnectionConfig());
 }
 #endif
 

@@ -562,7 +562,7 @@ static int runApplication(int argc, const char *const *argv)
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
         auto service = SyncthingService();
         SyncthingService::setMainInstance(&service);
-        settings.systemd.setupService(service);
+        settings.service.setupService(service);
         QObject::connect(&service, &SyncthingService::errorOccurred, &handleServiceError);
 #endif
         if (settings.icons.preferIconsFromTheme) {

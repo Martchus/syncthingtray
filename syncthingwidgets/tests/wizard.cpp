@@ -139,8 +139,8 @@ void WizardTests::testConfiguringLauncher()
     auto &settings = Settings::values();
     settings.launcher.useLibSyncthing = true;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-    settings.systemd.considerForReconnect = true;
-    settings.systemd.showButton = true;
+    settings.service.considerForReconnect = true;
+    settings.service.showButton = true;
 #endif
 
     // init new wizard and do some basic checks
@@ -329,8 +329,8 @@ void WizardTests::testConfiguringLauncher()
     QVERIFY(!settings.launcher.syncthingArgs.isEmpty());
     QVERIFY(!settings.launcher.useLibSyncthing);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-    QVERIFY(!settings.systemd.considerForReconnect);
-    QVERIFY(!settings.systemd.showButton);
+    QVERIFY(!settings.service.considerForReconnect);
+    QVERIFY(!settings.service.showButton);
 #endif
     // cannot verify the port from Syncthing's config, see comment in setup function
     //QCOMPARE(settings.connection.primary.syncthingUrl, QStringLiteral("http://127.0.0.1:8384"));
@@ -409,12 +409,12 @@ void WizardTests::testConfiguringCurrentlyRunningSyncthing()
     auto *const cfgLauncherBuiltInRadioButton = mainConfigPage->findChild<QRadioButton *>(QStringLiteral("cfgLauncherBuiltInRadioButton"));
     QVERIFY(cfgLauncherBuiltInRadioButton != nullptr);
     QVERIFY(cfgLauncherBuiltInRadioButton->isHidden());
-    auto *const cfgSystemdUserUnitRadioButton = mainConfigPage->findChild<QRadioButton *>(QStringLiteral("cfgSystemdUserUnitRadioButton"));
-    QVERIFY(cfgSystemdUserUnitRadioButton != nullptr);
-    QVERIFY(cfgSystemdUserUnitRadioButton->isHidden());
-    auto *const cfgSystemdSystemUnitRadioButton = mainConfigPage->findChild<QRadioButton *>(QStringLiteral("cfgSystemdSystemUnitRadioButton"));
-    QVERIFY(cfgSystemdSystemUnitRadioButton != nullptr);
-    QVERIFY(cfgSystemdSystemUnitRadioButton->isHidden());
+    auto *const cfgServiceUserUnitRadioButton = mainConfigPage->findChild<QRadioButton *>(QStringLiteral("cfgServiceUserUnitRadioButton"));
+    QVERIFY(cfgServiceUserUnitRadioButton != nullptr);
+    QVERIFY(cfgServiceUserUnitRadioButton->isHidden());
+    auto *const cfgServiceSystemUnitRadioButton = mainConfigPage->findChild<QRadioButton *>(QStringLiteral("cfgServiceSystemUnitRadioButton"));
+    QVERIFY(cfgServiceSystemUnitRadioButton != nullptr);
+    QVERIFY(cfgServiceSystemUnitRadioButton->isHidden());
     auto *const cfgCurrentlyRunningRadioButton = mainConfigPage->findChild<QRadioButton *>(QStringLiteral("cfgCurrentlyRunningRadioButton"));
     QVERIFY(cfgCurrentlyRunningRadioButton != nullptr);
     QVERIFY(!cfgCurrentlyRunningRadioButton->isHidden());

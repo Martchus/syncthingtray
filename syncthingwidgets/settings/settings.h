@@ -132,7 +132,7 @@ struct SYNCTHINGWIDGETS_EXPORT Launcher {
 };
 
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-struct SYNCTHINGWIDGETS_EXPORT Systemd {
+struct SYNCTHINGWIDGETS_EXPORT Service {
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE
     QString syncthingUnit = QString(); // keep service monitoring disabled by default
 #else
@@ -196,7 +196,7 @@ struct SYNCTHINGWIDGETS_EXPORT Settings {
     } icons;
     Launcher launcher;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-    Systemd systemd;
+    Service service;
 #endif
     WebView webView;
     QtUtilities::QtSettings qt;

@@ -167,18 +167,18 @@ bool Wizard::changeSettings()
         settings.launcher.libSyncthing.configDir = QFileInfo(detection.configFilePath).canonicalPath();
 #endif
         break;
-    case MainConfiguration::SystemdUserUnit:
+    case MainConfiguration::ServiceUserUnit:
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-        // configure systemd integration for user unit
-        settings.systemd.syncthingUnit = detection.userService.unitName();
-        settings.systemd.systemUnit = false;
+        // configure service integration for user unit
+        settings.service.syncthingUnit = detection.userService.unitName();
+        settings.service.systemUnit = false;
 #endif
         break;
-    case MainConfiguration::SystemdSystemUnit:
+    case MainConfiguration::ServiceSystemUnit:
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-        // configure systemd integration for system unit
-        settings.systemd.syncthingUnit = detection.systemService.unitName();
-        settings.systemd.systemUnit = true;
+        // configure service integration for system unit
+        settings.service.syncthingUnit = detection.systemService.unitName();
+        settings.service.systemUnit = true;
 #endif
         break;
     }
@@ -189,7 +189,7 @@ bool Wizard::changeSettings()
             = (mainConfig() == MainConfiguration::LauncherExternal || mainConfig() == MainConfiguration::LauncherBuiltIn);
     }
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-    settings.systemd.considerForReconnect = settings.systemd.showButton = extraConfig() && ExtraConfiguration::SystemdIntegration;
+    settings.service.considerForReconnect = settings.service.showButton = extraConfig() && ExtraConfiguration::ServiceIntegration;
 #endif
 
     // enable/disable auto start
@@ -220,11 +220,11 @@ bool Wizard::changeSettings()
             return true;
         }
         break;
-    case MainConfiguration::SystemdUserUnit:
-    case MainConfiguration::SystemdSystemUnit:
+    case MainConfiguration::ServiceUserUnit:
+    case MainConfiguration::ServiceSystemUnit:
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
         if (auto *const service = Data::SyncthingService::mainInstance()) {
-            settings.systemd.setupService(*service);
+            settings.service.setupService(*service);
             service->start();
             service->enable();
         } else {
@@ -368,8 +368,8 @@ void Wizard::pollForSyncthingConfig()
             }
         }
         break;
-    case MainConfiguration::SystemdUserUnit:
-    case MainConfiguration::SystemdSystemUnit:
+    case MainConfiguration::ServiceUserUnit:
+    case MainConfiguration::ServiceSystemUnit:
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
         if (m_elapsedPollTime < systemdPollTimeout) {
             break; // don't consider the systemd unit status immediately; also give it a short time to adjust
@@ -417,8 +417,8 @@ QString Wizard::hintAboutSyncthingLog() const
     case MainConfiguration::LauncherBuiltIn:
         res += tr(" It can be accessed within the <a href=\"openLauncherSettings\">launcher settings</a>.");
         break;
-    case MainConfiguration::SystemdUserUnit:
-    case MainConfiguration::SystemdSystemUnit:
+    case MainConfiguration::ServiceUserUnit:
+    case MainConfiguration::ServiceSystemUnit:
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
         res += tr(" It is normally written to the system journal (and can be accessed via e.g. journalctl).");
 #endif
@@ -654,13 +654,13 @@ MainConfigWizardPage::MainConfigWizardPage(QWidget *parent)
     setButtonText(QWizard::CustomButton1, tr("Show details from setup detection"));
     m_ui->setupUi(this);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-    m_cfgSystemdUserUnitText = m_ui->cfgSystemdUserUnitRadioButton->text();
-    m_cfgSystemdSystemUnitText = m_ui->cfgSystemdSystemUnitRadioButton->text();
+    m_cfgServiceUserUnitText = m_ui->cfgServiceUserUnitRadioButton->text();
+    m_cfgServiceSystemUnitText = m_ui->cfgServiceSystemUnitRadioButton->text();
 #endif
 
     // connect signals & slots
     for (auto *const option : std::initializer_list<QRadioButton *>{ m_ui->cfgCurrentlyRunningRadioButton, m_ui->cfgLauncherExternalRadioButton,
-             m_ui->cfgLauncherBuiltInRadioButton, m_ui->cfgSystemdUserUnitRadioButton, m_ui->cfgSystemdSystemUnitRadioButton,
+             m_ui->cfgLauncherBuiltInRadioButton, m_ui->cfgServiceUserUnitRadioButton, m_ui->cfgServiceSystemUnitRadioButton,
              m_ui->cfgNoneRadioButton }) {
         connect(option, &QRadioButton::toggled, this, &MainConfigWizardPage::handleSelectionChanged);
     }
@@ -687,8 +687,8 @@ void MainConfigWizardPage::initializePage()
 
     // hide all configuration options as a starting point
     for (auto *const option : std::initializer_list<QWidget *>{ m_ui->cfgCurrentlyRunningRadioButton, m_ui->cfgLauncherExternalRadioButton,
-             m_ui->cfgLauncherBuiltInRadioButton, m_ui->cfgSystemdUserUnitRadioButton, m_ui->cfgSystemdSystemUnitRadioButton,
-             m_ui->enableSystemdIntegrationCheckBox }) {
+             m_ui->cfgLauncherBuiltInRadioButton, m_ui->cfgServiceUserUnitRadioButton, m_ui->cfgServiceSystemUnitRadioButton,
+             m_ui->enableServiceIntegrationCheckBox }) {
         option->hide();
     }
 
@@ -696,8 +696,8 @@ void MainConfigWizardPage::initializePage()
     auto const &detection = wizard->setupDetection();
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     if (detection.userService.isUnitAvailable() || detection.systemService.isUnitAvailable()) {
-        m_ui->enableSystemdIntegrationCheckBox->show();
-        m_ui->enableSystemdIntegrationCheckBox->setChecked(true);
+        m_ui->enableServiceIntegrationCheckBox->show();
+        m_ui->enableServiceIntegrationCheckBox->setChecked(true);
     }
 #endif
 
@@ -721,17 +721,17 @@ void MainConfigWizardPage::initializePage()
         const auto userUnitRunning = detection.userService.isRunning();
         const auto systemUnitRunning = detection.systemService.isRunning();
         if (canLaunchViaUserUnit) {
-            m_ui->cfgSystemdUserUnitRadioButton->show();
-            m_ui->cfgSystemdUserUnitRadioButton->setText(m_cfgSystemdUserUnitText.arg(detection.userService.unitName()));
+            m_ui->cfgServiceUserUnitRadioButton->show();
+            m_ui->cfgServiceUserUnitRadioButton->setText(m_cfgServiceUserUnitText.arg(detection.userService.unitName()));
         }
         if (canLaunchViaSystemUnit) {
-            m_ui->cfgSystemdSystemUnitRadioButton->show();
-            m_ui->cfgSystemdSystemUnitRadioButton->setText(m_cfgSystemdSystemUnitText.arg(detection.systemService.unitName()));
+            m_ui->cfgServiceSystemUnitRadioButton->show();
+            m_ui->cfgServiceSystemUnitRadioButton->setText(m_cfgServiceSystemUnitText.arg(detection.systemService.unitName()));
         }
         if (canLaunchViaUserUnit && !systemUnitRunning) {
-            m_ui->cfgSystemdUserUnitRadioButton->setChecked(true);
+            m_ui->cfgServiceUserUnitRadioButton->setChecked(true);
         } else if (canLaunchViaSystemUnit && !userUnitRunning) {
-            m_ui->cfgSystemdSystemUnitRadioButton->setChecked(true);
+            m_ui->cfgServiceSystemUnitRadioButton->setChecked(true);
         }
         if (!detection.connection.isConnected()) {
             auto runningUnits = QStringList();
@@ -826,14 +826,14 @@ bool MainConfigWizardPage::validatePage()
         mainConfig = MainConfiguration::LauncherExternal;
     } else if (m_ui->cfgLauncherBuiltInRadioButton->isChecked()) {
         mainConfig = MainConfiguration::LauncherBuiltIn;
-    } else if (m_ui->cfgSystemdUserUnitRadioButton->isChecked()) {
-        mainConfig = MainConfiguration::SystemdUserUnit;
-    } else if (m_ui->cfgSystemdSystemUnitRadioButton->isChecked()) {
-        mainConfig = MainConfiguration::SystemdSystemUnit;
+    } else if (m_ui->cfgServiceUserUnitRadioButton->isChecked()) {
+        mainConfig = MainConfiguration::ServiceUserUnit;
+    } else if (m_ui->cfgServiceSystemUnitRadioButton->isChecked()) {
+        mainConfig = MainConfiguration::ServiceSystemUnit;
     }
 
     auto extraConfig = ExtraConfiguration::None;
-    CppUtilities::modFlagEnum(extraConfig, ExtraConfiguration::SystemdIntegration, m_ui->enableSystemdIntegrationCheckBox->isChecked());
+    CppUtilities::modFlagEnum(extraConfig, ExtraConfiguration::ServiceIntegration, m_ui->enableServiceIntegrationCheckBox->isChecked());
 
     emit configurationSelected(mainConfig, extraConfig);
     return true;
@@ -850,17 +850,17 @@ void MainConfigWizardPage::handleSelectionChanged()
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     const auto &detection = wizard->setupDetection();
     if (!m_ui->cfgCurrentlyRunningRadioButton->isHidden()) {
-        const auto &systemdSettings = Settings::values().systemd;
-        m_ui->enableSystemdIntegrationCheckBox->setChecked(systemdSettings.showButton || systemdSettings.considerForReconnect
+        const auto &serviceSettings = Settings::values().service;
+        m_ui->enableServiceIntegrationCheckBox->setChecked(serviceSettings.showButton || serviceSettings.considerForReconnect
             || detection.userService.isRunning() || detection.systemService.isRunning());
     } else {
-        if ((!m_ui->cfgSystemdUserUnitRadioButton->isHidden() && m_ui->cfgSystemdUserUnitRadioButton->isChecked())
-            || ((!m_ui->cfgSystemdSystemUnitRadioButton->isHidden() && m_ui->cfgSystemdSystemUnitRadioButton->isChecked()))) {
-            m_ui->enableSystemdIntegrationCheckBox->setChecked(true);
-            m_ui->enableSystemdIntegrationCheckBox->setEnabled(true);
+        if ((!m_ui->cfgServiceUserUnitRadioButton->isHidden() && m_ui->cfgServiceUserUnitRadioButton->isChecked())
+            || ((!m_ui->cfgServiceSystemUnitRadioButton->isHidden() && m_ui->cfgServiceSystemUnitRadioButton->isChecked()))) {
+            m_ui->enableServiceIntegrationCheckBox->setChecked(true);
+            m_ui->enableServiceIntegrationCheckBox->setEnabled(true);
         } else {
-            m_ui->enableSystemdIntegrationCheckBox->setChecked(false);
-            m_ui->enableSystemdIntegrationCheckBox->setEnabled(true);
+            m_ui->enableServiceIntegrationCheckBox->setChecked(false);
+            m_ui->enableServiceIntegrationCheckBox->setEnabled(true);
         }
     }
 #endif
@@ -868,13 +868,13 @@ void MainConfigWizardPage::handleSelectionChanged()
     // set completed state according to selection
     auto configSelected = false;
     for (auto *const option : std::initializer_list<QRadioButton *>{ m_ui->cfgCurrentlyRunningRadioButton, m_ui->cfgLauncherExternalRadioButton,
-             m_ui->cfgLauncherBuiltInRadioButton, m_ui->cfgSystemdUserUnitRadioButton, m_ui->cfgSystemdSystemUnitRadioButton,
+             m_ui->cfgLauncherBuiltInRadioButton, m_ui->cfgServiceUserUnitRadioButton, m_ui->cfgServiceSystemUnitRadioButton,
              m_ui->cfgNoneRadioButton }) {
         if ((configSelected = !option->isHidden() && option->isChecked())) {
             break;
         }
     }
-    configSelected = configSelected || (m_ui->enableSystemdIntegrationCheckBox->isEnabled() && m_ui->enableSystemdIntegrationCheckBox->isChecked());
+    configSelected = configSelected || (m_ui->enableServiceIntegrationCheckBox->isEnabled() && m_ui->enableServiceIntegrationCheckBox->isChecked());
     if (configSelected != m_configSelected) {
         m_configSelected = configSelected;
         emit completeChanged();
@@ -929,8 +929,8 @@ void AutostartWizardPage::initializePage()
     case MainConfiguration::LauncherBuiltIn:
         m_ui->launcherEnabledLabel->show();
         break;
-    case MainConfiguration::SystemdUserUnit:
-    case MainConfiguration::SystemdSystemUnit:
+    case MainConfiguration::ServiceUserUnit:
+    case MainConfiguration::ServiceSystemUnit:
         m_ui->systemdEnabledLabel->show();
         break;
     }
@@ -1026,11 +1026,11 @@ void ApplyWizardPage::initializePage()
             ? tr("executable from PATH as separate process, \"%1\"").arg(QString::fromLocal8Bit(detection.launcherOutput.trimmed()))
             : tr("built-in Syncthing library, \"%1\"").arg(Data::SyncthingLauncher::libSyncthingVersionInfo());
         break;
-    case MainConfiguration::SystemdUserUnit:
-    case MainConfiguration::SystemdSystemUnit:
+    case MainConfiguration::ServiceUserUnit:
+    case MainConfiguration::ServiceSystemUnit:
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
         mainConfig = tr("Start Syncthing by enabling and starting its systemd unit");
-        extraInfo = wizard->mainConfig() == MainConfiguration::SystemdUserUnit
+        extraInfo = wizard->mainConfig() == MainConfiguration::ServiceUserUnit
             ? tr("Using user unit \"%1\"").arg(detection.userService.unitName())
             : tr("Using system unit \"%1\"").arg(detection.systemService.unitName());
 #endif
@@ -1041,8 +1041,8 @@ void ApplyWizardPage::initializePage()
     }
     addListItem(mainConfig);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-    logFeature(tr("systemd integration"), wizard->extraConfig() && ExtraConfiguration::SystemdIntegration,
-        currentSettings.systemd.showButton && currentSettings.systemd.considerForReconnect);
+    logFeature(tr("systemd integration"), wizard->extraConfig() && ExtraConfiguration::ServiceIntegration,
+        currentSettings.service.showButton && currentSettings.service.considerForReconnect);
 #endif
 #ifdef SETTINGS_WIZARD_AUTOSTART
     if (!currentSettings.isPlasmoid) {

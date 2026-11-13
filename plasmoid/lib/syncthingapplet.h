@@ -209,9 +209,9 @@ private Q_SLOTS:
     void handleWebViewDeleted();
     void handleNotificationsDialogDeleted();
     void handleNewNotification(CppUtilities::DateTime when, const QString &msg);
-    void handleSystemdServiceError(const QString &context, const QString &name, const QString &message);
+    void handleServiceError(const QString &context, const QString &name, const QString &message);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-    void handleSystemdStatusChanged();
+    void handleServiceStatusChanged();
 #endif
     void handleEngineDestroyed();
     void handleThemeChanged();

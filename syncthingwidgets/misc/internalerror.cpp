@@ -101,7 +101,7 @@ bool InternalError::isRelevant(const SyncthingConnection &connection, SyncthingE
     // decide based on global user settings what to consider
     const auto considerLauncherForReconnect = useGlobalSettings ? settings.launcher.considerForReconnect : considerForReconnectDefault;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-    const auto considerServiceForReconnect = useGlobalSettings ? settings.systemd.considerForReconnect : considerForReconnectDefault;
+    const auto considerServiceForReconnect = useGlobalSettings ? settings.service.considerForReconnect : considerForReconnectDefault;
 #endif
     const auto ignoreInavailabilityAfterStartSec
         = useGlobalSettings ? settings.ignoreInavailabilityAfterStart : ignoreInavailabilityAfterStartSecDefault;

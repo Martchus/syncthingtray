@@ -168,8 +168,8 @@ private Q_SLOTS:
     Settings::Launcher::LauncherStatus applyLauncherSettings(
         bool reconnectRequired = false, bool skipApplyingToConnection = false, bool skipStartStopButton = false);
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-    Settings::Systemd::ServiceStatus handleSystemdStatusChanged();
-    Settings::Systemd::ServiceStatus applySystemdSettings(bool reconnectRequired = false);
+    Settings::Service::ServiceStatus handleServiceStatusChanged();
+    Settings::Service::ServiceStatus applyServiceSettings(bool reconnectRequired = false);
 #endif
     void handleWebViewDeleted();
     void handleNotificationsDialogDeleted();

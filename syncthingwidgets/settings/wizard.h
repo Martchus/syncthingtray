@@ -177,8 +177,8 @@ private Q_SLOTS:
 private:
     std::unique_ptr<Ui::MainConfigWizardPage> m_ui;
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
-    QString m_cfgSystemdUserUnitText;
-    QString m_cfgSystemdSystemUnitText;
+    QString m_cfgServiceUserUnitText;
+    QString m_cfgServiceSystemUnitText;
 #endif
     bool m_configSelected;
 };

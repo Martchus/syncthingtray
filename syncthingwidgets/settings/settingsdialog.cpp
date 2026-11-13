@@ -1830,7 +1830,7 @@ QWidget *ServiceOptionPage::setupWidget()
 bool ServiceOptionPage::apply()
 {
     auto &settings = Settings::values();
-    auto &systemdSettings = settings.systemd;
+    auto &systemdSettings = settings.service;
     auto &launcherSettings = settings.launcher;
     systemdSettings.syncthingUnit = ui()->syncthingUnitLineEdit->text();
     systemdSettings.systemUnit = ui()->systemUnitCheckBox->isChecked();
@@ -1858,7 +1858,7 @@ bool ServiceOptionPage::apply()
 
 void ServiceOptionPage::reset()
 {
-    const auto &settings = Settings::values().systemd;
+    const auto &settings = Settings::values().service;
     ui()->syncthingUnitLineEdit->setText(settings.syncthingUnit);
     ui()->systemUnitCheckBox->setChecked(settings.systemUnit);
     ui()->showButtonCheckBox->setChecked(settings.showButton);
