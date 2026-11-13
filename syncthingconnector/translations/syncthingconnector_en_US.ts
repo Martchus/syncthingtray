@@ -524,7 +524,7 @@
     </message>
     <message>
         <location filename="../syncthingservice.cpp" line="462"/>
-        <location filename="../syncthingservice.cpp" line="1587"/>
+        <location filename="../syncthingservice.cpp" line="1591"/>
         <source>Process exited with code %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -588,7 +588,7 @@
         <location filename="../syncthingservice.cpp" line="1250"/>
         <location filename="../syncthingservice.cpp" line="1319"/>
         <location filename="../syncthingservice.cpp" line="1339"/>
-        <location filename="../syncthingservice.cpp" line="1604"/>
+        <location filename="../syncthingservice.cpp" line="1612"/>
         <source>Operation Failed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -701,23 +701,37 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="1577"/>
-        <location filename="../syncthingservice.cpp" line="1587"/>
+        <location filename="../syncthingservice.cpp" line="1554"/>
+        <location filename="../syncthingservice.cpp" line="1581"/>
+        <location filename="../syncthingservice.cpp" line="1591"/>
         <source>install service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="1577"/>
+        <location filename="../syncthingservice.cpp" line="1554"/>
+        <location filename="../syncthingservice.cpp" line="1605"/>
+        <source>Service setup</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1554"/>
+        <location filename="../syncthingservice.cpp" line="1605"/>
+        <source>A service name is needed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../syncthingservice.cpp" line="1581"/>
         <source>UAC Elevation Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="1587"/>
+        <location filename="../syncthingservice.cpp" line="1591"/>
         <source>Installation Failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../syncthingservice.cpp" line="1604"/>
+        <location filename="../syncthingservice.cpp" line="1605"/>
+        <location filename="../syncthingservice.cpp" line="1612"/>
         <source>uninstall service</source>
         <translation type="unfinished"></translation>
     </message>
