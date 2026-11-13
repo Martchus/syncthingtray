@@ -135,11 +135,10 @@ Syncthing installation. You might consider different configurations:
   running Syncthing instance in the settings.
     * When starting Syncthing via systemd it is recommended to enable the systemd integration in the settings (see section
       "[Configuring systemd integration](#configuring-systemd-integration)").
-    * There is also experimental monitoring for Windows services. You need to build Syncthing Tray with
-      `-DWINDOWS_SERVICE_SUPPORT=ON` to use it. It allows monitoring an existing Windows service and installing its own
-      service to run the built-in version of Syncthing. When using a Windows service, I recommend configuring it to run
-      under your regular user account or even a dedicated user. You can configure this after the service is installed in the
-      Windows Services Console.
+    * There is also experimental monitoring for Windows services. It allows monitoring an existing Windows service and
+      installing its own service to run the built-in version of Syncthing. When using a Windows service, I recommend
+      configuring it to run under your regular user account or even a dedicated user. You can configure this after the
+      service is installed in the Windows Services Console.
     * Otherwise, no integrations are provided. In this case, Syncthing Tray cannot know whether Syncthing is expected to be
       running or not. It will therefore unconditionally attempt to connect with Syncthing continuously as-per the configurable
       re-connect interval. It will also unconditionally notify when disconnecting from Syncthing if this kind of notification

@@ -98,7 +98,7 @@ bool SetupDetection::isDone() const
 {
     return timedOut
         || (!connection.isConnecting() && (launcherExitCode.has_value() || launcherError.has_value())
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD // exclude Windows service for now
             && !userService.unitFileState().isEmpty() && !systemService.unitFileState().isEmpty()
 #endif
         );

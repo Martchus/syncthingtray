@@ -295,9 +295,9 @@ void Wizard::showDetailsFromSetupDetection()
         addListRo(detection.connectionErrors);
     }
 
-    // add systemd service info
+    // add systemd service info (do not consider a Windows service for now)
+#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SYSTEMD
     addParagraph(tr("Systemd:"));
-#ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
     infoItems << tr("State of user unit file \"%1\": ").arg(detection.userService.unitName()) + detection.userService.unitFileState();
     infoItems << tr("State of system unit file \"%1\": ").arg(detection.systemService.unitName()) + detection.systemService.unitFileState();
     addList(infoItems);

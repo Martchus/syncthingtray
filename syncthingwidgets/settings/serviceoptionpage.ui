@@ -134,7 +134,11 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QtUtilities::ClearLineEdit" name="syncthingUnitLineEdit"/>
+       <widget class="QtUtilities::ClearLineEdit" name="syncthingUnitLineEdit">
+        <property name="placeholderText">
+         <string>Enter the name of the service to control and monitor</string>
+        </property>
+       </widget>
       </item>
       <item row="1" column="1">
        <widget class="QCheckBox" name="systemUnitCheckBox">
@@ -406,6 +410,24 @@
       </size>
      </property>
     </spacer>
+   </item>
+   <item>
+    <widget class="QLabel" name="noticeLabel">
+     <property name="font">
+      <font>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::TextFormat::PlainText</enum>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

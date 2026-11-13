@@ -134,7 +134,7 @@ struct SYNCTHINGWIDGETS_EXPORT Launcher {
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
 struct SYNCTHINGWIDGETS_EXPORT Systemd {
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE
-    QString syncthingUnit = QStringLiteral("syncthing");
+    QString syncthingUnit = QString(); // keep service monitoring disabled by default
 #else
     QString syncthingUnit = QStringLiteral("syncthing.service");
 #endif

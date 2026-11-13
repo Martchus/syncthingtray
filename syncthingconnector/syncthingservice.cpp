@@ -1550,6 +1550,10 @@ void SyncthingService::openServiceManager() const
 
 void SyncthingService::installService(const QString &specifiedHomeDir)
 {
+    if (m_unitName.isEmpty()) {
+        emit errorOccurred(tr("install service"), tr("Service setup"), tr("A service name is needed."));
+        return;
+    }
 #if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
     const auto appPath = QCoreApplication::applicationFilePath();
     auto params = QStringLiteral("install-service --name \"%1\"").arg(m_unitName);
@@ -1597,6 +1601,10 @@ void SyncthingService::installService(const QString &specifiedHomeDir)
 
 void SyncthingService::uninstallService()
 {
+    if (m_unitName.isEmpty()) {
+        emit errorOccurred(tr("uninstall service"), tr("Service setup"), tr("A service name is needed."));
+        return;
+    }
 #if defined(LIB_SYNCTHING_CONNECTOR_SUPPORT_WINDOWS_SERVICE)
     auto errorMessage = QString();
     if (!executeElevated(QStringLiteral("uninstall-service"), m_unitName, errorMessage)) {

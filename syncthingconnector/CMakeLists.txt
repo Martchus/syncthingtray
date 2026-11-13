@@ -131,9 +131,9 @@ else ()
     message(STATUS "systemd support disabled")
 endif ()
 
-# configure support for controlling Syncthing via Windows service (WIP, for now disabled by default)
+# configure support for controlling Syncthing via Windows service
 if (WIN32)
-    set(ENABLE_WINDOWS_SERVICE_SUPPORT_BY_DEFAULT OFF)
+    set(ENABLE_WINDOWS_SERVICE_SUPPORT_BY_DEFAULT ON)
 else ()
     set(ENABLE_WINDOWS_SERVICE_SUPPORT_BY_DEFAULT OFF)
 endif ()
