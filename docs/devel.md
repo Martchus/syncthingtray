@@ -232,8 +232,8 @@ Also consider using strace to find out at which paths the shell is looking for `
 For a development setup of the KDE integration, continue reading the subsequent section.
 
 ## Translations
-Currently translations for English and German are available. Qt's built-in localization/translation
-framework is used under the hood.
+Qt's built-in localization/translation framework is used under the hood. Android-specific Java code
+also uses the Android resource/localization system.
 
 Note that `syncthingctl` has not been internationalized yet so it supports only English.
 
@@ -246,7 +246,7 @@ Translations for further locales can be added quite easily:
    `tray/CMakeLists.txt`.
 2. Configure a new build, e.g. follow steps under *[Building this straight](#building-this-straight)*.
     * To cut corners, one can also skip step 2, 3 and 4 by using all the English translation files
-      (all the `*_en_US.ts` files) as base. Take care to update the `language` attribute in the `TS`
+      as base (all the `*_en_US.ts` files). Take care to update the `language` attribute in the `TS`
       element after copying those files.
     * If you configure a build, be sure to create a fully-featured build. Otherwise not all text is
       considered. For a fully-featured build, the following CMake options need to be passed:
@@ -260,8 +260,11 @@ Translations for further locales can be added quite easily:
    `tray/translations` and the `translations` folder of `qtutilities`.
 5. Open the files with Qt Linguist to add translations. Qt Linguist is part of
    the [Qt Tools repository](http://code.qt.io/cgit/qt/qttools.git/) and its usage
-   is [well documented](http://doc.qt.io/qt-5/linguist-translators.html). It also supports
+   is [well documented](http://doc.qt.io/qt-6/linguist-translators.html). It also supports
    [using AI](https://www.qt.io/blog/ai-powered-translation-comes-to-qt-linguist) as of Qt 6.11.
+    * To use AI in a more automated way, you can use the
+      [`translator` tool provided by qtutilities](https://github.com/Martchus/qtutilities/tree/master/translator).
+      It supports using an OpenAI compatible server like `llama.cpp`.
 6. If you have added translations for the mobile UI as well, it makes sense to add an entry
    for the new locale also in `tray/android/res/xml/locale_config.xml`. This is required
    for the locale to be selectable in app-specific language settings on Android.
