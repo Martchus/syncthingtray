@@ -831,23 +831,38 @@ SyncthingDir *SyncthingConnection::findDirInfo(QLatin1String key, const QJsonObj
  * to the location of the corresponding Syncthing directory.
  *
  * \returns Returns a pointer to the object or nullptr if not found.
- * \remarks The returned object becomes invalid when the newDirs() signal is emitted or the connection is destroyed.
+ * \remarks
+ * - The returned object becomes invalid when the newDirs() signal is emitted or the connection is destroyed.
+ * - If no directory matches literally, symlinks are resolved on both sides (e.g. "/tmp" vs. "/private/tmp" on macOS).
  */
 SyncthingDir *SyncthingConnection::findDirInfoByPath(const QString &path, QString &relativePath, int &row)
 {
-    row = 0;
-    const auto cleanPath = QDir::cleanPath(path);
-    for (SyncthingDir &dir : m_dirs) {
-        const auto dirCleanPath = QDir::cleanPath(dir.path);
-        if (cleanPath == dirCleanPath) {
-            relativePath.clear();
-            return &dir;
-        } else if (cleanPath.startsWith(dirCleanPath)) {
-            relativePath = cleanPath.mid(dirCleanPath.size());
-            return &dir;
+    const auto findDir = [&](const QString &searchPath, auto &&mapDirPath) -> SyncthingDir * {
+        row = 0;
+        for (SyncthingDir &dir : m_dirs) {
+            const auto dirPath = mapDirPath(dir.path);
+            if (dirPath.isEmpty()) {
+            } else if (searchPath == dirPath) {
+                relativePath.clear();
+                return &dir;
+            } else if (searchPath.startsWith(dirPath)) {
+                relativePath = searchPath.mid(dirPath.size());
+                return &dir;
+            }
+            ++row;
         }
-        ++row;
+        return nullptr;
+    };
+    if (auto *const dir = findDir(QDir::cleanPath(path), [](const QString &dirPath) { return QDir::cleanPath(dirPath); })) {
+        return dir;
     }
+    const auto canonicalPath = QFileInfo(path).canonicalFilePath();
+    if (!canonicalPath.isEmpty()) {
+        if (auto *const dir = findDir(canonicalPath, [](const QString &dirPath) { return QFileInfo(dirPath).canonicalFilePath(); })) {
+            return dir;
+        }
+    }
+    row = 0;
     return nullptr;
 }
 
