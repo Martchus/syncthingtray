@@ -2849,7 +2849,7 @@
         <translation>Impossible de déterminer si le système fonctionne sur batterie.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2147"/>
+        <location filename="../settings/settingsdialog.cpp" line="2183"/>
         <source>Unable to restart via &quot;%1&quot;: %2</source>
         <translation>Impossible de redémarrer via « %1 » : %2</translation>
     </message>
@@ -3817,7 +3817,7 @@
     <name>QtGui::BuiltinWebViewOptionPage</name>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="2089"/>
+        <location filename="../settings/settingsdialog.cpp" line="2125"/>
         <source>Built-in web view</source>
         <translation>Vue web intégrée</translation>
     </message>
@@ -3837,7 +3837,7 @@
         <translation>Garder la vue web en cours d&apos;exécution lorsqu&apos;elle n&apos;est pas actuellement affichée</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2091"/>
+        <location filename="../settings/settingsdialog.cpp" line="2127"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
         <translation>Syncthing Tray n&apos;a pas été compilé avec le support de la vue web utilisant Qt WebKit ou Qt WebEngine.</translation>
     </message>
@@ -4384,12 +4384,12 @@
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2065"/>
+        <location filename="../settings/settingsdialog.cpp" line="2101"/>
         <source>Custom command to launch Syncthing&apos;s UI - </source>
         <translation>Commande personnalisée pour lancer l&apos;interface Syncthing - </translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2066"/>
+        <location filename="../settings/settingsdialog.cpp" line="2102"/>
         <source>&lt;p&gt;Enter a custom command to launch Syncthing&apos;s UI. The expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; will be replaced with the Syncthing-URL.&lt;/p&gt;&lt;p&gt;Leave the command empty to use the auto-detection.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Entrez une commande personnalisée pour lancer l&apos;interface Syncthing. L&apos;expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; sera remplacée par l&apos;URL Syncthing.&lt;/p&gt;&lt;p&gt;Laissez la commande vide pour utiliser la auto-détection.&lt;/p&gt;</translation>
     </message>
@@ -5172,8 +5172,8 @@
         <location filename="../settings/serviceoptionpage.ui" line="180"/>
         <location filename="../settings/serviceoptionpage.ui" line="267"/>
         <location filename="../settings/serviceoptionpage.ui" line="357"/>
-        <location filename="../settings/settingsdialog.cpp" line="1927"/>
-        <location filename="../settings/settingsdialog.cpp" line="1950"/>
+        <location filename="../settings/settingsdialog.cpp" line="1921"/>
+        <location filename="../settings/settingsdialog.cpp" line="1944"/>
         <source>unknown</source>
         <translation>inconnu</translation>
     </message>
@@ -5289,37 +5289,47 @@
         <translation>La prise en charge des services Windows est toujours expérimentale et principalement destinée aux utilisateurs expérimentés.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1720"/>
+        <location filename="../settings/settingsdialog.cpp" line="1988"/>
+        <source>Do you really want to install the service as &quot;%1&quot;? This name does not contain &quot;syncthing&quot; so this might lead to confusion later on.</source>
+        <translation>Voulez-vous vraiment installer le service en tant que &quot;%1&quot; ? Ce nom ne contient pas &quot;syncthing&quot;, ce qui pourrait prêter à confusion par la suite.</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1991"/>
+        <source>Do you really want to uninstall the service &quot;%1&quot;? This name does not contain &quot;syncthing&quot; so you are probably about to delete the wrong service!</source>
+        <translation>Voulez-vous vraiment désinstaller le service &quot;%1&quot; ? Ce nom ne contient pas &quot;syncthing&quot;, vous êtes donc probablement sur le point de supprimer le mauvais service !</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="2011"/>
         <source>Select home directory for Syncthing service</source>
         <translation>Sélectionner le répertoire personnel pour le service Syncthing</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1733"/>
+        <location filename="../settings/settingsdialog.cpp" line="1727"/>
         <source>Service installed</source>
         <translation>Service installé</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1734"/>
+        <location filename="../settings/settingsdialog.cpp" line="1728"/>
         <source>&lt;p&gt;The Syncthing service has been installed successfully.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Security note:&lt;/b&gt; By default, the service runs under the Local System account to access user folders without requiring a password. Since Syncthing is exposed to the network, for enhanced security you can configure the service to run under a specific user account in the Windows Services management console (&lt;em&gt;Properties &amp;rarr; Log On&lt;/em&gt;).&lt;/p&gt;</source>
         <translation>&lt;p&gt;Le service Syncthing a été installé avec succès.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Note de sécurité :&lt;/b&gt; Par défaut, le service s&apos;exécute sous le compte Système local pour accéder aux dossiers utilisateurs sans nécessiter de mot de passe. Comme Syncthing est exposé au réseau, pour une sécurité renforcée, vous pouvez configurer le service pour qu&apos;il s&apos;exécute sous un compte utilisateur spécifique dans la console de gestion des services Windows (&lt;em&gt;Propriétés &amp;rarr; Se connecter&lt;/em&gt;).&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1845"/>
+        <location filename="../settings/settingsdialog.cpp" line="1839"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation>Il n&apos;est pas possible d&apos;afficher le bouton démarrer/arrêter pour le service systemd et le lanceur interne en même temps. Le service systemd est prioritaire.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1851"/>
+        <location filename="../settings/settingsdialog.cpp" line="1845"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation>Il n&apos;est pas possible de prendre en compte le service systemd et le lanceur interne pour les reconnexions en même temps. Le service systemd est prioritaire.</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1900"/>
+        <location filename="../settings/settingsdialog.cpp" line="1894"/>
         <source>The specified service is unavailable or not installed</source>
         <translation>Le service spécifié est indisponible ou n&apos;est pas installé</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1922"/>
+        <location filename="../settings/settingsdialog.cpp" line="1916"/>
         <source>since </source>
         <translation>depuis </translation>
     </message>
@@ -5327,37 +5337,37 @@
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2179"/>
+        <location filename="../settings/settingsdialog.cpp" line="2215"/>
         <source>Tray</source>
         <translation>Barre</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2187"/>
+        <location filename="../settings/settingsdialog.cpp" line="2223"/>
         <source>Web view</source>
         <translation>Vue web</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2194"/>
+        <location filename="../settings/settingsdialog.cpp" line="2230"/>
         <source>Startup</source>
         <translation>Démarrage</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2196"/>
+        <location filename="../settings/settingsdialog.cpp" line="2232"/>
         <source>additional tool</source>
         <translation>outil supplémentaire</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2196"/>
+        <location filename="../settings/settingsdialog.cpp" line="2232"/>
         <source>Extra launcher</source>
         <translation>Lanceur supplémentaire</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2237"/>
+        <location filename="../settings/settingsdialog.cpp" line="2273"/>
         <source>Settings</source>
         <translation>Paramètres</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2243"/>
+        <location filename="../settings/settingsdialog.cpp" line="2279"/>
         <source>Start wizard</source>
         <translation>Démarrer l&apos;assistant</translation>
     </message>

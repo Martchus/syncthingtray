@@ -2856,7 +2856,7 @@
         <translation>无法确定系统是否正在使用电池供电。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2147"/>
+        <location filename="../settings/settingsdialog.cpp" line="2183"/>
         <source>Unable to restart via &quot;%1&quot;: %2</source>
         <translation>无法通过 “%1” 重新启动： %2</translation>
     </message>
@@ -4002,7 +4002,7 @@ The Web UI will be opened in the default web browser instead.</source>
     </message>
     <message>
         <location filename="../settings/builtinwebviewoptionpage.ui" line="12"/>
-        <location filename="../settings/settingsdialog.cpp" line="2089"/>
+        <location filename="../settings/settingsdialog.cpp" line="2125"/>
         <source>Built-in web view</source>
         <translation>内置 Web 视图</translation>
     </message>
@@ -4022,7 +4022,7 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation>当前未显示时保持网页视图运行</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2091"/>
+        <location filename="../settings/settingsdialog.cpp" line="2127"/>
         <source>Syncthing Tray has not been built with vieb view support utilizing either Qt WebKit or Qt WebEngine.</source>
         <translation>Syncthing Tray 尚未使用 Qt WebKit 或 Qt WebEngine 构建以支持 Web 视图。</translation>
     </message>
@@ -4572,12 +4572,12 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2065"/>
+        <location filename="../settings/settingsdialog.cpp" line="2101"/>
         <source>Custom command to launch Syncthing&apos;s UI - </source>
         <translation>启动 Syncthing 用户界面的自定义命令 - </translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2066"/>
+        <location filename="../settings/settingsdialog.cpp" line="2102"/>
         <source>&lt;p&gt;Enter a custom command to launch Syncthing&apos;s UI. The expression &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; will be replaced with the Syncthing-URL.&lt;/p&gt;&lt;p&gt;Leave the command empty to use the auto-detection.&lt;/p&gt;</source>
         <translation>&lt;p&gt;输入自定义命令以启动 Syncthing 的用户界面。表达式 &lt;code&gt;%SYNCTHING_URL%&lt;/code&gt; 将被替换为 Syncthing 网址.&lt;/p&gt;&lt;p&gt; 留空命令以使用自动检测。&lt;/p&gt;</translation>
     </message>
@@ -5408,8 +5408,8 @@ The Web UI will be opened in the default web browser instead.</source>
         <location filename="../settings/serviceoptionpage.ui" line="180"/>
         <location filename="../settings/serviceoptionpage.ui" line="267"/>
         <location filename="../settings/serviceoptionpage.ui" line="357"/>
-        <location filename="../settings/settingsdialog.cpp" line="1927"/>
-        <location filename="../settings/settingsdialog.cpp" line="1950"/>
+        <location filename="../settings/settingsdialog.cpp" line="1921"/>
+        <location filename="../settings/settingsdialog.cpp" line="1944"/>
         <source>unknown</source>
         <translation>未知</translation>
     </message>
@@ -5525,37 +5525,47 @@ The Web UI will be opened in the default web browser instead.</source>
         <translation>Windows 服务支持仍处于实验阶段，主要面向高级用户。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1720"/>
+        <location filename="../settings/settingsdialog.cpp" line="1988"/>
+        <source>Do you really want to install the service as &quot;%1&quot;? This name does not contain &quot;syncthing&quot; so this might lead to confusion later on.</source>
+        <translation>您确定要将服务安装为 &quot;%1&quot; 吗？该名称不包含 &quot;syncthing&quot;，这可能会导致日后产生混淆。</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="1991"/>
+        <source>Do you really want to uninstall the service &quot;%1&quot;? This name does not contain &quot;syncthing&quot; so you are probably about to delete the wrong service!</source>
+        <translation>您真的确定要卸载服务“%1”吗？此名称不包含“syncthing”，因此您很可能正在删除错误的服务！</translation>
+    </message>
+    <message>
+        <location filename="../settings/settingsdialog.cpp" line="2011"/>
         <source>Select home directory for Syncthing service</source>
         <translation>选择 Syncthing 服务的主目录</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1733"/>
+        <location filename="../settings/settingsdialog.cpp" line="1727"/>
         <source>Service installed</source>
         <translation>服务已安装</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1734"/>
+        <location filename="../settings/settingsdialog.cpp" line="1728"/>
         <source>&lt;p&gt;The Syncthing service has been installed successfully.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Security note:&lt;/b&gt; By default, the service runs under the Local System account to access user folders without requiring a password. Since Syncthing is exposed to the network, for enhanced security you can configure the service to run under a specific user account in the Windows Services management console (&lt;em&gt;Properties &amp;rarr; Log On&lt;/em&gt;).&lt;/p&gt;</source>
         <translation>&lt;p&gt;Syncthing 服务已成功安装。&lt;/p&gt;&lt;p&gt;&lt;b&gt;安全提示：&lt;/b&gt;默认情况下，该服务以“本地系统”账户运行，以便无需密码即可访问用户文件夹。由于 Syncthing 会暴露在网络中，为了增强安全性，您可以在 Windows 服务管理控制台中配置该服务以特定用户账户运行（&lt;em&gt;属性 &amp;rarr; 登录&lt;/em&gt;）。&lt;/p&gt;</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1845"/>
+        <location filename="../settings/settingsdialog.cpp" line="1839"/>
         <source>It is not possible to show the start/stop button for the systemd service and the internal launcher at the same time. The systemd service precedes.</source>
         <translation>无法同时显示 systemd 服务和内部启动器的启动/停止按钮。 systemd 服务优先。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1851"/>
+        <location filename="../settings/settingsdialog.cpp" line="1845"/>
         <source>It is not possible to consider the systemd service and the internal launcher for reconnects at the same time. The systemd service precedes.</source>
         <translation>无法同时考虑 systemd 服务和内部启动器进行重新连接。 systemd 服务优先。</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1900"/>
+        <location filename="../settings/settingsdialog.cpp" line="1894"/>
         <source>The specified service is unavailable or not installed</source>
         <translation>指定的服务不可用或未安装</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="1922"/>
+        <location filename="../settings/settingsdialog.cpp" line="1916"/>
         <source>since </source>
         <translation>自从 </translation>
     </message>
@@ -5563,37 +5573,37 @@ The Web UI will be opened in the default web browser instead.</source>
 <context>
     <name>QtGui::SettingsDialog</name>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2179"/>
+        <location filename="../settings/settingsdialog.cpp" line="2215"/>
         <source>Tray</source>
         <translation>托盘</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2187"/>
+        <location filename="../settings/settingsdialog.cpp" line="2223"/>
         <source>Web view</source>
         <translation>网页视图</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2194"/>
+        <location filename="../settings/settingsdialog.cpp" line="2230"/>
         <source>Startup</source>
         <translation>启动</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2196"/>
+        <location filename="../settings/settingsdialog.cpp" line="2232"/>
         <source>additional tool</source>
         <translation>附加工具</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2196"/>
+        <location filename="../settings/settingsdialog.cpp" line="2232"/>
         <source>Extra launcher</source>
         <translation>额外启动器</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2237"/>
+        <location filename="../settings/settingsdialog.cpp" line="2273"/>
         <source>Settings</source>
         <translation>设置</translation>
     </message>
     <message>
-        <location filename="../settings/settingsdialog.cpp" line="2243"/>
+        <location filename="../settings/settingsdialog.cpp" line="2279"/>
         <source>Start wizard</source>
         <translation>开始向导</translation>
     </message>
