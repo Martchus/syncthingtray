@@ -1714,15 +1714,9 @@ QWidget *ServiceOptionPage::setupWidget()
     QObject::connect(refreshAction, &QAction::triggered, m_service, &SyncthingService::reloadAllUnitFiles);
     QObject::connect(openLogsAction, &QAction::triggered, m_service, &SyncthingService::openLogs);
     QObject::connect(m_openServiceManagerAction, &QAction::triggered, m_service, &SyncthingService::openServiceManager);
-    QObject::connect(m_installServiceAction, &QAction::triggered, m_service, [service = m_service] { service->installService(); });
-    QObject::connect(m_installServiceCustomHomeAction, &QAction::triggered, m_service, [service = m_service] {
-        if (const auto dir = QFileDialog::getExistingDirectory(
-                nullptr, QCoreApplication::translate("QtGui::ServiceOptionPage", "Select home directory for Syncthing service"));
-            !dir.isEmpty()) {
-            service->installService(dir);
-        }
-    });
-    QObject::connect(m_uninstallServiceAction, &QAction::triggered, m_service, &SyncthingService::uninstallService);
+    QObject::connect(m_installServiceAction, &QAction::triggered, widget, std::bind(&ServiceOptionPage::installService, this));
+    QObject::connect(m_installServiceCustomHomeAction, &QAction::triggered, widget, std::bind(&ServiceOptionPage::installServiceWithHomeDir, this));
+    QObject::connect(m_uninstallServiceAction, &QAction::triggered, widget, std::bind(&ServiceOptionPage::uninstallService, this));
     QObject::connect(ui()->syncthingUnitLineEdit, &QLineEdit::textChanged, m_service, &SyncthingService::setUnitName);
     QObject::connect(ui()->startPushButton, &QPushButton::clicked, m_service, &SyncthingService::start);
     QObject::connect(ui()->stopPushButton, &QPushButton::clicked, m_service, &SyncthingService::stop);
@@ -1983,6 +1977,48 @@ void ServiceOptionPage::updateColors()
 {
     updateRunningColor();
     updateEnabledColor();
+}
+
+bool ServiceOptionPage::checkServiceName(bool install)
+{
+    const auto &name = m_service->unitName();
+    if (name.contains(QLatin1String("syncthing"), Qt::CaseInsensitive)) {
+        return true;
+    }
+    const auto message = install ? QCoreApplication::translate("QtGui::ServiceOptionPage",
+                                       "Do you really want to install the service as \"%1\"? This name does not contain \"syncthing\" so this might "
+                                       "lead to confusion later on.")
+                                 : QCoreApplication::translate("QtGui::ServiceOptionPage",
+                                       "Do you really want to uninstall the service \"%1\"? This name does not contain \"syncthing\" so you are "
+                                       "probably about to delete the wrong service!");
+    return QMessageBox::warning(nullptr, QCoreApplication::applicationName(), message.arg(name), QMessageBox::Yes | QMessageBox::No, QMessageBox::No)
+        == QMessageBox::Yes;
+}
+
+void ServiceOptionPage::installService()
+{
+    if (checkServiceName(true)) {
+        m_service->installService();
+    }
+}
+
+void ServiceOptionPage::installServiceWithHomeDir()
+{
+    if (!checkServiceName(true)) {
+        return;
+    }
+    if (const auto dir = QFileDialog::getExistingDirectory(
+            nullptr, QCoreApplication::translate("QtGui::ServiceOptionPage", "Select home directory for Syncthing service"));
+        !dir.isEmpty()) {
+        m_service->installService(dir);
+    }
+}
+
+void ServiceOptionPage::uninstallService()
+{
+    if (checkServiceName(false)) {
+        m_service->uninstallService();
+    }
 }
 #endif
 
