@@ -31,6 +31,7 @@
 
 #include <syncthingmodel/syncthingicons.h>
 
+#include <syncthingconnector/syncthingconfig.h>
 #include <syncthingconnector/syncthingprocess.h>
 #ifdef LIB_SYNCTHING_CONNECTOR_SUPPORT_SERVICE
 #include <syncthingconnector/syncthingservice.h>
@@ -132,10 +133,31 @@ static void handleServiceError(const QString &context, const QString &name, cons
 
 QObject *parentObject = nullptr;
 
+/*!
+ * \brief Configures the connection for the local Syncthing instance (e.g. one started via Homebrew or systemd) on first launch.
+ * \returns Returns whether a usable local Syncthing config was found so the wizard does not need to be shown.
+ */
+static bool configureLocalSyncthingOnFirstLaunch(Settings::Settings &settings)
+{
+    if (!settings.firstLaunch || settings.fakeFirstLaunch) {
+        return false;
+    }
+    const auto configFilePath = Data::SyncthingConfig::locateConfigFile();
+    auto config = Data::SyncthingConfig();
+    if (configFilePath.isEmpty() || !config.restore(configFilePath) || config.guiAddress.isEmpty() || config.guiApiKey.isEmpty()) {
+        return false;
+    }
+    settings.connection.addConfigFromWizard(config);
+    settings.firstLaunch = false;
+    Settings::save();
+    return true;
+}
+
 static int initSyncthingTray(bool windowed, bool waitForTray, const Argument &connectionConfigArg)
 {
     // get settings
     auto &settings = Settings::values();
+    configureLocalSyncthingOnFirstLaunch(settings);
     static const auto defaultConnection = std::vector<const char *>({ "" });
     const auto &connectionConfigurations
         = connectionConfigArg.isPresent() && !connectionConfigArg.values().empty() ? connectionConfigArg.values() : defaultConnection;

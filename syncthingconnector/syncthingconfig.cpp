@@ -50,6 +50,13 @@ QString SyncthingConfig::locateConfigFile(const QString &fileName)
         }
     }
 
+    // check location used by Syncthing on macOS ("~/Library/Application Support/Syncthing")
+#ifdef Q_OS_DARWIN
+    if (!(path = QStandardPaths::locate(QStandardPaths::GenericDataLocation, QStringLiteral("Syncthing/") + fileName)).isEmpty()) {
+        return path;
+    }
+#endif
+
     // check state dir used by Syncthing on Unix systems as of v1.27.0 (commit b5082f6af8b0a70afd3bc42977dad26920e72b68)
 #if defined(Q_OS_UNIX) && !defined(Q_OS_DARWIN)
     if (!(path = qEnvironmentVariable("XDG_STATE_HOME")).isEmpty()) {
