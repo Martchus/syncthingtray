@@ -67,6 +67,7 @@
 #endif
 
 #include <algorithm>
+#include <cstdlib>
 #include <functional>
 
 using namespace CppUtilities;
@@ -383,10 +384,10 @@ QuickGuiEngine &TrayWidget::quickGui()
     if (!m_quickUI.has_value()) {
         // force use of Vulkan under GNU/Linux to avoid "eglSwapBuffers failed with 0x…, surface: 0x…"
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
-        qputenv("QSG_RHI_BACKEND", "vulkan");
+        setenv("QSG_RHI_BACKEND", "vulkan", 0);
 #endif
         // use dense variant of Material style
-        qputenv("QT_QUICK_CONTROLS_MATERIAL_VARIANT", "Dense");
+        setenv("QT_QUICK_CONTROLS_MATERIAL_VARIANT", "Dense", 0);
 
         auto &settings = Settings::values();
         auto &quickUI = m_quickUI.emplace(qGuiApp, settings.qt);
