@@ -215,6 +215,7 @@ private:
     template <typename ReturnArg, typename... Args>
     bool invokeWidgetFunction(const char *member, QTemplatedMetaMethodReturnArgument<ReturnArg> r, Args &&...args);
     template <typename... Args> bool invokeWidgetFunction(const char *member, Args &&...args);
+    void handleSceneGraphError(QQuickWindow::SceneGraphError error, const QString &message);
 #endif
 
     QGuiApplication *m_app;

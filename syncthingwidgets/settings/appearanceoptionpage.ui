@@ -21,14 +21,122 @@
    <property name="topMargin">
     <number>9</number>
    </property>
-   <item row="5" column="0">
+   <item row="2" column="0">
+    <widget class="QLabel" name="windowTypeLabel">
+     <property name="text">
+      <string>Window type</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="windowTypeComboBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <item>
+      <property name="text">
+       <string>Popup</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Normal window</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Window without titlebar</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>None - open Syncthing directly</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="styleLabel">
+     <property name="text">
+      <string>Style</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QComboBox" name="styleComboBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <item>
+      <property name="text">
+       <string>Traditional</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Modern</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="rhiBackendLabel">
+     <property name="text">
+      <string>Graphics backend</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QComboBox" name="rhiBackendComboBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1">
+    <layout class="QHBoxLayout" name="restartHorizontalLayout">
+     <item>
+      <widget class="QLabel" name="requiresRestartLabel">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="MinimumExpanding" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Style and graphics backend need a restart to apply.</string>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="requiresRestartPushButton">
+       <property name="text">
+        <string>Apply and Restart</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="7" column="0">
     <widget class="QLabel" name="frameShapeLabel">
      <property name="text">
       <string>Frame shape</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="1">
+   <item row="7" column="1">
     <widget class="QComboBox" name="frameShapeComboBox">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -58,14 +166,14 @@
      </item>
     </widget>
    </item>
-   <item row="6" column="0">
+   <item row="8" column="0">
     <widget class="QLabel" name="frameShadowLabel">
      <property name="text">
       <string>Frame shadow</string>
      </property>
     </widget>
    </item>
-   <item row="6" column="1">
+   <item row="8" column="1">
     <widget class="QComboBox" name="frameShadowComboBox">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -90,14 +198,14 @@
      </item>
     </widget>
    </item>
-   <item row="8" column="0">
+   <item row="10" column="0">
     <widget class="QLabel" name="tabPosLabel">
      <property name="text">
       <string>Tab position</string>
      </property>
     </widget>
    </item>
-   <item row="8" column="1">
+   <item row="10" column="1">
     <widget class="QComboBox" name="tabPosComboBox">
      <property name="sizePolicy">
       <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
@@ -127,14 +235,56 @@
      </item>
     </widget>
    </item>
-   <item row="10" column="0">
+   <item row="11" column="0">
+    <widget class="QLabel" name="defaultTabLabel">
+     <property name="text">
+      <string>Default tab</string>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="1">
+    <widget class="QComboBox" name="defaultTabComboBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <item>
+      <property name="text">
+       <string>Folders</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Devices</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Downloads</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Recent changes</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>Last</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="12" column="0">
     <widget class="QLabel" name="sizeLabel">
      <property name="text">
       <string>Menu size</string>
      </property>
     </widget>
    </item>
-   <item row="10" column="1">
+   <item row="12" column="1">
     <layout class="QHBoxLayout" name="menuSizeHorizontalLayout">
      <item>
       <widget class="QSpinBox" name="widthSpinBox">
@@ -214,24 +364,80 @@
      </item>
     </layout>
    </item>
-   <item row="11" column="0">
+   <item row="13" column="0">
     <widget class="QLabel" name="guiElementsLabel">
      <property name="text">
       <string>Optional GUI elements</string>
      </property>
     </widget>
    </item>
+   <item row="13" column="1">
+    <layout class="QVBoxLayout" name="optionalGuiElementsVerticalLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QCheckBox" name="showTrafficCheckBox">
+       <property name="text">
+        <string>Traffic statistics</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="showDownloadsCheckBox">
+       <property name="text">
+        <string>Downloads</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="showTabTextsCheckBox">
+       <property name="text">
+        <string>Tab names</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="syncthingIconsCheckBox">
+       <property name="text">
+        <string>Syncthing icons</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
    <item row="14" column="0">
+    <widget class="QLabel" name="iconsLabel">
+     <property name="text">
+      <string>Icons</string>
+     </property>
+    </widget>
+   </item>
+   <item row="14" column="1">
+    <layout class="QVBoxLayout" name="iconsVerticalLayout">
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QCheckBox" name="preferIconsFromThemeCheckBox">
+       <property name="text">
+        <string>Prefer icons from theme over ForkAwesome icons (needs restart to apply)</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item row="16" column="0">
     <widget class="QLabel" name="positioningLabel">
      <property name="text">
       <string>Positioning</string>
      </property>
      <property name="alignment">
-      <set>Qt::AlignmentFlag::AlignLeading|Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
+      <set>Qt::AlignmentFlag::AlignLeft|Qt::AlignmentFlag::AlignTop</set>
      </property>
     </widget>
    </item>
-   <item row="14" column="1">
+   <item row="16" column="1">
     <layout class="QVBoxLayout" name="positioningVerticalLayout">
      <item>
       <widget class="QCheckBox" name="useCursorPosCheckBox">
@@ -321,175 +527,6 @@
       </layout>
      </item>
     </layout>
-   </item>
-   <item row="11" column="1">
-    <layout class="QVBoxLayout" name="optionalGuiElementsVerticalLayout">
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QCheckBox" name="showTrafficCheckBox">
-       <property name="text">
-        <string>Traffic statistics</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="showDownloadsCheckBox">
-       <property name="text">
-        <string>Downloads</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="showTabTextsCheckBox">
-       <property name="text">
-        <string>Tab names</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="syncthingIconsCheckBox">
-       <property name="text">
-        <string>Syncthing icons</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="12" column="1">
-    <layout class="QVBoxLayout" name="iconsVerticalLayout">
-     <property name="spacing">
-      <number>0</number>
-     </property>
-     <item>
-      <widget class="QCheckBox" name="preferIconsFromThemeCheckBox">
-       <property name="text">
-        <string>Prefer icons from theme over ForkAwesome icons (needs restart to apply)</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item row="12" column="0">
-    <widget class="QLabel" name="iconsLabel">
-     <property name="text">
-      <string>Icons</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="1">
-    <widget class="QComboBox" name="windowTypeComboBox">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <item>
-      <property name="text">
-       <string>Popup</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Normal window</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Window without titlebar</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>None - open Syncthing directly</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="windowTypeLabel">
-     <property name="text">
-      <string>Window type</string>
-     </property>
-    </widget>
-   </item>
-   <item row="9" column="1">
-    <widget class="QComboBox" name="defaultTabComboBox">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <item>
-      <property name="text">
-       <string>Folders</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Devices</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Downloads</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Recent changes</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Last</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="9" column="0">
-    <widget class="QLabel" name="defaultTabLabel">
-     <property name="text">
-      <string>Default tab</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="styleLabel">
-     <property name="text">
-      <string>Style</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QComboBox" name="styleComboBox">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <item>
-      <property name="text">
-       <string>Traditional</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>Modern</string>
-      </property>
-     </item>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QLabel" name="requiresRestartLabel">
-     <property name="text">
-      <string>Requires restart to apply.</string>
-     </property>
-    </widget>
    </item>
   </layout>
  </widget>

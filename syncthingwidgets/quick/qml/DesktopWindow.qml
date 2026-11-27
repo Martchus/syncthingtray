@@ -8,7 +8,7 @@ import Tray
 
 ApplicationWindow {
     id: appWindow
-    visible: true
+    visible: false
     width: 1250
     height: 575
     title: meta.title

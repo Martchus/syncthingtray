@@ -219,6 +219,7 @@ public:
     void hideConnectionStatus();
     void selectLauncherSettings();
     void selectUpdateSettings();
+    void selectAppearanceSettings();
     static void respawnIfRestartRequested();
 
 Q_SIGNALS:
@@ -226,6 +227,11 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void resetPositioningSettings();
+    static void replaceProcess(const QString &program);
+    static void restartProcess();
+#ifdef SYNCTHINGWIDGETS_SETUP_TOOLS_ENABLED
+    static void replaceProcessAfterUpdate();
+#endif
 
 private:
     void init();
@@ -235,6 +241,7 @@ private:
     QtUtilities::UpdateOptionPage *m_updateOptionPage = nullptr;
     int m_launcherSettingsCategory = -1, m_launcherSettingsPageIndex = -1;
     int m_updateSettingsCategory = -1, m_updateSettingsPageIndex = -1;
+    int m_appearanceSettingsCategory = -1, m_appearanceSettingsPageIndex = -1;
     static QtUtilities::RestartHandler *s_restartHandler;
 };
 

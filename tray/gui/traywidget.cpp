@@ -382,13 +382,6 @@ Data::SyncthingService *TrayWidget::service() const
 QuickGuiEngine &TrayWidget::quickGui()
 {
     if (!m_quickUI.has_value()) {
-        // force use of Vulkan under GNU/Linux to avoid "eglSwapBuffers failed with 0x…, surface: 0x…"
-        // note: This problem occurred with the NVIDIA driver. When I remember correctly, it happened with a driver version around 580
-        //       and only after hiding and trying to show the menu again. Not sure whether current NVIDIA driver versions are affected.
-        //       I cannot reproduce this problem right now with an AMD card and the radeonsi driver.
-#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
-        setenv("QSG_RHI_BACKEND", "vulkan", 0);
-#endif
         // use dense variant of Material style
         setenv("QT_QUICK_CONTROLS_MATERIAL_VARIANT", "Dense", 0);
 
@@ -428,6 +421,12 @@ void TrayWidget::showUpdateSettings()
 {
     showSettingsDialog();
     settingsDialog()->selectUpdateSettings();
+}
+
+void TrayWidget::showAppearanceSettings()
+{
+    showSettingsDialog();
+    settingsDialog()->selectAppearanceSettings();
 }
 
 void TrayWidget::showWizard()
@@ -845,6 +844,22 @@ void TrayWidget::showEvent(QShowEvent *event)
     QtGui::handleRelevantControlsChanged(m_visibleControls += VisibleControls::TrayWidget, m_ui->tabWidget->currentIndex(), *m_data.connection());
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
     if (m_quickWidget) {
+        if (const auto *const quickWindow = m_quickWidget->quickWindow(); !quickWindow || !quickWindow->isSceneGraphInitialized()) {
+            auto messageBox = QMessageBox(QMessageBox::Critical, QCoreApplication::applicationName(),
+                tr("Failed to initialize graphics backend for the modern UI. "
+                   "You can try to select a different graphics backend in the appearance settings or switch back to the traditional UI."));
+            connect(messageBox.addButton(tr("Appearance settings"), QMessageBox::AcceptRole), &QPushButton::clicked, this,
+                &TrayWidget::showAppearanceSettings);
+            connect(messageBox.addButton(tr("Restart with traditional UI"), QMessageBox::AcceptRole), &QPushButton::clicked, this, [] {
+                Settings::values().appearance.style = static_cast<int>(Style::Traditional);
+                Settings::save();
+                SettingsDialog::restartProcess();
+            });
+            messageBox.addButton(QMessageBox::Cancel);
+            messageBox.exec();
+            closeMenu();
+            return;
+        }
         m_quickWidget->setFocus();
         if (auto *const rootObject = m_quickWidget->rootObject()) {
             rootObject->forceActiveFocus();

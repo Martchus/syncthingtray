@@ -24,6 +24,7 @@
 #include <QHash>
 #include <QMenu>
 #include <QMessageBox>
+#include <QPushButton>
 #include <QQmlProperty>
 #include <QQuickWindow>
 #endif
@@ -375,8 +376,14 @@ bool QuickUI::showMainWindow()
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
     if (m_mainWindow) {
         m_mainWindow->show();
+        m_mainWindow->raise();
+        m_mainWindow->requestActivate();
         return true;
     } else if ((m_mainWindow = qobject_cast<QQuickWindow *>(loadComponent("Main", "DesktopWindow", m_engine)))) {
+        connect(m_mainWindow, &QQuickWindow::sceneGraphError, this, &QuickUI::handleSceneGraphError);
+        m_mainWindow->show();
+        m_mainWindow->raise();
+        m_mainWindow->requestActivate();
         return true;
     } else {
         return false;
@@ -403,10 +410,14 @@ bool QuickUI::showPage(
     }
     auto *const pageWindow
         = qobject_cast<QQuickWindow *>(loadComponent("Main", "PageWindow", m_engine, { { QStringLiteral("page"), QVariant::fromValue(page) } }));
-    static_cast<QObject *>(page)->setParent(pageWindow);
     if (!pageWindow) {
         return false;
     }
+    static_cast<QObject *>(page)->setParent(pageWindow);
+    connect(pageWindow, &QQuickWindow::sceneGraphError, this, &QuickUI::handleSceneGraphError);
+    pageWindow->show();
+    pageWindow->raise();
+    pageWindow->requestActivate();
     if (window) {
         *window = pageWindow;
     }
@@ -556,6 +567,32 @@ QQuickItem *QuickUI::makePageBackground(QQuickWindow *pageWindow)
 #endif
     return nullptr;
 }
+
+#ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
+void QuickUI::handleSceneGraphError(QQuickWindow::SceneGraphError error, const QString &message)
+{
+    Q_UNUSED(error)
+    m_mainWindow->deleteLater();
+    m_mainWindow = nullptr;
+    qWarning().noquote() << "Qt Quick scene graph error:" << message;
+    if (auto *const win = qobject_cast<QQuickWindow *>(sender())) {
+        win->hide();
+    }
+    auto messageBox = QMessageBox(QMessageBox::Critical, QCoreApplication::applicationName(),
+        tr("Failed to initialize graphics backend for the modern UI: %1\n\n"
+           "You can try to select a different graphics backend in the appearance settings or switch back to showing the web-based UI.")
+            .arg(message));
+    connect(messageBox.addButton(tr("Appearance settings"), QMessageBox::AcceptRole), &QPushButton::clicked, this,
+        [this] { invokeWidgetFunction("showAppearanceSettings"); });
+    connect(messageBox.addButton(tr("Use web-based UI"), QMessageBox::AcceptRole), &QPushButton::clicked, this, [this] {
+        // use browser even if built with support for the built-in web view as it will probably not work as well
+        Settings::values().webView.mode = Settings::WebView::Mode::Browser;
+        invokeWidgetFunction("showSyncthingUI");
+    });
+    messageBox.addButton(QMessageBox::Cancel);
+    messageBox.exec();
+}
+#endif
 
 #ifdef SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP
 template <typename ReturnArg, typename... Args>

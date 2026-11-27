@@ -62,6 +62,18 @@ struct SYNCTHINGWIDGETS_EXPORT NotifyOn {
 };
 
 struct SYNCTHINGWIDGETS_EXPORT Appearance {
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    enum class RhiBackend : int {
+        Automatic = 0,
+        Vulkan = 1,
+        OpenGL = 2,
+        Software = 3,
+        Direct3D11 = 4,
+        Direct3D12 = 5,
+        Metal = 6,
+    };
+#endif
+
     bool showTraffic = true;
     bool showDownloads = false;
     bool showTabTexts = true;
@@ -73,12 +85,21 @@ struct SYNCTHINGWIDGETS_EXPORT Appearance {
     int defaultTab = 0;
     int lastTab = 0;
     int initialStyle = 0, style = 0; // corresponds to TrayWidget::Style
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    RhiBackend rhiBackend = RhiBackend::Automatic;
+    RhiBackend initialRhiBackend = RhiBackend::Automatic;
+#endif
     struct SYNCTHINGWIDGETS_EXPORT Positioning {
         QPoint assumedIconPosition;
         bool useCursorPosition = true;
         bool useAssumedIconPosition = false;
         std::optional<QPoint> positionToUse() const;
     } positioning;
+
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    void applyRhiBackend() const;
+    static bool isRhiBackendAvailable(RhiBackend backend);
+#endif
 };
 
 struct SYNCTHINGWIDGETS_EXPORT ToolParameter {

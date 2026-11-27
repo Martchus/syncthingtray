@@ -41,9 +41,15 @@ normal application.
   different Wayland shells in one application.
 
 ## Broken "Modern UI"
-If the modern UI is not shown at all or causes Syncthing Tray to crash under
-GNU/Linux, make sure Vulkan works on your system in general. A working Vulkan
-setup is required under GNU/Linux.
+Under GNU/Linux, the "Automatic" backend setting prefers Vulkan to avoid a known
+driver issue with OpenGL (such as `eglSwapBuffers` errors on NVIDIA drivers). If
+Vulkan is not functional on your system, Syncthing Tray will automatically fall
+back to OpenGL or the Traditional UI.
+
+If you encounter issues with a specific graphics backend, you can select a
+different backend (such as OpenGL, Vulkan, or Software) in the settings under
+"Appearance -> Graphics backend", or override it via the `QSG_RHI_BACKEND`
+environment variable (e.g. `QSG_RHI_BACKEND=opengl`).
 
 If the modern UI looks broken (e.g. icons are missing), it probably uses an
 unsupported style. This is the case with the new

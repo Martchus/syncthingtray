@@ -33,6 +33,15 @@
 #include <QSettings>
 #include <QStringBuilder>
 #include <QVersionNumber>
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+#if QT_CONFIG(opengl)
+#include <QOpenGLContext>
+#endif
+#if QT_CONFIG(vulkan)
+#include <QVulkanFunctions>
+#include <QVulkanInstance>
+#endif
+#endif
 
 #include <iostream>
 #include <type_traits>
@@ -60,6 +69,152 @@ std::optional<QPoint> Appearance::Positioning::positionToUse() const
     return useCursorPosition ? std::optional<QPoint>(QCursor::pos())
                              : (useAssumedIconPosition ? std::optional<QPoint>(assumedIconPosition) : std::nullopt);
 }
+
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+#if QT_CONFIG(vulkan)
+static bool probeVulkan()
+{
+    if (!QGuiApplication::instance()) {
+        return false;
+    }
+    auto inst = QVulkanInstance();
+    if (!inst.create()) {
+        return false;
+    }
+    if (auto *const funcs = inst.functions()) {
+        auto count = std::uint32_t();
+        if (funcs->vkEnumeratePhysicalDevices(inst.vkInstance(), &count, nullptr) != VK_SUCCESS || count == 0) {
+            return false;
+        }
+    } else {
+        return false;
+    }
+    return true;
+}
+#endif
+
+#if QT_CONFIG(opengl)
+static bool probeOpenGL()
+{
+    if (!QGuiApplication::instance()) {
+        return false;
+    }
+    auto ctx = QOpenGLContext();
+    return ctx.create();
+}
+#endif
+
+/*!
+ * \brief Checks whether the specified RHI \a backend is available on the current platform/build.
+ */
+bool Appearance::isRhiBackendAvailable(RhiBackend backend)
+{
+    switch (backend) {
+    case RhiBackend::Automatic:
+    case RhiBackend::Software:
+        return true;
+    case RhiBackend::Vulkan:
+#if QT_CONFIG(vulkan)
+        return true;
+#else
+        return false;
+#endif
+    case RhiBackend::OpenGL:
+#if QT_CONFIG(opengl)
+        return true;
+#else
+        return false;
+#endif
+    case RhiBackend::Direct3D11:
+    case RhiBackend::Direct3D12:
+#if defined(Q_OS_WIN)
+        return true;
+#else
+        return false;
+#endif
+    case RhiBackend::Metal:
+#if defined(Q_OS_MACOS) || defined(Q_OS_DARWIN)
+        return true;
+#else
+        return false;
+#endif
+    default:
+        return false;
+    }
+}
+
+/*!
+ * \brief Configures the QSG_RHI_BACKEND environment variable according to the appearance settings.
+ */
+void Appearance::applyRhiBackend() const
+{
+    static auto alreadyApplied = false;
+    if (alreadyApplied) {
+        return;
+    }
+    alreadyApplied = true;
+
+    auto setRhiBackendEnv = [](const char *backend, bool override) {
+        if (!override && qEnvironmentVariableIsSet("QSG_RHI_BACKEND")) {
+            return;
+        }
+        qputenv("QSG_RHI_BACKEND", backend);
+    };
+
+    if (rhiBackend == RhiBackend::Software) {
+        qputenv("QT_QUICK_BACKEND", "software");
+        return;
+    }
+    if (qgetenv("QT_QUICK_BACKEND") == "software") {
+        qunsetenv("QT_QUICK_BACKEND");
+    }
+
+    switch (rhiBackend) {
+    case RhiBackend::Automatic:
+#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+        // prefer Vulkan under GNU/Linux to avoid "eglSwapBuffers failed with 0x…, surface: 0x…" with NVIDIA
+#if QT_CONFIG(vulkan)
+        if (probeVulkan()) {
+            setRhiBackendEnv("vulkan", false);
+            break;
+        }
+        qWarning("Vulkan is not available on this system; falling back to OpenGL for Qt Quick GUI.");
+#endif
+#if QT_CONFIG(opengl)
+        if (probeOpenGL()) {
+            setRhiBackendEnv("opengl", false);
+            break;
+        }
+        qWarning("Neither Vulkan nor OpenGL is available on this system; falling back to software rendering.");
+        qputenv("QT_QUICK_BACKEND", "software");
+#endif
+#endif
+        break;
+    case RhiBackend::Vulkan:
+#if QT_CONFIG(vulkan)
+        if (!probeVulkan()) {
+            qWarning("Vulkan was explicitly configured as the graphics backend, but it does not appear to be functional.");
+        }
+#endif
+        setRhiBackendEnv("vulkan", true);
+        break;
+    case RhiBackend::OpenGL:
+        setRhiBackendEnv("opengl", true);
+        break;
+    case RhiBackend::Software:
+        break;
+    case RhiBackend::Direct3D11:
+        setRhiBackendEnv("d3d11", true);
+        break;
+    case RhiBackend::Direct3D12:
+        setRhiBackendEnv("d3d12", true);
+        break;
+    case RhiBackend::Metal:
+        setRhiBackendEnv("metal", true);
+        break;
+    }
+}
+#endif
 
 /*!
  * \brief Contains the processes for launching extra tools.
@@ -384,6 +539,13 @@ bool restore()
         appearance.windowType = !windowed.toBool() ? 0 : 1;
     }
     appearance.initialStyle = appearance.style = settings.value(QStringLiteral("style"), appearance.style).toInt();
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    appearance.initialRhiBackend = appearance.rhiBackend
+        = static_cast<Appearance::RhiBackend>(settings.value(QStringLiteral("rhiBackend"), static_cast<int>(appearance.rhiBackend)).toInt());
+    if (!Appearance::isRhiBackendAvailable(appearance.rhiBackend)) {
+        appearance.initialRhiBackend = appearance.rhiBackend = Appearance::RhiBackend::Automatic;
+    }
+#endif
     appearance.trayMenuSize = settings.value(QStringLiteral("trayMenuSize"), appearance.trayMenuSize).toSize();
     appearance.frameStyle = settings.value(QStringLiteral("frameStyle"), appearance.frameStyle).toInt();
     appearance.tabPosition = settings.value(QStringLiteral("tabPos"), appearance.tabPosition).toInt();
@@ -542,6 +704,9 @@ bool save()
     settings.setValue(QStringLiteral("showStIcons"), appearance.showStIcons);
     settings.setValue(QStringLiteral("windowType"), appearance.windowType);
     settings.setValue(QStringLiteral("style"), appearance.style);
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    settings.setValue(QStringLiteral("rhiBackend"), static_cast<int>(appearance.rhiBackend));
+#endif
     settings.setValue(QStringLiteral("trayMenuSize"), appearance.trayMenuSize);
     settings.setValue(QStringLiteral("frameStyle"), appearance.frameStyle);
     settings.setValue(QStringLiteral("tabPos"), appearance.tabPosition);

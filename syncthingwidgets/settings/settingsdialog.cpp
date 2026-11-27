@@ -590,7 +590,7 @@ AppearanceOptionPage::~AppearanceOptionPage()
 {
 }
 
-static inline void setFormRowVisible(QFormLayout *layout, QWidget *widget1, QWidget *widget2, bool visible)
+inline void setFormRowVisible(QFormLayout *layout, QWidget *widget1, QWidget *widget2, bool visible)
 {
 #if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
     layout->setRowVisible(widget1, visible);
@@ -604,20 +604,63 @@ static inline void setFormRowVisible(QFormLayout *layout, QWidget *widget1, QWid
 #endif
 }
 
+inline void setFormRowVisible(QFormLayout *layout, QLayout *subLayout, QWidget *widget1, QWidget *widget2, bool visible)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(6, 4, 0)
+    layout->setRowVisible(subLayout, visible);
+    Q_UNUSED(widget1);
+    Q_UNUSED(widget2);
+#else
+    Q_UNUSED(layout)
+    Q_UNUSED(subLayout)
+    widget1->setVisible(visible);
+    widget2->setVisible(visible);
+#endif
+}
+
 QWidget *AppearanceOptionPage::setupWidget()
 {
     auto *const widget = AppearanceOptionPageBase::setupWidget();
     auto *const formLayout = ui()->formLayout;
-    auto *const requiresRestartLabel = ui()->requiresRestartLabel;
+    auto *const restartHorizontalLayout = ui()->restartHorizontalLayout;
+    auto *const restartLabel = ui()->requiresRestartLabel;
+    auto *const restartButton = ui()->requiresRestartPushButton;
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    auto *const rhiBackendComboBox = ui()->rhiBackendComboBox;
+    rhiBackendComboBox->addItem(
+        QCoreApplication::translate("QtGui::AppearanceOptionPage", "Automatic"), static_cast<int>(Settings::Appearance::RhiBackend::Automatic));
+#if QT_CONFIG(vulkan)
+    rhiBackendComboBox->addItem(QStringLiteral("Vulkan"), static_cast<int>(Settings::Appearance::RhiBackend::Vulkan));
+#endif
+#if QT_CONFIG(opengl)
+    rhiBackendComboBox->addItem(QStringLiteral("OpenGL"), static_cast<int>(Settings::Appearance::RhiBackend::OpenGL));
+#endif
+    rhiBackendComboBox->addItem(
+        QCoreApplication::translate("QtGui::AppearanceOptionPage", "Software"), static_cast<int>(Settings::Appearance::RhiBackend::Software));
+#if defined(Q_OS_WIN)
+    rhiBackendComboBox->addItem(QStringLiteral("Direct3D 11"), static_cast<int>(Settings::Appearance::RhiBackend::Direct3D11));
+    rhiBackendComboBox->addItem(QStringLiteral("Direct3D 12"), static_cast<int>(Settings::Appearance::RhiBackend::Direct3D12));
+#elif defined(Q_OS_MACOS) || defined(Q_OS_DARWIN)
+    rhiBackendComboBox->addItem(QStringLiteral("Metal"), static_cast<int>(Settings::Appearance::RhiBackend::Metal));
+#endif
+#endif
 #if !defined(GUI_QTQUICK) || !defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
     setFormRowVisible(formLayout, ui()->styleLabel, ui()->styleComboBox, false);
+    setFormRowVisible(formLayout, ui()->rhiBackendLabel, ui()->rhiBackendComboBox, false);
     ui()->syncthingIconsCheckBox->hide();
 #endif
-    setFormRowVisible(formLayout, requiresRestartLabel, nullptr, false);
+    setFormRowVisible(formLayout, restartHorizontalLayout, restartLabel, restartButton, false);
 #if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
-    QObject::connect(ui()->styleComboBox, &QComboBox::currentIndexChanged, formLayout, [this, formLayout, requiresRestartLabel](int index) {
+    auto updateRequiresRestart = [this, formLayout, restartHorizontalLayout, restartLabel, restartButton] {
+        const auto &appearance = Settings::values().appearance;
+        const auto styleChanged = appearance.initialStyle != ui()->styleComboBox->currentIndex();
+        const auto rhiBackendChanged = static_cast<int>(appearance.initialRhiBackend) != ui()->rhiBackendComboBox->currentData().toInt();
+        setFormRowVisible(formLayout, restartHorizontalLayout, restartLabel, restartButton, styleChanged || rhiBackendChanged);
+    };
+    QObject::connect(ui()->styleComboBox, &QComboBox::currentIndexChanged, formLayout, [this, formLayout, updateRequiresRestart](int index) {
         const auto traditionalStyleSelected = index == 0;
-        setFormRowVisible(formLayout, requiresRestartLabel, nullptr, Settings::values().appearance.initialStyle != index);
+        updateRequiresRestart();
+        setFormRowVisible(formLayout, ui()->rhiBackendLabel, ui()->rhiBackendComboBox, !traditionalStyleSelected);
         ui()->frameShapeComboBox->setEnabled(traditionalStyleSelected);
         ui()->frameShadowComboBox->setEnabled(traditionalStyleSelected);
         ui()->tabPosComboBox->setEnabled(traditionalStyleSelected);
@@ -626,6 +669,12 @@ QWidget *AppearanceOptionPage::setupWidget()
         ui()->showTabTextsCheckBox->setEnabled(traditionalStyleSelected);
         ui()->syncthingIconsCheckBox->setEnabled(!traditionalStyleSelected);
         ui()->preferIconsFromThemeCheckBox->setEnabled(traditionalStyleSelected);
+    });
+    QObject::connect(rhiBackendComboBox, &QComboBox::currentIndexChanged, formLayout, updateRequiresRestart);
+    QObject::connect(restartButton, &QPushButton::clicked, widget, [this] {
+        apply();
+        Settings::save();
+        SettingsDialog::restartProcess();
     });
 #endif
     return widget;
@@ -659,6 +708,9 @@ bool AppearanceOptionPage::apply()
     auto &settings = v.appearance;
     settings.windowType = ui()->windowTypeComboBox->currentIndex();
     settings.style = ui()->styleComboBox->currentIndex();
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    settings.rhiBackend = static_cast<Settings::Appearance::RhiBackend>(ui()->rhiBackendComboBox->currentData().toInt());
+#endif
     settings.trayMenuSize.setWidth(ui()->widthSpinBox->value());
     settings.trayMenuSize.setHeight(ui()->heightSpinBox->value());
     settings.showTraffic = ui()->showTrafficCheckBox->isChecked();
@@ -717,6 +769,11 @@ void AppearanceOptionPage::reset()
     resetPositioningSettings();
     ui()->windowTypeComboBox->setCurrentIndex(settings.windowType);
     ui()->styleComboBox->setCurrentIndex(settings.style);
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+    const auto rhiIndex = ui()->rhiBackendComboBox->findData(static_cast<int>(settings.rhiBackend));
+    ui()->rhiBackendComboBox->setCurrentIndex(rhiIndex >= 0 ? rhiIndex : 0);
+    setFormRowVisible(ui()->formLayout, ui()->rhiBackendLabel, ui()->rhiBackendComboBox, settings.style != 0);
+#endif
     ui()->showTrafficCheckBox->setChecked(settings.showTraffic);
     ui()->showDownloadsCheckBox->setChecked(settings.showDownloads);
     ui()->showTabTextsCheckBox->setChecked(settings.showTabTexts);
@@ -2165,14 +2222,11 @@ SettingsDialog::SettingsDialog(QWidget *parent)
     init();
 }
 
-#ifdef SYNCTHINGWIDGETS_SETUP_TOOLS_ENABLED
-/// \cond
-static void replaceProcess()
+/*!
+ * \brief Replaces the process with the specified \a program via `--replace`.
+ */
+void SettingsDialog::replaceProcess(const QString &program)
 {
-    auto *const updateHandler = QtUtilities::UpdateHandler::mainInstance();
-    if (!updateHandler) {
-        return;
-    }
     auto *const process = new Data::SyncthingProcess();
     QObject::connect(process, &Data::SyncthingProcess::finished, process, &QObject::deleteLater);
     QObject::connect(process, &Data::SyncthingProcess::errorOccurred, process, [process] {
@@ -2184,9 +2238,27 @@ static void replaceProcess()
         messageBox.exec();
     });
     process->setProcessChannelMode(QProcess::ForwardedChannels);
-    process->start(updateHandler->updater()->storedPath(), QStringList({ QStringLiteral("qt-widgets-gui"), QStringLiteral("--replace") }));
+    process->start(program, QStringList({ QStringLiteral("qt-widgets-gui"), QStringLiteral("--replace") }));
 }
-/// \endcond
+
+/*!
+ * \brief Restarts the process via `--replace`.
+ */
+void SettingsDialog::restartProcess()
+{
+    replaceProcess(QCoreApplication::applicationFilePath());
+}
+
+#ifdef SYNCTHINGWIDGETS_SETUP_TOOLS_ENABLED
+/*!
+ * \brief Restarts the process via `--replace` using the executable stored by the updater.
+ */
+void SettingsDialog::replaceProcessAfterUpdate()
+{
+    if (auto *const updateHandler = QtUtilities::UpdateHandler::mainInstance()) {
+        replaceProcess(updateHandler->updater()->storedPath());
+    }
+}
 #endif
 
 SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *parent)
@@ -2203,7 +2275,7 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
         }
         m_updateOptionPage->setRestartHandler(s_restartHandler->requester());
     } else {
-        m_updateOptionPage->setRestartHandler(&replaceProcess);
+        m_updateOptionPage->setRestartHandler(&SettingsDialog::replaceProcessAfterUpdate);
     }
 #endif
 
@@ -2217,6 +2289,8 @@ SettingsDialog::SettingsDialog(Data::SyncthingConnection *connection, QWidget *p
         m_appearanceOptionPage = new AppearanceOptionPage, new IconsOptionPage(IconsOptionPage::Context::UI),
         new IconsOptionPage(IconsOptionPage::Context::System) });
     category->setIcon(QIcon(QStringLiteral(":/icons/hicolor/scalable/app/syncthingtray.svg")));
+    m_appearanceSettingsCategory = 0;
+    m_appearanceSettingsPageIndex = 2;
     categories << category;
 
     category = new OptionCategory(this);
@@ -2310,6 +2384,13 @@ void SettingsDialog::selectUpdateSettings()
 {
     if (m_updateSettingsCategory >= 0 && m_updateSettingsPageIndex >= 0) {
         selectPage(m_updateSettingsCategory, m_updateSettingsPageIndex);
+    }
+}
+
+void SettingsDialog::selectAppearanceSettings()
+{
+    if (m_appearanceSettingsCategory >= 0 && m_appearanceSettingsPageIndex >= 0) {
+        selectPage(m_appearanceSettingsCategory, m_appearanceSettingsPageIndex);
     }
 }
 

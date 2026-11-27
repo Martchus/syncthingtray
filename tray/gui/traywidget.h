@@ -109,6 +109,7 @@ public Q_SLOTS:
     void showSettingsDialog();
     void showLauncherSettings();
     void showUpdateSettings();
+    void showAppearanceSettings();
     void showWizard();
     void showAboutDialog();
     void showSyncthingUI(bool noQuickUI = false);

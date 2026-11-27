@@ -535,6 +535,9 @@ static int runApplication(int argc, const char *const *argv)
         QObject::connect(&singleInstance, &SingleInstance::newInstance, &runApplication);
         Settings::restore();
         auto &settings = Settings::values();
+#if defined(GUI_QTQUICK) && defined(SYNCTHINGWIDGETS_GUI_QTQUICK_MODE_DESKTOP)
+        settings.appearance.applyRhiBackend();
+#endif
         settings.qt.disableNotices();
         settings.qt.apply();
         qtConfigArgs.applySettings(true);

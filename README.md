@@ -218,7 +218,11 @@ in the web view settings.
 The modern UI is new and there is still room for improvement. Hence it needs to be enabled
 manually. Additionally, Syncthing Tray needs to be built with `-DQUICK_GUI=ON` and Qt 6.10 or
 newer is required. This is the case for official Qt 6 based Syncthing Tray builds but might not
-be the case for downstream builds. The modern UI also requires Vulkan under GNU/Linux.
+be the case for downstream builds. By default, the graphics backend for the modern UI is selected
+automatically (preferring Vulkan under GNU/Linux to avoid known OpenGL driver issues, but
+automatically falling back to OpenGL if Vulkan is not functional). The backend can also be
+configured manually in the appearance settings or overridden via the `QSG_RHI_BACKEND` environment
+variable.
 
 With these conditions met, you can enable the modern UI under the appearance settings. The
 change requires a restart of Syncthing Tray to take effect. In the settings for showing the

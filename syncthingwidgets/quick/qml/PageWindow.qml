@@ -6,7 +6,7 @@ import Main
 
 ApplicationWindow {
     id: pageWindow
-    visible: true
+    visible: false
     width: 700
     height: 500
     title: `${(page.currentItem?.title ?? page.title)} - ${meta.title}`
