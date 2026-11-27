@@ -383,6 +383,9 @@ QuickGuiEngine &TrayWidget::quickGui()
 {
     if (!m_quickUI.has_value()) {
         // force use of Vulkan under GNU/Linux to avoid "eglSwapBuffers failed with 0x…, surface: 0x…"
+        // note: This problem occurred with the NVIDIA driver. When I remember correctly, it happened with a driver version around 580
+        //       and only after hiding and trying to show the menu again. Not sure whether current NVIDIA driver versions are affected.
+        //       I cannot reproduce this problem right now with an AMD card and the radeonsi driver.
 #if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
         setenv("QSG_RHI_BACKEND", "vulkan", 0);
 #endif
