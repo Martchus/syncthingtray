@@ -12,6 +12,7 @@
 #include <QCoreApplication>
 #include <QDesktopServices>
 #include <QMessageBox>
+#include <QPushButton>
 #include <QUrl>
 
 #ifdef Q_OS_WINDOWS
@@ -112,6 +113,28 @@ WebViewDialog::WebViewDialog(QWidget *parent)
     connect(m_view, &SYNCTHINGWIDGETS_WEB_VIEW::titleChanged, this, &WebViewDialog::setWindowTitle);
 
 #if defined(SYNCTHINGWIDGETS_USE_WEBENGINE)
+    connect(m_view, &QWebEngineView::renderProcessTerminated, this, [this](QWebEnginePage::RenderProcessTerminationStatus status, int exitCode) {
+        if (status == QWebEnginePage::NormalTerminationStatus) {
+            return;
+        }
+        qWarning("WebEngine render process terminated with status %d, exit code %d", static_cast<int>(status), exitCode);
+        auto messageBox = QMessageBox(QMessageBox::Critical, QCoreApplication::applicationName(),
+            tr("The web view render process terminated unexpectedly (exit code %1).\n\n"
+               "This can happen due to graphics driver incompatibility. You can try to reload or switch to using an external browser.")
+                .arg(exitCode),
+            QMessageBox::NoButton, this);
+        connect(messageBox.addButton(tr("Use external browser"), QMessageBox::AcceptRole), &QPushButton::clicked, this, [this] {
+            Settings::values().webView.mode = Settings::WebView::Mode::Browser;
+            const auto targetUrl = m_view->url().isEmpty() ? QUrl(m_connectionSettings.syncthingUrl) : m_view->url();
+            QDesktopServices::openUrl(targetUrl);
+            deleteLater();
+        });
+        connect(messageBox.addButton(tr("Reload"), QMessageBox::ActionRole), &QPushButton::clicked, m_view, &QWebEngineView::reload);
+        messageBox.addButton(QMessageBox::Close);
+        if (messageBox.exec() == QMessageBox::Close) {
+            close();
+        }
+    });
     m_view->installEventFilter(this);
     if (m_view->focusProxy()) {
         m_view->focusProxy()->installEventFilter(this);
