@@ -383,7 +383,9 @@ QuickGuiEngine &TrayWidget::quickGui()
 {
     if (!m_quickUI.has_value()) {
         // use dense variant of Material style
-        setenv("QT_QUICK_CONTROLS_MATERIAL_VARIANT", "Dense", 0);
+        if (!qEnvironmentVariableIsSet("QT_QUICK_CONTROLS_MATERIAL_VARIANT")) {
+            qputenv("QT_QUICK_CONTROLS_MATERIAL_VARIANT", "Dense");
+        }
 
         auto &settings = Settings::values();
         auto &quickUI = m_quickUI.emplace(qGuiApp, settings.qt);
