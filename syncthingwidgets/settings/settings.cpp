@@ -199,6 +199,11 @@ void Appearance::applyRhiBackend() const
         setRhiBackendEnv("vulkan", true);
         break;
     case RhiBackend::OpenGL:
+#if QT_CONFIG(opengl)
+        if (!probeOpenGL()) {
+            qWarning("OpenGL was explicitly configured as the graphics backend, but it does not appear to be functional.");
+        }
+#endif
         setRhiBackendEnv("opengl", true);
         break;
     case RhiBackend::Software:
