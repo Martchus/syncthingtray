@@ -187,20 +187,20 @@
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="99"/>
-        <location filename="../gui/traywidget.cpp" line="494"/>
+        <location filename="../gui/traywidget.cpp" line="497"/>
         <source>About</source>
         <translation>Über Syncthing Tray</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="58"/>
-        <location filename="../gui/traywidget.cpp" line="639"/>
+        <location filename="../gui/traywidget.cpp" line="642"/>
         <source>Connect</source>
         <translation>Verbinden</translation>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="72"/>
-        <location filename="../gui/traywidget.cpp" line="1120"/>
-        <location filename="../gui/traywidget.cpp" line="1168"/>
+        <location filename="../gui/traywidget.cpp" line="1139"/>
+        <location filename="../gui/traywidget.cpp" line="1187"/>
         <source>Start</source>
         <translation>Starten</translation>
     </message>
@@ -275,7 +275,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</source>
     </message>
     <message>
         <location filename="../gui/traywidget.ui" line="357"/>
-        <location filename="../gui/traywidget.cpp" line="210"/>
+        <location filename="../gui/traywidget.cpp" line="211"/>
         <source>New notifications</source>
         <translation>Neue Benachrichtigungen</translation>
     </message>
@@ -311,86 +311,91 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</source>
         <translation>Ignorieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="182"/>
+        <location filename="../gui/traywidget.cpp" line="183"/>
         <source>View own device ID</source>
         <translation>Eigene Geräte-ID anzeigen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="187"/>
+        <location filename="../gui/traywidget.cpp" line="188"/>
         <source>Restart Syncthing</source>
         <translation>Syncthing neustarten</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="192"/>
+        <location filename="../gui/traywidget.cpp" line="193"/>
         <source>Show Syncthing log</source>
         <translation>Syncthing-Log zeigen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="197"/>
+        <location filename="../gui/traywidget.cpp" line="198"/>
         <source>Rescan all folders</source>
         <translation>Alle Ordner neu scannen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="204"/>
+        <location filename="../gui/traywidget.cpp" line="205"/>
         <source>Connection</source>
         <translation>Verbindung</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="227"/>
+        <location filename="../gui/traywidget.cpp" line="228"/>
         <source>Show internal errors</source>
         <translation>Interne Fehler</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="242"/>
+        <location filename="../gui/traywidget.cpp" line="243"/>
         <source>Quit Syncthing Tray</source>
         <translation>Syncthing Tray schließen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="607"/>
+        <location filename="../gui/traywidget.cpp" line="610"/>
         <source>Do you really want to restart Syncthing?</source>
         <translation>Soll Syncthing wirklich neu gestartet werden?</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="634"/>
+        <location filename="../gui/traywidget.cpp" line="637"/>
         <source>Connecting …</source>
         <translation>Verbinde …</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="635"/>
+        <location filename="../gui/traywidget.cpp" line="638"/>
         <source>Establishing connection to Syncthing …</source>
         <translation>Stelle Verbindung zu Syncthing her …</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="640"/>
+        <location filename="../gui/traywidget.cpp" line="643"/>
         <source>Not connected to Syncthing, click to connect</source>
         <translation>Verbindung zu Syncthing getrennt, klicke um zu verbinden</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="645"/>
+        <location filename="../gui/traywidget.cpp" line="648"/>
         <source>Unable to establish connection to Syncthing.</source>
         <translation>Verbindung zu Syncthing kann nicht hergestellt werden.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="653"/>
+        <location filename="../gui/traywidget.cpp" line="656"/>
         <source>Syncthing is force-paused, click to resume</source>
         <translation>Syncthing wurde manuell pausiert, klicken Sie zum Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="657"/>
+        <location filename="../gui/traywidget.cpp" line="660"/>
         <source>Pause</source>
         <translation>Pausieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="658"/>
+        <location filename="../gui/traywidget.cpp" line="661"/>
         <source>Syncthing is running, click to pause all devices, discovery and relaying</source>
         <translation>Syncthing läuft, klicken Sie zum Anhalten aller Geräte, der Geräteerkennung und des Relayings</translation>
+    </message>
+    <message>
+        <location filename="../gui/traywidget.cpp" line="849"/>
+        <source>Failed to initialize graphics backend for the modern UI. You can try to select a different graphics backend in the appearance settings or switch back to the traditional UI.</source>
+        <translation>Die Initialisierung des Grafik-Backends für die moderne Benutzeroberfläche ist fehlgeschlagen. Du kannst versuchen, in den Darstellungseinstellungen ein anderes Grafik-Backend auszuwählen oder zur traditionellen Oberfläche zu wechseln.</translation>
     </message>
     <message>
         <source>Syncthing is running, click to pause all devices</source>
         <translation type="vanished">Syncthing läuft, klicke um alle Geräte zu pausieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="652"/>
+        <location filename="../gui/traywidget.cpp" line="655"/>
         <source>Continue</source>
         <translation>Fortsetzen</translation>
     </message>
@@ -399,53 +404,63 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</source>
         <translation type="vanished">Mind. ein Gerät ist pausiert, klicke um fortzusetzen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="791"/>
+        <location filename="../gui/traywidget.cpp" line="794"/>
         <source>The specified connection configuration &lt;em&gt;%1&lt;/em&gt; is not defined and hence ignored.</source>
         <translation>Die angegebene Verbindungskonfiguration &lt;em&gt;%1&lt;/em&gt; ist nicht definiert und wird daher ignoriert.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="877"/>
+        <location filename="../gui/traywidget.cpp" line="851"/>
+        <source>Appearance settings</source>
+        <translation>Darstellungseinstellungen</translation>
+    </message>
+    <message>
+        <location filename="../gui/traywidget.cpp" line="853"/>
+        <source>Restart with traditional UI</source>
+        <translation>Mit traditioneller Oberfläche neu starten</translation>
+    </message>
+    <message>
+        <location filename="../gui/traywidget.cpp" line="896"/>
         <source>The folder &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation>Der Ordner &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="888"/>
+        <location filename="../gui/traywidget.cpp" line="907"/>
         <source>The containing folder &lt;i&gt;%1&lt;/i&gt; does not exist on the local machine.</source>
         <translation>Der beinhaltende Ordner &lt;i&gt;%1&lt;/i&gt; existiert nicht lokal.</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="957"/>
+        <location filename="../gui/traywidget.cpp" line="976"/>
         <source>Open item</source>
         <translation>Öffne Datei/Ordner</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="963"/>
+        <location filename="../gui/traywidget.cpp" line="982"/>
         <source>Copy path</source>
         <translation>Pfad kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="967"/>
+        <location filename="../gui/traywidget.cpp" line="986"/>
         <source>Copy device ID</source>
         <translation>Geräte-ID kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="970"/>
+        <location filename="../gui/traywidget.cpp" line="989"/>
         <source>Copy folder ID</source>
         <translation>Ordner-ID kopieren</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="1116"/>
-        <location filename="../gui/traywidget.cpp" line="1162"/>
+        <location filename="../gui/traywidget.cpp" line="1135"/>
+        <location filename="../gui/traywidget.cpp" line="1181"/>
         <source>Stop</source>
         <translation>Stoppen</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="1117"/>
+        <location filename="../gui/traywidget.cpp" line="1136"/>
         <source>Stop Syncthing instance launched via tray icon</source>
         <translation>Stoppe Syncthing-Instanz, die mit dem internen Starter gestartet wurde</translation>
     </message>
     <message>
-        <location filename="../gui/traywidget.cpp" line="1121"/>
+        <location filename="../gui/traywidget.cpp" line="1140"/>
         <source>Start Syncthing with the built-in launcher configured in the settings</source>
         <translation>Starte Syncthing mit dem eingebauten Starter, der in den Einstellungen konfiguriert wird</translation>
     </message>
@@ -470,7 +485,7 @@ For &lt;i&gt;all&lt;/i&gt; notifications, check out the log</source>
         <translation>Das System-Tray bzw. der Infobereich ist aktuell nicht verfügbar. Mit der Option &quot;--windowed&quot; ist es möglich, Syncthing Tray als normales Fenster zu starten. Außerdem ist es möglich mit der Option &quot;--wait&quot; zu warten bis das System-Tray verfügbar ist anstelle diesen Dialog zu zeigen.</translation>
     </message>
     <message>
-        <location filename="../application/main.cpp" line="589"/>
+        <location filename="../application/main.cpp" line="592"/>
         <source>&lt;p&gt;This can have different causes:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Data corruption occurred during the download/extraction. In this case cancelling and retrying the update will help.&lt;/li&gt;&lt;li&gt;The signing key or updating mechanism in general has changed. In this case an according release note will be present on &lt;a href=&quot;https://martchus.github.io/syncthingtray/#downloads-section&quot;&gt;the website&lt;/a&gt; and &lt;a href=&quot;https://github.com/Martchus/syncthingtray/releases&quot;&gt;GitHub&lt;/a&gt;.&lt;/li&gt;&lt;li&gt;A bug in the newly introduced updater, see &lt;a href=&quot;https://github.com/Martchus/syncthingtray/issues&quot;&gt;issues on GitHub&lt;/a&gt; for potential bug reports.&lt;/li&gt;&lt;li&gt;Someone tries to distribute manipulated executables of Syncthing Tray.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;It is recommend to cancel the update and retry or cross-check the cause if the issue persists. If you ignore this error you &lt;i&gt;may&lt;/i&gt; install a corrupted/manipulated executable.&lt;/p&gt;</source>
         <translation>&lt;p&gt;Das kann verschiedene Ursachen haben:&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Die Datei wurde beim Herunterladen/Extrahieren beschädigt. In diesem Fall sollte es helfen das Update abzubrechen und neu zu versuchen.&lt;/li&gt;&lt;li&gt;Der Schlüssel mit dem die Datei signiert wird oder die Update-Mechanismus im Allgemeinen haben sich geändert. In diesem Fall sollte eine Anmerkung auf &lt;a href=&quot;https://martchus.github.io/syncthingtray/#downloads-section&quot;&gt;der Website&lt;/a&gt; oder &lt;a href=&quot;https://github.com/Martchus/syncthingtray/releases&quot;&gt;GitHub&lt;/a&gt; zu finden sein.&lt;/li&gt;&lt;li&gt;Der neue eingeführte Updater enthält noch Fehler, siehe &lt;a href=&quot;https://github.com/Martchus/syncthingtray/issues&quot;&gt;&quot;Issues&quot; auf GitHub&lt;/a&gt; für Fehlerberichte.&lt;/li&gt;&lt;li&gt;Jemand versucht manipulierte Versionen von Syncthing Tray zu verteilen.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;Es ist am besten das Update abzubrechen und nochmals zu versuchen. Falls der Fehler weiterhin auftritt sollte die Ursache ermittelt werden. Wenn du diesen Fehler ignorierst, wird &lt;i&gt;vielleicht&lt;/i&gt; eine beschädigte/manipulierte Version der Anwendungsdatei installiert.&lt;/p&gt;</translation>
     </message>
